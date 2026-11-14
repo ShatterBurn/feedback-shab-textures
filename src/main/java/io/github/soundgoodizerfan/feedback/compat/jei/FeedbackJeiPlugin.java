@@ -261,6 +261,7 @@ public class FeedbackJeiPlugin implements IModPlugin {
             registration.addRecipes(EngineeringCategory.TYPE, cards);
         }
         info(registration, io.github.soundgoodizerfan.feedback.registry.FModular.ENGINEERING_TABLE_ITEM.get(), "engineering_table");
+        info(registration, io.github.soundgoodizerfan.feedback.registry.FModular.RESEARCH_TABLE_ITEM.get(), "research_table");
         for (var form : io.github.soundgoodizerfan.feedback.registry.FormItems.all()) {
             var made = io.github.soundgoodizerfan.feedback.registry.FormItems.materials().get(form.material());
             if (made != null && made.food().isPresent())

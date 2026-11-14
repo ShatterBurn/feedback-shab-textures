@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "P": {
+      "item": "minecraft:paper"
+    },
+    "W": {
+      "tag": "minecraft:planks"
+    },
+    "L": {
+      "item": "minecraft:lectern"
+    }
+  },
+  "pattern": [
+    "PPP",
+    "WLW",
+    "WWW"
+  ],
+  "result": {
+    "count": 1,
+    "id": "feedback:research_table"
+  }
+}

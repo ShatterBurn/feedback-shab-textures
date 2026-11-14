@@ -44,7 +44,7 @@ public final class EngineeringRework {
 
     /** The notes an action leaves for the screen ({@code gui.feedback.engineering.note.*}). */
     public static final int NONE = 0, NO_TOOL = 1, BROKEN_TOOL = 2, NOT_MODULAR = 3, NOTHING = 4, REPAIRED = 5, SWAPPED = 6, TAKEN_APART = 7,
-            FITTED = 8, DOES_NOT_FIT = 9, SCHOOL = 10, NO_SCHOOL = 11, NO_BLANK = 12, NO_SPECIMEN = 13, WRITTEN = 14, DISH = 15, NO_SAMPLES = 16, NO_XP = 17, NO_PLAIN_BLANK = 18;
+            FITTED = 8, DOES_NOT_FIT = 9, SCHOOL = 10, NO_SCHOOL = 11, NO_BLANK = 12, NO_SPECIMEN = 13, WRITTEN = 14, DISH = 15;
 
     /** The most stock pieces one action will try. */
     private static final int MAX_PIECES = 64;
@@ -238,82 +238,6 @@ public final class EngineeringRework {
     /** Whether a stack may sit in the Fit grid or the Repair stock grid: a shaped part, a held module or stock of some material. */
     public static boolean isStock(ItemStack stack, Level level) {
         return stack.getItem() instanceof ModularPartItem || ModularNest.holdable(stack) || Material.find(ClientMaterials.on(level), stack).isPresent();
-    }
-
-    // --- Research -----------------------------------------------------------------------------
-
-    /**
-     * The samples a research run of volume {@code index} lays out: one stack of each distinct material in the player's inventory that states the
-     * volume's property, the first {@link io.github.soundgoodizerfan.feedback.modular.bake.ModularTuning#RESEARCH_SAMPLES} by distinct figure.
-     * Empty when fewer than three can be found.
-     */
-    public static List<ItemStack> researchSamples(ServerPlayer server, int index) {
-        var theme = io.github.soundgoodizerfan.feedback.modular.treatise.ResearchTheme.of(index);
-        var materials = io.github.soundgoodizerfan.feedback.process.MaterialTable.get().materials();
-        List<ItemStack> out = new ArrayList<>();
-        List<Double> seen = new ArrayList<>();
-        for (ItemStack s : server.getInventory().items) {
-            if (s.isEmpty())
-                continue;
-            var found = Material.find(materials, s);
-            if (found.isEmpty())
-                continue;
-            var fig = io.github.soundgoodizerfan.feedback.modular.treatise.ResearchTheme.figure(theme, found.get().material());
-            if (fig.isEmpty() || seen.contains(fig.getAsDouble()))
-                continue;
-            seen.add(fig.getAsDouble());
-            out.add(s);
-            if (out.size() >= io.github.soundgoodizerfan.feedback.modular.bake.ModularTuning.RESEARCH_SAMPLES)
-                break;
-        }
-        return out.size() >= 3 ? out : List.of();
-    }
-
-    /** The material ids of {@code samples}, comma-joined, as the research game's data. */
-    public static String researchData(int index, List<ItemStack> samples) {
-        var materials = io.github.soundgoodizerfan.feedback.process.MaterialTable.get().materials();
-        StringBuilder sb = new StringBuilder().append(Math.floorMod(index, io.github.soundgoodizerfan.feedback.modular.treatise.ResearchTheme.count())).append(';');
-        for (int i = 0; i < samples.size(); i++) {
-            var found = Material.find(materials, samples.get(i));
-            if (i > 0)
-                sb.append(',');
-            sb.append(found.map(f -> f.id().getNamespace().equals("feedback") ? f.id().getPath() : f.id().toString()).orElse(""));
-        }
-        return sb.toString();
-    }
-
-    /**
-     * Whether a research run can start: a Blank Treatise on the table, no specimen beside it (that is the other way to learn), samples in the
-     * pack and the experience to run it. 0 when it can, else the note code.
-     */
-    public static int researchReady(Container table, ServerPlayer server, int index) {
-        if (!table.getItem(EngineeringTableBlockEntity.BLANK).is(FModular.BLANK_TREATISE.get()))
-            return NO_BLANK;
-        if (!table.getItem(EngineeringTableBlockEntity.SPECIMEN).isEmpty())
-            return NO_PLAIN_BLANK;
-        if (researchSamples(server, index).isEmpty())
-            return NO_SAMPLES;
-        if (server.totalExperience < io.github.soundgoodizerfan.feedback.modular.bake.ModularTuning.RESEARCH_XP && !server.getAbilities().instabuild)
-            return NO_XP;
-        return 0;
-    }
-
-    /**
-     * A research run ended with notes of {@code quality}: the experience is spent, one of each sample is used up (a failed run spends them all the
-     * same), and the blank becomes the volume researched, its notes as good as the ranking was right.
-     */
-    public static Outcome researched(Container table, ServerPlayer server, int index, float quality) {
-        int ready = researchReady(table, server, index);
-        if (ready != 0)
-            return Outcome.of(ready);
-        var theme = io.github.soundgoodizerfan.feedback.modular.treatise.ResearchTheme.of(index);
-        for (ItemStack sample : researchSamples(server, index))
-            sample.shrink(1);
-        if (!server.getAbilities().instabuild)
-            server.giveExperiencePoints(-io.github.soundgoodizerfan.feedback.modular.bake.ModularTuning.RESEARCH_XP);
-        table.setItem(EngineeringTableBlockEntity.BLANK, TreatiseGame.onLearn(server, theme.school(), theme.volume(), ItemStack.EMPTY, quality));
-        HudReadoutPayload.send(server, Component.translatable("message.feedback.treatise.written", Component.translatable(theme.school().itemKey(theme.volume()))), 60);
-        return Outcome.of(WRITTEN);
     }
 
     // --- Treatise tab -------------------------------------------------------------------------

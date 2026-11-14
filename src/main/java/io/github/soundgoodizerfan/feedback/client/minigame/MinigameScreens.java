@@ -37,7 +37,6 @@ public final class MinigameScreens {
         register(EngineeringMinigames.UPSET, UpsetScreen::new);
         register(EngineeringMinigames.FITTING, FittingScreen::new);
         register(EngineeringMinigames.NOTES, NotesScreen::new);
-        register(EngineeringMinigames.RESEARCH, ResearchScreen::new);
     }
 
     private MinigameScreens() {
@@ -53,6 +52,11 @@ public final class MinigameScreens {
         LocalPlayer player = Minecraft.getInstance().player;
         if (opener != null && player != null && session.rounds() > 0)
             Minecraft.getInstance().setScreen(opener.open(parent, parent.getMenu(), session));
+    }
+
+    /** Opens the research game over the Research Table's screen. */
+    public static void openResearch(Screen parent, MinigameOpenPayload session) {
+        Minecraft.getInstance().setScreen(new ResearchScreen(parent, session));
     }
 
     /** Sends the one result of a game: a score in 0..1. */

@@ -36,6 +36,9 @@ public record MinigameResultPayload(int container, int percent) implements Custo
             if (context.player() instanceof ServerPlayer player && player.containerMenu instanceof EngineeringTableMenu menu
                     && menu.containerId == payload.container())
                 menu.finishMinigame(player, payload.percent());
+            else if (context.player() instanceof ServerPlayer player && player.containerMenu instanceof io.github.soundgoodizerfan.feedback.modular.research.ResearchTableMenu menu
+                    && menu.containerId == payload.container())
+                menu.finishMinigame(player, payload.percent());
         });
     }
 }

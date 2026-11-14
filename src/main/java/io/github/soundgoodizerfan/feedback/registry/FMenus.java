@@ -50,6 +50,11 @@ public class FMenus {
             MENUS.register("engineering_table",
                     () -> IMenuTypeExtension.create(io.github.soundgoodizerfan.feedback.modular.engineering.EngineeringTableMenu::new));
 
+    /** Extended: the table's position rides in the open packet. */
+    public static final DeferredHolder<MenuType<?>, MenuType<io.github.soundgoodizerfan.feedback.modular.research.ResearchTableMenu>> RESEARCH_TABLE =
+            MENUS.register("research_table",
+                    () -> IMenuTypeExtension.create(io.github.soundgoodizerfan.feedback.modular.research.ResearchTableMenu::new));
+
     /** Extended: as the Tool Table's; the block at the position says which bench it is. */
     public static final DeferredHolder<MenuType<?>, MenuType<io.github.soundgoodizerfan.feedback.modular.bench.StationMenu>> STATION =
             MENUS.register("station",

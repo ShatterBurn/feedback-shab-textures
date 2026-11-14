@@ -30,7 +30,7 @@ public class EngineeringTableScreen extends SkinnedScreen<EngineeringTableMenu> 
     /** Status text box (relative to the panel): under the arrow, right of the grid. */
     private static final int STATUS_X = 92, STATUS_Y = 62, STATUS_W = 116;
 
-    private Button apply, repair, swap, apart, learn, research, volume;
+    private Button apply, repair, swap, apart, learn;
 
     public EngineeringTableScreen(EngineeringTableMenu menu, Inventory inventory, Component title) {
         super(menu, inventory, title, SKIN);
@@ -53,11 +53,7 @@ public class EngineeringTableScreen extends SkinnedScreen<EngineeringTableMenu> 
         swap = action("swap", EngineeringTableMenu.BTN_SWAP, 36);
         apart = action("apart", EngineeringTableMenu.BTN_APART, 54);
         learn = addRenderableWidget(GuiStyle.primary(skin, Component.translatable("gui.feedback.engineering.learn"),
-                b -> press(EngineeringTableMenu.BTN_LEARN), leftPos + 12, topPos + 68, 80, 16, null));
-        research = addRenderableWidget(GuiStyle.button(skin, Component.translatable("gui.feedback.engineering.research"),
-                b -> press(EngineeringTableMenu.BTN_RESEARCH), leftPos + 96, topPos + 68, 52, 16));
-        volume = addRenderableWidget(GuiStyle.button(skin, Component.empty(),
-                b -> press(EngineeringTableMenu.BTN_VOLUME), leftPos + 152, topPos + 68, 52, 16));
+                b -> press(EngineeringTableMenu.BTN_LEARN), leftPos + (imageWidth - 80) / 2, topPos + 68, 80, 16, null));
     }
 
     private Button action(String key, int id, int y) {
@@ -79,9 +75,7 @@ public class EngineeringTableScreen extends SkinnedScreen<EngineeringTableMenu> 
         super.containerTick();
         apply.visible = menu.tab() == EngineeringTableMenu.TAB_FIT;
         repair.visible = swap.visible = apart.visible = menu.tab() == EngineeringTableMenu.TAB_REPAIR;
-        learn.visible = research.visible = volume.visible = menu.tab() == EngineeringTableMenu.TAB_TREATISE;
-        var theme = io.github.soundgoodizerfan.feedback.modular.treatise.ResearchTheme.of(menu.researchIndex());
-        volume.setMessage(Component.literal(font.plainSubstrByWidth(Component.translatable(theme.school().itemKey(theme.volume())).getString().replaceAll("^.*? ", ""), 44)));
+        learn.visible = menu.tab() == EngineeringTableMenu.TAB_TREATISE;
     }
 
     @Override
@@ -161,7 +155,7 @@ public class EngineeringTableScreen extends SkinnedScreen<EngineeringTableMenu> 
 
     private Component noteText() {
         String[] names = {"", "no_tool", "broken_tool", "not_modular", "nothing", "repaired", "swapped", "taken_apart", "fitted", "does_not_fit",
-                "school", "no_school", "no_blank", "no_specimen", "written", "dish", "no_samples", "no_xp", "no_plain_blank"};
+                "school", "no_school", "no_blank", "no_specimen", "written", "dish"};
         int n = menu.note();
         if (n <= 0 || n >= names.length)
             return Component.empty();

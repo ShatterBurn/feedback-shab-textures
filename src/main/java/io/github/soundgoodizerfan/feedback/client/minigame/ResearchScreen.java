@@ -6,7 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.github.soundgoodizerfan.feedback.modular.bake.ModularTuning;
-import io.github.soundgoodizerfan.feedback.modular.engineering.EngineeringTableMenu;
+import io.github.soundgoodizerfan.feedback.client.gui.GuiSkin;
+import io.github.soundgoodizerfan.feedback.client.gui.GuiStyle;
 import io.github.soundgoodizerfan.feedback.modular.treatise.ResearchTheme;
 import io.github.soundgoodizerfan.feedback.net.MinigameOpenPayload;
 import io.github.soundgoodizerfan.feedback.process.ClientMaterials;
@@ -29,7 +30,8 @@ import net.minecraft.resources.ResourceLocation;
  */
 final class ResearchScreen extends Screen {
 
-    private static final int W = 250, H = 190, PAGE = 0xFFEDE3C4, INK = 0xFF1F2A5C, DIM = 0xFF6C6C70, GOOD = 0xFF2E7D32, BAD = 0xFFA33A24;
+    private static final GuiSkin SKIN = GuiSkin.WOOD;
+    private static final int W = 250, H = 190;
 
     private final Screen parent;
     private final int containerId;
@@ -42,7 +44,7 @@ final class ResearchScreen extends Screen {
     private boolean ranking, sent;
     private Button compareMode, rankMode, clear, commit;
 
-    ResearchScreen(Screen parent, EngineeringTableMenu menu, MinigameOpenPayload session) {
+    ResearchScreen(Screen parent, MinigameOpenPayload session) {
         super(Component.translatable("gui.feedback.research.title"));
         this.parent = parent;
         this.containerId = session.container();
@@ -78,14 +80,14 @@ final class ResearchScreen extends Screen {
     protected void init() {
         px = (width - W) / 2;
         py = (height - H) / 2;
-        compareMode = addRenderableWidget(Button.builder(Component.translatable("gui.feedback.research.compare"), b -> mode(false)).bounds(px + 8, py + 150, 56, 16).build());
-        rankMode = addRenderableWidget(Button.builder(Component.translatable("gui.feedback.research.rank"), b -> mode(true)).bounds(px + 68, py + 150, 56, 16).build());
-        clear = addRenderableWidget(Button.builder(Component.translatable("gui.feedback.research.clear"), b -> order.clear()).bounds(px + 128, py + 150, 52, 16).build());
-        commit = addRenderableWidget(Button.builder(Component.translatable("gui.feedback.research.commit"), b -> commit()).bounds(px + 184, py + 150, 58, 16).build());
+        compareMode = addRenderableWidget(GuiStyle.button(SKIN, Component.translatable("gui.feedback.research.compare"), b -> mode(false), px + 8, py + 150, 56, 16));
+        rankMode = addRenderableWidget(GuiStyle.button(SKIN, Component.translatable("gui.feedback.research.rank"), b -> mode(true), px + 68, py + 150, 56, 16));
+        clear = addRenderableWidget(GuiStyle.button(SKIN, Component.translatable("gui.feedback.research.clear"), b -> order.clear(), px + 128, py + 150, 52, 16));
+        commit = addRenderableWidget(GuiStyle.button(SKIN, Component.translatable("gui.feedback.research.commit"), b -> commit(), px + 184, py + 150, 58, 16));
         for (int i = 0; i < names.size(); i++) {
             int n = i;
-            addRenderableWidget(Button.builder(Component.literal(String.valueOf((char) ('A' + i)) + "  " + shorten(names.get(i))), b -> sample(n))
-                    .bounds(px + 8 + (i % 2) * 118, py + 50 + (i / 2) * 20, 114, 18).build());
+            addRenderableWidget(GuiStyle.button(SKIN, Component.literal((char) ('A' + i) + "  " + shorten(names.get(i))), b -> sample(n),
+                    px + 8 + (i % 2) * 118, py + 50 + (i / 2) * 20, 114, 18));
         }
         mode(false);
     }
@@ -142,21 +144,20 @@ final class ResearchScreen extends Screen {
     @Override
     public void render(GuiGraphics g, int mx, int my, float partial) {
         renderTransparentBackground(g);
-        g.fill(px, py, px + W, py + H, PAGE);
-        g.renderOutline(px, py, W, H, INK);
-        g.drawString(font, title, px + 8, py + 8, INK, false);
-        g.drawString(font, Component.translatable(theme.school().itemKey(theme.volume())), px + 8, py + 20, DIM, false);
-        g.drawString(font, Component.translatable("gui.feedback.research.goal", Component.translatable("gui.feedback.research.property." + theme.key())), px + 8, py + 34, INK, false);
+        SKIN.panel(g, px, py, W, H);
+        g.drawString(font, title, px + 8, py + 8, SKIN.ink(), false);
+        g.drawString(font, Component.translatable(theme.school().itemKey(theme.volume())), px + 8, py + 20, SKIN.dim(), false);
+        g.drawString(font, Component.translatable("gui.feedback.research.goal", Component.translatable("gui.feedback.research.property." + theme.key())), px + 8, py + 34, SKIN.ink(), false);
         int y = py + 50 + ((names.size() + 1) / 2) * 20 + 4;
-        g.drawString(font, Component.translatable("gui.feedback.research.tests", tests), px + 8, y, tests > 0 ? GOOD : BAD, false);
+        g.drawString(font, Component.translatable("gui.feedback.research.tests", tests), px + 8, y, tests > 0 ? SKIN.accent() : SKIN.warn(), false);
         if (!ranking && picked >= 0)
-            g.drawString(font, Component.translatable("gui.feedback.research.against", String.valueOf((char) ('A' + picked))), px + 90, y, INK, false);
+            g.drawString(font, Component.translatable("gui.feedback.research.against", String.valueOf((char) ('A' + picked))), px + 90, y, SKIN.ink(), false);
         for (int i = 0; i < log.size(); i++)
-            g.drawString(font, log.get(i), px + 8, y + 12 + i * 10, INK, false);
+            g.drawString(font, log.get(i), px + 8, y + 12 + i * 10, SKIN.ink(), false);
         StringBuilder row = new StringBuilder();
         for (int i : order)
             row.append((char) ('A' + i)).append(' ');
-        g.drawString(font, Component.translatable("gui.feedback.research.order").getString() + " " + row, px + 8, py + 138, INK, false);
+        g.drawString(font, Component.translatable("gui.feedback.research.order").getString() + " " + row, px + 8, py + 138, SKIN.ink(), false);
         commit.active = order.size() >= names.size();
         super.render(g, mx, my, partial);
     }

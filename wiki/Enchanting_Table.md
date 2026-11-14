@@ -288,7 +288,7 @@ Vanilla gear converted into modular gear keeps the enchantments it already had.
 
 ## Knowing an effect
 
-You start knowing five effects: **Edge, Ward, Mend, Yield and Hold**. Every other effect shows in the list as **???**, with no description, until you learn it. Three ways to learn one:
+You start knowing five effects: **Edge, Ward, Mend, Yield and Hold**. Every other effect shows in the list as **???**, with no description, until you learn it. Four ways to learn one:
 
 - **Read a book.** Right-click a vanilla enchanted book (a cleric's, or loot). For each enchantment in it that an effect names, you learn that effect and the book is used up. A book that teaches nothing new is kept and says so. Which enchantment teaches which effect:
 
@@ -314,6 +314,7 @@ You start knowing five effects: **Edge, Ward, Mend, Yield and Hold**. Every othe
 
 - **Attempt it blind.** You may attempt an effect you do not know, at full price. The pad shows no guide: you must find the word's shape yourself. A clean result teaches you the effect; a flawed or failed one teaches nothing and the experience is spent.
 - **Study a part.** Seat a part that already holds the effect and press **Study** (it replaces Begin for an effect the part holds and you do not know). You learn it for nothing.
+- **Research it.** At the [Research Table](Research_Table.md), run trials on samples of stock and the attunement is learned.
 
 Knowledge is yours alone and is kept when you die.
 

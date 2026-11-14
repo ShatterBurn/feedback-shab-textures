@@ -96,10 +96,6 @@ Put a **Blank Treatise** or blank blueprint paper in the blank slot and a **spec
 - A Blank Treatise becomes the volume the specimen's type belongs to. See [Treatise](Treatise.md#obtaining) for the specimens.
 - Blank paper becomes a blueprint of the design the specimen's parts make. This works on any complex type and needs no treatise.
 
-### Researching a volume
-
-With a Blank Treatise in the blank slot and the specimen slot empty, the **volume button** cycles which treatise volume to research and **Research** starts the game. It needs three or more different materials (any stock) in your pack and 40 experience points. The game is described under [Treatise](Treatise.md#researching-a-volume).
-
 ## Recording for the Auto Engineer
 
 Hold a [Recipe Data Stick](Data_Stick.md) in your **off hand** while you take a craft from the output slot, and the stick records that assembly. An [Auto Engineer](Auto_Engineer.md) repeats it.

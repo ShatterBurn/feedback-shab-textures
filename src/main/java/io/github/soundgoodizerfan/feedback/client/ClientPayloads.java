@@ -29,6 +29,8 @@ public final class ClientPayloads {
     public static void openMinigame(io.github.soundgoodizerfan.feedback.net.MinigameOpenPayload payload) {
         if (Minecraft.getInstance().screen instanceof EngineeringTableScreen screen && screen.getMenu().containerId == payload.container())
             MinigameScreens.open(screen, payload);
+        else if (Minecraft.getInstance().screen instanceof io.github.soundgoodizerfan.feedback.client.bench.ResearchTableScreen screen && screen.getMenu().containerId == payload.container())
+            MinigameScreens.openResearch(screen, payload);
     }
 
     /** A cast wants the view turned: {@link CameraTurn} eases it there. */

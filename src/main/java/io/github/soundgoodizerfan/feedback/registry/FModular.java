@@ -267,6 +267,14 @@ public final class FModular {
                             .sound(net.minecraft.world.level.block.SoundType.METAL).requiresCorrectToolForDrops()));
     public static final DeferredItem<net.minecraft.world.item.BlockItem> ENGINEERING_TABLE_ITEM = ITEMS.registerSimpleBlockItem(ENGINEERING_TABLE);
 
+    /** Where what is not yet known is found out: a treatise volume or an attunement, by ranking samples (docs/dev/engineering.md). */
+    public static final net.neoforged.neoforge.registries.DeferredBlock<io.github.soundgoodizerfan.feedback.modular.research.ResearchTableBlock> RESEARCH_TABLE =
+            BLOCKS.register("research_table", () -> new io.github.soundgoodizerfan.feedback.modular.research.ResearchTableBlock(
+                    net.minecraft.world.level.block.state.BlockBehaviour.Properties.of()
+                            .mapColor(net.minecraft.world.level.material.MapColor.WOOD).strength(2.5f)
+                            .sound(net.minecraft.world.level.block.SoundType.WOOD)));
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> RESEARCH_TABLE_ITEM = ITEMS.registerSimpleBlockItem(RESEARCH_TABLE);
+
     /** The part-making benches: the Tool Table's code with a stock filter. The first two replace vanilla's smithing table and stonecutter. */
     public static final net.neoforged.neoforge.registries.DeferredBlock<io.github.soundgoodizerfan.feedback.modular.bench.StationBlock> SMITHING_TABLE =
             BLOCKS.register("smithing_table", () -> new io.github.soundgoodizerfan.feedback.modular.bench.StationBlock(
@@ -318,6 +326,10 @@ public final class FModular {
             net.minecraft.world.level.block.entity.BlockEntityType<io.github.soundgoodizerfan.feedback.modular.treatise.TreatiseShelfBlockEntity>> TREATISE_SHELF_ENTITY =
             BLOCK_ENTITIES.register("treatise_shelf", () -> net.minecraft.world.level.block.entity.BlockEntityType.Builder
                     .of(io.github.soundgoodizerfan.feedback.modular.treatise.TreatiseShelfBlockEntity::new, TREATISE_SHELF.get()).build(null));
+    public static final net.neoforged.neoforge.registries.DeferredHolder<net.minecraft.world.level.block.entity.BlockEntityType<?>,
+            net.minecraft.world.level.block.entity.BlockEntityType<io.github.soundgoodizerfan.feedback.modular.research.ResearchTableBlockEntity>> RESEARCH_TABLE_ENTITY =
+            BLOCK_ENTITIES.register("research_table", () -> net.minecraft.world.level.block.entity.BlockEntityType.Builder
+                    .of(io.github.soundgoodizerfan.feedback.modular.research.ResearchTableBlockEntity::new, RESEARCH_TABLE.get()).build(null));
     public static final DeferredHolder<net.minecraft.world.level.block.entity.BlockEntityType<?>,
             net.minecraft.world.level.block.entity.BlockEntityType<io.github.soundgoodizerfan.feedback.modular.prep.PrepTableBlockEntity>> PREP_TABLE_ENTITY =
             BLOCK_ENTITIES.register("prep_table", () -> net.minecraft.world.level.block.entity.BlockEntityType.Builder

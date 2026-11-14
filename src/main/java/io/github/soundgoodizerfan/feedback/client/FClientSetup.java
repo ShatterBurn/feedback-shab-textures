@@ -222,6 +222,7 @@ public class FClientSetup {
         event.register(FMenus.PREP_TABLE.get(), BenchScreen::new);
         event.register(FMenus.STATION.get(), BenchScreen::new);
         event.register(FMenus.ENGINEERING_TABLE.get(), EngineeringTableScreen::new);
+        event.register(FMenus.RESEARCH_TABLE.get(), io.github.soundgoodizerfan.feedback.client.bench.ResearchTableScreen::new);
         event.register(FMenus.MATERIAL_PROBE.get(), MaterialProbeScreen::new);
         event.register(FMenus.BLUEPRINT_TABLE.get(), BlueprintTableScreen::new);
         event.register(FMenus.ENCHANT.get(), EnchantScreen::new);

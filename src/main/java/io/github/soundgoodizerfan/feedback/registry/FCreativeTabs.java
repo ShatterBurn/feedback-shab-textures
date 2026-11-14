@@ -153,7 +153,7 @@ public class FCreativeTabs {
     /** Benches: where designs and parts are made, hand work first. */
     private static final List<DeferredItem<?>> STATIONS = of(FModular.BLUEPRINT_TABLE_ITEM, FModular.TREATISE_SHELF_ITEM,
             FModular.WOODWORKING_TABLE_ITEM, FModular.STONECUTTER_ITEM, FModular.SMITHING_TABLE_ITEM,
-            FModular.ANVIL_ITEM, FModular.ENGINEERING_TABLE_ITEM, FModular.ENCHANTING_TABLE_ITEM, FItems.AUTO_ENGINEER);
+            FModular.ANVIL_ITEM, FModular.ENGINEERING_TABLE_ITEM, FModular.RESEARCH_TABLE_ITEM, FModular.ENCHANTING_TABLE_ITEM, FItems.AUTO_ENGINEER);
 
     /** Fire and furnaces (hand-fed to powered), crucibles, casting and moulds, then cold. */
     private static final List<DeferredItem<?>> HEAT = of(FItems.CAMPFIRE, FItems.SOUL_CAMPFIRE, FItems.FIREBOX,
