@@ -53,16 +53,23 @@ public final class Researching {
         return mode == 0 ? ResearchTheme.count() : unknown(player).size();
     }
 
-    /** The samples among {@code stacks} that state the theme's property, the first {@link ModularTuning#RESEARCH_SAMPLES}. */
+    /** The samples among {@code stacks} that state the theme's property and differ from each other in it, the first {@link ModularTuning#RESEARCH_SAMPLES}. */
     public static List<ItemStack> samples(List<ItemStack> stacks, ResearchTheme.Theme theme) {
         var materials = MaterialTable.get().materials();
         List<ItemStack> out = new ArrayList<>();
+        List<Double> seen = new ArrayList<>();
         for (ItemStack s : stacks) {
             if (s.isEmpty() || out.size() >= ModularTuning.RESEARCH_SAMPLES)
                 continue;
             var found = Material.find(materials, s);
-            if (found.isPresent() && ResearchTheme.figure(theme, found.get().material()).isPresent())
+            if (found.isEmpty())
+                continue;
+            var fig = ResearchTheme.figure(theme, found.get().material());
+            // Two samples with the same figure cannot be told apart, so only the first counts.
+            if (fig.isPresent() && !seen.contains(fig.getAsDouble())) {
+                seen.add(fig.getAsDouble());
                 out.add(s);
+            }
         }
         return out;
     }

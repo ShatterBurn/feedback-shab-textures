@@ -31,7 +31,7 @@ import net.minecraft.resources.ResourceLocation;
 final class ResearchScreen extends Screen {
 
     private static final GuiSkin SKIN = GuiSkin.WOOD;
-    private static final int W = 250, H = 190;
+    private static final int W = 250, H = 214;
 
     private final Screen parent;
     private final int containerId;
@@ -158,6 +158,9 @@ final class ResearchScreen extends Screen {
         for (int i : order)
             row.append((char) ('A' + i)).append(' ');
         g.drawString(font, Component.translatable("gui.feedback.research.order").getString() + " " + row, px + 8, py + 138, SKIN.ink(), false);
+        g.drawString(font, Component.translatable("gui.feedback.research.help.1"), px + 8, py + 172, SKIN.dim(), false);
+        g.drawString(font, Component.translatable("gui.feedback.research.help.2"), px + 8, py + 183, SKIN.dim(), false);
+        g.drawString(font, Component.translatable("gui.feedback.research.help.3"), px + 8, py + 194, SKIN.dim(), false);
         commit.active = order.size() >= names.size();
         for (var widget : renderables)
             widget.render(g, mx, my, partial);
