@@ -1,6 +1,6 @@
 # Research Table
 
-The Research Table is where what is not yet known is found out. It writes a [Blank Treatise](Treatise.md#blank-treatise) into a treatise volume, or teaches you an attunement you have not learned, by trials on samples of stock.
+The Research Table is where what is not yet known is found out. It writes a [Blank Treatise](Treatise.md#blank-treatise) into a treatise volume, or teaches you an attunement you have not learned, by working out, on a board of linked concepts, how a specimen you already have leads to the new idea.
 
 ## Crafting
 
@@ -14,42 +14,64 @@ P is paper, W is any plank, L is a lectern.
 
 ## Using it
 
-The bench has a slot for one Blank Treatise and four sample slots. A sample is any stock of a material.
+The bench has a slot for one Blank Treatise and a slot for one **specimen**.
 
-- **Volumes / Attunements** (button 1) turns between treatise volumes and attunements you have not learned.
+- **Volumes / Attunements** turns between treatise volumes and attunements you have not learned.
 - **Next** steps through the choices.
-- **Research** runs the trials. It costs 40 experience points and one of each sample.
+- **Research** opens the research board. It costs 40 experience points.
 
-At least three samples that state the property are needed, and a volume also needs a Blank Treatise.
+A volume needs a Blank Treatise. An attunement needs only a specimen. The line under the specimen slot says what it takes.
 
-## How it works
+### Specimens
 
-Each volume is about one property of a material:
+A **first volume** takes a plain thing:
 
-| Volume | Property |
+| Volume | Specimen |
 | --- | --- |
-| Weapons I | hardness |
-| Weapons II | yield strength |
-| Weapons III | toughness |
-| Mechanical I | yield strength |
-| Mechanical II | density |
-| Aerospace I | density |
-| Aerospace II | specific heat |
-| Robotics I | conductivity |
-| Chemical I | melting point |
-| Chemical II | density |
-| Chemical III | specific heat |
-| Materials I | hardness |
+| Weapons I | sword, knife, axe or hafted tool |
+| Mechanical I | hand crank or water wheel |
+| Aerospace I | water wheel |
+| Robotics I | dynamotor or electromagnet |
+| Chemical I | crucible or thermal store |
+| Materials I | hand hammer or file |
 
-An attunement is about a property that is fixed by which attunement it is.
+A volume after the first takes an item built from the volume before it, and that earlier treatise must be held: in your pack, or on a [Treatise Shelf](Treatise_Binder_and_Shelf.md) beside the table.
 
-Research opens a game. Samples lie on the bench.
+| Volume | Specimen |
+| --- | --- |
+| Weapons II | cleaver, maul or spear |
+| Weapons III | crossbow, gun or spring gun |
+| Mechanical II | engine or flywheel |
+| Aerospace II | propeller |
+| Chemical II | boiler, gas tank or pressure vessel |
+| Chemical III | compressor or heat exchanger |
 
-1. **Compare** two samples at a time. There are only as many comparisons as there are samples, and two samples within 6 percent of each other cannot be told apart.
-2. **Set the samples in a row**, lowest first.
-3. **Write notes.** The share of pairs you put in the right order is the quality of the notes.
+An attunement takes any built item.
 
-A treatise carries that quality as its notes; an attunement is simply learned. A failed run still spends one of each sample and the experience. Leaving the game early spends nothing.
+## The research board
+
+Each volume and the attunement research has its own story and its own concepts. Weapons II, for example, is a flash in a tube: a spring has to be linked to hot gas pushing.
+
+The board is a hex board. The concept you already know sits at one end (the start) and the new idea at the other (the goal). Six hexes are rubble and cannot be used. Beside the board is a hand of concepts.
+
+1. Pick a concept from the hand. Some pairs are shown as known when you pick it.
+2. Pick a free hex beside the chain. If the concept really belongs with the cell it touches, it joins the chain with a rising note. If not, it fizzles, costs a point of **ink** and **strains** the specimen.
+3. A few joins in a row give an ink back.
+4. When the chain reaches the goal, the finding is replayed line by line and asks one question. Then a stamp grades the notes.
+
+The notes' quality comes from the ink left, the longest run of joins and the answer to the question. Running out of ink first leaves a scrawl.
+
+### Ink
+
+A run starts with seven ink, up to three more from a specimen in good condition, and a bonus if you have already done the real thing a good number of times: fired a crossbow many times before researching guns, or forged with a hammer before Materials I.
+
+### Strain
+
+A few fizzles wear the specimen: it comes back worn and can be repaired. Many fizzles take it apart into its parts, which go to you.
+
+## What comes out
+
+A treatise carries the quality as its notes. An attunement is simply learned. The experience is spent either way, and a scrawl still turns the Blank Treatise into the volume. Pressing Esc before closing the notebook spends nothing.
 
 ## See also
 

@@ -26,7 +26,7 @@ Types outside every volume (tools, armor, water wheel, thermal store, Leyden jar
 ## Obtaining
 
 - **Write one.** Craft a **Blank Treatise**, put it in the blank slot on the Treatise tab of the Engineering Table, put an item of that volume's types in the specimen slot and press **Take apart**, which opens the learning game: calipers measure each part of the specimen (click to open the jaws, click again when they just touch the part; too tight crushes the reading, too loose is a guess) and the readings are inked onto a notebook page. How well you read it is the quality of the **notes** the treatise keeps (guessed, rough, fair, clean, exact); you always get the volume. The item is taken apart and the Blank Treatise becomes that volume. Most types that need a treatise have a [specimen](#specimens) you can craft to take apart first; a maul, spear, cleaver or charge is made the usual way.
-- **Research one.** A Blank Treatise can be written at the [Research Table](Research_Table.md).
+- **Research one.** A Blank Treatise can be written at the [Research Table](Research_Table.md) with a specimen built from the volume before it (a first volume takes a plain thing), by working the research board.
 - **Find one.** A treatise of a random school and volume turns up, rarely, in dungeon, mineshaft, desert temple, stronghold and bastion chests.
 - **Buy one.** Weaponsmiths, toolsmiths, cartographers, librarians, clerics and masons sell volume I of their school at a high trade level, and the later volumes at higher levels; clerics sell Chemical I and II, and weaponsmiths all three Weapons volumes. See [Villagers](Villagers.md#blueprints).
 
