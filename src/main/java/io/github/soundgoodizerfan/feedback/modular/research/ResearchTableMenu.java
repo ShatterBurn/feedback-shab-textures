@@ -216,7 +216,7 @@ public class ResearchTableMenu extends AbstractContainerMenu {
             List<io.github.soundgoodizerfan.feedback.modular.attunement.Attunements.Effect> list = Researching.unknown(server);
             var effect = list.get(Math.floorMod(sentIndex, list.size()));
             AttunementKnowledge.learn(server, effect);
-            HudReadoutPayload.send(server, Component.translatable("message.feedback.research.learned", Component.translatable(effect.key())), 60);
+            HudReadoutPayload.send(server, Component.translatable("message.feedback.research.learned", Component.translatable("attunement.feedback." + effect.id().getPath())), 60);
             note.set(NOTE_LEARNED);
             index.set(0);
         }

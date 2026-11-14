@@ -76,7 +76,7 @@ public class ResearchTableScreen extends SkinnedScreen<ResearchTableMenu> {
                 out.add(Component.translatable(School.values()[v[0]].itemKey(v[1])));
         } else
             for (var e : Researching.unknown(minecraft.player))
-                out.add(Component.translatable(e.key()));
+                out.add(Component.translatable("attunement.feedback." + e.id().getPath()));
         return out;
     }
 
