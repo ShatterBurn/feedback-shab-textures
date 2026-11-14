@@ -33,19 +33,20 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 /**
- * The Research Table: a Blank Treatise and a specimen. {@link #BTN_MODE} turns between researching a treatise volume and an attunement not yet
- * known, {@link #BTN_NEXT} steps through what there is, {@link #BTN_RESEARCH} opens the research board. A volume takes as its specimen an item
+ * The Research Table: a Blank Treatise and a specimen. the tabs choose between researching a treatise volume and an attunement not yet
+ * known, a click on a listed entry picks it, {@link #BTN_RESEARCH} opens the research board. A volume takes as its specimen an item
  * the volume before it taught how to build (a first volume, one of the plain things its plan names) and wants that earlier treatise in hand.
  * The experience is spent whatever the score; the specimen is worn or comes apart by how hard the researcher pushed it; the blank becomes the
  * volume with the score as its notes' quality, or the attunement is learned.
  */
 public class ResearchTableMenu extends AbstractContainerMenu {
 
-    public static final int BTN_MODE = 1, BTN_NEXT = 2, BTN_RESEARCH = 3;
+    /** {@code BTN_TREATISES} and {@code BTN_ATTUNEMENTS} choose what is listed, {@code BTN_PICK + i} picks the i-th entry, {@code BTN_RESEARCH} opens the board. */
+    public static final int BTN_TREATISES = 1, BTN_ATTUNEMENTS = 2, BTN_RESEARCH = 3, BTN_PICK = 100;
     public static final int NOTE_NONE = 0, NOTE_NO_BLANK = 1, NOTE_NO_SPECIMEN = 2, NOTE_NO_XP = 3, NOTE_NOTHING = 4, NOTE_WRITTEN = 5, NOTE_LEARNED = 6,
             NOTE_NO_EARLIER = 7, NOTE_NO_PLAN = 8;
 
-    public static final int W = 176, H = 196, BLANK_X = 44, SPECIMEN_X = 114, SLOT_Y = 24, INV_X = 8, INV_Y = 114;
+    public static final int W = 232, H = 278, SLOT_X = 14, BLANK_Y = 40, SPECIMEN_Y = 70, INV_X = 35, INV_Y = 198;
 
     private final Container table;
     private final DataSlot mode = DataSlot.standalone(), index = DataSlot.standalone(), note = DataSlot.standalone();
@@ -53,7 +54,8 @@ public class ResearchTableMenu extends AbstractContainerMenu {
     private final BlockPos pos;
     private boolean playing;
     private long gameStart;
-    private int sentMode = -1, sentIndex = -1;
+    private int sentMode = -1, sentIndex = -1, sentInk, sentSeed;
+    private ResearchPlan sentPlan;
 
     public ResearchTableMenu(int id, Inventory inventory, RegistryFriendlyByteBuf buf) {
         this(id, inventory, new SimpleContainer(ResearchTableBlockEntity.SIZE), buf.readBlockPos());
@@ -68,7 +70,7 @@ public class ResearchTableMenu extends AbstractContainerMenu {
         this.table = table;
         this.player = inventory.player;
         this.pos = pos;
-        addSlot(new Slot(table, ResearchTableBlockEntity.BLANK, BLANK_X, SLOT_Y) {
+        addSlot(new Slot(table, ResearchTableBlockEntity.BLANK, SLOT_X, BLANK_Y) {
             @Override
             public boolean mayPlace(ItemStack s) {
                 return s.is(FModular.BLANK_TREATISE.get());
@@ -79,7 +81,7 @@ public class ResearchTableMenu extends AbstractContainerMenu {
                 return 1;
             }
         });
-        addSlot(new Slot(table, ResearchTableBlockEntity.SPECIMEN, SPECIMEN_X, SLOT_Y) {
+        addSlot(new Slot(table, ResearchTableBlockEntity.SPECIMEN, SLOT_X, SPECIMEN_Y) {
             @Override
             public boolean mayPlace(ItemStack s) {
                 return ModularStacks.design(s) != null;
@@ -137,16 +139,18 @@ public class ResearchTableMenu extends AbstractContainerMenu {
     public boolean clickMenuButton(Player p, int id) {
         if (!(p instanceof ServerPlayer server))
             return false;
-        if (id == BTN_MODE) {
-            mode.set(1 - mode.get());
+        if (id == BTN_TREATISES || id == BTN_ATTUNEMENTS) {
+            mode.set(id == BTN_ATTUNEMENTS ? 1 : 0);
             index.set(0);
             note.set(0);
             return true;
         }
-        int count = Researching.count(server, mode.get());
-        if (id == BTN_NEXT) {
-            index.set(count == 0 ? 0 : Math.floorMod(index.get() + 1, count));
-            note.set(0);
+        if (id >= BTN_PICK) {
+            int count = Researching.count(server, mode.get());
+            if (id - BTN_PICK < count) {
+                index.set(id - BTN_PICK);
+                note.set(0);
+            }
             return true;
         }
         if (id != BTN_RESEARCH)
@@ -163,23 +167,37 @@ public class ResearchTableMenu extends AbstractContainerMenu {
         gameStart = now;
         sentMode = mode.get();
         sentIndex = index.get();
-        PacketDistributor.sendToPlayer(server, new ResearchOpenPayload(containerId, plan.json(),
-                Researching.ink(server, table.getItem(ResearchTableBlockEntity.SPECIMEN), plan), (int) (now ^ containerId * 31L)));
+        sentPlan = plan;
+        sentInk = Researching.ink(server, table.getItem(ResearchTableBlockEntity.SPECIMEN), plan);
+        sentSeed = (int) (now ^ containerId * 31L);
+        PacketDistributor.sendToPlayer(server, new ResearchOpenPayload(containerId, plan.json(), sentInk, sentSeed));
         return true;
     }
 
     /**
-     * The client's one result: {@code score} the notes' quality and {@code strain} how hard the specimen was pushed, both in percent. A result
-     * sent faster than an honest play could be is scored as nothing. The experience is spent; the specimen is worn or comes apart; the volume is
-     * written or the attunement learned.
+     * The client's one result: the placements it made and the answer it gave, which are replayed here over the plan, seed and ink that were
+     * sent ({@link ResearchBoard}); the score and the strain are what that replay makes, never what the client says. A result sent faster than an
+     * honest play could be is scored as nothing. The experience is spent; the specimen is worn or comes apart; the volume is written or the
+     * attunement learned.
      */
-    public void finishResearch(ServerPlayer server, int score, int strain) {
-        if (!playing || sentMode != mode.get() || sentIndex != index.get())
+    public void finishResearch(ServerPlayer server, List<String> moves, int answer) {
+        if (!playing || sentMode != mode.get() || sentIndex != index.get() || sentPlan == null)
             return;
         playing = false;
         long elapsed = server.level().getGameTime() - gameStart;
-        float quality = elapsed < ModularTuning.RESEARCH_MIN_TICKS ? 0f : Math.max(0, Math.min(100, score)) / 100f;
-        int pushed = Math.max(0, Math.min(100, strain));
+        ResearchBoard board = new ResearchBoard(sentPlan, sentSeed, sentInk);
+        for (String move : moves) {
+            int at = move.indexOf('@'), comma = move.indexOf(',', at + 1);
+            if (at < 0 || comma < 0 || board.over())
+                break;
+            try {
+                board.place(move.substring(0, at), ResearchBoard.key(Integer.parseInt(move.substring(at + 1, comma)), Integer.parseInt(move.substring(comma + 1))));
+            } catch (NumberFormatException e) {
+                break;
+            }
+        }
+        float quality = elapsed < ModularTuning.RESEARCH_MIN_TICKS ? 0f : board.quality(board.reached && answer == sentPlan.answer);
+        int pushed = board.strain(Researching.forgiving(table.getItem(ResearchTableBlockEntity.SPECIMEN)));
         int why = ready(server);
         if (why != 0) {
             note.set(why);

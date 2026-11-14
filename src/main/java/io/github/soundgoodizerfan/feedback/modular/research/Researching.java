@@ -96,6 +96,21 @@ public final class Researching {
     }
 
     /**
+     * How forgiving the specimen is of being pushed, 0 to 1: the toughness of the material it wears with, against the reference. A tougher
+     * specimen takes more fizzles before it is worn.
+     */
+    public static float forgiving(ItemStack specimen) {
+        var design = ModularStacks.design(specimen);
+        ModularType type = design == null ? null : ModularTypes.known(design.type());
+        var part = type == null ? null : design.part(type.wearRole());
+        var m = part == null ? null : io.github.soundgoodizerfan.feedback.process.MaterialTable.get().materials().get(part.material());
+        if (m == null)
+            return 0f;
+        float t = m.mechanical().toughness().map(x -> x.value()).orElse(0f);
+        return t / (t + ModularTuning.RESEARCH_TOUGH_HALF);
+    }
+
+    /**
      * The ink a run starts with: a base, more from a specimen that is in good shape, and the plan's eureka bonus when the researcher has already
      * done the real thing enough times.
      */
