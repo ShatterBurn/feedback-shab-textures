@@ -160,7 +160,7 @@ public class FCreativeTabs {
             FItems.HEARTH, FItems.FURNACE, FItems.SMOKER, FItems.BLAST_FURNACE, FItems.IMPROVED_FURNACE,
             FItems.KILN, FItems.ANNEALING_FURNACE, FItems.PUDDLING_FURNACE, FItems.ARC_HEARTH, FItems.ARC_HEAD,
             FItems.INDUCTION_STOVE, FItems.REFLOW_OVEN, FModular.BURNER, FModular.BOILER, FModular.HEAT_EXCHANGER,
-            FModular.THERMAL_STORE, FItems.SMALL_CRUCIBLE, FItems.LARGE_CRUCIBLE, FItems.CASTING_BASIN,
+            FModular.THERMAL_STORE, FModular.CRUCIBLE, FItems.CASTING_BASIN,
             FItems.INGOT_MOLD, FItems.TUBE_MOLD, FItems.GLASS_BLOCK_MOLD, FItems.GLASS_PANE_MOLD,
             FItems.GLASS_BOTTLE_MOLD, FItems.PICKAXE_HEAD_MOLD, FItems.AXE_HEAD_MOLD, FItems.SHOVEL_HEAD_MOLD,
             FItems.HOE_HEAD_MOLD, FItems.SICKLE_HEAD_MOLD, FItems.SAW_BLADE_MOLD, FItems.ATOMISING_MOLD,
@@ -182,7 +182,7 @@ public class FCreativeTabs {
     private static final List<DeferredItem<?>> FLUIDS = of(FModular.PUMP, FModular.COMPRESSOR, FItems.VACUUM_PUMP,
             FModular.GAS_TANK, FModular.PRESSURE_VESSEL, FItems.VALVE, FItems.RELIEF_VALVE, FItems.AIR_INTAKE,
             FItems.BELLOWS, FItems.DAMPER, FItems.FLARE, FItems.HYDRIDE_BED, FItems.CONDENSER, FItems.REBOILER,
-            FItems.TRAY_BUBBLE_CAP, FItems.TRAY_SIEVE, FItems.TRAY_PACKED, FItems.REACTOR, FItems.GAS_CENTRIFUGE,
+            FModular.TRAY, FItems.REACTOR, FModular.GAS_CENTRIFUGE,
             FItems.SEEP, FItems.SOUL_SEEP, FItems.DERRICK_BASE, FItems.DERRICK_CASING, FItems.DERRICK_BIT,
             FItems.WELLHEAD);
 
@@ -192,7 +192,7 @@ public class FCreativeTabs {
 
     private static final List<DeferredItem<?>> TUBES = of(FItems.TUBE, FItems.LINED_TUBE, FItems.WIDE_TUBE,
             FItems.EVACUATED_TUBE, FItems.TUBE_JUNCTION, FItems.PROGRAMMED_JUNCTION, FItems.TUBE_STATION,
-            FItems.SORTING_STATION, FItems.LINEAR_MOTOR, FItems.CARRIER, FItems.MAGNETIC_CARRIER, FItems.POD,
+            FItems.SORTING_STATION, FModular.LINEAR_MOTOR, FItems.CARRIER, FItems.MAGNETIC_CARRIER, FItems.POD,
             FItems.ENDER_PORT, FItems.ENDER_ANCHOR);
 
     /** Cultures, taps and relays: the biological and mystical machines. */
@@ -227,7 +227,7 @@ public class FCreativeTabs {
             FItems.CRYSTAL_HOLDER, FItems.HEATSINK, FItems.BIMETALLIC_STRIP);
 
     /** Coils, then electrical components, passive to active. */
-    private static final List<DeferredItem<?>> ELECTRICAL = of(FItems.COPPER_COIL, FItems.IRON_COIL,
+    private static final List<DeferredItem<?>> ELECTRICAL = of(FModular.HEATING_COIL,
             FItems.INDUCTION_COIL, FItems.PREHEAT_COIL, FItems.FUSE, FItems.BREAKER, FItems.COHERER,
             FItems.WHISKER, FItems.GALENA, FItems.PYRITE, FItems.RELAY, FItems.TRACE_BOARD, FItems.PHOSPHOR_SCREEN);
 

@@ -17,18 +17,11 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 
-/** A column tray. One class, three registrations: the type is the block, because the player picks it by crafting it. */
+/** A column tray: a modular block whose efficiency, flow and fouling come from the deck it was built with ({@code BlockFigures}). */
 public class TrayBlock extends Block implements EntityBlock {
 
-    private final TrayType type;
-
-    public TrayBlock(Properties properties, TrayType type) {
+    public TrayBlock(Properties properties) {
         super(properties);
-        this.type = type;
-    }
-
-    public TrayType type() {
-        return type;
     }
 
     @Override

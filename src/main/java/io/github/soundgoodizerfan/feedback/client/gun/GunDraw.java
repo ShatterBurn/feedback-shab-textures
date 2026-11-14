@@ -1147,11 +1147,7 @@ final class GunDraw {
         if (v.has("Q"))
             m.part(v, "Q").rod(0, 0, r + 0.25f, end, end + Math.min(2.5f, len * 0.4f), Tile.BRUSHED);
         if (v.has("P")) {
-            float f = switch (v.variant("P")) {
-                case "thread_breech" -> 0.18f;
-                case "thread_muzzle" -> 0.88f;
-                default -> 0.5f;
-            };
+            float f = v.variant("P").isEmpty() ? 0.5f : Integer.parseInt(v.variant("P")) / 100f;
             float z = GunView.snap(start - len * f, 0.25f);
             m.part(v, "P").rod(0, 0, r + 0.25f, z - 0.375f, z + 0.375f, Tile.KNURL);
         }

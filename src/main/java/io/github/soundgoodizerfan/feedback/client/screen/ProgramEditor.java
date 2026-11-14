@@ -1758,7 +1758,7 @@ public final class ProgramEditor {
             case CONTROL -> 0xFF66DDDD;
             case MASS -> 0xFFCCCCCC;
             case PRESSURE -> 0xFFDDDDEE;
-            case ALTITUDE, AIRSPEED, ATTITUDE -> 0xFF88DDFF;
+            case ALTITUDE, AIRSPEED, ATTITUDE, VERTICAL_SPEED, AIR_DENSITY -> 0xFF88DDFF;
             case HARDNESS, FIGURE, ORE, LIGHT, EXPERIENCE, XP_LEVEL, CHARGE, FLUX, DEPOSIT, RESPONSE, MOISTURE, PATHOGEN, TOXIN, RADIATION, DOSE -> 0xFFCCCCCC;
         };
     }

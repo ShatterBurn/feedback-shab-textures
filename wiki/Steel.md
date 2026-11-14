@@ -29,14 +29,14 @@ What that means in practice:
 - **Inside the band** it progresses, fastest near the middle.
 - **Above the band** it stops progressing again, and you're getting close to the spoil line.
 - **Above the spoil line** the batch is **ruined instantly**. The iron and charcoal become Burnt Iron.
-- **Heating too fast** also stops progress, even inside the band. A **small** crucible on a full fire climbs faster than steel allows, so it can't make steel at all at full blast. That's the real reason for the large crucible.
+- **Heating too fast** also stops progress, even inside the band. A **light** crucible (few slots, a thin wall) on a full fire climbs faster than steel allows, so it can't make steel at all at full blast. A heavier crucible climbs slower.
 
 ## Tips
 
 - With only words to go on, steel's window straddles *yellow / pale yellow* (1300–1400 Tu), which is too vague. The thermometer reads in 25 Tu steps, about two steps inside the window, which makes this doable by hand: heat, check, ease off, check again.
-- **Insulation** helps a large crucible sit steadily in the band.
+- **Insulation** helps a heavy crucible sit steadily in the band.
 - Run the bellows through a [Clutch](Clutch.md) so you can stop the air without stopping your whole line.
-- A **[Bimetallic Strip](Bimetallic_Strip.md)** can switch the bellows for you, but the standard strip trips at **1440 Tu**, above steel's band (top 1410). It holds a large crucible within about 20 Tu either side of 1440: no progress, but no burnt iron either. On a small crucible it swings past 1470 and burns the batch.
+- A **[Bimetallic Strip](Bimetallic_Strip.md)** can switch the bellows for you, but the standard strip trips at **1440 Tu**, above steel's band (top 1410). It holds a heavy crucible within about 20 Tu either side of 1440: no progress, but no burnt iron either. On a light crucible it swings past 1470 and burns the batch.
 - For proper automatic control, bolt a [Temperature Sensor](Instruments.md#temperature-sensor) on and use a [Controller](Controller.md).
 
 ## Other routes

@@ -28,7 +28,7 @@ Nothing is locked behind an instrument; they are how you do on purpose what you 
 | [XP Meter](#xp-meter) | Experience levels and points | Whole levels, points to the nearest 5 |
 | [Survey Meter](#survey-meter) | Ore and oil within 16 blocks | Counts rounded to 8, wobbling |
 | [Mass Probe](#mass-probe) | Metal the Electrolytic Cell plates onto it | Depends on the cut: 0.009 to 0.09 Qu |
-| [Flight Sensor](#flight-sensor) | Altitude, airspeed, pitch and roll of a vehicle | Nearest block, 0.5 block/s, 2 degrees |
+| [Flight Sensor](#flight-sensor) | Altitude, airspeed, pitch, roll, vertical speed and air density of a vehicle | Nearest block, 0.5 block/s, 2 degrees |
 
 The [Phosphor Screen](Phosphor_Screen.md) is a block with its own sealing and burn-in rules and has its own page. The [Instrument Bag](#instrument-bag) holds instruments in one slot.
 
@@ -356,6 +356,8 @@ Place it on the vehicle. Its front is the way it faces; pitch and roll are measu
 | **Airspeed** | How fast the vehicle is moving, in blocks per second, to the nearest half. There is no wind, so this is also its speed over the ground. |
 | **Pitch** | Nose up (positive) or down, in degrees, to the nearest two. |
 | **Roll** | Tilt to either side of the front, in degrees, to the nearest two. |
+| **Vertical speed** | How fast the vehicle climbs, in blocks per second (negative when it sinks). |
+| **Air density** | The [air](Vehicles.md#air-density) around it as a share of surface density: less the higher it climbs. |
 
 **Sneak-right-click** shows the current reading.
 

@@ -220,7 +220,7 @@ public class FBlockEntities {
     /** One type for both crucible sizes, for the same reason the cogs share one: size is the block. */
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CrucibleBlockEntity>> CRUCIBLE =
             BLOCK_ENTITIES.register("crucible", () -> BlockEntityType.Builder
-                    .of(CrucibleBlockEntity::new, FBlocks.SMALL_CRUCIBLE.get(), FBlocks.LARGE_CRUCIBLE.get(), FBlocks.ARC_HEARTH.get())
+                    .of(CrucibleBlockEntity::new, FBlocks.CRUCIBLE.get(), FBlocks.ARC_HEARTH.get())
                     .build(null));
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<io.github.soundgoodizerfan.feedback.machine.arc.ArcHeadBlockEntity>> ARC_HEAD =
@@ -343,7 +343,7 @@ public class FBlockEntities {
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CoilBlockEntity>> COIL =
             BLOCK_ENTITIES.register("coil", () -> BlockEntityType.Builder
-                    .of(CoilBlockEntity::new, FBlocks.COPPER_COIL.get(), FBlocks.IRON_COIL.get())
+                    .of(CoilBlockEntity::new, FBlocks.HEATING_COIL.get())
                     .build(null));
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BreakerBlockEntity>> BREAKER =
@@ -581,8 +581,7 @@ public class FBlockEntities {
                     .of(io.github.soundgoodizerfan.feedback.machine.column.ReboilerBlockEntity::new, FBlocks.REBOILER.get()).build(null));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<io.github.soundgoodizerfan.feedback.machine.column.TrayBlockEntity>> TRAY =
             BLOCK_ENTITIES.register("tray", () -> BlockEntityType.Builder
-                    .of(io.github.soundgoodizerfan.feedback.machine.column.TrayBlockEntity::new, FBlocks.TRAY_BUBBLE_CAP.get(), FBlocks.TRAY_SIEVE.get(),
-                            FBlocks.TRAY_PACKED.get()).build(null));
+                    .of(io.github.soundgoodizerfan.feedback.machine.column.TrayBlockEntity::new, FBlocks.TRAY.get()).build(null));
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<io.github.soundgoodizerfan.feedback.machine.reactor.ReactorBlockEntity>> REACTOR =
             BLOCK_ENTITIES.register("reactor", () -> BlockEntityType.Builder

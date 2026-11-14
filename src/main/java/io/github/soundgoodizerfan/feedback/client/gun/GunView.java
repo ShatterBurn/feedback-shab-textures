@@ -136,6 +136,9 @@ record GunView(GunLayout.Type type, String action, boolean slide, float len, flo
             String variant = p.variant();
             if (variant.isEmpty() && role != null)
                 variant = role.part().map(s -> s.base()).orElse("");
+            // The resonance weight has no variants: its place along the barrel (axis position, percent) rides in the variant slot.
+            if (p.role().equals("P"))
+                variant = Integer.toString(Math.round(p.axis("position", 50f)));
             variants.put(p.role(), variant);
         }
         // A barrel's jacket is a slot of the barrel, drawn as the jacket layer (letter J) in the jacket's own material.

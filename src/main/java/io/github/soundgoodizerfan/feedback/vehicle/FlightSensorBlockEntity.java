@@ -35,7 +35,7 @@ import net.minecraft.world.phys.Vec3;
  * {@link SensorFitting} (a node of its own, not mounted on a holder), so the card machinery that
  * links, reads and quantises fittings serves it unchanged. One reading at a time, a discrete
  * choice stepped by use; each has the quantity a comparator checks it against, so altitude is never
- * compared with speed. Readings come from the body's pose and the speed the physics step last
+ * compared with speed (modes: altitude, airspeed, pitch, roll, vertical speed, air density). Readings come from the body's pose and the speed the physics step last
  * saw; there is no wind, so airspeed is speed over the ground.
  * <p>
  * It resolves like any instrument: quantised to its own resolution, a bad sensor costing
@@ -46,7 +46,8 @@ public class FlightSensorBlockEntity extends BlockEntity implements SensorFittin
     /** What it reads, with the quantity that reading is. */
     public enum Mode implements StringRepresentable {
         ALTITUDE("altitude", Quantity.ALTITUDE), AIRSPEED("airspeed", Quantity.AIRSPEED),
-        PITCH("pitch", Quantity.ATTITUDE), ROLL("roll", Quantity.ATTITUDE);
+        PITCH("pitch", Quantity.ATTITUDE), ROLL("roll", Quantity.ATTITUDE),
+        VERTICAL_SPEED("vertical_speed", Quantity.VERTICAL_SPEED), AIR_DENSITY("air_density", Quantity.AIR_DENSITY);
 
         private final String key;
         private final Quantity quantity;
@@ -68,7 +69,7 @@ public class FlightSensorBlockEntity extends BlockEntity implements SensorFittin
 
     private Mode mode = Mode.ALTITUDE;
     /** The body's speed as of the last physics step; written there, read on the server tick. */
-    private volatile double speed;
+    private volatile double speed, climb;
     private final Set<DataNodeRef> links = new HashSet<>();
 
     public FlightSensorBlockEntity(BlockPos pos, BlockState state) {
@@ -87,7 +88,9 @@ public class FlightSensorBlockEntity extends BlockEntity implements SensorFittin
     /** Every physics step: the body's speed, which only the physics thread may ask for. */
     @Override
     public void sable$physicsTick(ServerSubLevel subLevel, RigidBodyHandle handle, double timeStep) {
-        speed = handle.getLinearVelocity(new Vector3d()).length();
+        Vector3d v = handle.getLinearVelocity(new Vector3d());
+        speed = v.length();
+        climb = v.y;
     }
 
     /** The true figure for the current mode. */
@@ -104,6 +107,8 @@ public class FlightSensorBlockEntity extends BlockEntity implements SensorFittin
         return switch (mode) {
             case ALTITUDE -> (float) (at.y - (level == null ? 0 : level.getMinBuildHeight()));
             case AIRSPEED -> (float) speed;
+            case VERTICAL_SPEED -> (float) climb;
+            case AIR_DENSITY -> level == null ? 0f : AirDensityTable.at(level, at.y);
             case PITCH -> (float) Math.toDegrees(Math.asin(Math.clamp(front.y, -1, 1)));
             // Roll: how far the sensor's up has tipped sideways of the vertical plane through its front.
             case ROLL -> {
@@ -125,6 +130,8 @@ public class FlightSensorBlockEntity extends BlockEntity implements SensorFittin
         return switch (quantity) {
             case ALTITUDE -> VehicleTuning.FLIGHT_ALTITUDE_RESOLUTION;
             case AIRSPEED -> VehicleTuning.FLIGHT_AIRSPEED_RESOLUTION;
+            case VERTICAL_SPEED -> VehicleTuning.FLIGHT_CLIMB_RESOLUTION;
+            case AIR_DENSITY -> VehicleTuning.FLIGHT_DENSITY_RESOLUTION;
             default -> VehicleTuning.FLIGHT_ATTITUDE_RESOLUTION;
         };
     }

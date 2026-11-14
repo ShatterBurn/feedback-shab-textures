@@ -34,8 +34,8 @@ public class FittingGameTests {
     public static void refractoryLiningSlowsTheClimbButNeverPassesTheFlame(GameTestHelper helper) {
         BlockPos bare = new BlockPos(1, 1, 1);
         BlockPos lined = new BlockPos(3, 1, 1);
-        helper.setBlock(bare, FBlocks.SMALL_CRUCIBLE.get());
-        helper.setBlock(lined, FBlocks.SMALL_CRUCIBLE.get());
+        helper.setBlock(bare, FBlocks.CRUCIBLE.get());
+        helper.setBlock(lined, FBlocks.CRUCIBLE.get());
         CrucibleBlockEntity plain = (CrucibleBlockEntity) helper.getBlockEntity(bare);
         CrucibleBlockEntity lining = (CrucibleBlockEntity) helper.getBlockEntity(lined);
 

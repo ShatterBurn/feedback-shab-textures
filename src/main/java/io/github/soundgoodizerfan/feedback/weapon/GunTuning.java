@@ -280,7 +280,11 @@ public final class GunTuning {
             BLAST_SHOVE_PER_LEVEL = 0.35f,
             /** Share of a charge's power a level of blast_hold (the casing held tight) adds. */
             BLAST_HOLD_PER_LEVEL = 0.08f,
-            GRENADE_PAYLOAD_FRAG = 0.12f, GRENADE_FLASH_REACH = 6f;
+            GRENADE_PAYLOAD_FRAG = 0.12f, GRENADE_FLASH_REACH = 6f,
+            /** A casing with no scoring confines the gas {@code CASING_CONFINE_UNSCORED} times; fully scored loses {@code CASING_CONFINE_LOSS} of it. */
+            CASING_CONFINE_UNSCORED = 1.4f, CASING_CONFINE_LOSS = 0.7f,
+            /** Fragment multiple of an unscored casing, and what full scoring adds. */
+            CASING_FRAG_UNSCORED = 0.3f, CASING_FRAG_GAIN = 1.5f;
 
     public static final int GRENADE_FLASH_TICKS = 100;
 

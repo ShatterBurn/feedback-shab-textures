@@ -28,12 +28,15 @@ public final class EngineeringMinigames {
     /** Read a specimen's parts with calipers onto a notebook page; its score is the quality of the notes. */
     public static final ResourceLocation NOTES = Feedback.id("notes");
 
+    /** Put samples in a row by a volume's own property, a few comparisons at a time; its score is the quality of the notes of a researched treatise. */
+    public static final ResourceLocation RESEARCH = Feedback.id("research");
+
     private EngineeringMinigames() {
     }
 
     /** Whether {@code id} names a game the table can play. */
     public static boolean known(String id) {
-        return TORQUE.toString().equals(id) || UPSET.toString().equals(id) || FITTING.toString().equals(id) || NOTES.toString().equals(id);
+        return TORQUE.toString().equals(id) || UPSET.toString().equals(id) || FITTING.toString().equals(id) || NOTES.toString().equals(id) || RESEARCH.toString().equals(id);
     }
 
     /**
@@ -55,6 +58,8 @@ public final class EngineeringMinigames {
 
     /** The rounds an assembly spending {@code fasteners} fasteners and made of {@code pieces} grid parts plays; 0 when the game has nothing to do. */
     public static int rounds(String id, int fasteners, int pieces) {
+        if (RESEARCH.toString().equals(id))
+            return 1;
         if (NOTES.toString().equals(id))
             return Math.max(0, Math.min(pieces, ModularTuning.NOTES_MAX_PARTS));
         if (FITTING.toString().equals(id))
@@ -68,6 +73,8 @@ public final class EngineeringMinigames {
 
     /** The fewest ticks an honest play of {@code rounds} rounds takes; a result sent sooner is scored as nothing. */
     public static long minTicks(String id, int rounds) {
+        if (RESEARCH.toString().equals(id))
+            return ModularTuning.RESEARCH_MIN_TICKS;
         if (NOTES.toString().equals(id))
             return (long) rounds * ModularTuning.NOTES_MIN_READ_TICKS;
         if (FITTING.toString().equals(id))

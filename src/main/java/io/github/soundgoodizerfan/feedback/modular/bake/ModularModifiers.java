@@ -409,11 +409,8 @@ public final class ModularModifiers {
             case "butcher" -> new Object[]{n(p(v, "animal_mult", 1.5f)), n(p(v, "extra_chance", 0.5f) * 100), n(p(v, "monster_mult", 0.85f))};
             case "line_cut" -> new Object[]{n(p(v, "length", 3)), n(p(v, "line_mult", 0.7f) * 100), n(p(v, "main_mult", 0.9f) * 100), n(p(v, "wear", 1))};
             case "spring" -> new Object[]{n(p(v, "reset", 30f) / 20), n(p(v, "rating", 12f)), n(p(v, "throw_rating", 6f))};
-            case "snap_shot" -> new Object[]{n(p(v, "draw_mult", 0.6f) * 100), n(p(v, "velocity_mult", 0.8f) * 100)};
-            case "heavy_draw" -> new Object[]{n(p(v, "draw_mult", 1.5f) * 100), n(p(v, "velocity_mult", 1.3f) * 100), n(p(v, "slow", 0.3f) * 100)};
-            case "heavy_bolt" -> new Object[]{n(p(v, "draw_mult", 2.2f) * 100), n(p(v, "damage_mult", 1.6f) * 100), n(p(v, "pierce", 2)),
-                    n(p(v, "slow", 0.25f) * 100)};
-            case "snap_bolt" -> new Object[]{n(p(v, "draw_mult", 0.45f) * 100), n(p(v, "velocity_mult", 0.7f) * 100), n(p(v, "damage_mult", 0.8f) * 100)};
+            case "limb_handling" -> new Object[]{n(p(v, "draw_mult", 1f) * 100), n(p(v, "velocity_mult", 1f) * 100), n(p(v, "damage_mult", 1f) * 100),
+                    n(p(v, "pierce", 0)), n(p(v, "slow", 0f) * 100)};
             case "recurve" -> new Object[]{n(p(v, "bonus", 0.25f) * 100), n(p(v, "pierce", 1)), n(p(v, "draw_mult", 1.15f) * 100)};
             case "stalker" -> new Object[]{n(p(v, "head_mult", 1.5f)), n(p(v, "velocity_mult", 0.85f) * 100), n(p(v, "draw_mult", 1.15f) * 100)};
             case "repeater" -> new Object[]{n(p(v, "bolts", 3)), n(p(v, "draw_mult", 1.3f) * 100), n(p(v, "damage_mult", 0.85f) * 100),

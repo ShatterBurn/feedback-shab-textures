@@ -1,0 +1,47 @@
+{
+  "family": "block",
+  "required": [
+    "S"
+  ],
+  "slot": "mainhand",
+  "wear_litres": 0.5,
+  "wear_role": "S",
+  "primary": "S",
+  "blueprint": true,
+  "roles": {
+    "S": {
+      "name": "centrifuge_rotor",
+      "class": "working_face",
+      "forms": [
+        "centrifuge_rotor"
+      ],
+      "litres": 0.5,
+      "layer": 0,
+      "axes": {
+        "radius": {
+          "min": 10,
+          "max": 50,
+          "unit": "cm",
+          "default": 25,
+          "step": 5,
+          "scales": true
+        }
+      },
+      "part": {
+        "item": "feedback:centrifuge_rotor",
+        "cells": 4,
+        "stock": [
+          "plate"
+        ]
+      }
+    }
+  },
+  "patterns": [
+    [
+      "S"
+    ]
+  ],
+  "defaults": {
+    "S": "feedback:stainless_steel"
+  }
+}

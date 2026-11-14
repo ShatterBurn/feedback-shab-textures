@@ -37,6 +37,21 @@
             "cells": 2,
             "strike": 1.5
           }
+        ],
+        "slots": [
+          {
+            "name": "body",
+            "share": 3
+          },
+          {
+            "name": "edge",
+            "forms": [
+              "ingot",
+              "nugget",
+              "gem"
+            ],
+            "share": 1
+          }
         ]
       }
     },

@@ -1,6 +1,8 @@
 {
   "family": "block",
-  "required": ["S"],
+  "required": [
+    "S"
+  ],
   "slot": "mainhand",
   "wear_litres": 0.5,
   "wear_role": "S",
@@ -36,13 +38,6 @@
             "name": "tubes_plain",
             "params": {
               "fin": 1.0
-            }
-          },
-          {
-            "name": "tubes_finned",
-            "cells": 7,
-            "params": {
-              "fin": 1.6
             }
           },
           {

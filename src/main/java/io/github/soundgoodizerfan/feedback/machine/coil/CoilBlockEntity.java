@@ -48,6 +48,22 @@ import net.minecraft.world.level.block.state.BlockState;
  */
 public class CoilBlockEntity extends ElectricNode implements ThermalBody, HeatSource, Wearing {
 
+    /** What a built coil keeps of its element's design: the amps it draws, the heat each Eu makes, its heat mass and the hottest it runs unworn ({@code BlockFigures}). */
+    private final io.github.soundgoodizerfan.feedback.modular.bake.FigureStore figures = new io.github.soundgoodizerfan.feedback.modular.bake.FigureStore();
+
+    @Override
+    protected void applyImplicitComponents(DataComponentInput input) {
+        super.applyImplicitComponents(input);
+        figures.set(input.get(io.github.soundgoodizerfan.feedback.registry.FDataComponents.BLOCK_FIGURES.get()),
+                input.get(io.github.soundgoodizerfan.feedback.registry.FModular.DESIGN.get()), input.get(io.github.soundgoodizerfan.feedback.registry.FModular.FIGURES.get()));
+    }
+
+    @Override
+    protected void collectImplicitComponents(net.minecraft.core.component.DataComponentMap.Builder components) {
+        super.collectImplicitComponents(components);
+        figures.collect(components);
+    }
+
     private float temperature = ThermalTuning.AMBIENT_TU.value();
     private float condition = 1f;
     private boolean powered;
@@ -65,7 +81,7 @@ public class CoilBlockEntity extends ElectricNode implements ThermalBody, HeatSo
 
     @Override
     public float wantedAmps() {
-        return ElectricMachineTuning.COIL_AMPS;
+        return figures.get("Amps", ElectricMachineTuning.COIL_AMPS);
     }
 
     @Override
@@ -78,14 +94,12 @@ public class CoilBlockEntity extends ElectricNode implements ThermalBody, HeatSo
         super.onResolved(band, eu, amps, wanted, blocked);
         powered = eu > 0f && amps > 0f;
         if (powered)
-            Heat.warm(this, eu * amps * ElectricMachineTuning.COIL_WORK_PER_EU * condition);
+            Heat.warm(this, eu * amps * figures.get("Work", ElectricMachineTuning.COIL_WORK_PER_EU) * condition);
     }
 
-    /** The hottest the element runs without wearing: its metal's service temperature. */
+    /** The hottest the element runs without wearing: its metal's service temperature, a copper element's for a coil built from nothing. */
     public Tu serviceTemperature() {
-        Material material = MaterialTable.get().materials().get(((CoilBlock) getBlockState().getBlock()).element);
-        return material == null ? ThermalTuning.AMBIENT_TU
-                : material.thermal().serviceTemperature().orElse(ThermalTuning.AMBIENT_TU);
+        return new Tu(figures.get("ServiceTu", 300f));
     }
 
     public void tickServer() {
@@ -145,7 +159,7 @@ public class CoilBlockEntity extends ElectricNode implements ThermalBody, HeatSo
 
     @Override
     public ThermalMass getThermalMass() {
-        return ElectricMachineTuning.COIL_MASS;
+        return new ThermalMass(figures.get("Mass", ElectricMachineTuning.COIL_MASS.workPerTu()));
     }
 
     @Override
@@ -160,6 +174,7 @@ public class CoilBlockEntity extends ElectricNode implements ThermalBody, HeatSo
         super.saveAdditional(tag, registries);
         tag.putFloat("Temperature", temperature);
         tag.putFloat("Condition", condition);
+        figures.save(tag, registries);
     }
 
     @Override
@@ -168,5 +183,6 @@ public class CoilBlockEntity extends ElectricNode implements ThermalBody, HeatSo
         if (tag.contains("Temperature"))
             temperature = tag.getFloat("Temperature");
         condition = tag.contains("Condition") ? tag.getFloat("Condition") : 1f;
+        figures.load(tag, registries);
     }
 }

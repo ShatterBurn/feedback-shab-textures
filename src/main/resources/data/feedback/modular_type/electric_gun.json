@@ -514,37 +514,21 @@
       ],
       "litres": 0.05,
       "layer": 12,
+      "axes": {
+        "position": {
+          "min": 20,
+          "max": 90,
+          "step": 10,
+          "unit": "%",
+          "default": 50
+        }
+      },
+      "trait": "resonance",
       "part": {
         "item": "feedback:resonance_weight",
-        "cells": 1,
+        "cells": 2,
         "stock": [
           "ingot"
-        ],
-        "base": "thread_middle",
-        "variants": [
-          {
-            "name": "thread_breech",
-            "trait": "resonance",
-            "params": {
-              "tuned_ms": 250.0
-            }
-          },
-          {
-            "name": "thread_middle",
-            "cells": 2,
-            "trait": "resonance",
-            "params": {
-              "tuned_ms": 450.0
-            }
-          },
-          {
-            "name": "thread_muzzle",
-            "cells": 3,
-            "trait": "resonance",
-            "params": {
-              "tuned_ms": 800.0
-            }
-          }
         ]
       },
       "mount": "barrel"
@@ -898,6 +882,37 @@
             {
               "name": "heavy"
             }
+          ]
+        },
+        "chambers": {
+          "min": 3,
+          "max": 12,
+          "unit": "",
+          "default": 6,
+          "step": 1,
+          "variants": [
+            "cylinder"
+          ]
+        },
+        "capacitance": {
+          "min": 2,
+          "max": 6,
+          "unit": "x",
+          "default": 3,
+          "step": 0.5,
+          "variants": [
+            "capacitor_bank",
+            "burst_bank"
+          ]
+        },
+        "flywheel_mass": {
+          "min": 50,
+          "max": 200,
+          "unit": "%",
+          "default": 100,
+          "step": 10,
+          "variants": [
+            "flywheel"
           ]
         }
       }

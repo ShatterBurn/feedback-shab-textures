@@ -106,7 +106,10 @@ public class CrucibleBlock extends Block implements EntityBlock {
         if (!(level.getBlockEntity(pos) instanceof CrucibleBlockEntity crucible))
             return InteractionResult.PASS;
         if (!level.isClientSide)
-            player.openMenu(crucible);
+            player.openMenu(crucible, buf -> {
+                buf.writeVarInt(crucible.getContents().size());
+                buf.writeVarInt(crucible.getTank().getCapacity());
+            });
         return InteractionResult.sidedSuccess(level.isClientSide);
     }
 

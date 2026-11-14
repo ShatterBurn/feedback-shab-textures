@@ -37,18 +37,6 @@
         ],
         "variants": [
           {
-            "name": "kama",
-            "trait": "kama",
-            "params": {
-              "length": 2,
-              "cooldown_ticks": 20
-            },
-            "cells": 3,
-            "reach": 0.03,
-            "centre": 0.02,
-            "strike": 1.0
-          },
-          {
             "name": "rake",
             "trait": "rake",
             "params": {

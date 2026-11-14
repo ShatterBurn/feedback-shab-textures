@@ -262,12 +262,12 @@ public class ModularElectricGun extends GunItem {
         return cell.isEmpty() ? -1f : BatteryStack.stateOfCharge(BatteryStack.state(cell));
     }
 
-    /** Chambers a cylinder has charged now (a fraction while one fills), at most {@link ModularTuning#EGUN_CHAMBERS}. */
+    /** Chambers a cylinder has charged now (a fraction while one fills), at most the seat's {@link ElectricGunSpec#chambers()}. */
     public static float chambers(ItemStack gun, long now, ElectricGunSpec spec, io.github.soundgoodizerfan.feedback.core.unit.VoltageBand band, int cells) {
         CompoundTag tag = tag(gun);
-        float held = tag.contains(CHAMBERS) ? tag.getFloat(CHAMBERS) : ModularTuning.EGUN_CHAMBERS;
+        float held = tag.contains(CHAMBERS) ? tag.getFloat(CHAMBERS) : spec.chambers();
         float seconds = Math.max(0L, now - tag.getLong(CHAMBERS_AT)) / 20f;
-        return Math.min(ModularTuning.EGUN_CHAMBERS, held + seconds * spec.refillPerSecond(band, cells));
+        return Math.min(spec.chambers(), held + seconds * spec.refillPerSecond(band, cells));
     }
 
     public static void setChambers(ItemStack gun, float chambers, long now) {

@@ -17,35 +17,20 @@
       ],
       "litres": 0.1,
       "layer": 0,
+      "axes": {
+        "scoring": {
+          "min": 0,
+          "max": 100,
+          "step": 25,
+          "unit": "%",
+          "default": 50
+        }
+      },
       "part": {
         "item": "feedback:charge_casing",
         "cells": 1,
         "stock": [
           "plate"
-        ],
-        "base": "plain_casing",
-        "variants": [
-          {
-            "name": "tight_casing",
-            "params": {
-              "confine": 1.4,
-              "frag": 0.3
-            }
-          },
-          {
-            "name": "plain_casing",
-            "params": {
-              "confine": 1.0,
-              "frag": 1.0
-            }
-          },
-          {
-            "name": "scored_casing",
-            "params": {
-              "confine": 0.7,
-              "frag": 1.8
-            }
-          }
         ],
         "slots": [
           {

@@ -43,7 +43,7 @@ public final class GunAmmo {
             var spec = io.github.soundgoodizerfan.feedback.modular.item.ModularElectricGun.specOf(gun);
             float charge = spec != null && spec.seat() == io.github.soundgoodizerfan.feedback.modular.bake.ElectricGunSpec.Seat.BACKPACK_TETHER
                     ? 1f : io.github.soundgoodizerfan.feedback.modular.item.ModularElectricGun.chargeFraction(gun);
-            return charge <= 0f ? 0 : Math.max(1, Math.round(charge * io.github.soundgoodizerfan.feedback.modular.bake.ModularTuning.EGUN_CHAMBERS));
+            return charge <= 0f ? 0 : Math.max(1, Math.round(charge * (spec == null ? io.github.soundgoodizerfan.feedback.modular.bake.ModularTuning.EGUN_CHAMBERS : spec.chambers())));
         }
         return magazine(gun).rounds().size() + (gun.has(FWeapons.CHAMBER.get()) ? 1 : 0);
     }

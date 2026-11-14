@@ -49,10 +49,10 @@ A [Firebox](Firebox.md), [Fluid Burner](Fluid_Burner.md), [Heating Coil](Heating
 
 How fast something heats up and cools down depends on how heavy it is. A vessel's weight is its walls **plus what it holds**: a full crucible heats slower than an empty one, and metal (heavy, but easy to warm) and water (slow to warm) weigh in by how much heat they soak up per Mu ([specific heat](Materials.md#heat-and-other-figures)).
 
-- A **light** vessel (a Small Crucible) moves fast: it closes most of the gap to its fire in about **2 seconds**. It responds quickly, but it's twitchy and overshoots.
-- A **heavy** vessel (a Large Crucible) takes about **20 seconds** for the same. It's hard to get going and hard to stop, but it holds a temperature almost by itself. A [Refractory Lining](Refractory_Lining.md) doubles a small crucible's sluggishness.
+- A **light** vessel (a two-slot crucible with a thin wall) moves fast: it closes most of the gap to its fire in about **2 seconds**. It responds quickly, but it's twitchy and overshoots.
+- A **heavy** vessel (a many-slot crucible with a thick wall) takes about **20 seconds** for the same. It's hard to get going and hard to stop, but it holds a temperature almost by itself. A [Refractory Lining](Refractory_Lining.md) doubles a light crucible's sluggishness.
 
-Some processes care how **fast** the temperature is changing as well as what it is (JEI shows this as *Max rate*). Steel allows 5 Tu a tick. A small crucible on a full blown fire is still climbing at about 9 Tu a tick inside steel's band, so it simply can't make steel at full blast; a large one climbs at under 1 Tu a tick.
+Some processes care how **fast** the temperature is changing as well as what it is (JEI shows this as *Max rate*). Steel allows 5 Tu a tick. A light crucible on a full blown fire is still climbing at about 9 Tu a tick inside steel's band, so it simply can't make steel at full blast; a heavy one climbs at under 1 Tu a tick.
 
 ## Hot items stay hot, and cool down anywhere
 

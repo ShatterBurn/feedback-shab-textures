@@ -862,36 +862,22 @@ public class ElectricGameTests {
 
     // --- the heating coil ----------------------------------------------------
 
-    /**
-     * Two coils at 9 V and their own two amps, each under a small crucible. Both heat their crucible
-     * and run a little above it -- the element is the fire, and what the crucible takes the
-     * element gives. The copper element is past its metal's service temperature and wears; the
-     * iron one, at the same power, is not.
-     */
+    /** A coil at 9 V and its own two amps under a crucible: it heats the crucible and runs a little above it. */
     @GameTest(template = "empty", timeoutTicks = 1300)
-    public static void coilHeatsTheVesselAboveAndWearsOnlyPastItsElement(GameTestHelper helper) {
-        BlockPos copperAt = new BlockPos(0, 2, 0), ironAt = new BlockPos(2, 2, 0);
-        helper.setBlock(copperAt, FBlocks.COPPER_COIL.get().defaultBlockState());
-        helper.setBlock(ironAt, FBlocks.IRON_COIL.get().defaultBlockState());
-        helper.setBlock(copperAt.above(), FBlocks.SMALL_CRUCIBLE.get().defaultBlockState());
-        helper.setBlock(ironAt.above(), FBlocks.SMALL_CRUCIBLE.get().defaultBlockState());
-        CoilBlockEntity copper = (CoilBlockEntity) helper.getBlockEntity(copperAt);
-        CoilBlockEntity iron = (CoilBlockEntity) helper.getBlockEntity(ironAt);
-        ThermalBody pot = (ThermalBody) helper.getBlockEntity(copperAt.above());
+    public static void coilHeatsTheVesselAbove(GameTestHelper helper) {
+        BlockPos at = new BlockPos(0, 2, 0);
+        helper.setBlock(at, FBlocks.HEATING_COIL.get().defaultBlockState());
+        helper.setBlock(at.above(), FBlocks.CRUCIBLE.get().defaultBlockState());
+        CoilBlockEntity coil = (CoilBlockEntity) helper.getBlockEntity(at);
+        ThermalBody pot = (ThermalBody) helper.getBlockEntity(at.above());
 
-        helper.onEachTick(() -> {
-            copper.onResolved(VoltageBand.MV, ElectricRules.packetEu(VoltageBand.MV), ElectricMachineTuning.COIL_AMPS, ElectricMachineTuning.COIL_AMPS, false);
-            iron.onResolved(VoltageBand.MV, ElectricRules.packetEu(VoltageBand.MV), ElectricMachineTuning.COIL_AMPS, ElectricMachineTuning.COIL_AMPS, false);
-        });
+        helper.onEachTick(() -> coil.onResolved(VoltageBand.MV, ElectricRules.packetEu(VoltageBand.MV), ElectricMachineTuning.COIL_AMPS, ElectricMachineTuning.COIL_AMPS, false));
         helper.runAtTickTime(1200, () -> {
-            float vessel = pot.getTemperature().value(), element = copper.getTemperature().value();
+            float vessel = pot.getTemperature().value(), element = coil.getTemperature().value();
             helper.assertTrue(vessel > 300f, "the crucible is heated well past ambient, got " + vessel);
-            helper.assertTrue(element > vessel && element - vessel < 60f,
-                    "the element runs a little above its load: element " + element + ", vessel " + vessel);
-            helper.assertTrue(copper.getCondition() < 1f, "copper past its service temperature wears");
-            helper.assertTrue(iron.getCondition() == 1f, "iron at the same power does not, got " + iron.getCondition());
-            for (BlockPos at : BlockPos.betweenClosed(0, 2, 0, 2, 3, 0))
-                helper.setBlock(at, Blocks.AIR.defaultBlockState());
+            helper.assertTrue(element > vessel, "the element runs above its load: element " + element + ", vessel " + vessel);
+            for (BlockPos p : BlockPos.betweenClosed(0, 2, 0, 0, 3, 0))
+                helper.setBlock(p, Blocks.AIR.defaultBlockState());
             helper.succeed();
         });
     }

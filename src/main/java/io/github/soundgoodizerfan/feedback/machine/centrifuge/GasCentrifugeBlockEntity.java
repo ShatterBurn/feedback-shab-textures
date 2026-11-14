@@ -31,6 +31,22 @@ public class GasCentrifugeBlockEntity extends RotationNode {
     private static final ResourceLocation ENRICHED = ResourceLocation.fromNamespaceAndPath("feedback", "uranium_enriched_ingot");
     private static final ResourceLocation DEPLETED = ResourceLocation.fromNamespaceAndPath("feedback", "uranium_depleted_ingot");
 
+    /** What a built centrifuge keeps of its rotor's design: the speed it starts at, what it loads the shaft with and the speed its rim holds ({@code BlockFigures}). */
+    private final io.github.soundgoodizerfan.feedback.modular.bake.FigureStore figures = new io.github.soundgoodizerfan.feedback.modular.bake.FigureStore();
+
+    @Override
+    protected void applyImplicitComponents(DataComponentInput input) {
+        super.applyImplicitComponents(input);
+        figures.set(input.get(io.github.soundgoodizerfan.feedback.registry.FDataComponents.BLOCK_FIGURES.get()),
+                input.get(io.github.soundgoodizerfan.feedback.registry.FModular.DESIGN.get()), input.get(io.github.soundgoodizerfan.feedback.registry.FModular.FIGURES.get()));
+    }
+
+    @Override
+    protected void collectImplicitComponents(net.minecraft.core.component.DataComponentMap.Builder components) {
+        super.collectImplicitComponents(components);
+        figures.collect(components);
+    }
+
     private int feed;
     private int enriched;
     private int depleted;
@@ -48,7 +64,7 @@ public class GasCentrifugeBlockEntity extends RotationNode {
 
     @Override
     public Su getLoadSu() {
-        return MachineTuning.CENTRIFUGE_LOAD_SU;
+        return new Su(figures.get("Load", MachineTuning.CENTRIFUGE_LOAD_SU.value()));
     }
 
     public IFluidHandler handler() {
@@ -128,10 +144,16 @@ public class GasCentrifugeBlockEntity extends RotationNode {
 
     public void tickServer() {
         float rpm = Math.abs(getRpm().value());
-        if (rpm < MachineTuning.CENTRIFUGE_MIN_RPM || feed < MachineTuning.CENTRIFUGE_BATCH_INGOTS || acid.getFluidAmount() < MachineTuning.CENTRIFUGE_HF_MB) {
+        float minRpm = figures.get("MinRpm", MachineTuning.CENTRIFUGE_MIN_RPM), rim = figures.get("RimRpm", 0f);
+        // A rotor spun past what its rim holds tears itself apart: a mistake of the shaft's speed against the rotor's metal.
+        if (rim > 0f && rpm > rim && level != null) {
+            level.destroyBlock(worldPosition, true);
             return;
         }
-        float ratio = rpm / MachineTuning.CENTRIFUGE_MIN_RPM;
+        if (rpm < minRpm || feed < MachineTuning.CENTRIFUGE_BATCH_INGOTS || acid.getFluidAmount() < MachineTuning.CENTRIFUGE_HF_MB) {
+            return;
+        }
+        float ratio = rpm / minRpm;
         progress += ratio * ratio;
         if (progress >= MachineTuning.CENTRIFUGE_BATCH_TICKS) {
             progress = 0f;
@@ -150,6 +172,7 @@ public class GasCentrifugeBlockEntity extends RotationNode {
         tag.putInt("Enriched", enriched);
         tag.putInt("Depleted", depleted);
         tag.putFloat("Progress", progress);
+        figures.save(tag, registries);
         tag.put("Acid", acid.writeToNBT(registries, new CompoundTag()));
     }
 
@@ -160,6 +183,7 @@ public class GasCentrifugeBlockEntity extends RotationNode {
         enriched = tag.getInt("Enriched");
         depleted = tag.getInt("Depleted");
         progress = tag.getFloat("Progress");
+        figures.load(tag, registries);
         acid.readFromNBT(registries, tag.getCompound("Acid"));
     }
 }

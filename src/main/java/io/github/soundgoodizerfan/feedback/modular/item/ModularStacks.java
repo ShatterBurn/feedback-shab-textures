@@ -142,6 +142,14 @@ public final class ModularStacks {
         if (type.family() == ModularType.Family.ENGINE && (before == null || !java.util.Objects.equals(before.part(ModularBake.ENGINE_PLUG), design.part(ModularBake.ENGINE_PLUG))))
             stack.remove(io.github.soundgoodizerfan.feedback.registry.FVehicles.PLUG_WEAR.get());
         stack.set(FModular.DESIGN.get(), design);
+        // Fire resistant only if its lowest-melting part survives lava (the way a plain material's items are, FormItems).
+        if (!design.parts().isEmpty() && design.parts().stream().allMatch(p -> {
+            Material pm = materials.get(p.material());
+            return pm != null && pm.survivesLava();
+        }))
+            stack.set(net.minecraft.core.component.DataComponents.FIRE_RESISTANT, net.minecraft.util.Unit.INSTANCE);
+        else
+            stack.remove(net.minecraft.core.component.DataComponents.FIRE_RESISTANT);
         baked = Optional.of(ModularFit.adjust(baked.get(), ModularFit.of(stack)));
         stack.set(FModular.FIGURES.get(), baked.get());
         ModularAssembly.keepCredit(stack, design, type, materials);

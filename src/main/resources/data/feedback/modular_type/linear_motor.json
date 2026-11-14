@@ -1,0 +1,55 @@
+{
+  "family": "block",
+  "required": [
+    "S"
+  ],
+  "slot": "mainhand",
+  "wear_litres": 0.3,
+  "wear_role": "S",
+  "primary": "S",
+  "blueprint": true,
+  "roles": {
+    "S": {
+      "name": "motor_winding",
+      "class": "working_face",
+      "forms": [
+        "motor_winding"
+      ],
+      "litres": 0.3,
+      "layer": 0,
+      "axes": {
+        "turns": {
+          "min": 1,
+          "max": 8,
+          "unit": "",
+          "default": 4,
+          "step": 1,
+          "scales": true
+        },
+        "gauge": {
+          "min": 20,
+          "max": 100,
+          "unit": "%",
+          "default": 50,
+          "step": 5
+        }
+      },
+      "part": {
+        "item": "feedback:motor_winding",
+        "cells": 3,
+        "stock": [
+          "wire",
+          "fine_wire"
+        ]
+      }
+    }
+  },
+  "patterns": [
+    [
+      "S"
+    ]
+  ],
+  "defaults": {
+    "S": "feedback:copper"
+  }
+}

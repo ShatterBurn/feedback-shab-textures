@@ -1,6 +1,8 @@
 {
   "family": "block",
-  "required": ["S"],
+  "required": [
+    "S"
+  ],
   "slot": "mainhand",
   "wear_litres": 0.5,
   "wear_role": "S",
@@ -56,18 +58,18 @@
               "life": 1.9
             }
           }
+        ],
+        "slots": [
+          {
+            "name": "anode",
+            "share": 3
+          },
+          {
+            "name": "cathode",
+            "share": 1
+          }
         ]
       }
-    },
-    "C": {
-      "name": "copper_cathode",
-      "class": "working_face",
-      "forms": [
-        "plate"
-      ],
-      "litres": 0.02,
-      "layer": 1,
-      "bulk": 2
     }
   },
   "patterns": [

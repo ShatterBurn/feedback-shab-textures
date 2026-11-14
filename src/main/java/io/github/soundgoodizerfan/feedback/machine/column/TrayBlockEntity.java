@@ -38,8 +38,20 @@ public class TrayBlockEntity extends BlockEntity implements Part {
         super(FBlockEntities.TRAY.get(), pos, state);
     }
 
-    public TrayType type() {
-        return getBlockState().getBlock() instanceof TrayBlock block ? block.type() : TrayType.SIEVE;
+    /** What a built tray keeps of its deck's design: share of vapour held back, mB a tick it takes, and how fast it cokes ({@code BlockFigures}); a sieve's constants for a tray built from nothing. */
+    private final io.github.soundgoodizerfan.feedback.modular.bake.FigureStore figures = new io.github.soundgoodizerfan.feedback.modular.bake.FigureStore();
+
+    @Override
+    protected void applyImplicitComponents(DataComponentInput input) {
+        super.applyImplicitComponents(input);
+        figures.set(input.get(io.github.soundgoodizerfan.feedback.registry.FDataComponents.BLOCK_FIGURES.get()),
+                input.get(io.github.soundgoodizerfan.feedback.registry.FModular.DESIGN.get()), input.get(io.github.soundgoodizerfan.feedback.registry.FModular.FIGURES.get()));
+    }
+
+    @Override
+    protected void collectImplicitComponents(net.minecraft.core.component.DataComponentMap.Builder components) {
+        super.collectImplicitComponents(components);
+        figures.collect(components);
     }
 
     /** Fraction of the tray still clean, 0 to 1 (shown as machine condition). */
@@ -48,7 +60,7 @@ public class TrayBlockEntity extends BlockEntity implements Part {
     }
 
     public float efficiency() {
-        return type().efficiency * condition();
+        return figures.get("Efficiency", PetrochemTuning.TRAY_SIEVE_EFFICIENCY) * condition();
     }
 
     public HeatedTank getDraw() {
@@ -99,7 +111,7 @@ public class TrayBlockEntity extends BlockEntity implements Part {
 
     /** Takes up to a clean tray's flow of {@code stack} (the liquid that condensed here); returns how much it took. */
     public int take(FluidStack stack, float tu) {
-        int amount = Math.min(Math.min(Math.round(type().flow * condition()), draw.getSpace()), stack.getAmount());
+        int amount = Math.min(Math.min(Math.round(figures.get("Flow", PetrochemTuning.TRAY_SIEVE_FLOW) * condition()), draw.getSpace()), stack.getAmount());
         if (amount <= 0)
             return 0;
         return draw.fill(FluidHeat.stamp(stack.copyWithAmount(amount), tu), IFluidHandler.FluidAction.EXECUTE);
@@ -109,7 +121,7 @@ public class TrayBlockEntity extends BlockEntity implements Part {
     public void coke(float tu, float heaviness) {
         if (tu <= PetrochemTuning.COLUMN_COKE_TU)
             return;
-        foul = Math.min(1f, foul + PetrochemTuning.COLUMN_FOUL_PER_TICK * type().foul * heaviness
+        foul = Math.min(1f, foul + PetrochemTuning.COLUMN_FOUL_PER_TICK * figures.get("Foul", PetrochemTuning.TRAY_SIEVE_FOUL) * heaviness
                 * (tu - PetrochemTuning.COLUMN_COKE_TU) / PetrochemTuning.COLUMN_COKE_TU);
         setChanged();
     }
@@ -179,6 +191,7 @@ public class TrayBlockEntity extends BlockEntity implements Part {
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
         tag.putFloat("Foul", foul);
+        figures.save(tag, registries);
         tag.put("Draw", draw.writeToNBT(registries, new CompoundTag()));
     }
 
@@ -186,6 +199,7 @@ public class TrayBlockEntity extends BlockEntity implements Part {
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
         foul = tag.getFloat("Foul");
+        figures.load(tag, registries);
         if (tag.contains("Draw"))
             draw.readFromNBT(registries, tag.getCompound("Draw"));
     }

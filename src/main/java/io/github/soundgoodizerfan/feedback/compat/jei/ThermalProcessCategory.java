@@ -80,7 +80,7 @@ public class ThermalProcessCategory implements IRecipeCategory<ThermalProcess> {
     private final IDrawable icon;
 
     public ThermalProcessCategory(IGuiHelper guiHelper) {
-        this.icon = guiHelper.createDrawableItemStack(new ItemStack(FItems.SMALL_CRUCIBLE.get()));
+        this.icon = guiHelper.createDrawableItemStack(new ItemStack(io.github.soundgoodizerfan.feedback.registry.FModular.CRUCIBLE.get()));
     }
 
     @Override

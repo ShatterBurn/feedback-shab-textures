@@ -14,7 +14,7 @@ The anode has one measure, its **size**, from 20 to 100 percent (50 by default).
 | Plate | 1.6 times | 0.7 times |
 | Block | 0.8 times | 1.9 times |
 
-**Addon.** A **cathode** (plate) is an optional piece that adds current. The wider the gap between the cathode's and the anode's electrode potentials, the more it adds.
+**Cathode.** The cathode is a slot of the anode part, a second metal beside the anode's own (see [Composed Parts](Composed_Parts.md)). The wider the gap between the cathode metal's and the anode metal's electrode potentials, the more current the cell gives.
 
 ## Using it
 
@@ -40,6 +40,8 @@ C C
 C is a Galvanic Cell. The pack gives the same 1 A, at its higher band. A higher band carries more energy in each packet, so the pack spends its anode faster for the same current.
 
 If a turning Electrostatic Generator is on the same line, its higher band overrules the cells for as long as the pulse lasts. Jade shows the cells as *"Outbid by a higher band"* during that time. That's normal.
+
+Jade also shows the anode in words: spent, nearly spent, part used or plentiful.
 
 ## Notes
 

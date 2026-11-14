@@ -82,7 +82,7 @@ public final class EGunSounds {
         };
         if (have > lastCharge && lastCharge >= 0f && slot == lastSlot)
             mc.level.playLocalSound(player.getX(), player.getEyeY(), player.getZ(), FSounds.GUN_EGUN_REFILL.get(), SoundSource.PLAYERS,
-                    0.5f, 0.9f + 0.15f * (have / Math.max(1f, ModularTuning.EGUN_CHAMBERS)), false);
+                    0.5f, 0.9f + 0.15f * (have / Math.max(1f, spec.chambers())), false);
         lastCharge = have;
         lastSlot = slot;
         // The sight going up powers the fittings that read it.

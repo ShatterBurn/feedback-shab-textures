@@ -110,7 +110,11 @@ public enum Quantity implements StringRepresentable {
     /** Light at a block face, in levels 0 to 15 (block and sky read as one figure and one offset): a light meter reads it. Appended, never inserted. */
     LIGHT("light"),
     /** How fast something is warming (positive) or cooling (negative), in Tu per second: a pyroelectric plate reads it. Appended, never inserted. */
-    HEATING_RATE("heating_rate");
+    HEATING_RATE("heating_rate"),
+    /** Speed along the vertical, in blocks per second, signed (climb positive): a flight sensor reads it. Appended, never inserted. */
+    VERTICAL_SPEED("vertical_speed"),
+    /** Density of the air at a body, 1 at the surface ordinary air: a flight sensor reads it. Appended, never inserted. */
+    AIR_DENSITY("air_density");
 
     private final String key;
 

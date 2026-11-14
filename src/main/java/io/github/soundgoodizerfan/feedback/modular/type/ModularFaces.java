@@ -148,8 +148,12 @@ public final class ModularFaces {
         if (type == null || type.family() != ModularType.Family.HAFTED)
             return out;
         for (Part p : faces(d))
-            if (!spent(p))
+            if (!spent(p)) {
                 kind(p, type).ifPresent(h -> out.addAll(h.actions()));
+                ModularType.Role role = type.roles().get(p.role());
+                if (role != null)
+                    role.variant(p).ifPresent(v -> out.addAll(v.actions()));
+            }
         return out;
     }
 

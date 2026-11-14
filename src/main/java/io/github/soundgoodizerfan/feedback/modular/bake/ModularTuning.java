@@ -195,7 +195,7 @@ public final class ModularTuning {
     /** Capacitor bank: seconds to recharge at Light, Standard and Heavy with a two-cell battery (more cells take longer); the shot is this many times a tier's pulse; each dielectric band adds this share to what it holds. */
     public static final float[] EGUN_BANK_RECHARGE_S = {8f, 12f, 16f};
     public static final float EGUN_CORE_MULT = 3f, EGUN_CORE_RANGE = 0.35f, EGUN_CORE_SPEED = 1.6f, EGUN_CORE_VENT_KEEP = 0.25f, EGUN_CORE_PARRY_RANGE = 3.5f,
-            EGUN_CORE_PELLET_MU = 0.02f, EGUN_BANK_MULT = 3f, EGUN_BANK_PER_LEVEL = 0.1f, EGUN_BANK_DIELECTRIC_STEP = 0.15f;
+            EGUN_CORE_PELLET_MU = 0.02f, EGUN_BANK_PER_LEVEL = 0.1f, EGUN_BANK_DIELECTRIC_STEP = 0.15f;
     /** Burst bank: ticks between the three shots of a burst. */
     public static final int EGUN_BURST_GAP_TICKS = 2;
     /** Flywheel: ticks of a held trigger to full spin (at the reference density), ticks to spin down, and the spin the first shot waits for. */
@@ -309,6 +309,9 @@ public final class ModularTuning {
     /** The learning game: parts read per specimen at most, the fewest ticks an honest reading takes, and the start levels perfect notes give. */
     public static final int NOTES_MAX_PARTS = 6;
     public static final int NOTES_MIN_READ_TICKS = 16;
+    /** Research: experience points a trial run spends, the most samples laid out, the fewest an honest play takes (ticks), and the share of the larger figure under which two samples cannot be told apart. */
+    public static final int RESEARCH_XP = 40, RESEARCH_SAMPLES = 4, RESEARCH_MIN_TICKS = 60;
+    public static final float RESEARCH_NOISE = 0.06f;
     public static final float NOTES_MAX_LEVELS = 2f;
     /** Filing: strokes a file takes before it wears one point (hand tools may always wear). */
     public static final int FILE_STROKES_PER_WEAR = 5;
@@ -800,6 +803,17 @@ public final class ModularTuning {
             WHEEL_INERTIA = 400f, WHEEL_REF_DENSITY = 0.6f;
 
     /** Thermal store: the wall (cm) the fixed block stands for, its heat mass and leak, and the brick density and conductivity they were quoted at. */
+    /** Crucible: heat mass of a two-slot, reference-wall brick crucible, the wall (mm) and volumetric heat (density times specific heat of brick) it is quoted at, and the tank each slot of a crucible holds. */
+    public static final float CRUCIBLE_MASS = 25f, CRUCIBLE_REF_WALL_MM = 30f, CRUCIBLE_REF_VOLUMETRIC_HEAT = 1.9f * 0.84f;
+    public static final float CRUCIBLE_TANK_MB_PER_SLOT = 648f;
+    /** Gas centrifuge: the rotor radius (cm) the machine's quoted minimum speed and load are for, and the rim speed constant shared with the flywheel's. */
+    public static final float CENTRIFUGE_REF_CM = 25f, ROTOR_RIM_CONSTANT = 44f;
+    /** Column tray: the hole (mm) and pitch (mm) the three decks' quoted efficiency, flow and fouling are for. A smaller hole holds back more and cokes faster; open area (hole over pitch, squared) sets the flow. */
+    public static final float TRAY_REF_HOLE_MM = 15f, TRAY_REF_PITCH_MM = 40f;
+    /** Heating coil: the wire gauge (percent) and turns a coil draws its quoted amps at, and the drop at which an element turns half its current to heat. */
+    public static final float COIL_REF_GAUGE = 50f, COIL_REF_TURNS = 2f, COIL_DROP_HALF = 0.5f;
+    /** Linear motor ring: the turns and gauge (percent) it draws its quoted amps at; its push over a magnetic capsule rises with the turns and the core's pull. */
+    public static final float RING_REF_TURNS = 4f, RING_REF_GAUGE = 50f;
     public static final float STORE_REF_CM = 20f, STORE_MASS = 1800f, STORE_LEAK = 0.05f, STORE_REF_DENSITY = 1.9f, STORE_REF_CONDUCTIVITY = 0.000175f;
     /** Leyden jar: the plate area (percent) and glass wall (mm) the fixed jar stands for, and its capacitance, leak per tick and burst amps. */
     public static final float JAR_REF_AREA = 50f, JAR_REF_WALL_MM = 4f, JAR_CAPACITY_PACKETS = 10f, JAR_LEAK = 0.002f, JAR_BURST_AMPS = 8f;

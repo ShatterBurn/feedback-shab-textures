@@ -154,8 +154,8 @@ public class TubeBlockEntity extends BlockEntity implements PressureHolder {
             if (k == TubeBlock.Kind.LINED || k == TubeBlock.Kind.EVACUATED)
                 drive *= TubeTuning.TUBE_LINER_FACTOR;
         }
-        if (c.stack.getItem() instanceof CarrierItem i && i.kind() == CarrierItem.Kind.MAGNETIC && ringed())
-            drive *= TubeTuning.TUBE_LINEAR_FACTOR;
+        if (c.stack.getItem() instanceof CarrierItem i && i.kind() == CarrierItem.Kind.MAGNETIC)
+            drive *= ringPush();
         float t = TubeTuning.TUBE_BASE_HOP_TICKS * (1f + mass / (max / 2f)) / drive;
         if (corner)
             t *= pod ? TubeTuning.POD_CORNER_FACTOR : TubeTuning.TUBE_CORNER_FACTOR;
@@ -164,14 +164,15 @@ public class TubeBlockEntity extends BlockEntity implements PressureHolder {
         return Math.max(1, Math.round(t));
     }
 
-    /** A powered linear-motor ring touching this block. */
-    private boolean ringed() {
+    /** The strongest push of a powered linear-motor ring touching this block, 1 with none. */
+    private float ringPush() {
+        float push = 1f;
         if (level == null)
-            return false;
+            return push;
         for (Direction d : Direction.values())
             if (level.getBlockEntity(worldPosition.relative(d)) instanceof LinearMotorBlockEntity m && m.powered())
-                return true;
-        return false;
+                push = Math.max(push, m.push());
+        return push;
     }
 
     /** Whether a capsule can pass from this block through {@code d}: a tube, or a station that faces this block. */

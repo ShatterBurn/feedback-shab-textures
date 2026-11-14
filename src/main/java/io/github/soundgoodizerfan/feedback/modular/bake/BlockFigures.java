@@ -37,7 +37,7 @@ public final class BlockFigures {
         if (!roleKey.equals(ROLE))
             return switch (idOf(type) + "/" + roleKey) {
                 case "heat_exchanger/F" -> material.thermal().conductivity().isPresent();
-                case "water_wheel/R", "pump/V", "compressor/I", "burner/F", "thruster/J", "hand_crank/G", "electromagnet/Y", "boiler/B", "flywheel/B", "flywheel/G", "galvanic_cell/C", "lamp/B" -> material.density().muPerMb() > 0;
+                case "water_wheel/R", "pump/V", "compressor/I", "burner/F", "thruster/J", "hand_crank/G", "electromagnet/Y", "boiler/B", "flywheel/B", "flywheel/G", "lamp/B" -> material.density().muPerMb() > 0;
                 case "thermal_store/I" -> true;
                 case "thermal_store/F" -> material.density().muPerMb() > 0;
                 case "leyden_jar/F" -> material.ampacity().isPresent();
@@ -54,8 +54,13 @@ public final class BlockFigures {
             case "water_wheel", "pump", "compressor", "burner", "hand_crank" -> material.density().muPerMb() > 0;
             case "galvanic_cell" -> material.kind().orElse(null) == Material.Kind.METAL && material.density().muPerMb() > 0;
             case "lamp" -> material.ampacity().isPresent();
+            case "linear_motor" -> material.kind().orElse(null) == Material.Kind.METAL && material.density().muPerMb() > 0 && material.ampacity().isPresent();
+            case "heating_coil" -> material.kind().orElse(null) == Material.Kind.METAL && material.density().muPerMb() > 0 && material.thermal().serviceTemperature().isPresent();
+            case "tray" -> material.kind().orElse(null) == Material.Kind.METAL && material.density().muPerMb() > 0;
+            case "gas_centrifuge" -> material.kind().orElse(null) == Material.Kind.METAL && material.density().muPerMb() > 0 && material.mechanical().yieldStrength().isPresent();
             case "electromagnet" -> material.kind().orElse(null) == Material.Kind.METAL && material.density().muPerMb() > 0;
             case "thermal_store" -> material.thermal().conductivity().isPresent() && material.density().muPerMb() > 0;
+            case "crucible" -> material.density().muPerMb() > 0 && material.failureTemperature().isPresent() && material.thermal().specificHeat().isPresent();
             case "leyden_jar" -> material.electrical().insulation().isPresent();
             default -> true;
         };
@@ -149,6 +154,53 @@ float mass = ModularBake.param(type, part, "mass", 1f) * ModularTuning.STORE_MAS
                 out.putFloat("Mass", mass);
                 out.putFloat("Leak", leak);
             }
+            // A crucible is its wall: more slots is a bigger vessel (heat mass with the square), a thicker wall has more to heat, and the
+            // wall's own stuff (density times specific heat, against the brick the first one was built of) sets how much heat that is.
+            // The hottest the wall holds is its material's failure temperature; past it the wall wears.
+            case "crucible" -> {
+                float slots = Math.round(role.axis(part, "slots"));
+                float wall = role.axis(part, "wall") / ModularTuning.CRUCIBLE_REF_WALL_MM;
+                float heat = (float) m.density().muPerMb() * m.thermal().specificHeat().get().workPerMuPerTu() / ModularTuning.CRUCIBLE_REF_VOLUMETRIC_HEAT;
+                out.putFloat("Slots", slots);
+                out.putFloat("Tank", ModularTuning.CRUCIBLE_TANK_MB_PER_SLOT * slots);
+                out.putFloat("Mass", ModularTuning.CRUCIBLE_MASS * (slots / 2f) * (slots / 2f) * wall * heat);
+                out.putFloat("ServiceTu", m.failureTemperature().get().value());
+            }
+            // A rotor separates by centripetal pull, which grows with radius and the square of the speed, so a wider rotor starts at a lower speed
+            // (a = w^2 r); it weighs, and so loads the shaft, with its radius squared and its metal's density; and its rim holds only as fast
+            // as its metal's strength over density allows, falling with radius (the flywheel's rim law). Past that the rotor tears.
+            case "gas_centrifuge" -> {
+                float r = role.axis(part, "radius") / ModularTuning.CENTRIFUGE_REF_CM;
+                out.putFloat("MinRpm", io.github.soundgoodizerfan.feedback.machine.MachineTuning.CENTRIFUGE_MIN_RPM / (float) Math.sqrt(r));
+                out.putFloat("Load", io.github.soundgoodizerfan.feedback.machine.MachineTuning.CENTRIFUGE_LOAD_SU.value() * r * r * (float) m.density().muPerMb() / 7.9f);
+                out.putFloat("RimRpm", ModularTuning.ROTOR_RIM_CONSTANT * (float) Math.sqrt(m.mechanical().yieldStrength().get().value() / m.density().muPerMb()) / (r * ModularTuning.CENTRIFUGE_REF_CM / 50f));
+            }
+            // A deck's three shapes are the old bubble-cap, sieve and packed trays; the hole and pitch drilled in it tune them: a finer hole holds back more
+            // of the vapour and cokes faster, the open area (hole over pitch, squared) is how much it takes a tick.
+            case "tray" -> {
+                float hole = role.axis(part, "hole") / ModularTuning.TRAY_REF_HOLE_MM, pitch = role.axis(part, "pitch") / ModularTuning.TRAY_REF_PITCH_MM;
+                out.putFloat("Efficiency", Math.min(0.98f, ModularBake.param(type, part, "efficiency", 0.8f) * (float) Math.pow(1f / hole, 0.15)));
+                out.putFloat("Flow", ModularBake.param(type, part, "flow", 40f) * hole * hole / (pitch * pitch));
+                out.putFloat("Foul", ModularBake.param(type, part, "foul", 1.5f) / (float) Math.sqrt(hole));
+            }
+            // A thicker wire passes more current (with the square of its gauge) and a longer one (more turns) less; the heat each Eu makes is the share of
+            // the power the wire's own drop turns to heat, so nichrome heats well and copper hardly; the mass to heat is the wire's, and it holds as hot as its metal.
+            case "heating_coil" -> {
+                float g = role.axis(part, "gauge") / ModularTuning.COIL_REF_GAUGE, turns = role.axis(part, "turns") / ModularTuning.COIL_REF_TURNS;
+                float drop = m.electrical().drop().orElse(0.5f);
+                float heat = drop / (drop + ModularTuning.COIL_DROP_HALF);
+                out.putFloat("Amps", ElectricMachineTuning.COIL_AMPS * g * g / turns);
+                out.putFloat("Work", ElectricMachineTuning.COIL_WORK_PER_EU * heat / 0.5f);
+                out.putFloat("Mass", ElectricMachineTuning.COIL_MASS.workPerTu() * g * g * turns * (float) m.density().muPerMb() / 7.9f);
+                out.putFloat("ServiceTu", m.thermal().serviceTemperature().get().value());
+            }
+            // A ring of winding round the tube: more turns pull a magnetic capsule harder and draw more current, and a thicker wire draws more
+            // (gauge squared); a push of 1 would be no ring, the reference ring pushes as the old fixed motor did.
+            case "linear_motor" -> {
+                float turns = role.axis(part, "turns") / ModularTuning.RING_REF_TURNS, g = role.axis(part, "gauge") / ModularTuning.RING_REF_GAUGE;
+                out.putFloat("Amps", io.github.soundgoodizerfan.feedback.core.tube.TubeTuning.LINEAR_MOTOR_AMPS * turns * g * g);
+                out.putFloat("Push", 1f + (io.github.soundgoodizerfan.feedback.core.tube.TubeTuning.TUBE_LINEAR_FACTOR - 1f) * turns);
+            }
             // Charge held is plate area over glass thickness; thin glass leaks it away much faster (as the square).
             case "leyden_jar" -> {
                 float area = role.axis(part, "area") / ModularTuning.JAR_REF_AREA * ModularBake.param(type, part, "area", 1f);
@@ -222,9 +274,9 @@ float leak = ModularBake.param(type, part, "leak", 1f) * ModularTuning.JAR_LEAK 
                 out.putFloat("Pull", 0.08f * n * ModularBake.param(type, part, "pull", 1f) * yoke(design, materials));
                 out.putFloat("Range", 4f * ModularBake.param(type, part, "range", 1f));
             }
-            // Anode: a bigger anode feeds more current and lasts in proportion to its bulk; the shape trades current against life; a copper cathode (an addon) draws a little more.
+            // Anode: a bigger anode feeds more current and lasts in proportion to its bulk; the shape trades current against life; a cathode metal further above the anode draws more.
             case "galvanic_cell" -> {
-                float a = role.axis(part, "anode") / 50f, amps = ModularBake.param(type, part, "amps", 1f) * a * cathode(design, materials, m);
+                float a = role.axis(part, "anode") / 50f, amps = ModularBake.param(type, part, "amps", 1f) * a * cathode(design, role, materials, m);
                 out.putFloat("Amps", amps);
                 out.putFloat("AnodeEu", 768000f * a * ModularBake.param(type, part, "life", 1f) / Math.max(0.1f, ModularBake.param(type, part, "amps", 1f) * a));
             }
@@ -301,8 +353,9 @@ float leak = ModularBake.param(type, part, "leak", 1f) * ModularTuning.JAR_LEAK 
     }
 
     /** A cell's voltage is the gap between its electrodes' potentials: a cathode further above the anode draws more current. */
-    private static float cathode(ModularDesign design, Map<ResourceLocation, Material> materials, Material anode) {
-        Material c = addon(design, materials, "C");
+    private static float cathode(ModularDesign design, ModularType.Role role, Map<ResourceLocation, Material> materials, Material anode) {
+        Part part = design.part(ROLE);
+        Material c = part == null ? null : ModularBake.slotMaterial(role, part, "cathode", materials);
         if (c == null)
             return 1f;
         float gap = c.electrical().electrodePotential().orElse(0f) - anode.electrical().electrodePotential().orElse(0f);

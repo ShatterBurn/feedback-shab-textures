@@ -1,6 +1,9 @@
 {
   "family": "cell",
-  "required": ["P", "C"],
+  "required": [
+    "P",
+    "C"
+  ],
   "slot": "mainhand",
   "wear_litres": 0.25,
   "wear_role": "P",
@@ -19,6 +22,16 @@
         "cells": 2,
         "stock": [
           "plate"
+        ],
+        "slots": [
+          {
+            "name": "anode",
+            "share": 1
+          },
+          {
+            "name": "cathode",
+            "share": 1
+          }
         ]
       },
       "axes": {

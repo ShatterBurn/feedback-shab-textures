@@ -4,7 +4,7 @@ An electric furnace in two blocks: an **Arc Hearth** that holds the melt, and an
 
 ## Crafting
 
-**Arc Hearth**: a ring of [Insulation](Insulation.md) blocks around a Large Crucible.
+**Arc Hearth**: a ring of [Insulation](Insulation.md) blocks around a [Crucible](Crucible.md).
 
 ```
 I I I
@@ -12,7 +12,7 @@ I L I
 I I I
 ```
 
-I is an Insulation block and L is a Large [Crucible](Crucible.md).
+I is an Insulation block and L is a Crucible.
 
 **Arc Head**
 
@@ -28,7 +28,7 @@ S is a Steel Plate, C is Ceramic and W is Copper Fine Wire.
 
 ## The Arc Hearth
 
-A crucible four times over: **6 charge slots** and a tank of **5184 mB**, 36 ingots. It has no fire of its own, and it is far heavier than a Large Crucible, so it heats and cools slowly. Its screen, pouring into molds, hopper behavior and tapping work as on the [Crucible](Crucible.md).
+A crucible four times over: **6 charge slots** and a tank of **5184 mB**, 36 ingots. It has no fire of its own, and it is far heavier than a crucible, so it heats and cools slowly. Its screen, pouring into molds, hopper behavior and tapping work as on the [Crucible](Crucible.md).
 
 **Wall wear.** A bath hotter than **2,200 Tu** wears the hearth's wall, faster the further over. With a [Refractory Lining](Refractory_Lining.md) fitted the limit is **3,300 Tu**. A worn wall leaks more heat, down to a floor of half condition; the hearth keeps working.
 

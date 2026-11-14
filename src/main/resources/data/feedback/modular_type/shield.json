@@ -1,6 +1,9 @@
 {
   "family": "shield",
-  "required": ["F", "R"],
+  "required": [
+    "F",
+    "R"
+  ],
   "minigame": "feedback:fitting",
   "wear_litres": 2.9,
   "wear_role": "F",
@@ -146,7 +149,20 @@
           "max": 3,
           "default": 1,
           "step": 1,
-          "scales": true
+          "scales": true,
+          "bands": [
+            {
+              "name": "narrow",
+              "max": 1
+            },
+            {
+              "name": "normal",
+              "max": 2
+            },
+            {
+              "name": "wide"
+            }
+          ]
         }
       }
     },
@@ -237,14 +253,15 @@
         "name": "heater_shield",
         "is": {
           "variant": "heater",
-          "face_size": "normal"
+          "face_size": "normal",
+          "rim_width": "narrow"
         }
       },
       {
         "name": "knights_shield",
         "is": {
           "variant": "heater",
-          "rim": "fitted"
+          "rim_width": "normal|wide"
         }
       },
       {

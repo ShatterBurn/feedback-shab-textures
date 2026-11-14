@@ -219,7 +219,7 @@
           {
             "name": "automatic",
             "cells": 2,
-            "trait": "blowback,select_fire,closed_bolt",
+            "trait": "blowback,closed_bolt",
             "params": {
               "pressure_limit": 1.2
             }
@@ -298,7 +298,7 @@
           {
             "name": "automatic",
             "cells": 4,
-            "trait": "gas_operated,select_fire,closed_bolt"
+            "trait": "gas_operated,closed_bolt"
           }
         ]
       }
@@ -674,37 +674,21 @@
       ],
       "litres": 0.05,
       "layer": 12,
+      "axes": {
+        "position": {
+          "min": 20,
+          "max": 90,
+          "step": 10,
+          "unit": "%",
+          "default": 50
+        }
+      },
+      "trait": "resonance",
       "part": {
         "item": "feedback:resonance_weight",
-        "cells": 1,
+        "cells": 2,
         "stock": [
           "ingot"
-        ],
-        "base": "thread_middle",
-        "variants": [
-          {
-            "name": "thread_breech",
-            "trait": "resonance",
-            "params": {
-              "tuned_ms": 250.0
-            }
-          },
-          {
-            "name": "thread_middle",
-            "cells": 2,
-            "trait": "resonance",
-            "params": {
-              "tuned_ms": 450.0
-            }
-          },
-          {
-            "name": "thread_muzzle",
-            "cells": 3,
-            "trait": "resonance",
-            "params": {
-              "tuned_ms": 800.0
-            }
-          }
         ]
       },
       "mount": "barrel"

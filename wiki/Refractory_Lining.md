@@ -13,7 +13,7 @@ B B
 
 ## Fitting it
 
-Right-click a Small or Large Crucible, or a furnace, with the lining. It goes inside, so it doesn't matter which face you click. Each takes **one** lining. Breaking the machine, or prying with a [Crowbar](Crowbar.md), gives the lining back.
+Right-click a crucible or a furnace, with the lining. It goes inside, so it doesn't matter which face you click. Each takes **one** lining. Breaking the machine, or prying with a [Crowbar](Crowbar.md), gives the lining back.
 
 ## What it actually does
 
@@ -26,11 +26,11 @@ A lined crucible behaves like a heavier crucible:
 
 What it **won't** do is raise the crucible's final temperature. A crucible still settles just under the temperature of the fire beneath it, lined or not. To get hotter you need a hotter fire. See [Powered Bellows](Powered_Bellows.md).
 
-## Small vs. large
+## Light vs. heavy crucibles
 
-On a **Small Crucible** the difference is dramatic: it roughly doubles how sluggish it is, which puts it partway to a Large Crucible's steadiness without the size. On a **Large Crucible**, which is already very heavy, you'll barely notice it.
+On a **light crucible** (few slots, a thin wall) the difference is dramatic: it roughly doubles how sluggish it is, which puts it partway to a big crucible's steadiness without the size. On a **heavy crucible**, which is already slow, you'll barely notice it.
 
 ## When to use it
 
 - **Yes:** long holds at a steady temperature, or jobs that are ruined by heating too fast.
-- **No:** jobs where you need the crucible to get hot *quickly*, or to cool down fast between batches. Leave the small crucible bare for those.
+- **No:** jobs where you need the crucible to get hot *quickly*, or to cool down fast between batches. Leave a light crucible bare for those.

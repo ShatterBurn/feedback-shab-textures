@@ -27,10 +27,9 @@ public class FMenus {
 
     public static final DeferredHolder<MenuType<?>, MenuType<CrucibleMenu>> ARC_HEARTH =
             MENUS.register("arc_hearth", () -> new MenuType<>(CrucibleMenu::arcHearth, FeatureFlags.VANILLA_SET));
-    public static final DeferredHolder<MenuType<?>, MenuType<CrucibleMenu>> LARGE_CRUCIBLE =
-            MENUS.register("large_crucible", () -> new MenuType<>(CrucibleMenu::largeCrucible, FeatureFlags.VANILLA_SET));
+    /** The crucible's menu: its size (slots, tank) is read off the built block and sent with the open. */
     public static final DeferredHolder<MenuType<?>, MenuType<CrucibleMenu>> CRUCIBLE =
-            MENUS.register("crucible", () -> new MenuType<>(CrucibleMenu::new, FeatureFlags.VANILLA_SET));
+            MENUS.register("crucible", () -> IMenuTypeExtension.create((id, inv, buf) -> CrucibleMenu.sized(id, inv, buf.readVarInt(), buf.readVarInt())));
 
     public static final DeferredHolder<MenuType<?>, MenuType<io.github.soundgoodizerfan.feedback.control.computer.ComputerMenu>> COMPUTER =
             MENUS.register("computer",

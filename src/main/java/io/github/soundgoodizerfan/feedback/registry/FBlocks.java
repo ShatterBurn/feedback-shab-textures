@@ -498,22 +498,13 @@ public class FBlocks {
      * twenty-tick-old reading is actionable on one and useless on the other -- falls out of that
      * single number. See {@link io.github.soundgoodizerfan.feedback.machine.vessel.VesselTuning#CRUCIBLE_SMALL_MASS}.
      */
-    public static final DeferredBlock<CrucibleBlock> SMALL_CRUCIBLE = BLOCKS.register("small_crucible",
+    public static final DeferredBlock<CrucibleBlock> CRUCIBLE = BLOCKS.register("crucible",
             () -> new CrucibleBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.STONE)
                     .strength(3.5f)
                     .sound(SoundType.STONE)
                     .noOcclusion()
                     .lightLevel(s -> s.getValue(io.github.soundgoodizerfan.feedback.core.thermal.Incandescence.GLOW)), VesselTuning.CRUCIBLE_SMALL_MASS));
-
-    public static final DeferredBlock<CrucibleBlock> LARGE_CRUCIBLE = BLOCKS.register("large_crucible",
-            () -> new CrucibleBlock(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.STONE)
-                    .strength(3.5f)
-                    .sound(SoundType.STONE)
-                    .noOcclusion()
-                    .lightLevel(s -> s.getValue(io.github.soundgoodizerfan.feedback.core.thermal.Incandescence.GLOW)), MachineTuning.CRUCIBLE_LARGE_MASS,
-                    VesselTuning.CRUCIBLE_LARGE_SLOTS, VesselTuning.VESSEL_TANK_CAPACITY_MB));
 
     /** The arc furnace's hearth: a crucible with four times the mass, six charge slots and a 36-ingot tank. The arc head set on it is the fire. */
     public static final DeferredBlock<CrucibleBlock> ARC_HEARTH = BLOCKS.register("arc_hearth",
@@ -813,17 +804,12 @@ public class FBlocks {
                     .strength(2.0f)
                     .sound(SoundType.METAL)));
 
-    /** Eu to Thermal: a heating element, one block per element metal. See {@code CoilBlockEntity}. */
-    public static final DeferredBlock<CoilBlock> COPPER_COIL = BLOCKS.register("copper_coil",
+    /** Eu to Thermal: a heating element built from a wire (a modular block). See {@code CoilBlockEntity}. */
+    public static final DeferredBlock<CoilBlock> HEATING_COIL = BLOCKS.register("heating_coil",
             () -> new CoilBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.COLOR_ORANGE)
                     .strength(2.0f)
-                    .sound(SoundType.METAL), Feedback.id("copper")));
-    public static final DeferredBlock<CoilBlock> IRON_COIL = BLOCKS.register("iron_coil",
-            () -> new CoilBlock(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.METAL)
-                    .strength(2.0f)
-                    .sound(SoundType.METAL), Feedback.id("wrought_iron")));
+                    .sound(SoundType.METAL)));
 
     /** Electricity's stop: opens a line, arcs under load, trips. See {@code BreakerBlockEntity}. */
     public static final DeferredBlock<BreakerBlock> BREAKER = BLOCKS.register("breaker",
@@ -1314,16 +1300,11 @@ public class FBlocks {
                     .mapColor(MapColor.METAL)
                     .strength(4.0f)
                     .sound(SoundType.METAL)));
-    public static final DeferredBlock<io.github.soundgoodizerfan.feedback.machine.column.TrayBlock> TRAY_BUBBLE_CAP = tray("tray_bubble_cap", io.github.soundgoodizerfan.feedback.machine.column.TrayType.BUBBLE_CAP);
-    public static final DeferredBlock<io.github.soundgoodizerfan.feedback.machine.column.TrayBlock> TRAY_SIEVE = tray("tray_sieve", io.github.soundgoodizerfan.feedback.machine.column.TrayType.SIEVE);
-    public static final DeferredBlock<io.github.soundgoodizerfan.feedback.machine.column.TrayBlock> TRAY_PACKED = tray("tray_packed", io.github.soundgoodizerfan.feedback.machine.column.TrayType.PACKED);
-
-    private static DeferredBlock<io.github.soundgoodizerfan.feedback.machine.column.TrayBlock> tray(String name, io.github.soundgoodizerfan.feedback.machine.column.TrayType type) {
-        return BLOCKS.register(name, () -> new io.github.soundgoodizerfan.feedback.machine.column.TrayBlock(BlockBehaviour.Properties.of()
-                .mapColor(MapColor.METAL)
-                .strength(3.0f)
-                .sound(SoundType.METAL), type));
-    }
+    public static final DeferredBlock<io.github.soundgoodizerfan.feedback.machine.column.TrayBlock> TRAY = BLOCKS.register("tray",
+            () -> new io.github.soundgoodizerfan.feedback.machine.column.TrayBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.METAL)
+                    .strength(3.0f)
+                    .sound(SoundType.METAL)));
 
     public static final DeferredBlock<io.github.soundgoodizerfan.feedback.machine.reactor.ReactorBlock> REACTOR = BLOCKS.register("reactor",
             () -> new io.github.soundgoodizerfan.feedback.machine.reactor.ReactorBlock(BlockBehaviour.Properties.of()

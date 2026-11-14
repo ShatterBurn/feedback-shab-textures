@@ -26,8 +26,36 @@ Types outside every volume (tools, armor, water wheel, thermal store, Leyden jar
 ## Obtaining
 
 - **Write one.** Craft a **Blank Treatise**, put it in the blank slot on the Treatise tab of the Engineering Table, put an item of that volume's types in the specimen slot and press **Take apart**, which opens the learning game: calipers measure each part of the specimen (click to open the jaws, click again when they just touch the part; too tight crushes the reading, too loose is a guess) and the readings are inked onto a notebook page. How well you read it is the quality of the **notes** the treatise keeps (guessed, rough, fair, clean, exact); you always get the volume. The item is taken apart and the Blank Treatise becomes that volume. Most types that need a treatise have a [specimen](#specimens) you can craft to take apart first; a maul, spear, cleaver or charge is made the usual way.
+- **Research one.** With no specimen, a Blank Treatise can be written by [researching a volume](#researching-a-volume).
 - **Find one.** A treatise of a random school and volume turns up, rarely, in dungeon, mineshaft, desert temple, stronghold and bastion chests.
 - **Buy one.** Weaponsmiths, toolsmiths, cartographers, librarians, clerics and masons sell volume I of their school at a high trade level, and the later volumes at higher levels; clerics sell Chemical I and II, and weaponsmiths all three Weapons volumes. See [Villagers](Villagers.md#blueprints).
+
+### Researching a volume
+
+On the Treatise tab of the [Engineering Table](Engineering_Table.md#researching-a-volume), put a Blank Treatise in the blank slot and leave the specimen slot empty. Have three or more different materials (any stock) in your pack and 40 experience points. The volume button cycles which volume to research; each volume is about one property of a material:
+
+| Volume | Property |
+| --- | --- |
+| Weapons I | hardness |
+| Weapons II | yield strength |
+| Weapons III | toughness |
+| Mechanical I | yield strength |
+| Mechanical II | density |
+| Aerospace I | density |
+| Aerospace II | specific heat |
+| Robotics I | conductivity |
+| Chemical I | melting point |
+| Chemical II | density |
+| Chemical III | specific heat |
+| Materials I | hardness |
+
+Press **Research** to open the game. Samples, up to four distinct materials from your pack, lie on the bench.
+
+1. **Compare** two samples at a time. There are only as many comparisons as there are samples, and two samples within 6 percent of each other cannot be told apart.
+2. **Set the samples in a row**, lowest first.
+3. **Write the notes.** The share of pairs you put in the right order is the quality of the notes.
+
+The Blank Treatise becomes the volume. A failed run still spends one of each sample and the experience. Press Esc before writing the notes and nothing is spent.
 
 ### Blank Treatise
 

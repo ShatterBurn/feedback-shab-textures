@@ -3,7 +3,7 @@
   "category": "redstone",
   "key": {
     "L": {
-      "item": "feedback:copper_coil"
+      "item": "feedback:heating_coil"
     },
     "X": {
       "item": "feedback:whisker"

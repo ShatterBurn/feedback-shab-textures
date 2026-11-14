@@ -266,7 +266,8 @@ public final class VehicleTuning {
     public static final float THRUSTER_MIN_AIR_DENSITY = 0.05f;
 
     /** Placeholder. The flight sensor's resolutions: altitude in blocks, airspeed in blocks per second, attitude in degrees. */
-    public static final float FLIGHT_ALTITUDE_RESOLUTION = 1f, FLIGHT_AIRSPEED_RESOLUTION = 0.5f, FLIGHT_ATTITUDE_RESOLUTION = 2f;
+    public static final float FLIGHT_ALTITUDE_RESOLUTION = 1f, FLIGHT_AIRSPEED_RESOLUTION = 0.5f, FLIGHT_ATTITUDE_RESOLUTION = 2f,
+            FLIGHT_CLIMB_RESOLUTION = 0.5f, FLIGHT_DENSITY_RESOLUTION = 0.05f;
 
     /** Placeholder [OPEN]. Gas cells (flight A1): mB one cell block holds (a block is 1000 mB), the most cells one connected group counts, and how far past its rest volume each skin stretches before it weeps (cloth, rubberised, plate). */
     public static final int GAS_CELL_MB = 1000, GAS_GROUP_MAX_CELLS = 4096;

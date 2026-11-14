@@ -202,9 +202,9 @@ public final class GunHud {
         switch (spec.seat()) {
             case CYLINDER -> {
                 float held = io.github.soundgoodizerfan.feedback.modular.item.ModularElectricGun.chambersShown(gun, game);
-                int n = io.github.soundgoodizerfan.feedback.modular.bake.ModularTuning.EGUN_CHAMBERS, full = lamp(spec, gun, game, 0xFF40FF60);
+                int n = spec.chambers(), full = lamp(spec, gun, game, 0xFF40FF60);
                 for (int i = 0; i < n; i++) {
-                    int vx = x + Math.round(i * (span - 7) / 5f);
+                    int vx = x + Math.round(i * (span - 7) / (float) Math.max(1, n - 1));
                     float fill = Mth.clamp(held - i, 0f, 1f);
                     g.fill(vx + 2, y + 3, vx + 5, y + 11, DARK);
                     int rows = Math.round(8 * fill);

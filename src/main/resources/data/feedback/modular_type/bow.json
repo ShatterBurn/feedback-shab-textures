@@ -1,6 +1,9 @@
 {
   "family": "bow",
-  "required": ["L", "W"],
+  "required": [
+    "L",
+    "W"
+  ],
   "minigame": "feedback:fitting",
   "wear_litres": 3.3,
   "wear_role": "L",
@@ -59,26 +62,14 @@
           "bands": [
             {
               "name": "short",
-              "max": 85,
-              "trait": "snap_shot",
-              "params": {
-                "draw_mult": 0.6,
-                "velocity_mult": 0.8,
-                "slow": 0
-              }
+              "max": 85
             },
             {
               "name": "normal",
               "max": 135
             },
             {
-              "name": "long",
-              "trait": "heavy_draw",
-              "params": {
-                "draw_mult": 1.5,
-                "velocity_mult": 1.3,
-                "slow": 0.3
-              }
+              "name": "long"
             }
           ]
         }
@@ -86,7 +77,15 @@
       "offers": [
         "limb",
         "riser"
-      ]
+      ],
+      "trait": "limb_handling",
+      "params": {
+        "draw_exp": 1.0,
+        "velocity_exp": 0.5,
+        "damage_exp": 0.0,
+        "slow_per": 0.45,
+        "pierce_per": 0.0
+      }
     },
     "W": {
       "name": "string",

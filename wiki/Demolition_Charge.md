@@ -8,13 +8,7 @@ Shape the **casing** (a plate of a metal) at a [Smithing Table](Smithing_Table.m
 
 ## Casing, primer and payload
 
-The casing is a shaped plate part. Its shape is a choice:
-
-| Casing | Effect |
-| --- | --- |
-| **Tight Casing** | Holds the gas in: a harder blast, few fragments. |
-| **Plain Casing** | An ordinary shell. |
-| **Scored Casing** | Cut to break up: many fragments, a softer blast. |
+The casing is a shaped plate part with one measure, its **Scoring**, from 0 to 100 percent. More scoring cuts the shell to break up: a softer blast and more fragments. Less scoring leaves it thick and whole, holding the gas in: a harder blast and fewer fragments.
 
 An optional **primer** changes how the filler burns. A **Booster** burns the filler through for a harder blast and less fire. A **Flash Primer** makes the charge throw fire. An optional **payload** of hard bits (iron nuggets, flint) packed round the filler adds to the fragments; a luminous powder such as glowstone dust makes a flash that blinds nearby living things for a few seconds.
 

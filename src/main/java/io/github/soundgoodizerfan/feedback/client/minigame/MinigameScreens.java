@@ -37,6 +37,7 @@ public final class MinigameScreens {
         register(EngineeringMinigames.UPSET, UpsetScreen::new);
         register(EngineeringMinigames.FITTING, FittingScreen::new);
         register(EngineeringMinigames.NOTES, NotesScreen::new);
+        register(EngineeringMinigames.RESEARCH, ResearchScreen::new);
     }
 
     private MinigameScreens() {

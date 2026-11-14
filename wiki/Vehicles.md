@@ -18,7 +18,7 @@ A vehicle is a build of [micro cells](Micro_Core.md) and full-size blocks that a
 | **[Thruster](Thruster.md)** | Pushes the whole body along its facing; burns liquid fuel. |
 | **[Propeller](Propeller.md)** | Pulls the whole body along its facing from a turning shaft. |
 | **[Gas Cell](Gas_Cell.md)** | Holds a lift gas; an [Airship](Airship.md) floats on a block of them. |
-| **[Flight Sensor](Instruments.md#flight-sensor)** | Reads altitude, airspeed, pitch or roll for a program. |
+| **[Flight Sensor](Instruments.md#flight-sensor)** | Reads altitude, airspeed, pitch, roll, vertical speed or air density for a program. |
 | **[Driver's Seat](#the-drivers-seat)** | Sit in it; your keyboard becomes the car's controls. |
 
 ## The Lift
@@ -93,7 +93,7 @@ A [Rotary Bearing](Rotary_Bearing.md) with role 0 whose turned body contains **t
 
 A ball joint at the edge of its cone, a slider bottomed out or a piston that cannot reach its level wears its joint when it is forced against that stop for 5 seconds or more. A drive that pushes against a held brake wears the brake pad, which lowers the brake's grip. A worn joint loses condition down to a floor of 30%.
 
-**Sneak-click** an assembled joint voxel to read *"Joint X%, brake pad Y%"*. Clicking it with a full-size [Bearing](Bearing.md) renews both.
+**Sneak-click** an assembled joint voxel to read *"Joint sound, brake pad marked"*: each is said in words, **sound**, **marked**, **battered** or **spent**, worse as it wears. Clicking it with a full-size [Bearing](Bearing.md) renews both.
 
 ## Wings
 

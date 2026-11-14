@@ -50,6 +50,8 @@ public final class VesselTuning {
      * Neither is better. A process that needs to <em>move</em> would much rather have the small
      * one.
      */
+    /** A built crucible whose wall condition falls to this share has given way. */
+    public static final float CRUCIBLE_WALL_BREAK = 0.1f;
     public static final ThermalMass CRUCIBLE_SMALL_MASS = new ThermalMass(25f);
 
     /**

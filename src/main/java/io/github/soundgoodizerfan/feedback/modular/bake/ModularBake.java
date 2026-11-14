@@ -289,7 +289,12 @@ public final class ModularBake {
         int perCell = Math.max(1, Math.round(role.axis(plates, "cell_size")));
         int cells = Math.max(1, Math.round(role.axis(plates, "cell_count")));
         Material.SecondaryCell sc = pm.electrical().secondaryCell().get();
-        return Optional.of(new CellSpec(cells, sc.euPerIngot() * perCell, sc, cm.electrical().insulation().get()));
+        // The cathode is the second electrode (the anode is the main material): a cell holds the mean of the pair's charge per ingot.
+        Material cathode = slotMaterial(role, plates, "cathode", materials);
+        if (cathode == null || cathode.electrical().secondaryCell().isEmpty())
+            return Optional.empty();
+        float euPerIngot = (sc.euPerIngot() + cathode.electrical().secondaryCell().get().euPerIngot()) / 2f;
+        return Optional.of(new CellSpec(cells, euPerIngot * perCell, sc, cm.electrical().insulation().get()));
     }
 
     /**

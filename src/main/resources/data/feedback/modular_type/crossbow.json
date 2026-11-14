@@ -1,6 +1,11 @@
 {
   "family": "crossbow",
-  "required": ["P", "W", "S", "L"],
+  "required": [
+    "P",
+    "W",
+    "S",
+    "L"
+  ],
   "blueprint": true,
   "wear_litres": 0.7,
   "wear_role": "L",
@@ -14,6 +19,29 @@
       ],
       "litres": 0.05,
       "layer": 0,
+      "axes": {
+        "prod_length": {
+          "min": 20,
+          "max": 100,
+          "unit": "cm",
+          "default": 60,
+          "step": 5,
+          "scales": true,
+          "bands": [
+            {
+              "name": "short",
+              "max": 35
+            },
+            {
+              "name": "normal",
+              "max": 80
+            },
+            {
+              "name": "long"
+            }
+          ]
+        }
+      },
       "part": {
         "item": "feedback:crossbow_prod",
         "cells": 2,
@@ -21,29 +49,6 @@
           "stick",
           "rod",
           "bone"
-        ],
-        "variants": [
-          {
-            "name": "arbalest",
-            "cells": 4,
-            "trait": "heavy_bolt",
-            "params": {
-              "draw_mult": 2.2,
-              "damage_mult": 1.6,
-              "pierce": 2,
-              "slow": 0.25
-            }
-          },
-          {
-            "name": "pistol",
-            "cells": 1,
-            "trait": "snap_bolt",
-            "params": {
-              "draw_mult": 0.45,
-              "velocity_mult": 0.7,
-              "damage_mult": 0.8
-            }
-          }
         ],
         "slots": [
           {
@@ -62,7 +67,15 @@
       "offers": [
         "limb",
         "riser"
-      ]
+      ],
+      "trait": "limb_handling",
+      "params": {
+        "draw_exp": 1.0,
+        "velocity_exp": 0.5,
+        "damage_exp": 0.8,
+        "slow_per": 0.4,
+        "pierce_per": 3.0
+      }
     },
     "W": {
       "name": "string",
@@ -201,5 +214,21 @@
   "vanilla": {
     "crossbow": "stick"
   },
-  "school": "weapons:2"
+  "school": "weapons:2",
+  "names": {
+    "designations": [
+      {
+        "name": "arbalest",
+        "is": {
+          "prod_length": "long"
+        }
+      },
+      {
+        "name": "pistol_crossbow",
+        "is": {
+          "prod_length": "short"
+        }
+      }
+    ]
+  }
 }

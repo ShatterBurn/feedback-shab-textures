@@ -34,12 +34,7 @@
           },
           {
             "name": "long_gun",
-            "cells": 2,
-            "trait": "gun_braced",
-            "params": {
-              "kick_mult": 0.7,
-              "spread_mult": 0.6
-            }
+            "cells": 2
           }
         ]
       }
@@ -142,6 +137,60 @@
           }
         ]
       }
+    },
+    "i": {
+      "name": "stock",
+      "class": "mount",
+      "forms": [
+        "gun_stock"
+      ],
+      "litres": 0.15,
+      "layer": 4,
+      "part": {
+        "item": "feedback:gun_stock",
+        "cells": 2,
+        "stock": [
+          "plate",
+          "*_planks"
+        ],
+        "base": "fixed",
+        "variants": [
+          {
+            "name": "fixed",
+            "trait": "gun_braced",
+            "params": {
+              "length": 1.0
+            }
+          },
+          {
+            "name": "skeleton",
+            "cells": 1,
+            "trait": "gun_braced",
+            "params": {
+              "length": 0.6
+            }
+          },
+          {
+            "name": "folding",
+            "cells": 1,
+            "trait": "gun_braced",
+            "params": {
+              "length": 0.45
+            }
+          }
+        ],
+        "slots": [
+          {
+            "name": "core",
+            "share": 3
+          },
+          {
+            "name": "pad",
+            "share": 1
+          }
+        ]
+      },
+      "mount": "receiver"
     }
   },
   "patterns": [

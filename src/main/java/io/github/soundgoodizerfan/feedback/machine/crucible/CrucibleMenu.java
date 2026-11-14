@@ -36,15 +36,9 @@ public class CrucibleMenu extends AbstractContainerMenu {
     private final int size;
     private final int tankCapacity;
 
-    public CrucibleMenu(int id, Inventory inventory) {
-        this(FMenus.CRUCIBLE.get(), id, inventory, new SimpleContainer(VesselTuning.CRUCIBLE_SLOTS), new SimpleContainerData(3),
-                VesselTuning.VESSEL_TANK_CAPACITY_MB);
-    }
-
-    /** The large crucible's menu: the same screen with {@link VesselTuning#CRUCIBLE_LARGE_SLOTS} slots. */
-    public static CrucibleMenu largeCrucible(int id, Inventory inventory) {
-        return new CrucibleMenu(FMenus.LARGE_CRUCIBLE.get(), id, inventory, new SimpleContainer(VesselTuning.CRUCIBLE_LARGE_SLOTS),
-                new SimpleContainerData(3), VesselTuning.VESSEL_TANK_CAPACITY_MB);
+    /** The client's menu for a built crucible: {@code slots} charge slots and a tank of {@code tankMb}, as the server sent them. */
+    public static CrucibleMenu sized(int id, Inventory inventory, int slots, int tankMb) {
+        return new CrucibleMenu(FMenus.CRUCIBLE.get(), id, inventory, new SimpleContainer(slots), new SimpleContainerData(3), tankMb);
     }
 
     /** The arc hearth's menu: the same screen with more slots and a deeper tank. */

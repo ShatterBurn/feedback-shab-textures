@@ -19,8 +19,6 @@
   ],
   "rewards": {
     "recipes": [
-      "feedback:copper_coil",
-      "feedback:iron_coil",
       "feedback:breaker",
       "feedback:fuse",
       "feedback:coherer",

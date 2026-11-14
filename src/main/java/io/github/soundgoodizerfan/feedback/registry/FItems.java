@@ -313,8 +313,6 @@ public class FItems {
     public static final DeferredItem<io.github.soundgoodizerfan.feedback.machine.skillet.SkilletItem> SKILLET = ITEMS.register("skillet",
             () -> new io.github.soundgoodizerfan.feedback.machine.skillet.SkilletItem(FBlocks.SKILLET.get(), new Item.Properties()));
     public static final DeferredItem<BlockItem> HEARTH = ITEMS.registerSimpleBlockItem(FBlocks.HEARTH);
-    public static final DeferredItem<BlockItem> SMALL_CRUCIBLE = ITEMS.registerSimpleBlockItem(FBlocks.SMALL_CRUCIBLE);
-    public static final DeferredItem<BlockItem> LARGE_CRUCIBLE = ITEMS.registerSimpleBlockItem(FBlocks.LARGE_CRUCIBLE);
     public static final DeferredItem<BlockItem> ARC_HEARTH = ITEMS.registerSimpleBlockItem(FBlocks.ARC_HEARTH);
     public static final DeferredItem<BlockItem> ARC_HEAD = ITEMS.registerSimpleBlockItem(FBlocks.ARC_HEAD);
     /** A rod of a conducting material that carries the arc; consumed by nature. See {@code ElectrodeItem}. */
@@ -367,8 +365,6 @@ public class FItems {
     public static final DeferredItem<io.github.soundgoodizerfan.feedback.machine.cable.CableItem> FENCE = ITEMS.register("fence",
             () -> new io.github.soundgoodizerfan.feedback.machine.cable.CableItem(FBlocks.FENCE.get(), new Item.Properties()));
     public static final DeferredItem<BlockItem> GALVANIC_CELL_PACK = ITEMS.registerSimpleBlockItem(FBlocks.GALVANIC_CELL_PACK);
-    public static final DeferredItem<BlockItem> COPPER_COIL = ITEMS.registerSimpleBlockItem(FBlocks.COPPER_COIL);
-    public static final DeferredItem<BlockItem> IRON_COIL = ITEMS.registerSimpleBlockItem(FBlocks.IRON_COIL);
     public static final DeferredItem<BlockItem> INDUCTION_COIL = ITEMS.registerSimpleBlockItem(FBlocks.INDUCTION_COIL);
     public static final DeferredItem<BlockItem> INDUCTION_STOVE = ITEMS.registerSimpleBlockItem(FBlocks.INDUCTION_STOVE);
     public static final DeferredItem<BlockItem> PREHEAT_COIL = ITEMS.registerSimpleBlockItem(FBlocks.PREHEAT_COIL);
@@ -454,7 +450,6 @@ public class FItems {
     public static final DeferredItem<BlockItem> REACTOR_CORE = ITEMS.registerSimpleBlockItem(FBlocks.REACTOR_CORE);
     public static final DeferredItem<BlockItem> FUEL_CHANNEL = ITEMS.registerSimpleBlockItem(FBlocks.FUEL_CHANNEL);
     public static final DeferredItem<BlockItem> CONTROL_ASSEMBLY = ITEMS.registerSimpleBlockItem(FBlocks.CONTROL_ASSEMBLY);
-    public static final DeferredItem<BlockItem> GAS_CENTRIFUGE = ITEMS.registerSimpleBlockItem(FBlocks.GAS_CENTRIFUGE);
     public static final DeferredItem<BlockItem> SCRAM_TRIP = ITEMS.registerSimpleBlockItem(FBlocks.SCRAM_TRIP);
     public static final DeferredItem<BlockItem> SPENT_FUEL_POOL = ITEMS.registerSimpleBlockItem(FBlocks.SPENT_FUEL_POOL);
     public static final DeferredItem<BlockItem> COOLANT_PORT = ITEMS.registerSimpleBlockItem(FBlocks.COOLANT_PORT);
@@ -495,9 +490,6 @@ public class FItems {
     public static final DeferredItem<io.github.soundgoodizerfan.feedback.machine.derrick.DerrickBitItem> DERRICK_BIT = ITEMS.register("derrick_bit",
             () -> new io.github.soundgoodizerfan.feedback.machine.derrick.DerrickBitItem(new net.minecraft.world.item.Item.Properties().stacksTo(1)));
     public static final DeferredItem<BlockItem> REBOILER = ITEMS.registerSimpleBlockItem(FBlocks.REBOILER);
-    public static final DeferredItem<BlockItem> TRAY_BUBBLE_CAP = ITEMS.registerSimpleBlockItem(FBlocks.TRAY_BUBBLE_CAP);
-    public static final DeferredItem<BlockItem> TRAY_SIEVE = ITEMS.registerSimpleBlockItem(FBlocks.TRAY_SIEVE);
-    public static final DeferredItem<BlockItem> TRAY_PACKED = ITEMS.registerSimpleBlockItem(FBlocks.TRAY_PACKED);
     public static final DeferredItem<BlockItem> REACTOR = ITEMS.registerSimpleBlockItem(FBlocks.REACTOR);
     public static final DeferredItem<BlockItem> GAS_TURBINE = ITEMS.registerSimpleBlockItem(FBlocks.GAS_TURBINE);
     public static final DeferredItem<BlockItem> FLARE = ITEMS.registerSimpleBlockItem(FBlocks.FLARE);
@@ -817,7 +809,6 @@ public class FItems {
     /** Steps a tube station through its sort bands. */
     public static final DeferredItem<Item> SORT_GAUGE = ITEMS.register("sort_gauge", () -> new Item(new Item.Properties().stacksTo(1)));
     public static final DeferredItem<BlockItem> VACUUM_PUMP = ITEMS.registerSimpleBlockItem(FBlocks.VACUUM_PUMP);
-    public static final DeferredItem<BlockItem> LINEAR_MOTOR = ITEMS.registerSimpleBlockItem(FBlocks.LINEAR_MOTOR);
     public static final DeferredItem<BlockItem> CREATIVE_AIR = ITEMS.registerSimpleBlockItem(FBlocks.CREATIVE_AIR);
     public static final DeferredItem<BlockItem> ENDER_PORT = ITEMS.registerSimpleBlockItem(FBlocks.ENDER_PORT);
     public static final DeferredItem<Item> ENDER_ANCHOR = ITEMS.register("ender_anchor", () -> new Item(new Item.Properties().stacksTo(16)));

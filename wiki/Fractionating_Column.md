@@ -7,7 +7,7 @@ Splits [crude oil](Oil.md#crude-oil) into naphtha, kerosene and diesel by boilin
 Stack the blocks straight up, in this order:
 
 1. one **Reboiler**
-2. one or more **trays** (any mix of the three kinds)
+2. one or more **[Column Trays](#trays)** (any mix of the three deck kinds)
 3. optionally one **[Condenser](Condenser.md)** on top
 
 A column with a single tray works, but smears its cuts. A column with no condenser still works, but runs warm at the top.
@@ -41,11 +41,19 @@ Each tray is a cut point. The vapor rising from the reboiler meets the tray at a
 
 The liquid a tray catches collects in its **draw tank (1,000 mB)** and is pushed out sideways, up to 40 mB a tick, into any fluid block beside it: a [Pipe](Pipe.md), a [Pump](Pump.md), a tank. Nothing can be put into a tray from outside. **Right-click** a tray with an empty hand to read its condition and what it is drawing.
 
-| Tray | Holds back | Takes up to | Fouls |
+### Building a tray
+
+A tray is one modular block, the **Column Tray**. Draw it at the [Blueprint Table](Blueprint_Table.md) (pick *Column Tray* in the type row). It has one part, the **Tray Deck**, shaped from plate of a metal; the tray is built from it at the Stonecutter.
+
+The deck comes in three variants:
+
+| Deck | Holds back | Flow | Fouls |
 | --- | --- | --- | --- |
-| Bubble-Cap | 92% | 20 mB/t | normally |
-| Sieve | 80% | 40 mB/t | fastest (1.5x) |
-| Packed | 70% | 60 mB/t | slowest (0.6x) |
+| Bubble-Cap | the most | least | normally |
+| Sieve | middling | middling | fastest |
+| Packed | the least | most | slowest |
+
+Two measures tune it. **Hole** (5 to 30 mm) is how fine the drilling is: a finer hole holds back more of the vapor and cokes faster. **Pitch** (20 to 80 mm) is the spacing of the holes. The **open area** (the hole against the pitch) sets how much the tray takes a tick: a wider hole or a tighter pitch flows more. The tray's tooltip and the [Blueprint Table](Blueprint_Table.md) figures show what it holds back and takes.
 
 The sharper the tray the less it flows. Vapor a tray cannot take rides up to the next one.
 

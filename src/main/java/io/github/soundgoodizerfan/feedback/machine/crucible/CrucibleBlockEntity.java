@@ -86,7 +86,9 @@ public class CrucibleBlockEntity extends io.github.soundgoodizerfan.feedback.mac
     /** How often the vessel looks around to see what has been built against it. */
     private static final int INSULATION_RECHECK_INTERVAL = 20;
 
-    private final NonNullList<ItemStack> contents = NonNullList.withSize(slotCount(), ItemStack.EMPTY);
+    /** What a built crucible keeps of its design: its slots, tank, heat mass and the hottest its wall holds ({@code BlockFigures}). */
+    private final io.github.soundgoodizerfan.feedback.modular.bake.FigureStore figures = new io.github.soundgoodizerfan.feedback.modular.bake.FigureStore();
+    private NonNullList<ItemStack> contents = NonNullList.withSize(slotCount(), ItemStack.EMPTY);
 
     private int insulation;
     /** An arc hearth's wall: 1 as built, worn by a bath hotter than its lining holds. Other crucibles never wear. */
@@ -99,6 +101,32 @@ public class CrucibleBlockEntity extends io.github.soundgoodizerfan.feedback.mac
 
     public CrucibleBlockEntity(BlockPos pos, BlockState state) {
         super(FBlockEntities.CRUCIBLE.get(), pos, state);
+    }
+
+    /** The slots and tank a built crucible's figures give, applied once they are known: the charge list is resized, keeping what it held. */
+    private void sizeToFigures() {
+        int slots = Math.max(1, Math.round(figures.get("Slots", contents.size())));
+        if (slots != contents.size()) {
+            NonNullList<ItemStack> resized = NonNullList.withSize(slots, ItemStack.EMPTY);
+            for (int i = 0; i < Math.min(slots, contents.size()); i++)
+                resized.set(i, contents.get(i));
+            contents = resized;
+        }
+        tank.setCapacity(Math.round(figures.get("Tank", tank.getCapacity())));
+    }
+
+    @Override
+    protected void applyImplicitComponents(DataComponentInput input) {
+        super.applyImplicitComponents(input);
+        figures.set(input.get(io.github.soundgoodizerfan.feedback.registry.FDataComponents.BLOCK_FIGURES.get()),
+                input.get(io.github.soundgoodizerfan.feedback.registry.FModular.DESIGN.get()), input.get(io.github.soundgoodizerfan.feedback.registry.FModular.FIGURES.get()));
+        sizeToFigures();
+    }
+
+    @Override
+    protected void collectImplicitComponents(net.minecraft.core.component.DataComponentMap.Builder components) {
+        super.collectImplicitComponents(components);
+        figures.collect(components);
     }
 
     /** Read off the block, so a bigger hearth is the same entity with more room. Used while the fields are built, so it names no field. */
@@ -121,7 +149,7 @@ public class CrucibleBlockEntity extends io.github.soundgoodizerfan.feedback.mac
     @Override
     public ThermalMass getThermalMass() {
         ThermalMass base = getBlockState().getBlock() instanceof CrucibleBlock crucible
-                ? crucible.getThermalMass()
+                ? new ThermalMass(figures.get("Mass", crucible.getThermalMass().workPerTu()))
                 : VesselTuning.CRUCIBLE_SMALL_MASS;
         float mass = base.workPerTu() + chargeWorkPerTu();
         for (UpgradeFitting upgrade : upgrades)
@@ -246,7 +274,7 @@ public class CrucibleBlockEntity extends io.github.soundgoodizerfan.feedback.mac
     @Override
     public net.minecraft.world.inventory.AbstractContainerMenu createMenu(int id, net.minecraft.world.entity.player.Inventory inventory,
                                                                           net.minecraft.world.entity.player.Player player) {
-        return new CrucibleMenu(isArcHearth() ? FMenus.ARC_HEARTH.get() : contents.size() == VesselTuning.CRUCIBLE_SLOTS ? FMenus.CRUCIBLE.get() : FMenus.LARGE_CRUCIBLE.get(), id, inventory, this);
+        return new CrucibleMenu(isArcHearth() ? FMenus.ARC_HEARTH.get() : FMenus.CRUCIBLE.get(), id, inventory, this);
     }
 
     // --- the tick ---------------------------------------------------------------------------
@@ -268,6 +296,17 @@ public class CrucibleBlockEntity extends io.github.soundgoodizerfan.feedback.mac
             Catchup.settle(this, HeatSource.spanAt(level, worldPosition, away), ambient, away);
         Heat.tick(this, fireTu, ambient, fireTu.value() > ambient.value());
         measureDelta();
+        float wallTu = figures.get("ServiceTu", 0f);
+        if (!isArcHearth() && wallTu > 0f) {
+            // A built crucible's wall holds as hot as its own material does: past that it wears (as the arc hearth's does), and a spent wall gives way.
+            float excess = temperature - wallTu;
+            if (excess > 0f)
+                wall = Math.max(0f, wall - VesselTuning.ARC_HEARTH_WEAR_PER_TU_EXCESS * excess);
+            if (wall <= VesselTuning.CRUCIBLE_WALL_BREAK) {
+                level.destroyBlock(worldPosition, false);
+                return;
+            }
+        }
         if (isArcHearth()) {
             boolean lined = upgrades.stream().anyMatch(u -> u instanceof RefractoryLiningFitting);
             float excess = temperature - (lined ? VesselTuning.ARC_HEARTH_LINED_TU : VesselTuning.ARC_HEARTH_UNLINED_TU);
@@ -311,6 +350,7 @@ public class CrucibleBlockEntity extends io.github.soundgoodizerfan.feedback.mac
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
         ContainerHelper.saveAllItems(tag, contents, true, registries);
+        figures.save(tag, registries);
         saveCore(tag);
         tag.putInt("Insulation", insulation);
         tag.putInt("Dampers", dampers);
@@ -321,6 +361,8 @@ public class CrucibleBlockEntity extends io.github.soundgoodizerfan.feedback.mac
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
+        figures.load(tag, registries);
+        sizeToFigures();
         contents.clear();
         ContainerHelper.loadAllItems(tag, contents, registries);
         loadCore(tag);

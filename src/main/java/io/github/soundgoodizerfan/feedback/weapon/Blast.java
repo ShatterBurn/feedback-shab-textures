@@ -67,7 +67,7 @@ public final class Blast {
 
     /**
      * Read a charge design: the one rule behind the placed block, the thrown charge and the Blueprint Table's figures.
-     * Options are variants of the casing ({@code confine}, {@code frag}), the fuse ({@code ticks}, {@code impact}) and
+     * Options are the casing's scoring axis (cut deeper: less confinement, more fragments), the fuse ({@code ticks}, {@code impact}) and
      * the primer ({@code burn_add}, {@code fire}); the payload is raw stock counted by item.
      */
     public static java.util.Optional<Packed> read(io.github.soundgoodizerfan.feedback.modular.type.ModularDesign design,
@@ -94,8 +94,9 @@ public final class Blast {
             Material m = materials.get(part.material());
             if (part.role().equals(type.wearRole())) {
                 casing = m;
-                confine = v.map(x -> x.params().getOrDefault("confine", 1f)).orElse(1f);
-                frag = v.map(x -> x.params().getOrDefault("frag", 1f)).orElse(1f);
+                float scored = role == null ? 0.5f : role.axis(part, "scoring") / 100f;
+                confine = GunTuning.CASING_CONFINE_UNSCORED - GunTuning.CASING_CONFINE_LOSS * scored;
+                frag = GunTuning.CASING_FRAG_UNSCORED + GunTuning.CASING_FRAG_GAIN * scored;
             } else if (part.role().equals(FUSE_ROLE)) {
                 ticks = role == null ? ticks : Math.round(role.paramOf(part, "ticks", (float) GunTuning.DEMO_FUSE_TICKS));
                 impact = v.map(x -> x.params().getOrDefault("impact", 0f) > 0f).orElse(false);

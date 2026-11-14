@@ -1,6 +1,8 @@
 {
   "family": "hand",
-  "required": ["B"],
+  "required": [
+    "B"
+  ],
   "strike": 0.0,
   "wear_litres": 0.3,
   "wear_role": "B",
@@ -21,6 +23,21 @@
         "cells": 2,
         "stock": [
           "plate"
+        ],
+        "slots": [
+          {
+            "name": "body",
+            "share": 3
+          },
+          {
+            "name": "edge",
+            "forms": [
+              "ingot",
+              "nugget",
+              "gem"
+            ],
+            "share": 1
+          }
         ]
       }
     },

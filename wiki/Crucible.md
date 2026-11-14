@@ -1,36 +1,34 @@
 # Crucible
 
-An open brick pot that sits over a [Firebox](Firebox.md) (or lava), or beside a [Heating Coil](Heating_Coil.md), [Induction Coil](Induction.md#induction-coil) or [Arc Head](Arc_Furnace.md#the-arc-head). It's where you make steel, melt metal and mix alloys, and it's the one hot vessel you can **measure and automate**.
+An open pot that sits over a [Firebox](Firebox.md) (or lava), or beside a [Heating Coil](Heating_Coil.md), [Induction Coil](Induction.md#induction-coil) or [Arc Head](Arc_Furnace.md#the-arc-head). It's where you make steel, melt metal and mix alloys, and it's the one hot vessel you can **measure and automate**.
 
-## Crafting
+## Building it
 
-**Small Crucible**
+Draw it at the [Blueprint Table](Blueprint_Table.md) (pick *Crucible* in the type row). It has one part, the **Crucible Shell**, shaped from **brick** or from **plate** of a metal at the [Stonecutter](Stonecutter.md) (brick) or [Smithing Table](Smithing_Table.md) (plate), and the crucible is built from it at the Stonecutter. Breaking the block gives the same crucible back, with its wear.
 
-```
-B   B
-B B B
-```
+The shell has two measures:
 
-**Large Crucible**
+| Measure | Range | What it sets |
+| --- | --- | --- |
+| **Charge slots** | 2 to 8 | How many items it holds, and how big a vessel it is. Each slot adds **648 mB** to the tank (4.5 ingots). |
+| **Wall** | 10 to 60 mm, steps of 5 | How thick the wall is. A thicker wall has more to heat. |
 
-```
-B   B
-B   B
-B B B
-```
+The default is a **two-slot, 30 mm brick** crucible: it holds two items and a **1296 mB** tank, nine ingots' worth.
 
-B is a Brick.
+## Size, wall and heat
 
-## Small vs. large
+How much heat a crucible takes to warm is set by its size, its wall thickness and **what the wall is made of**: a metal wall takes up and gives off heat quickly, brick holds it and warms slowly. More slots make a bigger, heavier vessel that is slower to warm and slower to cool; a thicker wall is slower still. A light crucible closes most of the gap to its fire in a couple of seconds, overshoots easily and is hard to hold steady; a heavy one takes many times longer but holds a temperature almost on its own. All of them settle at the same temperature on the same fire. Some processes (steel especially) have a *max rate*, and a light crucible on a full fire may simply climb too fast to satisfy it. See [Heat](Heat.md#heavy-vs-light-vessels).
 
-A large crucible is ten times as heavy and has six item slots to the small one's two. A small crucible closes most of the gap to its fire in about 2 seconds, overshoots easily, and is hard to hold steady. A large one takes about 20 seconds but holds a temperature almost on its own. Both settle at the same temperature on the same fire. Some processes (steel especially) have a *max rate*, and a small crucible on a full fire may simply climb too fast to satisfy it. See [Heat](Heat.md).
+A [Refractory Lining](Refractory_Lining.md) makes a light crucible behave more like a heavy one.
 
-A [Refractory Lining](Refractory_Lining.md) makes a small crucible behave more like a large one.
+### Wall wear
+
+Every wall material holds up to a temperature. Run the crucible **hotter than its wall material holds** and the wall wears; a worn wall leaks more heat, and a spent wall gives way. Brick holds less than a good metal; choose the wall for the temperatures you mean to run.
 
 ## Using it
 
-- **Right-click with an item** to drop one in. Shift shows the same. A bucket or other fluid container is poured into the crucible's tank as far as it has room, and the empty bucket comes back (water here is what a dirt dip turns into clay, and what sets concrete powder into concrete). The small crucible holds **two** items and the large one **six**.
-- **Right-click with an empty hand** to open its screen. The small crucible has two item slots and the large one has six, in rows of three, beside a heat gauge and a tank gauge. Inputs and finished products share the slots: a product lands in a free slot.
+- **Right-click with an item** to drop one in. Shift shows the same. A bucket or other fluid container is poured into the crucible's tank as far as it has room, and the empty bucket comes back (water here is what a dirt dip turns into clay, and what sets concrete powder into concrete). It holds as many items as it has charge slots.
+- **Right-click with an empty hand** to open its screen. Its item slots are in rows of three, beside a heat gauge and a tank gauge. Inputs and finished products share the slots: a product lands in a free slot.
 - The **heat gauge** is banded in the same ten bands as the glow of a Thermal Vessel; hover it to read the temperature in Tu.
 - The **tank gauge** is filled in the melt's color; hover it to see the fluid and its amount in ingots. Molds fill from the tank, not from the screen.
 - Items taken out of a slot come out **at the crucible's temperature** and start cooling at once. Ingots taken a click apart differ by a few Tu and do not stack on their own. **Right-click** one held on the cursor onto the other in any inventory or container to merge them at their [average heat](Heat.md#merging-heated-stacks).
@@ -47,7 +45,7 @@ Ores, raw metal and ingots melt into the crucible's **tank** once they're hot en
 
 Scrap, swarf and a whole made part melt back too. Swarf pours nine tenths of its volume (a part of metal filed down at a bench sheds it, and so do the [Lathe](Lathe.md) and other cutting machines); a whole made part pours nineteen twentieths of the metal it holds, a filed part less.
 
-Melting takes the metal's **melting heat** out of the crucible: the pot cools a little for every piece that melts, more for a metal with a high melting heat. The tank holds **1296 mB**, nine ingots' worth (144 mB an ingot). If it's full, extra metal that melts is lost. Molten metal held past its boiling point boils off with a poisonous fume ([Arc Furnace](Arc_Furnace.md#hazards)). A melt will not pour into a tank holding crude oil or a gas.
+Melting takes the metal's **melting heat** out of the crucible: the pot cools a little for every piece that melts, more for a metal with a high melting heat. The tank holds 648 mB for each charge slot, 1296 mB on the default build (144 mB an ingot). If it's full, extra metal that melts is lost. Molten metal held past its boiling point boils off with a poisonous fume ([Arc Furnace](Arc_Furnace.md#hazards)). A melt will not pour into a tank holding crude oil or a gas.
 
 ## Building around it
 

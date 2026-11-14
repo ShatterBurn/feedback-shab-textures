@@ -19,6 +19,38 @@ import net.minecraft.world.level.block.state.BlockState;
 public class LinearMotorBlockEntity extends ElectricNode {
 
     private boolean powered;
+    /** What a built ring keeps of its winding's design: the amps it draws and the push it gives a magnetic capsule ({@code BlockFigures}). */
+    private final io.github.soundgoodizerfan.feedback.modular.bake.FigureStore figures = new io.github.soundgoodizerfan.feedback.modular.bake.FigureStore();
+
+    @Override
+    protected void applyImplicitComponents(DataComponentInput input) {
+        super.applyImplicitComponents(input);
+        figures.set(input.get(io.github.soundgoodizerfan.feedback.registry.FDataComponents.BLOCK_FIGURES.get()),
+                input.get(io.github.soundgoodizerfan.feedback.registry.FModular.DESIGN.get()), input.get(io.github.soundgoodizerfan.feedback.registry.FModular.FIGURES.get()));
+    }
+
+    @Override
+    protected void collectImplicitComponents(net.minecraft.core.component.DataComponentMap.Builder components) {
+        super.collectImplicitComponents(components);
+        figures.collect(components);
+    }
+
+    @Override
+    protected void saveAdditional(net.minecraft.nbt.CompoundTag tag, net.minecraft.core.HolderLookup.Provider registries) {
+        super.saveAdditional(tag, registries);
+        figures.save(tag, registries);
+    }
+
+    @Override
+    protected void loadAdditional(net.minecraft.nbt.CompoundTag tag, net.minecraft.core.HolderLookup.Provider registries) {
+        super.loadAdditional(tag, registries);
+        figures.load(tag, registries);
+    }
+
+    /** The multiple of a magnetic capsule's drive this ring gives while it is fed. */
+    public float push() {
+        return figures.get("Push", TubeTuning.TUBE_LINEAR_FACTOR);
+    }
 
     public LinearMotorBlockEntity(BlockPos pos, BlockState state) {
         super(FBlockEntities.LINEAR_MOTOR.get(), pos, state);
@@ -35,7 +67,7 @@ public class LinearMotorBlockEntity extends ElectricNode {
 
     @Override
     public float wantedAmps() {
-        return TubeTuning.LINEAR_MOTOR_AMPS;
+        return figures.get("Amps", TubeTuning.LINEAR_MOTOR_AMPS);
     }
 
     @Override

@@ -1,0 +1,55 @@
+{
+  "family": "block",
+  "required": [
+    "S"
+  ],
+  "slot": "mainhand",
+  "wear_litres": 0.2,
+  "wear_role": "S",
+  "primary": "S",
+  "blueprint": true,
+  "roles": {
+    "S": {
+      "name": "coil_element",
+      "class": "working_face",
+      "forms": [
+        "coil_element"
+      ],
+      "litres": 0.2,
+      "layer": 0,
+      "axes": {
+        "gauge": {
+          "min": 20,
+          "max": 100,
+          "unit": "%",
+          "default": 50,
+          "step": 5
+        },
+        "turns": {
+          "min": 1,
+          "max": 4,
+          "unit": "",
+          "default": 2,
+          "step": 1,
+          "scales": true
+        }
+      },
+      "part": {
+        "item": "feedback:coil_element",
+        "cells": 2,
+        "stock": [
+          "wire",
+          "fine_wire"
+        ]
+      }
+    }
+  },
+  "patterns": [
+    [
+      "S"
+    ]
+  ],
+  "defaults": {
+    "S": "feedback:copper"
+  }
+}

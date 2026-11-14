@@ -12,7 +12,7 @@ C E C
   L
 ```
 
-P is a Steel Plate, C is a Copper Heating Coil, E is an [Electromagnet](Electromagnet.md) and L is Leather. Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 3 [fasteners](Fasteners.md). The recipe appears once you have unlocked the tempered steel plate. The gauntlet comes out tempered steel.
+P is a Steel Plate, C is a [Heating Coil](Heating_Coil.md) (any), E is an [Electromagnet](Electromagnet.md) and L is Leather. Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 3 [fasteners](Fasteners.md). The recipe appears once you have unlocked the tempered steel plate. The gauntlet comes out tempered steel.
 
 It is also a **rare find** (about 3%) in dungeon, stronghold and ancient city chests, already 30 to 70% worn.
 

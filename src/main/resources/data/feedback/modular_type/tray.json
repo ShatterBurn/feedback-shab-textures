@@ -1,0 +1,80 @@
+{
+  "family": "block",
+  "required": [
+    "S"
+  ],
+  "slot": "mainhand",
+  "wear_litres": 0.3,
+  "wear_role": "S",
+  "primary": "S",
+  "blueprint": true,
+  "roles": {
+    "S": {
+      "name": "tray_deck",
+      "class": "working_face",
+      "forms": [
+        "tray_deck"
+      ],
+      "litres": 0.3,
+      "layer": 0,
+      "axes": {
+        "hole": {
+          "min": 5,
+          "max": 30,
+          "unit": "mm",
+          "default": 15,
+          "step": 1
+        },
+        "pitch": {
+          "min": 20,
+          "max": 80,
+          "unit": "mm",
+          "default": 40,
+          "step": 5
+        }
+      },
+      "part": {
+        "item": "feedback:tray_deck",
+        "cells": 3,
+        "stock": [
+          "plate"
+        ],
+        "base": "tray_sieve",
+        "variants": [
+          {
+            "name": "tray_bubble_cap",
+            "params": {
+              "efficiency": 0.92,
+              "flow": 20,
+              "foul": 1.0
+            }
+          },
+          {
+            "name": "tray_sieve",
+            "params": {
+              "efficiency": 0.8,
+              "flow": 40,
+              "foul": 1.5
+            }
+          },
+          {
+            "name": "tray_packed",
+            "params": {
+              "efficiency": 0.7,
+              "flow": 60,
+              "foul": 0.6
+            }
+          }
+        ]
+      }
+    }
+  },
+  "patterns": [
+    [
+      "S"
+    ]
+  ],
+  "defaults": {
+    "S": "feedback:steel"
+  }
+}

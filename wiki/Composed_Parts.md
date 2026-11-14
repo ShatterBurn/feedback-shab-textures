@@ -8,10 +8,11 @@ When a part has a slot you choose, the part bench shows **one more stock slot** 
 
 | Slot | On | What it does |
 | --- | --- | --- |
-| **Edge** | sword, axe, hoe, maul, pickaxe, shovel, sickle, spear, cleaver, hand knife | A harder material inlaid along the cutting edge of a softer body: the katana trick. The edge sets how well it bites; the body behind it sets how well it holds. |
+| **Edge** | sword, axe, hoe, maul, pickaxe, shovel, sickle, spear, cleaver, hand knife, hand hammer head, file head, saw blade, shears blade | A harder material inlaid along the cutting edge of a softer body: the katana trick. The edge sets how well it bites; the body behind it sets how well it holds. |
 | **Lens** | gun sight, pulse gun sight, suit optic module | The glass of a scope. Its clarity decides how much light the scope loses at its zoom. |
 | **Media** | suit filter module | The porous packing of a cartridge, charcoal or brick. How open it is decides how strongly the filter works. |
 | **Jacket** | gun barrel | A second layer around the liner. A jacket of a damping material (sculk) steadies the spread, cold and hot. |
+| **Anode and cathode** | battery plates, galvanic cell anode | The two electrodes, each of its own metal. A battery cell holds the mean of the pair's charge per ingot; a galvanic cell's current follows the gap between the two metals' electrode potentials. |
 | **Back** | bow limbs, crossbow prod | A backing on the limb: its stiffness joins the core's by share, so a stiffer back draws harder and shoots faster. |
 | **Balls** | bearings (in the [Dynamotor](Dynamotor.md)) | The friction of the balls scales the bearing's drag. |
 | **Wrap** | gun grip | The wrap sets the hold. |

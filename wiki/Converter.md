@@ -9,14 +9,14 @@ C E C
 A A A
 ```
 
-**Solid-State Converter**: C is a [Copper Heating Coil](Heating_Coil.md), E is a [Basic Electronic Circuit](Basic_Electronic_Circuit.md) and A is an Aluminum Plate.
+**Solid-State Converter**: C is a [Heating Coil](Heating_Coil.md) (any), E is a [Basic Electronic Circuit](Basic_Electronic_Circuit.md) and A is an Aluminum Plate.
 
 ```
 C W C
 A A A
 ```
 
-**Converter Tap**: C is a Copper Heating Coil, W is a [Cat's Whisker Detector](Cats_Whisker_Detector.md) and A is an Aluminum Plate.
+**Converter Tap**: C is a [Heating Coil](Heating_Coil.md) (any), W is a [Cat's Whisker Detector](Cats_Whisker_Detector.md) and A is an Aluminum Plate.
 
 ```
 A A

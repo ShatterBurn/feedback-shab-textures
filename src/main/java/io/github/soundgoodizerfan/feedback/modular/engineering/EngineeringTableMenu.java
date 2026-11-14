@@ -58,7 +58,7 @@ public class EngineeringTableMenu extends AbstractContainerMenu {
     /** Menu buttons {@code BTN_TAB + tab} select a tab. */
     public static final int BTN_TAB = 0;
     /** Fit tab: fit every attachment. Repair tab: repair, swap a part, take apart. Treatise tab: take the specimen apart onto the blank. */
-    public static final int BTN_FIT_APPLY = 100, BTN_REPAIR = 200, BTN_SWAP = 201, BTN_APART = 202, BTN_LEARN = 300;
+    public static final int BTN_FIT_APPLY = 100, BTN_REPAIR = 200, BTN_SWAP = 201, BTN_APART = 202, BTN_LEARN = 300, BTN_RESEARCH = 301, BTN_VOLUME = 302;
 
     public static final int OUT = 0;
     /** The binder's second slot, shown on the Treatise tab (same container slot as the Crafting tab's). */
@@ -87,6 +87,9 @@ public class EngineeringTableMenu extends AbstractContainerMenu {
     private final DataSlot note = DataSlot.standalone();
     /** The school volume a {@link EngineeringRework#SCHOOL} note names, as {@link #school} codes it (synced). */
     private final DataSlot noteVolume = DataSlot.standalone();
+    /** The treatise volume the Treatise tab would research without a specimen: an index into {@code ResearchTheme}. */
+    private final DataSlot research = DataSlot.standalone();
+    private int researchSent = -1;
     private final Container table;
     private final Container output = new ResultContainer();
     private final Player player;
@@ -167,6 +170,7 @@ public class EngineeringTableMenu extends AbstractContainerMenu {
         addDataSlot(school);
         addDataSlot(note);
         addDataSlot(noteVolume);
+        addDataSlot(research);
         if (!player.level().isClientSide)
             refresh();
     }
@@ -352,6 +356,17 @@ public class EngineeringTableMenu extends AbstractContainerMenu {
         long elapsed = server.level().getGameTime() - gameStart;
         gameId = "";
         float score = elapsed < EngineeringMinigames.minTicks(id, gameRounds) ? 0f : Math.max(0, Math.min(100, percent)) / 100f;
+        if (EngineeringMinigames.RESEARCH.toString().equals(id)) {
+            // Research: the notes are as good as the ranking was right; a failed run still spends its samples and experience.
+            if (tabs.get() == TAB_TREATISE && researchSent >= 0) {
+                EngineeringRework.Outcome out = EngineeringRework.researched(table, server, researchSent, score);
+                note.set(out.note());
+                noteVolume.set(out.volume());
+                broadcastChanges();
+            }
+            researchSent = -1;
+            return;
+        }
         if (EngineeringMinigames.NOTES.toString().equals(id)) {
             // The learning game: the volume is written with notes as good as the reading, whatever the score (never a gate).
             if (tabs.get() == TAB_TREATISE && EngineeringRework.learnRounds(table, server) == rounds) {
@@ -402,8 +417,16 @@ public class EngineeringTableMenu extends AbstractContainerMenu {
             refresh();
             return true;
         }
+        if (id == BTN_VOLUME && tabs.get() == TAB_TREATISE) {
+            research.set(Math.floorMod(research.get() + 1, io.github.soundgoodizerfan.feedback.modular.treatise.ResearchTheme.count()));
+            note.set(0);
+            noteVolume.set(0);
+            broadcastChanges();
+            return true;
+        }
         int tab = tabs.get();
         EngineeringRework.Outcome out = switch (id) {
+            case BTN_RESEARCH -> tab == TAB_TREATISE ? researchClicked(server) : null;
             case BTN_FIT_APPLY -> tab == TAB_FIT ? EngineeringRework.fit(table, server, heldMask()) : null;
             case BTN_REPAIR -> tab == TAB_REPAIR ? EngineeringRework.repair(table, server, ModularRework.Mode.MEND) : null;
             case BTN_SWAP -> tab == TAB_REPAIR ? EngineeringRework.repair(table, server, ModularRework.Mode.SWAP) : null;
@@ -436,6 +459,28 @@ public class EngineeringTableMenu extends AbstractContainerMenu {
         gameRounds = rounds;
         gameStart = now;
         PacketDistributor.sendToPlayer(server, new MinigameOpenPayload(containerId, gameId, gameRounds, 1, ""));
+        return EngineeringRework.Outcome.of(0);
+    }
+
+    /** The index of the volume the Treatise tab would research, as the server holds it. */
+    public int researchIndex() {
+        return research.get();
+    }
+
+    /** Research: opens the research game with the samples found in the pack; a refusal says why through the note. */
+    private EngineeringRework.Outcome researchClicked(ServerPlayer server) {
+        int ready = EngineeringRework.researchReady(table, server, research.get());
+        if (ready != 0)
+            return EngineeringRework.Outcome.of(ready);
+        long now = server.level().getGameTime();
+        if (!gameId.isEmpty() && now - gameStart < 20)
+            return EngineeringRework.Outcome.of(0);
+        gameId = EngineeringMinigames.RESEARCH.toString();
+        gameRounds = 1;
+        gameStart = now;
+        researchSent = research.get();
+        PacketDistributor.sendToPlayer(server, new MinigameOpenPayload(containerId, gameId, 1, 1,
+                EngineeringRework.researchData(researchSent, EngineeringRework.researchSamples(server, researchSent))));
         return EngineeringRework.Outcome.of(0);
     }
 

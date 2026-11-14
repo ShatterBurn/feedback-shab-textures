@@ -65,6 +65,7 @@ import io.github.soundgoodizerfan.feedback.modular.type.ModularType;
  * @param leadLength blocks of line on the reel.
  * @param pileReturn the share of a shot's energy a thermopile returns at the barrel's limit (0 for no thermopile): its two metals' Seebeck gap, capped by tier.
  * @param sinkK      the sink's heat capacity against a kilogram of copper: how many returning shots it takes to fill.
+ * @param seatSize   the seat's own measure: a cylinder's chambers, a bank's pulse multiple, a flywheel's mass (1 is the reference wheel); 1 for another seat.
  */
 public record ElectricGunSpec(Seat seat, int tier, float boreMm, float lengthM, float barrelLoss, float seatAmp, float seatDensity,
                               int dielectric, VoltageBand band, float barrelMass, int maxCells, float heatMult, float report,
@@ -72,7 +73,7 @@ public record ElectricGunSpec(Seat seat, int tier, float boreMm, float lengthM, 
                               boolean holdCharge, boolean pump, int beams, boolean fork, boolean zoom, boolean gauge, boolean sight, float sightFov, int bank, float limitTu, float serviceTu,
                               float sense, float zoomGain, float pumpGain, float pumpLever, float holdGain, float gaugeRes,
                               boolean coherence, float lining, boolean malefic, float shuntTicks, boolean lead, float leadAmp, float leadLength,
-                              float pileReturn, float sinkK, float gripFriction, float lensPass) {
+                              float pileReturn, float sinkK, float gripFriction, float lensPass, float seatSize) {
 
     /** The heat cycle: what a seat does between shots, and the fire modes it allows. */
     public enum Seat {
@@ -139,6 +140,7 @@ public record ElectricGunSpec(Seat seat, int tier, float boreMm, float lengthM, 
         int bank = 0;
         float sense = 1f, zoomGain = 1f, pumpGain = 1f, pumpLever = 1f, holdGain = 1f, gaugeRes = 1f;
         boolean coherence = false, malefic = false, lead = false;
+        float seatSize = 1f;
         float lining = 0f, shuntTicks = 0f, leadAmp = 0f, leadLength = 0f, pileGap = 0f, sinkK = 0f;
         float limitTu = ModularTuning.EGUN_LIMIT_TU, serviceTu = ModularTuning.EGUN_LIMIT_TU, gripFriction = GunTuning.GUN_KICK_REFERENCE_FRICTION, lensPass = 1f;
         for (MaterialPerks.Attunement a : MaterialPerks.attunements(design))
@@ -180,6 +182,12 @@ public record ElectricGunSpec(Seat seat, int tier, float boreMm, float lengthM, 
                 case SEAT -> {
                     seat = Seat.of(role.variant(p).map(ModularType.Variant::name).orElse("cylinder"));
                     tier = Mth.clamp(Math.round(role.axis(p, "tier")), 1, 3);
+                    seatSize = switch (seat) {
+                        case CYLINDER -> role.axis(p, "chambers");
+                        case CAPACITOR_BANK, BURST_BANK -> role.axis(p, "capacitance");
+                        case FLYWHEEL -> role.axis(p, "flywheel_mass") / 100f;
+                        default -> 1f;
+                    };
                     seatAmp = m.ampacity().orElse(0f);
                     seatDensity = m.density().muPerMb();
                     Material dm = ModularBake.slotMaterial(role, p, "dielectric", materials);
@@ -305,7 +313,7 @@ public record ElectricGunSpec(Seat seat, int tier, float boreMm, float lengthM, 
         ElectricGunSpec spec = new ElectricGunSpec(seat, tier, bore, length, loss, seatAmp, seatDensity, dielectric, band, mass, maxCells,
                 heatMult, report, heatGain, shed, spreadMult, darkAt, darkCut, governor, hold, pump, beams, fork, zoom, gauge, sight, sightFov, bank, limitTu, serviceTu, sense, zoomGain, pumpGain, pumpLever, holdGain, gaugeRes,
                 coherence, lining, malefic, shuntTicks, lead, leadAmp, leadLength,
-                seat == Seat.THERMOPILE ? Math.min(ModularTuning.EGUN_PILE_CAP * tier / 3f, pileGap * ModularTuning.EGUN_PILE_RETURN_PER_UV) : 0f, sinkK, gripFriction, lensPass);
+                seat == Seat.THERMOPILE ? Math.min(ModularTuning.EGUN_PILE_CAP * tier / 3f, pileGap * ModularTuning.EGUN_PILE_RETURN_PER_UV) : 0f, sinkK, gripFriction, lensPass, seatSize);
         return fault(design, type) == null ? Optional.of(spec) : Optional.empty();
     }
 
@@ -396,10 +404,10 @@ public record ElectricGunSpec(Seat seat, int tier, float boreMm, float lengthM, 
     /** How the seat shapes its pulse against an ordinary one: a bank holds a lot, a flywheel by its density. */
     public float seatMult() {
         return switch (seat) {
-            case CAPACITOR_BANK -> ModularTuning.EGUN_BANK_MULT * (1f + ModularTuning.EGUN_BANK_DIELECTRIC_STEP * dielectric);
-            case BURST_BANK -> ModularTuning.EGUN_BANK_MULT * (1f + ModularTuning.EGUN_BANK_DIELECTRIC_STEP * dielectric) / ModularTuning.GUN_BURST_ROUNDS;
+            case CAPACITOR_BANK -> seatSize * (1f + ModularTuning.EGUN_BANK_DIELECTRIC_STEP * dielectric);
+            case BURST_BANK -> seatSize * (1f + ModularTuning.EGUN_BANK_DIELECTRIC_STEP * dielectric) / ModularTuning.GUN_BURST_ROUNDS;
             case CORE_BREECH -> ModularTuning.EGUN_CORE_MULT;
-            case FLYWHEEL -> Mth.clamp(0.6f + 0.4f * seatDensity / ModularTuning.EGUN_FLY_REF_DENSITY, 0.6f, 1.6f);
+            case FLYWHEEL -> Mth.clamp(0.6f + 0.4f * seatDensity / ModularTuning.EGUN_FLY_REF_DENSITY, 0.6f, 1.6f) * (float) Math.sqrt(seatSize);
             default -> 1f;
         };
     }
@@ -470,9 +478,14 @@ public record ElectricGunSpec(Seat seat, int tier, float boreMm, float lengthM, 
         return Math.round(ModularTuning.EGUN_BANK_RECHARGE_S[tier - 1] * 20f * Math.max(1, cells) / 2f);
     }
 
+    /** Chambers a cylinder holds (its seat measure); the reference six for any other seat. */
+    public int chambers() {
+        return seat == Seat.CYLINDER ? Math.max(1, Math.round(seatSize)) : ModularTuning.EGUN_CHAMBERS;
+    }
+
     /** Ticks of a held trigger a flywheel takes to spin up: a denser wheel takes longer. */
     public float spinUpTicks() {
-        return ModularTuning.EGUN_FLY_UP_TICKS * Mth.clamp(seatDensity / ModularTuning.EGUN_FLY_REF_DENSITY, 0.5f, 2f);
+        return ModularTuning.EGUN_FLY_UP_TICKS * Mth.clamp(seatDensity / ModularTuning.EGUN_FLY_REF_DENSITY, 0.5f, 2f) * seatSize;
     }
 
     /** Ticks between shots with nothing slowing it: the seat's cycle ({@code burst}: inside a burst bank's burst). */

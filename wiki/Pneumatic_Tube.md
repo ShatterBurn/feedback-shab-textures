@@ -50,10 +50,7 @@ Crafting: Pump + Pneumatic Tube.
 
 A coil ring placed against a tube block. Fed with current (2 A at MV), it drives capsules that carry a magnetic plate through that block at twice the speed. Plain capsules ignore it. See [Carrier](Carrier.md#magnetic-carrier) and [Electricity](Electricity.md).
 
-Crafting: eight Copper Wire in a ring.
+A modular block built from one part, a **Motor Winding** cut from wire or fine wire of a metal. Two measures set it:
 
-```
-W W W
-W   W
-W W W
-```
+- **Turns**, 1 to 8: more turns push a magnetic capsule harder and draw more current.
+- **Gauge**, 20 to 100 percent: a thicker wire draws more current.

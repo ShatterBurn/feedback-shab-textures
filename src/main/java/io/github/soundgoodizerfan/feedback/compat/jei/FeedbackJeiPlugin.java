@@ -355,6 +355,8 @@ public class FeedbackJeiPlugin implements IModPlugin {
         info(registration, FItems.CONVERTER_TAP.get(), "converter_tap");
         info(registration, FItems.HEATSINK.get(), "heatsink");
         info(registration, FModular.THERMAL_STORE.get(), "thermal_store");
+        info(registration, FModular.CRUCIBLE.get(), "crucible");
+        info(registration, FModular.HEATING_COIL.get(), "heating_coil");
         info(registration, FItems.WHISKER.get(), "whisker");
         info(registration, FItems.RELAY.get(), "relay");
         info(registration, FItems.COMPONENT_TESTER.get(), "component_tester");
@@ -430,7 +432,7 @@ public class FeedbackJeiPlugin implements IModPlugin {
         info(registration, FItems.FLOPPY_DISK.get(), "floppy_disk");
         info(registration, FItems.USB_DRIVE.get(), "usb_drive");
         info(registration, FItems.FUNCTION_CARD.get(), "function_card");
-        info(registration, FItems.GAS_CENTRIFUGE.get(), "gas_centrifuge");
+        info(registration, FModular.GAS_CENTRIFUGE.get(), "gas_centrifuge");
         info(registration, FItems.ENRICHED_FUEL_ROD.get(), "enriched_fuel_rod");
         info(registration, FItems.BREEDER_ROD.get(), "breeder_rod");
         info(registration, FItems.SPENT_FUEL_POOL.get(), "spent_fuel_pool");
@@ -498,7 +500,7 @@ public class FeedbackJeiPlugin implements IModPlugin {
         info(registration, FItems.SORTING_STATION.get(), "sorting_station");
         info(registration, FItems.SORT_GAUGE.get(), "sort_gauge");
         info(registration, FItems.VACUUM_PUMP.get(), "vacuum_pump");
-        info(registration, FItems.LINEAR_MOTOR.get(), "linear_motor");
+        info(registration, FModular.LINEAR_MOTOR.get(), "linear_motor");
         info(registration, FItems.CARRIER.get(), "carrier");
         info(registration, FItems.MAGNETIC_CARRIER.get(), "magnetic_carrier");
         info(registration, FItems.POD.get(), "pod");
@@ -563,13 +565,13 @@ public class FeedbackJeiPlugin implements IModPlugin {
         // is a real fix, not just a consequence of it. Which vessel can actually reach a given
         // card's printed floor is a fact the card states in words or figures, not a fact this
         // list gets to decide (§15, no whitelists).
-        Item[] vessels = {FItems.SMALL_CRUCIBLE.get(), FItems.LARGE_CRUCIBLE.get(), FItems.ARC_HEARTH.get(),
+        Item[] vessels = {FModular.CRUCIBLE.get(), FItems.ARC_HEARTH.get(),
                 FItems.FURNACE.get(), FItems.SMOKER.get(), FItems.BLAST_FURNACE.get(),
                 FItems.IMPROVED_FURNACE.get(), FItems.KILN.get(), FItems.ANNEALING_FURNACE.get(), FItems.PUDDLING_FURNACE.get()};
         registration.addRecipeCatalysts(ThermalProcessCategory.TYPE, vessels);
         // A dip is drawn from any vessel's tank (MoltenVessel); a mix is kept only by a crucible.
         registration.addRecipeCatalysts(MixtureCategory.TYPE, io.github.soundgoodizerfan.feedback.registry.FWeapons.MIXER_ITEM.get(), io.github.soundgoodizerfan.feedback.registry.FWeapons.RELOADING_PRESS_ITEM.get(),
-                FItems.SMALL_CRUCIBLE.get(), FItems.LARGE_CRUCIBLE.get(), FItems.ARC_HEARTH.get());
+                FModular.CRUCIBLE.get(), FItems.ARC_HEARTH.get());
         registration.addRecipeCatalysts(ThermalProcessCategory.TYPE, FModular.BOILER.get(), FItems.CONDENSER.get(), FItems.REBOILER.get());
         registration.addRecipeCatalysts(ThermalProcessCategory.TYPE, FItems.ELECTROLYSER.get());
         registration.addRecipeCatalysts(CircuitChainCategory.TYPE, FItems.CIRCUIT.get());

@@ -8,7 +8,7 @@ Draw it at the [Blueprint Table](Blueprint_Table.md) (pick *Heat Exchanger* in t
 
 | Choice | What it sets |
 | --- | --- |
-| **Tubes** | Plain, finned, coiled, or plate and frame. See [Tube types](#tube-types). |
+| **Tubes** | Plain, coiled, or plate and frame. See [Tube types](#tube-types). |
 | **Tube area** | From 20 to 100 percent of the wall, in steps of 5; the default is 50. More area carries more heat. |
 | **Metal** | The plate the tubes are made from. A metal that conducts heat well carries more. It must be a metal with a stated conductivity. |
 
@@ -24,7 +24,6 @@ Each type is cut from a different number of stock cells, and the ones that carry
 | --- | --- |
 | Plain | the same |
 | Coiled | 1.3 times as much |
-| Finned | 1.6 times as much |
 | Plate and frame | 2.0 times as much |
 
 ## Addons

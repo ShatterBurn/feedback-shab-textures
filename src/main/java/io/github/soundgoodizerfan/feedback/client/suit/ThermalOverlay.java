@@ -94,7 +94,7 @@ public final class ThermalOverlay {
     @SubscribeEvent
     static void onTick(ClientTickEvent.Post event) {
         Minecraft mc = Minecraft.getInstance();
-        if (mc.player == null || mc.level == null || !SuitClient.live(Ability.THERMAL)) {
+        if (mc.player == null || mc.level == null || !thermalOn(mc)) {
             seen = List.of();
             return;
         }
@@ -159,11 +159,18 @@ public final class ThermalOverlay {
 
     // --- drawing ------------------------------------------------------------------------------------------
 
+    /** The suit's thermal view is live, or the wielder is aiming a gun whose scope carries a thermal fitting. */
+    private static boolean thermalOn(Minecraft mc) {
+        return SuitClient.live(Ability.THERMAL)
+                || (mc.player != null && io.github.soundgoodizerfan.feedback.client.gun.GunClient.aimed(mc.player)
+                && io.github.soundgoodizerfan.feedback.suit.ScopeThermal.fitted(mc.player.getMainHandItem()));
+    }
+
     private static void render(GuiGraphics g, DeltaTracker delta) {
         Minecraft mc = Minecraft.getInstance();
         if (mc.player == null || mc.options.hideGui && false)
             return;
-        boolean thermal = SuitClient.live(Ability.THERMAL), night = SuitClient.live(Ability.NIGHT);
+        boolean thermal = thermalOn(mc), night = SuitClient.live(Ability.NIGHT);
         if (!thermal && !night)
             return;
         textures();

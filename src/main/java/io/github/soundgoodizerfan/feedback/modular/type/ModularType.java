@@ -811,7 +811,7 @@ public record ModularType(Family family, Slot slot, List<Mine> mines, float stri
             List<Variant> out = new ArrayList<>();
             // The base variant is the standard shape: it sets the standard's size, and is not listed again.
             float standard = variant(base).filter(v -> v.cells() > 0f).map(Variant::cells).orElse(cells);
-            out.add(new Variant("", standard, 0f, 1f, "", 1f, 0f, 1f, "", Map.of(), false, ""));
+            out.add(new Variant("", standard, 0f, 1f, "", 1f, 0f, 1f, "", Map.of(), false, "", List.of()));
             variants.stream().filter(v -> v.cells() > 0f && !v.name().equals(base)).forEach(out::add);
             return out;
         }
@@ -886,12 +886,14 @@ public record ModularType(Family family, Slot slot, List<Mine> mines, float stri
      * @param adjective whether the shape is a word beside the type's own in a build's automatic name ({@link BuildNames}: "curved iron
      *                sword") rather than a name for the whole thing ("iron pitchfork"). Armour variants always are.
      * @param school  the treatise volume ({@code robotics:1}, as a type's) the table must hold before it offers this variant; empty for none.
+     * @param actions what a hafted face of this shape also does to a block it is used on, beside its kind's ({@code till} for a kama).
      * @param rhythm  for a variant forged rather than laid: the pattern played on the anvil, one
      *                character per step ({@code t} a tap, {@code h} a heavy blow, {@code .} a rest).
      *                A forged variant has no shape, since it is made from a standard part.
      */
     public record Variant(String name, float cells, float reach, float section, String rhythm, float strike,
-                          float centre, float mass, String trait, Map<String, Float> params, boolean adjective, String school) {
+                          float centre, float mass, String trait, Map<String, Float> params, boolean adjective, String school,
+                          List<String> actions) {
         static final Codec<Variant> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 Codec.STRING.fieldOf("name").forGetter(Variant::name),
                 Codec.FLOAT.optionalFieldOf("cells", 0f).forGetter(Variant::cells),
@@ -904,7 +906,8 @@ public record ModularType(Family family, Slot slot, List<Mine> mines, float stri
                 Codec.STRING.optionalFieldOf("trait", "").forGetter(Variant::trait),
                 Codec.unboundedMap(Codec.STRING, Codec.FLOAT).optionalFieldOf("params", Map.of()).forGetter(Variant::params),
                 Codec.BOOL.optionalFieldOf("adjective", false).forGetter(Variant::adjective),
-                Codec.STRING.optionalFieldOf("school", "").forGetter(Variant::school)
+                Codec.STRING.optionalFieldOf("school", "").forGetter(Variant::school),
+                Codec.STRING.listOf().optionalFieldOf("actions", List.of()).forGetter(Variant::actions)
         ).apply(instance, Variant::new));
 
     }

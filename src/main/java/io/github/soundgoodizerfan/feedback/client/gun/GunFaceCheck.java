@@ -62,7 +62,7 @@ public final class GunFaceCheck {
             "i", new String[]{"fixed", "skeleton", "folding"},
             "W", new String[]{"vertical_grip", "angled_grip", "hand_stop", "folding_grip"},
             "S", new String[]{"reflex", "scope"},
-            "P", new String[]{"thread_breech", "thread_middle", "thread_muzzle"},
+            "P", new String[]{"20", "50", "90"},
             "s", new String[]{"cylinder", "flux_cycler", "capacitor_bank", "burst_bank", "core_breech", "flywheel", "recoil_dynamo", "backpack_tether"});
 
     private static final float[][] BARRELS = {{2f, 0.5f, 0.25f}, {6f, 0.75f, 0.375f}, {14f, 1.25f, 0.5f}};

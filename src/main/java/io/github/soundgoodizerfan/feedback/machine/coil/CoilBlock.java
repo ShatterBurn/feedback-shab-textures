@@ -19,18 +19,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * {@code Eu} to Thermal: a heating coil, set under a vessel like a firebox. One
- * class, one block per element metal: the element is the physical part that decides how hot it
- * may run, so a better element is a different coil you could point at, never a setting.
+ * {@code Eu} to Thermal: a heating coil, set under a vessel like a firebox. The element is the
+ * physical part that decides how hot it may run and how much it heats: a modular block wound from
+ * any metal wire, its gauge and turns drawn at the Blueprint Table ({@code BlockFigures}).
  */
 public class CoilBlock extends Block implements EntityBlock {
 
-    /** The metal the element is wound from; its material file says how hot it may run. */
-    final ResourceLocation element;
-
-    public CoilBlock(Properties properties, ResourceLocation element) {
+    public CoilBlock(Properties properties) {
         super(properties);
-        this.element = element;
         registerDefaultState(stateDefinition.any().setValue(BlockStateProperties.FACING, Direction.UP));
     }
 

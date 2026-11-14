@@ -328,8 +328,8 @@ public class MicroCellBlock extends BaseEntityBlock implements BlockSubLevelColl
             if (!level.isClientSide) {
                 var joint = cell.bearing(i);
                 player.displayClientMessage(joint.hasWheel()
-                        ? Component.translatable("message.feedback.joint.condition_wheel", Math.round(joint.condition() * 100), Math.round(joint.pad() * 100), Math.round(joint.tread() * 100))
-                        : Component.translatable("message.feedback.joint.condition", Math.round(joint.condition() * 100), Math.round(joint.pad() * 100)), true);
+                        ? Component.translatable("message.feedback.joint.condition_wheel", wornWord(joint.condition()), wornWord(joint.pad()), wornWord(joint.tread()))
+                        : Component.translatable("message.feedback.joint.condition", wornWord(joint.condition()), wornWord(joint.pad())), true);
             }
             return InteractionResult.sidedSuccess(level.isClientSide);
         }
@@ -354,5 +354,10 @@ public class MicroCellBlock extends BaseEntityBlock implements BlockSubLevelColl
         if (level instanceof ServerLevel server)
             player.displayClientMessage(Component.translatable("message.feedback.rotary_bearing." + MicroBearings.toggle(server, pos, i)), true);
         return InteractionResult.sidedSuccess(level.isClientSide);
+    }
+
+    /** How worn a joint part is, in words (the figure belongs to an instrument): sound, marked, battered or spent. */
+    private static Component wornWord(float condition) {
+        return Component.translatable("message.feedback.joint.worn." + io.github.soundgoodizerfan.feedback.core.FTuning.conditionBand(condition));
     }
 }

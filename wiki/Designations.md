@@ -21,7 +21,9 @@ A **band** is a range an axis sits in. Armor and weapon parts have axes you aim 
 | Boots | Shaft | ankle up to 12 cm, normal up to 24 cm, high over 24 cm |
 |  | Sole | thin up to 7 mm, normal up to 16 mm, thick over 16 mm |
 | Shield | Face size | small up to 42 cm, normal up to 75 cm, large over 75 cm |
+| Shield rim | Rim width | narrow up to 1, normal up to 2, wide over 2 |
 | Bow | Limb length | short up to 85 cm, normal up to 135 cm, long over 135 cm |
+| Crossbow | Prod length | short up to 35 cm, normal up to 80 cm, long over 80 cm |
 | Sword blade | Length | short up to 65 cm, normal up to 105 cm, long over 105 cm |
 |  | Thickness | thin up to 3.5 mm, normal up to 6.5 mm, thick over 6.5 mm |
 |  | Width | narrow up to 3 cm, normal up to 5.5 cm, wide over 5.5 cm |
@@ -112,19 +114,19 @@ A piece is named from its plate shape, the bands of its axes and the fittings on
 |  | **Thigh Boots** | shaft high, sole normal |
 |  | **Waders** | shaft high, sole thick |
 
-## Shields and bows
+## Shields, bows and crossbows
 
 | Type | Name | What gives it |
 | --- | --- | --- |
 | Shield | **Swashbuckler** | face size small, a boss fitted, a rim fitted |
 |  | **Targe** | face size normal, a boss fitted |
-|  | **Knight's Shield** | the heater shape, a rim fitted |
+|  | **Knight's Shield** | the heater shape, rim width normal or wide |
 |  | **Norman Shield** | the kite shield shape, a boss fitted |
 |  | **Siege Shield** | face size large, the rectangular shape, a boss fitted |
 |  | **Tower Shield** | face size large, the rectangular shape |
 |  | **Kite Shield** | the kite shield shape |
 |  | **Buckler** | face size small |
-|  | **Heater Shield** | the heater shape, face size normal |
+|  | **Heater Shield** | the heater shape, face size normal, rim width narrow |
 | Bow | **Warbow** | limb length long, a back fitted |
 |  | **Horse Bow** | the recurve shape, limb length short |
 |  | **Yumi** | the recurve shape, limb length long, a back fitted |
@@ -132,6 +134,8 @@ A piece is named from its plate shape, the bands of its axes and the fittings on
 |  | **Shortbow** | limb length short |
 |  | **Longbow** | limb length long |
 |  | **Composite Bow** | the recurve shape, limb length normal or long |
+| Crossbow | **Arbalest** | prod length long |
+|  | **Pistol Crossbow** | prod length short |
 
 ## Swords, axes and other hafted tools
 

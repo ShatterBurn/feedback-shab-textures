@@ -52,7 +52,7 @@ The **barrel** sets how the bore is finished.
 
 ### Flintlock
 
-A **Flintlock** is a gun made from five parts: a **receiver** (handgun or long-gun frame), a **smoothbore barrel**, a **trigger**, a **grip** and a **lock** (shaped from a rod or an ingot). Nothing else fits it: no sights, feeds or fittings. It fires **one round at a time, loaded from the muzzle by hand**, and takes about **2.2 s** between shots. Roughly **one pull in eight flashes in the pan**: a click and a puff of smoke, the charge stays loaded and the pull still costs the cycle. A flintlock with a handgun frame is a **flintlock pistol**, with a long-gun frame a **flintlock musket**.
+A **Flintlock** is a gun made from five parts: a **receiver** (handgun or long-gun frame), a **smoothbore barrel**, a **trigger**, a **grip** and a **lock** (shaped from a rod or an ingot). A **stock**, shaped and fitted as on a gun, gives it bracing. Nothing else fits it: no sights, feeds or fittings. It fires **one round at a time, loaded from the muzzle by hand**, and takes about **2.2 s** between shots. Roughly **one pull in eight flashes in the pan**: a click and a puff of smoke, the charge stays loaded and the pull still costs the cycle. A flintlock with a handgun frame is a **flintlock pistol**, with a long-gun frame a **flintlock musket**.
 
 It is slow and unreliable beside a modern gun: the weapon of the time before real guns.
 
@@ -63,7 +63,7 @@ Everything else is a **trait**, read from the parts, and a gun has as many as it
 | Hammer | lever, pump, break, flintlock | lets a cylinder be fitted and fanned |
 | Fan | a cylinder on a hammer action | crouched, hold attack to slap the hammer as fast as the hand can, with more spread, kick and heat |
 | Double barrel | a second barrel | crouched, a pull fires both barrels at once for one recoil |
-| Select fire | an automatic action | semi, burst or full auto, switched in hand |
+| Select fire | a selector switch | semi, burst or full auto, switched in hand |
 | Manual cycle | bolt, lever, pump, break, flintlock | the shooter brings the next round up: the action's time between shots |
 | Lockup | bolt, lever, break, single action, double action | how firmly the breech is held shut: a bolt rates the chamber 25% above the barrel's own strength and groups tighter, a lever 25% below, a break action 40% below, a single action holds the barrel's own rating and groups 15% tighter, a double action 10% below and 20% looser. Pump and self-loading actions hold the barrel's own rating |
 | Blowback | a slide | only the bolt's mass holds the breech: a round above 3.6 Pu kicks harder and wears the bore faster |

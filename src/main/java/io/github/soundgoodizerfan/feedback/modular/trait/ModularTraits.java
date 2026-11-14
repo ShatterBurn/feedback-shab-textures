@@ -90,10 +90,7 @@ public final class ModularTraits {
         register("line_cut", new io.github.soundgoodizerfan.feedback.modular.trait.LineCut());
         register("smash", new io.github.soundgoodizerfan.feedback.modular.trait.SmashAttack());
         register("spring", new io.github.soundgoodizerfan.feedback.modular.trait.Spring());
-        register("snap_shot", new io.github.soundgoodizerfan.feedback.modular.trait.Handling());
-        register("heavy_draw", new io.github.soundgoodizerfan.feedback.modular.trait.Handling());
-        register("heavy_bolt", new io.github.soundgoodizerfan.feedback.modular.trait.Handling());
-        register("snap_bolt", new io.github.soundgoodizerfan.feedback.modular.trait.Handling());
+        register("limb_handling", new io.github.soundgoodizerfan.feedback.modular.trait.Handling());
         register("recurve", new io.github.soundgoodizerfan.feedback.modular.trait.Recurve());
         register("stalker", new io.github.soundgoodizerfan.feedback.modular.trait.Stalker());
         register("repeater", new io.github.soundgoodizerfan.feedback.modular.trait.Repeater());
@@ -196,7 +193,8 @@ public final class ModularTraits {
             if (!role.trait().isEmpty()) {
                 Optional<String> id = firstId(role.trait());
                 if (id.isPresent())
-                    out.add(new Active(id.get(), REGISTRY.get(id.get()), new ModularTrait.Params(role.params())));
+                    out.add(new Active(id.get(), REGISTRY.get(id.get()), id.get().equals("limb_handling")
+                            ? LimbHandling.derive(role, part) : new ModularTrait.Params(role.params())));
             }
         }
         return out;
