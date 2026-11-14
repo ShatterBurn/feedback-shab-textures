@@ -143,7 +143,7 @@ final class ResearchScreen extends Screen {
 
     @Override
     public void render(GuiGraphics g, int mx, int my, float partial) {
-        renderTransparentBackground(g);
+        renderBackground(g, mx, my, partial);
         SKIN.panel(g, px, py, W, H);
         g.drawString(font, title, px + 8, py + 8, SKIN.ink(), false);
         g.drawString(font, Component.translatable(theme.school().itemKey(theme.volume())), px + 8, py + 20, SKIN.dim(), false);
@@ -159,7 +159,14 @@ final class ResearchScreen extends Screen {
             row.append((char) ('A' + i)).append(' ');
         g.drawString(font, Component.translatable("gui.feedback.research.order").getString() + " " + row, px + 8, py + 138, SKIN.ink(), false);
         commit.active = order.size() >= names.size();
-        super.render(g, mx, my, partial);
+        for (var widget : renderables)
+            widget.render(g, mx, my, partial);
+    }
+
+    /** No vanilla blur (it would blur what is drawn before the widgets): a plain dim behind the panel. */
+    @Override
+    public void renderBackground(GuiGraphics g, int mx, int my, float partial) {
+        g.fill(0, 0, width, height, 0x88000000);
     }
 
     @Override
