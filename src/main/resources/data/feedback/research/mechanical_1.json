@@ -1,0 +1,102 @@
+{
+  "school": "mechanical",
+  "volume": 1,
+  "title": "Heat that turns",
+  "labels": {
+    "hand_crank": "A hand crank",
+    "rotation": "Rotation",
+    "crankshaft": "A crankshaft",
+    "piston": "A piston",
+    "cylinder": "A cylinder",
+    "stroke": "A stroke",
+    "fuel": "Fuel",
+    "spark": "A spark",
+    "heat": "Heat",
+    "pressure": "Pressure",
+    "engine": "An engine"
+  },
+  "relations": [
+    [
+      "hand_crank",
+      "rotation"
+    ],
+    [
+      "rotation",
+      "crankshaft"
+    ],
+    [
+      "crankshaft",
+      "piston"
+    ],
+    [
+      "piston",
+      "cylinder"
+    ],
+    [
+      "piston",
+      "stroke"
+    ],
+    [
+      "stroke",
+      "engine"
+    ],
+    [
+      "cylinder",
+      "pressure"
+    ],
+    [
+      "pressure",
+      "heat"
+    ],
+    [
+      "heat",
+      "fuel"
+    ],
+    [
+      "fuel",
+      "spark"
+    ],
+    [
+      "spark",
+      "stroke"
+    ],
+    [
+      "fuel",
+      "engine"
+    ]
+  ],
+  "known": [
+    [
+      "hand_crank",
+      "rotation"
+    ],
+    [
+      "stroke",
+      "engine"
+    ]
+  ],
+  "start": "hand_crank",
+  "goal": "engine",
+  "replay": [
+    "You turn the crank and a rod slides back and forth. Now run it the other way round.",
+    "Something pushes the piston; the crankshaft turns the push into a turn.",
+    "Whatever does the pushing, the crank is the same."
+  ],
+  "question": "What does the crankshaft do?",
+  "options": [
+    "Stores the fuel",
+    "Turns the piston's back and forth into rotation",
+    "Makes the spark"
+  ],
+  "answer": 1,
+  "eureka": {
+    "kind": "crafted",
+    "item": "feedback:hand_crank",
+    "threshold": 3,
+    "ink": 2
+  },
+  "specimens": [
+    "hand_crank",
+    "water_wheel"
+  ]
+}

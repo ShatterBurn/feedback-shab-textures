@@ -1,0 +1,105 @@
+{
+  "school": "aerospace",
+  "volume": 1,
+  "title": "A screw in the air",
+  "labels": {
+    "water_wheel": "A water wheel",
+    "paddle": "A paddle",
+    "rotation": "Rotation",
+    "blade": "A blade",
+    "pitch": "Pitch",
+    "air": "Air",
+    "thrust": "Thrust",
+    "lift": "Lift",
+    "wing": "A wing",
+    "screw": "A screw",
+    "propeller": "A propeller"
+  },
+  "relations": [
+    [
+      "water_wheel",
+      "paddle"
+    ],
+    [
+      "paddle",
+      "rotation"
+    ],
+    [
+      "rotation",
+      "screw"
+    ],
+    [
+      "screw",
+      "blade"
+    ],
+    [
+      "blade",
+      "pitch"
+    ],
+    [
+      "pitch",
+      "thrust"
+    ],
+    [
+      "blade",
+      "air"
+    ],
+    [
+      "air",
+      "lift"
+    ],
+    [
+      "lift",
+      "wing"
+    ],
+    [
+      "thrust",
+      "propeller"
+    ],
+    [
+      "air",
+      "thrust"
+    ],
+    [
+      "pitch",
+      "propeller"
+    ],
+    [
+      "wing",
+      "blade"
+    ]
+  ],
+  "known": [
+    [
+      "water_wheel",
+      "paddle"
+    ],
+    [
+      "thrust",
+      "propeller"
+    ]
+  ],
+  "start": "water_wheel",
+  "goal": "propeller",
+  "replay": [
+    "A wheel in a stream turns under the water's push. Turn it yourself, in air, and the push goes the other way.",
+    "A blade set at a slant throws air behind it, and the air throws the blade forward.",
+    "The steeper the pitch, the more it bites and the harder it is to turn."
+  ],
+  "question": "What gives a propeller its push?",
+  "options": [
+    "It sucks the air in",
+    "Slanted blades throw air backwards",
+    "The hub pushes the air"
+  ],
+  "answer": 1,
+  "eureka": {
+    "kind": "used",
+    "item": "feedback:water_wheel",
+    "threshold": 5,
+    "ink": 2
+  },
+  "specimens": [
+    "water_wheel"
+  ]
+}

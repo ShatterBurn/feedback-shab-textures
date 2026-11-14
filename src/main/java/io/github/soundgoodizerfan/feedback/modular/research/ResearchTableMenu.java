@@ -2,18 +2,18 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.modular.research;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.github.soundgoodizerfan.feedback.modular.attunement.AttunementKnowledge;
 import io.github.soundgoodizerfan.feedback.modular.bake.ModularTuning;
-import io.github.soundgoodizerfan.feedback.modular.engineering.EngineeringMinigames;
-import io.github.soundgoodizerfan.feedback.modular.treatise.ResearchTheme;
+import io.github.soundgoodizerfan.feedback.modular.engineering.EngineeringAssembly;
 import io.github.soundgoodizerfan.feedback.modular.engineering.TreatiseGame;
+import io.github.soundgoodizerfan.feedback.modular.item.ModularRework;
+import io.github.soundgoodizerfan.feedback.modular.item.ModularStacks;
+import io.github.soundgoodizerfan.feedback.modular.treatise.School;
 import io.github.soundgoodizerfan.feedback.net.HudReadoutPayload;
-import io.github.soundgoodizerfan.feedback.net.MinigameOpenPayload;
-import io.github.soundgoodizerfan.feedback.process.Material;
-import io.github.soundgoodizerfan.feedback.process.MaterialTable;
+import io.github.soundgoodizerfan.feedback.net.ResearchOpenPayload;
+import io.github.soundgoodizerfan.feedback.process.ClientMaterials;
 import io.github.soundgoodizerfan.feedback.registry.FMenus;
 import io.github.soundgoodizerfan.feedback.registry.FModular;
 
@@ -26,29 +26,32 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.DataSlot;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 /**
- * The Research Table: a Blank Treatise and up to four samples of stuff on the bench. {@link #BTN_MODE} turns between researching a treatise
- * volume and an attunement not yet known, {@link #BTN_NEXT} steps through what there is, {@link #BTN_RESEARCH} opens the research game
- * ({@code ResearchScreen}). The experience is spent and the samples used up whatever the score; the blank becomes the volume, or the attunement
- * is learned, with the score as the quality of the notes (the treatise) or simply known (an attunement).
+ * The Research Table: a Blank Treatise and a specimen. {@link #BTN_MODE} turns between researching a treatise volume and an attunement not yet
+ * known, {@link #BTN_NEXT} steps through what there is, {@link #BTN_RESEARCH} opens the research board. A volume takes as its specimen an item
+ * the volume before it taught how to build (a first volume, one of the plain things its plan names) and wants that earlier treatise in hand.
+ * The experience is spent whatever the score; the specimen is worn or comes apart by how hard the researcher pushed it; the blank becomes the
+ * volume with the score as its notes' quality, or the attunement is learned.
  */
 public class ResearchTableMenu extends AbstractContainerMenu {
 
     public static final int BTN_MODE = 1, BTN_NEXT = 2, BTN_RESEARCH = 3;
-    public static final int NOTE_NONE = 0, NOTE_NO_BLANK = 1, NOTE_NO_SAMPLES = 2, NOTE_NO_XP = 3, NOTE_NOTHING = 4, NOTE_WRITTEN = 5, NOTE_LEARNED = 6;
+    public static final int NOTE_NONE = 0, NOTE_NO_BLANK = 1, NOTE_NO_SPECIMEN = 2, NOTE_NO_XP = 3, NOTE_NOTHING = 4, NOTE_WRITTEN = 5, NOTE_LEARNED = 6,
+            NOTE_NO_EARLIER = 7, NOTE_NO_PLAN = 8;
 
-    public static final int W = 176, H = 196, BLANK_X = 18, SLOT_Y = 24, SAMPLE_X = 60, INV_X = 8, INV_Y = 114;
+    public static final int W = 176, H = 196, BLANK_X = 44, SPECIMEN_X = 114, SLOT_Y = 24, INV_X = 8, INV_Y = 114;
 
     private final Container table;
     private final DataSlot mode = DataSlot.standalone(), index = DataSlot.standalone(), note = DataSlot.standalone();
     private final Player player;
     private final BlockPos pos;
-    private String gameId = "";
+    private boolean playing;
     private long gameStart;
     private int sentMode = -1, sentIndex = -1;
 
@@ -76,18 +79,17 @@ public class ResearchTableMenu extends AbstractContainerMenu {
                 return 1;
             }
         });
-        for (int i = 0; i < ResearchTableBlockEntity.SAMPLE_COUNT; i++)
-            addSlot(new Slot(table, ResearchTableBlockEntity.SAMPLES + i, SAMPLE_X + i * 18, SLOT_Y) {
-                @Override
-                public boolean mayPlace(ItemStack s) {
-                    return Material.find(io.github.soundgoodizerfan.feedback.process.ClientMaterials.on(player.level()), s).isPresent();
-                }
+        addSlot(new Slot(table, ResearchTableBlockEntity.SPECIMEN, SPECIMEN_X, SLOT_Y) {
+            @Override
+            public boolean mayPlace(ItemStack s) {
+                return ModularStacks.design(s) != null;
+            }
 
-                @Override
-                public int getMaxStackSize() {
-                    return 64;
-                }
-            });
+            @Override
+            public int getMaxStackSize() {
+                return 1;
+            }
+        });
         for (int row = 0; row < 3; row++)
             for (int column = 0; column < 9; column++)
                 addSlot(new Slot(inventory, column + row * 9 + 9, INV_X + column * 18, INV_Y + row * 18));
@@ -110,26 +112,22 @@ public class ResearchTableMenu extends AbstractContainerMenu {
         return note.get();
     }
 
-    /** The subject of what is picked now. */
-    public ResearchTheme.Theme theme() {
-        return Researching.theme(player, mode.get(), index.get());
-    }
-
-    private List<ItemStack> sampleStacks() {
-        List<ItemStack> out = new ArrayList<>();
-        for (int i = 0; i < ResearchTableBlockEntity.SAMPLE_COUNT; i++)
-            out.add(table.getItem(ResearchTableBlockEntity.SAMPLES + i));
-        return out;
+    private ContainerLevelAccess access() {
+        return ContainerLevelAccess.create(player.level(), pos);
     }
 
     /** 0 when a run can start, else the note. */
     private int ready(ServerPlayer server) {
-        if (mode.get() == 0 && !table.getItem(ResearchTableBlockEntity.BLANK).is(FModular.BLANK_TREATISE.get()))
-            return NOTE_NO_BLANK;
         if (Researching.count(server, mode.get()) == 0)
             return NOTE_NOTHING;
-        if (Researching.samples(sampleStacks(), theme()).size() < 3)
-            return NOTE_NO_SAMPLES;
+        if (mode.get() == 0 && !table.getItem(ResearchTableBlockEntity.BLANK).is(FModular.BLANK_TREATISE.get()))
+            return NOTE_NO_BLANK;
+        if (Researching.plan(mode.get(), index.get()) == null)
+            return NOTE_NO_PLAN;
+        if (!Researching.builtOn(server, access(), mode.get(), index.get()))
+            return NOTE_NO_EARLIER;
+        if (!Researching.specimenFits(table.getItem(ResearchTableBlockEntity.SPECIMEN), mode.get(), index.get()))
+            return NOTE_NO_SPECIMEN;
         if (server.totalExperience < ModularTuning.RESEARCH_XP && !server.getAbilities().instabuild)
             return NOTE_NO_XP;
         return 0;
@@ -158,41 +156,46 @@ public class ResearchTableMenu extends AbstractContainerMenu {
         if (why != 0)
             return true;
         long now = server.level().getGameTime();
-        if (!gameId.isEmpty() && now - gameStart < 20)
+        if (playing && now - gameStart < 20)
             return true;
-        gameId = EngineeringMinigames.RESEARCH.toString();
+        ResearchPlan plan = Researching.plan(mode.get(), index.get());
+        playing = true;
         gameStart = now;
         sentMode = mode.get();
         sentIndex = index.get();
-        var theme = theme();
-        PacketDistributor.sendToPlayer(server, new MinigameOpenPayload(containerId, gameId, 1, 1,
-                Researching.data(theme, Researching.samples(sampleStacks(), theme))));
+        PacketDistributor.sendToPlayer(server, new ResearchOpenPayload(containerId, plan.json(),
+                Researching.ink(server, table.getItem(ResearchTableBlockEntity.SPECIMEN), plan), (int) (now ^ containerId * 31L)));
         return true;
     }
 
-    /** The client's one result: the notes' quality, 0 to 100 percent; a result sent faster than an honest play could be is scored as nothing. */
-    public void finishMinigame(ServerPlayer server, int percent) {
-        if (gameId.isEmpty() || sentMode != mode.get() || sentIndex != index.get())
+    /**
+     * The client's one result: {@code score} the notes' quality and {@code strain} how hard the specimen was pushed, both in percent. A result
+     * sent faster than an honest play could be is scored as nothing. The experience is spent; the specimen is worn or comes apart; the volume is
+     * written or the attunement learned.
+     */
+    public void finishResearch(ServerPlayer server, int score, int strain) {
+        if (!playing || sentMode != mode.get() || sentIndex != index.get())
             return;
+        playing = false;
         long elapsed = server.level().getGameTime() - gameStart;
-        gameId = "";
-        float score = elapsed < ModularTuning.RESEARCH_MIN_TICKS ? 0f : Math.max(0, Math.min(100, percent)) / 100f;
+        float quality = elapsed < ModularTuning.RESEARCH_MIN_TICKS ? 0f : Math.max(0, Math.min(100, score)) / 100f;
+        int pushed = Math.max(0, Math.min(100, strain));
         int why = ready(server);
         if (why != 0) {
             note.set(why);
             return;
         }
-        var theme = theme();
-        for (ItemStack sample : Researching.samples(sampleStacks(), theme))
-            sample.shrink(1);
         if (!server.getAbilities().instabuild)
             server.giveExperiencePoints(-ModularTuning.RESEARCH_XP);
+        strainSpecimen(server, pushed);
         if (mode.get() == 0) {
-            table.setItem(ResearchTableBlockEntity.BLANK, TreatiseGame.onLearn(server, theme.school(), theme.volume(), ItemStack.EMPTY, score));
-            HudReadoutPayload.send(server, Component.translatable("message.feedback.treatise.written", Component.translatable(theme.school().itemKey(theme.volume()))), 60);
+            int[] v = Researching.volume(sentIndex);
+            School school = School.values()[v[0]];
+            table.setItem(ResearchTableBlockEntity.BLANK, TreatiseGame.onLearn(server, school, v[1], ItemStack.EMPTY, quality));
+            HudReadoutPayload.send(server, Component.translatable("message.feedback.treatise.written", Component.translatable(school.itemKey(v[1]))), 60);
             note.set(NOTE_WRITTEN);
         } else {
-            var list = Researching.unknown(server);
+            List<io.github.soundgoodizerfan.feedback.modular.attunement.Attunements.Effect> list = Researching.unknown(server);
             var effect = list.get(Math.floorMod(sentIndex, list.size()));
             AttunementKnowledge.learn(server, effect);
             HudReadoutPayload.send(server, Component.translatable("message.feedback.research.learned", Component.translatable(effect.key())), 60);
@@ -201,6 +204,25 @@ public class ResearchTableMenu extends AbstractContainerMenu {
         }
         table.setChanged();
         broadcastChanges();
+    }
+
+    /** Pushing the specimen hard wears it, and pushing it too hard takes it apart into its parts, which go to the researcher. */
+    private void strainSpecimen(ServerPlayer server, int strain) {
+        ItemStack specimen = table.getItem(ResearchTableBlockEntity.SPECIMEN);
+        if (specimen.isEmpty() || strain < ModularTuning.RESEARCH_WEAR_STRAIN)
+            return;
+        if (strain >= ModularTuning.RESEARCH_BREAK_STRAIN) {
+            var level = server.level();
+            List<ItemStack> parts = ModularRework.dismantle(specimen, ClientMaterials.on(level), EngineeringAssembly.types(level), 0f);
+            table.setItem(ResearchTableBlockEntity.SPECIMEN, ItemStack.EMPTY);
+            parts.forEach(p -> server.getInventory().placeItemBackInInventory(p));
+            return;
+        }
+        if (specimen.isDamageableItem()) {
+            int cost = Math.round(specimen.getMaxDamage() * ModularTuning.RESEARCH_WEAR_SHARE * strain / 100f);
+            specimen.setDamageValue(Math.min(specimen.getMaxDamage() - 1, specimen.getDamageValue() + cost));
+            ModularStacks.refresh(specimen);
+        }
     }
 
     @Override

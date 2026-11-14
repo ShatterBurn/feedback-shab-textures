@@ -1,0 +1,106 @@
+{
+  "school": "chemical",
+  "volume": 1,
+  "title": "Holding the melt",
+  "labels": {
+    "crucible": "A crucible",
+    "heat": "Heat",
+    "melt": "A melt",
+    "fluid": "Fluid",
+    "tank": "A tank",
+    "wall": "A wall",
+    "pressure": "Pressure",
+    "seal": "A seal",
+    "lid": "A lid",
+    "boil": "Boiling",
+    "vessel": "A vessel"
+  },
+  "relations": [
+    [
+      "crucible",
+      "heat"
+    ],
+    [
+      "heat",
+      "melt"
+    ],
+    [
+      "melt",
+      "fluid"
+    ],
+    [
+      "fluid",
+      "tank"
+    ],
+    [
+      "tank",
+      "wall"
+    ],
+    [
+      "wall",
+      "pressure"
+    ],
+    [
+      "pressure",
+      "seal"
+    ],
+    [
+      "seal",
+      "lid"
+    ],
+    [
+      "lid",
+      "vessel"
+    ],
+    [
+      "seal",
+      "vessel"
+    ],
+    [
+      "heat",
+      "boil"
+    ],
+    [
+      "boil",
+      "pressure"
+    ],
+    [
+      "wall",
+      "vessel"
+    ]
+  ],
+  "known": [
+    [
+      "crucible",
+      "heat"
+    ],
+    [
+      "seal",
+      "vessel"
+    ]
+  ],
+  "start": "crucible",
+  "goal": "vessel",
+  "replay": [
+    "An open pot gives what it holds to the air. Put a lid on it and the boil has to go somewhere.",
+    "The wall stops it, or does not.",
+    "A vessel is a pot that holds a pressure."
+  ],
+  "question": "What does a vessel have that an open pot lacks?",
+  "options": [
+    "A handle",
+    "Walls and seals that hold a pressure",
+    "A larger fire"
+  ],
+  "answer": 1,
+  "eureka": {
+    "kind": "used",
+    "item": "feedback:crucible",
+    "threshold": 10,
+    "ink": 2
+  },
+  "specimens": [
+    "crucible",
+    "thermal_store"
+  ]
+}

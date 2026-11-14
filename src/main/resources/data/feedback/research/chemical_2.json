@@ -1,0 +1,97 @@
+{
+  "school": "chemical",
+  "volume": 2,
+  "title": "Squeezing the air",
+  "labels": {
+    "vessel": "A vessel",
+    "pressure": "Pressure",
+    "gas": "Gas",
+    "volume": "Volume",
+    "piston": "A piston",
+    "stroke": "A stroke",
+    "valve": "A valve",
+    "heat": "Heat",
+    "cooling": "Cooling",
+    "compressor": "A compressor"
+  },
+  "relations": [
+    [
+      "vessel",
+      "pressure"
+    ],
+    [
+      "pressure",
+      "gas"
+    ],
+    [
+      "gas",
+      "volume"
+    ],
+    [
+      "volume",
+      "piston"
+    ],
+    [
+      "piston",
+      "stroke"
+    ],
+    [
+      "stroke",
+      "valve"
+    ],
+    [
+      "valve",
+      "compressor"
+    ],
+    [
+      "stroke",
+      "heat"
+    ],
+    [
+      "heat",
+      "cooling"
+    ],
+    [
+      "cooling",
+      "compressor"
+    ],
+    [
+      "gas",
+      "heat"
+    ],
+    [
+      "piston",
+      "compressor"
+    ]
+  ],
+  "known": [
+    [
+      "vessel",
+      "pressure"
+    ],
+    [
+      "valve",
+      "compressor"
+    ]
+  ],
+  "start": "vessel",
+  "goal": "compressor",
+  "replay": [
+    "Push the gas into less room and it pushes back harder, and it gets hot.",
+    "A valve lets it in one way and traps it behind.",
+    "Stroke after stroke, a vessel fills with a pressure no fire could make."
+  ],
+  "question": "What happens to a gas squeezed into less room?",
+  "options": [
+    "It cools",
+    "Its pressure and its heat rise",
+    "Nothing"
+  ],
+  "answer": 1,
+  "eureka": {
+    "kind": "used",
+    "item": "feedback:gas_tank",
+    "threshold": 5,
+    "ink": 2
+  }
+}

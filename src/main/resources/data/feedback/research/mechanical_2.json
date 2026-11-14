@@ -1,0 +1,102 @@
+{
+  "school": "mechanical",
+  "volume": 2,
+  "title": "Torque for speed",
+  "labels": {
+    "engine": "An engine",
+    "shaft": "A shaft",
+    "torque": "Torque",
+    "speed": "Speed",
+    "lever": "A lever",
+    "gear": "A gear",
+    "teeth": "Teeth",
+    "ratio": "A ratio",
+    "clutch": "A clutch",
+    "friction": "Friction",
+    "gearbox": "A gearbox"
+  },
+  "relations": [
+    [
+      "engine",
+      "shaft"
+    ],
+    [
+      "shaft",
+      "torque"
+    ],
+    [
+      "shaft",
+      "speed"
+    ],
+    [
+      "torque",
+      "lever"
+    ],
+    [
+      "lever",
+      "gear"
+    ],
+    [
+      "gear",
+      "teeth"
+    ],
+    [
+      "gear",
+      "ratio"
+    ],
+    [
+      "ratio",
+      "gearbox"
+    ],
+    [
+      "ratio",
+      "speed"
+    ],
+    [
+      "ratio",
+      "torque"
+    ],
+    [
+      "clutch",
+      "friction"
+    ],
+    [
+      "clutch",
+      "shaft"
+    ],
+    [
+      "clutch",
+      "gearbox"
+    ]
+  ],
+  "known": [
+    [
+      "engine",
+      "shaft"
+    ],
+    [
+      "gear",
+      "teeth"
+    ]
+  ],
+  "start": "engine",
+  "goal": "gearbox",
+  "replay": [
+    "A long lever lifts what a short one cannot, at the cost of the distance.",
+    "A gear is a lever that goes round: speed and torque trade at a ratio.",
+    "Pick the ratio and the engine can do what it could not."
+  ],
+  "question": "What does a gear ratio trade?",
+  "options": [
+    "Fuel for power",
+    "Speed for torque",
+    "Heat for light"
+  ],
+  "answer": 1,
+  "eureka": {
+    "kind": "used",
+    "item": "feedback:engine",
+    "threshold": 5,
+    "ink": 2
+  }
+}

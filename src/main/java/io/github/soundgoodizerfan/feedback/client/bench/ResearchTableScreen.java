@@ -52,8 +52,7 @@ public class ResearchTableScreen extends SkinnedScreen<ResearchTableMenu> {
     protected void renderBg(GuiGraphics g, float partial, int mx, int my) {
         skin.panel(g, leftPos, topPos, imageWidth, imageHeight);
         skin.slot(g, leftPos + ResearchTableMenu.BLANK_X, topPos + ResearchTableMenu.SLOT_Y);
-        for (int i = 0; i < ResearchTableBlockEntity.SAMPLE_COUNT; i++)
-            skin.slot(g, leftPos + ResearchTableMenu.SAMPLE_X + i * 18, topPos + ResearchTableMenu.SLOT_Y);
+        skin.slot(g, leftPos + ResearchTableMenu.SPECIMEN_X, topPos + ResearchTableMenu.SLOT_Y);
         inventory(g, ResearchTableMenu.INV_X, ResearchTableMenu.INV_Y);
     }
 
@@ -61,22 +60,36 @@ public class ResearchTableScreen extends SkinnedScreen<ResearchTableMenu> {
     protected void renderLabels(GuiGraphics g, int mx, int my) {
         super.renderLabels(g, mx, my);
         g.drawString(font, Component.translatable("gui.feedback.research_table.blank"), ResearchTableMenu.BLANK_X, ResearchTableMenu.SLOT_Y - 10, skin.dim(), false);
-        g.drawString(font, Component.translatable("gui.feedback.research_table.samples"), ResearchTableMenu.SAMPLE_X, ResearchTableMenu.SLOT_Y - 10, skin.dim(), false);
+        g.drawString(font, Component.translatable("gui.feedback.research_table.specimen"), ResearchTableMenu.SPECIMEN_X, ResearchTableMenu.SLOT_Y - 10, skin.dim(), false);
         Component picked = picked();
         g.drawString(font, picked, 10, 48, skin.ink(), false);
-        var theme = menu.theme();
-        g.drawString(font, Component.translatable("gui.feedback.research_table.by", Component.translatable("gui.feedback.research.property." + theme.key())), 10, 58, skin.dim(), false);
+        g.drawString(font, specimenHint(), 10, 58, skin.dim(), false);
         int n = menu.note();
         if (n > 0)
             g.drawString(font, Component.translatable("gui.feedback.research_table.note." + n), 10, 88, (n >= ResearchTableMenu.NOTE_WRITTEN ? skin.accent() : skin.warn()) | 0xFF000000, false);
+    }
+
+    /** What the specimen for what is picked must be. */
+    private Component specimenHint() {
+        if (menu.mode() == 1)
+            return Component.translatable("gui.feedback.research_table.hint.any");
+        int[] v = Researching.volume(menu.index());
+        var school = io.github.soundgoodizerfan.feedback.modular.treatise.School.values()[v[0]];
+        if (v[1] <= 1) {
+            var plan = Researching.plan(0, menu.index());
+            return plan == null || plan.specimens.isEmpty() ? Component.translatable("gui.feedback.research_table.hint.plain")
+                    : Component.translatable("gui.feedback.research_table.hint.first", String.join(", ", plan.specimens));
+        }
+        return Component.translatable("gui.feedback.research_table.hint.built", Component.translatable(school.itemKey(v[1] - 1)));
     }
 
     /** What is picked: a volume's name, or the unknown attunement's; empty-handed when the player knows every attunement. */
     private Component picked() {
         var player = minecraft.player;
         if (menu.mode() == 0) {
-            var theme = menu.theme();
-            return Component.translatable("gui.feedback.research_table.volume", Component.translatable(theme.school().itemKey(theme.volume())));
+            int[] v = Researching.volume(menu.index());
+            var school = io.github.soundgoodizerfan.feedback.modular.treatise.School.values()[v[0]];
+            return Component.translatable("gui.feedback.research_table.volume", Component.translatable(school.itemKey(v[1])));
         }
         var list = Researching.unknown(player);
         if (list.isEmpty())

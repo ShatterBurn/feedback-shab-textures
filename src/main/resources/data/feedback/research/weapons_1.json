@@ -1,0 +1,103 @@
+{
+  "school": "weapons",
+  "volume": 1,
+  "title": "Why a blade cuts",
+  "labels": {
+    "muscle": "Your arm",
+    "force": "Force",
+    "point": "A point",
+    "wedge": "A wedge",
+    "edge": "An edge",
+    "hardness": "Hardness",
+    "steel": "Steel",
+    "grind": "Grinding",
+    "whetstone": "Whetstone",
+    "bruise": "A bruise"
+  },
+  "relations": [
+    [
+      "muscle",
+      "force"
+    ],
+    [
+      "force",
+      "point"
+    ],
+    [
+      "force",
+      "wedge"
+    ],
+    [
+      "wedge",
+      "edge"
+    ],
+    [
+      "point",
+      "edge"
+    ],
+    [
+      "hardness",
+      "edge"
+    ],
+    [
+      "steel",
+      "hardness"
+    ],
+    [
+      "grind",
+      "edge"
+    ],
+    [
+      "grind",
+      "whetstone"
+    ],
+    [
+      "whetstone",
+      "hardness"
+    ],
+    [
+      "force",
+      "bruise"
+    ],
+    [
+      "muscle",
+      "bruise"
+    ]
+  ],
+  "known": [
+    [
+      "muscle",
+      "force"
+    ],
+    [
+      "wedge",
+      "edge"
+    ]
+  ],
+  "start": "muscle",
+  "goal": "edge",
+  "replay": [
+    "You press the blade into the target. The same arm that only bruised with a stick now parts the hide.",
+    "The force no longer spreads: it runs down into a line as thin as you can grind it.",
+    "A harder metal keeps that line thin for longer."
+  ],
+  "question": "Why does the blade cut where the stick only bruises?",
+  "options": [
+    "It is heavier",
+    "The same force over a much thinner line",
+    "It is a better metal"
+  ],
+  "answer": 1,
+  "eureka": {
+    "kind": "used",
+    "item": "minecraft:iron_sword",
+    "threshold": 40,
+    "ink": 2
+  },
+  "specimens": [
+    "sword",
+    "hand_knife",
+    "axe",
+    "hafted_tool"
+  ]
+}

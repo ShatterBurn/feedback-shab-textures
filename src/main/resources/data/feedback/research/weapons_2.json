@@ -1,0 +1,115 @@
+{
+  "school": "weapons",
+  "volume": 2,
+  "title": "A flash in a tube",
+  "labels": {
+    "spring": "A spring",
+    "stored_energy": "Stored energy",
+    "release": "Release",
+    "bolt": "A bolt",
+    "powder": "Powder",
+    "flash": "A flash",
+    "heat": "Heat",
+    "gas": "Hot gas",
+    "pressure": "Pressure",
+    "tube": "A tube",
+    "plug": "A plug",
+    "gas_push": "Gas pushes"
+  },
+  "relations": [
+    [
+      "spring",
+      "stored_energy"
+    ],
+    [
+      "stored_energy",
+      "release"
+    ],
+    [
+      "release",
+      "bolt"
+    ],
+    [
+      "release",
+      "flash"
+    ],
+    [
+      "powder",
+      "flash"
+    ],
+    [
+      "powder",
+      "heat"
+    ],
+    [
+      "flash",
+      "heat"
+    ],
+    [
+      "heat",
+      "gas"
+    ],
+    [
+      "gas",
+      "pressure"
+    ],
+    [
+      "pressure",
+      "tube"
+    ],
+    [
+      "tube",
+      "plug"
+    ],
+    [
+      "plug",
+      "pressure"
+    ],
+    [
+      "pressure",
+      "gas_push"
+    ],
+    [
+      "gas",
+      "gas_push"
+    ],
+    [
+      "bolt",
+      "tube"
+    ]
+  ],
+  "known": [
+    [
+      "spring",
+      "stored_energy"
+    ],
+    [
+      "powder",
+      "flash"
+    ],
+    [
+      "pressure",
+      "gas_push"
+    ]
+  ],
+  "start": "spring",
+  "goal": "gas_push",
+  "replay": [
+    "You pack powder behind a plug and light it. The flash that only startled you outdoors now has nowhere to go.",
+    "The tube creaks. The bolt leaves it faster than any spring has thrown it.",
+    "It was never the flash that moved the bolt."
+  ],
+  "question": "What pushed the bolt out of the tube?",
+  "options": [
+    "The spring in the plug",
+    "Hot gas from the burning powder, with nowhere else to go",
+    "The flash of light itself"
+  ],
+  "answer": 1,
+  "eureka": {
+    "kind": "used",
+    "item": "minecraft:crossbow",
+    "threshold": 50,
+    "ink": 2
+  }
+}

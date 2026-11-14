@@ -29,7 +29,12 @@ public final class ClientPayloads {
     public static void openMinigame(io.github.soundgoodizerfan.feedback.net.MinigameOpenPayload payload) {
         if (Minecraft.getInstance().screen instanceof EngineeringTableScreen screen && screen.getMenu().containerId == payload.container())
             MinigameScreens.open(screen, payload);
-        else if (Minecraft.getInstance().screen instanceof io.github.soundgoodizerfan.feedback.client.bench.ResearchTableScreen screen && screen.getMenu().containerId == payload.container())
+    }
+
+    /** The Research Table's trial wants playing. */
+    public static void openResearch(io.github.soundgoodizerfan.feedback.net.ResearchOpenPayload payload) {
+        if (Minecraft.getInstance().screen instanceof io.github.soundgoodizerfan.feedback.client.bench.ResearchTableScreen screen
+                && screen.getMenu().containerId == payload.container())
             MinigameScreens.openResearch(screen, payload);
     }
 

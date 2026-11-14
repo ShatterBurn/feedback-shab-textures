@@ -1,0 +1,102 @@
+{
+  "school": "aerospace",
+  "volume": 2,
+  "title": "No air needed",
+  "labels": {
+    "propeller": "A propeller",
+    "air": "Air",
+    "momentum": "Momentum",
+    "exhaust": "Exhaust",
+    "fuel": "Fuel",
+    "burn": "Burning",
+    "nozzle": "A nozzle",
+    "pressure": "Pressure",
+    "reaction": "Reaction",
+    "thruster": "A thruster",
+    "blade": "A blade"
+  },
+  "relations": [
+    [
+      "propeller",
+      "blade"
+    ],
+    [
+      "blade",
+      "air"
+    ],
+    [
+      "air",
+      "momentum"
+    ],
+    [
+      "momentum",
+      "exhaust"
+    ],
+    [
+      "momentum",
+      "reaction"
+    ],
+    [
+      "exhaust",
+      "nozzle"
+    ],
+    [
+      "fuel",
+      "burn"
+    ],
+    [
+      "burn",
+      "pressure"
+    ],
+    [
+      "pressure",
+      "nozzle"
+    ],
+    [
+      "nozzle",
+      "thruster"
+    ],
+    [
+      "reaction",
+      "thruster"
+    ],
+    [
+      "exhaust",
+      "reaction"
+    ],
+    [
+      "burn",
+      "exhaust"
+    ]
+  ],
+  "known": [
+    [
+      "propeller",
+      "blade"
+    ],
+    [
+      "nozzle",
+      "thruster"
+    ]
+  ],
+  "start": "propeller",
+  "goal": "thruster",
+  "replay": [
+    "A propeller pushes on air. Take the air away and it has nothing to push.",
+    "What it needs is only something thrown backward; carry that something with you.",
+    "Burn the fuel, throw it out of the nozzle, and the vessel moves the other way."
+  ],
+  "question": "What does a thruster push against?",
+  "options": [
+    "The air",
+    "The ground",
+    "Its own exhaust"
+  ],
+  "answer": 2,
+  "eureka": {
+    "kind": "used",
+    "item": "feedback:propeller",
+    "threshold": 5,
+    "ink": 2
+  }
+}

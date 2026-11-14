@@ -309,9 +309,11 @@ public final class ModularTuning {
     /** The learning game: parts read per specimen at most, the fewest ticks an honest reading takes, and the start levels perfect notes give. */
     public static final int NOTES_MAX_PARTS = 6;
     public static final int NOTES_MIN_READ_TICKS = 16;
-    /** Research: experience points a trial run spends, the most samples laid out, the fewest an honest play takes (ticks), and the share of the larger figure under which two samples cannot be told apart. */
-    public static final int RESEARCH_XP = 40, RESEARCH_SAMPLES = 4, RESEARCH_MIN_TICKS = 60;
-    public static final float RESEARCH_NOISE = 0.06f;
+    /** Research: experience points a trial run spends, the fewest ticks an honest play takes, and the ink a run starts with (a base and a bonus for a specimen in good shape). */
+    public static final int RESEARCH_XP = 40, RESEARCH_MIN_TICKS = 60, RESEARCH_BASE_INK = 7, RESEARCH_SPECIMEN_INK = 3;
+    /** Research strain (percent) past which the specimen is worn, and past which it comes apart; and the share of its life a full-strain run costs it. */
+    public static final int RESEARCH_WEAR_STRAIN = 35, RESEARCH_BREAK_STRAIN = 70;
+    public static final float RESEARCH_WEAR_SHARE = 0.5f;
     public static final float NOTES_MAX_LEVELS = 2f;
     /** Filing: strokes a file takes before it wears one point (hand tools may always wear). */
     public static final int FILE_STROKES_PER_WEAR = 5;

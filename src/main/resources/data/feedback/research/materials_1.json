@@ -1,0 +1,102 @@
+{
+  "school": "materials",
+  "volume": 1,
+  "title": "What a blow does to metal",
+  "labels": {
+    "hammer": "A hammer",
+    "blow": "A blow",
+    "hardness": "Hardness",
+    "grain": "Grain",
+    "hot": "Heat",
+    "anneal": "Annealing",
+    "quench": "Quenching",
+    "temper": "Tempering",
+    "brittle": "Brittleness",
+    "tough": "Toughness",
+    "crystal": "Crystal"
+  },
+  "relations": [
+    [
+      "hammer",
+      "blow"
+    ],
+    [
+      "blow",
+      "grain"
+    ],
+    [
+      "grain",
+      "hardness"
+    ],
+    [
+      "hardness",
+      "brittle"
+    ],
+    [
+      "brittle",
+      "temper"
+    ],
+    [
+      "temper",
+      "tough"
+    ],
+    [
+      "hot",
+      "anneal"
+    ],
+    [
+      "anneal",
+      "grain"
+    ],
+    [
+      "hot",
+      "quench"
+    ],
+    [
+      "quench",
+      "hardness"
+    ],
+    [
+      "quench",
+      "brittle"
+    ],
+    [
+      "crystal",
+      "grain"
+    ]
+  ],
+  "known": [
+    [
+      "hammer",
+      "blow"
+    ],
+    [
+      "quench",
+      "hardness"
+    ]
+  ],
+  "start": "hammer",
+  "goal": "temper",
+  "replay": [
+    "Hammer cold metal and it gets harder, then it cracks.",
+    "Heat takes the hardness back. Quench it and the hardness locks in, with brittleness.",
+    "Temper what you quenched and you trade a little of one for the other."
+  ],
+  "question": "Why temper a quenched piece?",
+  "options": [
+    "To make it softer",
+    "To give back toughness at a little cost in hardness",
+    "To change its colour"
+  ],
+  "answer": 1,
+  "eureka": {
+    "kind": "used",
+    "item": "feedback:hand_hammer",
+    "threshold": 20,
+    "ink": 2
+  },
+  "specimens": [
+    "hand_hammer",
+    "file"
+  ]
+}

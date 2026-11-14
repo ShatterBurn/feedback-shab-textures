@@ -158,6 +158,7 @@ public class Feedback {
         event.addListener(io.github.soundgoodizerfan.feedback.modular.type.ModularTypes.get());
         event.addListener(io.github.soundgoodizerfan.feedback.weapon.GunOptions.get());
         event.addListener(io.github.soundgoodizerfan.feedback.modular.attunement.Attunements.get());
+        event.addListener(io.github.soundgoodizerfan.feedback.modular.research.ResearchPlans.get());
         event.addListener(io.github.soundgoodizerfan.feedback.weapon.GunBlueprintPool.get());
         event.addListener(io.github.soundgoodizerfan.feedback.combat.skill.SkillTrees.get());
     }
@@ -361,6 +362,12 @@ public class Feedback {
                 .playToClient(io.github.soundgoodizerfan.feedback.net.MinigameOpenPayload.TYPE,
                         io.github.soundgoodizerfan.feedback.net.MinigameOpenPayload.STREAM_CODEC,
                         io.github.soundgoodizerfan.feedback.net.MinigameOpenPayload::handle)
+                .playToClient(io.github.soundgoodizerfan.feedback.net.ResearchOpenPayload.TYPE,
+                        io.github.soundgoodizerfan.feedback.net.ResearchOpenPayload.STREAM_CODEC,
+                        io.github.soundgoodizerfan.feedback.net.ResearchOpenPayload::handle)
+                .playToServer(io.github.soundgoodizerfan.feedback.net.ResearchResultPayload.TYPE,
+                        io.github.soundgoodizerfan.feedback.net.ResearchResultPayload.STREAM_CODEC,
+                        io.github.soundgoodizerfan.feedback.net.ResearchResultPayload::handle)
                 .playToServer(io.github.soundgoodizerfan.feedback.net.MinigameResultPayload.TYPE,
                         io.github.soundgoodizerfan.feedback.net.MinigameResultPayload.STREAM_CODEC,
                         io.github.soundgoodizerfan.feedback.net.MinigameResultPayload::handle)

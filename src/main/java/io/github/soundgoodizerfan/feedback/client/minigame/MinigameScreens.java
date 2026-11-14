@@ -55,8 +55,8 @@ public final class MinigameScreens {
     }
 
     /** Opens the research game over the Research Table's screen. */
-    public static void openResearch(Screen parent, MinigameOpenPayload session) {
-        Minecraft.getInstance().setScreen(new ResearchScreen(parent, session));
+    public static void openResearch(Screen parent, io.github.soundgoodizerfan.feedback.net.ResearchOpenPayload session) {
+        Minecraft.getInstance().setScreen(new ResearchBoardScreen(parent, session));
     }
 
     /** Sends the one result of a game: a score in 0..1. */

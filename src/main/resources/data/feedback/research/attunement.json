@@ -1,0 +1,96 @@
+{
+  "school": "attunement",
+  "volume": 0,
+  "title": "Marking the unseen",
+  "labels": {
+    "marking": "A marking",
+    "ink": "Ink",
+    "glyph": "A glyph",
+    "light": "Light",
+    "ritual": "A ritual",
+    "patience": "Patience",
+    "rhythm": "Rhythm",
+    "focus": "Focus",
+    "resonance": "Resonance",
+    "attunement": "An attunement",
+    "metal": "Metal"
+  },
+  "relations": [
+    [
+      "marking",
+      "ink"
+    ],
+    [
+      "ink",
+      "glyph"
+    ],
+    [
+      "glyph",
+      "light"
+    ],
+    [
+      "glyph",
+      "focus"
+    ],
+    [
+      "focus",
+      "patience"
+    ],
+    [
+      "patience",
+      "rhythm"
+    ],
+    [
+      "rhythm",
+      "ritual"
+    ],
+    [
+      "ritual",
+      "resonance"
+    ],
+    [
+      "light",
+      "resonance"
+    ],
+    [
+      "resonance",
+      "attunement"
+    ],
+    [
+      "focus",
+      "attunement"
+    ],
+    [
+      "metal",
+      "resonance"
+    ],
+    [
+      "ink",
+      "metal"
+    ]
+  ],
+  "known": [
+    [
+      "marking",
+      "ink"
+    ],
+    [
+      "resonance",
+      "attunement"
+    ]
+  ],
+  "start": "marking",
+  "goal": "attunement",
+  "replay": [
+    "You mark the same glyph a dozen times. The twelfth rings on the metal where the others did not.",
+    "Patience and rhythm are what the glyph needs; the metal answers the way a bell does.",
+    "The part keeps what it heard."
+  ],
+  "question": "What does an attunement ask of the part?",
+  "options": [
+    "That it be struck hard",
+    "That it ring to a pattern it was marked with",
+    "That it be heated"
+  ],
+  "answer": 1
+}

@@ -1,0 +1,107 @@
+{
+  "school": "weapons",
+  "volume": 3,
+  "title": "Lightning on a leash",
+  "labels": {
+    "powder": "Powder",
+    "chemical_energy": "Chemical energy",
+    "charge": "Charge",
+    "current": "Current",
+    "wire": "A wire",
+    "coil": "A coil",
+    "field": "A field",
+    "magnet": "A magnet",
+    "capacitor": "A capacitor",
+    "release": "Release",
+    "pulse": "A pulse",
+    "heat": "Heat"
+  },
+  "relations": [
+    [
+      "powder",
+      "chemical_energy"
+    ],
+    [
+      "powder",
+      "heat"
+    ],
+    [
+      "chemical_energy",
+      "charge"
+    ],
+    [
+      "charge",
+      "current"
+    ],
+    [
+      "current",
+      "wire"
+    ],
+    [
+      "wire",
+      "coil"
+    ],
+    [
+      "coil",
+      "field"
+    ],
+    [
+      "field",
+      "magnet"
+    ],
+    [
+      "charge",
+      "capacitor"
+    ],
+    [
+      "current",
+      "capacitor"
+    ],
+    [
+      "capacitor",
+      "release"
+    ],
+    [
+      "release",
+      "pulse"
+    ],
+    [
+      "field",
+      "pulse"
+    ],
+    [
+      "current",
+      "heat"
+    ]
+  ],
+  "known": [
+    [
+      "powder",
+      "chemical_energy"
+    ],
+    [
+      "release",
+      "pulse"
+    ]
+  ],
+  "start": "powder",
+  "goal": "pulse",
+  "replay": [
+    "A cell stores what powder stores, but gives it back as a push through a wire instead of a gas.",
+    "Let it pool in a capacitor and let go at once: a blow with nothing solid in it.",
+    "The shot is current; the gun only has to survive its own heat."
+  ],
+  "question": "What does a pulse gun throw?",
+  "options": [
+    "A tiny bullet",
+    "Stored charge, released all at once",
+    "Burning powder"
+  ],
+  "answer": 1,
+  "eureka": {
+    "kind": "used",
+    "item": "feedback:gun",
+    "threshold": 30,
+    "ink": 2
+  }
+}

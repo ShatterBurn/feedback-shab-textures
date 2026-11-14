@@ -1,0 +1,106 @@
+{
+  "school": "robotics",
+  "volume": 1,
+  "title": "A motor that listens",
+  "labels": {
+    "dynamo": "A dynamo",
+    "current": "Current",
+    "motor": "A motor",
+    "coil": "A coil",
+    "field": "A field",
+    "torque": "Torque",
+    "sensor": "A sensor",
+    "feedback": "Feedback",
+    "controller": "A controller",
+    "position": "Position",
+    "servo": "A servo"
+  },
+  "relations": [
+    [
+      "dynamo",
+      "current"
+    ],
+    [
+      "current",
+      "coil"
+    ],
+    [
+      "coil",
+      "field"
+    ],
+    [
+      "field",
+      "motor"
+    ],
+    [
+      "motor",
+      "torque"
+    ],
+    [
+      "torque",
+      "position"
+    ],
+    [
+      "sensor",
+      "position"
+    ],
+    [
+      "sensor",
+      "feedback"
+    ],
+    [
+      "feedback",
+      "controller"
+    ],
+    [
+      "controller",
+      "motor"
+    ],
+    [
+      "controller",
+      "servo"
+    ],
+    [
+      "position",
+      "servo"
+    ],
+    [
+      "motor",
+      "servo"
+    ]
+  ],
+  "known": [
+    [
+      "dynamo",
+      "current"
+    ],
+    [
+      "controller",
+      "servo"
+    ]
+  ],
+  "start": "dynamo",
+  "goal": "servo",
+  "replay": [
+    "Run a dynamo backwards and it is a motor: a coil and a field, pushing round.",
+    "A motor turns; it does not know where it is. Tell it, and let it correct.",
+    "The controller compares where it is to where it should be, and the motor listens."
+  ],
+  "question": "What makes a servo different from a plain motor?",
+  "options": [
+    "It is faster",
+    "It measures its position and corrects",
+    "It is stronger"
+  ],
+  "answer": 1,
+  "eureka": {
+    "kind": "crafted",
+    "item": "feedback:dynamotor",
+    "threshold": 3,
+    "ink": 2
+  },
+  "specimens": [
+    "dynamotor",
+    "electromagnet"
+  ]
+}

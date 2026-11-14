@@ -19,10 +19,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
-/** The Research Table's container: the blank treatise and the four samples laid out to be compared. */
+/** The Research Table's container: the blank treatise and the specimen it is researched from. */
 public class ResearchTableBlockEntity extends BlockEntity implements Container, MenuProvider {
 
-    public static final int BLANK = 0, SAMPLES = 1, SAMPLE_COUNT = 4, SIZE = SAMPLES + SAMPLE_COUNT;
+    public static final int BLANK = 0, SPECIMEN = 1, SIZE = 2;
 
     private final NonNullList<ItemStack> items = NonNullList.withSize(SIZE, ItemStack.EMPTY);
 

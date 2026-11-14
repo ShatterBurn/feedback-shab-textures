@@ -1,0 +1,102 @@
+{
+  "school": "chemical",
+  "volume": 3,
+  "title": "The shaped blast",
+  "labels": {
+    "compressor": "A compressor",
+    "gas": "Gas",
+    "fuel": "Fuel",
+    "oxidiser": "An oxidiser",
+    "mix": "A mix",
+    "spark": "A spark",
+    "burn": "Burning",
+    "confine": "Confinement",
+    "casing": "A casing",
+    "fragment": "Fragments",
+    "blast": "A blast"
+  },
+  "relations": [
+    [
+      "compressor",
+      "gas"
+    ],
+    [
+      "gas",
+      "mix"
+    ],
+    [
+      "fuel",
+      "mix"
+    ],
+    [
+      "oxidiser",
+      "mix"
+    ],
+    [
+      "mix",
+      "spark"
+    ],
+    [
+      "spark",
+      "burn"
+    ],
+    [
+      "burn",
+      "confine"
+    ],
+    [
+      "confine",
+      "casing"
+    ],
+    [
+      "casing",
+      "fragment"
+    ],
+    [
+      "burn",
+      "blast"
+    ],
+    [
+      "confine",
+      "blast"
+    ],
+    [
+      "fragment",
+      "blast"
+    ],
+    [
+      "oxidiser",
+      "burn"
+    ]
+  ],
+  "known": [
+    [
+      "compressor",
+      "gas"
+    ],
+    [
+      "confine",
+      "blast"
+    ]
+  ],
+  "start": "compressor",
+  "goal": "blast",
+  "replay": [
+    "Burn a mix in the open and it flares. Burn it shut in and it does not flare.",
+    "The casing is the difference between a fire and a charge.",
+    "Score the casing and the fragments are part of the blast."
+  ],
+  "question": "What turns a burning mix into a blast?",
+  "options": [
+    "More fuel alone",
+    "Confinement",
+    "A hotter spark"
+  ],
+  "answer": 1,
+  "eureka": {
+    "kind": "used",
+    "item": "minecraft:flint_and_steel",
+    "threshold": 30,
+    "ink": 2
+  }
+}
