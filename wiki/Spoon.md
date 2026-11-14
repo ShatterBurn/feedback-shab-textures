@@ -6,6 +6,8 @@ A modular hand tool for working a [Stockpot](Stockpot.md): hold it to stir, tap 
 
 Shape a **Spoon Bowl** (from a plate, planks or bone; metal is shaped hot at the [Smithing Table](Smithing_Table.md) or [Anvil](Anvil.md)) and put it with a handle (stick or bone) at the [Woodworking Table](Woodworking_Table.md), as for any [modular tool](Tools_and_Weapons.md).
 
+The handle's strength changes the tool's durability a little: a weaker handle than wood's shortens it, a stronger one lengthens it, and wood is normal.
+
 ## Using it
 
 Aim at a stockpot with the spoon in hand.

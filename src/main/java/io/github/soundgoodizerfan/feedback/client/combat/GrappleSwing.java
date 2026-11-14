@@ -144,6 +144,18 @@ public final class GrappleSwing {
         for (int pass = 0; pass < (n > 1 ? ModularTuning.GRAPPLE_JOINT_PASSES : 1); pass++)
             for (int i = 0; i < n; i++)
                 player.setDeltaMovement(GrappleHook.constrain(pivots[i].subtract(mid), eff[i], player.getDeltaMovement()));
+        // The motor: a steady pull along each line at the drum's speed, on the ground as in the air (the stretch draw above is too weak to beat ground friction).
+        if (reeling)
+            for (int i = 0; i < n; i++) {
+                Vec3 to = pivots[i].subtract(mid);
+                if (to.length() <= ModularTuning.GRAPPLE_STOP_DISTANCE)
+                    continue;
+                Vec3 dir = to.normalize();
+                Vec3 v = player.getDeltaMovement();
+                double lack = hooks.get(i).reelSpeed() * drum - v.dot(dir);
+                if (lack > 0)
+                    player.setDeltaMovement(v.add(dir.scale(lack)));
+            }
         if (reeling)
             for (Vec3 pivot : pivots)
                 if (pivot.subtract(mid).length() < ModularTuning.GRAPPLE_BRAKE_RADIUS) {

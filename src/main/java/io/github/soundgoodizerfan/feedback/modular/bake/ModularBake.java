@@ -306,7 +306,12 @@ public final class ModularBake {
         float grip = variant.map(v -> v.params().getOrDefault("grip", 1f)).orElse(1f);
         float heat = variant.map(v -> v.params().getOrDefault("heat", 1f)).orElse(1f);
         boolean cleat = design.parts().stream().anyMatch(p -> !p.role().equals(type.wearRole()));
-        float friction = m.mechanical().friction().get() * grip + (cleat ? io.github.soundgoodizerfan.feedback.logistics.LogisticsTuning.CLEAT_GRIP : 0f);
+        // A cleat bites by its own metal's friction against the standard.
+        Material cm = design.parts().stream().filter(p -> !p.role().equals(type.wearRole())).map(p -> materials.get(p.material()))
+                .filter(java.util.Objects::nonNull).findFirst().orElse(null);
+        float cleatGrip = cm == null ? 1f : Math.max(ModularTuning.CLEAT_GRIP_MIN, Math.min(ModularTuning.CLEAT_GRIP_MAX,
+                cm.mechanical().friction().orElse(ModularTuning.CLEAT_REF_FRICTION) / ModularTuning.CLEAT_REF_FRICTION));
+        float friction = m.mechanical().friction().get() * grip + (cleat ? io.github.soundgoodizerfan.feedback.logistics.LogisticsTuning.CLEAT_GRIP * cleatGrip : 0f);
         return Optional.of(new io.github.soundgoodizerfan.feedback.logistics.belt.BeltSpec(band.material(), friction, m.thermal().serviceTemperature().get().value() * heat, cleat));
     }
 
@@ -428,7 +433,11 @@ public final class ModularBake {
             danger *= 1f + ModularTuning.TANK_BANDS_GAIN * bandYield / (bandYield + shellYield);
         }
         // A relief valve (an addon) vents a share of the room a tick near the danger line, so a pump that outruns the leak still cannot burst it.
-        float relief = design.part(TANK_VALVE) == null ? 0f : volume * ModularTuning.TANK_RELIEF_PER_ROOM;
+        // The seat's metal decides whether it still lifts clean: a corroded seat sticks and weeps.
+        Part valve = design.part(TANK_VALVE);
+        Material vm = valve == null ? null : materials.get(valve.material());
+        float relief = vm == null ? 0f : volume * ModularTuning.TANK_RELIEF_PER_ROOM
+                * (1f - ModularTuning.VALVE_CORROSION_LOSS * (1f - vm.corrosionResistance().orElse(0.5f)));
         return Optional.of(new TankSpec(volume, danger, danger * ModularTuning.TANK_CRITICAL_OVER_DANGER, steel, relief));
     }
 
@@ -518,8 +527,12 @@ public final class ModularBake {
                 f.merge(Fig.SUIT_DRIVE, grade * ModularTuning.SUIT_DRIVE_PER_MOTOR_GRADE, Float::sum);
                 f.put(Fig.SUIT_LOSS, clamp(ModularTuning.SUIT_LOSS_FLOOR + (1f - grade) * ModularTuning.SUIT_LOSS_PER_GRADE_SHORT, 0f, ModularTuning.SUIT_LOSS_MAX));
             }
-            case "gauge" -> f.put(Fig.SUIT_GAUGE, Math.min(1f, 0.5f + 5f * m.separation().reflectivity().orElse(0.2f)));
-            case "sensor_head" -> f.merge(Fig.SUIT_SENSE, (float) part.count(), Float::sum);
+            // the clearer the finer, and a soft glass scratches and loses some of the step
+            case "gauge" -> f.put(Fig.SUIT_GAUGE, Math.min(1f, 0.5f + 5f * m.separation().reflectivity().orElse(0.2f))
+                    * (1f - ModularTuning.GAUGE_SCRATCH_LOSS * soft(m)));
+            // the lead carries the signal: the better it conducts, the further each cell reaches (glass carries the base)
+            case "sensor_head" -> f.merge(Fig.SUIT_SENSE, part.count() * (ModularTuning.SENSE_BASE + ModularTuning.SENSE_PER_AMPACITY
+                    * GearTuning.saturate(m.ampacity().orElse(0f), ModularTuning.FITTING_AMPACITY_HALF)), Float::sum);
             case "battery_bay" -> f.put(Fig.SUIT_BAY, 1f);
             // the held module's own baked figures: what it is and how strongly it works, and how well it is wired
             case "upgrade" -> {
@@ -858,9 +871,14 @@ public final class ModularBake {
                 float drive = 0;
                 float string = 0;
                 float total = 0;
+                float bind = 0, drag = 0;
                 for (Part p : design.parts()) {
                     ModularType.Role r = type.roles().get(p.role());
                     total += mass(r, p, by.get(p.role()));
+                    if (r.name().equals("binding"))
+                        bind = GearTuning.saturate(strength(by.get(p.role())), ModularTuning.FITTING_STRENGTH_HALF);
+                    else if (r.name().equals("magazine"))
+                        drag = by.get(p.role()).mechanical().friction().orElse(0f);
                     if (r.name().equals("string"))
                         string = strength(by.get(p.role()));
                     else if (r.name().equals("limbs") || r.name().equals("prod"))
@@ -873,8 +891,9 @@ public final class ModularBake {
                 f.put(Fig.VELOCITY, clamp((float) Math.pow(ratio, ModularTuning.VELOCITY_EXPONENT) * worn,
                         ModularTuning.VELOCITY_MIN, ModularTuning.VELOCITY_MAX));
                 f.put(Fig.DRAW, clamp(ModularTuning.DRAW_REFERENCE_TICKS * (float) Math.sqrt(ratio),
-                        ModularTuning.DRAW_MIN_TICKS, ModularTuning.DRAW_MAX_TICKS));
-                f.put(Fig.JOINT, string > 0 ? drive / (ModularTuning.STRING_SHARE * string) : 0f);
+                        ModularTuning.DRAW_MIN_TICKS, ModularTuning.DRAW_MAX_TICKS) * (1f + ModularTuning.MAGAZINE_DRAW_PER_FRICTION * drag));
+                // A binding that holds the limbs to the riser takes load off the joint; a strong one takes more.
+                f.put(Fig.JOINT, string > 0 ? drive / (ModularTuning.STRING_SHARE * string) * (1f - ModularTuning.BINDING_JOINT_RELIEF * bind) : 0f);
             }
             case AIR_GUN -> {
                 Optional<SpringGunSpec> spec = SpringGunSpec.of(design, type, materials);
@@ -901,6 +920,12 @@ public final class ModularBake {
                 ElectricGunSpec egun = spec.get();
                 f.put(Fig.MASS, total);
                 f.put(Fig.SHOT_ENERGY, egun.pulseJ() * egun.seatMult() * worn);
+                var hand = io.github.soundgoodizerfan.feedback.weapon.GunSpec.hand(design, type, materials);
+                if (hand.core() != null || hand.bipod() != null) {
+                    var brace = hand.braced();
+                    f.put(Fig.BRACE_KICK, brace.kick());
+                    f.put(Fig.BRACE_SPREAD, brace.spread());
+                }
                 // The shared gun figures at an ordinary pulse: what the gun pipeline reads (cycle, kick, sound, the HUD).
                 f.putAll(egun.figures(egun.pulseJ() * egun.seatMult(), total, egun.cycleTicks(false), 0f, 1f).figs());
                 f.put(Fig.MASS, total);
@@ -929,35 +954,60 @@ public final class ModularBake {
                 float cover = clamp(plateRole.cells(plate) * plateRole.volumeScale(plate) / Math.max(1f, canonical), 0f, ModularTuning.ARMOUR_COVER_MAX);
                 float points = type.armourMax() * share * type.roles().get(type.wearRole()).factor(plate.form()) * cover;
                 float total = 0;
+                // What a fitting's own metal adds: a hard collar stops a point, a tough pauldron takes the glancing blow, a poleyn
+                // outlasts the knee's knocks, spurs bite and hobnails grip the ground, a bay's plate is armour over the cells.
+                float pierce = 0, toughAdd = 0, durGain = 0, groundGrip = 0;
                 for (Part p : design.parts()) {
                     ModularType.Role r = type.roles().get(p.role());
-                    total += mass(r, p, by.get(p.role()));
-                    if (r.name().equals("underlayer")) {
-                        float c = competence(by.get(p.role()));
-                        points += type.armourMax() * ModularTuning.LINING_SHARE * c / (c + ModularTuning.ARMOUR_HALF_COMPETENCE);
+                    Material pm = by.get(p.role());
+                    total += mass(r, p, pm);
+                    switch (r.name()) {
+                        case "underlayer" -> {
+                            float c = competence(pm);
+                            points += type.armourMax() * ModularTuning.LINING_SHARE * c / (c + ModularTuning.ARMOUR_HALF_COMPETENCE);
+                        }
+                        case "battery_bay" -> {
+                            float c = competence(pm);
+                            points += type.armourMax() * ModularTuning.BAY_ARMOUR_SHARE * c / (c + ModularTuning.ARMOUR_HALF_COMPETENCE);
+                        }
+                        case "collar" -> pierce += ModularTuning.COLLAR_PIERCE * GearTuning.saturate(pm.hardness().value(), GearTuning.HARDNESS_HALF);
+                        case "pauldron" -> toughAdd += ModularTuning.PAULDRON_TOUGHNESS * GearTuning.saturate(toughness(pm), GearTuning.TOUGHNESS_HALF);
+                        case "poleyn" -> durGain += ModularTuning.POLEYN_DURABILITY * competence(pm) / (competence(pm) + ModularTuning.ARMOUR_HALF_COMPETENCE);
+                        case "spurs" -> groundGrip += ModularTuning.SPUR_GRIP * GearTuning.saturate(pm.hardness().value(), GearTuning.HARDNESS_HALF);
+                        case "hobnails" -> groundGrip += ModularTuning.HOBNAIL_GRIP_PER_FRICTION * pm.mechanical().friction().orElse(0f);
+                        default -> { }
                     }
-                    suitFitting(f, type, r, p, by.get(p.role()));
+                    suitFitting(f, type, r, p, pm);
                 }
+                f.put(Fig.DURABILITY, (float) Math.max(1, Math.round(f.get(Fig.DURABILITY) * (1f + durGain))));
                 f.put(Fig.MASS, total);
-                f.put(Fig.PIERCE_RESIST, clamp(share * cover * param(plateRole, plate, "pierce"), 0f, ModularTuning.PIERCE_RESIST_MAX));
+                f.put(Fig.PIERCE_RESIST, clamp(share * cover * param(plateRole, plate, "pierce") + pierce, 0f, ModularTuning.PIERCE_RESIST_MAX));
                 f.put(Fig.FIRE_CONDUCT, edge.thermal().conductivity().map(c -> c.workPerTickPerTu()).orElse(0f) * plateRole.volume(plate));
                 f.put(Fig.ARMOUR, points * worn);
                 f.put(Fig.ARMOUR_TOUGHNESS, ModularTuning.TOUGHNESS_MAX * Math.max(0f,
-                        (share - ModularTuning.TOUGHNESS_FROM_SHARE) / (1 - ModularTuning.TOUGHNESS_FROM_SHARE)));
+                        (share - ModularTuning.TOUGHNESS_FROM_SHARE) / (1 - ModularTuning.TOUGHNESS_FROM_SHARE)) + toughAdd);
                 // Boots meet the ground: a coat grippier than the plate under it plants the foot, a slicker one loses it.
                 float grip = type.slot() != ModularType.Slot.FEET || coatMetal == null ? 0f
                         : hold * ModularTuning.COAT_GRIP_PER_FRICTION * (coatMetal.mechanical().friction().orElse(0f)
                         - edge.mechanical().friction().orElse(0f));
                 f.put(Fig.KNOCKBACK_RESISTANCE, clamp((edge.density().muPerMb() - ModularTuning.KNOCKBACK_DENSITY_FLOOR)
-                        * ModularTuning.KNOCKBACK_PER_DENSITY + grip, 0f, ModularTuning.KNOCKBACK_MAX));
+                        * ModularTuning.KNOCKBACK_PER_DENSITY + grip + groundGrip, 0f, ModularTuning.KNOCKBACK_MAX));
                 f.put(Fig.SLOW, clamp(Math.max(0f, total - ModularTuning.SLOW_FREE_MASS) * ModularTuning.SLOW_PER_KG,
                         0f, ModularTuning.SLOW_MAX));
             }
             case SHIELD -> {
                 float total = 0;
                 float held = 1f;
+                float boss = 0;
                 for (Part p : design.parts()) {
                     total += mass(type.roles().get(p.role()), p, by.get(p.role()));
+                    // A stiff rim keeps the face from dishing, a strong strap keeps it on the arm, a boss soaks the blows' centre.
+                    switch (type.roles().get(p.role()).name()) {
+                        case "rim" -> held *= 1f + ModularTuning.RIM_STRENGTH_CAPACITY * GearTuning.saturate(strength(by.get(p.role())), ModularTuning.FITTING_STRENGTH_HALF);
+                        case "strap" -> held *= 1f + ModularTuning.STRAP_STRENGTH_CAPACITY * GearTuning.saturate(strength(by.get(p.role())), ModularTuning.FITTING_STRENGTH_HALF);
+                        case "boss" -> boss = competence(by.get(p.role())) / (competence(by.get(p.role())) + ModularTuning.ARMOUR_HALF_COMPETENCE);
+                        default -> { }
+                    }
                     held *= type.roles().get(p.role()).axesFor(p).containsKey("rim_width")
                             ? 1f + ModularTuning.RIM_CAPACITY_PER_WIDTH * (type.roles().get(p.role()).axis(p, "rim_width") - 1f)
                             : param(type.roles().get(p.role()), p, "capacity_mult");
@@ -966,6 +1016,7 @@ public final class ModularBake {
                 }
                 f.put(Fig.MASS, total);
                 f.put(Fig.CAPACITY, (ModularTuning.SHIELD_BASE_CAPACITY + comp * worn) * held);
+                f.put(Fig.DURABILITY, (float) Math.max(1, Math.round(f.get(Fig.DURABILITY) * (1f + ModularTuning.BOSS_DURABILITY * boss))));
             }
             case HAND -> {
                 // A face of the hafted plan swings and digs as any other, and a hammer face also lands the hand's blow.
@@ -977,6 +1028,13 @@ public final class ModularBake {
                 for (Part p : design.parts())
                     total += mass(type.roles().get(p.role()), p, by.get(p.role()));
                 f.put(Fig.MASS, total);
+                // The handle is the weak link of a hand tool: its yield strength against wood's moves the tool's life.
+                for (Part p : design.parts())
+                    if (!p.role().equals(type.wearRole())) {
+                        float life = Math.max(1f - ModularTuning.HANDLE_LIFE_SPAN, Math.min(1f + ModularTuning.HANDLE_LIFE_SPAN,
+                                1f - ModularTuning.HANDLE_LIFE_SPAN + ModularTuning.HANDLE_LIFE_SPAN * strength(by.get(p.role())) / ModularTuning.HANDLE_REF_YIELD));
+                        f.put(Fig.DURABILITY, (float) Math.max(1, Math.round(f.get(Fig.DURABILITY) * life)));
+                    }
                 // A heavier, harder, tougher head lands a harder blow; a worn one has lost some of it.
                 f.put(Fig.STRIKE_ST, ModularTuning.HAND_ST_PER_MU_COMPETENCE * total * zone.wear() * worn * type.strike()
                         * type.roles().get(type.primary()).strike(design.part(type.primary())));
@@ -1002,6 +1060,17 @@ public final class ModularBake {
                     f.put(Fig.FIST, GearTuning.GLOVE_FIST * worn * strike * (hard + GearTuning.saturate(plate.density().muPerMb(), GearTuning.DENSITY_HALF)) / 2f);
                     f.put(Fig.ARMOUR, GearTuning.GLOVE_ARMOUR * worn * cover * hard);
                     f.put(Fig.SWING_DRAG, Math.min(GearTuning.GLOVE_DRAG_MAX, plateMass * GearTuning.GLOVE_DRAG_PER_MU));
+                }
+                // A vambrace guards the forearm by its hardness; a lining pads the blow by its competence (as armour's underlayer does).
+                for (Part p : design.parts()) {
+                    Material pm = by.get(p.role());
+                    switch (type.roles().get(p.role()).name()) {
+                        case "vambrace" -> f.merge(Fig.ARMOUR, GearTuning.GLOVE_ARMOUR * ModularTuning.VAMBRACE_ARMOUR_SHARE
+                                * GearTuning.saturate(pm.hardness().value(), GearTuning.HARDNESS_HALF) * worn, Float::sum);
+                        case "lining" -> f.merge(Fig.ARMOUR, GearTuning.GLOVE_ARMOUR * ModularTuning.GLOVE_LINING_ARMOUR_SHARE
+                                * competence(pm) / (competence(pm) + ModularTuning.ARMOUR_HALF_COMPETENCE) * worn, Float::sum);
+                        default -> { }
+                    }
                 }
             }
             case BACKPACK -> {
@@ -1035,7 +1104,27 @@ public final class ModularBake {
                     carry += strength(by.get(ModularBackpack.FRAME)) * ModularTuning.PACK_FRAME_CARRY;
                 if (by.get(ModularBackpack.BELT) != null)
                     carry += strength(by.get(ModularBackpack.BELT)) * ModularTuning.PACK_BELT_CARRY * worn;
+                // A rigid pad spreads the load; a weak buckle gives first. A hard liner guards the shell, but a conductive lamp bracket
+                // leads the lantern's heat into it and a conductive battery plate sheds the cell's heat away from it.
+                Material pad = by.get(ModularBackpack.PAD), buckle = by.get(ModularBackpack.BUCKLE), liner = by.get(ModularBackpack.LINER),
+                        bracket = by.get(ModularBackpack.LAMP), bay = by.get(ModularBackpack.BAY), patch = by.get(ModularBackpack.PATCH);
+                if (pad != null)
+                    carry += strength(pad) * ModularTuning.PACK_PAD_CARRY * worn;
+                if (buckle != null)
+                    carry *= 1f - ModularTuning.PACK_BUCKLE_SPAN * (1f - GearTuning.saturate(strength(buckle), ModularTuning.FITTING_STRENGTH_HALF));
                 f.put(Fig.CARRY, carry);
+                float dur = 1f;
+                if (liner != null)
+                    dur += ModularTuning.PACK_LINER_DURABILITY * GearTuning.saturate(toughness(liner), GearTuning.TOUGHNESS_HALF);
+                if (bracket != null)
+                    dur -= ModularTuning.PACK_BRACKET_HEAT * GearTuning.saturate(bracket.thermal().conductivity().map(c -> c.workPerTickPerTu()).orElse(0f), ModularTuning.FITTING_CONDUCTIVITY_HALF);
+                if (bay != null)
+                    dur += ModularTuning.PACK_BATTERY_DURABILITY * GearTuning.saturate(bay.thermal().conductivity().map(c -> c.workPerTickPerTu()).orElse(0f), ModularTuning.FITTING_CONDUCTIVITY_HALF);
+                f.put(Fig.DURABILITY, (float) Math.max(1, Math.round(f.get(Fig.DURABILITY) * dur)));
+                // What a fire patch lets through to the shell (conductivity times its volume); ModularBackpack scorches by it.
+                if (patch != null)
+                    f.put(Fig.FIRE_CONDUCT, patch.thermal().conductivity().map(c -> c.workPerTickPerTu()).orElse(0f)
+                            * type.roles().get(ModularBackpack.PATCH).volume(design.part(ModularBackpack.PATCH)));
             }
             case BED -> {
                 float total = 0;
@@ -1053,7 +1142,10 @@ public final class ModularBake {
                 Part frame = design.part(ModularBed.FRAME);
                 float lift = frame == null ? 0f : type.roles().get(ModularBed.FRAME).paramOf(frame, "lift", 1f);
                 float soft = 0.7f * (padding == null ? 0f : soft(padding)) + 0.3f * (cover == null ? 0f : soft(cover));
-                f.put(Fig.COMFORT, worn * soft * comfort * (1f + ModularTuning.BED_LIFT_COMFORT * lift));
+                // A frame of low strength sags under the sleeper and takes some of the comfort.
+                float sag = frame == null || by.get(ModularBed.FRAME) == null ? 0f
+                        : ModularTuning.BED_FRAME_SAG * (1f - GearTuning.saturate(strength(by.get(ModularBed.FRAME)), ModularTuning.FITTING_STRENGTH_HALF));
+                f.put(Fig.COMFORT, worn * soft * comfort * (1f + ModularTuning.BED_LIFT_COMFORT * lift) * (1f - sag));
                 float pass = padding == null ? ModularTuning.BED_WARM_HALF_CONDUCTIVITY * 10f
                         : padding.thermal().conductivity().map(c -> c.workPerTickPerTu()).orElse(ModularTuning.BED_WARM_HALF_CONDUCTIVITY * 10f);
                 float keeps = ModularTuning.BED_WARM_HALF_CONDUCTIVITY / (ModularTuning.BED_WARM_HALF_CONDUCTIVITY + pass);
@@ -1143,6 +1235,12 @@ public final class ModularBake {
         if (!fitted.isEmpty()) {
             f.put(Fig.FITTING_WEAR, gun.get().fittingWear(materials, false));
             f.put(Fig.FITTING_LIMIT, fitted.stream().map(fp -> fp.serviceTu()).min(Float::compare).orElse(0f));
+        }
+        // a gun with neither a stock nor a bipod has nothing to brace on: both stay zero and are left out
+        if (gun.get().hand().core() != null || gun.get().hand().bipod() != null) {
+            var brace = gun.get().hand().braced();
+            f.put(Fig.BRACE_KICK, brace.kick());
+            f.put(Fig.BRACE_SPREAD, brace.spread());
         }
         f.put(Fig.ENCHANTABILITY, (float) enchantability(by.get(type.primary())));
         return Optional.of(ModularFigures.of(f, step));

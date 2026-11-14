@@ -186,14 +186,14 @@ Beyond the parts of the pattern, a finished tool takes optional **fittings**, pu
 
 | Fitting | On | Does |
 | --- | --- | --- |
-| binding | sword, hand hammer, hand knife, bow, crossbow, and the tools that already had one | Lashing where head meets handle: takes some of the shock. |
+| binding | sword, hand hammer, hand knife, bow, crossbow, and the tools that already had one | Lashing where head meets handle: takes some of the shock. On a bow or crossbow, a stronger binding relieves more of the joint's strain. |
 | pommel | axe, maul, spear, pickaxe, sword | A knob, ball, wheel or counterweight at the butt that moves the weight toward your hand. |
 | tip | maul, hand hammer, and the tools that already had one | A hard piece set in the head. |
 | spring | maul, spear, sword | Wire or rod of metal. Right click cocks it, the next blow lets it go for extra damage; a sword's release also lunges you forward; on a spear it lets the head be thrown from the spring. Stored energy is its volume times its stiffness; a spring worked past what its head can take takes a permanent set and finally snaps. |
 | lanyard | sword, axe, maul, spear | A chain to the hand. Thrown, it reels what it hits and pulls the weapon weakly back at a cost in throw speed; held, a disarming shot cannot strip it. |
 | edge guard | axe, spear, pickaxe, shovel | A plate strip down the haft that stiffens it, at a cost in mass. |
-| magazine | crossbow | A box of plate or plank: its volume sets how many bolts a load takes, scattered, slower to load. |
+| magazine | crossbow | A box of plate or plank: its volume sets how many bolts a load takes, scattered, slower to load; the plate's friction lengthens the draw. |
 | rest | bow, crossbow | A padded rest: steadier aim. |
 | stabiliser | bow, crossbow | A counter-mass slug: steadier, slower to raise. |
-| boss | shield | A plate dome: a turned blow bashes and shoves the attacker, at a cost in mass and a weak spot. |
-| strap | shield | String or wire carrying the weight: the face holds a little more. |
+| boss | shield | A plate dome: a turned blow bashes and shoves the attacker, at a cost in mass and a weak spot. A competent plate raises the shield's durability. |
+| strap | shield | String or wire carrying the weight: the face holds a little more, and a stronger strap holds more. A stronger rim holds more too. |

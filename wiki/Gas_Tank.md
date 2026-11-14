@@ -22,7 +22,7 @@ An addon is an optional extra part made from raw stock, added when you assemble 
 | Addon | Stock | What it does |
 | --- | --- | --- |
 | **Hoop bands** | rod | Bands round the shell. A band metal stronger than the shell's raises the danger line, by up to 60% at best. |
-| **Relief valve** | nugget | Opens above 90% of the danger line and vents gas, so a compressor that outruns what you draw off cannot burst the tank. |
+| **Relief valve** | nugget | Opens above 90% of the danger line and vents gas, so a compressor that outruns what you draw off cannot burst the tank. A seat of a corrosion-resistant metal vents the most; a corroded one sticks and vents less. |
 
 ## It can burst
 

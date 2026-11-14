@@ -14,7 +14,7 @@ The nozzle has one measure, the **bore**, from 4 to 20 mm (10 by default). A wid
 | Jet | 1.5 times | 8% hotter |
 | Wick | 0.6 times | 8% cooler |
 
-**Addon.** A **flame holder** (nugget) is an optional piece that steadies the flame, 3% hotter.
+**Addon.** A **flame holder** (nugget) is an optional piece that steadies the flame. A metal that holds a higher service temperature steadies it hotter.
 
 ## Using it
 

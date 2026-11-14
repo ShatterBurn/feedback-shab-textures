@@ -1,6 +1,6 @@
 # Grapple
 
-A hook on a line. Throw it at a block or a creature and the line catches. You **swing** from a block, or from a creature when the hook has no barb; with a barb a lighter creature is reeled to you instead.
+A hook on a line. Throw it at a block or a creature and the line catches. You **swing** from a block, or from a creature when the hook has no barb; with a barb a creature up to three times your mass is reeled to you instead.
 
 ## Crafting
 
@@ -20,7 +20,7 @@ Put the grapple in the crafting grid with the parts, in any arrangement. Each fi
 | --- | --- | --- |
 | Extra coil | 4 string items (anything in string form whose material is at least as strong as wool) | The line is 28 blocks long instead of 16 |
 | Winch | 1 Grapple Winch | The reel runs twice as fast |
-| Barbed head | 2 rods of a material at least as strong as wrought iron | A lighter creature is reeled to you |
+| Barbed head | 2 rods of a material at least as strong as wrought iron | A creature up to three times your mass is reeled to you |
 | Second hook | 3 plates of a material at least as strong as wrought iron | A second line, thrown by using the grapple again with a line out |
 | Metal line | 4 plain wires of one metal (Iron Wire, Copper Wire, any metal's wire; fine wire does not count) | The line is made of that metal; the tooltip reads "Line: <material>" |
 
@@ -43,14 +43,14 @@ Use it to throw. The hook flies fast on a short arc and bites the first block or
 - **Sneak** to let go of every line. You keep your speed, with a small boost. Using the grapple again does not let go.
 - **A block:** the line is fixed at the bite. Its length is how far you were from the anchor when it caught, up to the line's length. Fall, or run past the line's length, and you arc around the anchor, keeping your sideways speed. The swing is a smooth pendulum; a hook straight overhead does not bounce.
 - **A creature, without a barb:** the creature is a swing anchor, whatever its size.
-- **A creature, with a barb:** a creature lighter than you is dragged to you. A heavier one is still a swing anchor. Mass is judged by body size, the same stand-in as the [parry](Combat.md#parry)'s.
+- **A creature, with a barb:** a creature up to three times your mass is dragged to you, slower the heavier it is than you. A heavier one is a swing anchor. Mass is judged by body size, the same stand-in as the [parry](Combat.md#parry)'s.
 
 With a second hook fitted, using the grapple while a line is out throws the second hook, and both lines hold you as you swing. The two lines hold together: you cannot slip one by leaning on the other.
 
 ### Swinging
 
 - **The line catches on edges.** A line that runs over a block corner bends round it and the swing hangs from the corner, with the line that is left. Up to eight bends. Each edge the line is dragged over saws at it: a bent line takes more load than a straight one (see below), so a line a straight swing would not part may part round corners. A [sheave](#sheave) is a bend that does not saw.
-- **Winch.** The drum comes up to speed over half a second of holding use. Near the anchor the line drags your speed down so you stop at the anchor instead of hitting it.
+- **Winch.** The drum comes up to speed over half a second of holding use, then pulls you along the line at a steady speed, on the ground as in the air. Near the anchor the line drags your speed down so you stop at the anchor instead of hitting it.
 - **Pay out.** Hold **X** (*Grapple: pay out line*, rebindable) to let line out, up to the grapple's longest line (16 blocks, 28 with the extra coil).
 - **Pump.** In the air on a taut line, hold a direction to add speed along it, up to a limit. Air drag is lighter on a line and for a second after letting go, so a swing keeps the speed it was given.
 - **Jump** to let go with an upward kick (in the air) and the swing's momentum.

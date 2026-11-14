@@ -72,9 +72,11 @@ public class GearItem extends Item {
             tooltip.add(flavorLine(Component.translatable(base + i)));
     }
 
-    /** A flavour line in red; a leading "+ " (the bullet of a stat-style line) stays white. */
+    /** A flavour line in red; a leading "+ " (the bullet of a stat-style line) stays white; a leading "= " makes the whole line white. */
     private static Component flavorLine(Component text) {
         String raw = text.getString();
+        if (raw.startsWith("= "))
+            return Component.literal(raw.substring(2)).withStyle(ChatFormatting.WHITE);
         if (!raw.startsWith("+ "))
             return text.copy().withStyle(ChatFormatting.RED);
         return Component.literal("+ ").withStyle(ChatFormatting.WHITE).append(Component.literal(raw.substring(2)).withStyle(ChatFormatting.RED));

@@ -330,6 +330,46 @@ public final class ModularModifiers {
                 return new Object[]{n((1 - io.github.soundgoodizerfan.feedback.weapon.HandlingPhysics.counterKick(share)) * 100),
                         n((io.github.soundgoodizerfan.feedback.weapon.HandlingPhysics.counterCycle(share) - 1) * 100)};
             }
+            // the fittings below act on live state (heat, light), so the gloss gives what each cuts at its best: a cold barrel, a dark room
+            case "gun_obturator" -> {
+                Material m = slot.apply("obturator", "main");
+                if (m == null)
+                    return null;
+                float seal = Math.max(0f, 1f - m.hardness().value() / p(v, "soft_limit", 1f));
+                return new Object[]{n(p(v, "kick_cut", 0.25f) * seal * 100), n(p(v, "spread_cut", 0.15f) * seal * 100)};
+            }
+            case "gun_sear" -> {
+                Material m = slot.apply("magnetic_sear", "main");
+                boolean pull = m != null && m.separation().magnetic();
+                return new Object[]{n(pull ? p(v, "spread_cut", 0.15f) * 100 : 0), n(pull ? p(v, "cycle_cut", 0.1f) * 100 : 0)};
+            }
+            case "gun_reticle" -> {
+                Material m = slot.apply("lit_reticle", "main");
+                return new Object[]{n(m == null ? 0 : p(v, "spread_cut", 0.2f) * m.luminance().orElse(0) / 15f * 100)};
+            }
+            case "gun_buffer" -> {
+                Material m = slot.apply("hydraulic_buffer", "main");
+                float thick = m == null ? 0f : Math.min(1f, (float) Math.log10(Math.max(1f, m.molten().viscosity().orElse(1f))) / p(v, "decades", 4f));
+                return new Object[]{n((1f - p(v, "kick_floor", 0.5f)) * thick * 100), n(p(v, "cycle_slow", 0.3f) * thick * 100)};
+            }
+            case "jacket_damping" -> {
+                ModularDesign.Part barrel = design.part(type.wearRole());
+                Material m = barrel == null ? null : ModularBake.slotMaterial(type.roles().get(barrel.role()), barrel, "jacket", materials);
+                var d = m == null ? null : m.mechanical().damping().orElse(null);
+                return new Object[]{n(d == null ? 0 : (1f - d.coldSpread()) * 100)};
+            }
+            case "bayonet" -> {
+                Material m = slot.apply("bayonet", "main");
+                return new Object[]{n(io.github.soundgoodizerfan.feedback.weapon.GunBludgeon.bayonetBase(m))};
+            }
+            case "thermal_fit" -> {
+                Material m = slot.apply("thermal_sleeve", "main");
+                return m == null ? null : new Object[]{n(io.github.soundgoodizerfan.feedback.weapon.HandlingPhysics.sleeveFollow(m) * 100)};
+            }
+            case "resonance" -> {
+                Material m = slot.apply("resonance_weight", "main");
+                return m == null ? null : new Object[]{n(io.github.soundgoodizerfan.feedback.weapon.HandlingPhysics.resonanceDetune(m) * 100)};
+            }
             case "belt_fed" -> {
                 Material m = slot.apply("belt_feed", "main");
                 return m == null ? null : new Object[]{n(io.github.soundgoodizerfan.feedback.weapon.HandlingPhysics.beltReload(m))};

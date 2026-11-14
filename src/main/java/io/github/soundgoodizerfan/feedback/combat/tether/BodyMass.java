@@ -28,6 +28,9 @@ public final class BodyMass {
 
     /** Stand-in mass in Mu. */
     public static float of(Entity e) {
-        return e.getBbWidth() * e.getBbWidth() * e.getBbHeight() * ParryTuning.BBOX_DENSITY;
+        if (e instanceof net.minecraft.world.entity.player.Player)
+            return ParryTuning.PLAYER_MASS;
+        return e.getBbWidth() * e.getBbWidth() * e.getBbHeight() * ParryTuning.BBOX_DENSITY
+                * (e.getType().is(net.minecraft.tags.EntityTypeTags.UNDEAD) ? ParryTuning.UNDEAD_DENSITY_SHARE : 1f);
     }
 }

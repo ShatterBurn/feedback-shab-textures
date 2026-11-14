@@ -89,6 +89,11 @@ public final class GunBludgeon {
         return w != null && shooter.level().getGameTime() <= w.until() ? w : null;
     }
 
+    /** A bayonet of {@code mat}'s blow before any edge attunement: its hardness sets it, within bounds. */
+    public static float bayonetBase(io.github.soundgoodizerfan.feedback.process.Material mat) {
+        return Mth.clamp((mat == null ? 1f : mat.hardness().value()) * GunFuTuning.BAYONET_DAMAGE_PER_HARDNESS, GunFuTuning.BAYONET_DAMAGE_MIN, GunFuTuning.BAYONET_DAMAGE_MAX);
+    }
+
     /** Bayonet Drill's blow: the bayonet part's own material hardness sets it, within bounds. */
     private static float bayonetDamage(ItemStack gun, GunFigures f) {
         var design = io.github.soundgoodizerfan.feedback.modular.item.ModularStacks.design(gun);

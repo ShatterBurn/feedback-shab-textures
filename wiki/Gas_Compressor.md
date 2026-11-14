@@ -14,7 +14,7 @@ The rotor has one measure, the **diameter**, set at the Blueprint Table, from 20
 | Twin stage | 1.8 times | 0.8 times | 1.7 times |
 | Screw | 1.3 times | 0.6 times | 1.2 times |
 
-**Addon.** An **intercooler** (plate) is an optional piece that takes heat out between stages: the gas leaves 0.6 times as hot.
+**Addon.** An **intercooler** (plate) is an optional piece that takes heat out between stages. The better its metal conducts heat, the cooler the gas leaves; copper takes out the most.
 
 ## Placing
 

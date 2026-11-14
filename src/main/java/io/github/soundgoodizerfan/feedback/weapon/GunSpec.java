@@ -47,7 +47,7 @@ import java.util.Optional;
  *                 figures it bakes ({@link ModularTraits#gunBaked}).
  */
 public record GunSpec(ResourceLocation material, BarrelGeometry barrel, Sight sight, Parts parts,
-                      GunLayout layout, Map<ResourceLocation, ResourceLocation> fittings, List<ModularTraits.Active> traits) {
+                      GunLayout layout, Map<ResourceLocation, ResourceLocation> fittings, List<ModularTraits.Active> traits, Hand hand) {
 
     public static final int MIN_BORE_MM = 5, MAX_BORE_MM = 20;
 
@@ -112,6 +112,45 @@ public record GunSpec(ResourceLocation material, BarrelGeometry barrel, Sight si
         }
     }
 
+    /**
+     * The metals that hold the gun steady, found once at the bake: a stock's core and pad and its variant's length, a bipod's leg, a foregrip's
+     * frame and its variant's leverage. Any of them is null when the gun has no such part.
+     */
+    public record Hand(float stockLength, Material core, Material pad, Material bipod, float leverage, Material foregrip) {
+        static final Hand NONE = new Hand(1f, null, null, null, 1f, null);
+
+        /** Kick and spread multipliers braced and still: the stock and the bipod together; 1 and 1 with neither. */
+        public HandlingPhysics.Brace braced() {
+            float kick = 1f, spread = 1f;
+            if (core != null) {
+                var b = HandlingPhysics.stock(stockLength, core, pad);
+                kick *= b.kick();
+                spread *= b.spread();
+            }
+            if (bipod != null) {
+                var b = HandlingPhysics.bipod(bipod);
+                kick *= b.kick();
+                spread *= b.spread();
+            }
+            return new HandlingPhysics.Brace(kick, spread);
+        }
+    }
+
+    public static Hand hand(ModularDesign design, ModularType type, Map<ResourceLocation, Material> materials) {
+        ModularDesign.Part stock = design.part(STOCK), bipod = design.part("I"), fore = design.part("W");
+        Material core = null, pad = null;
+        float length = 1f, leverage = 1f;
+        if (stock != null) {
+            ModularType.Role role = type.roles().get(STOCK);
+            core = io.github.soundgoodizerfan.feedback.modular.bake.ModularBake.slotMaterial(role, stock, "core", materials);
+            pad = io.github.soundgoodizerfan.feedback.modular.bake.ModularBake.slotMaterial(role, stock, "pad", materials);
+            length = role.variant(stock).map(v -> v.params().getOrDefault("length", 1f)).orElse(1f);
+        }
+        if (fore != null)
+            leverage = type.roles().get("W").variant(fore).map(v -> v.params().getOrDefault("leverage", 1f)).orElse(1f);
+        return new Hand(length, core, pad, bipod == null ? null : materials.get(bipod.material()), leverage, fore == null ? null : materials.get(fore.material()));
+    }
+
     /** A double gun's other barrel: its metal, and its shape as machined. */
     public record Second(ResourceLocation material, BarrelGeometry built) {
     }
@@ -131,7 +170,7 @@ public record GunSpec(ResourceLocation material, BarrelGeometry barrel, Sight si
             return this;
         Second other = parts.second().get();
         return new GunSpec(other.material(), other.built(), sight,
-                parts.withSecond(Optional.of(new Second(material, barrel))), layout, fittings, traits);
+                parts.withSecond(Optional.of(new Second(material, barrel))), layout, fittings, traits, hand);
     }
 
     // --- reading a design -------------------------------------------------------------------------
@@ -223,7 +262,7 @@ public record GunSpec(ResourceLocation material, BarrelGeometry barrel, Sight si
                 type.roles().get(GRIP).variant(grip).map(v -> v.params().getOrDefault("friction_mult", 1f)).orElse(1f) * wrapGrip(type, grip, materials),
                 design.part(SLIDE) != null);
         return Optional.of(new GunSpec(barrel.material(), geometry(type, BARREL, barrel), sight, parts,
-                new GunLayout(kind, act, feed), fittings, ModularTraits.allOf(design, type)));
+                new GunLayout(kind, act, feed), fittings, ModularTraits.allOf(design, type), hand(design, type, materials)));
     }
 
     /** What a grip's wrap does to the hold: its material's sliding friction against the reference (a leather wrap grips as a standard one). */
@@ -422,7 +461,7 @@ public record GunSpec(ResourceLocation material, BarrelGeometry barrel, Sight si
      * The parts off the barrel: what they weigh, how well the grip holds the hand, and how hard the
      * fitted sleeves drag a bullet that couples to them ({@link #eddyOf}, summed).
      */
-    private record Frame(float mu, float gripFriction, float eddy, float receiverRating, java.util.List<FittingPhysics> fits) {
+    private record Frame(float mu, float gripFriction, float eddy, float receiverRating, java.util.List<FittingPhysics> fits, float flex, float actionMass, float feedDrag) {
     }
 
     /** A grip's friction; one never measured holds like the reference. */
@@ -470,7 +509,11 @@ public record GunSpec(ResourceLocation material, BarrelGeometry barrel, Sight si
             mu += option.get().metalMb() * fm.density().muPerMb();
         }
         return Optional.of(new Frame(mu, gripFriction(grip) * parts.hold(), eddy,
-                parts.slid() ? Float.MAX_VALUE : receiver.mechanical().yieldStrength().map(y -> y.value() * GunTuning.GUN_RECEIVER_RATING_PER_ST).orElse(Float.MAX_VALUE), fits));
+                parts.slid() ? Float.MAX_VALUE : receiver.mechanical().yieldStrength().map(y -> y.value() * GunTuning.GUN_RECEIVER_RATING_PER_ST).orElse(Float.MAX_VALUE), fits,
+                (1f + GunTuning.GUN_TRIGGER_FLEX_SPREAD * (1f - HandlingPhysics.rigidity(trigger))) * (1f + GunTuning.GUN_FRAME_FLEX_SPREAD * (1f - HandlingPhysics.rigidity(receiver))),
+                GunTuning.GUN_SLIDE_METAL_MB * slide.density().muPerMb() / (GunTuning.GUN_SLIDE_METAL_MB * GunTuning.GUN_ACTION_REF_DENSITY),
+                // rounds slide up the feed: a rough way drags the cycle, a smooth one frees it
+                feed.mechanical().friction().orElse(GunTuning.GUN_KICK_REFERENCE_FRICTION) - GunTuning.GUN_KICK_REFERENCE_FRICTION));
     }
 
     /** What the fitted options do to the bake, folded: every figure the gun owns and an option reaches. */
@@ -608,11 +651,14 @@ public record GunSpec(ResourceLocation material, BarrelGeometry barrel, Sight si
         // Barrel tube in its metal, the rest in theirs.
         float gunMu = tubeMu(new BarrelGeometry(boreMmReal(), boreMmReal() + 2 * barrel.wallMm(), (float) barrelM), m) + frame.mu();
 
-        int cycleMs = Math.round(GunTuning.GUN_CYCLE_BASE_MS + GunTuning.GUN_CYCLE_MS_PER_IMPULSE * impulse)
+        // the moving mass of the action: a heavier slide or bolt cycles slower, a light one quicker
+        float actionLag = Mth.clamp(1f + GunTuning.GUN_ACTION_CYCLE_PER_MASS * (frame.actionMass() - 1f) + GunTuning.GUN_FEED_CYCLE_PER_FRICTION * frame.feedDrag(), GunTuning.GUN_ACTION_CYCLE_MIN, GunTuning.GUN_ACTION_CYCLE_MAX);
+        int cycleMs = Math.round((GunTuning.GUN_CYCLE_BASE_MS + GunTuning.GUN_CYCLE_MS_PER_IMPULSE * impulse) * actionLag)
                 + Math.round(layout.action().manualMs() * Mth.clamp((float) Math.sqrt(gunMu / GunTuning.GUN_KICK_REFERENCE_MU), GunTuning.GUN_MANUAL_MASS_MIN, GunTuning.GUN_MANUAL_MASS_MAX));
         float spread = Math.max(GunTuning.GUN_SPREAD_FLOOR_DEG,
                 GunTuning.GUN_SPREAD_AT_MEDIUM_DEG * GunTuning.GUN_BARREL_MEDIUM_M / (float) barrelM)
                 + Math.max(0, loose) * GunTuning.GUN_BORE_SPREAD_DEG_PER_MM;
+        spread *= frame.flex();
         // Kick is recoil velocity, impulse over the gun's mass, and the grip's friction is how
         // much of it the hand lets through: a heavy gun with a grippy grip kicks least.
         float kick = GunTuning.GUN_KICK_DEG_PER_IMPULSE * impulse * (GunTuning.GUN_KICK_REFERENCE_MU / gunMu)

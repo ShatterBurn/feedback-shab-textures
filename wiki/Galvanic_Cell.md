@@ -14,7 +14,7 @@ The anode has one measure, its **size**, from 20 to 100 percent (50 by default).
 | Plate | 1.6 times | 0.7 times |
 | Block | 0.8 times | 1.9 times |
 
-**Addon.** A **copper cathode** (plate) is an optional piece that adds 25% to the current.
+**Addon.** A **cathode** (plate) is an optional piece that adds current. The wider the gap between the cathode's and the anode's electrode potentials, the more it adds.
 
 ## Using it
 

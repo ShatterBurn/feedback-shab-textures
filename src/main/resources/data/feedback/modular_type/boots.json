@@ -164,7 +164,8 @@
       "name": "gauge",
       "school": "robotics:1",
       "forms": [
-        "lens"
+        "lens",
+        "gem"
       ],
       "litres": 0.005,
       "layer": 6,

@@ -14,7 +14,7 @@ The impeller has one measure, the **diameter**, from 10 to 60 cm (30 by default)
 | Axial | 1.6 times | half |
 | Screw | 0.7 times | 1.6 times |
 
-**Addon.** A **volute** (plate) is an optional casing that adds 15% to the flow, for a little more load.
+**Addon.** A **volute** (plate) is an optional casing that adds flow, for a little more load. The smoother its metal (the lower its friction), the more flow it adds.
 
 ## Placing
 

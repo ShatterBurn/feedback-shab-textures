@@ -18,8 +18,8 @@ P is a Wrought Iron Plate, R a Wrought Iron Rod, C a Chain, W a Grapple Winch (s
 
 Wear it in the bracer slot. Press **B** (*Whiplash*, rebindable) to throw the hook along your look; hold it while the hook flies and, once it bites, while the line holds. Release to pull.
 
-- **A light creature** (lighter than you by body size, the same stand-in as the [parry](Combat.md#parry)'s) is dragged to you.
-- **A heavy creature or a block** pulls you to it.
+- **A creature up to three times your mass** (by body size, the same stand-in as the [parry](Combat.md#parry)'s) is dragged to you, slower the heavier it is than you.
+- **A heavier creature or a block** pulls you to it, at a steady speed on the ground as in the air.
 - **A creature** is bitten for **1 damage**.
 - **Release before the hook bites** and it is drawn back.
 - **Press the key again with a line out** to let go.

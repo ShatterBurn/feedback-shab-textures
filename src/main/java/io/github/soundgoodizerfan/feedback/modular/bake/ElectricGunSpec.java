@@ -72,7 +72,7 @@ public record ElectricGunSpec(Seat seat, int tier, float boreMm, float lengthM, 
                               boolean holdCharge, boolean pump, int beams, boolean fork, boolean zoom, boolean gauge, boolean sight, float sightFov, int bank, float limitTu, float serviceTu,
                               float sense, float zoomGain, float pumpGain, float pumpLever, float holdGain, float gaugeRes,
                               boolean coherence, float lining, boolean malefic, float shuntTicks, boolean lead, float leadAmp, float leadLength,
-                              float pileReturn, float sinkK) {
+                              float pileReturn, float sinkK, float gripFriction, float lensPass) {
 
     /** The heat cycle: what a seat does between shots, and the fire modes it allows. */
     public enum Seat {
@@ -140,7 +140,7 @@ public record ElectricGunSpec(Seat seat, int tier, float boreMm, float lengthM, 
         float sense = 1f, zoomGain = 1f, pumpGain = 1f, pumpLever = 1f, holdGain = 1f, gaugeRes = 1f;
         boolean coherence = false, malefic = false, lead = false;
         float lining = 0f, shuntTicks = 0f, leadAmp = 0f, leadLength = 0f, pileGap = 0f, sinkK = 0f;
-        float limitTu = ModularTuning.EGUN_LIMIT_TU, serviceTu = ModularTuning.EGUN_LIMIT_TU;
+        float limitTu = ModularTuning.EGUN_LIMIT_TU, serviceTu = ModularTuning.EGUN_LIMIT_TU, gripFriction = GunTuning.GUN_KICK_REFERENCE_FRICTION, lensPass = 1f;
         for (MaterialPerks.Attunement a : MaterialPerks.attunements(design))
             if (a.kind().equals("pulse_bank"))
                 bank += a.level();
@@ -164,9 +164,19 @@ public record ElectricGunSpec(Seat seat, int tier, float boreMm, float lengthM, 
                     var v = role.variant(p);
                     maxCells = Math.round(v.map(x -> x.params().getOrDefault("max_cells", 2f)).orElse(2f));
                     heatMult = v.map(x -> x.params().getOrDefault("heat_mult", 1f)).orElse(1f);
+                    spreadMult *= 1f + GunTuning.GUN_FRAME_FLEX_SPREAD * (1f - io.github.soundgoodizerfan.feedback.weapon.HandlingPhysics.rigidity(m));
                     receiver = true;
                 }
-                case "trigger" -> trigger = true;
+                case "trigger" -> {
+                    trigger = true;
+                    // a flexing trigger group wanders the aim
+                    spreadMult *= 1f + ModularTuning.EGUN_LEVER_FLEX_SPREAD * (1f - io.github.soundgoodizerfan.feedback.weapon.HandlingPhysics.rigidity(m));
+                }
+                case "grip" -> {
+                    // the wrap is what the hand holds
+                    Material wrap = ModularBake.slotMaterial(role, p, "wrap", materials);
+                    gripFriction = (wrap == null ? m : wrap).mechanical().friction().orElse(GunTuning.GUN_KICK_REFERENCE_FRICTION);
+                }
                 case SEAT -> {
                     seat = Seat.of(role.variant(p).map(ModularType.Variant::name).orElse("cylinder"));
                     tier = Mth.clamp(Math.round(role.axis(p, "tier")), 1, 3);
@@ -229,6 +239,8 @@ public record ElectricGunSpec(Seat seat, int tier, float boreMm, float lengthM, 
                     pumpLever = io.github.soundgoodizerfan.feedback.weapon.HandlingPhysics.rigidity(ModularBake.slotMaterial(role, p, "lever", materials));
                 }
                 case "beam_lens" -> {
+                    // the lens passes what it does not reflect: a clear one loses little of the pulse, a dull one a lot
+                    lensPass = 1f - Mth.clamp(m.separation().reflectivity().orElse(ModularTuning.LENS_DEFAULT_LOSS), 0f, 0.9f);
                     String v = role.variant(p).map(ModularType.Variant::name).orElse("beam_splitter");
                     if (v.equals("arc_fork"))
                         fork = true;
@@ -293,7 +305,7 @@ public record ElectricGunSpec(Seat seat, int tier, float boreMm, float lengthM, 
         ElectricGunSpec spec = new ElectricGunSpec(seat, tier, bore, length, loss, seatAmp, seatDensity, dielectric, band, mass, maxCells,
                 heatMult, report, heatGain, shed, spreadMult, darkAt, darkCut, governor, hold, pump, beams, fork, zoom, gauge, sight, sightFov, bank, limitTu, serviceTu, sense, zoomGain, pumpGain, pumpLever, holdGain, gaugeRes,
                 coherence, lining, malefic, shuntTicks, lead, leadAmp, leadLength,
-                seat == Seat.THERMOPILE ? Math.min(ModularTuning.EGUN_PILE_CAP * tier / 3f, pileGap * ModularTuning.EGUN_PILE_RETURN_PER_UV) : 0f, sinkK);
+                seat == Seat.THERMOPILE ? Math.min(ModularTuning.EGUN_PILE_CAP * tier / 3f, pileGap * ModularTuning.EGUN_PILE_RETURN_PER_UV) : 0f, sinkK, gripFriction, lensPass);
         return fault(design, type) == null ? Optional.of(spec) : Optional.empty();
     }
 
@@ -378,7 +390,7 @@ public record ElectricGunSpec(Seat seat, int tier, float boreMm, float lengthM, 
 
     /** Joules one ordinary pulse holds, before the barrel. */
     public float pulseJ() {
-        return ceilJ() * tierFraction();
+        return ceilJ() * tierFraction() * lensPass;
     }
 
     /** How the seat shapes its pulse against an ordinary one: a bank holds a lot, a flywheel by its density. */
@@ -503,7 +515,8 @@ public record ElectricGunSpec(Seat seat, int tier, float boreMm, float lengthM, 
         float energy = hit / GunTuning.GUN_DAMAGE_PER_WORK;
         float impulse = impulse(joules, hit);
         float spread = coneDeg(zoomShare) * spreadMult;
-        float kick = GunTuning.GUN_KICK_DEG_PER_IMPULSE * impulse * (GunTuning.GUN_KICK_REFERENCE_MU / Math.max(0.05f, gunKg));
+        float kick = GunTuning.GUN_KICK_DEG_PER_IMPULSE * impulse * (GunTuning.GUN_KICK_REFERENCE_MU / Math.max(0.05f, gunKg))
+                * (GunTuning.GUN_KICK_REFERENCE_FRICTION / Math.max(0.05f, gripFriction));
         return new GunFigures(new Pu(0f), new Pu(0f), 10f, energy, new Mu(0.001f), new Mu(gunKg), impulse, cycleTicks * 50, spread, kick,
                 report, heatGain * heatMult, shed);
     }

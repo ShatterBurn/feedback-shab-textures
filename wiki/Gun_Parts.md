@@ -53,7 +53,7 @@ The turned grip is a blank. A gun takes it as a **Gun Grip**, shaped at a bench 
 
 A stock is made at a bench from a plate (any metal, polymer or organic material that comes as one) or from planks, in one of three shapes: **fixed**, **skeleton** or **folding**. It takes the kick into your shoulder while you are crouched and still, so the gun kicks less and groups tighter ([Guns](Guns.md#frames)). It is optional, and fits any frame.
 
-A stock has a **core** and a **pad**, each a choice of material. The core holds by its yield strength: a stiffer core carries more of the kick. The pad cushions by being soft and tough. The shape sets the stock's length, and a longer stock cuts more.
+A stock has a **core** and a **pad**, each a choice of material. The cut it makes shows on the Blueprint Table as **Braced kick** and **Braced spread**. The core holds by its yield strength: a stiffer core carries more of the kick. The pad cushions by being soft and tough. The shape sets the stock's length, and a longer stock cuts more.
 
 ## The barrel
 
@@ -94,7 +94,7 @@ Lay the gun's parts in the grid of the [Engineering Table](Engineering_Table.md)
 | Slide **or** Bolt | the action; its variant says which: self-loading or automatic (slide); bolt, lever, pump, break, single action, double action, self-loading or automatic (bolt); a revolver takes a single action (cocked by thumb between shots, groups tighter) or a double action (cocked by the trigger, groups looser) |
 | Trigger Group, Gun Grip | always; a grip is wood unless you choose another material; its variant is straight, pistol grip, finger-groove or palm-swell |
 | Cylinder, Magazine Tube, Belt Feed or Box Feed | optional: the feed (none means a box magazine on a slide; a bolt or lever with none loads one round by hand, and a Box Feed gives it a box magazine; a break action holds its barrels) |
-| Sight | optional: a reflex sight (see-through glass, with a lit dot if illuminated) or a scope (aimed, the zoom shows inside its round lens with a reticle; the view outside the lens stays normal) (none is iron sights). A sight is a frame and a **lens**: you choose the lens material in its own stock slot, and clearer glass loses less light. A scope also has a **zoom** axis from 1.5 to 6 times. A barrel is a **liner** and a **jacket**: a jacket of a damping material such as sculk steadies the spread, cold and hot. A grip's **wrap** sets the hold and shows on the grip as a sleeve in its own material. The gun has a socket for a thermal fitting, which takes a circuit. See [Composed Parts](Composed_Parts.md) |
+| Sight | optional: a reflex sight (see-through glass, with a lit dot if illuminated) or a scope (aimed, the zoom shows inside its round lens with a reticle; the view outside the lens stays normal) (none is iron sights). A sight is a frame and a **lens**: you choose the lens material in its own stock slot, and clearer glass loses less light. A lens takes a plate, pane, gem, shard or ingot. A scope also has a **zoom** axis from 1.5 to 6 times. A barrel is a **liner** and a **jacket**: a jacket of a damping material such as sculk steadies the spread, cold and hot. A grip's **wrap** sets the hold and shows on the grip as a sleeve in its own material. The gun has a socket for a thermal fitting, which takes a circuit. See [Composed Parts](Composed_Parts.md) |
 | A fitting part | each fitting on the gun, one to a slot, added on the Engineering Table's [Fit tab](Engineering_Table.md#fit-tab) |
 
 **Each part's material is on the part.** A receiver can be a metal or a polymer (a plastic frame): it holds the action, and on a gun without a slide it also holds the breech, so it limits the chamber (see [The chamber](#the-chamber)). The barrel's metal and wall decide the chamber's strength. The rest add their own weight. A double's second barrel has its own metal and bore; two rounds in fires the first barrel, one round fires the second.
@@ -110,7 +110,9 @@ Your hand holds the grip, so the grip's material sets how much friction it gets.
 | Wood, bamboo, brass | 0.4 |
 | Bronze | 0.3 |
 
-Kick scales with 0.6 ÷ friction, so a bronze grip kicks twice as hard as a steel one. The grip's shape multiplies the friction on top.
+Kick scales with 0.6 ÷ friction, so a bronze grip kicks twice as hard as a steel one. The grip's shape multiplies the friction on top. A grip's wrap, where one is fitted, is the surface the hand holds, so its material sets the friction.
+
+The other parts read their metal too. A trigger group or receiver that flexes widens the spread, and a stiff metal keeps it tight. A heavier slide or bolt slows the cycle and a lighter one quickens it. A feed way's friction slows the cycle when it is high and frees it when it is low.
 
 ## Fittings
 
@@ -128,19 +130,23 @@ The metal a fitting is machined in decides what it does. A fitting takes only a 
 
 A suppressor, a brake and an eddy sleeve all go on the muzzle, so a gun has one of them.
 
+A **bayonet** lands a blow that follows its blade's hardness; the Blueprint Table shows it.
+
+Two fittings that add a trait also read their metal. A **thermal sleeve** takes up a share of the barrel's heat set by its metal's heat conductivity: a poor conductor takes up as little as half, so it closes on the barrel later and both its tightest group and its binding come at a hotter barrel. A **resonance weight** of a denser metal damps more, so a round may stray further from the tuned speed before the group opens; an iron weight is the reference. Both traits' descriptions show the share.
+
 ### Fitting heat
 
 A fitting takes the barrel's heat. Past its metal's service temperature it softens and what it did fades toward a bare barrel's. At its melting point it **runs off the gun** (*"The X runs off the gun."*) and has to be refitted. The Blueprint Table shows **Fitting wear** (the share of the gun's life a shot wears away through its fittings) and **Fitting limit** (the hottest barrel the weakest fitting survives).
 
 ### Fittings made of the stuff itself
 
-These four are shaped at a bench from raw stock, and the material decides what they do. All four act on the shot as you aim it, so the HUD and the spec sheet show the effect.
+These four are shaped at a bench from raw stock, and the material decides what they do. All four act on the shot as you aim it, so the HUD and the spec sheet show the effect. Their effect depends on live heat and light, so the Blueprint Table gloss shows each one's best case: a cold barrel, a dark room. A barrel jacket's gloss shows its cut of the cold spread the same way.
 
 | Fitting | Made of | Effect |
 | --- | --- | --- |
 | **Obturator** | Leather, or any raw stock such as phantom membrane | A ring that seals a loose chamber (a Flat Ring, a Cup Seal that cuts the most kick, or a Double Ring that tightens the group most). The softer the stuff, the more it cuts: up to **25%** less kick and **15%** tighter group. Once the barrel is hotter than the stuff's oxidation temperature it has burned away and leaks: **10%** more kick and **20%** wider group, until the barrel cools. |
 | **Hydraulic Buffer** | Something sticky: honey, slime | A sealed chamber of fluid the recoil pushes through. Honey takes kick to **50%** and slows the cycle by **30%**; thinner fluids do less. The fluid thins as the barrel heats and is no use at the round's ignition temperature. |
-| **Lit Reticle** | Something luminous, as dust or a block: glowstone, redstone | Glowing mineral in the sight, needing no power. A **Dot** shows at light level 7 or less and tightens the group by up to **20%**; a **Ring** shows in dim light (11 or less) and tightens it less; a **Cross** shows only in deep dark (4 or less) and tightens it most. In daylight it does nothing. |
+| **Lit Reticle** | Something luminous, as dust, a block, a rod, an ingot or raw stock: glowstone, redstone | Glowing mineral in the sight, needing no power. A **Dot** shows at light level 7 or less and tightens the group by up to **20%**; a **Ring** shows in dim light (11 or less) and tightens it less; a **Cross** shows only in deep dark (4 or less) and tightens it most. In daylight it does nothing. |
 | **Magnetic Sear** | A magnetic metal: iron, steel, nickel | A magnet holds the sear: up to **15%** tighter group and a **10%** quicker cycle. The pull fades as the barrel warms and is gone at the metal's Curie temperature. A non-magnetic metal does nothing. |
 
 ### Changing a fitting

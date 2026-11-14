@@ -6,6 +6,7 @@ import io.github.soundgoodizerfan.feedback.core.FTuning;
 import io.github.soundgoodizerfan.feedback.core.thermal.AmbientTable;
 import io.github.soundgoodizerfan.feedback.weapon.GunCondition;
 import io.github.soundgoodizerfan.feedback.weapon.GunFigures;
+import io.github.soundgoodizerfan.feedback.weapon.HandlingPhysics;
 
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
@@ -16,7 +17,7 @@ import net.minecraft.world.item.ItemStack;
  * as the barrel heats the sleeve closes on it and the group tightens to {@code tight_spread} at {@code fit_at}
  * (a share of the way from the room to the round's ignition); past {@code bind_at} it grips the bore and squeezes
  * the chamber's rating down to {@code bind_rating} at cook-off. Read live off the stack, so the client predicts
- * the shot. The sleeve's metal does not matter: shortcut, one expansion for every metal, split it when metals differ.
+ * the shot. The sleeve closes as fast as its metal takes up the barrel's heat ({@link HandlingPhysics#sleeveFollow}).
  */
 public class GunThermalFit implements ModularTrait {
 
@@ -25,6 +26,7 @@ public class GunThermalFit implements ModularTrait {
         float ambient = AmbientTable.at(shooter.level()).value();
         float heat = Math.max(0f, (GunCondition.temperature(gun, shooter.level()).value() - ambient)
                 / (FTuning.GUN_PROPELLANT_IGNITION_TU - ambient));
+        heat *= HandlingPhysics.sleeveFollow(GunFitting.of(gun, "thermal_sleeve"));
         float fitAt = p.get("fit_at", 0.4f), bindAt = p.get("bind_at", 0.7f);
         float spread = heat < fitAt
                 ? Mth.lerp(heat / fitAt, p.get("cold_spread", 1.3f), p.get("tight_spread", 0.6f))

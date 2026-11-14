@@ -417,7 +417,7 @@ public class ModularBackpack extends ModularItem {
         }
         ItemStack bag = r.stack();
         boolean wear = over && (!fitted(bag, LINER) || player.tickCount % 40 == 0);
-        if (player.isOnFire() && !fitted(bag, PATCH) && shellIs(bag, Material.Trait.FLAMMABLE)) {
+        if (player.isOnFire() && shellIs(bag, Material.Trait.FLAMMABLE) && scorches(bag, player)) {
             bag.setDamageValue(Math.min(bag.getMaxDamage() - 1, bag.getDamageValue() + GearKinds.packWear(bag, ModularTuning.PACK_SCORCH_WEAR)));
             ModularStacks.refresh(bag);
             wear = true;
@@ -433,6 +433,15 @@ public class ModularBackpack extends ModularItem {
             weigh(player);
         else if (player.tickCount % ModularTuning.PACK_FALLBACK_TICKS == 0)
             weigh(player);
+    }
+
+    /** Whether this tick's fire reaches the shell: all of it with no patch, else the share the patch's metal conducts. */
+    private static boolean scorches(ItemStack bag, Player player) {
+        if (!fitted(bag, PATCH))
+            return true;
+        ModularFigures f = ModularStacks.figures(bag);
+        float c = f == null ? 0f : f.get(Fig.FIRE_CONDUCT);
+        return player.getRandom().nextFloat() < c / (c + ModularTuning.PACK_PATCH_HALF_CONDUCT);
     }
 
     /** The quick-release buckle: the pack comes off at once and lands at the wearer's feet, contents and all. */

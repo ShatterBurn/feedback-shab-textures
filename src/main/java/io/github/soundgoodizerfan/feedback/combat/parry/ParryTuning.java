@@ -45,6 +45,10 @@ public final class ParryTuning {
      * mass figure yet; this is the flagged exception for mobs (plan section 5, item 18).
      */
     public static final float BBOX_DENSITY = 120f;
+    /** Share of {@link #BBOX_DENSITY} an undead body keeps: same frame, less matter, it is decomposing. */
+    public static final float UNDEAD_DENSITY_SHARE = 0.5f;
+    /** A player's mass in Mu, rounded up from what the box gives (a person is heavier than a box of the same size). */
+    public static final float PLAYER_MASS = 85f;
     /** Joules an unarmed or unfigured blow carries per point of damage, for an attacker with no baked IMPACT. */
     public static final float JOULES_PER_DAMAGE = 10f;
     /** Stagger ticks per joule of impact over the attacker's mass (J/Mu), within the bounds below. */
@@ -82,7 +86,7 @@ public final class ParryTuning {
 
     /** STAND-IN mass of a living thing, Mu: bounding-box volume times {@link #BBOX_DENSITY}. Shared by the parry and the gun bludgeon. A worn back piece adds its mass (a heavier body staggers shorter). */
     public static float standInMass(net.minecraft.world.entity.LivingEntity who) {
-        return who.getBbWidth() * who.getBbWidth() * who.getBbHeight() * BBOX_DENSITY
+        return io.github.soundgoodizerfan.feedback.combat.tether.BodyMass.of(who)
                 + io.github.soundgoodizerfan.feedback.combat.gear.CombatGear.of(who).mass();
     }
 

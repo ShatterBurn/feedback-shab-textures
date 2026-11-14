@@ -200,31 +200,42 @@ public class FeedbackJeiPlugin implements IModPlugin {
         };
     }
 
+    /**
+     * JEI lists categories in registration order, so this order is the sort rule. Three groups, in the order a
+     * player reaches for them: processes (what a machine or a hand does to matter: heat first, then shaping hand
+     * before machine, separation, chemistry, electronics, brewing), assembly (bench work that makes parts and
+     * designs), reference (pages that are read, not run: material figures, veins, blueprint pools, trade). A new
+     * category goes in the group it belongs to, at the point the same simple-before-advanced rule puts it.
+     * Creative tabs have their own order, documented on {@code FCreativeTabs}.
+     */
     @Override
     public void registerCategories(IRecipeCategoryRegistration registration) {
         registration.addRecipeCategories(
-                new DeformationCategory(registration.getJeiHelpers().getGuiHelper()),
-                new RemovalCategory(registration.getJeiHelpers().getGuiHelper()),
+                // Processes: heat, shaping, separation, chemistry, then electronics and brewing.
                 new ThermalProcessCategory(registration.getJeiHelpers().getGuiHelper()),
-                new PressCategory(registration.getJeiHelpers().getGuiHelper()),
-                new OreVeinCategory(registration.getJeiHelpers().getGuiHelper()),
-                new BasinCategory(registration.getJeiHelpers().getGuiHelper()),
-                new MaterialStatsCategory(registration.getJeiHelpers().getGuiHelper()),
-                new BrewingIngredientCategory(registration.getJeiHelpers().getGuiHelper()),
-                new SeparationCategory(registration.getJeiHelpers().getGuiHelper()),
-                new OreProcessingCategory(registration.getJeiHelpers().getGuiHelper()),
                 new FuelCategory(registration.getJeiHelpers().getGuiHelper()),
-                new PotionShapeCategory(registration.getJeiHelpers().getGuiHelper()),
+                new BasinCategory(registration.getJeiHelpers().getGuiHelper()),
+                new DeformationCategory(registration.getJeiHelpers().getGuiHelper()),
+                new PressCategory(registration.getJeiHelpers().getGuiHelper()),
+                new RemovalCategory(registration.getJeiHelpers().getGuiHelper()),
+                new OreProcessingCategory(registration.getJeiHelpers().getGuiHelper()),
+                new SeparationCategory(registration.getJeiHelpers().getGuiHelper()),
                 new MixtureCategory(registration.getJeiHelpers().getGuiHelper()),
-                new GoodsCategory(registration.getJeiHelpers().getGuiHelper()),
-                new BuysCategory(registration.getJeiHelpers().getGuiHelper()),
-                new GunOptionCategory(registration.getJeiHelpers().getGuiHelper()),
-                new GunBlueprintPoolCategory(registration.getJeiHelpers().getGuiHelper()),
                 new SolderingCategory(registration.getJeiHelpers().getGuiHelper()),
                 new CircuitChainCategory(registration.getJeiHelpers().getGuiHelper()),
-                new PartBenchToolCategory(registration.getJeiHelpers().getGuiHelper()),
+                new PotionShapeCategory(registration.getJeiHelpers().getGuiHelper()),
+                new BrewingIngredientCategory(registration.getJeiHelpers().getGuiHelper()),
+                // Assembly: where parts and designs are made.
                 new PartBenchPartCategory(registration.getJeiHelpers().getGuiHelper()),
-                new EngineeringCategory(registration.getJeiHelpers().getGuiHelper()));
+                new PartBenchToolCategory(registration.getJeiHelpers().getGuiHelper()),
+                new EngineeringCategory(registration.getJeiHelpers().getGuiHelper()),
+                new GunOptionCategory(registration.getJeiHelpers().getGuiHelper()),
+                // Reference: what to read, never what to run.
+                new MaterialStatsCategory(registration.getJeiHelpers().getGuiHelper()),
+                new OreVeinCategory(registration.getJeiHelpers().getGuiHelper()),
+                new GunBlueprintPoolCategory(registration.getJeiHelpers().getGuiHelper()),
+                new GoodsCategory(registration.getJeiHelpers().getGuiHelper()),
+                new BuysCategory(registration.getJeiHelpers().getGuiHelper()));
     }
 
     /**

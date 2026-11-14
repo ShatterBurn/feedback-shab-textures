@@ -9,9 +9,9 @@ Make the pieces as described on [Armor](Armor.md), then add parts on the [Fit ta
 | Fitting | Made from | Goes on | What it does |
 | --- | --- | --- | --- |
 | **Servo** | a finished motor ([Dynamotor](Dynamotor.md)) held whole | any piece | Drives the abilities. The motor's rated amps set how hard it pulls and how much of the power it wastes as heat. |
-| **Gauge** | a lens | any piece | Without any gauge the suit reports in words; with one it reports in figures, finer with clearer glass. |
-| **Sensor head** | fibre, 2 cells | helmet | Night sight and thermal view. |
-| **Battery bay** | plates, 2 cells | chestplate | Holds the battery the whole suit runs on. |
+| **Gauge** | a lens | any piece | Without any gauge the suit reports in words; with one it reports in figures, finer with clearer glass. The full step needs hard clear glass; a soft glass scratches and loses some of it. It takes lens or gem stock. |
+| **Sensor head** | fibre, 2 cells | helmet | Night sight and thermal view. Its reach follows the lead's electrical conductivity: a better conductor reaches further per cell. It takes fibre, wire or fine wire. |
+| **Battery bay** | plates, 2 cells | chestplate | Holds the battery the whole suit runs on, and its plate adds a little armor. |
 | **Suit Module** | a finished module built from casing, wiring and attachments | any piece | One upgrade for that piece; see [Upgrade modules](#upgrade-modules). |
 
 A servo's drive and waste come from its motor's rated amps: a motor rated higher drives harder, and a motor short of its full rating wastes more of the power as heat.

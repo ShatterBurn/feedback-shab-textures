@@ -322,10 +322,24 @@ public final class ModularTraits {
         return f;
     }
 
+    /** Crouched and still, the stock's and the bipod's cut of kick and spread, baked on the gun ({@code Fig.BRACE_KICK}, {@code BRACE_SPREAD}). */
+    private static io.github.soundgoodizerfan.feedback.weapon.GunFigures braced(Player shooter, ItemStack gun,
+                                                                                  io.github.soundgoodizerfan.feedback.weapon.GunFigures f) {
+        if (!shooter.isCrouching() || shooter.getDeltaMovement().horizontalDistanceSqr() > 1.0E-3)
+            return f;
+        var figs = io.github.soundgoodizerfan.feedback.modular.item.ModularStacks.figures(gun);
+        if (figs == null)
+            return f;
+        float kick = figs.get(io.github.soundgoodizerfan.feedback.modular.bake.ModularFigures.Fig.BRACE_KICK),
+                spread = figs.get(io.github.soundgoodizerfan.feedback.modular.bake.ModularFigures.Fig.BRACE_SPREAD);
+        return kick <= 0f || spread <= 0f ? f : f.withKick(kick).withSpread(spread);
+    }
+
     public static io.github.soundgoodizerfan.feedback.weapon.GunFigures gunAimed(Player shooter, ItemStack gun,
                                                                                   io.github.soundgoodizerfan.feedback.weapon.GunFigures f) {
         for (Active a : allOf(gun))
             f = a.trait().gunAimed(shooter, gun, f, a.params());
+        f = braced(shooter, gun, f);
         return io.github.soundgoodizerfan.feedback.weapon.GunBalance.apply(shooter, gun,
                 io.github.soundgoodizerfan.feedback.weapon.FittingHeat.soften(shooter, gun, f));
     }
@@ -335,6 +349,7 @@ public final class ModularTraits {
                                                                                   io.github.soundgoodizerfan.feedback.weapon.GunFigures f, List<Active> traits) {
         for (Active a : traits)
             f = a.trait().gunAimed(shooter, gun, f, a.params());
+        f = braced(shooter, gun, f);
         return io.github.soundgoodizerfan.feedback.weapon.GunBalance.apply(shooter, gun,
                 io.github.soundgoodizerfan.feedback.weapon.FittingHeat.soften(shooter, gun, f));
     }

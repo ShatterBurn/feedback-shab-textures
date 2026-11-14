@@ -111,6 +111,9 @@ public record ModularFigures(List<Float> values, int step) {
         FITTING_WEAR,
         /** {@code Tu}: the hottest a barrel can run before the weakest fitting softens (its metal's service temperature). */
         FITTING_LIMIT,
+        /** Kick and spread left, as a share, when the shooter is braced (crouched and still) on a stock or a bipod: 1 is no cut. */
+        BRACE_KICK,
+        BRACE_SPREAD,
         // --- a charge's (family CHARGE) ---
         /** Explosion power: the blend's burned potential and the casing's confinement. */
         BLAST,

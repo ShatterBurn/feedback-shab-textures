@@ -173,21 +173,23 @@ public final class GunTuning {
     // --- What a hit does (spec 3.5). Placeholders. ---------------------------------------------
 
     /**
-     * A block whose material has a toughness at or under this is brittle enough for a bullet to
-     * break (glass 1, ice 1; stone 6, obsidian 2 are not). It is the marker figure the author
-     * ruled on, not a list: a pack's pane qualifies because of what it is.
+     * A block shatters, and so a bullet can break it, when the plastic zone at a crack tip is under this many mm:
+     * (toughness K_Ic / yield stress) squared, with 1 St toughness = 1 MPa sqrt(m) and 1 St yield = 20 MPa. A brittle
+     * solid (glass 0.4, obsidian 0.3, stone 0.2, granite 0.1) fails before it yields; dirt, sand, snow, brick, clay
+     * and wood (2.5 and up) give and crumble, and metals (tens of metres) bend. Cutoff sits between brick and glass.
      */
-    public static final float GUN_BREAK_TOUGHNESS_MAX = 1.5f;
+    public static final float GUN_SHATTER_ZONE_MM = 1f;
 
     /** Work a bullet gives up to break a block, per unit of the block's toughness. */
     public static final float GUN_BREAK_WORK_PER_TOUGHNESS = 40f;
 
     /**
-     * Momentum a bullet needs to break a brittle block, per unit of its toughness, in kg m/s
+     * Momentum a bullet needs to break a shattering block, per unit of its yield strength, in kg m/s
      * (spec 3.5, after Create Big Cannons: what breaks a block is a blow, so momentum, and what it
-     * costs is work). A 9 mm lead pistol round carries about 2; glass is toughness 1.
+     * costs is work). A 9 mm lead pistol round carries about 2: it breaks glass (yield 2.5), a rifle
+     * round (about 4) stone (5), granite (7.5) wants more.
      */
-    public static final float GUN_BREAK_MOMENTUM_PER_TOUGHNESS = 0.5f;
+    public static final float GUN_BREAK_MOMENTUM_PER_YIELD = 0.5f;
 
     /**
      * A bullet softer than the block it meets glances off when it comes in shallower than this:
@@ -198,8 +200,8 @@ public final class GunTuning {
 
     public static final int GUN_RICOCHET_MAX = 2;
 
-    /** The projectile's hardness when a shot names no material: lead's. */
-    public static final float GUN_DEFAULT_PROJECTILE_HARDNESS = 0.3f;
+    /** The projectile's hardness when a shot names no material: lead's (0.5 St, real Vickers 0.04 GPa). */
+    public static final float GUN_DEFAULT_PROJECTILE_HARDNESS = 0.5f;
 
     /** Anchor round: ticks and Slowness level that glue a body in place. Tether round: reel speed cap, blocks per tick. Bounce: launch per level of the payload's bounce perk, and how close the shooter must be. Placeholders. */
     public static final int GUN_ANCHOR_TICKS = 100, GUN_ANCHOR_AMPLIFIER = 7;
@@ -325,6 +327,8 @@ public final class GunTuning {
      * per unit cut, the shroud's best extra shedding, the brake's best cut of the gas recoil and how loud it makes the report.
      */
     public static final float FIT_K_HALF = 0.015f, FIT_MU_HALF = 0.3f,
+            /** A thermal sleeve of a poor conductor lags the barrel's heat down to this share; a resonance weight is judged against iron's density, and its window stays within the two bounds. */
+            SLEEVE_LAG_FLOOR = 0.5f, RES_REF_DENSITY = 7.8f, RES_WINDOW_MIN = 0.6f, RES_WINDOW_MAX = 1.5f,
             SUPP_MAX_CUT = 0.95f, SUPP_HEAT_PER_CUT = 2.0f, SHROUD_MAX_GAIN = 2.5f, BRAKE_MAX_CUT = 0.8f, BRAKE_LOUD = 0.9f;
 
     /**
@@ -392,6 +396,13 @@ public final class GunTuning {
      * weighs about 2.6 Mu; steel's friction is 0.6), and kick goes as reference over actual for both.
      */
     public static final float GUN_KICK_REFERENCE_MU = 2.6f, GUN_KICK_REFERENCE_FRICTION = 0.6f;
+    /**
+     * A flexing trigger group or receiver wanders the aim: spread grows by this share of how far each falls short of a stiff metal
+     * ({@link HandlingPhysics#rigidity}); the action's moving mass, against the reference slide of iron, slows or quickens the cycle by this
+     * share per unit of difference, kept within the bounds.
+     */
+    public static final float GUN_TRIGGER_FLEX_SPREAD = 0.2f, GUN_FRAME_FLEX_SPREAD = 0.2f, GUN_ACTION_CYCLE_PER_MASS = 0.25f,
+            GUN_FEED_CYCLE_PER_FRICTION = 0.25f, GUN_ACTION_CYCLE_MIN = 0.75f, GUN_ACTION_CYCLE_MAX = 1.5f, GUN_ACTION_REF_DENSITY = 7.8f;
 
     /** Damage per Work delivered. */
     public static final float GUN_DAMAGE_PER_WORK = 0.03f;

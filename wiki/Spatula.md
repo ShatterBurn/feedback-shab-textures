@@ -13,6 +13,8 @@ The blade's shape is the choice:
 | **Turner** | Turns one piece. |
 | **Slotted Turner** | Turns one piece and lets about a tenth of its moisture run off through the slots. |
 
+The handle's strength changes the tool's durability a little: a weaker handle than wood's shortens it, a stronger one lengthens it, and wood is normal.
+
 ## Using it
 
 Right-click a piece in a skillet to flip it. The quarter under your crosshair is the one that turns. Only the face down chars, and a flip swaps the faces.

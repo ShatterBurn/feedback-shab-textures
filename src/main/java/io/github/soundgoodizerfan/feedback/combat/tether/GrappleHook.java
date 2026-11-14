@@ -287,7 +287,7 @@ public class GrappleHook extends Projectile {
             discard();
             return;
         }
-        boolean dragTarget = target != null && has(BARB) && BodyMass.of(target) < BodyMass.of(owner);
+        boolean dragTarget = target != null && has(BARB) && BodyMass.of(target) <= BodyMass.of(owner) * ModularTuning.GRAPPLE_DRAG_MASS_RATIO;
         LivingEntity held = dragTarget ? target : owner;
         Tether.Anchor anchor = dragTarget ? new Tether.Anchor.OnEntity(owner.getId())
                 : target != null ? new Tether.Anchor.OnEntity(target.getId()) : new Tether.Anchor.OnBlock(block);
@@ -461,6 +461,8 @@ public class GrappleHook extends Projectile {
         }
         float speed = reelSpeed();
         speed *= 1f - (float) living.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE);
+        // A body heavier than the thrower comes slower, by the mass ratio.
+        speed *= Math.min(1f, BodyMass.of(owner) / BodyMass.of(living));
         // A crouched player with footing holds back a share of the pull (armour mass adds to it).
         if (living instanceof Player held2) {
             float hold = io.github.soundgoodizerfan.feedback.combat.skill.Skills.tetherPullScale(held2);

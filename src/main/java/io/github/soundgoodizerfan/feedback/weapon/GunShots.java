@@ -886,6 +886,7 @@ public final class GunShots {
     }
 
     private static final Map<net.minecraft.world.level.block.Block, Float> TOUGHNESS = new HashMap<>();
+    private static final Map<net.minecraft.world.level.block.Block, Float> YIELD = new HashMap<>();
     private static final Map<net.minecraft.world.level.block.Block, Float> HARDNESS = new HashMap<>();
     private static final Map<net.minecraft.world.item.Item, Float> ARMOUR = new HashMap<>();
     private static int toughnessGeneration = -1;
@@ -894,6 +895,7 @@ public final class GunShots {
     private static void checkGeneration() {
         if (toughnessGeneration != io.github.soundgoodizerfan.feedback.process.MaterialTable.generation()) {
             TOUGHNESS.clear();
+            YIELD.clear();
             HARDNESS.clear();
             ARMOUR.clear();
             toughnessGeneration = io.github.soundgoodizerfan.feedback.process.MaterialTable.generation();
@@ -948,9 +950,9 @@ public final class GunShots {
         return armourHardness <= 0 || bulletHardness <= armourHardness ? 0f : 1f - armourHardness / bulletHardness;
     }
 
-    /** Whether a blow of this momentum breaks a brittle block of this toughness. Pure. */
-    public static boolean breaks(float toughness, float momentum) {
-        return !Float.isNaN(breakCost(toughness)) && momentum >= toughness * GunTuning.GUN_BREAK_MOMENTUM_PER_TOUGHNESS;
+    /** Whether a blow of this momentum breaks a shattering block of this toughness and yield. Pure. */
+    public static boolean breaks(float toughness, float yield, float momentum) {
+        return !Float.isNaN(breakCost(toughness, yield)) && momentum >= yield * GunTuning.GUN_BREAK_MOMENTUM_PER_YIELD;
     }
 
     /** Whether a bullet glances off: softer than the block, coming in shallow. Pure. */
@@ -965,24 +967,37 @@ public final class GunShots {
      */
     public static float toughnessOf(net.minecraft.world.level.block.Block block) {
         checkGeneration();
-        return TOUGHNESS.computeIfAbsent(block, b -> {
-            var item = b.asItem();
-            if (item == net.minecraft.world.item.Items.AIR)
-                return Float.NaN;
-            return io.github.soundgoodizerfan.feedback.process.Material
-                    .find(io.github.soundgoodizerfan.feedback.process.MaterialTable.get().materials(), item)
-                    .flatMap(l -> l.material().mechanical().toughness())
-                    .map(t -> t.value()).orElse(Float.NaN);
-        });
+        return TOUGHNESS.computeIfAbsent(block, b -> mechanicalOf(b, m -> m.toughness()));
+    }
+
+    /** The yield strength of the material a block is, or NaN if no material claims it. Cached like {@link #toughnessOf}. */
+    public static float yieldOf(net.minecraft.world.level.block.Block block) {
+        checkGeneration();
+        return YIELD.computeIfAbsent(block, b -> mechanicalOf(b, m -> m.yieldStrength()));
+    }
+
+    private static float mechanicalOf(net.minecraft.world.level.block.Block b,
+            java.util.function.Function<io.github.soundgoodizerfan.feedback.process.Material.Mechanical, java.util.Optional<io.github.soundgoodizerfan.feedback.core.unit.St>> figure) {
+        var item = b.asItem();
+        if (item == net.minecraft.world.item.Items.AIR)
+            return Float.NaN;
+        return io.github.soundgoodizerfan.feedback.process.Material
+                .find(io.github.soundgoodizerfan.feedback.process.MaterialTable.get().materials(), item)
+                .flatMap(l -> figure.apply(l.material().mechanical()))
+                .map(t -> t.value()).orElse(Float.NaN);
     }
 
     /**
-     * Work it costs a bullet to break a block of this toughness, or NaN if it will not break
-     * (spec 3.5: only things like glass). Pure, so a test and the step agree.
+     * Work it costs a bullet to break a block of this toughness and yield, or NaN if it will not break:
+     * only what shatters (plastic zone under {@code GUN_SHATTER_ZONE_MM}; glass, stone) breaks, never what
+     * gives (dirt, wood) or bends (metal). Pure, so a test and the step agree.
      */
-    public static float breakCost(float toughness) {
-        return Float.isNaN(toughness) || toughness > GunTuning.GUN_BREAK_TOUGHNESS_MAX
-                ? Float.NaN : toughness * GunTuning.GUN_BREAK_WORK_PER_TOUGHNESS;
+    public static float breakCost(float toughness, float yield) {
+        if (Float.isNaN(toughness) || Float.isNaN(yield) || yield <= 0)
+            return Float.NaN;
+        float zoneMm = toughness / (20f * yield);
+        zoneMm *= zoneMm * 1000f;
+        return zoneMm > GunTuning.GUN_SHATTER_ZONE_MM ? Float.NaN : toughness * GunTuning.GUN_BREAK_WORK_PER_TOUGHNESS;
     }
 
     /** A round has hit: the gun's traits hear where, on what, and with how much energy left. */
@@ -1273,11 +1288,11 @@ public final class GunShots {
             BlockPos at = block.getBlockPos();
             Vec3 p = block.getLocation();
             var hitBlock = level.getBlockState(at).getBlock();
-            float toughness = toughnessOf(hitBlock);
-            float cost = breakCost(toughness);
+            float toughness = toughnessOf(hitBlock), yield = yieldOf(hitBlock);
+            float cost = breakCost(toughness, yield);
             boolean allowed = !Float.isNaN(cost) && mayChange(level, s.shooter, at);
             // What breaks a brittle block is the blow, momentum; what it costs the bullet is work.
-            if (allowed && breaks(toughness, s.momentum() * s.flight.ease()) && s.energy() > cost && s.spend(cost)) {
+            if (allowed && breaks(toughness, yield, s.momentum() * s.flight.ease()) && s.energy() > cost && s.spend(cost)) {
                 // Glass breaks and the bullet goes on, a little slower.
                 level.destroyBlock(at, false, s.shooter);
                 s.pos = p.add(s.velocity.normalize().scale(0.05));

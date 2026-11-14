@@ -8,7 +8,7 @@ Draw it at the [Blueprint Table](Blueprint_Table.md) (pick *Glowstone Lamp* in t
 
 The filament has one measure, its **gauge**, from 20 to 100 percent (50 by default). The draw rises with the square of the gauge, and a thicker filament lasts longer when the line is over its band. The filament has a fixed standard surface that is never picked.
 
-**Addon.** A **ballast** (nugget) is an optional piece that adds 20% to the overload the filament survives.
+**Addon.** A **ballast** (nugget) is an optional piece that adds to the overload the filament survives. A metal with more thermal mass (it takes more heat per mB) adds more.
 
 ## Using it
 

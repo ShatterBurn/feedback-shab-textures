@@ -80,6 +80,7 @@ public final class FCommands {
         dispatcher.register(Commands.literal("feedback").requires(s -> s.hasPermission(2))
                 .then(Commands.literal("blueprint").executes(FCommands::blueprintOf))
                 .then(Commands.literal("charge").executes(FCommands::charge))
+                .then(Commands.literal("audit").then(Commands.literal("materials").executes(FCommands::auditMaterials)))
                 .then(Commands.literal("build").executes(FCommands::build)
                         .then(Commands.literal("parts").executes(FCommands::parts)))
                 .then(Commands.literal("part")
@@ -281,6 +282,19 @@ public final class FCommands {
     }
 
     /** Every part the held blueprint lists, in its planned materials. */
+    /** Dev: writes {@code material_audit.txt} in the run directory, one line per part or slot saying whether its material changes any figure. */
+    private static int auditMaterials(CommandContext<CommandSourceStack> c) throws CommandSyntaxException {
+        List<String> lines = io.github.soundgoodizerfan.feedback.modular.blueprint.ToolDesigns.materialAudit(ModularTypes.get().types(), MaterialTable.get().materials());
+        try {
+            java.nio.file.Files.write(java.nio.file.Path.of("material_audit.txt"), lines);
+        } catch (java.io.IOException e) {
+            throw new SimpleCommandExceptionType(Component.literal(e.getMessage())).create();
+        }
+        long dead = lines.stream().filter(l -> l.endsWith("DEAD")).count();
+        c.getSource().sendSuccess(() -> Component.literal(lines.size() + " places audited, " + dead + " dead: material_audit.txt"), false);
+        return lines.size();
+    }
+
     private static int parts(CommandContext<CommandSourceStack> c) throws CommandSyntaxException {
         ServerPlayer player = c.getSource().getPlayerOrException();
         ItemStack blueprint = held(player);

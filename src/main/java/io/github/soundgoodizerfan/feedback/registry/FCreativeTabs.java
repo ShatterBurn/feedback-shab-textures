@@ -2,530 +2,502 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.registry;
 
-import io.github.soundgoodizerfan.feedback.weapon.GunTuning;
 import io.github.soundgoodizerfan.feedback.Feedback;
+import io.github.soundgoodizerfan.feedback.combat.gear.GearStats;
+import io.github.soundgoodizerfan.feedback.core.unit.VoltageBand;
+import io.github.soundgoodizerfan.feedback.machine.cable.CableGauge;
+import io.github.soundgoodizerfan.feedback.machine.cable.CableItem;
+import io.github.soundgoodizerfan.feedback.process.Cut;
+import io.github.soundgoodizerfan.feedback.process.MadeOf;
+import io.github.soundgoodizerfan.feedback.process.Material;
+import io.github.soundgoodizerfan.feedback.weapon.Cartridge;
+import io.github.soundgoodizerfan.feedback.weapon.GunTuning;
+import io.github.soundgoodizerfan.feedback.weapon.Magazine;
+
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.SimpleFluidContent;
 import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
+/**
+ * The creative menu: seven tabs, one sort rule set. Read this before adding an item.
+ *
+ * <h2>Which tab</h2>
+ * Ask what the player does with the thing, top to bottom; the first yes wins.
+ * <ol>
+ *   <li><b>Weapons &amp; Combat</b>: it hurts, shields, fires, or moves the wearer by force (guns, ammunition and
+ *       the stations that make it, melee gear, shield, grapple).</li>
+ *   <li><b>Food &amp; Farming</b>: it is eaten, cooked with, grown, or a kitchen station.</li>
+ *   <li><b>Control &amp; Vehicles</b>: it senses, decides, signals or steers (sensors, controllers, computers,
+ *       disks, redstone devices, vehicle bodies, seat, thruster, tires).</li>
+ *   <li><b>Tools &amp; Gear</b>: it is held, worn or read, not placed (hand tools, instruments, worn gear,
+ *       knowledge items).</li>
+ *   <li><b>Machines &amp; Stations</b>: it is placed and works, or is a bench (furnaces, power, fluids,
+ *       logistics, reactors, cultures).</li>
+ *   <li><b>Parts &amp; Components</b>: it is built into something else (rotation parts, joints, coils, cables,
+ *       heads, electrodes).</li>
+ *   <li><b>Materials</b>: it is stuff (generated forms, ingots, ores, soils, intermediates, buckets).</li>
+ * </ol>
+ *
+ * <h2>Order inside a tab</h2>
+ * Sections run in the order the player meets them. Inside a section, items are grouped by family (every mold
+ * together, every cable together, every furnace together). Inside a family, simple comes before advanced: by the
+ * era the thing needs (hand work, then mechanical, then thermal and chemical, then electric, then computing), and a
+ * bare variant before a refined one. Per-material items (one per material that can be one) stay together as one
+ * family, in material file order, which is what {@link FormItems#materials()} gives.
+ *
+ * <h2>Editing</h2>
+ * <ul>
+ *   <li>A section is a {@code List<DeferredItem<?>>} below, or a method for items built as stacks (per material,
+ *       per variant). Put a new item in the section it belongs to, where the tier rule puts it.</li>
+ *   <li>Every item lists in exactly one tab. The Tools tab ends with {@link #unclaimedModular()}: a
+ *       {@link FModular} item that no section names lands there in registration order, so a new modular type
+ *       shows up even when forgotten; the fix is to name it in its section.</li>
+ *   <li>Development cheats go in {@link #buildOperatorTab}, never in a tab here.</li>
+ *   <li>JEI categories have their own order, documented on {@code FeedbackJeiPlugin#registerCategories}.</li>
+ * </ul>
+ */
 public class FCreativeTabs {
 
     public static final DeferredRegister<CreativeModeTab> TABS =
             DeferredRegister.create(Registries.CREATIVE_MODE_TAB, Feedback.MOD_ID);
 
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MAIN = TABS.register("main",
-            () -> CreativeModeTab.builder()
-                    .title(Component.translatable("itemGroup.feedback"))
-                    .icon(() -> new ItemStack(FItems.SHAFT.get()))
-                    .displayItems((params, output) -> {
-                        output.accept(FItems.TONGS.get());
-                        // A plain Gun: the core gives it the gun type's starter design (a 9 mm steel handgun) on first tick.
-                        output.accept(new ItemStack(FWeapons.GUN.get()));
-                        output.accept(FWeapons.RELOADING_PRESS_ITEM.get());
-                        output.accept(FWeapons.MIXER_ITEM.get());
-                        output.accept(FWeapons.DEMOLITION_CHARGE_ITEM.get());
-                        FModular.items().forEach(output::accept);
-                        FLogistics.fill(output);
-                        FAutomation.fill(output);
-                        output.accept(FItems.BULLET_MOLD.get());
-                        output.accept(FItems.BALL_MOLD.get());
-                        output.accept(FItems.TUBE_MOLD.get());
-                        output.accept(FItems.GLASS_BLOCK_MOLD.get());
-                        output.accept(FItems.GLASS_PANE_MOLD.get());
-                        output.accept(FItems.GLASS_BOTTLE_MOLD.get());
-                        output.accept(FItems.PICKAXE_HEAD_MOLD.get());
-                        output.accept(FItems.AXE_HEAD_MOLD.get());
-                        output.accept(FItems.SHOVEL_HEAD_MOLD.get());
-                        output.accept(FItems.HOE_HEAD_MOLD.get());
-                        output.accept(FItems.SICKLE_HEAD_MOLD.get());
-                        output.accept(FItems.SAW_BLADE_MOLD.get());
-                        output.accept(FItems.ATOMISING_MOLD.get());
-                        output.accept(new ItemStack(FWeapons.MAGAZINE_ITEM.get()));
-                        ItemStack loaded = new ItemStack(FWeapons.MAGAZINE_ITEM.get());
-                        loaded.set(FWeapons.MAGAZINE.get(), new io.github.soundgoodizerfan.feedback.weapon.Magazine(
-                                java.util.Collections.nCopies(io.github.soundgoodizerfan.feedback.weapon.GunTuning.GUN_MAGAZINE_STANDARD,
-                                        io.github.soundgoodizerfan.feedback.weapon.Cartridge.reference(9))));
-                        output.accept(loaded);
-                        ItemStack round = new ItemStack(FWeapons.CARTRIDGE_ITEM.get());
-                        round.set(FWeapons.CARTRIDGE.get(), io.github.soundgoodizerfan.feedback.weapon.Cartridge.reference(9));
-                        output.accept(round);
-                        ItemStack shell = new ItemStack(FWeapons.CARTRIDGE_ITEM.get());
-                        shell.set(FWeapons.CARTRIDGE.get(), io.github.soundgoodizerfan.feedback.weapon.Cartridge.referenceShot(18));
-                        output.accept(shell);
-                        output.accept(FVehicles.LIFT_ITEM.get());
-                        output.accept(FVehicles.GAS_CELL_CLOTH_ITEM.get());
-                        output.accept(FVehicles.GAS_CELL_RUBBER_ITEM.get());
-                        output.accept(FVehicles.GAS_CELL_PLATE_ITEM.get());
-                        output.accept(FVehicles.GAS_CELL_BLADDER_ITEM.get());
-                        output.accept(FVehicles.GAS_CELL_MEMBRANE_ITEM.get());
-                        output.accept(FVehicles.VENT_VALVE_ITEM.get());
-                        output.accept(FVehicles.BALLAST_TANK_ITEM.get());
-                        output.accept(FVehicles.FLIGHT_SENSOR_ITEM.get());
-                        output.accept(FVehicles.MICRO_CORE.get());
-                        output.accept(FVehicles.SEAT_ITEM.get());
-                        output.accept(FItems.SHAFT.get());
-                        output.accept(FItems.CAMPFIRE.get());
-                        output.accept(FItems.SOUL_CAMPFIRE.get());
-                        output.accept(FItems.HOPPER.get());
-                        output.accept(FItems.DROPPER.get());
-                        output.accept(FItems.NOTE_BLOCK.get());
-                        FItems.NOISEMAKERS.values().forEach(m -> output.accept(m.get()));
-                        output.accept(FItems.DISPENSER.get());
-                        output.accept(FItems.BEARING.get());
-                        output.accept(FItems.SMALL_COG.get());
-                        output.accept(FItems.LARGE_COG.get());
-                        output.accept(FItems.GEARBOX.get());
-                        output.accept(FItems.DIFFERENTIAL.get());
-                        output.accept(FItems.ROTATION_ADAPTER.get());
-                        output.accept(FItems.ROTARY_BEARING.get());
-                        output.accept(FItems.RING_GEAR.get());
-                        output.accept(FItems.LARGE_RING_GEAR.get());
-                        output.accept(FItems.MICRO_WEDGE.get());
-                        output.accept(FItems.TIRE_RUBBER.get());
-                        output.accept(FItems.BALL_JOINT.get());
-                        output.accept(FItems.LOCKED_JOINT.get());
-                        output.accept(FItems.SLIDER_JOINT.get());
-                        output.accept(FItems.PISTON_JOINT.get());
-                        output.accept(FItems.CRANK_LINKAGE.get());
-                        output.accept(FItems.MECHANICAL_HAMMER.get());
-                        output.accept(FItems.WIRE_DRAWER.get());
-                        output.accept(FItems.ROLLING_MILL.get());
-                        output.accept(FItems.MECHANICAL_PRESS.get());
-                        output.accept(FItems.DRILL_PRESS.get());
-                        output.accept(FItems.LATHE.get());
-                        output.accept(FItems.LATHE_TOOL_BIT.get());
-                        output.accept(FItems.GRINDING_WHEEL.get());
-                        output.accept(FItems.DIAMOND_GRINDING_WHEEL.get());
-                        output.accept(FItems.GROUND_HARDENED_STEEL.get());
-                        output.accept(FItems.SMALL_PULLEY.get());
-                        output.accept(FItems.LARGE_PULLEY.get());
-                        output.accept(FItems.BELT.get());
-                        output.accept(FItems.JOINT_LINK.get());
-                        output.accept(FItems.CLUTCH.get());
-                        output.accept(FItems.OVERSPEED_TRIP.get());
-                        output.accept(FItems.TIMER.get());
-                        output.accept(FItems.CONTROLLER.get());
-                        output.accept(FItems.PROGRAMMER.get());
-                        output.accept(FItems.ELECTRIC_CONTROLLER.get());
-                        output.accept(FItems.ELECTRIC_PROGRAMMER.get());
-                        output.accept(FItems.COMPUTER.get());
-                        output.accept(FItems.PUNCH_CARD.get());
-                        output.accept(FItems.CIRCUIT_BOARD.get());
-                        output.accept(FItems.FLOPPY_DISK.get());
-                        output.accept(FItems.USB_DRIVE.get());
-                        for (String app : io.github.soundgoodizerfan.feedback.control.computer.ComputerApps.DISK_APPS)
-                            output.accept(io.github.soundgoodizerfan.feedback.control.computer.ComputerApps.disk(app));
-                        output.accept(FItems.FUNCTION_CARD.get());
-                        output.accept(FItems.MEMORY_DRUM.get());
-                        output.accept(FItems.CARD_RACK.get());
-                        output.accept(FItems.ESCAPEMENT.get());
-                        output.accept(FItems.CALIPERS.get());
-                        output.accept(FModular.DRAW_GAUGE.get());
-                        output.accept(FItems.INSTRUMENT_BAG.get());
-                        output.accept(FItems.WRENCH.get());
-                        output.accept(FItems.TASTING_SPOON.get());
-                        output.accept(FItems.GRAPPLE.get());
-                        output.accept(FItems.GRAPPLE_WINCH.get());
-                        net.minecraft.world.item.ItemStack feedbacker = new net.minecraft.world.item.ItemStack(FItems.FEEDBACKER.get());
-                        feedbacker.set(FDataComponents.GEAR.get(), new io.github.soundgoodizerfan.feedback.combat.gear.GearStats(
-                                io.github.soundgoodizerfan.feedback.Feedback.id("tempered_steel"), io.github.soundgoodizerfan.feedback.Feedback.id("leather"),
-                                1.43f, 0.29f, 0f, 0f, 0f, 0f));
-                        feedbacker.set(FDataComponents.GRANTS.get(), java.util.List.of(
-                                io.github.soundgoodizerfan.feedback.combat.parry.ParryTuning.PUNCH_PROJECTILES));
-                        output.accept(feedbacker);
-                        net.minecraft.world.item.ItemStack knuckleblaster = new net.minecraft.world.item.ItemStack(FItems.KNUCKLEBLASTER.get());
-                        knuckleblaster.set(FDataComponents.GEAR.get(), new io.github.soundgoodizerfan.feedback.combat.gear.GearStats(
-                                io.github.soundgoodizerfan.feedback.Feedback.id("tempered_steel"), io.github.soundgoodizerfan.feedback.Feedback.id("leather"),
-                                0f, 0.5f, 0f, 0f, 0f, 0f));
-                        knuckleblaster.set(FDataComponents.GRANTS.get(), java.util.List.of(
-                                io.github.soundgoodizerfan.feedback.combat.punch.PunchTuning.HEAVY_PUNCH));
-                        output.accept(knuckleblaster);
-                        net.minecraft.world.item.ItemStack whiplash = new net.minecraft.world.item.ItemStack(FItems.WHIPLASH.get());
-                        whiplash.set(FDataComponents.GEAR.get(), new io.github.soundgoodizerfan.feedback.combat.gear.GearStats(
-                                io.github.soundgoodizerfan.feedback.Feedback.id("wrought_iron"), io.github.soundgoodizerfan.feedback.Feedback.id("wrought_iron"),
-                                0f, 0f, 0f, 0f, 0f, 0f));
-                        whiplash.set(FDataComponents.GRANTS.get(), java.util.List.of(
-                                io.github.soundgoodizerfan.feedback.combat.whip.WhipTuning.WHIPLASH));
-                        output.accept(whiplash);
-                        output.accept(FItems.UNLEARNING_TOKEN.get());
-                        output.accept(FItems.FIREBOX.get());
-                        output.accept(FItems.HEARTH.get());
-                        io.github.soundgoodizerfan.feedback.registry.FormItems.materials().forEach((id, material) -> {
-                            if (material.forms().containsKey("plate") && material.thermal().conductivity().isPresent())
-                                output.accept(io.github.soundgoodizerfan.feedback.machine.skillet.SkilletItem.of(id));
-                        });
-                        io.github.soundgoodizerfan.feedback.registry.FormItems.materials().forEach((id, material) -> {
-                            if (material.forms().containsKey("plate") && material.thermal().conductivity().isPresent())
-                                output.accept(io.github.soundgoodizerfan.feedback.machine.stockpot.StockpotItem.of(id));
-                        });
-                        output.accept(FItems.BREWING_STAND.get());
-                        output.accept(FItems.ICE_BOX.get());
-                        output.accept(FItems.REFRIGERATION_UNIT.get());
-                        output.accept(FItems.CRYOCOOLER.get());
-                        output.accept(FItems.DRYING_RACK.get());
-                        output.accept(FItems.SALT.get());
-                        output.accept(FItems.ALUMINA.get());
-                        output.accept(FItems.SILICATE_SLAG.get());
-                        output.accept(FItems.RED_MUD.get());
-                        output.accept(FItems.RARE_EARTH_RESIDUE.get());
-                        output.accept(FItems.FERTILISER.get());
-                        output.accept(FItems.COPPER_BUCKET.get());
-                        // One filled bucket per source fluid: the bucket is one item, so each fluid's "form" is a component.
-                        FFluids.FLUIDS.getEntries().stream().map(h -> h.get())
-                                .filter(f -> f.defaultFluidState().isSource()).forEach(f -> {
-                                    ItemStack filled = new ItemStack(FItems.COPPER_BUCKET.get());
-                                    filled.set(FDataComponents.BUCKET_CONTENT.get(), net.neoforged.neoforge.fluids.SimpleFluidContent.copyOf(
-                                            new net.neoforged.neoforge.fluids.FluidStack(f,
-                                                    io.github.soundgoodizerfan.feedback.item.CopperBucketItem.CAPACITY_MB)));
-                                    output.accept(filled);
-                                });
-                        FCrops.SEEDS.forEach(seed -> output.accept(seed.get()));
-                        output.accept(FItems.DOUGH.get());
-                        output.accept(FItems.LOAF.get());
-                        output.accept(FItems.FLATBREAD_DOUGH.get());
-                        output.accept(FItems.FLATBREAD.get());
-                        output.accept(FItems.PASTRY_DOUGH.get());
-                        output.accept(FItems.PASTRY_SHELL.get());
-                        output.accept(FItems.ROASTED_PUMPKIN.get());
-                        output.accept(FItems.NOODLES.get());
-                        output.accept(FItems.COOKED_NOODLES.get());
-                        output.accept(FItems.FRIED_EGG.get());
-                        output.accept(FItems.TURNIP.get());
-                        output.accept(FItems.TOMATO.get());
-                        output.accept(FItems.ONION.get());
-                        output.accept(FItems.GARLIC.get());
-                        output.accept(FItems.CABBAGE.get());
-                        output.accept(FItems.CORN.get());
-                        output.accept(FItems.RICE.get());
-                        output.accept(FItems.STEAMED_RICE.get());
-                        output.accept(FItems.SOYBEAN.get());
-                        output.accept(FItems.CHILE_PEPPER.get());
-                        output.accept(FItems.GINGER.get());
-                        output.accept(FItems.PEPPER.get());
-                        output.accept(FItems.JAR.get());
-                        output.accept(FItems.SMALL_CRUCIBLE.get());
-                        output.accept(FItems.LARGE_CRUCIBLE.get());
-                        output.accept(FItems.ARC_HEARTH.get());
-                        output.accept(FItems.ARC_HEAD.get());
-                        // One electrode per material that can carry an arc.
-                        io.github.soundgoodizerfan.feedback.registry.FormItems.materials().forEach((id, material) -> {
-                            if (material.electrodeLimit().isPresent())
-                                output.accept(io.github.soundgoodizerfan.feedback.machine.arc.ElectrodeItem.of(id));
-                        });
-                        output.accept(FItems.POWER_CUTTER.get());
-                        output.accept(FItems.AUTO_ENGINEER.get());
-                        output.accept(FItems.DATA_STICK.get());
-                        // One cutter head of each kind per material hard enough to be one.
-                        io.github.soundgoodizerfan.feedback.registry.FormItems.materials().forEach((id, material) -> {
-                            boolean hard = material.kind().filter(k -> k == io.github.soundgoodizerfan.feedback.process.Material.Kind.METAL
-                                    || k == io.github.soundgoodizerfan.feedback.process.Material.Kind.CERAMIC
-                                    || k == io.github.soundgoodizerfan.feedback.process.Material.Kind.CRYSTAL).isPresent();
-                            if (!hard)
-                                return;
-                            net.minecraft.world.item.ItemStack saw = new net.minecraft.world.item.ItemStack(FItems.SAW_HEAD.get());
-                            saw.set(FDataComponents.MADE_OF.get(), new io.github.soundgoodizerfan.feedback.process.MadeOf(id, "ingot", 1));
-                            output.accept(saw);
-                            if (material.ampacity().isPresent()) {
-                                net.minecraft.world.item.ItemStack plasma = new net.minecraft.world.item.ItemStack(FItems.PLASMA_HEAD.get());
-                                plasma.set(FDataComponents.MADE_OF.get(), new io.github.soundgoodizerfan.feedback.process.MadeOf(id, "ingot", 1));
-                                output.accept(plasma);
-                            }
-                        });
-                        output.accept(FItems.INSULATION.get());
-                        output.accept(FItems.CRYSTAL_HOLDER.get());
-                        output.accept(FItems.CULTURE_DISH.get());
-                        output.accept(FItems.CATALYST_TAP.get());
-                        output.accept(FItems.ORB_ABSORBER.get());
-                        output.accept(FItems.ORE_TAP.get());
-                        output.accept(FItems.TRADE_TAP.get());
-                        output.accept(FItems.SMELTER_TAP.get());
-                        output.accept(FItems.DISENCHANT_STONE.get());
-                        output.accept(FItems.SCULK_RELAY.get());
-                        output.accept(FItems.DATA_SENSOR.get());
-                        output.accept(FItems.CULTURE_SEED.get());
-                        output.accept(FItems.CREEPER_PEN.get());
-                        output.accept(FItems.CREEPER_SAC.get());
-                        output.accept(FItems.CREEPER_CHARGE.get());
-                        output.accept(FItems.RELAY_ORGAN.get());
-                        io.github.soundgoodizerfan.feedback.registry.FormItems.materials().forEach((id, material) -> {
-                            if (material.xpStore().filter(x -> x.conductance() > 0).isPresent())
-                                output.accept(io.github.soundgoodizerfan.feedback.machine.xp.XpWireItem.of(id));
-                        });
-                        io.github.soundgoodizerfan.feedback.registry.FormItems.materials().forEach((id, material) -> {
-                            if (material.separation().diamagnetism() > 0f)
-                                output.accept(io.github.soundgoodizerfan.feedback.machine.levitation.LevitationPlateItem.of(id));
-                            if (material.separation().diamagnetism() > 0f)
-                                output.accept(io.github.soundgoodizerfan.feedback.machine.levitation.LevitationSleeveItem.of(id));
-                        });
-                        io.github.soundgoodizerfan.feedback.registry.FormItems.materials().forEach((id, material) -> {
-                            if (material.electrical().pyroCoupling().filter(c -> c > 0f).isPresent())
-                                output.accept(io.github.soundgoodizerfan.feedback.machine.pyro.PyroPlateItem.of(id));
-                        });
-                        output.accept(FItems.HYDRIDE_BED.get());
-                        output.accept(FItems.DAMPER.get());
-                        output.accept(FItems.VALVE.get());
-                        output.accept(FItems.REDSTONE_EMITTER.get());
-                        output.accept(FItems.ANALOG_ADAPTER.get());
-                        output.accept(FItems.BELLOWS.get());
-                        // One cable per conductor: every jar material that states an ampacity.
-                        io.github.soundgoodizerfan.feedback.registry.FormItems.materials().forEach((id, material) -> {
-                            if (material.ampacity().isPresent()) {
-                                output.accept(io.github.soundgoodizerfan.feedback.machine.cable.CableItem.of(id, 1));
-                                for (io.github.soundgoodizerfan.feedback.core.unit.VoltageBand band : io.github.soundgoodizerfan.feedback.core.unit.VoltageBand.values())
-                                    output.accept(io.github.soundgoodizerfan.feedback.machine.cable.CableItem.of(id, 1, band));
-                                // The other gauges: bare, and coated for the lowest band.
-                                for (io.github.soundgoodizerfan.feedback.machine.cable.CableGauge gauge : io.github.soundgoodizerfan.feedback.machine.cable.CableGauge.values()) {
-                                    if (gauge == io.github.soundgoodizerfan.feedback.machine.cable.CableGauge.STANDARD)
-                                        continue;
-                                    output.accept(io.github.soundgoodizerfan.feedback.machine.cable.CableItem.of(id, 1, null, gauge));
-                                    output.accept(io.github.soundgoodizerfan.feedback.machine.cable.CableItem.of(id, 1,
-                                            io.github.soundgoodizerfan.feedback.core.unit.VoltageBand.LV, gauge));
-                                }
-                                ItemStack post = new ItemStack(FItems.FENCE.get());
-                                post.set(FDataComponents.MADE_OF.get(), new io.github.soundgoodizerfan.feedback.process.MadeOf(id, "wire", 1));
-                                output.accept(post);
-                            }
-                        });
-                        output.accept(FItems.GALVANIC_CELL_PACK.get());
-                        output.accept(FItems.ELECTROSTATIC_GENERATOR.get());
-                        output.accept(FItems.COPPER_COIL.get());
-                        output.accept(FItems.IRON_COIL.get());
-                        output.accept(FItems.INDUCTION_COIL.get());
-                        output.accept(FItems.INDUCTION_STOVE.get());
-                        output.accept(FItems.PREHEAT_COIL.get());
-                        output.accept(FItems.BREAKER.get());
-                        for (io.github.soundgoodizerfan.feedback.machine.cable.CableGauge gauge : io.github.soundgoodizerfan.feedback.machine.cable.CableGauge.values()) {
-                            if (gauge == io.github.soundgoodizerfan.feedback.machine.cable.CableGauge.STANDARD)
-                                continue;
-                            ItemStack breaker = new ItemStack(FItems.BREAKER.get());
-                            breaker.set(FDataComponents.CABLE_GAUGE.get(), gauge);
-                            output.accept(breaker);
-                        }
-                        output.accept(FItems.FUSE.get());
-                        output.accept(FItems.COHERER.get());
-                        output.accept(FItems.REFLOW_OVEN.get());
-                        output.accept(FItems.PHOSPHOR_SCREEN.get());
-                        output.accept(FItems.OSCILLOSCOPE.get());
-                        output.accept(FItems.TRACE_BOARD.get());
-                        output.accept(FItems.SOLDERING_IRON.get());
-                        output.accept(FItems.ARC_WELDER.get());
-                        output.accept(FItems.WHISKER.get());
-                        output.accept(FItems.RELAY.get());
-                        output.accept(FItems.GALENA.get());
-                        output.accept(FItems.PYRITE.get());
-                        output.accept(FItems.HYDROMETER.get());
-                        output.accept(FItems.JAR_BATON.get());
-                        output.accept(FItems.ELECTROLYTIC_CELL.get());
-                        output.accept(FItems.ELECTROLYSER.get());
-                        output.accept(FItems.CHARGER.get());
-                        output.accept(FItems.CHARGING_GANTRY.get());
-                        output.accept(FItems.RECTIFIER.get());
-                        output.accept(FItems.CONVERTER.get());
-                        output.accept(FItems.CONVERTER_TAP.get());
-                        output.accept(FItems.HEATSINK.get());
-                        output.accept(FItems.BIMETALLIC_STRIP.get());
-                        output.accept(FItems.STEAM_ENGINE.get());
-                        output.accept(FItems.STEAM_TURBINE.get());
-                        output.accept(FItems.CONDENSER.get());
-                        output.accept(FItems.HUSK_SAND.get());
-                        output.accept(FItems.VACUUM_DRYER.get());
-                        output.accept(FItems.TUBE.get());
-                        output.accept(FItems.LINED_TUBE.get());
-                        output.accept(FItems.WIDE_TUBE.get());
-                        output.accept(FItems.EVACUATED_TUBE.get());
-                        output.accept(FItems.TUBE_JUNCTION.get());
-                        output.accept(FItems.PROGRAMMED_JUNCTION.get());
-                        output.accept(FItems.TUBE_STATION.get());
-                        output.accept(FItems.SORTING_STATION.get());
-                        output.accept(FItems.SORT_GAUGE.get());
-                        output.accept(FItems.VACUUM_PUMP.get());
-                        output.accept(FItems.LINEAR_MOTOR.get());
-                        output.accept(FItems.CARRIER.get());
-                        output.accept(FItems.MAGNETIC_CARRIER.get());
-                        output.accept(FItems.POD.get());
-                        output.accept(FItems.ENDER_PORT.get());
-                        output.accept(FItems.ENDER_ANCHOR.get());
-                        output.accept(FItems.GAS_TURBINE.get());
-                        output.accept(FItems.FLARE.get());
-                        output.accept(FItems.REACTOR.get());
-                        output.accept(FItems.REBOILER.get());
-                        output.accept(FItems.TRAY_BUBBLE_CAP.get());
-                        output.accept(FItems.TRAY_SIEVE.get());
-                        output.accept(FItems.TRAY_PACKED.get());
-                        output.accept(FItems.DERRICK_BASE.get());
-                        output.accept(FItems.DERRICK_CASING.get());
-                        output.accept(FItems.DERRICK_BIT.get());
-                        output.accept(FItems.WELLHEAD.get());
-                        output.accept(FItems.SEEP.get());
-                        output.accept(FItems.SOUL_SEEP.get());
-                        output.accept(FItems.REACTOR_CORE.get());
-                        output.accept(FItems.FUEL_CHANNEL.get());
-                        output.accept(FItems.CONTROL_ASSEMBLY.get());
-                        output.accept(FItems.SCRAM_TRIP.get());
-                        output.accept(FItems.SPENT_FUEL_POOL.get());
-                        output.accept(FItems.COOLANT_PORT.get());
-                        output.accept(FItems.COOLANT_CHANNEL.get());
-                        output.accept(FItems.NEUTRON_REFLECTOR.get());
-                        output.accept(FItems.STAR_SEAT.get());
-                        output.accept(FItems.FLUX_METER.get());
-                        output.accept(FItems.GRAPHITE_MODERATOR.get());
-                        output.accept(FItems.SHOCK_CAPSULE.get());
-                        output.accept(FItems.SHEAVE.get());
-                        output.accept(FItems.PURIFIED_REDSTONE.get());
-                        output.accept(FItems.SUPERCONDUCTOR_BLEND.get());
-                        output.accept(FItems.CALCINED_BLEND.get());
-                        output.accept(FItems.SHEATHED_BILLET.get());
-                        output.accept(FItems.IMPACT_PENDULUM.get());
-                        output.accept(FItems.STRIKE_POST.get());
-                        output.accept(FItems.RESPIRATOR.get());
-                        output.accept(FItems.DIAMOND_GRIT.get());
-                        output.accept(FItems.DIAMOND_SEED.get());
-                        output.accept(FItems.FUEL_ROD.get());
-                        output.accept(FItems.THORIUM_FUEL_ROD.get());
-                        output.accept(FItems.ENRICHED_FUEL_ROD.get());
-                        output.accept(FItems.BREEDER_ROD.get());
-                        output.accept(FItems.SPENT_FUEL_ROD.get());
-                        output.accept(FItems.GAS_CENTRIFUGE.get());
-                        output.accept(FItems.CORE_SLAG.get());
-                        output.accept(FItems.MAGMA_HEAD.get());
-                        output.accept(FItems.BASTION_RUBBLE.get());
-                        output.accept(FItems.CASTING_BASIN.get());
-                        output.accept(FItems.THERMOMETER.get());
-                        output.accept(FItems.PYROMETER.get());
-                        output.accept(FItems.PRESSURE_GAUGE.get());
-                        output.accept(FItems.LIGHT_METER.get());
-                        output.accept(FItems.REACH_PROBE.get());
-                        output.accept(FItems.XP_METER.get());
-                        output.accept(FItems.STEEL_INGOT.get());
-                        output.accept(FItems.BURNT_IRON.get());
-                        output.accept(io.github.soundgoodizerfan.feedback.item.BloomItem.of(FItems.IRON_BLOOM.get(), 3));
-                        output.accept(io.github.soundgoodizerfan.feedback.item.BloomItem.of(FItems.IRON_BLOOM.get(), 1));
-                        output.accept(FItems.BLOOMERY_SLAG.get());
-                        output.accept(FItems.SCRAP_METAL.get());
-                        output.accept(FItems.CHARRED_REMAINS.get());
-                        output.accept(FItems.CRACKED_CERAMIC.get());
-                        output.accept(FItems.POROUS_SINTER.get());
-                        output.accept(FItems.CERMET_POWDER.get());
-                        output.accept(FItems.CERMET_GREEN_COMPACT.get());
-                        output.accept(FItems.TUNGSTEN_CARBIDE_POWDER.get());
-                        output.accept(FItems.TUNGSTEN_CARBIDE_GREEN_COMPACT.get());
-                        output.accept(FItems.POROUS_AGGREGATE.get());
-                        output.accept(FItems.SYNTHETIC_PEARL.get());
-                        output.accept(FItems.TUNED_EYE.get());
-                        output.accept(FItems.RARE_EARTH_MAGNET_POWDER.get());
-                        output.accept(FItems.RARE_EARTH_MAGNET_GREEN_COMPACT.get());
-                        output.accept(FItems.RARE_EARTH_MAGNET_BLANK.get());
-                        output.accept(FItems.OSMIUM_SPONGE.get());
-                        output.accept(FItems.OSMIUM_POWDER.get());
-                        output.accept(FItems.OSMIUM_GREEN_COMPACT.get());
-                        output.accept(FItems.HARDENED_STEEL.get());
-                        output.accept(FItems.CAST_NETHERITE_INGOT.get());
-                        output.accept(FItems.NETHERITE_POWDER.get());
-                        output.accept(FItems.NETHERITE_GREEN_COMPACT.get());
-                        output.accept(FItems.WORN_NETHERITE_BITS.get());
-                        output.accept(FItems.GHAST_BLADDER.get());
-                        FormItems.all().forEach(generated -> output.accept(generated.item().get()));
-                        output.accept(FItems.TEMPERED_STEEL.get());
-                        output.accept(FItems.CAST_IRON.get());
-                        output.accept(FItems.TIN_INGOT.get());
-                        output.accept(FItems.ZINC_INGOT.get());
-                        output.accept(FItems.BRONZE_INGOT.get());
-                        output.accept(FItems.BRASS_INGOT.get());
-                        output.accept(FItems.GLASS_INGOT.get());
-                        output.accept(FItems.CERAMIC.get());
-                        output.accept(FItems.GLAZED_CERAMIC.get());
-                        output.accept(FItems.KAOLINITE.get());
-                        output.accept(FItems.FIREBRICK.get());
-                        output.accept(FItems.GRAPHITE.get());
-                        output.accept(FItems.GRAPHITE_ORE.get());
-                        output.accept(FItems.DEEPSLATE_GRAPHITE_ORE.get());
-                        output.accept(FItems.SALTPETRE.get());
-                        output.accept(FItems.SALTPETRE_ORE.get());
-                        output.accept(FItems.DEEPSLATE_SALTPETRE_ORE.get());
-                        output.accept(FItems.SULFUR.get());
-                        output.accept(FItems.SULFUR_ORE.get());
-                        output.accept(FItems.COAL_ORE.get());
-                        output.accept(FItems.DEEPSLATE_COAL_ORE.get());
-                        output.accept(FItems.IRON_ORE.get());
-                        output.accept(FItems.DEEPSLATE_IRON_ORE.get());
-                        output.accept(FItems.COPPER_ORE.get());
-                        output.accept(FItems.DEEPSLATE_COPPER_ORE.get());
-                        output.accept(FItems.GOLD_ORE.get());
-                        output.accept(FItems.DEEPSLATE_GOLD_ORE.get());
-                        output.accept(FItems.LAPIS_ORE.get());
-                        output.accept(FItems.DEEPSLATE_LAPIS_ORE.get());
-                        output.accept(FItems.REDSTONE_ORE.get());
-                        output.accept(FItems.DEEPSLATE_REDSTONE_ORE.get());
-                        output.accept(FItems.DIAMOND_ORE.get());
-                        output.accept(FItems.DEEPSLATE_DIAMOND_ORE.get());
-                        output.accept(FItems.EMERALD_ORE.get());
-                        output.accept(FItems.DEEPSLATE_EMERALD_ORE.get());
-                        output.accept(FItems.NETHER_GOLD_ORE.get());
-                        output.accept(FItems.NETHER_QUARTZ_ORE.get());
-                        output.accept(FItems.TIN_ORE.get());
-                        output.accept(FItems.DEEPSLATE_TIN_ORE.get());
-                        output.accept(FItems.RAW_TIN.get());
-                        output.accept(FItems.ZINC_ORE.get());
-                        output.accept(FItems.DEEPSLATE_ZINC_ORE.get());
-                        output.accept(FItems.RAW_ZINC.get());
-                        output.accept(FItems.LEAD_ORE.get());
-                        output.accept(FItems.DEEPSLATE_LEAD_ORE.get());
-                        output.accept(FItems.GALENA_ORE.get());
-                        output.accept(FItems.PYRITE_ORE.get());
-                        output.accept(FItems.KAOLINITE_DEPOSIT.get());
-                        output.accept(FItems.SALT_DEPOSIT.get());
-                        output.accept(FItems.COPPER_FLOWER.get());
-                        output.accept(FItems.ZINC_VIOLET.get());
-                        output.accept(FItems.RUSTY_SOIL.get());
-                        output.accept(FItems.BLEACHED_SOIL.get());
-                        output.accept(FItems.SOOTY_SOIL.get());
-                        output.accept(FItems.BLADDER_CAMPION.get());
-                        output.accept(FItems.BLACK_SAND.get());
-                        output.accept(FItems.GOSSAN_RUBBLE.get());
-                        output.accept(FItems.TARNISHED_SOIL.get());
-                        output.accept(FItems.LEAD_CHEST.get());
-                        output.accept(FItems.RAW_LEAD.get());
-                        output.accept(FItems.LEAD_INGOT.get());
-                        output.accept(FItems.SILVER_INGOT.get());
-                        output.accept(FItems.COPPER_TUBING.get());
-                        output.accept(FItems.GLASS_TUBING.get());
-                        output.accept(FItems.QUARTZ_GLASS_INGOT.get());
-                        output.accept(FItems.FURNACE.get());
-                        output.accept(FItems.SMOKER.get());
-                        output.accept(FItems.BLAST_FURNACE.get());
-                        output.accept(FItems.IMPROVED_FURNACE.get());
-                        output.accept(FItems.KILN.get());
-                        output.accept(FItems.ANNEALING_FURNACE.get());
-                        output.accept(FItems.PUDDLING_FURNACE.get());
-                        output.accept(FItems.INGOT_MOLD.get());
-                        output.accept(FItems.TEMPERATURE_SENSOR.get());
-                        output.accept(FItems.GALVANOMETER.get());
-                        output.accept(FItems.COMPONENT_TESTER.get());
-                        for (io.github.soundgoodizerfan.feedback.process.Cut cut : io.github.soundgoodizerfan.feedback.process.Cut.values()) {
-                            net.minecraft.world.item.ItemStack probe = new net.minecraft.world.item.ItemStack(FItems.MASS_PROBE.get());
-                            probe.set(FDataComponents.CUT.get(), cut);
-                            output.accept(probe);
-                        }
-                        output.accept(FItems.ELECTROSCOPE.get());
-                        output.accept(FItems.CURRENT_SENSOR.get());
-                        output.accept(FItems.REFRACTORY_LINING.get());
-                        output.accept(FItems.RELIEF_VALVE.get());
-                        output.accept(FItems.AIR_INTAKE.get());
-                        output.accept(FItems.CROWBAR.get());
-                        output.accept(FItems.MORTAR.get());
-                        output.accept(FItems.DATA_CONNECTOR.get());
-                        // CREATIVE_CONTROLLER stays out, same as DEBUG_HELMET -- see buildOperatorTab below.
-                    })
-                    .build());
+    // ---- Tools & Gear ----
+
+    /** Hand tools: grip and prise, shape, then powered hand tools. */
+    private static final List<DeferredItem<?>> HAND_TOOLS = of(FItems.TONGS, FItems.CROWBAR, FItems.WRENCH, FItems.MORTAR,
+            FModular.HAFTED_TOOL, FModular.SAWBLADE, FModular.SHEARS, FModular.GLOVE, FModular.SCRATCH_FILES,
+            FItems.JAR_BATON, FItems.SOLDERING_IRON, FItems.ARC_WELDER, FItems.POWER_CUTTER);
+
+    /** Instruments by what they read: size and mass, heat and pressure, light and field, electricity, matter. */
+    private static final List<DeferredItem<?>> INSTRUMENTS = of(FItems.INSTRUMENT_BAG,
+            FItems.CALIPERS, FModular.DRAW_GAUGE, FModular.BALANCE_SCALE, FItems.SORT_GAUGE,
+            FItems.THERMOMETER, FItems.PYROMETER, FItems.PRESSURE_GAUGE, FItems.HYDROMETER,
+            FItems.LIGHT_METER, FItems.REACH_PROBE, FItems.XP_METER, FItems.FLUX_METER,
+            FItems.ELECTROSCOPE, FItems.GALVANOMETER, FItems.COMPONENT_TESTER, FItems.OSCILLOSCOPE,
+            FModular.SURVEY_METER, FModular.GEIGER_COUNTER, FModular.DOSIMETER, FModular.TEST_STRIP);
+
+    /** Worn, head to foot, then what the wearer carries. */
+    private static final List<DeferredItem<?>> WORN = of(FModular.HELMET, FModular.CHESTPLATE, FModular.LEGGINGS,
+            FModular.BOOTS, FItems.RESPIRATOR, FModular.SUIT_MODULE, FModular.BACKPACK, FModular.BED);
+
+    /** Knowledge: blank, then written, then what holds it. */
+    private static final List<DeferredItem<?>> KNOWLEDGE = of(FModular.BLANK_TREATISE, FModular.BLUEPRINT,
+            FModular.BLUEPRINT_BOOK, FModular.TREATISE_BINDER, FItems.UNLEARNING_TOKEN);
+
+    // ---- Weapons & Combat ----
+
+    /** Ranged, simple to advanced: bows, spring, powder, electric. */
+    private static final List<DeferredItem<?>> RANGED = of(FModular.BOW, FModular.CROSSBOW, FModular.SPRING_GUN,
+            FWeapons.GUN, FModular.ELECTRIC_GUN);
+
+    private static final List<DeferredItem<?>> MELEE_AND_DEFENCE = of(FModular.SHIELD, FItems.WHIPLASH,
+            FItems.FEEDBACKER, FItems.KNUCKLEBLASTER, FItems.GRAPPLE, FItems.GRAPPLE_WINCH);
+
+    /** Ammunition making: moulds, then the mixing and loading stations, then charges. */
+    private static final List<DeferredItem<?>> AMMUNITION_MAKING = of(FItems.BULLET_MOLD, FItems.BALL_MOLD,
+            FWeapons.MIXER_ITEM, FWeapons.RELOADING_PRESS_ITEM, FModular.CHARGE, FWeapons.DEMOLITION_CHARGE_ITEM);
+
+    // ---- Food & Farming ----
+
+    private static final List<DeferredItem<?>> KITCHEN = of(FModular.PREP_TABLE_ITEM, FItems.DRYING_RACK,
+            FItems.BREWING_STAND, FModular.SPATULA, FModular.SPOON, FItems.TASTING_SPOON, FItems.JAR);
+
+    /** Staples and dishes, raw to made. */
+    private static final List<DeferredItem<?>> FOOD_ITEMS = of(FItems.DOUGH, FItems.LOAF, FItems.FLATBREAD_DOUGH,
+            FItems.FLATBREAD, FItems.PASTRY_DOUGH, FItems.PASTRY_SHELL, FItems.NOODLES, FItems.COOKED_NOODLES,
+            FItems.RICE, FItems.STEAMED_RICE, FItems.FRIED_EGG, FItems.ROASTED_PUMPKIN,
+            FModular.DISH, FModular.SKEWER, FModular.SOUP, FModular.WRAP, FModular.PIE, FModular.BREAD);
+
+    private static final List<DeferredItem<?>> CROPS = of(FItems.TURNIP, FItems.TOMATO, FItems.ONION, FItems.GARLIC,
+            FItems.CABBAGE, FItems.CORN, FItems.SOYBEAN, FItems.CHILE_PEPPER, FItems.GINGER, FItems.PEPPER,
+            FItems.FERTILISER);
+
+    // ---- Control & Vehicles ----
+
+    /** Signals: a note, a redstone line, then sensors by what they sense. */
+    private static final List<DeferredItem<?>> SIGNALS = of(FItems.NOTE_BLOCK, FItems.REDSTONE_EMITTER,
+            FItems.ANALOG_ADAPTER, FItems.TEMPERATURE_SENSOR, FItems.CURRENT_SENSOR, FItems.DATA_SENSOR);
+
+    /** Controllers: mechanical, electric, then computing; media and cards last. */
+    private static final List<DeferredItem<?>> CONTROLLERS = of(FItems.TIMER, FItems.CONTROLLER, FItems.PROGRAMMER,
+            FItems.ELECTRIC_CONTROLLER, FItems.ELECTRIC_PROGRAMMER, FItems.COMPUTER, FItems.PUNCH_CARD,
+            FItems.CIRCUIT_BOARD, FItems.FLOPPY_DISK, FItems.USB_DRIVE, FItems.FUNCTION_CARD, FItems.MEMORY_DRUM,
+            FItems.CARD_RACK, FItems.DATA_STICK, FItems.DATA_CONNECTOR);
+
+    /** Vehicle bodies: lift, gas cells (cloth to membrane), valves and tanks, seat, thrust, ground contact. */
+    private static final List<DeferredItem<?>> VEHICLE_PARTS = of(FVehicles.LIFT_ITEM, FVehicles.GAS_CELL_CLOTH_ITEM,
+            FVehicles.GAS_CELL_RUBBER_ITEM, FVehicles.GAS_CELL_PLATE_ITEM, FVehicles.GAS_CELL_BLADDER_ITEM,
+            FVehicles.GAS_CELL_MEMBRANE_ITEM, FVehicles.VENT_VALVE_ITEM, FVehicles.BALLAST_TANK_ITEM,
+            FVehicles.FLIGHT_SENSOR_ITEM, FVehicles.MICRO_CORE, FVehicles.SEAT_ITEM, FModular.THRUSTER,
+            FItems.TIRE_RUBBER);
+
+    // ---- Machines & Stations ----
+
+    /** Benches: where designs and parts are made, hand work first. */
+    private static final List<DeferredItem<?>> STATIONS = of(FModular.BLUEPRINT_TABLE_ITEM, FModular.TREATISE_SHELF_ITEM,
+            FModular.WOODWORKING_TABLE_ITEM, FModular.STONECUTTER_ITEM, FModular.SMITHING_TABLE_ITEM,
+            FModular.ANVIL_ITEM, FModular.ENGINEERING_TABLE_ITEM, FModular.ENCHANTING_TABLE_ITEM, FItems.AUTO_ENGINEER);
+
+    /** Fire and furnaces (hand-fed to powered), crucibles, casting and moulds, then cold. */
+    private static final List<DeferredItem<?>> HEAT = of(FItems.CAMPFIRE, FItems.SOUL_CAMPFIRE, FItems.FIREBOX,
+            FItems.HEARTH, FItems.FURNACE, FItems.SMOKER, FItems.BLAST_FURNACE, FItems.IMPROVED_FURNACE,
+            FItems.KILN, FItems.ANNEALING_FURNACE, FItems.PUDDLING_FURNACE, FItems.ARC_HEARTH, FItems.ARC_HEAD,
+            FItems.INDUCTION_STOVE, FItems.REFLOW_OVEN, FModular.BURNER, FModular.BOILER, FModular.HEAT_EXCHANGER,
+            FModular.THERMAL_STORE, FItems.SMALL_CRUCIBLE, FItems.LARGE_CRUCIBLE, FItems.CASTING_BASIN,
+            FItems.INGOT_MOLD, FItems.TUBE_MOLD, FItems.GLASS_BLOCK_MOLD, FItems.GLASS_PANE_MOLD,
+            FItems.GLASS_BOTTLE_MOLD, FItems.PICKAXE_HEAD_MOLD, FItems.AXE_HEAD_MOLD, FItems.SHOVEL_HEAD_MOLD,
+            FItems.HOE_HEAD_MOLD, FItems.SICKLE_HEAD_MOLD, FItems.SAW_BLADE_MOLD, FItems.ATOMISING_MOLD,
+            FItems.ICE_BOX, FItems.REFRIGERATION_UNIT, FItems.CRYOCOOLER, FItems.VACUUM_DRYER);
+
+    /** Shaping metal: hammer, draw, roll, press, drill, turn; then the test rigs. */
+    private static final List<DeferredItem<?>> METALWORKING = of(FItems.MECHANICAL_HAMMER, FItems.WIRE_DRAWER,
+            FItems.ROLLING_MILL, FItems.MECHANICAL_PRESS, FItems.DRILL_PRESS, FItems.LATHE,
+            FItems.IMPACT_PENDULUM, FItems.STRIKE_POST);
+
+    /** Making motion and charge: muscle and water, steam and gas, electric; then storing and converting it. */
+    private static final List<DeferredItem<?>> POWER = of(FModular.HAND_CRANK, FModular.WATER_WHEEL,
+            FItems.STEAM_ENGINE, FItems.STEAM_TURBINE, FItems.GAS_TURBINE, FModular.DYNAMOTOR,
+            FModular.GALVANIC_CELL, FItems.GALVANIC_CELL_PACK, FItems.ELECTROSTATIC_GENERATOR, FModular.LEYDEN_JAR,
+            FModular.BATTERY, FItems.CHARGER, FItems.CHARGING_GANTRY, FItems.RECTIFIER, FItems.CONVERTER,
+            FItems.CONVERTER_TAP, FModular.ELECTROMAGNET, FModular.LAMP, FItems.ELECTROLYTIC_CELL, FItems.ELECTROLYSER);
+
+    /** Fluids and gases: move, hold, control, treat, then the oil field. */
+    private static final List<DeferredItem<?>> FLUIDS = of(FModular.PUMP, FModular.COMPRESSOR, FItems.VACUUM_PUMP,
+            FModular.GAS_TANK, FModular.PRESSURE_VESSEL, FItems.VALVE, FItems.RELIEF_VALVE, FItems.AIR_INTAKE,
+            FItems.BELLOWS, FItems.DAMPER, FItems.FLARE, FItems.HYDRIDE_BED, FItems.CONDENSER, FItems.REBOILER,
+            FItems.TRAY_BUBBLE_CAP, FItems.TRAY_SIEVE, FItems.TRAY_PACKED, FItems.REACTOR, FItems.GAS_CENTRIFUGE,
+            FItems.SEEP, FItems.SOUL_SEEP, FItems.DERRICK_BASE, FItems.DERRICK_CASING, FItems.DERRICK_BIT,
+            FItems.WELLHEAD);
+
+    /** Handling: hand-fed blocks, then belts, tubes and pods, then the ender ports. */
+    private static final List<DeferredItem<?>> HANDLING = of(FItems.HOPPER, FItems.DROPPER, FItems.DISPENSER,
+            FItems.LEAD_CHEST, FModular.CONVEYOR_BELT);
+
+    private static final List<DeferredItem<?>> TUBES = of(FItems.TUBE, FItems.LINED_TUBE, FItems.WIDE_TUBE,
+            FItems.EVACUATED_TUBE, FItems.TUBE_JUNCTION, FItems.PROGRAMMED_JUNCTION, FItems.TUBE_STATION,
+            FItems.SORTING_STATION, FItems.LINEAR_MOTOR, FItems.CARRIER, FItems.MAGNETIC_CARRIER, FItems.POD,
+            FItems.ENDER_PORT, FItems.ENDER_ANCHOR);
+
+    /** Cultures, taps and relays: the biological and mystical machines. */
+    private static final List<DeferredItem<?>> CULTURES = of(FItems.CULTURE_DISH, FItems.CULTURE_SEED,
+            FItems.CREEPER_PEN, FItems.CREEPER_SAC, FItems.CREEPER_CHARGE, FItems.RELAY_ORGAN, FItems.ORB_ABSORBER,
+            FItems.SCULK_RELAY, FItems.DISENCHANT_STONE, FItems.CATALYST_TAP, FItems.ORE_TAP, FItems.TRADE_TAP,
+            FItems.SMELTER_TAP, FModular.XP_CONTAINER);
+
+    /** Fission: vessel, coolant, control, then fuel and what comes out. */
+    private static final List<DeferredItem<?>> REACTORS = of(FItems.REACTOR_CORE, FItems.FUEL_CHANNEL,
+            FItems.CONTROL_ASSEMBLY, FItems.SCRAM_TRIP, FItems.COOLANT_PORT, FItems.COOLANT_CHANNEL,
+            FItems.NEUTRON_REFLECTOR, FItems.GRAPHITE_MODERATOR, FItems.SHOCK_CAPSULE, FItems.STAR_SEAT,
+            FItems.SPENT_FUEL_POOL, FItems.FUEL_ROD, FItems.THORIUM_FUEL_ROD, FItems.ENRICHED_FUEL_ROD,
+            FItems.BREEDER_ROD, FItems.SPENT_FUEL_ROD);
+
+    // ---- Parts & Components ----
+
+    /** Rotation, in transmission order: shaft, bearings, gears, belts, then what controls the line. */
+    private static final List<DeferredItem<?>> ROTATION = of(FItems.SHAFT, FItems.BEARING, FItems.ROTARY_BEARING,
+            FItems.SMALL_COG, FItems.LARGE_COG, FItems.RING_GEAR, FItems.LARGE_RING_GEAR, FItems.SMALL_PULLEY,
+            FItems.LARGE_PULLEY, FItems.BELT, FItems.GEARBOX, FItems.DIFFERENTIAL, FItems.ROTATION_ADAPTER,
+            FItems.CLUTCH, FItems.OVERSPEED_TRIP, FItems.ESCAPEMENT, FItems.SHEAVE, FModular.FLYWHEEL,
+            FItems.MICRO_WEDGE);
+
+    /** Joints: fixed, then free to move. */
+    private static final List<DeferredItem<?>> JOINTS = of(FItems.LOCKED_JOINT, FItems.BALL_JOINT,
+            FItems.SLIDER_JOINT, FItems.PISTON_JOINT, FItems.CRANK_LINKAGE, FItems.JOINT_LINK);
+
+    /** Machine tooling and linings: what wears or shields inside a machine. */
+    private static final List<DeferredItem<?>> TOOLING = of(FItems.LATHE_TOOL_BIT, FItems.GRINDING_WHEEL,
+            FItems.DIAMOND_GRINDING_WHEEL, FItems.MAGMA_HEAD, FItems.REFRACTORY_LINING, FItems.INSULATION,
+            FItems.CRYSTAL_HOLDER, FItems.HEATSINK, FItems.BIMETALLIC_STRIP);
+
+    /** Coils, then electrical components, passive to active. */
+    private static final List<DeferredItem<?>> ELECTRICAL = of(FItems.COPPER_COIL, FItems.IRON_COIL,
+            FItems.INDUCTION_COIL, FItems.PREHEAT_COIL, FItems.FUSE, FItems.BREAKER, FItems.COHERER,
+            FItems.WHISKER, FItems.GALENA, FItems.PYRITE, FItems.RELAY, FItems.TRACE_BOARD, FItems.PHOSPHOR_SCREEN);
+
+    // ---- Materials ----
+
+    /** Metals, alloys and ceramics as ingots and stock, base metal then alloy, cast then worked. */
+    private static final List<DeferredItem<?>> STOCK = of(FItems.TIN_INGOT, FItems.ZINC_INGOT, FItems.LEAD_INGOT,
+            FItems.SILVER_INGOT, FItems.BRONZE_INGOT, FItems.BRASS_INGOT, FItems.CAST_IRON, FItems.STEEL_INGOT,
+            FItems.TEMPERED_STEEL, FItems.HARDENED_STEEL, FItems.GROUND_HARDENED_STEEL, FItems.CAST_NETHERITE_INGOT,
+            FItems.GLASS_INGOT, FItems.QUARTZ_GLASS_INGOT, FItems.COPPER_TUBING, FItems.GLASS_TUBING,
+            FItems.CERAMIC, FItems.GLAZED_CERAMIC, FItems.FIREBRICK);
+
+    /** Ores and the ground: stone and deepslate ore side by side, raw before ore, then deposits, plants, soils. */
+    private static final List<DeferredItem<?>> ORES = of(FItems.COAL_ORE, FItems.DEEPSLATE_COAL_ORE,
+            FItems.IRON_ORE, FItems.DEEPSLATE_IRON_ORE, FItems.COPPER_ORE, FItems.DEEPSLATE_COPPER_ORE,
+            FItems.GOLD_ORE, FItems.DEEPSLATE_GOLD_ORE, FItems.LAPIS_ORE, FItems.DEEPSLATE_LAPIS_ORE,
+            FItems.REDSTONE_ORE, FItems.DEEPSLATE_REDSTONE_ORE, FItems.DIAMOND_ORE, FItems.DEEPSLATE_DIAMOND_ORE,
+            FItems.EMERALD_ORE, FItems.DEEPSLATE_EMERALD_ORE, FItems.NETHER_GOLD_ORE, FItems.NETHER_QUARTZ_ORE,
+            FItems.RAW_TIN, FItems.TIN_ORE, FItems.DEEPSLATE_TIN_ORE, FItems.RAW_ZINC, FItems.ZINC_ORE,
+            FItems.DEEPSLATE_ZINC_ORE, FItems.RAW_LEAD, FItems.LEAD_ORE, FItems.DEEPSLATE_LEAD_ORE,
+            FItems.GRAPHITE_ORE, FItems.DEEPSLATE_GRAPHITE_ORE, FItems.SALTPETRE_ORE, FItems.DEEPSLATE_SALTPETRE_ORE,
+            FItems.SULFUR_ORE, FItems.GALENA_ORE, FItems.PYRITE_ORE, FItems.KAOLINITE_DEPOSIT, FItems.SALT_DEPOSIT,
+            FItems.COPPER_FLOWER, FItems.ZINC_VIOLET, FItems.BLADDER_CAMPION, FItems.RUSTY_SOIL,
+            FItems.BLEACHED_SOIL, FItems.SOOTY_SOIL, FItems.TARNISHED_SOIL, FItems.BLACK_SAND,
+            FItems.GOSSAN_RUBBLE, FItems.BASTION_RUBBLE);
+
+    /** Reagents and refined minerals. */
+    private static final List<DeferredItem<?>> CHEMICALS = of(FItems.SALT, FItems.SALTPETRE, FItems.SULFUR,
+            FItems.GRAPHITE, FItems.KAOLINITE, FItems.ALUMINA, FItems.HUSK_SAND, FItems.PURIFIED_REDSTONE,
+            FItems.DIAMOND_GRIT, FItems.DIAMOND_SEED);
+
+    /** Process intermediates and wastes, in the order the work goes: powders, compacts, blanks, then slags. */
+    private static final List<DeferredItem<?>> INTERMEDIATES = of(FItems.BURNT_IRON, FItems.SUPERCONDUCTOR_BLEND,
+            FItems.CALCINED_BLEND, FItems.SHEATHED_BILLET, FItems.CERMET_POWDER, FItems.CERMET_GREEN_COMPACT,
+            FItems.TUNGSTEN_CARBIDE_POWDER, FItems.TUNGSTEN_CARBIDE_GREEN_COMPACT, FItems.RARE_EARTH_MAGNET_POWDER,
+            FItems.RARE_EARTH_MAGNET_GREEN_COMPACT, FItems.RARE_EARTH_MAGNET_BLANK, FItems.OSMIUM_SPONGE,
+            FItems.OSMIUM_POWDER, FItems.OSMIUM_GREEN_COMPACT, FItems.NETHERITE_POWDER,
+            FItems.NETHERITE_GREEN_COMPACT, FItems.POROUS_AGGREGATE, FItems.POROUS_SINTER, FItems.SYNTHETIC_PEARL,
+            FItems.TUNED_EYE, FItems.GHAST_BLADDER, FItems.BLOOMERY_SLAG, FItems.SILICATE_SLAG, FItems.RED_MUD,
+            FItems.RARE_EARTH_RESIDUE, FItems.CORE_SLAG, FItems.SCRAP_METAL, FItems.CHARRED_REMAINS,
+            FItems.CRACKED_CERAMIC, FItems.WORN_NETHERITE_BITS);
+
+    /** Every section named above, to find the modular items no tab claims. */
+    private static final List<List<DeferredItem<?>>> SECTIONS = List.of(HAND_TOOLS, INSTRUMENTS, WORN, KNOWLEDGE,
+            RANGED, MELEE_AND_DEFENCE, AMMUNITION_MAKING, KITCHEN, FOOD_ITEMS, CROPS, SIGNALS, CONTROLLERS,
+            VEHICLE_PARTS, STATIONS, HEAT, METALWORKING, POWER, FLUIDS, HANDLING, TUBES, CULTURES, REACTORS,
+            ROTATION, JOINTS, TOOLING, ELECTRICAL, STOCK, ORES, CHEMICALS, INTERMEDIATES);
+
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> TOOLS = tab("tools",
+            () -> new ItemStack(FItems.WRENCH.get()), FCreativeTabs::fillTools);
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> WEAPONS = tab("weapons",
+            () -> new ItemStack(FWeapons.GUN.get()), FCreativeTabs::fillWeapons);
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MACHINES = tab("machines",
+            () -> new ItemStack(FItems.BLAST_FURNACE.get()), FCreativeTabs::fillMachines);
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> PARTS = tab("parts",
+            () -> new ItemStack(FItems.SMALL_COG.get()), FCreativeTabs::fillParts);
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> CONTROL = tab("control",
+            () -> new ItemStack(FItems.CONTROLLER.get()), FCreativeTabs::fillControl);
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> FOOD = tab("food",
+            () -> new ItemStack(FItems.LOAF.get()), FCreativeTabs::fillFood);
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MATERIALS = tab("materials",
+            () -> new ItemStack(FItems.STEEL_INGOT.get()), FCreativeTabs::fillMaterials);
 
     private FCreativeTabs() {
+    }
+
+    private static DeferredHolder<CreativeModeTab, CreativeModeTab> tab(String id, Supplier<ItemStack> icon,
+                                                                      Consumer<CreativeModeTab.Output> fill) {
+        return TABS.register(id, () -> CreativeModeTab.builder()
+                .title(Component.translatable("itemGroup.feedback." + id))
+                .icon(icon)
+                .displayItems((params, output) -> fill.accept(output))
+                .build());
+    }
+
+    private static List<DeferredItem<?>> of(DeferredItem<?>... items) {
+        return List.of(items);
+    }
+
+    private static void all(CreativeModeTab.Output out, List<DeferredItem<?>> section) {
+        section.forEach(i -> out.accept(i.get()));
+    }
+
+    private static void forMaterials(java.util.function.BiConsumer<net.minecraft.resources.ResourceLocation, Material> each) {
+        FormItems.materials().forEach(each);
+    }
+
+    private static ItemStack madeOf(DeferredItem<?> item, net.minecraft.resources.ResourceLocation id, String form) {
+        ItemStack stack = new ItemStack(item.get());
+        stack.set(FDataComponents.MADE_OF.get(), new MadeOf(id, form, 1));
+        return stack;
+    }
+
+    // ---- Tab bodies ----
+
+    private static void fillTools(CreativeModeTab.Output out) {
+        all(out, HAND_TOOLS);
+        all(out, INSTRUMENTS);
+        for (Cut cut : Cut.values()) {
+            ItemStack probe = new ItemStack(FItems.MASS_PROBE.get());
+            probe.set(FDataComponents.CUT.get(), cut);
+            out.accept(probe);
+        }
+        all(out, WORN);
+        all(out, KNOWLEDGE);
+        unclaimedModular().forEach(out::accept);
+    }
+
+    /** Modular items no section names: they land at the end of Tools in registration order. */
+    private static List<Item> unclaimedModular() {
+        Set<Item> claimed = new HashSet<>();
+        SECTIONS.forEach(s -> s.forEach(i -> claimed.add(i.get())));
+        claimed.add(FModular.CREATIVE_TREATISE.get());
+        return FModular.items().stream().filter(i -> !claimed.contains(i)).toList();
+    }
+
+    private static void fillWeapons(CreativeModeTab.Output out) {
+        // A plain Gun: the core gives it the gun type's starter design (a 9 mm steel handgun) on first tick.
+        all(out, RANGED);
+        all(out, MELEE_AND_DEFENCE);
+        out.accept(gear(FItems.FEEDBACKER, "tempered_steel", "leather", 1.43f, 0.29f,
+                io.github.soundgoodizerfan.feedback.combat.parry.ParryTuning.PUNCH_PROJECTILES));
+        out.accept(gear(FItems.KNUCKLEBLASTER, "tempered_steel", "leather", 0f, 0.5f,
+                io.github.soundgoodizerfan.feedback.combat.punch.PunchTuning.HEAVY_PUNCH));
+        out.accept(gear(FItems.WHIPLASH, "wrought_iron", "wrought_iron", 0f, 0f,
+                io.github.soundgoodizerfan.feedback.combat.whip.WhipTuning.WHIPLASH));
+        // Ammunition, simple to advanced: the empty magazine, a loaded one, a round, a shotgun shell.
+        out.accept(new ItemStack(FWeapons.MAGAZINE_ITEM.get()));
+        ItemStack loaded = new ItemStack(FWeapons.MAGAZINE_ITEM.get());
+        loaded.set(FWeapons.MAGAZINE.get(), new Magazine(
+                Collections.nCopies(GunTuning.GUN_MAGAZINE_STANDARD, Cartridge.reference(9))));
+        out.accept(loaded);
+        ItemStack round = new ItemStack(FWeapons.CARTRIDGE_ITEM.get());
+        round.set(FWeapons.CARTRIDGE.get(), Cartridge.reference(9));
+        out.accept(round);
+        ItemStack shell = new ItemStack(FWeapons.CARTRIDGE_ITEM.get());
+        shell.set(FWeapons.CARTRIDGE.get(), Cartridge.referenceShot(18));
+        out.accept(shell);
+        all(out, AMMUNITION_MAKING);
+    }
+
+    /** The three Feedback gear items in the menu: a worked example of each, with the technique it grants. */
+    private static ItemStack gear(DeferredItem<?> item, String head, String grip, float a, float b,
+                                  net.minecraft.resources.ResourceLocation grant) {
+        ItemStack stack = new ItemStack(item.get());
+        stack.set(FDataComponents.GEAR.get(), new GearStats(Feedback.id(head), Feedback.id(grip), a, b, 0f, 0f, 0f, 0f));
+        stack.set(FDataComponents.GRANTS.get(), List.of(grant));
+        return stack;
+    }
+
+    private static void fillMachines(CreativeModeTab.Output out) {
+        all(out, STATIONS);
+        all(out, HEAT);
+        all(out, METALWORKING);
+        all(out, POWER);
+        all(out, FLUIDS);
+        all(out, HANDLING);
+        FLogistics.fill(out);
+        all(out, TUBES);
+        all(out, CULTURES);
+        all(out, REACTORS);
+    }
+
+    private static void fillParts(CreativeModeTab.Output out) {
+        all(out, ROTATION);
+        all(out, JOINTS);
+        all(out, TOOLING);
+        // One saw head per material hard enough to be one, then a plasma head for those that carry current.
+        forMaterials((id, m) -> {
+            if (isHard(m))
+                out.accept(madeOf(FItems.SAW_HEAD, id, "ingot"));
+        });
+        forMaterials((id, m) -> {
+            if (isHard(m) && m.ampacity().isPresent())
+                out.accept(madeOf(FItems.PLASMA_HEAD, id, "ingot"));
+        });
+        // One electrode per material that can carry an arc.
+        forMaterials((id, m) -> {
+            if (m.electrodeLimit().isPresent())
+                out.accept(io.github.soundgoodizerfan.feedback.machine.arc.ElectrodeItem.of(id));
+        });
+        all(out, ELECTRICAL);
+        // One cable per conductor: every material that states an ampacity; bare, coated per band, other gauges, a post.
+        forMaterials((id, m) -> {
+            if (m.ampacity().isEmpty())
+                return;
+            out.accept(CableItem.of(id, 1));
+            for (VoltageBand band : VoltageBand.values())
+                out.accept(CableItem.of(id, 1, band));
+            for (CableGauge gauge : CableGauge.values()) {
+                if (gauge == CableGauge.STANDARD)
+                    continue;
+                out.accept(CableItem.of(id, 1, null, gauge));
+                out.accept(CableItem.of(id, 1, VoltageBand.LV, gauge));
+            }
+            out.accept(madeOf(FItems.FENCE, id, "wire"));
+        });
+        for (CableGauge gauge : CableGauge.values()) {
+            if (gauge == CableGauge.STANDARD)
+                continue;
+            ItemStack breaker = new ItemStack(FItems.BREAKER.get());
+            breaker.set(FDataComponents.CABLE_GAUGE.get(), gauge);
+            out.accept(breaker);
+        }
+        forMaterials((id, m) -> {
+            if (m.xpStore().filter(x -> x.conductance() > 0).isPresent())
+                out.accept(io.github.soundgoodizerfan.feedback.machine.xp.XpWireItem.of(id));
+        });
+        forMaterials((id, m) -> {
+            if (m.separation().diamagnetism() > 0f)
+                out.accept(io.github.soundgoodizerfan.feedback.machine.levitation.LevitationPlateItem.of(id));
+        });
+        forMaterials((id, m) -> {
+            if (m.separation().diamagnetism() > 0f)
+                out.accept(io.github.soundgoodizerfan.feedback.machine.levitation.LevitationSleeveItem.of(id));
+        });
+        forMaterials((id, m) -> {
+            if (m.electrical().pyroCoupling().filter(c -> c > 0f).isPresent())
+                out.accept(io.github.soundgoodizerfan.feedback.machine.pyro.PyroPlateItem.of(id));
+        });
+    }
+
+    private static boolean isHard(Material m) {
+        return m.kind().filter(k -> k == Material.Kind.METAL || k == Material.Kind.CERAMIC
+                || k == Material.Kind.CRYSTAL).isPresent();
+    }
+
+    private static void fillControl(CreativeModeTab.Output out) {
+        all(out, SIGNALS);
+        FItems.NOISEMAKERS.values().forEach(m -> out.accept(m.get()));
+        all(out, CONTROLLERS);
+        for (String app : io.github.soundgoodizerfan.feedback.control.computer.ComputerApps.DISK_APPS)
+            out.accept(io.github.soundgoodizerfan.feedback.control.computer.ComputerApps.disk(app));
+        FAutomation.fill(out);
+        all(out, VEHICLE_PARTS);
+    }
+
+    private static void fillFood(CreativeModeTab.Output out) {
+        all(out, KITCHEN);
+        // One skillet and one stock pot per material that is plate and conducts heat.
+        forMaterials((id, m) -> {
+            if (m.forms().containsKey("plate") && m.thermal().conductivity().isPresent())
+                out.accept(io.github.soundgoodizerfan.feedback.machine.skillet.SkilletItem.of(id));
+        });
+        forMaterials((id, m) -> {
+            if (m.forms().containsKey("plate") && m.thermal().conductivity().isPresent())
+                out.accept(io.github.soundgoodizerfan.feedback.machine.stockpot.StockpotItem.of(id));
+        });
+        all(out, FOOD_ITEMS);
+        FCrops.SEEDS.forEach(seed -> out.accept(seed.get()));
+        all(out, CROPS);
+    }
+
+    private static void fillMaterials(CreativeModeTab.Output out) {
+        FormItems.all().forEach(generated -> out.accept(generated.item().get()));
+        all(out, STOCK);
+        all(out, ORES);
+        all(out, CHEMICALS);
+        out.accept(io.github.soundgoodizerfan.feedback.item.BloomItem.of(FItems.IRON_BLOOM.get(), 3));
+        out.accept(io.github.soundgoodizerfan.feedback.item.BloomItem.of(FItems.IRON_BLOOM.get(), 1));
+        all(out, INTERMEDIATES);
+        out.accept(FItems.COPPER_BUCKET.get());
+        // One filled bucket per source fluid: the bucket is one item, so each fluid's "form" is a component.
+        FFluids.FLUIDS.getEntries().stream().map(h -> h.get())
+                .filter(f -> f.defaultFluidState().isSource()).forEach(f -> {
+                    ItemStack filled = new ItemStack(FItems.COPPER_BUCKET.get());
+                    filled.set(FDataComponents.BUCKET_CONTENT.get(), SimpleFluidContent.copyOf(
+                            new FluidStack(f, io.github.soundgoodizerfan.feedback.item.CopperBucketItem.CAPACITY_MB)));
+                    out.accept(filled);
+                });
     }
 
     public static void register(IEventBus modBus) {
@@ -536,7 +508,7 @@ public class FCreativeTabs {
     /**
      * Development cheats belong with vanilla's own -- a command block and a barrier already
      * live here, and "obtainable only by someone who already knows it exists" is exactly what
-     * this tab is for. Neither item is in {@link #MAIN}; this is their only creative-menu home.
+     * this tab is for. None of these items is in a tab above; this is their only creative-menu home.
      */
     private static void buildOperatorTab(BuildCreativeModeTabContentsEvent event) {
         if (event.getTabKey() == CreativeModeTabs.OP_BLOCKS) {

@@ -41,14 +41,21 @@ public final class ModularCause {
                 continue;
             boolean wearing = p.role().equals(type.wearRole()) || role.set();
             boolean named = switch (fig) {
-                case HARDNESS, EDGE_TOUGHNESS, BITE, DURABILITY, ARMOUR_TOUGHNESS, CAPACITY -> wearing || (fig == Fig.DURABILITY && role.striker());
+                case HARDNESS, EDGE_TOUGHNESS, BITE, DURABILITY, ARMOUR_TOUGHNESS, CAPACITY -> wearing || (fig == Fig.DURABILITY && role.striker())
+                        // fittings whose own metal moves it: a pauldron, a poleyn, a shield's rim, strap and boss, a pack's liner, bracket and bay
+                        || (fig == Fig.ARMOUR_TOUGHNESS && role.name().equals("pauldron"))
+                        || (fig == Fig.DURABILITY && "poleyn boss hard_liner lamp_bracket battery_fitting".contains(role.name()))
+                        || (fig == Fig.CAPACITY && (role.name().equals("rim") || role.name().equals("strap")));
                 case HARDNESS_OFF, EDGE_TOUGHNESS_OFF, DIG_SPEED_OFF -> p.role().equals("J");
                 case HARDNESS_THIRD, EDGE_TOUGHNESS_THIRD, DIG_SPEED_THIRD -> p.role().equals("K");
                 case DURABILITY_B -> p.role().equals("J");
                 case DURABILITY_C -> p.role().equals("K");
-                case ARMOUR -> type.family() == ModularType.Family.GLOVE ? p.role().equals(ModularGlove.PLATE) : wearing || role.name().equals("underlayer");
-                case PIERCE_RESIST, FIRE_CONDUCT -> p.role().equals(type.wearRole());
-                case KNOCKBACK_RESISTANCE, CORROSION -> p.role().equals(type.wearRole());
+                case ARMOUR -> type.family() == ModularType.Family.GLOVE ? p.role().equals(ModularGlove.PLATE) || role.name().equals("vambrace") || role.name().equals("lining")
+                        : wearing || role.name().equals("underlayer") || role.name().equals("battery_bay");
+                case PIERCE_RESIST -> p.role().equals(type.wearRole()) || role.name().equals("collar");
+                case FIRE_CONDUCT -> p.role().equals(type.wearRole()) || role.name().equals("fire_patch");
+                case KNOCKBACK_RESISTANCE -> p.role().equals(type.wearRole()) || role.name().equals("spurs") || role.name().equals("hobnails");
+                case CORROSION -> p.role().equals(type.wearRole());
                 case ENCHANTABILITY -> p.role().equals(type.primary());
                 case REACH -> role.rod();
                 case DAMAGE, DIG_SPEED -> wearing || p.equals(heaviest(design, type, materials));
@@ -60,6 +67,7 @@ public final class ModularCause {
                 case CYCLE -> p.role().equals("A") || p.role().equals("K");
                 case REPORT, HEAT_FACTOR, SHED_FACTOR -> "MNQVH".contains(p.role());
                 case FITTING_WEAR, FITTING_LIMIT -> "MNQVHZ".contains(p.role());
+                case BRACE_KICK, BRACE_SPREAD -> p.role().equals("i") || p.role().equals("I");
                 case PEAK_PRESSURE, BULLET_MASS, IMPULSE, OVERPRESSURE -> false;
                 // a charge's: the filler's blend sets the burn, the casing holds it in
                 case BLAST -> p.role().equals(type.wearRole()) || "FG".contains(p.role());
@@ -68,7 +76,7 @@ public final class ModularCause {
                 case STRIKE_ST -> true;
                 // a glove's: the metacarpal plate punches, guards and weighs; the body and lining only pad
                 // a backpack's: the strap carries it, the shell holds it
-                case CARRY -> ModularBackpack.CARRY_ROLES.contains(p.role());
+                case CARRY -> ModularBackpack.CARRY_ROLES.contains(p.role()) || p.role().equals(ModularBackpack.PAD) || p.role().equals(ModularBackpack.BUCKLE);
                 case SLOTS, POINTS -> p.role().equals(ModularBackpack.SHELL) || p.role().equals(ModularBackpack.FRAME);
                 case STORES -> ModularBackpack.STORE_ROLES.contains(p.role());
                 case SUIT_DRIVE, SUIT_LOSS -> role.name().equals("servo");

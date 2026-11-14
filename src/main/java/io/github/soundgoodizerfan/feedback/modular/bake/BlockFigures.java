@@ -61,6 +61,20 @@ public final class BlockFigures {
         };
     }
 
+    /** {@code v} over {@code ref}, held to 0..1: how much of a reference property a part's metal has. */
+    private static float share(float v, float ref) {
+        return Math.max(0f, Math.min(1f, v / ref));
+    }
+
+    /** The hottest a part of {@code m} runs: its service temperature, else the temperature it fails at. */
+    private static float serviceTu(Material m) {
+        return m.thermal().serviceTemperature().or(m::failureTemperature).map(t -> t.value()).orElse(0f);
+    }
+
+    private static float conduction(Material m) {
+        return m.thermal().conductivity().map(c -> c.workPerTickPerTu()).orElse(0f);
+    }
+
     /** The id {@code type} is known by (the item and file name), or empty. */
     private static String idOf(ModularType type) {
         for (Map.Entry<ResourceLocation, ModularType> e : ModularTypes.known().entrySet())
@@ -128,7 +142,7 @@ float mass = ModularBake.param(type, part, "mass", 1f) * ModularTuning.STORE_MAS
                 Part salt = design.part("F"), lag = design.part("I");
                 Material sm = salt == null ? null : materials.get(salt.material()), lm = lag == null ? null : materials.get(lag.material());
                 if (sm != null)
-                    mass += ModularTuning.STORE_SALT_MASS * (float) sm.density().muPerMb() / ModularTuning.STORE_SALT_DENSITY;
+                    mass += ModularTuning.STORE_SALT_MASS * (float) sm.density().muPerMb() * sm.thermal().specificHeat().map(c -> c.workPerMuPerTu()).orElse(ModularTuning.STORE_SALT_SPECIFIC_HEAT) / ModularTuning.STORE_SALT_VOLUMETRIC_HEAT;
                 if (lm != null)
                     leak *= Math.min(1f, Math.max(ModularTuning.STORE_LAG_FLOOR, lm.thermal().conductivity()
                             .map(c -> c.workPerTickPerTu() / ModularTuning.STORE_REF_CONDUCTIVITY).orElse(0.5f)));
@@ -150,8 +164,11 @@ float leak = ModularBake.param(type, part, "leak", 1f) * ModularTuning.JAR_LEAK 
                 Material fm = foil == null ? null : materials.get(foil.material());
                 if (fm != null && fm.ampacity().isPresent())
                     burst *= Math.max(0.5f, Math.min(3f, fm.ampacity().get() / ModularTuning.JAR_REF_AMPACITY));
-                if (sleeve != null)
-                    leak *= ModularTuning.JAR_SLEEVE_LEAK;
+                // the sleeve cuts the leak the more, the higher the band its own insulation holds off
+                Material sl = sleeve == null ? null : materials.get(sleeve.material());
+                if (sl != null)
+                    leak *= net.minecraft.util.Mth.lerp((float) sl.electrical().insulation().map(Enum::ordinal).orElse(0) / (VoltageBand.values().length - 1),
+                            ModularTuning.JAR_SLEEVE_LEAK_POOR, ModularTuning.JAR_SLEEVE_LEAK);
                 out.putFloat("Leak", leak);
                 out.putFloat("BurstAmps", burst);
             }
@@ -159,7 +176,10 @@ float leak = ModularBake.param(type, part, "leak", 1f) * ModularTuning.JAR_LEAK 
             // A volute (an addon) is a casing that turns speed into flow.
             case "pump" -> {
                 float d = role.axis(part, "diameter") / 30f, flow = ModularBake.param(type, part, "flow", 1f);
-                float volute = design.part("V") == null ? 1f : 1.15f;
+                // a smooth wall (low friction) turns more of the speed into flow
+                Part vp = design.part("V");
+                Material vm = vp == null ? null : materials.get(vp.material());
+                float volute = vm == null ? 1f : 1f + ModularTuning.VOLUTE_GAIN * (1f - share(vm.mechanical().friction().orElse(ModularTuning.VOLUTE_REF_FRICTION), ModularTuning.VOLUTE_REF_FRICTION));
                 out.putFloat("MbPerRpm", 0.5f * d * d * flow * volute);
                 out.putFloat("Load", 8f * d * d * flow * volute);
                 out.putFloat("Lift", 6f / ModularBake.param(type, part, "lift", 1f));
@@ -169,19 +189,19 @@ float leak = ModularBake.param(type, part, "leak", 1f) * ModularTuning.JAR_LEAK 
                 float d = role.axis(part, "diameter") / 40f;
                 out.putFloat("MbPerRpm", 0.4f * d * d * ModularBake.param(type, part, "flow", 1f));
                 out.putFloat("Load", 30f * d * d * ModularBake.param(type, part, "load", 1f));
-                out.putFloat("Heat", 60f * ModularBake.param(type, part, "heat", 1f) * (design.part("I") == null ? 1f : 0.6f));
+                out.putFloat("Heat", 60f * ModularBake.param(type, part, "heat", 1f) * intercooler(design, materials));
             }
             // Nozzle: fuel burned goes with the bore area; the variant trades burn against flame temperature; a flame holder (an addon) steadies the flame a little hotter.
             case "burner" -> {
                 float b = role.axis(part, "bore") / 10f;
                 out.putFloat("Burn", 0.5f * b * b * ModularBake.param(type, part, "burn", 1f));
-                out.putFloat("Flame", ModularBake.param(type, part, "flame", 1f) * (design.part("F") == null ? 1f : 1.03f));
+                out.putFloat("Flame", ModularBake.param(type, part, "flame", 1f) * flameHolder(design, materials));
             }
             // Nozzle: push and fuel burned both go with the bore area; the variant trades push against fuel; a regen jacket (an addon) warms the fuel first, so less of it burns.
             case "thruster" -> {
                 float b = role.axis(part, "bore") / 20f;
                 out.putFloat("Force", b * b * ModularBake.param(type, part, "thrust", 1f));
-                out.putFloat("Burn", io.github.soundgoodizerfan.feedback.core.FTuning.THRUSTER_FUEL_MB_PER_TICK * b * b * ModularBake.param(type, part, "burn", 1f) * (design.part("J") == null ? 1f : 0.85f));
+                out.putFloat("Burn", io.github.soundgoodizerfan.feedback.core.FTuning.THRUSTER_FUEL_MB_PER_TICK * b * b * ModularBake.param(type, part, "burn", 1f) * regenJacket(design, materials));
             }
             // Crank: a longer arm is more lever and a slower hand; a flywheel (an addon) carries it through the dead spot.
             case "hand_crank" -> {
@@ -189,18 +209,22 @@ float leak = ModularBake.param(type, part, "leak", 1f) * ModularTuning.JAR_LEAK 
                 float arm = role.axesFor(part).containsKey("arm_length") ? role.axis(part, "arm_length") / role.axesFor(part).get("arm_length").def() : 1f;
                 out.putFloat("Power", 12f * ModularBake.param(type, part, "lever", 1f) * arm);
                 out.putFloat("Rpm", 32f * ModularBake.param(type, part, "rpm", 1f) / arm);
-                out.putFloat("Inertia", design.part("G") == null ? 4f : 12f);
+                // the flywheel plate's momentum goes with its density (the heavier plate carries the hand through the dead spot)
+                Part fly = design.part("G");
+                Material fm = fly == null ? null : materials.get(fly.material());
+                out.putFloat("Inertia", fm == null ? ModularTuning.CRANK_BARE_INERTIA
+                        : ModularTuning.CRANK_BARE_INERTIA + ModularTuning.CRANK_PLATE_INERTIA * Math.min(ModularTuning.CRANK_PLATE_DENSITY_CAP, (float) fm.density().muPerMb() / ModularTuning.CRANK_REF_DENSITY));
             }
             // Core: turns raise the pull and the current together; the shape trades pull against reach; a yoke (an addon) closes the magnetic path.
             case "electromagnet" -> {
                 float n = role.axis(part, "turns") / 100f;
                 out.putFloat("Amps", n);
-                out.putFloat("Pull", 0.08f * n * ModularBake.param(type, part, "pull", 1f) * (design.part("Y") == null ? 1f : 1.2f));
+                out.putFloat("Pull", 0.08f * n * ModularBake.param(type, part, "pull", 1f) * yoke(design, materials));
                 out.putFloat("Range", 4f * ModularBake.param(type, part, "range", 1f));
             }
             // Anode: a bigger anode feeds more current and lasts in proportion to its bulk; the shape trades current against life; a copper cathode (an addon) draws a little more.
             case "galvanic_cell" -> {
-                float a = role.axis(part, "anode") / 50f, amps = ModularBake.param(type, part, "amps", 1f) * a * (design.part("C") == null ? 1f : 1.25f);
+                float a = role.axis(part, "anode") / 50f, amps = ModularBake.param(type, part, "amps", 1f) * a * cathode(design, materials, m);
                 out.putFloat("Amps", amps);
                 out.putFloat("AnodeEu", 768000f * a * ModularBake.param(type, part, "life", 1f) / Math.max(0.1f, ModularBake.param(type, part, "amps", 1f) * a));
             }
@@ -208,7 +232,7 @@ float leak = ModularBake.param(type, part, "leak", 1f) * ModularTuning.JAR_LEAK 
             case "lamp" -> {
                 float g = role.axis(part, "gauge") / 50f;
                 out.putFloat("Amps", 0.5f * g * g * ModularBake.param(type, part, "amps", 1f));
-                out.putFloat("Burnout", 1.5f * ModularBake.param(type, part, "tough", 1f) * (0.6f + 0.4f * g) * (design.part("B") == null ? 1f : 1.2f));
+                out.putFloat("Burnout", 1.5f * ModularBake.param(type, part, "tough", 1f) * (0.6f + 0.4f * g) * ballast(design, materials));
             }
             // A boiler is a shell like the vessel's: the shell sets the pressure it risks and gives way at, and the pressure its seams weep and its valve opens at follow it.
             case "boiler" -> {
@@ -234,11 +258,71 @@ float leak = ModularBake.param(type, part, "leak", 1f) * ModularTuning.JAR_LEAK 
                     rim *= 1f + 0.25f * bm.mechanical().yieldStrength().get().value() / (bm.mechanical().yieldStrength().get().value() + yield);
                 out.putFloat("Inertia", inertia);
                 out.putFloat("RimRpm", rim);
-                out.putFloat("Drag", 0.2f * r * (design.part("G") == null ? 1f : 0.7f));
+                out.putFloat("Drag", 0.2f * r * bearing(design, materials));
             }
             default -> {
             }
         }
         return Optional.of(out);
+    }
+
+    /** The material of addon part {@code role}, or null if the design has none (or it is unknown). */
+    private static Material addon(ModularDesign design, Map<ResourceLocation, Material> materials, String role) {
+        Part p = design.part(role);
+        return p == null ? null : materials.get(p.material());
+    }
+
+    /** An intercooler takes heat out between stages by how well its plate conducts: copper takes {@code INTERCOOLER_TAKE} of it. */
+    private static float intercooler(ModularDesign design, Map<ResourceLocation, Material> materials) {
+        Material c = addon(design, materials, "I");
+        return c == null ? 1f : 1f - ModularTuning.INTERCOOLER_TAKE * share(conduction(c), ModularTuning.ADDON_REF_CONDUCTIVITY);
+    }
+
+    /** A flame holder lives in the flame: the hotter its metal holds, the hotter a flame it steadies. */
+    private static float flameHolder(ModularDesign design, Map<ResourceLocation, Material> materials) {
+        Material h = addon(design, materials, "F");
+        return h == null ? 1f : 1f + ModularTuning.FLAME_HOLDER_GAIN * share(serviceTu(h), ModularTuning.FLAME_HOLDER_REF_TU);
+    }
+
+    /** A regen jacket hands the nozzle's heat to the fuel: the better its plate conducts, the more heat the fuel carries back and the less of it burns. */
+    private static float regenJacket(ModularDesign design, Map<ResourceLocation, Material> materials) {
+        Material j = addon(design, materials, "J");
+        return j == null ? 1f : 1f - ModularTuning.REGEN_SAVING * share(conduction(j), ModularTuning.ADDON_REF_CONDUCTIVITY);
+    }
+
+    /** A yoke closes the magnetic path only if it is magnetic, and the less it loses to eddies and hysteresis the more of the pull it keeps. */
+    private static float yoke(ModularDesign design, Map<ResourceLocation, Material> materials) {
+        Material y = addon(design, materials, "Y");
+        if (y == null)
+            return 1f;
+        if (!y.separation().magnetic())
+            return 1f;
+        return 1f + ModularTuning.YOKE_GAIN * (1f - share(y.electrical().coreLoss().orElse(ModularTuning.YOKE_REF_CORE_LOSS / 2f), ModularTuning.YOKE_REF_CORE_LOSS));
+    }
+
+    /** A cell's voltage is the gap between its electrodes' potentials: a cathode further above the anode draws more current. */
+    private static float cathode(ModularDesign design, Map<ResourceLocation, Material> materials, Material anode) {
+        Material c = addon(design, materials, "C");
+        if (c == null)
+            return 1f;
+        float gap = c.electrical().electrodePotential().orElse(0f) - anode.electrical().electrodePotential().orElse(0f);
+        return 1f + ModularTuning.CATHODE_GAIN * Math.max(0f, Math.min(ModularTuning.CATHODE_GAP_CAP, gap / ModularTuning.CATHODE_REF_GAP));
+    }
+
+    /** A ballast soaks an overvoltage as heat: the more heat a mB of its metal takes (density times specific heat), the bigger the surge it carries. */
+    private static float ballast(ModularDesign design, Map<ResourceLocation, Material> materials) {
+        Material b = addon(design, materials, "B");
+        if (b == null)
+            return 1f;
+        float cap = (float) b.density().muPerMb() * b.thermal().specificHeat().map(c -> c.workPerMuPerTu()).orElse(0f);
+        return 1f + ModularTuning.BALLAST_GAIN * share(cap, ModularTuning.BALLAST_REF_HEAT_CAPACITY);
+    }
+
+    /** A bearing's sliding friction is the drag it leaves on the spinning wheel. */
+    private static float bearing(ModularDesign design, Map<ResourceLocation, Material> materials) {
+        Material b = addon(design, materials, "G");
+        if (b == null)
+            return 1f;
+        return Math.min(1f, ModularTuning.BEARING_DRAG_FLOOR + ModularTuning.BEARING_DRAG_PER_FRICTION * b.mechanical().friction().orElse(ModularTuning.BEARING_DEFAULT_FRICTION));
     }
 }

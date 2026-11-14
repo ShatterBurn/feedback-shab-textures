@@ -434,6 +434,36 @@ public final class ModularTuning {
     public static final float SLOW_PER_KG = 0.003f;
     public static final float SLOW_MAX = 0.1f;
 
+    // --- fittings: the half-points of the curves a fitting's metal is read on (x / (x + half)); real figures sit on these scales ---
+    /** Yield strength (iron 7.5, steel 12), thermal conductivity (iron 0.02, copper 0.1), ampacity (iron 0.31, copper 1) and service temperature (iron 450, steel 550). */
+    public static final float FITTING_STRENGTH_HALF = 8f, FITTING_CONDUCTIVITY_HALF = 0.05f, FITTING_AMPACITY_HALF = 0.5f, FITTING_SERVICE_HALF = 500f;
+    /** Boots: knockback resistance a spur's hardness (it bites the ground) and a hobnail's friction (it grips) plant the foot with. */
+    public static final float SPUR_GRIP = 0.02f, HOBNAIL_GRIP_PER_FRICTION = 0.03f;
+    /** Chest and helmet: pierce resistance a hard collar adds; armour toughness a tough pauldron adds; durability share a sound poleyn (knee) adds. */
+    public static final float COLLAR_PIERCE = 0.1f, PAULDRON_TOUGHNESS = 0.5f, POLEYN_DURABILITY = 0.25f;
+    /** Share of a piece's points a battery bay's plate adds, by its competence (as {@link #LINING_SHARE}). */
+    public static final float BAY_ARMOUR_SHARE = 0.1f;
+    /** The gauge's lens: the step it loses at most when the glass is soft and scratches. */
+    public static final float GAUGE_SCRATCH_LOSS = 0.3f;
+    /** The sensor head: a fibre's reach is its cells times this plus this per unit of saturated ampacity (a sheet of glass carries the base). */
+    public static final float SENSE_BASE = 0.75f, SENSE_PER_AMPACITY = 0.5f;
+    /** Shield: capacity share a rim's strength, and a strap's strength, add at best; durability share a boss takes by its competence. */
+    public static final float RIM_STRENGTH_CAPACITY = 0.2f, STRAP_STRENGTH_CAPACITY = 0.15f, BOSS_DURABILITY = 0.3f;
+    /** Bow and crossbow: the share the binding's strength takes off the joint's loading at best. */
+    public static final float BINDING_JOINT_RELIEF = 0.3f;
+    /** Crossbow magazine: draw ticks added per unit of the plate's friction (bolts drag through the feed). */
+    public static final float MAGAZINE_DRAW_PER_FRICTION = 0.3f;
+    /** Glove: armour share a vambrace adds by its hardness, and a lining by its competence (as {@link #LINING_SHARE}). */
+    public static final float VAMBRACE_ARMOUR_SHARE = 0.5f, GLOVE_LINING_ARMOUR_SHARE = 0.25f;
+    /** Backpack: carry per unit of strength a rigid back pad spreads; share the buckle's weakness takes off the carry at worst; durability share a hard liner adds, and a hot lamp bracket takes. */
+    public static final float PACK_PAD_CARRY = 1f, PACK_BUCKLE_SPAN = 0.2f, PACK_LINER_DURABILITY = 0.3f, PACK_BRACKET_HEAT = 0.2f;
+    /** Backpack fire patch: the heat conductance (the patch's conductivity times its volume) at which half a scorch gets through. */
+    public static final float PACK_PATCH_HALF_CONDUCT = 0.001f;
+    /** Backpack battery fitting: durability share the plate's heat-shedding (conductivity) adds, a cell running cooler. */
+    public static final float PACK_BATTERY_DURABILITY = 0.2f;
+    /** Bed: comfort share lost when the frame sags (its strength low). */
+    public static final float BED_FRAME_SAG = 0.2f;
+
     // --- backpack ---
     /** {@code Mu} of carry rating per unit of the strap material's strength. Invented. */
     public static final float PACK_CARRY_PER_STRENGTH = 8f;
@@ -615,6 +645,8 @@ public final class ModularTuning {
     public static final float GRAPPLE_REEL = 0.3f;
     /** Reel speed multiple with the winch fitted. */
     public static final float GRAPPLE_WINCH_MULT = 2f;
+    /** A barbed hook drags a creature up to this many times the thrower's mass; a heavier one is a swing anchor. Over the thrower's own mass the pull slows by the ratio. */
+    public static final float GRAPPLE_DRAG_MASS_RATIO = 3f;
     /** Share of speed kept and added on letting go of a line while moving at least {@link #GRAPPLE_RELEASE_MIN} (the swing's momentum thrown on). */
     public static final double GRAPPLE_RELEASE_BOOST = 1.2;
     /** Blocks per tick under which a release carries no boost. */
@@ -779,9 +811,40 @@ public final class ModularTuning {
     /** Water wheel rim ring: inertia per unit of ring density. */
     public static final float RING_INERTIA = 120f;
     /** Thermal store: the salt fill's heat mass at the reference density, and the least a lagging can cut the leak to. */
-    public static final float STORE_SALT_MASS = 900f, STORE_SALT_DENSITY = 2.16f, STORE_LAG_FLOOR = 0.2f;
+    public static final float STORE_SALT_MASS = 900f, STORE_LAG_FLOOR = 0.2f;
+    /** Thermal store salt fill: heat held per mB of fill (density times specific heat, rock salt's 2.16 x 0.88) the salt mass is quoted at, and the specific heat assumed for a fill that states none. */
+    public static final float STORE_SALT_VOLUMETRIC_HEAT = 1.9f, STORE_SALT_SPECIFIC_HEAT = 0.5f;
     /** Leyden jar: the current the foil's ampacity is quoted at, and the share of leak an outer sleeve keeps. */
     public static final float JAR_REF_AMPACITY = 8f, JAR_SLEEVE_LEAK = 0.5f;
+    /** Leyden jar outer sleeve: the share of leak kept at the lowest band the sleeve insulates (a top-band sleeve keeps {@code JAR_SLEEVE_LEAK}). */
+    public static final float JAR_SLEEVE_LEAK_POOR = 1f;
+
+    /** Block addons, by the property a real engineer would pick. Thermal conductivity a plate is judged against (copper's), for the intercooler's take and the regen jacket's saving. */
+    public static final float ADDON_REF_CONDUCTIVITY = 0.1f;
+    /** Compressor intercooler: the share of the charge's heat a copper plate takes out between stages. */
+    public static final float INTERCOOLER_TAKE = 0.5f;
+    /** Thruster regen jacket: the share of fuel a copper jacket saves by warming it first. */
+    public static final float REGEN_SAVING = 0.25f;
+    /** Burner flame holder: the flame temperature gain of a holder that holds {@code FLAME_HOLDER_REF_TU}, and that service temperature (Tu). */
+    public static final float FLAME_HOLDER_GAIN = 0.1f, FLAME_HOLDER_REF_TU = 1000f;
+    /** Pump volute: the flow gain of a frictionless wall, and the friction (a polished iron's 0.6 is the old 15 per cent) it is judged against. */
+    public static final float VOLUTE_GAIN = 0.3f, VOLUTE_REF_FRICTION = 1f;
+    /** Hand crank: the bare crank's inertia, what a plate of the reference density adds (capped at {@code CRANK_PLATE_DENSITY_CAP} times it), and that density (iron). */
+    public static final float CRANK_BARE_INERTIA = 4f, CRANK_PLATE_INERTIA = 8f, CRANK_REF_DENSITY = 7.8f, CRANK_PLATE_DENSITY_CAP = 2f;
+    /** Electromagnet yoke: the pull a lossless magnetic yoke adds, and the core loss at which it adds none. */
+    public static final float YOKE_GAIN = 0.3f, YOKE_REF_CORE_LOSS = 0.2f;
+    /** Galvanic cell cathode: the current a cathode one reference gap (volts of electrode potential, zinc to copper) above the anode adds, and the most gaps that count. */
+    public static final float CATHODE_GAIN = 0.25f, CATHODE_REF_GAP = 1.1f, CATHODE_GAP_CAP = 1.5f;
+    /** Lamp ballast: the surge margin a ballast of the reference heat capacity (Work per Tu per mB) adds. */
+    public static final float BALLAST_GAIN = 0.3f, BALLAST_REF_HEAT_CAPACITY = 4f;
+    /** Flywheel bearing: the drag left by a frictionless bearing, what each unit of sliding friction adds, and the friction assumed when a material states none. */
+    public static final float BEARING_DRAG_FLOOR = 0.4f, BEARING_DRAG_PER_FRICTION = 0.5f, BEARING_DEFAULT_FRICTION = 0.6f;
+    /** Pressure shell relief valve: the share of vent a valve seat of no corrosion resistance loses (it sticks and weeps). */
+    public static final float VALVE_CORROSION_LOSS = 0.4f;
+    /** Belt cleat: the friction a cleat grips with is judged against this (wood's 0.4 to iron's 0.6), within the lowest and highest share of the cleat's grip. */
+    public static final float CLEAT_REF_FRICTION = 0.5f, CLEAT_GRIP_MIN = 0.5f, CLEAT_GRIP_MAX = 1.5f;
+    /** Hand tools: a handle weaker than this yield strength (wood's) lowers the tool's life by the share per missing unit, and a stronger one raises it, within the span. */
+    public static final float HANDLE_REF_YIELD = 2f, HANDLE_LIFE_SPAN = 0.2f;
 
     // --- fit: a blueprint is a specification, a part is judged against it --------------------
 

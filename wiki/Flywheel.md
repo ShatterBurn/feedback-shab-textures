@@ -29,7 +29,7 @@ Shape the disc from plate or ingot of the metal you chose at the [Smithing Table
 | Addon | Stock | What it does |
 | --- | --- | --- |
 | **Rim bands** | rod | Bands round the rim let the disc spin faster before it strains. |
-| **Bearing** | nugget | Cuts the disc's drag by 30%. |
+| **Bearing** | nugget | Cuts the disc's drag. A low-friction metal cuts it most. |
 
 ## Using it
 

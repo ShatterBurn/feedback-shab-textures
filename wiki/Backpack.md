@@ -42,14 +42,14 @@ A finished pack takes **fittings**: fit them on the [Fit tab](Engineering_Table.
 | Bottle loops | 1 leather bundle | 1 | Three store slots for potions, flasks and fluid containers. |
 | Bandolier | 2 leather bundles | 1 | Three store slots for rounds and arrows. |
 | Bedroll lashing | 2 sticks | 1 | One store slot that takes only a [bed](Bed.md) built with no frame (a bedroll). |
-| Lamp bracket | 1 rod | 1 | One store slot that takes only a lantern; a lantern in it lights the area around you. |
-| Battery fitting | 2 plates | 1 | One store slot that takes only a [battery](Battery.md). A tethered [electric gun](Electric_Gun.md) draws from it. |
-| Crafting pad | 2 planks | 2 | Press **N** on firm ground to open a 3x3 crafting grid. Heavy. |
-| Hard liner | 2 plates | 1 | The strap wears half as fast under an overload. |
-| Fire patch | 1 plate | 1 | A burning wearer's cloth shell scorches and wears without one; with it, not. |
+| Lamp bracket | 1 rod | 1 | One store slot that takes only a lantern; a lantern in it lights the area around you. A bracket that conducts heat well leads the lantern's heat into the shell and lowers its durability. |
+| Battery fitting | 2 plates | 1 | One store slot that takes only a [battery](Battery.md). A tethered [electric gun](Electric_Gun.md) draws from it. A plate that conducts heat well sheds the cell's heat and raises the shell's durability. |
+| Crafting pad | 2 planks | 2 | Press **N** on firm ground to open a 3x3 crafting grid. Heavy. A stronger pad metal spreads the load and raises the carry rating. |
+| Hard liner | 2 plates | 1 | The strap wears half as fast under an overload. A tougher liner raises the shell's durability. |
+| Fire patch | 1 plate | 1 | A burning wearer's cloth shell scorches and wears without one. With one, the fire gets through only in proportion to how well the patch's metal conducts heat: a poor conductor stops it, a good one barely does. |
 | Oiled coat | 1 hide | 1 | A cloth shell without one soaks in water or rain and weighs half as much again. |
 | Warm liner | 3 carpets | 1 | Powder-snow chill leaves you faster. |
-| Quick-release buckle | 1 nugget | 1 | Its key (unbound until you set it) drops the pack at once, contents and all. |
+| Quick-release buckle | 1 nugget | 1 | Its key (unbound until you set it) drops the pack at once, contents and all. A weak buckle metal cuts the carry rating. |
 
 ## Attunements
 

@@ -14,7 +14,7 @@ The core has one measure, the **turns**, from 50 to 150 percent (100 by default)
 | Horseshoe | 1.4 times | 0.7 times |
 | Pot | 1.8 times | 0.5 times |
 
-**Addon.** A **yoke** (plate) is an optional piece that closes the magnetic path, adding 20% to the pull.
+**Addon.** A **yoke** (plate) is an optional piece that closes the magnetic path and adds to the pull. It must be a magnetic metal, and the lower its core loss, the more it adds.
 
 ## What it pulls
 

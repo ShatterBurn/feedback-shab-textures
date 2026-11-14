@@ -913,12 +913,28 @@ public record Material(St hardness, Tu minTemperature, Tu maxTemperature,
 
     /** The material and form {@code item} is, if any material lists or generated it. */
     public static Optional<Located> find(Map<ResourceLocation, Material> materials, Item item) {
+        // A shaped part is one item for every material: it is told by its MadeOf, not its item.
+        if (item instanceof io.github.soundgoodizerfan.feedback.modular.part.ModularPartItem)
+            return Optional.empty();
+        return Optional.ofNullable(itemIndex(materials).get(item));
+    }
+
+    /** Item to where it sits, first material in table order winning; rebuilt only when the table instance changes (a reload or sync). */
+    private static final Map<Map<ResourceLocation, Material>, Map<Item, Located>> INDEXES = new java.util.IdentityHashMap<>();
+
+    private static synchronized Map<Item, Located> itemIndex(Map<ResourceLocation, Material> materials) {
+        Map<Item, Located> have = INDEXES.get(materials);
+        if (have != null)
+            return have;
+        // The client and the server each hold a table; a few stale ones after reloads are dropped rather than tracked.
+        if (INDEXES.size() >= 4)
+            INDEXES.clear();
+        Map<Item, Located> built = new java.util.IdentityHashMap<>();
         for (Map.Entry<ResourceLocation, Material> e : materials.entrySet())
             for (Map.Entry<String, Item> form : e.getValue().items(e.getKey()).entrySet())
-                // A shaped part is one item for every material: it is told by its MadeOf, not its item.
-                if (form.getValue() == item && !(item instanceof io.github.soundgoodizerfan.feedback.modular.part.ModularPartItem))
-                    return Optional.of(new Located(e.getKey(), e.getValue(), form.getKey()));
-        return Optional.empty();
+                built.putIfAbsent(form.getValue(), new Located(e.getKey(), e.getValue(), form.getKey()));
+        INDEXES.put(materials, built);
+        return built;
     }
 
     /**

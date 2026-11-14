@@ -170,7 +170,8 @@
       "name": "gauge",
       "school": "robotics:1",
       "forms": [
-        "lens"
+        "lens",
+        "gem"
       ],
       "litres": 0.005,
       "layer": 6,
@@ -180,7 +181,9 @@
       "name": "sensor_head",
       "school": "robotics:1",
       "forms": [
-        "fibre"
+        "fibre",
+        "wire",
+        "fine_wire"
       ],
       "litres": 0.01,
       "layer": 7,

@@ -43,7 +43,7 @@ An addon is an optional extra part made from raw stock, added when you assemble 
 | Addon | Stock | What it does |
 | --- | --- | --- |
 | **Foil** | foil | Burst current scales with the metal's ampacity. |
-| **Outer sleeve** | glass tubing | A second insulator over the jar; halves the leak. |
+| **Outer sleeve** | glass tubing | A second insulator over the jar that cuts the leak. The higher the voltage band its insulation holds off, the more it cuts, down to half the leak at best. |
 
 ## A burst, not a battery
 

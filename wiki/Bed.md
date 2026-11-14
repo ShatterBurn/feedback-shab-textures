@@ -22,7 +22,7 @@ The **Bed Frame** lifts the mattress off the cold ground. Its stock is planks, r
 - **Bedstead**: four cells, a tall frame that lifts the sleeper well off the ground.
 - **Cot**: three cells, a low light frame that lifts the sleeper a little.
 
-A frame adds comfort and warmth, and weight. The [Blueprint Table](Blueprint_Table.md) shows the **comfort** and **warmth** of a drawing before you make it.
+A frame adds comfort and warmth, and weight. A frame of a weak metal or wood sags under the sleeper and cuts some of the comfort. The [Blueprint Table](Blueprint_Table.md) shows the **comfort** and **warmth** of a drawing before you make it.
 
 ## Using it
 

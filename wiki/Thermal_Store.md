@@ -31,7 +31,7 @@ An addon is an optional extra part made from raw stock, added when you assemble 
 | Addon | Stock | What it does |
 | --- | --- | --- |
 | **Lagging** | carpet | Wrapped round the outside. The poorer its conductivity, the less heat leaks, down to a fifth of the leak at best. |
-| **Salt fill** | raw salt | Adds heat mass. |
+| **Salt fill** | raw salt | Adds heat mass, by how much heat a mB of the salt takes. |
 
 ## Using it
 

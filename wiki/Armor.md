@@ -32,6 +32,19 @@ To take a lining or studs off, take the piece apart on the Repair tab and fit th
 
 **Studs** are gems, shards or nuggets set into the plate (on any plate; diamond studs in steel plate). Each stud covers a tenth of the piece, up to half, and that share takes the stud's hardness, toughness and wear. Four diamond studs in a steel chestplate lift it from steel's 6.7 points to about 7.2 and keep steel's toughness, where a whole diamond plate is 7.5 points and glass. Studs add a little mass and nothing else. Armor takes no tip: a plate has no edge.
 
+## Fittings
+
+A finished piece takes fittings on the [Fit tab](Engineering_Table.md#fit-tab), and each reads its own metal:
+
+| Fitting | On | What its metal does |
+| --- | --- | --- |
+| **Spurs** | boots | Add knockback resistance; a harder metal adds more. |
+| **Hobnails** | boots | Add knockback resistance; a higher-friction metal adds more. |
+| **Collar** | chestplate, helmet | Adds pierce resistance; a harder metal adds more. |
+| **Pauldron** | chestplate | Adds armor toughness; a tougher metal adds more. |
+| **Battery bay** | chestplate | Adds a little armor; a more competent plate adds more. |
+| **Poleyn** | leggings | Raises durability; a more competent plate raises it more. |
+
 ## Axes, aiming and names
 
 Each plate has **axes**: continuous measures you aim at the bench before you make it. A chestplate has **width** and **torso length**, a helmet **face opening** and **crown height**, leggings **length** and **width**, boots **shaft height** and **sole thickness**. The axes also shape the piece you wear: a taller crown, a wider chest, longer legs stretch it, a closed face opening shows a visor, and a boot with a high shaft shows a cuff. Pick the plate's shape in the fan, then use the strip that appears (minus and plus, or drag the plate preview) to set each axis, and click the shape again to make it. More material means more cover and more weight, and more stock. How well the work goes sets how close the made part is to what you aimed at: over or under by chance, never exactly, and a poor forging misses by more.

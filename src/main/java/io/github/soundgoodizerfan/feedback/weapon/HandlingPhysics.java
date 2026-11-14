@@ -32,6 +32,18 @@ public final class HandlingPhysics {
         return soft * GearTuning.saturate(m.mechanical().toughness().map(t -> t.value()).orElse(0f), GunTuning.HAND_PAD_TOUGH_HALF);
     }
 
+    /** Share of the barrel's heat a thermal sleeve of {@code m} has taken up: a poor conductor lags the barrel, so it closes on it late. */
+    public static float sleeveFollow(Material m) {
+        float k = m == null ? 0f : m.thermal().conductivity().map(c -> c.workPerTickPerTu()).orElse(0f);
+        return GunTuning.SLEEVE_LAG_FLOOR + (1f - GunTuning.SLEEVE_LAG_FLOOR) * GearTuning.saturate(k, GunTuning.FIT_K_HALF);
+    }
+
+    /** How wide a resonance weight of {@code m} lets the round stray from its tuned speed, against iron (1): a heavier metal damps more, so a wider tolerance (smaller number). */
+    public static float resonanceDetune(Material m) {
+        float d = m == null ? GunTuning.RES_REF_DENSITY : m.density().muPerMb();
+        return Math.max(GunTuning.RES_WINDOW_MIN, Math.min(GunTuning.RES_WINDOW_MAX, GunTuning.RES_REF_DENSITY / Math.max(0.1f, d)));
+    }
+
     /** A bipod's {@code leg} metal, braced on the ground. */
     public static Brace bipod(Material leg) {
         float r = rigidity(leg);

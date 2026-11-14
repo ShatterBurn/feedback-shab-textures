@@ -462,4 +462,162 @@ public final class ToolDesigns {
         }
         return out;
     }
+
+    // --- the material audit ---------------------------------------------------------------------
+
+    /**
+     * Does the material a part (or a slot of it) is made of change anything? For every type, in the first assembly each role appears in,
+     * every material the role takes is put in that role (then in each extra slot) and the bake is compared: the shared figures and every
+     * family spec (an electric gun's, a cell's, an engine's). One line per place: tried, distinct outcomes, which figures moved.
+     * A place with one outcome is a material that is drawn but never read. Dev only: it bakes a design hundreds of times per place.
+     */
+    public static List<String> materialAudit(Map<ResourceLocation, ModularType> types, Map<ResourceLocation, Material> materials) {
+        CACHE.set(new Cache());
+        try {
+            List<String> out = new ArrayList<>();
+            for (ResourceLocation id : types.keySet().stream().sorted().toList()) {
+                ModularType type = types.get(id);
+                if (type.face() || type.patterns().isEmpty() && type.family() != ModularType.Family.GUN)
+                    continue;
+                Set<String> done = new LinkedHashSet<>();
+                for (ModularType.Assembly a : type.assembliesUpTo(type.extras().size() > 4 ? 1 : type.extras().size())) {
+                    if (done.containsAll(a.counts().keySet()) || a.counts().keySet().stream().anyMatch(k -> type.roles().get(k).component()))
+                        continue;
+                    Optional<ModularDesign> d = plain(id, types, a.counts(), false, materials);
+                    if (d.isEmpty() || auditKey(d.get(), type, materials) == null)
+                        continue;
+                    for (String role : a.counts().keySet())
+                        if (done.add(role))
+                            auditRole(id, type, d.get(), role, types, materials, out);
+                }
+            }
+            return out;
+        } finally {
+            CACHE.remove();
+        }
+    }
+
+    /** Figures that move but decide nothing worth building for (a gun's corrosion, enchantability): a place that moves only these reads WEAK. Edit as rulings come. */
+    private static final Set<String> AUDIT_WEAK = Set.of("CORROSION", "ENCHANTABILITY");
+    /** The edge's figures: read only by a type that cuts, digs or strikes, so on any other type they count as weak too. */
+    private static final Set<String> AUDIT_EDGE = Set.of("HARDNESS", "EDGE_TOUGHNESS", "BITE", "HARDNESS_OFF", "EDGE_TOUGHNESS_OFF", "HARDNESS_THIRD", "EDGE_TOUGHNESS_THIRD");
+    private static final Set<ModularType.Family> AUDIT_EDGED = Set.of(ModularType.Family.DIG, ModularType.Family.BLADE, ModularType.Family.MACE,
+            ModularType.Family.SPEAR, ModularType.Family.HAFTED, ModularType.Family.SHEARS, ModularType.Family.HAND);
+
+    /** Figures a part's mass moves on its own: a place that moves only these is a lump of metal, its material read for density and nothing else. */
+    private static final Set<String> AUDIT_WEIGHT = Set.of("MASS", "KICK", "BALANCE", "SLOW", "SWING", "ATTACK_SPEED");
+
+    private static boolean weak(ModularType type, Set<String> moved) {
+        return moved.stream().allMatch(m -> AUDIT_WEAK.contains(m) || !AUDIT_EDGED.contains(type.family()) && AUDIT_EDGE.contains(m));
+    }
+
+    private static void auditRole(ResourceLocation id, ModularType type, ModularDesign base, String role, Map<ResourceLocation, ModularType> types,
+                                  Map<ResourceLocation, Material> materials, List<String> out) {
+        ModularType.Role r = type.roles().get(role);
+        Part was = base.part(role);
+        PartBenchShaping.Option shape = standard(r, types);
+        List<Material.Located> choices = materials(type, role, shape, materials);
+        Map<String, List<Map.Entry<String, ModularDesign>>> sweeps = new LinkedHashMap<>();
+        List<Map.Entry<String, ModularDesign>> main = new ArrayList<>();
+        for (Material.Located l : sample(choices))
+            main.add(Map.entry(l.id().getPath(), base.withPart(part(role, l, shape, was.count()).withMeasures(was.measures()))));
+        sweeps.put(role, main);
+        var shaping = r.shapingOf(was);
+        if (shaping.isPresent())
+            for (int i = 1; i < shaping.get().slots().size(); i++) {
+                ModularType.PartSlot slot = shaping.get().slots().get(i);
+                if (slot.standard().isPresent())
+                    continue;
+                List<Map.Entry<String, ModularDesign>> list = new ArrayList<>();
+                for (Material.Located l : sample(slotMaterials(slot, shaping.get(), materials))) {
+                    Map<String, io.github.soundgoodizerfan.feedback.process.Measures.Slot> slots = new HashMap<>(was.measures().slots());
+                    slots.put(slot.name(), new io.github.soundgoodizerfan.feedback.process.Measures.Slot(l.id(), l.form()));
+                    list.add(Map.entry(l.id().getPath(), base.withPart(was.withMeasures(was.measures().withSlots(slots)))));
+                }
+                sweeps.put(role + "#" + slot.name(), list);
+            }
+        sweeps.forEach((place, designs) -> {
+            Set<String> outcomes = new LinkedHashSet<>(), specs = new LinkedHashSet<>(), mods = new LinkedHashSet<>();
+            Set<String> moved = new LinkedHashSet<>();
+            float[] first = null;
+            for (Map.Entry<String, ModularDesign> e : designs) {
+                String k = auditKey(e.getValue(), type, materials);
+                if (k == null)
+                    continue;
+                outcomes.add(k);
+                specs.add(k.substring(k.lastIndexOf('|') + 1));
+                mods.add(k.substring(k.indexOf(']') + 1, k.lastIndexOf('|')));
+                Optional<ModularFigures> f = safeBake(e.getValue(), type, materials);
+                if (f.isPresent()) {
+                    float[] v = new float[ModularFigures.Fig.values().length];
+                    for (ModularFigures.Fig g : ModularFigures.Fig.values())
+                        v[g.ordinal()] = f.get().get(g);
+                    if (first == null)
+                        first = v;
+                    else
+                        for (ModularFigures.Fig g : ModularFigures.Fig.values())
+                            if (v[g.ordinal()] != first[g.ordinal()])
+                                moved.add(g.name());
+                }
+            }
+            if (outcomes.isEmpty() || designs.size() < 2)
+                return; // nothing to vary: one material fits
+            String how = outcomes.size() == 1 ? " DEAD"
+                    : moved.isEmpty() && mods.size() == 1 ? " (spec only)"
+                    : specs.size() == 1 && mods.size() == 1 && weak(type, moved) ? " WEAK moves only " + moved
+                    : specs.size() == 1 && mods.size() == 1 && AUDIT_WEIGHT.containsAll(moved) ? " WEIGHT ONLY " + moved
+                    : " moves " + moved + (mods.size() > 1 ? " +modifiers" : "") + (specs.size() > 1 ? " +spec" : "");
+            out.add(String.format("%s %s: %d tried, %d outcomes%s", id.getPath(), place, designs.size(), outcomes.size(), how));
+        });
+    }
+
+    /** At most 60 materials, evenly spread through the sorted list. */
+    private static List<Material.Located> sample(List<Material.Located> all) {
+        List<Material.Located> sorted = all.stream().sorted(Comparator.comparing(l -> l.id().toString())).toList();
+        if (sorted.size() <= 60)
+            return sorted;
+        List<Material.Located> out = new ArrayList<>();
+        for (int i = 0; i < 60; i++)
+            out.add(sorted.get(i * sorted.size() / 60));
+        return out;
+    }
+
+    /** Everything a design bakes to, as one string, or null if it does not bake: the shared figures and each family's own spec. */
+    private static String auditKey(ModularDesign d, ModularType type, Map<ResourceLocation, Material> materials) {
+        Optional<ModularFigures> f = safeBake(d, type, materials);
+        if (f.isEmpty())
+            return null;
+        StringBuilder sb = new StringBuilder(f.get().values().toString());
+        // what a trait does on top of the figures (a stock's kick cut, a bipod's spread cut) lives in the modifiers, not the figures
+        sb.append('|');
+        try {
+            io.github.soundgoodizerfan.feedback.modular.bake.ModularModifiers.of(d, type, f.get()).forEach(m -> sb.append(m.id()).append(m.gloss()));
+        } catch (RuntimeException e) {
+            sb.append('!');
+        }
+        sb.append('|');
+        java.util.function.Supplier<?>[] specs = {
+                () -> io.github.soundgoodizerfan.feedback.modular.bake.ElectricGunSpec.of(d, type, materials),
+                () -> ModularBake.cell(d, type, materials), () -> ModularBake.belt(d, type, materials),
+                () -> ModularBake.engine(d, type, materials), () -> ModularBake.tank(d, type, materials),
+                () -> ModularBake.propeller(d, type, materials), () -> ModularBake.gearbox(d, type, materials),
+                () -> ModularBake.machine(d, type, materials),
+                () -> io.github.soundgoodizerfan.feedback.modular.bake.BlockFigures.of(d, type, materials)};
+        for (var spec : specs)
+            try {
+                sb.append(spec.get());
+            } catch (RuntimeException e) {
+                sb.append('!');
+            }
+        return sb.toString();
+    }
+
+    /** A bake that throws for a material it cannot read (a fault of its own) counts as no bake. */
+    private static Optional<ModularFigures> safeBake(ModularDesign d, ModularType type, Map<ResourceLocation, Material> materials) {
+        try {
+            return ModularBake.bake(d, type, materials, 0);
+        } catch (RuntimeException e) {
+            return Optional.empty();
+        }
+    }
 }

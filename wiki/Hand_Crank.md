@@ -13,7 +13,7 @@ Its **arm length** is a stepper from 4 to 8 on the drawing: a longer arm gives m
 | Straight, arm length 6 | standard | standard |
 | Offset | 1.3 times | 0.9 times |
 
-**Addon.** A **flywheel** (plate) is an optional disc that triples the crank's inertia: it carries the turn through the dead spot and is slower to start.
+**Addon.** A **flywheel** (plate) is an optional disc that adds to the crank's inertia: it carries the turn through the dead spot and is slower to start. A denser plate adds more inertia.
 
 ## Using it
 

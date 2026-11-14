@@ -131,7 +131,7 @@ public final class BlueprintBoard {
     /** A node's size and the distance between nodes, in drawing units. */
     private static final float NODE = 26, PITCH = 40;
     private static final int ROW_H = 10, LABEL_W = 50, BAR_W = 62;
-    private static final int SWATCH = 12, SWATCH_PITCH = 13, THUMB = 22, THUMB_PITCH = 24;
+    private static final int SWATCH = 18, SWATCH_PITCH = 20, THUMB = 22, THUMB_PITCH = 24;
     private static final float MIN_ZOOM = 0.4f, MAX_ZOOM = 2.2f;
     private static final int MAX_PINS = 3;
     /** A design of more drawn parts than this folds the type's groups into clusters. */
@@ -266,7 +266,9 @@ public final class BlueprintBoard {
     private float zoom = 1;
     private boolean panning;
     private final io.github.soundgoodizerfan.feedback.client.gun.GunPreview preview = new io.github.soundgoodizerfan.feedback.client.gun.GunPreview();
-    private int drawerScroll, swatchScroll, figScroll, kindScroll;
+    private int drawerScroll, figScroll, kindScroll;
+    /** The swatch grid's scroll in pixels: where it is going and where it is now (it eases). */
+    private final GuiStyle.Scroll swatchScroll = new GuiStyle.Scroll();
     private final Map<String, Long> flashes = new HashMap<>();
     private long stampAt;
     private final List<Pin> pins = new ArrayList<>();
@@ -283,6 +285,17 @@ public final class BlueprintBoard {
     /** The parts that changed from the first drawing, and what each does to a figure: filled on first hover of a bar. */
     private Map<String, ModularFigures> ablation;
     private Fig traceFor;
+    /** The figure the material swatches are sorted by (highest first), picked by clicking its bar; null keeps the list's own order. */
+    private Fig sortFig;
+    /** Whether the sort puts the lowest first (the second click on the same bar). */
+    private boolean sortLeast;
+    /** As {@link #sortFig}, but for one of the numbers under the figure bars (a pulse gun's hold, a tank's room, a band): the line's translation key; null for none. Only one of the two sorts at a time. */
+    private String sortUse;
+    /** Most uses lines under the figure bars. */
+    private static final int MAX_USES = 6;
+    private int hoverUse = -1;
+    /** The would-be uses lines of a part in a material and shape, worked out once per edit. */
+    private final Map<String, List<Component>> ghostUses = new HashMap<>();
     private final Map<String, Float> trace = new HashMap<>();
     private final Map<Fig, String> labels = new java.util.EnumMap<>(Fig.class);
 
@@ -545,29 +558,6 @@ public final class BlueprintBoard {
         }).toList();
     }
 
-    /**
-     * {@code key} and what it can be swapped for, keeping the sheet one some form has, in the one fixed order of
-     * {@link #allKeys}: the arrows step round this ring, so the same list is walked both ways.
-     */
-    private List<String> swaps(String key) {
-        Set<String> cur = now();
-        List<String> out = new ArrayList<>();
-        for (String k : allKeys()) {
-            if (k.equals(key)) {
-                out.add(k);
-                continue;
-            }
-            if (cur.contains(k) || pair(k) != pair(key))
-                continue;
-            Set<String> s = new LinkedHashSet<>(cur);
-            s.remove(key);
-            s.add(k);
-            if (feasible(s))
-                out.add(k);
-        }
-        return out;
-    }
-
     private boolean removable(String key) {
         Set<String> s = now();
         s.remove(key);
@@ -583,22 +573,6 @@ public final class BlueprintBoard {
         return cur.contains(k) ? k : null;
     }
 
-    /** What an option is called: the part, and how many where it is raw stock. */
-    private String keyLabel(String key) {
-        String role = roleOf(key);
-        int n = pair(key) ? Integer.parseInt(key.substring(key.indexOf(':') + 1)) : 1;
-        String name = roleName(role).getString();
-        return n > 1 && !ToolDesigns.shaped(current().roles().get(role)) ? name + " x" + n : name;
-    }
-
-    private void swap(String key, String next) {
-        Set<String> s = now();
-        s.remove(key);
-        s.add(next);
-        set(s);
-        selected = roleOf(next);
-    }
-
     private boolean drawn(String role) {
         return counts().containsKey(role);
     }
@@ -610,7 +584,7 @@ public final class BlueprintBoard {
         refit = true;
         selected = null;
         form = 0;
-        swatchScroll = 0;
+        swatchScroll.snap(0);
         figScroll = 0;
         extras.clear();
         fanFor = null;
@@ -697,11 +671,6 @@ public final class BlueprintBoard {
         return out;
     }
 
-    private int mostVariants(String role) {
-        return kindRow(role) ? shapes(role).stream().collect(java.util.stream.Collectors.groupingBy(o -> o.shaping().item(), java.util.stream.Collectors.counting()))
-                .values().stream().mapToInt(Long::intValue).max().orElse(1) : shapes(role).size();
-    }
-
     private int thumbsPerRow() {
         return Math.max(1, (call.w() - 8) / THUMB_PITCH);
     }
@@ -758,8 +727,28 @@ public final class BlueprintBoard {
             Set<ResourceLocation> ids = new java.util.HashSet<>();
             fit.forEach(l -> ids.add(l.id()));
             fitSets.put(k, ids);
-            List<Material.Located> out = new ArrayList<>(fit);
-            return List.copyOf(out.stream().filter(this::matches).toList());
+            List<Material.Located> out = new ArrayList<>(fit.stream().filter(this::matches).toList());
+            if (sortUse != null && !role.contains("#")) {
+                int shape = shapeIndex(role);
+                String by = sortUse;
+                // the number the whole design would show on that line with each material in this part; a material with no such line goes last
+                Map<ResourceLocation, Float> would = new HashMap<>();
+                for (Material.Located l : out)
+                    would.put(l.id(), ghostUsesOf(role, l.id(), shape).stream().filter(u -> by.equals(useKey(u))).map(BlueprintBoard::useValue)
+                            .filter(v -> !Float.isNaN(v)).findFirst().orElse(null));
+                java.util.Comparator<Float> order = sortLeast ? java.util.Comparator.naturalOrder() : java.util.Comparator.reverseOrder();
+                out.sort(java.util.Comparator.comparing((Material.Located l) -> would.get(l.id()), java.util.Comparator.nullsLast(order)));
+            } else if (sortFig != null && !role.contains("#")) {
+                int shape = shapeIndex(role);
+                Fig by = sortFig;
+                // The figure the whole design would have with each material in this part; a material that makes no design goes last.
+                Map<ResourceLocation, Float> would = new HashMap<>();
+                for (Material.Located l : out)
+                    would.put(l.id(), ghostOf(role, l.id(), shape).map(f -> f.get(by)).orElse(null));
+                java.util.Comparator<Float> order = sortLeast ? java.util.Comparator.naturalOrder() : java.util.Comparator.reverseOrder();
+                out.sort(java.util.Comparator.comparing((Material.Located l) -> would.get(l.id()), java.util.Comparator.nullsLast(order)));
+            }
+            return List.copyOf(out);
         });
     }
 
@@ -928,12 +917,17 @@ public final class BlueprintBoard {
     private void refresh() {
         ModularType t = current();
         ghosts.clear();
+        ghostUses.clear();
+        swatchLists.clear(); // a sorted list follows the other parts' figures
         ghostRole = null;
         ghost = Optional.empty();
         ablation = null;
         traceFor = null;
         trace.clear();
         icons.clear();
+        movesCache.clear();
+        variantIcons.clear();
+        materialIcons.clear();
         dirty();
         shapeLists.clear(); // roles differ per type
         layout();
@@ -954,6 +948,10 @@ public final class BlueprintBoard {
         modifiers = design.isPresent() && figures.isPresent() ? ModularModifiers.of(design.get(), t, figures.get()) : List.of();
         chipText = modifiers.stream().map(m -> m.name().getString()).toList();
         shown = figures.map(ModularBlueprintItem::present).orElse(List.of());
+        if (sortFig != null && !shown.contains(sortFig))
+            sortFig = null;
+        if (sortUse != null && uses.stream().noneMatch(u -> sortUse.equals(useKey(u))))
+            sortUse = null;
         if (design.isPresent())
             for (ModularDesign.Part p : design.get().parts()) {
                 List<ItemStack> made = ToolDesigns.items(p, t.roles().get(p.role()), ClientMaterials.get(), p.count());
@@ -1405,14 +1403,15 @@ public final class BlueprintBoard {
 
     // --- widgets ----------------------------------------------------------------------------------
 
-    /** How many control rows the part panel has for the selected part: a stepper or the remove button, then the edge. */
-    private int controlRows(String role) {
-        if (role == null)
-            return 0;
-        ModularType t = current();
-        String key = keyOf(role);
-        int rows = t.ranged(role) || (key != null && (swaps(key).size() > 1 || removable(key))) ? 1 : 0;
-        return rows + (slotsOf(role).size() > 1 ? 1 : 0) + (edged() && role.equals(t.wearRole()) ? 1 : 0) + Math.min(MAX_AXIS_ROWS, axesOf(role).size());
+    /** The part panel has two pages: 0 the part's shape and sizes, 1 its material (search and swatches). */
+    private int page;
+
+    private boolean hasMaterials(String role) {
+        return slotsOf(role).size() > 1 || !onlyOne(matKey(role));
+    }
+
+    private boolean matPage(String role) {
+        return page == 1 && role != null && hasMaterials(role);
     }
 
     /** A scalar's row: its name and figure, in its unit. */
@@ -1424,41 +1423,221 @@ public final class BlueprintBoard {
         return I18n.get("modular.feedback.axis." + name) + ": " + (dim.grain() < 1f ? String.format(java.util.Locale.ROOT, "%.2f", v) : String.valueOf(Math.round(v))) + unit;
     }
 
-    private static final int SEARCH_H = 14;
-    /** Scalar rows shown at once; a part with more scrolls them, so the panel never outgrows its box. */
-    private static final int MAX_AXIS_ROWS = 3;
-    private int axisScroll;
-
-    /** The part's stepper rows above its scalars: a count or swap or remove row, then the edge. */
-    private int rowsAboveAxes(String role) {
+    private static final int SEARCH_H = 14, TABS_W = 96;
+    /** The stepper rows of the drawn variant: a count row, the edge, then the part's scalars. */
+    private int stepperRows(String role) {
         ModularType t = current();
-        String key = keyOf(role);
-        return (t.ranged(role) || (key != null && (swaps(key).size() > 1 || removable(key))) ? 1 : 0) + (slotsOf(role).size() > 1 ? 1 : 0)
-                + (edged() && role.equals(t.wearRole()) ? 1 : 0);
+        return (t.ranged(role) ? 1 : 0) + (edged() && role.equals(t.wearRole()) ? 1 : 0) + axesOf(role).size();
     }
 
     private int swatchTop(String role) {
-        return oy + panelY + 15 + 15 * controlRows(role) + SEARCH_H;
-    }
-
-    private int shapesHeight(String role) {
-        int n = role == null ? 0 : shapes(role).size();
-        if (n < 2)
-            return 0;
-        int rows = mostVariants(role) > thumbsPerRow() ? THUMB_PITCH : 0;
-        return (kindRow(role) ? TAB_H + 3 : 0) + THUMB + 4 + rows;
+        return oy + panelY + 15 + (slotsOf(role).size() > 1 ? 15 : 0) + SEARCH_H;
     }
 
     /** Height of a head-kind tab standing on the variant box. */
     private static final int TAB_H = 20;
+    /** A variant row: the render box and its pitch; the drawn variant's row grows by its description and the part's steppers. */
+    private static final int ROW_BOX = 24, ROW_PITCH = 26;
 
-    /** Where the variant thumbnails start: under the kind tabs and the box's top rim when there are kinds to choose. */
-    private int variantsTop(String role) {
-        return shapesTop(role) + (kindRow(role) ? TAB_H + 3 : 0);
+    private record RowBox(int idx, int y, int h) { }
+
+    /** The list's scroll in pixels: where it is going, where it is now, and how far it can go. Both ease, so a scroll glides. */
+    private final GuiStyle.Scroll rowScroll = new GuiStyle.Scroll();
+    /** Each row's height as drawn, easing toward {@link #rowHeight}, so a row opens and shuts by growing. */
+    private final Map<Integer, Float> rowNow = new HashMap<>();
+    private String rowKey = "";
+    private final List<AbstractWidget> rowSteppers = new ArrayList<>();
+    private boolean followShape = true;
+    private List<RowBox> rowBoxes = List.of();
+    private final Map<String, String> movesCache = new HashMap<>();
+    private final Map<String, ItemStack> variantIcons = new HashMap<>();
+
+    private int rowW() {
+        return call.w() - 8 - 5;
     }
 
-    private int shapesTop(String role) {
-        return oy + panelY + panelH - 3 - shapesHeight(role);
+    /** The shape page's variant rows: those of the drawn kind, or one row (-1) for a part with no shapes to choose. */
+    private List<Integer> rowIdx(String role) {
+        List<Integer> vs = variants(role);
+        return vs.isEmpty() ? List.of(-1) : vs;
+    }
+
+    private boolean rowSelected(String role, int idx) {
+        return idx < 0 || idx == shapeIndex(role);
+    }
+
+    /** Whether the drawn variant's row is open: showing its description and the part's steppers. A right click shuts it (and opens it again). */
+    private boolean shapeShut;
+    private static final int DESC_INDENT = 6;
+
+    private List<net.minecraft.util.FormattedCharSequence> fullDesc(String role, int idx) {
+        if (idx < 0 || idx >= shapes(role).size())
+            return List.of();
+        List<Component> all = PartPresenter.describe(shapes(role).get(idx));
+        List<net.minecraft.util.FormattedCharSequence> out = new ArrayList<>();
+        for (Component c : all.subList(1, all.size()))
+            out.addAll(font.split(c, rowW() - ROW_BOX - 10 - DESC_INDENT));
+        return out;
+    }
+
+    /** The description as far as the list has room for it: the steppers always fit, the text gives way and ends in an ellipsis. */
+    private List<net.minecraft.util.FormattedCharSequence> descLines(String role, int idx) {
+        List<net.minecraft.util.FormattedCharSequence> all = fullDesc(role, idx);
+        int n = stepperRows(role);
+        int room = listBottom() - listTop(role) - 13 - 2 - (n > 0 ? 15 * n + 2 : 0);
+        int max = Math.max(1, room / 9);
+        if (all.size() <= max)
+            return all;
+        List<net.minecraft.util.FormattedCharSequence> out = new ArrayList<>(all.subList(0, max));
+        out.set(max - 1, net.minecraft.util.FormattedCharSequence.composite(out.get(max - 1), net.minecraft.util.FormattedCharSequence.forward("...", net.minecraft.network.chat.Style.EMPTY)));
+        return out;
+    }
+
+    private boolean rowOpen(String role, int idx) {
+        return !shapeShut && rowSelected(role, idx);
+    }
+
+    private int rowHeight(String role, int idx) {
+        if (!rowOpen(role, idx))
+            return ROW_PITCH;
+        int n = stepperRows(role);
+        return Math.max(ROW_PITCH, 13 + 9 * descLines(role, idx).size() + 2) + (n > 0 ? 15 * n + 2 : 0);
+    }
+
+    /** The figures that differ between this part's variants, in the order they differ most: what the shape moves in the whole. */
+    private String moves(String role) {
+        return movesCache.computeIfAbsent(role + "|" + shapeIndex(role), k -> {
+            List<Integer> vs = variants(role);
+            Optional<Material.Located> mat = choice(role);
+            if (vs.size() < 2 || mat.isEmpty())
+                return "";
+            List<ModularFigures> made = new ArrayList<>();
+            for (int i : vs)
+                ghostOf(role, mat.get().id(), i).ifPresent(made::add);
+            if (made.size() < 2)
+                return "";
+            Map<Fig, Float> spread = new HashMap<>();
+            for (Fig f : shown) {
+                float lo = Float.MAX_VALUE, hi = -Float.MAX_VALUE;
+                for (ModularFigures m : made) {
+                    lo = Math.min(lo, m.get(f));
+                    hi = Math.max(hi, m.get(f));
+                }
+                float rel = (hi - lo) / Math.max(1e-6f, Math.max(Math.abs(hi), Math.abs(lo)));
+                if (rel > 0.02f)
+                    spread.put(f, rel);
+            }
+            return spread.entrySet().stream().sorted(Map.Entry.<Fig, Float>comparingByValue().reversed()).limit(4)
+                    .map(e -> label(e.getKey())).collect(java.util.stream.Collectors.joining(", "));
+        });
+    }
+
+    private int movesH(String role) {
+        return moves(role).isEmpty() ? 0 : 11;
+    }
+
+    private int kindsTop(String role) {
+        return oy + panelY + 15 + movesH(role);
+    }
+
+    private int listTop(String role) {
+        return kindsTop(role) + (kindRow(role) ? TAB_H + 3 : 0) + 1;
+    }
+
+    private int listBottom() {
+        return oy + panelY + panelH - 4;
+    }
+
+    /**
+     * Works out the rows showing, every frame: each row's height and the scroll ease toward where the drawn variant and the wheel want them, so
+     * rows grow and shut and the list glides. After an edit the scroll first moves to keep the drawn variant's row in view.
+     */
+    private void layoutRows(String role) {
+        List<Integer> idxs = rowIdx(role);
+        int top = listTop(role), room = listBottom() - top;
+        String key = role + "|" + idxs.hashCode();
+        boolean fresh = !key.equals(rowKey);
+        float total = 0, selTop = 0, selH = 0;
+        for (int idx : idxs) {
+            int h = rowHeight(role, idx);
+            if (rowSelected(role, idx)) {
+                selTop = total;
+                selH = h;
+            }
+            total += h;
+        }
+        rowScroll.setMax(total - room);
+        if (fresh) {
+            rowKey = key;
+            rowNow.clear();
+            rowScroll.snap(0);
+        }
+        if (followShape) {
+            followShape = false;
+            if (selTop < rowScroll.target())
+                rowScroll.to(selTop);
+            else if (selTop + selH > rowScroll.target() + room)
+                rowScroll.to(Math.min(selTop, selTop + selH - room));
+        }
+        float scroll = rowScroll.update();
+        for (int idx : idxs) {
+            int h = rowHeight(role, idx);
+            rowNow.put(idx, fresh || !rowNow.containsKey(idx) ? h : GuiStyle.ease(rowNow.get(idx), h, rowScroll.k()));
+        }
+        List<RowBox> out = new ArrayList<>();
+        float y = top - scroll;
+        for (int idx : idxs) {
+            int h = Math.round(rowNow.get(idx));
+            if (y + h > top && y < top + room)
+                out.add(new RowBox(idx, Math.round(y), h));
+            y += h;
+        }
+        rowBoxes = out;
+        placeSteppers(role);
+    }
+
+    /** The open row's steppers follow it as it grows and scrolls; one shows only once its row has grown to hold it, and inside the list. */
+    private void placeSteppers(String role) {
+        RowBox open = rowBoxes.stream().filter(b -> rowOpen(role, b.idx())).findFirst().orElse(null);
+        int base = open == null ? 0 : Math.max(ROW_PITCH, 13 + 9 * descLines(role, open.idx()).size() + 2);
+        for (int i = 0; i < rowSteppers.size(); i++) {
+            AbstractWidget w = rowSteppers.get(i);
+            int y = open == null ? 0 : open.y() + base + 1 + 15 * i;
+            w.setY(y);
+            w.visible = open != null && y >= listTop(role) && y + 14 <= listBottom() + 1 && y + 14 <= open.y() + open.h();
+        }
+    }
+
+    private final Map<String, ItemStack> materialIcons = new HashMap<>();
+
+    /** The part in material {@code l} (its drawn shape) as its item, for a swatch; empty for a slot's material, which has no item of its own. */
+    private ItemStack materialIcon(String role, Material.Located l) {
+        if (role.contains("#") || current() == null || !current().roles().containsKey(role))
+            return ItemStack.EMPTY;
+        return materialIcons.computeIfAbsent(role + "|" + shapeIndex(role) + "|" + l.id(), k -> {
+            ModularDesign.Part part = ToolDesigns.part(role, l, shapeOf(role), counts().getOrDefault(role, 1));
+            List<ItemStack> made = ToolDesigns.items(part, current().roles().get(role), ClientMaterials.get(), part.count());
+            return made.isEmpty() ? ItemStack.EMPTY : made.get(0);
+        });
+    }
+
+    /** The part in material {@code mat} and variant {@code idx} as its item, for the row's render box. */
+    private ItemStack variantIcon(String role, int idx) {
+        Optional<Material.Located> c = choice(role);
+        if (c.isEmpty())
+            return ItemStack.EMPTY;
+        return variantIcons.computeIfAbsent(role + "|" + idx + "|" + c.get().id(), k -> {
+            ModularType t = current();
+            ModularDesign.Part part = ToolDesigns.part(role, c.get(), idx < 0 ? shapeOf(role) : shapeAt(role, idx), counts().getOrDefault(role, 1));
+            List<ItemStack> made = ToolDesigns.items(part, t.roles().get(role), ClientMaterials.get(), part.count());
+            return made.isEmpty() ? ItemStack.EMPTY : made.get(0);
+        });
+    }
+
+    /** How far the swatch grid can scroll, in pixels. */
+    private float swatchMax(String role) {
+        int total = (swatches(matKey(role)).size() + swatchCols() - 1) / swatchCols();
+        return Math.max(0, (total - swatchRows(role)) * SWATCH_PITCH);
     }
 
     private int swatchCols() {
@@ -1466,7 +1645,7 @@ public final class BlueprintBoard {
     }
 
     private int swatchRows(String role) {
-        return Math.max(1, (shapesTop(role) - swatchTop(role) - 2) / SWATCH_PITCH);
+        return matPage(role) ? Math.max(1, (oy + panelY + panelH - 3 - swatchTop(role)) / SWATCH_PITCH) : 0;
     }
 
     /** Makes the board's controls (again after any edit that changes which are needed). */
@@ -1511,30 +1690,57 @@ public final class BlueprintBoard {
         host.sampleWanted(role != null);
         if (role == null)
             return;
+        if (!hasMaterials(role))
+            page = 0;
+        else
+            widgetAdd(GuiStyle.tabs(skin, ox + call.x() + call.w() - 4 - TABS_W, oy + panelY + 1, TABS_W, 13,
+                    List.of(Component.translatable("gui.feedback.blueprint_table.page.shape"), Component.translatable("gui.feedback.blueprint_table.page.material")),
+                    () -> page, i -> {
+                        page = i;
+                        swatchScroll.snap(0);
+                        build();
+                    }));
+        boolean mat = matPage(role);
         int y = oy + panelY + 15;
-        String key = keyOf(role);
         int x = ox + call.x() + 4;
-        boolean rem = key != null && removable(key);
-        int sw = call.w() - 8 - (rem ? 18 : 0);
+        if (mat) {
+            buildMaterials(role, x, y);
+            return;
+        }
+        rowSteppers.clear();
+        layoutRows(role);
+        if (!rowOpen(role, shapeIndex(role)) && !(shapes(role).isEmpty() && !shapeShut))
+            return;
+        int y2 = 0, w = rowW();
         if (t.ranged(role)) {
             List<Integer> range = t.ranges().get(role);
             int lo = Math.max(1, range.get(0)), hi = range.get(1);
-            widgetAdd(GuiStyle.stepper(skin, x, y, sw, 14, "<", ">",
+            rowSteppers.add(widgetAdd(GuiStyle.stepper(skin, x, y2, w, 14, "<", ">",
                     () -> roleName(role).getString() + " x" + counts().getOrDefault(role, lo),
-                    dir -> change(() -> sizes.put(role, lo + Math.floorMod(counts().get(role) - lo + dir, hi - lo + 1))), false, null));
-        } else if (key != null && swaps(key).size() > 1) {
-            List<String> alt = swaps(key);
-            widgetAdd(GuiStyle.stepper(skin, x, y, sw, 14, "<", ">", () -> keyLabel(key),
-                    dir -> change(() -> swap(key, alt.get(Math.floorMod(alt.indexOf(key) + dir, alt.size())))), false, null));
+                    dir -> change(() -> sizes.put(role, lo + Math.floorMod(counts().get(role) - lo + dir, hi - lo + 1))), false, null)));
+            y2 += 15;
         }
-        if (rem)
-            widgetAdd(GuiStyle.button(skin, Component.literal("x"), b -> change(() -> {
-                Set<String> rest = now();
-                rest.remove(key);
-                set(rest);
-            }), x + call.w() - 8 - 14, y, 14, 14));
-        if (rem || t.ranged(role) || (key != null && swaps(key).size() > 1))
-            y += 15;
+        if (edged() && role.equals(t.wearRole())) {
+            rowSteppers.add(widgetAdd(GuiStyle.stepper(skin, x, y2, w, 14, "<", ">",
+                    () -> Component.translatable("tooltip.feedback.modular.edge." + edge.getSerializedName()).getString(),
+                    dir -> change(() -> edge = edge.step(dir)), false, null)));
+            y2 += 15;
+        }
+        for (Map.Entry<String, ModularType.Axis> d : axesOf(role)) {
+            String name = d.getKey();
+            ModularType.Axis dim = d.getValue();
+            rowSteppers.add(widgetAdd(GuiStyle.stepper(skin, x, y2, w, 14, "<", ">", () -> axisLabel(role, name, dim),
+                    dir -> change(() -> {
+                        float now = axisValue(role, name, ToolDesigns.part(role, choice(role).orElseThrow(), shapeOf(role), 1));
+                        float next = Math.round((now + dir * dim.grain()) / dim.grain()) * dim.grain();
+                        axisVals.put(role + ":" + name, dim.clamp(next));
+                    }), false, null)));
+            y2 += 15;
+        }
+    }
+
+    /** The material page's controls: the slot picker when the part has several, and the search box over the swatches. */
+    private void buildMaterials(String role, int x, int y) {
         List<ModularType.PartSlot> slots = slotsOf(role);
         if (slots.size() > 1) {
             // One picker per slot: the stepper picks which slot the swatches below paint.
@@ -1542,26 +1748,7 @@ public final class BlueprintBoard {
                     () -> I18n.get("modular.feedback.slot." + slots.get(Math.min(slotSel.getOrDefault(role, 0), slots.size() - 1)).name()),
                     dir -> change(() -> {
                         slotSel.put(role, Math.floorMod(slotSel.getOrDefault(role, 0) + dir, slots.size()));
-                        swatchScroll = 0;
-                    }), false, null));
-            y += 15;
-        }
-        if (edged() && role.equals(t.wearRole())) {
-            widgetAdd(GuiStyle.stepper(skin, x, y, call.w() - 8, 14, "<", ">",
-                    () -> Component.translatable("tooltip.feedback.modular.edge." + edge.getSerializedName()).getString(),
-                    dir -> change(() -> edge = edge.step(dir)), false, null));
-            y += 15;
-        }
-        List<Map.Entry<String, ModularType.Axis>> allAxes = axesOf(role);
-        axisScroll = Mth.clamp(axisScroll, 0, Math.max(0, allAxes.size() - MAX_AXIS_ROWS));
-        for (Map.Entry<String, ModularType.Axis> d : allAxes.subList(axisScroll, Math.min(allAxes.size(), axisScroll + MAX_AXIS_ROWS))) {
-            String name = d.getKey();
-            ModularType.Axis dim = d.getValue();
-            widgetAdd(GuiStyle.stepper(skin, x, y, call.w() - 8, 14, "<", ">", () -> axisLabel(role, name, dim),
-                    dir -> change(() -> {
-                        float now = axisValue(role, name, ToolDesigns.part(role, choice(role).orElseThrow(), shapeOf(role), 1));
-                        float next = Math.round((now + dir * dim.grain()) / dim.grain()) * dim.grain();
-                        axisVals.put(role + ":" + name, dim.clamp(next));
+                        swatchScroll.snap(0);
                     }), false, null));
             y += 15;
         }
@@ -1575,7 +1762,7 @@ public final class BlueprintBoard {
         searchBox.setResponder(v -> {
             query = v;
             swatchLists.clear();
-            swatchScroll = 0;
+            swatchScroll.snap(0);
         });
         widgetAdd(searchBox);
     }
@@ -1618,10 +1805,12 @@ public final class BlueprintBoard {
         edit.run();
         dirty(); // the edit may have changed what sel() reads just below
         if (type != type0 || !before.equals(String.valueOf(sel()))) {
-            swatchScroll = 0;
-            axisScroll = 0;
+            swatchScroll.snap(0);
+            rowScroll.to(0);
+            shapeShut = false;
             host.selectionChanged();
         }
+        followShape = true;
         refresh();
         build();
     }
@@ -1711,7 +1900,45 @@ public final class BlueprintBoard {
                     pickShape(role, pick);
                 return true;
             }
+            if (button == 0 && hoverUse >= 0 && hoverUse < uses.size()) {
+                String k = useKey(uses.get(hoverUse));
+                sortFig = null;
+                if (!k.equals(sortUse)) {
+                    sortUse = k;
+                    sortLeast = false;
+                } else if (!sortLeast)
+                    sortLeast = true;
+                else
+                    sortUse = null;
+                swatchLists.clear();
+                swatchScroll.snap(0);
+                GuiSkin.play(skin.click(), 1f);
+                return true;
+            }
+            if (button == 0 && hoverFig >= 0) {
+                Fig f = shown.get(hoverFig);
+                sortUse = null;
+                if (f != sortFig) {
+                    sortFig = f;
+                    sortLeast = false;
+                } else if (!sortLeast)
+                    sortLeast = true;
+                else
+                    sortFig = null;
+                swatchLists.clear();
+                swatchScroll.snap(0);
+                GuiSkin.play(skin.click(), 1f);
+                return true;
+            }
+            if (button == 1 && role != null && !matPage(role) && in(mx, my, ox + call.x(), listTop(role), call.w(), listBottom() - listTop(role))) {
+                GuiSkin.play(skin.click(), 0.9f);
+                shapeShut = !shapeShut;
+                followShape = true;
+                build();
+                return true;
+            }
             if (button == 0 && hoverShape >= 0 && role != null) {
+                shapeShut = false;
                 pickShape(role, hoverShape);
                 return true;
             }
@@ -1832,19 +2059,17 @@ public final class BlueprintBoard {
             return true;
         }
         String role = sel();
-        if (role != null && kindRow(role) && in(mx, my, ox + call.x() + 4, shapesTop(role), thumbsPerRow() * THUMB_PITCH, THUMB_PITCH)) {
+        if (role != null && !matPage(role) && kindRow(role) && in(mx, my, ox + call.x() + 4, kindsTop(role), thumbsPerRow() * THUMB_PITCH, TAB_H)) {
             kindScroll = Mth.clamp(kindScroll + dir, 0, Math.max(0, kinds(role).size() - thumbsPerRow()));
             return true;
         }
-        if (role != null && axesOf(role).size() > MAX_AXIS_ROWS
-                && in(mx, my, ox + call.x(), oy + panelY + 15 + 15 * rowsAboveAxes(role), call.w(), 15 * MAX_AXIS_ROWS)) {
-            axisScroll = Mth.clamp(axisScroll + dir, 0, axesOf(role).size() - MAX_AXIS_ROWS);
-            build();
+        if (role != null && !matPage(role) && in(mx, my, ox + call.x(), listTop(role), call.w(), listBottom() - listTop(role))) {
+            rowScroll.by(dir * 20);
             return true;
         }
         if (role != null && in(mx, my, ox + call.x(), swatchTop(role), call.w(), swatchRows(role) * SWATCH_PITCH)) {
-            int rows = (swatches(matKey(role)).size() + swatchCols() - 1) / swatchCols();
-            swatchScroll = Mth.clamp(swatchScroll + dir, 0, Math.max(0, rows - swatchRows(role)));
+            swatchScroll.setMax(swatchMax(role));
+            swatchScroll.by(dir * SWATCH_PITCH);
             return true;
         }
         if (in(mx, my, ox + res.x(), oy + panelY, res.w(), panelH)) {
@@ -2001,7 +2226,7 @@ public final class BlueprintBoard {
     }
 
     private int figRows() {
-        return Math.max(1, (panelH - 10 - rigH() - Math.min(uses.size(), 4) * 9) / ROW_H);
+        return Math.max(1, (panelH - 10 - rigH() - Math.min(uses.size(), MAX_USES) * 9) / ROW_H);
     }
 
     /** Whether the type has a test rig, and the height it takes off the top of the figures panel while it is on. */
@@ -2036,7 +2261,7 @@ public final class BlueprintBoard {
 
     /** Which things the pointer is over; set once per frame, read by the drawing and the tooltips. */
     private void updateHover(int mx, int my) {
-        hoverNode = hoverSwatch = hoverShape = hoverKind = hoverFig = hoverChip = hoverDrawer = hoverFault = hoverLink = -1;
+        hoverNode = hoverSwatch = hoverShape = hoverKind = hoverFig = hoverUse = hoverChip = hoverDrawer = hoverFault = hoverLink = -1;
         hoverCorner = false;
         if (current() == null)
             return;
@@ -2074,27 +2299,28 @@ public final class BlueprintBoard {
             List<Material.Located> mats = swatches(matKey(role));
             int sx = ox + call.x() + 4, sy = swatchTop(role), cols = swatchCols(), rows = swatchRows(role);
             if (in(mx, my, sx, sy, cols * SWATCH_PITCH, rows * SWATCH_PITCH)) {
-                int i = (swatchScroll + (my - sy) / SWATCH_PITCH) * cols + (mx - sx) / SWATCH_PITCH;
+                int i = (swatchScroll.px() + (my - sy)) / SWATCH_PITCH * cols + (mx - sx) / SWATCH_PITCH;
                 hoverSwatch = i < mats.size() ? i : -1;
             }
-            int n = shapes(role).size();
-            if (n > 1) {
-                int ty = shapesTop(role), per = thumbsPerRow();
-                int vy = variantsTop(role);
-                if (kindRow(role) && in(mx, my, sx, ty, per * THUMB_PITCH, TAB_H)) {
+            if (!matPage(role)) {
+                layoutRows(role);
+                int per = thumbsPerRow();
+                if (kindRow(role) && in(mx, my, sx, kindsTop(role), per * THUMB_PITCH, TAB_H)) {
                     int i = kindScroll + (mx - sx) / THUMB_PITCH;
                     hoverKind = i < kinds(role).size() ? i : -1;
-                } else if (in(mx, my, sx, vy, per * THUMB_PITCH, shapesHeight(role) - (vy - ty))) {
-                    List<Integer> vs = variants(role);
-                    int i = (my - vy) / THUMB_PITCH * per + (mx - sx) / THUMB_PITCH;
-                    hoverShape = i < vs.size() && i < per * 2 ? vs.get(i) : -1;
-                }
+                } else
+                    for (RowBox b : rowBoxes)
+                        if (b.idx() >= 0 && my >= listTop(role) && my < listBottom() && in(mx, my, sx, b.y(), rowW(), b.h()))
+                            hoverShape = b.idx();
             }
         }
         if (in(mx, my, ox + res.x() + 2, oy + panelY + 5 + rigH(), res.w() - 4, figRows() * ROW_H)) {
             int i = figScroll + (my - oy - panelY - 5 - rigH()) / ROW_H;
             hoverFig = i < shown.size() ? i : -1;
         }
+        int usesShown = Math.min(uses.size(), MAX_USES), useTop = oy + panelY + panelH - 4 - usesShown * 9;
+        if (usesShown > 0 && in(mx, my, ox + res.x() + 2, useTop, res.w() - 4, usesShown * 9))
+            hoverUse = (my - useTop) / 9;
         updateGhost();
     }
 
@@ -2132,7 +2358,39 @@ public final class BlueprintBoard {
         String r = gr;
         ResourceLocation m = gm;
         int s = gs;
-        ghost = ghosts.computeIfAbsent(gr + "|" + gm + "|" + gs, k -> design(r, m, s)
+        ghost = ghostOf(r, m, s);
+    }
+
+    private List<Component> ghostUsesOf(String role, ResourceLocation mat, int shape) {
+        return ghostUses.computeIfAbsent(role + "|" + mat + "|" + shape, k -> design(role, mat, shape).map(this::usesOf).orElse(List.of()));
+    }
+
+    /** The translation key of a uses line: what it is, whatever the build's number. */
+    private static String useKey(Component line) {
+        return line.getContents() instanceof net.minecraft.network.chat.contents.TranslatableContents t ? t.getKey() : "";
+    }
+
+    /** The number a uses line shows, to sort by: its first argument, or a voltage band's rank; NaN if it has none. */
+    private static float useValue(Component line) {
+        if (!(line.getContents() instanceof net.minecraft.network.chat.contents.TranslatableContents t) || t.getArgs().length == 0)
+            return Float.NaN;
+        Object a = t.getArgs()[0];
+        if (a instanceof Number n)
+            return n.floatValue();
+        if (a instanceof Component c && c.getContents() instanceof net.minecraft.network.chat.contents.TranslatableContents tc)
+            for (VoltageBand b : VoltageBand.values())
+                if (b.key().equals(tc.getKey()))
+                    return b.ordinal();
+        try {
+            return Float.parseFloat(String.valueOf(a));
+        } catch (NumberFormatException e) {
+            return Float.NaN;
+        }
+    }
+
+    /** The figures {@code role} in material {@code mat} and shape {@code shape} would give the drawing, worked out once per edit. */
+    private Optional<ModularFigures> ghostOf(String role, ResourceLocation mat, int shape) {
+        return ghosts.computeIfAbsent(role + "|" + mat + "|" + shape, k -> design(role, mat, shape)
                 .flatMap(d -> ToolDesigns.predict(d, ModularTypes.known(), ClientMaterials.get())));
     }
 
@@ -2378,27 +2636,42 @@ public final class BlueprintBoard {
         String mk = matKey(role);
         List<Material.Located> mats = swatches(mk);
         Optional<Material.Located> now = choice(mk);
-        boolean single = onlyOne(mk);
+        boolean single = onlyOne(mk) || !matPage(role);
         if (!single)
             skin.inset(g, x + 4, swatchTop(role) - SEARCH_H + 1, call.w() - 8, SEARCH_H - 3);
-        if (axesOf(role).size() > MAX_AXIS_ROWS)
-            skin.scrollbar(g, x + call.w() - 4, y + 15 + 15 * rowsAboveAxes(role), 15 * MAX_AXIS_ROWS, axesOf(role).size(), MAX_AXIS_ROWS, axisScroll);
         g.drawString(font, roleName(role), x + 5, y + 4, skin.ink(), false);
         String name = materialName(mk);
-        int nw = Math.min(font.width(name), 110);
-        fit(g, name, x + call.w() - 5 - nw, y + 4, 110, skin.dim());
+        if (!hasMaterials(role)) {
+            int nw = Math.min(font.width(name), 110);
+            fit(g, name, x + call.w() - 5 - nw, y + 4, 110, skin.dim());
+        } else {
+            // The material's name sits between the part's name and the page tabs.
+            int nx = x + 5 + font.width(roleName(role)) + 8, room = x + call.w() - 4 - TABS_W - 4 - nx;
+            if (room >= 24)
+                fit(g, name, nx, y + 4, room, skin.dim());
+        }
         int sx = x + 4, sy = swatchTop(role), cols = swatchCols(), rows = swatchRows(role);
-        int total = (mats.size() + cols - 1) / cols;
-        swatchScroll = Mth.clamp(swatchScroll, 0, Math.max(0, total - rows));
-        for (int r = 0; r < (single ? 0 : rows); r++)
+        swatchScroll.setMax(swatchMax(role));
+        swatchScroll.update();
+        float max = swatchScroll.max();
+        int shift = swatchScroll.px();
+        if (!single)
+            g.enableScissor(sx - 2, sy, x + call.w() - 4, sy + rows * SWATCH_PITCH);
+        for (int r = single ? 0 : shift / SWATCH_PITCH; r <= (single ? -1 : (shift + rows * SWATCH_PITCH - 1) / SWATCH_PITCH); r++)
             for (int c = 0; c < cols; c++) {
-                int i = (swatchScroll + r) * cols + c;
+                int i = r * cols + c;
                 if (i >= mats.size())
                     break;
-                int px = sx + c * SWATCH_PITCH, py = sy + r * SWATCH_PITCH;
+                int px = sx + c * SWATCH_PITCH, py = sy + r * SWATCH_PITCH - shift;
                 Material.Located l = mats.get(i);
                 boolean fits = usable(mk, l);
-                g.fill(px, py, px + SWATCH, py + SWATCH, 0xFF000000 | MaterialColors.of(l.id()));
+                ItemStack icon = materialIcon(mk, l);
+                if (icon.isEmpty())
+                    g.fill(px, py, px + SWATCH, py + SWATCH, 0xFF000000 | MaterialColors.of(l.id()));
+                else {
+                    g.fill(px, py, px + SWATCH, py + SWATCH, alpha(skin.ink(), 0x14));
+                    GuiStyle.spinItem(g, icon, px + SWATCH / 2f, py + SWATCH / 2f, 1f, i == hoverSwatch);
+                }
                 if (!fits) {
                     g.fill(px, py, px + SWATCH, py + SWATCH, 0xB0202020);
                     g.drawCenteredString(font, "x", px + SWATCH / 2 + 1, py + (SWATCH - 8) / 2 + 1, skin.warn());
@@ -2407,49 +2680,79 @@ public final class BlueprintBoard {
                 g.renderOutline(px - (on ? 1 : 0), py - (on ? 1 : 0), SWATCH + (on ? 2 : 0), SWATCH + (on ? 2 : 0),
                         on ? skin.accent() : i == hoverSwatch ? skin.ink() : alpha(skin.ink(), 0x40));
             }
-        if (!single)
-            skin.scrollbar(g, x + call.w() - 4, sy, rows * SWATCH_PITCH, total, rows, swatchScroll);
-        List<PartBenchShaping.Option> options = shapes(role);
-        if (options.size() > 1) {
-            int per = thumbsPerRow(), ty = shapesTop(role), cur = shapeIndex(role);
-            int rgb = now.map(l -> MaterialColors.of(l.id())).orElse(0x808080);
-            int vy = variantsTop(role);
-            if (kindRow(role)) {
-                List<net.minecraft.resources.ResourceLocation> ks = kinds(role);
-                int sel = kindIndex(role);
-                // Keep the drawn kind in view; its variants sit in a box the kind tabs stand on, the drawn kind's tab joined to it.
-                if (sel < kindScroll)
-                    kindScroll = sel;
-                else if (sel >= kindScroll + per)
-                    kindScroll = sel - per + 1;
-                kindScroll = Mth.clamp(kindScroll, 0, Math.max(0, ks.size() - per));
-                int rowsShown = Math.min(2, (variants(role).size() + per - 1) / per);
-                skin.plaque(g, sx - 2, ty + TAB_H, per * THUMB_PITCH + 2, 3 + Math.max(1, rowsShown) * THUMB_PITCH);
-                for (int i = 0; i < per && kindScroll + i < ks.size(); i++) {
-                    int k = kindScroll + i, px = sx + i * THUMB_PITCH;
-                    skin.plaqueTab(g, px, ty, THUMB, TAB_H, k == sel, k == hoverKind);
-                    if (!headIcon(g, ks.get(k), "", px + THUMB / 2, ty + TAB_H / 2 + (k == sel ? 0 : 1), rgb))
-                        for (PartBenchShaping.Option o : options)
-                            if (o.shaping().item().equals(ks.get(k))) {
-                                thumb(g, o, px, ty - 1, rgb);
-                                break;
-                            }
-                }
-                if (kindScroll > 0)
-                    g.drawString(font, "<", sx - 3, ty + 6, skin.dim(), false);
-                if (kindScroll + per < ks.size())
-                    g.drawString(font, ">", sx + per * THUMB_PITCH - 3, ty + 6, skin.dim(), false);
-            }
-            List<Integer> vs = variants(role);
-            for (int j = 0; j < vs.size() && j < per * 2; j++) {
-                int i = vs.get(j), px = sx + j % per * THUMB_PITCH, py = vy + j / per * THUMB_PITCH;
-                skin.plaque(g, px, py, THUMB, THUMB);
-                skin.row(g, px, py, THUMB, THUMB, i == cur, i == hoverShape);
-                PartBenchShaping.Option vo = options.get(i);
-                if (!kindRow(role) || !headIcon(g, vo.shaping().item(), vo.variant().name(), px + THUMB / 2, py + THUMB / 2, rgb))
-                    thumb(g, vo, px, py, rgb);
-            }
+        if (!single) {
+            g.disableScissor();
+            if (max > 0)
+                skin.scrollbar(g, x + call.w() - 4, sy, rows * SWATCH_PITCH, Math.round(max) + rows * SWATCH_PITCH, rows * SWATCH_PITCH, shift);
         }
+        if (!matPage(role))
+            drawVariants(g, role, sx, now.map(l -> MaterialColors.of(l.id())).orElse(0x808080));
+    }
+
+    /** The shape page: what the shape moves in the whole, the head kinds as tabs, then a row per variant with the drawn one open. */
+    private void drawVariants(GuiGraphics g, String role, int sx, int rgb) {
+        List<PartBenchShaping.Option> options = shapes(role);
+        String moves = moves(role);
+        if (!moves.isEmpty())
+        {
+            // The words after the label slide when they are too long, so none is cut off.
+            String lead = I18n.get("gui.feedback.blueprint_table.moves") + " ";
+            g.drawString(font, lead, sx, oy + panelY + 16, skin.dim(), false);
+            GuiStyle.marquee(g, font, Component.literal(moves), sx + font.width(lead), oy + panelY + 16, call.w() - 12 - font.width(lead), skin.dim());
+        }
+        int per = thumbsPerRow(), ty = kindsTop(role);
+        if (kindRow(role)) {
+            List<net.minecraft.resources.ResourceLocation> ks = kinds(role);
+            int sel = kindIndex(role);
+            // Keep the drawn kind in view; its variants sit in a box the kind tabs stand on, the drawn kind's tab joined to it.
+            if (sel < kindScroll)
+                kindScroll = sel;
+            else if (sel >= kindScroll + per)
+                kindScroll = sel - per + 1;
+            kindScroll = Mth.clamp(kindScroll, 0, Math.max(0, ks.size() - per));
+            skin.plaque(g, sx - 2, ty + TAB_H, call.w() - 4, listBottom() + 2 - (ty + TAB_H));
+            for (int i = 0; i < per && kindScroll + i < ks.size(); i++) {
+                int k = kindScroll + i, px = sx + i * THUMB_PITCH;
+                skin.plaqueTab(g, px, ty, THUMB, TAB_H, k == sel, k == hoverKind);
+                if (!headIcon(g, ks.get(k), "", px + THUMB / 2, ty + TAB_H / 2 + (k == sel ? 0 : 1), rgb))
+                    for (PartBenchShaping.Option o : options)
+                        if (o.shaping().item().equals(ks.get(k))) {
+                            thumb(g, o, px, ty - 1, rgb);
+                            break;
+                        }
+            }
+            if (kindScroll > 0)
+                g.drawString(font, "<", sx - 3, ty + 6, skin.dim(), false);
+            if (kindScroll + per < ks.size())
+                g.drawString(font, ">", sx + per * THUMB_PITCH - 3, ty + 6, skin.dim(), false);
+        }
+        g.enableScissor(sx - 1, listTop(role), sx + rowW() + 1, listBottom() + 1);
+        for (RowBox b : rowBoxes) {
+            // Each row draws inside its own current height, so a row that is growing reveals its text as it opens.
+            g.enableScissor(sx - 1, Math.max(b.y(), listTop(role)), sx + rowW() + 1, Math.min(b.y() + b.h(), listBottom() + 1));
+            boolean drawn = rowSelected(role, b.idx()), hot = b.idx() == hoverShape;
+            skin.row(g, sx, b.y(), rowW(), b.h(), drawn, hot);
+            skin.inset(g, sx + 2, b.y() + 1, ROW_BOX, ROW_BOX);
+            int cx = sx + 2 + ROW_BOX / 2, cy = b.y() + 1 + ROW_BOX / 2;
+            ItemStack icon = variantIcon(role, b.idx());
+            if (!icon.isEmpty()) {
+                GuiStyle.spinItem(g, icon, cx, cy, 1.3f, drawn || hot);
+            } else if (b.idx() >= 0)
+                thumb(g, options.get(b.idx()), sx + 3, b.y() + 2, rgb);
+            Component name = b.idx() < 0 ? roleName(role) : options.get(b.idx()).label();
+            fit(g, name.getString(), sx + ROW_BOX + 6, b.y() + 4, rowW() - ROW_BOX - 10, drawn ? skin.accent() : skin.ink());
+            if (b.h() > ROW_PITCH + 1) {
+                int ly = b.y() + 14;
+                for (net.minecraft.util.FormattedCharSequence line : descLines(role, b.idx())) {
+                    g.drawString(font, line, sx + ROW_BOX + 6 + DESC_INDENT, ly, skin.dim(), false);
+                    ly += 9;
+                }
+            }
+            g.disableScissor();
+        }
+        g.disableScissor();
+        if (rowScroll.max() > 0)
+            skin.scrollbar(g, sx + rowW() + 1, listTop(role), listBottom() - listTop(role), Math.round(rowScroll.max()) + listBottom() - listTop(role), listBottom() - listTop(role), rowScroll.px());
     }
 
     /**
@@ -2553,7 +2856,7 @@ public final class BlueprintBoard {
             Fig f = shown.get(figScroll + r);
             int ry = top + r * ROW_H;
             skin.row(g, x + 2, ry - 1, res.w() - 7, ROW_H, false, figScroll + r == hoverFig);
-            fit(g, label(f), x + 5, ry + 1, LABEL_W, skin.dim());
+            fit(g, label(f), x + 5, ry + 1, LABEL_W, f == sortFig ? skin.accent() : skin.dim());
             float v = cur.get(f);
             if (shift) {
                 g.drawString(font, PartPresenter.num(v), bx, ry + 1, skin.ink(), false);
@@ -2584,9 +2887,10 @@ public final class BlueprintBoard {
             }
         }
         skin.scrollbar(g, x + res.w() - 4, top, rows * ROW_H, shown.size(), rows, figScroll);
-        int uy = y + panelH - 4 - Math.min(uses.size(), 4) * 9;
-        for (int i = 0; i < uses.size() && i < 4; i++)
-            g.drawString(font, uses.get(i), x + 5, uy + i * 9, skin.ink(), false);
+        int uy = y + panelH - 4 - Math.min(uses.size(), MAX_USES) * 9;
+        for (int i = 0; i < uses.size() && i < MAX_USES; i++)
+            g.drawString(font, uses.get(i).copy().withColor(useKey(uses.get(i)).equals(sortUse) ? skin.accent() : i == hoverUse ? skin.accent() & 0xFFFFFF | 0xFF000000 : skin.ink()),
+                    x + 5, uy + i * 9, 0xFFFFFFFF, false);
         // the parts that changed a hovered figure, found once per figure
         Fig hf = hoverFig >= 0 ? shown.get(hoverFig) : null;
         if (hf != traceFor) {
@@ -2637,6 +2941,7 @@ public final class BlueprintBoard {
                             ? Component.translatable("figure.feedback.block.Band", Component.translatable(VoltageBand.values()[(int) tag.getFloat(k)].key()))
                             : Component.translatable("figure.feedback.block." + k, String.format(java.util.Locale.ROOT, "%.3g", tag.getFloat(k))))
                     .toList()).orElse(List.of());
+            case ELECTRIC_GUN -> io.github.soundgoodizerfan.feedback.modular.bake.ElectricGunSpec.of(d, t, ClientMaterials.get()).map(BlueprintBoard::egunLines).orElse(List.of());
             case PRESSURE -> ModularBake.tank(d, t, ClientMaterials.get()).<List<Component>>map(v -> List.of(
                     Component.translatable("gui.feedback.blueprint_table.tank.room", Math.round(v.volumeMb())),
                     Component.translatable("gui.feedback.blueprint_table.tank.danger", String.format(java.util.Locale.ROOT, "%.1f", v.dangerPu())),
@@ -2664,6 +2969,32 @@ public final class BlueprintBoard {
         return List.of(Component.translatable("gui.feedback.blueprint_table.machine.frame", Math.round(m.frameSu())),
                 Component.translatable("gui.feedback.blueprint_table.machine.amps", Math.round(m.ratedAmps())),
                 Component.translatable("gui.feedback.blueprint_table.machine.band", Component.translatable(m.band().key())));
+    }
+
+    /** The numbers a pulse gun's fittings read off their metals, which the shared figures do not carry: only those the build has. */
+    private static List<Component> egunLines(io.github.soundgoodizerfan.feedback.modular.bake.ElectricGunSpec e) {
+        List<Component> out = new ArrayList<>();
+        java.util.function.BiConsumer<String, Float> pct = (k, v) -> out.add(Component.translatable("gui.feedback.blueprint_table.egun." + k, Math.round(v * 100)));
+        // what the receiver insulates to: the band the gun may run on
+        out.add(Component.translatable("gui.feedback.blueprint_table.egun.band", Component.translatable(e.band().key())));
+        if (e.holdCharge())
+            pct.accept("hold", e.holdGain());
+        if (e.pump())
+            pct.accept("pump", e.pumpGain());
+        if (e.zoom())
+            pct.accept("zoom", e.zoomGain());
+        if (e.gauge())
+            pct.accept("gauge", e.gaugeRes());
+        if (e.governor() != io.github.soundgoodizerfan.feedback.modular.bake.ElectricGunSpec.Governor.NONE)
+            pct.accept("sense", e.sense());
+        if (e.coherence())
+            pct.accept("lining", e.lining());
+        if (e.sinkK() > 0)
+            pct.accept("sink", e.sinkK());
+        if (e.lead())
+            pct.accept("lead", e.leadAmp());
+        pct.accept("loss", e.barrelLoss());
+        return out;
     }
 
     private static List<Component> cellLines(ModularBake.CellSpec c) {
@@ -2730,14 +3061,33 @@ public final class BlueprintBoard {
         if (hoverSwatch >= 0 && sel() != null)
         {
             Material.Located l = swatches(matKey(sel())).get(hoverSwatch);
-            return usable(matKey(sel()), l) ? List.of(materialLabel(l))
-                    : List.of(materialLabel(l), Component.translatable("gui.feedback.blueprint_table.unfit").withStyle(net.minecraft.ChatFormatting.RED));
+            List<Component> card = new ArrayList<>();
+            card.add(materialLabel(l));
+            l.material().kind().ifPresent(k -> card.add(Component.literal(k.name().toLowerCase(java.util.Locale.ROOT)).withStyle(net.minecraft.ChatFormatting.GRAY)));
+            if (!usable(matKey(sel()), l)) {
+                card.add(Component.translatable("gui.feedback.blueprint_table.unfit").withStyle(net.minecraft.ChatFormatting.RED));
+                return card;
+            }
+            // What the whole design would do with it: the figures it moves, most first.
+            if (ghost.isPresent() && figures.isPresent()) {
+                Map<Fig, Float> change = new HashMap<>();
+                for (Fig f : shown) {
+                    float now = figures.get().get(f), then = ghost.get().get(f);
+                    float rel = (then - now) / Math.max(1e-6f, Math.max(Math.abs(now), Math.abs(then)));
+                    if (Math.abs(rel) > 0.02f)
+                        change.put(f, rel);
+                }
+                change.entrySet().stream().sorted((a, b) -> Float.compare(Math.abs(b.getValue()), Math.abs(a.getValue()))).limit(6)
+                        .forEach(e -> card.add(Component.literal((e.getValue() > 0 ? "\u25B2 " : "\u25BC ") + label(e.getKey()))
+                                .withStyle(e.getValue() > 0 ? net.minecraft.ChatFormatting.GREEN : net.minecraft.ChatFormatting.RED)));
+            }
+            return card;
         }
         if (hoverKind >= 0 && sel() != null) {
             net.minecraft.resources.ResourceLocation k = kinds(sel()).get(hoverKind);
             return List.of(Component.translatable("item." + k.getNamespace() + "." + k.getPath()));
         }
-        if (hoverShape >= 0 && sel() != null)
+        if (hoverShape >= 0 && sel() != null && (hoverShape != shapeIndex(sel()) || shapeShut || fullDesc(sel(), hoverShape).size() > descLines(sel(), hoverShape).size()))
             return PartPresenter.describe(shapes(sel()).get(hoverShape));
         if (hoverFig >= 0) {
             Fig f = shown.get(hoverFig);

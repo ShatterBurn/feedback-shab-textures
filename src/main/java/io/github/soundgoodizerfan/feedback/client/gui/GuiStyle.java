@@ -315,6 +315,101 @@ public final class GuiStyle {
         return new Tabs(skin, x, y, w, h, labels, selected, select);
     }
 
+    /** Draws text clipped to {@code width}; text wider than that slides back and forth, pausing at each end. */
+    public static void marquee(GuiGraphics g, net.minecraft.client.gui.Font font, net.minecraft.network.chat.Component text, int x, int y, int width, int color) {
+        int over = font.width(text) - width;
+        int off = 0;
+        if (over > 0) {
+            long period = over * 25L + 1500L; // 40 px/s plus a pause at each end
+            long t = net.minecraft.Util.getMillis() % (2 * period);
+            long ping = t < period ? t : 2 * period - t;
+            off = (int) Math.max(0, Math.min(over, (ping - 750L) / 25L));
+        }
+        g.enableScissor(x, y - 1, x + width, y + 10);
+        g.drawString(font, text, x - off, y, color, false);
+        g.disableScissor();
+    }
+
+    /** Moves {@code now} a fraction {@code k} (0..1) of the way to {@code target}; the last half pixel snaps, so a glide ends. */
+    public static float ease(float now, float target, float k) {
+        float d = target - now;
+        return Math.abs(d) < 0.5f ? target : now + d * k;
+    }
+
+    /**
+     * A scroll position in pixels that glides. The wheel moves {@link #by the target}, {@link #update} (once a frame) eases the shown position to
+     * it, and {@link #setMax} bounds both. With reduce motion on it jumps. {@link #k} is the step the last update took, for easing other
+     * things (a row's height) in step with the scroll.
+     */
+    public static final class Scroll {
+        private float target, now, max, k = 1f;
+        private long last;
+
+        public void setMax(float max) {
+            this.max = Math.max(0f, max);
+            target = Mth.clamp(target, 0f, this.max);
+            now = Mth.clamp(now, 0f, this.max);
+        }
+
+        public float max() {
+            return max;
+        }
+
+        public float target() {
+            return target;
+        }
+
+        /** Scrolls the target by {@code delta} pixels (a wheel notch is a row's height). */
+        public void by(float delta) {
+            to(target + delta);
+        }
+
+        public void to(float position) {
+            target = Mth.clamp(position, 0f, max);
+        }
+
+        /** Puts both at {@code position} at once: a new list starts at its top, it does not glide there. */
+        public void snap(float position) {
+            target = now = Mth.clamp(position, 0f, max);
+        }
+
+        /** Eases toward the target; call once a frame, before reading {@link #px}. Returns the position. */
+        public float update() {
+            long t = System.nanoTime();
+            float dt = last == 0 ? 0f : Math.min(0.1f, (t - last) / 1e9f);
+            last = t;
+            k = ClientSettings.reduceMotion() ? 1f : 1f - (float) Math.exp(-dt * 16f);
+            now = ease(now, target, k);
+            return now;
+        }
+
+        public float k() {
+            return k;
+        }
+
+        public int px() {
+            return Math.round(now);
+        }
+    }
+
+    /**
+     * Draws an item centred on ({@code cx}, {@code cy}), {@code scale} times its 16 px, and with {@code spin} turning it about its own middle
+     * (still with reduce motion on). The depth is squashed so the turn stays in the box instead of swinging through the screen.
+     */
+    public static void spinItem(GuiGraphics g, net.minecraft.world.item.ItemStack stack, float cx, float cy, float scale, boolean spin) {
+        g.pose().pushPose();
+        g.pose().translate(cx, cy, 50);
+        g.pose().scale(scale, scale, 0.05f);
+        if (spin && !ClientSettings.reduceMotion()) {
+            // renderItem stands the item 150 deep in the pose, so the turn is made about that depth.
+            g.pose().translate(0, 0, 150);
+            g.pose().mulPose(com.mojang.math.Axis.YP.rotationDegrees(time() * 4f % 360f));
+            g.pose().translate(0, 0, -150);
+        }
+        g.renderItem(stack, -8, -8);
+        g.pose().popPose();
+    }
+
     /** Eases a 0..1 hover glow toward {@code on}, {@code dt} seconds on. */
     private static float ease(float glow, boolean on, float dt) {
         return glow + Mth.clamp((on ? 1f : 0f) - glow, -dt * 8f, dt * 8f);

@@ -288,7 +288,11 @@
             "name": "lens",
             "forms": [
               "lens",
-              "plate"
+              "plate",
+              "pane",
+              "gem",
+              "shard",
+              "ingot"
             ],
             "traits": [
               "transparent"
@@ -329,7 +333,10 @@
         "cells": 1,
         "stock": [
           "dust",
-          "block"
+          "block",
+          "rod",
+          "ingot",
+          "raw"
         ],
         "variants": [
           {
