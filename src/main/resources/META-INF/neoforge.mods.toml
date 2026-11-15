@@ -44,6 +44,23 @@ versionRange = "[2.0.6,)"
 ordering = "AFTER"
 side = "BOTH"
 
+# The Shelf prototype (space/SpaceTravel) moves a Sable body between dimensions through Dimensional Sable and
+# scales one through Sable Scaling (both MIT; players install them, we never ship them). Scaling extends Sable's
+# pose network format, so both sides need it.
+[[dependencies.${mod_id}]]
+modId = "dimensional_sable"
+type = "required"
+versionRange = "[1.1.0,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.${mod_id}]]
+modId = "sablescale"
+type = "required"
+versionRange = "[1.2.0,)"
+ordering = "AFTER"
+side = "BOTH"
+
 # Gloves (item/GloveItem) are a curio in the `hands` slot. Required on both sides: protection is
 # decided on the server from what the player wears.
 [[dependencies.${mod_id}]]

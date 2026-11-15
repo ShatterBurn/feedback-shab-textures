@@ -159,6 +159,10 @@ dependencies {
         exclude group: "dev.engine-room.flywheel"
         exclude group: "com.tterrag.registrate"
     }
+    // Dimensional Sable and Sable Scaling (both MIT, required, not shipped): the space prototype moves and
+    // scales Sable bodies through them (space/SpaceTravel). Modrinth maven, version ids.
+    implementation "maven.modrinth:dimensional-sable:${dimensional_sable_version}"
+    implementation "maven.modrinth:sable-scaling:${sable_scaling_version}"
     // Sable's Rapier backend, compile-only: the micro cells' voxel colliders write into its scene
     // (vehicle/micro/MicroColliders). Sable ships it at runtime; it is not part of Sable's API.
     compileOnly("dev.ryanhcode.sable:sable-sable_rapier-${minecraft_version}:${sable_version}") { transitive = false }

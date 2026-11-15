@@ -79,6 +79,15 @@ public final class FCommands {
     static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("feedback").requires(s -> s.hasPermission(2))
                 .then(Commands.literal("blueprint").executes(FCommands::blueprintOf))
+                .then(Commands.literal("space")
+                        .then(Commands.literal("send").executes(c -> space(c, 0, 0)))
+                        .then(Commands.literal("back").executes(c -> space(c, 1, 0)))
+                        .then(Commands.literal("scale")
+                                .then(Commands.literal("reset").executes(c -> space(c, 2, 1)))
+                                .then(Commands.argument("k", com.mojang.brigadier.arguments.DoubleArgumentType.doubleArg(
+                                                io.github.soundgoodizerfan.feedback.space.SpaceTravel.minScale(),
+                                                io.github.soundgoodizerfan.feedback.space.SpaceTravel.maxScale()))
+                                        .executes(c -> space(c, 2, com.mojang.brigadier.arguments.DoubleArgumentType.getDouble(c, "k"))))))
                 .then(Commands.literal("charge").executes(FCommands::charge))
                 .then(Commands.literal("audit").then(Commands.literal("materials").executes(FCommands::auditMaterials)))
                 .then(Commands.literal("build").executes(FCommands::build)
@@ -114,6 +123,29 @@ public final class FCommands {
                                         Arrays.stream(MagazineSize.values()).map(MagazineSize::getSerializedName), b))
                                 .then(Commands.argument("bore", IntegerArgumentType.integer(GunSpec.MIN_BORE_MM, GunSpec.MAX_BORE_MM))
                                         .executes(FCommands::magazine)))));
+    }
+
+    private static final SimpleCommandExceptionType NO_BODY =
+            new SimpleCommandExceptionType(Component.translatable("commands.feedback.space.no_body"));
+
+    /** {@code what}: 0 send, 1 back, 2 scale to {@code k}. Acts on the body the player stands on or looks at. */
+    private static int space(CommandContext<CommandSourceStack> c, int what, double k) throws CommandSyntaxException {
+        var player = c.getSource().getPlayerOrException();
+        var body = io.github.soundgoodizerfan.feedback.space.SpaceTravel.bodyOf(player);
+        if (body == null) throw NO_BODY.create();
+        var level = player.serverLevel();
+        if (what == 2) {
+            io.github.soundgoodizerfan.feedback.space.SpaceTravel.scale(body, k);
+            c.getSource().sendSuccess(() -> Component.translatable("commands.feedback.space.scaled", k), true);
+            return 1;
+        }
+        int n = what == 0 ? io.github.soundgoodizerfan.feedback.space.SpaceTravel.send(level, body)
+                : io.github.soundgoodizerfan.feedback.space.SpaceTravel.back(level, body);
+        if (n == -1) throw new SimpleCommandExceptionType(Component.translatable(
+                what == 0 ? "commands.feedback.space.already_there" : "commands.feedback.space.not_there")).create();
+        if (n == -2) throw new SimpleCommandExceptionType(Component.translatable("commands.feedback.space.no_shelf")).create();
+        c.getSource().sendSuccess(() -> Component.translatable("commands.feedback.space.moved", n), true);
+        return n;
     }
 
     /**

@@ -28,6 +28,9 @@ departs from all three of these deliberately.
 | **Super Factory Manager** | MPL-2.0 | **Yes** | No per-file "Incompatible With Secondary Licenses" notice found, so combinable under GPL-3.0 per MPL §3.3/§10.4's default. Read, nothing taken — see below |
 | **Silent Gear** | MIT | **Yes** | Permissive. Preserve the notice, state the origin. Read for modular items; design taken. **Textures copied as placeholders (2026-10-21, user ruling)** -- the repo's MIT licence covers them; see *Textures* below |
 | **Tinkers' Construct** | MIT | **Yes** | Permissive. Only a 1.20.1 source exists, so any port is to 1.21 data components. Read for modular items; design taken, nothing copied |
+| **Dimensional Sable** | MIT | **Yes** | Required dependency (not shipped, Modrinth maven); its public `SubLevelWarper` API is called, nothing copied. Players install it |
+| **Sable Scaling** | MIT | **Yes** | Required dependency (not shipped, Modrinth maven); its public `SubLevelScale` API is called, nothing copied. Needed on both sides: it extends Sable's pose wire format |
+| **Genesis** (jamesgreen26) | Apache-2.0 | **Yes** | Design only, nothing copied or depended on. Notices only if code is ever copied |
 | **Backported Spears** (Unknowneth) | CC0 1.0 (the repository's `LICENSE`; CurseForge says Public Domain, Modrinth says MIT: all permissive and GPL-compatible, CC0 is the file in the source) | **Yes** | No obligation; attribution kindly. Cloned to `../Backported-Spears-reference` on its `1.21.1` branch (NeoForge 21.1.215, **yarn mappings and Mixins**, so nothing pastes into this Mojang/Parchment project as is). Read for the spear's charge behaviour (spec 5.4); **design only, no code taken** (the spear's charge is written fresh with Mojang names; its stab swing curve and hold-up pose, a raise then sway, are the design behind `client/SpearClient.stab` and `phase`, written anew); record each site here if code is adapted later |
 | **Spartan Weaponry** (ObliviousSpartan) | Apache-2.0 (code; read at its `1.20.1` branch, no 1.21.1 one exists) | **Yes** | Permissive and GPL-3.0-compatible one way. Preserve the notice, state the origin. Read for thrown modular weapons; design taken, nothing copied. Assets never |
 | **TacZ** (Timeless and Classics: Zero) | GPL-3.0 (code; read at its `1.20.1` branch, commit `b482eff`; assets have their own terms and are never used) | **Yes** | Same licence as this project. Read for gun feel (spec 7.1, 2026-10-12) and for attachments and ammunition (spec 13, 2026-10-21); design taken, nothing copied |
@@ -607,6 +610,10 @@ groups** are the discrete choices (one per axis). Nothing else.
 ## SableBarehanded (shove and carry, 2026-10-29)
 
 **GPL-3.0 (JuaanP), read at `master` commit `9e84d99`, cloned to `../SableBarehanded-reference`.** Design only; **nothing copied.** *Taken:* the server-authoritative grab flow (the client only says the key is down; the server resolves the body from the hit position, checks reach and mass, and rejects tiny bodies) and dropping the hold on over-tension or when the player stands on the body. *Rejected:* the constraint-motor levitation of heavy bodies (heavy bodies are shoved by impulse and resisted by tires and brakes through Sable), config dials, potion strength, food exhaustion, the speed modifier and the log-mass force curve.
+
+## Space prototype (Dimensional Sable, Sable Scaling, Genesis; 2026-11-15)
+
+**Dimensional Sable (MIT, hollow-egg, v1.1.0) and Sable Scaling (MIT, v1.2.0)** are required runtime dependencies; `space/SpaceTravel` calls `SubLevelWarper.warpConnectedSubLevels` and `SubLevelScale.apply`. Nothing is copied. **Genesis (Apache-2.0, `1.21.1` branch, commit `ba58a78`, cloned to `../Genesis-reference`)** was read for design only. *Taken from Genesis:* zero gravity as Sable's per-dimension physics data, a whole connected chain moving in one call, removing the old body only after the new one loads. *Rejected:* Pehkui per-entity scaling, altitude-constant travel triggers, the cube-planet celestial registry, flat heat falloff, id-keyed entity checks, the Rapier cluster-frame mixins.
 
 ## TacZ (guns, 2026-10-12, 2026-10-21 and 2026-11-05)
 
