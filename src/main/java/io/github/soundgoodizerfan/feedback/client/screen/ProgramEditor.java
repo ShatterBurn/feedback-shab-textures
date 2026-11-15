@@ -999,7 +999,7 @@ public final class ProgramEditor {
     /** The inputs of the analog part an actuator card names, looked up in the client's own world. */
     private static String[] channelKeys(ActuatorNode node) {
         var level = Minecraft.getInstance().level;
-        if (node.target() == null || level == null)
+        if (node.target() == null || node.target().isLocal() || level == null)
             return new String[0];
         var be = level.getBlockEntity(node.target().pos());
         return be instanceof Analog analog ? analog.channelKeys()
@@ -1636,14 +1636,14 @@ public final class ProgramEditor {
 
         switch (node) {
             case SensorNode n -> {
-                graphics.drawString(font, linkText(n.target() != null), 8, rowTextY(0), COLOR_MUTED, false);
+                graphics.drawString(font, linkText(n.target()), 8, rowTextY(0), COLOR_MUTED, false);
                 if (n.quantity() == Quantity.CONTROL)
                     graphics.drawString(font, awaitingKey == n.id() ? Component.translatable("feedback.programmer.press_key")
                             : Component.translatable("feedback.programmer.key",
                             InputConstants.Type.KEYSYM.getOrCreate(n.channel()).getDisplayName()), 8, rowTextY(1), COLOR_TEXT, false);
             }
             case ActuatorNode n -> {
-                graphics.drawString(font, linkText(n.target() != null), 8, rowTextY(0), COLOR_MUTED, false);
+                graphics.drawString(font, linkText(n.target()), 8, rowTextY(0), COLOR_MUTED, false);
                 String[] channels = channelKeys(n);
                 if (channels.length > 0)
                     graphics.drawString(font, Component.translatable(channels[Math.floorMod(n.channel(), channels.length)]),
@@ -1737,8 +1737,13 @@ public final class ProgramEditor {
                 : g.wireError(other, wireFrom.slot(), node).isEmpty();
     }
 
-    private static Component linkText(boolean linked) {
-        return Component.translatable(linked ? "feedback.programmer.linked" : "feedback.programmer.unlinked");
+    private static Component linkText(@Nullable io.github.soundgoodizerfan.feedback.control.data.DataNodeRef target) {
+        if (target != null && target.isLocal()) {
+            var channel = io.github.soundgoodizerfan.feedback.robot.RobotChannel.of(target.local());
+            if (channel != null)
+                return Component.translatable(channel.langKey());
+        }
+        return Component.translatable(target != null ? "feedback.programmer.linked" : "feedback.programmer.unlinked");
     }
 
     /** Distinct per {@link Quantity} so a wire's colour names what it carries, not just Number-vs-Boolean. */

@@ -76,6 +76,8 @@ A program may loop back on itself only through a *Delay*, since a Delay's output
 1. Right-click the sensor or block with a **[Data Connector](Data_Connector.md)**.
 2. Open the Programmer and click the card's **link** button. It changes from *unlinked* to *linked*.
 
+A [Robot](Robots.md) carries its own channels for cards to link to.
+
 ## Printing
 
 Press **Print**. The program is checked first, and you'll be told if:

@@ -61,7 +61,7 @@ public final class DataLinkManager {
         UUID id = player.getUUID();
         Level level = node.getNodeLevel();
         DataNodeRef previous = Optional.ofNullable(pending.remove(id))
-                .filter(p -> p.dimension() == level.dimension()).map(Pending::ref).orElse(null);
+                .filter(p -> p.dimension() == level.dimension()).map(Pending::ref).filter(r -> !r.isLocal()).orElse(null);
 
         if (previous == null || previous.equals(node.getNodeRef())) {
             pending.put(id, new Pending(level.dimension(), node.getNodeRef()));
@@ -104,6 +104,11 @@ public final class DataLinkManager {
             DataWires.record(level, a.getNodeRef(), node.getNodeRef(), paid.grade());
         player.displayClientMessage(Component.translatable(linked
                 ? "feedback.data_connector.linked" : "feedback.data_connector.failed"), true);
+    }
+
+    /** The player has selected one of a robot's own channels (see {@code robot/RobotChannel}), ready for a Programmer card's Link. */
+    public void selectLocal(Player player, DataNodeRef ref) {
+        pending.put(player.getUUID(), new Pending(player.level().dimension(), ref));
     }
 
     /** Drops a player's half-made link -- called on logout so it can't outlive the session. */

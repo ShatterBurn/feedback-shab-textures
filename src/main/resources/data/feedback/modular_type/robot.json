@@ -1,0 +1,72 @@
+{
+  "family": "robot",
+  "required": [
+    "C",
+    "D",
+    "T"
+  ],
+  "slot": "mainhand",
+  "wear_litres": 0.05,
+  "wear_role": "C",
+  "primary": "C",
+  "roles": {
+    "C": {
+      "name": "robot_chassis",
+      "class": "housing",
+      "forms": [
+        "robot_chassis"
+      ],
+      "litres": 0.2,
+      "layer": 0,
+      "part": {
+        "item": "feedback:robot_chassis",
+        "cells": 4,
+        "stock": [
+          "plate"
+        ]
+      }
+    },
+    "D": {
+      "name": "robot_drive",
+      "class": "housing",
+      "forms": [
+        "robot_drive"
+      ],
+      "litres": 0.1,
+      "layer": 1,
+      "part": {
+        "item": "feedback:robot_drive",
+        "cells": 2,
+        "stock": [
+          "plate"
+        ]
+      }
+    },
+    "T": {
+      "name": "robot_head",
+      "class": "working_face",
+      "forms": [
+        "robot_head"
+      ],
+      "litres": 0.08,
+      "layer": 2,
+      "strike": 1.0,
+      "part": {
+        "item": "feedback:robot_head",
+        "cells": 2,
+        "stock": [
+          "plate"
+        ]
+      }
+    }
+  },
+  "patterns": [
+    [
+      "C",
+      "D",
+      "T"
+    ]
+  ],
+  "defaults": {},
+  "blueprint": true
+}

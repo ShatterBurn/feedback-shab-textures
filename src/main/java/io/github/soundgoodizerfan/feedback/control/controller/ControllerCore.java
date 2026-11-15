@@ -98,23 +98,51 @@ public class ControllerCore implements Container, Fittable {
     private boolean dirty;
     private boolean priming;
 
+    /** The block entity hosting this core, or null when a robot carries it. */
+    @Nullable
     private final BlockEntity host;
+    private final java.util.function.Supplier<Level> levelOf;
+    private final Runnable changed;
+    /** A robot's own channels, answering the {@code DataNodeRef.local} cards; null on a block host. */
+    @Nullable
+    private final Locals locals;
     private final BooleanSupplier powered;
     private final java.util.function.Predicate<ItemStack> takes;
 
+    /** What a robot answers for the cards naming its own channels: a reading, and a write that says whether it was taken. */
+    public interface Locals {
+        float read(int channel, int argument);
+
+        void write(int channel, boolean on);
+    }
+
     public ControllerCore(BlockEntity host, BooleanSupplier powered, java.util.function.Predicate<ItemStack> takes) {
         this.host = host;
+        this.levelOf = host::getLevel;
+        this.changed = host::setChanged;
+        this.locals = null;
+        this.powered = powered;
+        this.takes = takes;
+    }
+
+    /** A core carried by a robot: it has no block entity; {@code locals} answers the robot's own channels. */
+    public ControllerCore(java.util.function.Supplier<Level> level, Runnable changed, Locals locals, BooleanSupplier powered,
+            java.util.function.Predicate<ItemStack> takes) {
+        this.host = null;
+        this.levelOf = level;
+        this.changed = changed;
+        this.locals = locals;
         this.powered = powered;
         this.takes = takes;
     }
 
     private Level level() {
-        return host.getLevel();
+        return levelOf.get();
     }
 
     @Override
     public void setChanged() {
-        host.setChanged();
+        changed.run();
     }
 
     /** The program's variables and their values (a Float or a Boolean each), as last saved or synced; for a monitor. */
@@ -305,6 +333,8 @@ public class ControllerCore implements Container, Fittable {
                 : sensor.target();
         if (level() == null || ref == null)
             return 0f;
+        if (ref.isLocal())
+            return locals == null ? 0f : locals.read(ref.local(), sensor.channel());
         DataNode node = DataNode.resolveOrNull(level(), ref);
         // An electric host reads only down a wire: no path of links, no reading; poor wire rounds it.
         if (node != null && node.acceptsLinks() && host instanceof DataNode self) {
@@ -333,6 +363,11 @@ public class ControllerCore implements Container, Fittable {
     private void writeActuator(@Nullable DataNodeRef ref, int channel, Object value) {
         if (level() == null || ref == null)
             return;
+        if (ref.isLocal()) {
+            if (locals != null && value instanceof Boolean on)
+                locals.write(ref.local(), on);
+            return;
+        }
         DataNode target = DataNode.resolve(level(), ref).orElse(null);
         if (value instanceof Boolean pulse && channel > 0 && target instanceof io.github.soundgoodizerfan.feedback.control.Steppable stepper) {
             stepper.pulse(channel, pulse);
@@ -473,11 +508,11 @@ public class ControllerCore implements Container, Fittable {
         List<io.github.soundgoodizerfan.feedback.control.program.ProgramNode> out = new ArrayList<>();
         boolean changed = false;
         for (var n : graph.nodes()) {
-            if (n instanceof io.github.soundgoodizerfan.feedback.control.program.SensorNode s && s.target() != null && moves.containsKey(s.target().pos())) {
+            if (n instanceof io.github.soundgoodizerfan.feedback.control.program.SensorNode s && s.target() != null && !s.target().isLocal() && moves.containsKey(s.target().pos())) {
                 n = new io.github.soundgoodizerfan.feedback.control.program.SensorNode(s.id(),
                         new DataNodeRef(moves.get(s.target().pos()), s.target().side(), s.target().voxel()), s.quantity(), s.channel());
                 changed = true;
-            } else if (n instanceof io.github.soundgoodizerfan.feedback.control.program.ActuatorNode a && a.target() != null && moves.containsKey(a.target().pos())) {
+            } else if (n instanceof io.github.soundgoodizerfan.feedback.control.program.ActuatorNode a && a.target() != null && !a.target().isLocal() && moves.containsKey(a.target().pos())) {
                 n = new io.github.soundgoodizerfan.feedback.control.program.ActuatorNode(a.id(), a.input(),
                         new DataNodeRef(moves.get(a.target().pos()), a.target().side(), a.target().voxel()), a.channel());
                 changed = true;
@@ -502,7 +537,7 @@ public class ControllerCore implements Container, Fittable {
 
     @Override
     public boolean stillValid(Player player) {
-        return Container.stillValidBlockEntity(host, player);
+        return host == null || Container.stillValidBlockEntity(host, player);
     }
 
     @Override

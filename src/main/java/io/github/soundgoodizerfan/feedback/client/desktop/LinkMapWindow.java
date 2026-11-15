@@ -54,7 +54,7 @@ final class LinkMapWindow extends DesktopWindow {
             if (ref != null) {
                 BlockPos p = ref.pos();
                 far = Math.max(far, Math.max(Math.abs(p.getX() - origin.getX()), Math.abs(p.getZ() - origin.getZ())));
-            } else if (node instanceof SensorNode || node instanceof ActuatorNode) {
+            } else if ((node instanceof SensorNode || node instanceof ActuatorNode) && !robotOwn(node)) {
                 unlinked++;
             }
         }
@@ -93,7 +93,14 @@ final class LinkMapWindow extends DesktopWindow {
         ui.clipped(0, h + 2, w, line, hover != null ? skin.ink() : skin.warn());
     }
 
+    /** The world block a card names; null for an unlinked card and for a robot's own channel (no place on the map). */
     private static DataNodeRef ref(ProgramNode node) {
-        return node instanceof SensorNode s ? s.target() : node instanceof ActuatorNode a ? a.target() : null;
+        DataNodeRef target = node instanceof SensorNode s ? s.target() : node instanceof ActuatorNode a ? a.target() : null;
+        return target != null && target.isLocal() ? null : target;
+    }
+
+    private static boolean robotOwn(ProgramNode node) {
+        DataNodeRef target = node instanceof SensorNode s ? s.target() : node instanceof ActuatorNode a ? a.target() : null;
+        return target != null && target.isLocal();
     }
 }

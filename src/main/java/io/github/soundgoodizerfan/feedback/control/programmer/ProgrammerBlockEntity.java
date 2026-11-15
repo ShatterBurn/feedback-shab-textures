@@ -191,9 +191,9 @@ public class ProgrammerBlockEntity extends BlockEntity implements Container, Men
         DataNodeRef ref = targetOf(node);
         if (ref == null || level == null)
             return node;
-        if (trusted.contains(ref)) {
+        if (trusted.contains(ref) || ref.isLocal()) {
             // A target in an unloaded chunk is kept as sent: there is nothing to check it against.
-            if (!level.isLoaded(ref.pos()))
+            if (!ref.isLocal() && !level.isLoaded(ref.pos()))
                 return node;
             ProgramNode linked = resolveLink(node, ref, ref);
             if (linked != null)
@@ -243,6 +243,17 @@ public class ProgrammerBlockEntity extends BlockEntity implements Container, Men
     private ProgramNode resolveLink(ProgramNode node, DataNodeRef look, DataNodeRef ref) {
         if (level == null)
             return null;
+        if (look.isLocal()) {
+            // a robot's own channel: an action is a switch, a sense a boolean state or a number
+            var channel = io.github.soundgoodizerfan.feedback.robot.RobotChannel.of(look.local());
+            if (channel == null)
+                return null;
+            if (node instanceof SensorNode sensor)
+                return channel.actuator() ? null : new SensorNode(sensor.id(), ref, channel.bool() ? Quantity.STATE : Quantity.CHARGE);
+            if (node instanceof ActuatorNode actuator)
+                return channel.actuator() ? new ActuatorNode(actuator.id(), actuator.input(), ref, 0) : null;
+            return null;
+        }
         Optional<DataNode> resolved = DataNode.resolve(level, look);
         if (node instanceof SensorNode sensor) {
             // An actuator reads back as its own on/off state -- what a deadband needs (philosophy 14).
