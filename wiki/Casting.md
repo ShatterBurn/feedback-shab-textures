@@ -85,7 +85,7 @@ The first row is the Pickaxe, Axe and Shovel Head Molds; the second is the Hoe, 
 
 A [Casting Basin](Casting_Basin.md) under the crucible pours into up to four molds, or into an open pool, without the hand work.
 
-You can pour copper, gold, iron, wrought iron, cast iron, tin, zinc, lead, silver, antimony, vanadium, indium, mercury, bronze, brass, the other alloys above, glass, borosilicate glass, uranium glass and quartz glass. Plastic melts ([Polyethylene Melt, Soul Resin Melt](Materials.md#making-polymers)) pour into an Ingot Mold the same way and set at 100 and 150 Tu.
+You can pour copper, gold, iron, wrought iron, cast iron, tin, zinc, lead, silver, antimony, vanadium, indium, mercury, bronze, brass, the other alloys above, glass, borosilicate glass, uranium glass and quartz glass. Plastic melts ([Polyethylene Melt, Soul Resin Melt, Polyester Melt](Materials.md#making-polymers)) pour into an Ingot Mold the same way and set at 100, 150 and 255 Tu.
 
 ## Alloys
 

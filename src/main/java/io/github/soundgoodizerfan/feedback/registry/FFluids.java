@@ -210,6 +210,30 @@ public final class FFluids {
             FLUIDS.register("ethylene", () -> new BaseFlowingFluid.Source(petro(FFluidTypes.ETHYLENE, FFluids.ETHYLENE, FFluids.ETHYLENE_FLOWING)));
     public static final DeferredHolder<Fluid, Fluid> ETHYLENE_FLOWING =
             FLUIDS.register("ethylene_flowing", () -> new BaseFlowingFluid.Flowing(petro(FFluidTypes.ETHYLENE, FFluids.ETHYLENE, FFluids.ETHYLENE_FLOWING)));
+    public static final DeferredHolder<Fluid, Fluid> XYLENE =
+            FLUIDS.register("xylene", () -> new BaseFlowingFluid.Source(petro(FFluidTypes.XYLENE, FFluids.XYLENE, FFluids.XYLENE_FLOWING)));
+    public static final DeferredHolder<Fluid, Fluid> XYLENE_FLOWING =
+            FLUIDS.register("xylene_flowing", () -> new BaseFlowingFluid.Flowing(petro(FFluidTypes.XYLENE, FFluids.XYLENE, FFluids.XYLENE_FLOWING)));
+    public static final DeferredHolder<Fluid, Fluid> TEREPHTHALIC_ACID =
+            FLUIDS.register("terephthalic_acid", () -> new BaseFlowingFluid.Source(petro(FFluidTypes.TEREPHTHALIC_ACID, FFluids.TEREPHTHALIC_ACID, FFluids.TEREPHTHALIC_ACID_FLOWING)));
+    public static final DeferredHolder<Fluid, Fluid> TEREPHTHALIC_ACID_FLOWING =
+            FLUIDS.register("terephthalic_acid_flowing", () -> new BaseFlowingFluid.Flowing(petro(FFluidTypes.TEREPHTHALIC_ACID, FFluids.TEREPHTHALIC_ACID, FFluids.TEREPHTHALIC_ACID_FLOWING)));
+    public static final DeferredHolder<Fluid, Fluid> ETHYLENE_OXIDE =
+            FLUIDS.register("ethylene_oxide", () -> new BaseFlowingFluid.Source(petro(FFluidTypes.ETHYLENE_OXIDE, FFluids.ETHYLENE_OXIDE, FFluids.ETHYLENE_OXIDE_FLOWING)));
+    public static final DeferredHolder<Fluid, Fluid> ETHYLENE_OXIDE_FLOWING =
+            FLUIDS.register("ethylene_oxide_flowing", () -> new BaseFlowingFluid.Flowing(petro(FFluidTypes.ETHYLENE_OXIDE, FFluids.ETHYLENE_OXIDE, FFluids.ETHYLENE_OXIDE_FLOWING)));
+    public static final DeferredHolder<Fluid, Fluid> ETHYLENE_GLYCOL =
+            FLUIDS.register("ethylene_glycol", () -> new BaseFlowingFluid.Source(petro(FFluidTypes.ETHYLENE_GLYCOL, FFluids.ETHYLENE_GLYCOL, FFluids.ETHYLENE_GLYCOL_FLOWING)));
+    public static final DeferredHolder<Fluid, Fluid> ETHYLENE_GLYCOL_FLOWING =
+            FLUIDS.register("ethylene_glycol_flowing", () -> new BaseFlowingFluid.Flowing(petro(FFluidTypes.ETHYLENE_GLYCOL, FFluids.ETHYLENE_GLYCOL, FFluids.ETHYLENE_GLYCOL_FLOWING)));
+    public static final DeferredHolder<Fluid, Fluid> POLYESTER_MELT =
+            FLUIDS.register("polyester_melt", () -> new BaseFlowingFluid.Source(petro(FFluidTypes.POLYESTER_MELT, FFluids.POLYESTER_MELT, FFluids.POLYESTER_MELT_FLOWING)));
+    public static final DeferredHolder<Fluid, Fluid> POLYESTER_MELT_FLOWING =
+            FLUIDS.register("polyester_melt_flowing", () -> new BaseFlowingFluid.Flowing(petro(FFluidTypes.POLYESTER_MELT, FFluids.POLYESTER_MELT, FFluids.POLYESTER_MELT_FLOWING)));
+    public static final DeferredHolder<Fluid, Fluid> ACETALDEHYDE =
+            FLUIDS.register("acetaldehyde", () -> new BaseFlowingFluid.Source(petro(FFluidTypes.ACETALDEHYDE, FFluids.ACETALDEHYDE, FFluids.ACETALDEHYDE_FLOWING)));
+    public static final DeferredHolder<Fluid, Fluid> ACETALDEHYDE_FLOWING =
+            FLUIDS.register("acetaldehyde_flowing", () -> new BaseFlowingFluid.Flowing(petro(FFluidTypes.ACETALDEHYDE, FFluids.ACETALDEHYDE, FFluids.ACETALDEHYDE_FLOWING)));
     public static final DeferredHolder<Fluid, Fluid> WISP_GAS =
             FLUIDS.register("wisp_gas", () -> new BaseFlowingFluid.Source(petro(FFluidTypes.WISP_GAS, FFluids.WISP_GAS, FFluids.WISP_GAS_FLOWING)));
     public static final DeferredHolder<Fluid, Fluid> WISP_GAS_FLOWING =

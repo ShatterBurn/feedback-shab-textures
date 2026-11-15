@@ -55,5 +55,11 @@
     "loop_width": 0.12,
     "lag": 3
   },
-  "toxicity": 0.4
+  "toxicity": 0.4,
+  "catalyst": {
+    "activity": 1.2,
+    "sulfur_tolerance": 0.05,
+    "regeneration_temperature": 400,
+    "sinter_temperature": 900
+  }
 }

@@ -320,6 +320,9 @@
     "shock_lead": {
       "kind": "mend"
     },
+    "tether_lead": {
+      "kind": "mend"
+    },
     "heat_sink": {
       "kind": "mend"
     }
@@ -545,6 +548,9 @@
       "kind": "tithe"
     },
     "shock_lead": {
+      "kind": "tithe"
+    },
+    "tether_lead": {
       "kind": "tithe"
     },
     "heat_sink": {

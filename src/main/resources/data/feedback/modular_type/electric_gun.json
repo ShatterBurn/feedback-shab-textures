@@ -832,13 +832,6 @@
             }
           },
           {
-            "name": "backpack_tether",
-            "cells": 1,
-            "params": {
-              "tether": 1
-            }
-          },
-          {
             "name": "thermopile",
             "cells": 4,
             "params": {
@@ -995,6 +988,36 @@
       },
       "mount": "receiver"
     },
+    "t": {
+      "name": "tether_lead",
+      "forms": [
+        "tether_lead"
+      ],
+      "litres": 0.05,
+      "layer": 4,
+      "part": {
+        "item": "feedback:tether_lead",
+        "cells": 1,
+        "stock": [
+          "rod"
+        ],
+        "variants": [],
+        "slots": [
+          {
+            "name": "sheath",
+            "share": 1
+          },
+          {
+            "name": "cable",
+            "share": 3,
+            "forms": [
+              "wire"
+            ]
+          }
+        ]
+      },
+      "mount": "receiver"
+    },
     "k": {
       "name": "heat_sink",
       "class": "housing",
@@ -1075,7 +1098,7 @@
       {
         "name": "pulse_hand_cannon",
         "is": {
-          "seat": "recoil_dynamo|backpack_tether",
+          "seat": "recoil_dynamo",
           "frame": "handgun",
           "bore": "wide"
         }
@@ -1083,14 +1106,14 @@
       {
         "name": "pulse_pistol",
         "is": {
-          "seat": "recoil_dynamo|backpack_tether",
+          "seat": "recoil_dynamo",
           "frame": "handgun"
         }
       },
       {
         "name": "pulse_cannon",
         "is": {
-          "seat": "recoil_dynamo|backpack_tether",
+          "seat": "recoil_dynamo",
           "frame": "long_gun",
           "bore": "wide"
         }
@@ -1098,7 +1121,7 @@
       {
         "name": "pulse_sniper_rifle",
         "is": {
-          "seat": "recoil_dynamo|backpack_tether",
+          "seat": "recoil_dynamo",
           "frame": "long_gun",
           "barrel_length": "long",
           "sight": "fitted"
@@ -1107,7 +1130,7 @@
       {
         "name": "pulse_marksman_rifle",
         "is": {
-          "seat": "recoil_dynamo|backpack_tether",
+          "seat": "recoil_dynamo",
           "frame": "long_gun",
           "barrel_length": "long"
         }
@@ -1115,7 +1138,7 @@
       {
         "name": "pulse_carbine",
         "is": {
-          "seat": "recoil_dynamo|backpack_tether",
+          "seat": "recoil_dynamo",
           "frame": "long_gun",
           "barrel_length": "short"
         }
@@ -1123,21 +1146,21 @@
       {
         "name": "pulse_rifle",
         "is": {
-          "seat": "recoil_dynamo|backpack_tether",
+          "seat": "recoil_dynamo",
           "frame": "long_gun"
         }
       },
       {
         "name": "pulse_machine_gun",
         "is": {
-          "seat": "recoil_dynamo|backpack_tether",
+          "seat": "recoil_dynamo",
           "frame": "machine_gun"
         }
       },
       {
         "name": "pulse_gun",
         "is": {
-          "seat": "recoil_dynamo|backpack_tether"
+          "seat": "recoil_dynamo"
         }
       }
     ]
@@ -1219,6 +1242,10 @@
       "k": [
         1,
         2
+      ],
+      "t": [
+        0,
+        3
       ]
     },
     "joins": [
@@ -1297,6 +1324,10 @@
       [
         "k",
         "B"
+      ],
+      [
+        "t",
+        "R"
       ]
     ]
   },

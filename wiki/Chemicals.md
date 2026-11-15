@@ -1,6 +1,6 @@
 # Chemicals
 
-The gases and liquids of the chemical chain: hydrogen and oxygen from the [Electrolyser](Electrolyser.md), brine, lye, acids, carbon dioxide, leach liquors, liquid teleportant, heavy water, fluorine compounds, bleach, nitrogen, argon, helium, ammonia and the molten cryolite bath. Gases are stored in a [Gas Tank](Gas_Tank.md), carried by a [Pipe](Pipe.md) and compressed by a [Gas Compressor](Gas_Compressor.md). Most are made in the [Reactor](Reactor.md).
+The gases and liquids of the chemical chain: hydrogen and oxygen from the [Electrolyser](Electrolyser.md), brine, lye, acids, carbon dioxide, leach liquors, liquid teleportant, heavy water, fluorine compounds, bleach, nitrogen, argon, helium, ammonia, ethylene, the polyester chain and the molten cryolite bath. Gases are stored in a [Gas Tank](Gas_Tank.md), carried by a [Pipe](Pipe.md) and compressed by a [Gas Compressor](Gas_Compressor.md). Most are made in the [Reactor](Reactor.md).
 
 ## Hydrogen
 
@@ -104,6 +104,22 @@ A toxic gas made in a Reactor from nitrogen and hydrogen over an iron bed. With 
 6. **PTFE Insulation** by sintering the powder in any vessel that holds the heat.
 
 PTFE does not flow when heated, so it is never cast from a melt; it is a powder sintered like cermet. Windows and amounts are in the [Reactor](Reactor.md#the-reactions) table; the finished polymer is on [Materials](Materials.md#polymers).
+
+## Ethylene
+
+A flammable gas ([Fuels](Fuels.md)). Steam-crack naphtha vapor from the [Fractionating Column](Fractionating_Column.md) in a [Reactor](Reactor.md#the-reactions) and it gives ethylene with methane. It is the feed for polyethylene and for ethylene oxide.
+
+## Polyester chain
+
+Polyester is a chain of [Reactor](Reactor.md#the-reactions) steps, none needing pressure:
+
+1. **Xylene** from naphtha vapor, reformed over a platinum or palladium ingot bed. It flashes at 27 Tu.
+2. **Terephthalic Acid** from xylene and air over a cobalt or manganese ingot bed. Held hotter than the window it burns to carbon dioxide and water instead.
+3. **Ethylene Oxide** from ethylene and oxygen over a silver ingot bed. It is toxic and flashes at -20 Tu.
+4. **Ethylene Glycol** from ethylene oxide and water.
+5. **Polyester Melt** from terephthalic acid and ethylene glycol, with water as a byproduct. Held too hot it gives less melt and **Acetaldehyde**, which flashes at -39 Tu and boils at 20 Tu, so it is a gas in a warm reactor.
+
+Amounts and windows are in the Reactor table; the melt is poured as described under [Polymers](Materials.md#making-polymers). A flammable or toxic fluid loose in a hot line is a [hazard](Hazards.md).
 
 ## Cryolite bath
 

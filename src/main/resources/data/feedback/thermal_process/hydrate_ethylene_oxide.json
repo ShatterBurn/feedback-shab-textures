@@ -1,0 +1,28 @@
+{
+  "inputs": [],
+  "min_temperature": 100,
+  "optimal_temperature": 140,
+  "max_temperature": 180,
+  "required_tpu": 150,
+  "max_rate": 6,
+  "spoil_temperature": 300,
+  "reaction": {
+    "fluid_inputs": [
+      {
+        "fluid": "feedback:ethylene_oxide",
+        "mb": 100
+      },
+      {
+        "fluid": "minecraft:water",
+        "mb": 100
+      }
+    ],
+    "fluid_outputs": [
+      {
+        "fluid": "feedback:ethylene_glycol",
+        "mb": 100
+      }
+    ],
+    "heat": 6
+  }
+}

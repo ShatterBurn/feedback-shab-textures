@@ -1,0 +1,34 @@
+{
+  "color": "#f0e8d0",
+  "kind": "fluid",
+  "traits": [
+    "flammable"
+  ],
+  "hardness": 1,
+  "density": 0.0018,
+  "thermal": {
+    "cooling_rate": 1,
+    "conductivity": 4.2e-05,
+    "oxidation_temperature": 175,
+    "melting_point": -123,
+    "boiling_point": 20,
+    "specific_heat": 1.4,
+    "latent_heat_fusion": 73,
+    "latent_heat_vaporisation": 570
+  },
+  "combustion": {
+    "flame_temperature": 1500,
+    "burn_ticks": 300,
+    "spread": 0.1,
+    "flash_point": -39
+  },
+  "molten": {
+    "viscosity": 0.01,
+    "shear_thickening": 0
+  },
+  "toxicity": 0.7,
+  "separation": {
+    "reflectivity": 0.02
+  },
+  "corrosion_resistance": 1.0
+}

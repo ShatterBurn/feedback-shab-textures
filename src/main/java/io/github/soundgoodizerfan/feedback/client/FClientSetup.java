@@ -279,6 +279,12 @@ public class FClientSetup {
         event.registerFluidType(waterTinted(0xFFE6E6D8), FFluidTypes.POLYETHYLENE_MELT.get());
         event.registerFluidType(waterTinted(0xFF4A9A9A), FFluidTypes.SOUL_RESIN_MELT.get());
         event.registerFluidType(waterTinted(0x66DDE8EE), FFluidTypes.ETHYLENE.get());
+        event.registerFluidType(waterTinted(0xFFEAEAD0), FFluidTypes.XYLENE.get());
+        event.registerFluidType(waterTinted(0xFFF0EEE6), FFluidTypes.TEREPHTHALIC_ACID.get());
+        event.registerFluidType(waterTinted(0x44E8F0F4), FFluidTypes.ETHYLENE_OXIDE.get());
+        event.registerFluidType(waterTinted(0xFFE0ECEE), FFluidTypes.ETHYLENE_GLYCOL.get());
+        event.registerFluidType(waterTinted(0xFFDDE6E8), FFluidTypes.POLYESTER_MELT.get());
+        event.registerFluidType(waterTinted(0x44F0E8D0), FFluidTypes.ACETALDEHYDE.get());
         event.registerFluidType(waterTinted(0x8869E0E0), FFluidTypes.WISP_GAS.get());
         event.registerFluidType(waterTinted(0x33DDEEFF), FFluidTypes.AIR.get());
         event.registerFluidType(waterTinted(0x44AADDFF), FFluidTypes.OXYGEN.get());

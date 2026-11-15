@@ -144,7 +144,7 @@ public final class ElectricMechanism implements GunMechanism {
         }
         float joules = spec.pulseJ() * spec.seatMult() * power * spin;
         // The draw: the pulse's energy in Eu; a weak cell gives the share it has.
-        float needed = joules / ModularTuning.EGUN_J_PER_EU;
+        float needed = joules / ModularTuning.EGUN_J_PER_EU * (1f + spec.tetherLoss());
         float took = BatteryStack.draw(drawn, needed);
         float fraction = needed <= 0f ? 0f : took / needed;
         joules *= fraction;
@@ -529,9 +529,12 @@ public final class ElectricMechanism implements GunMechanism {
             case FLYWHEEL -> List.of(new GunSound.Layer(crack, volume, (0.8f + 1.0f * spinNow(gun, spec)) * jitter));
             case BURST_BANK -> List.of(new GunSound.Layer(io.github.soundgoodizerfan.feedback.registry.FSounds.GUN_EGUN_BANK.get(), volume * 0.8f, jitter), new GunSound.Layer(crack, volume, pitch * jitter));
             case RECOIL_DYNAMO -> List.of(new GunSound.Layer(io.github.soundgoodizerfan.feedback.registry.FSounds.GUN_EGUN_DYNAMO.get(), volume * 0.7f, jitter), new GunSound.Layer(crack, volume, pitch * jitter));
-            case BACKPACK_TETHER -> List.of(new GunSound.Layer(io.github.soundgoodizerfan.feedback.registry.FSounds.GUN_EGUN_TETHER.get(), volume * 0.7f, jitter), new GunSound.Layer(crack, volume, pitch * jitter));
             default -> List.of(new GunSound.Layer(crack, volume, pitch * jitter));
         };
+        if (spec.tethered()) {
+            seat = new java.util.ArrayList<>(seat);
+            seat.add(new GunSound.Layer(io.github.soundgoodizerfan.feedback.registry.FSounds.GUN_EGUN_TETHER.get(), volume * 0.7f, jitter));
+        }
         // A beam lens adds its own voice over the seat's: a splitter fans out, a fork branches, a coherence lens rings, a malefic lens thuds low.
         if (spec.beams() <= 0 && !spec.fork() && !spec.coherence() && !spec.malefic())
             return seat;

@@ -36,7 +36,7 @@ A [Fractionating Column](Fractionating_Column.md) boils crude into three cuts, e
 | Kerosene | 180 Tu | 70 Tu | |
 | Diesel | 300 Tu | none | does not give off vapor on its own |
 
-Crude oil itself flashes at 15 Tu. Heavy Oil is a fluid of its own, near black; a Reactor cracks it into diesel and naphtha. Naphtha Vapor, Kerosene Vapor and Diesel Vapor are the gases the column makes before the cuts are condensed. All of them can be piped ([Pipe](Pipe.md)), pumped ([Pump](Pump.md)) and stored in tanks. Fluids are tinted on the water texture: crude and heavy oil near black, naphtha pale straw, kerosene gold, diesel amber, vapors translucent. How the cuts burn is on [Fuels](Fuels.md).
+Crude oil itself flashes at 15 Tu. Heavy Oil is a fluid of its own, near black; a Reactor cracks it into diesel and naphtha. Naphtha Vapor steam-cracks in a Reactor into [ethylene](Chemicals.md#ethylene) and methane, or reforms into [xylene](Chemicals.md#polyester-chain) for polyester. Naphtha Vapor, Kerosene Vapor and Diesel Vapor are the gases the column makes before the cuts are condensed. All of them can be piped ([Pipe](Pipe.md)), pumped ([Pump](Pump.md)) and stored in tanks. Fluids are tinted on the water texture: crude and heavy oil near black, naphtha pale straw, kerosene gold, diesel amber, vapors translucent. How the cuts burn is on [Fuels](Fuels.md).
 
 ### Fire
 

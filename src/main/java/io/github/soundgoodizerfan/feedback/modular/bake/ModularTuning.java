@@ -283,6 +283,8 @@ public final class ModularTuning {
      */
     public static final float EGUN_LEAD_PER_M = 1f, EGUN_LEAD_CAP_J = 90f, EGUN_LEAD_EU_PER_TICK = 6f, EGUN_LEAD_EFFICIENCY = 0.7f, EGUN_LEAD_SHORT_DAMAGE = 3f;
     public static final int EGUN_LEAD_MAX_TICKS = 100;
+    /** Extra share of a shot's energy a tether lead of copper (conductivity x ampacity 1) costs; the loss is this over conductivity x ampacity, kept between the floor and the ceiling. */
+    public static final float EGUN_TETHER_LOSS = 0.1f, EGUN_TETHER_LOSS_MIN = 0.03f, EGUN_TETHER_LOSS_MAX = 0.75f;
     /**
      * Thermopile: the share of a shot's energy a pair of metals returns per microvolt a kelvin of Seebeck gap at the barrel's limit, the cap on that
      * return of a heavy-tier seat (lighter tiers take a share), the Seebeck a metal with no figure of its own is estimated at per unit of electrode

@@ -90,6 +90,13 @@ public final class FFluidTypes {
     public static final DeferredHolder<FluidType, FluidType> POLYETHYLENE_MELT = petroType("polyethylene_melt", 900, 4000, 300);
     public static final DeferredHolder<FluidType, FluidType> SOUL_RESIN_MELT = petroType("soul_resin_melt", 900, 4000, 300);
     public static final DeferredHolder<FluidType, FluidType> ETHYLENE = petroType("ethylene", -2, 100, 300);
+    /** The polyester chain: p-xylene, its oxidised acid (a slurry), ethylene oxide, glycol, the melt, and the acetaldehyde a hot melt gives off. */
+    public static final DeferredHolder<FluidType, FluidType> XYLENE = petroType("xylene", 860, 650, 300);
+    public static final DeferredHolder<FluidType, FluidType> TEREPHTHALIC_ACID = petroType("terephthalic_acid", 1300, 5000, 300);
+    public static final DeferredHolder<FluidType, FluidType> ETHYLENE_OXIDE = petroType("ethylene_oxide", -2, 100, 300);
+    public static final DeferredHolder<FluidType, FluidType> ETHYLENE_GLYCOL = petroType("ethylene_glycol", 1110, 16000, 300);
+    public static final DeferredHolder<FluidType, FluidType> POLYESTER_MELT = petroType("polyester_melt", 1200, 4000, 300);
+    public static final DeferredHolder<FluidType, FluidType> ACETALDEHYDE = petroType("acetaldehyde", -2, 100, 300);
     public static final DeferredHolder<FluidType, FluidType> WISP_GAS = petroType("wisp_gas", -2, 100, 300);
     public static final DeferredHolder<FluidType, FluidType> AIR = petroType("air", -1, 20, 300);
     public static final DeferredHolder<FluidType, FluidType> OXYGEN = petroType("oxygen", -1, 20, 300);

@@ -65,6 +65,7 @@ import io.github.soundgoodizerfan.feedback.modular.type.ModularType;
  * @param leadLength blocks of line on the reel.
  * @param pileReturn the share of a shot's energy a thermopile returns at the barrel's limit (0 for no thermopile): its two metals' Seebeck gap, capped by tier.
  * @param sinkK      the sink's heat capacity against a kilogram of copper: how many returning shots it takes to fill.
+ * @param tetherLoss extra share of every shot's energy a tether lead costs drawing from the worn battery (0 with none fitted).
  * @param seatSize   the seat's own measure: a cylinder's chambers, a bank's pulse multiple, a flywheel's mass (1 is the reference wheel); 1 for another seat.
  */
 public record ElectricGunSpec(Seat seat, int tier, float boreMm, float lengthM, float barrelLoss, float seatAmp, float seatDensity,
@@ -73,7 +74,13 @@ public record ElectricGunSpec(Seat seat, int tier, float boreMm, float lengthM, 
                               boolean holdCharge, boolean pump, int beams, boolean fork, boolean zoom, boolean gauge, boolean sight, float sightFov, int bank, float limitTu, float serviceTu,
                               float sense, float zoomGain, float pumpGain, float pumpLever, float holdGain, float gaugeRes,
                               boolean coherence, float lining, boolean malefic, float shuntTicks, boolean lead, float leadAmp, float leadLength,
-                              float pileReturn, float sinkK, float gripFriction, float lensPass, float seatSize) {
+                              float pileReturn, float sinkK, float gripFriction, float lensPass, float seatSize, float tetherLoss) {
+
+    /** Whether a tether lead is fitted: the gun draws from a worn battery (a suit's bay or a pack's fitting) and has no cell of its own. */
+    public boolean tethered() {
+        return tetherLoss > 0f;
+    }
+
 
     /** The heat cycle: what a seat does between shots, and the fire modes it allows. */
     public enum Seat {
@@ -84,7 +91,6 @@ public record ElectricGunSpec(Seat seat, int tier, float boreMm, float lengthM, 
         CORE_BREECH("core_breech", true, true, FireMode.SEMI),
         FLYWHEEL("flywheel", false, true, FireMode.AUTO, FireMode.SEMI),
         RECOIL_DYNAMO("recoil_dynamo", false, false, FireMode.AUTO, FireMode.SEMI, FireMode.BURST),
-        BACKPACK_TETHER("backpack_tether", false, false, FireMode.AUTO, FireMode.SEMI, FireMode.BURST),
         THERMOPILE("thermopile", false, true, FireMode.AUTO, FireMode.SEMI);
 
         private final String id;
@@ -140,7 +146,7 @@ public record ElectricGunSpec(Seat seat, int tier, float boreMm, float lengthM, 
         int bank = 0;
         float sense = 1f, zoomGain = 1f, pumpGain = 1f, pumpLever = 1f, holdGain = 1f, gaugeRes = 1f;
         boolean coherence = false, malefic = false, lead = false;
-        float seatSize = 1f;
+        float seatSize = 1f, tetherLoss = 0f;
         float lining = 0f, shuntTicks = 0f, leadAmp = 0f, leadLength = 0f, pileGap = 0f, sinkK = 0f;
         float limitTu = ModularTuning.EGUN_LIMIT_TU, serviceTu = ModularTuning.EGUN_LIMIT_TU, gripFriction = GunTuning.GUN_KICK_REFERENCE_FRICTION, lensPass = 1f;
         for (MaterialPerks.Attunement a : MaterialPerks.attunements(design))
@@ -205,6 +211,14 @@ public record ElectricGunSpec(Seat seat, int tier, float boreMm, float lengthM, 
                     leadLength = role.axis(p, "line_length") * ModularTuning.EGUN_LEAD_PER_M;
                     Material ln = ModularBake.slotMaterial(role, p, "line", materials);
                     leadAmp = ln == null ? 0f : ln.ampacity().orElse(0f);
+                }
+                case "tether_lead" -> {
+                    // Resistance of the lead: a poorer conductor, or a thinner one that carries less, loses a bigger share of each shot on the way.
+                    Material cb = ModularBake.slotMaterial(role, p, "cable", materials);
+                    Material cm = cb == null ? m : cb;
+                    float conduct = cm.electrical().conductivity().orElse(0f) * cm.ampacity().orElse(0f);
+                    tetherLoss = conduct <= 0f ? ModularTuning.EGUN_TETHER_LOSS_MAX
+                            : Mth.clamp(ModularTuning.EGUN_TETHER_LOSS / conduct, ModularTuning.EGUN_TETHER_LOSS_MIN, ModularTuning.EGUN_TETHER_LOSS_MAX);
                 }
                 case "heat_governor" -> {
                     governor = switch (role.variant(p).map(ModularType.Variant::name).orElse("fire_rate_throttle")) {
@@ -313,7 +327,7 @@ public record ElectricGunSpec(Seat seat, int tier, float boreMm, float lengthM, 
         ElectricGunSpec spec = new ElectricGunSpec(seat, tier, bore, length, loss, seatAmp, seatDensity, dielectric, band, mass, maxCells,
                 heatMult, report, heatGain, shed, spreadMult, darkAt, darkCut, governor, hold, pump, beams, fork, zoom, gauge, sight, sightFov, bank, limitTu, serviceTu, sense, zoomGain, pumpGain, pumpLever, holdGain, gaugeRes,
                 coherence, lining, malefic, shuntTicks, lead, leadAmp, leadLength,
-                seat == Seat.THERMOPILE ? Math.min(ModularTuning.EGUN_PILE_CAP * tier / 3f, pileGap * ModularTuning.EGUN_PILE_RETURN_PER_UV) : 0f, sinkK, gripFriction, lensPass, seatSize);
+                seat == Seat.THERMOPILE ? Math.min(ModularTuning.EGUN_PILE_CAP * tier / 3f, pileGap * ModularTuning.EGUN_PILE_RETURN_PER_UV) : 0f, sinkK, gripFriction, lensPass, seatSize, tetherLoss);
         return fault(design, type) == null ? Optional.of(spec) : Optional.empty();
     }
 

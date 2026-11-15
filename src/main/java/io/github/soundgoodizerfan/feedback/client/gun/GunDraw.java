@@ -130,7 +130,7 @@ final class GunDraw {
         if (!v.electric() || !v.has("s"))
             return false;
         return switch (v.variant("s")) {
-            case "flux_cycler", "burst_bank", "backpack_tether", "flywheel" -> false;
+            case "flux_cycler", "burst_bank", "flywheel" -> false;
             default -> true;
         };
     }
@@ -317,14 +317,6 @@ final class GunDraw {
                 m.rod(0, yc, rr, z0, z1, Tile.METAL);
                 m.rings(0, yc, rr + 0.125f, z0 + 0.25f, z1 - 0.25f, Math.max(4, (int) (span / 0.75f)), 0.25f, Tile.COIL);
             }
-            case "backpack_tether" -> {
-                // A socket let into the rear face and a cable that leaves backward and hangs.
-                m.part(v, "s");
-                float rb = recvBack(v), y = (ry[0] + ry[1]) / 2f;
-                m.box(-0.375f, y - 0.375f, rb, 0.375f, y + 0.375f, rb + 0.375f, Tile.PANEL);
-                m.rod(0, y, 0.25f, rb + 0.375f, rb + 3f, Tile.KNURL);
-                m.box(-0.25f, y - 2f, rb + 2.5f, 0.25f, y + 0.25f, rb + 3f, Tile.KNURL);
-            }
             default -> {
                 // Cylinder: a drum of six chambers in the receiver's window, turned about a sideways axis, the charged ones lit on both faces.
                 m.part(v, "s");
@@ -410,6 +402,14 @@ final class GunDraw {
         if (v.has("z")) {
             m.part(v, "z");
             m.rod(0, v.top() + 0.375f, 0.375f, ga, Math.min(ga + 1.5f, gb), Tile.COIL);
+        }
+        if (v.has("t")) {
+            // The tether lead: a socket let into the rear face and a cable that leaves backward and hangs.
+            m.part(v, "t");
+            float rb = recvBack(v), y = (recvY(v)[0] + recvY(v)[1]) / 2f;
+            m.box(-0.375f, y - 0.375f, rb, 0.375f, y + 0.375f, rb + 0.375f, Tile.PANEL);
+            m.rod(0, y, 0.25f, rb + 0.375f, rb + 3f, Tile.KNURL);
+            m.box(-0.25f, y - 2f, rb + 2.5f, 0.25f, y + 0.25f, rb + 3f, Tile.KNURL);
         }
         if (v.has("j")) {
             // The shock lead's reel: a drum of line low on the right flank, behind the governor.

@@ -88,7 +88,7 @@ public class ModularElectricGun extends GunItem {
         ModularTooltip.add(stack, tooltip);
         GunCondition.wearLine(stack).ifPresent(tooltip::add);
         ElectricGunSpec spec = specOf(stack);
-        if (spec != null && spec.seat() == ElectricGunSpec.Seat.BACKPACK_TETHER) {
+        if (spec != null && spec.tethered()) {
             tooltip.add(Component.translatable("tooltip.feedback.electric_gun.tether").withStyle(ChatFormatting.GRAY));
             return;
         }
@@ -129,7 +129,7 @@ public class ModularElectricGun extends GunItem {
 
     /** The battery {@code wielder}'s {@code gun} draws from: its own cell; a tether takes a suit's bay, else a pack's battery fitting. */
     public static Source source(LivingEntity wielder, ItemStack gun, ElectricGunSpec spec) {
-        if (spec.seat() != ElectricGunSpec.Seat.BACKPACK_TETHER)
+        if (!spec.tethered())
             return new Source(cell(gun), b -> setCell(gun, b));
         if (!(wielder instanceof Player player))
             return Source.NONE;
@@ -169,7 +169,7 @@ public class ModularElectricGun extends GunItem {
 
     private static boolean tethered(ItemStack gun) {
         ElectricGunSpec spec = specOf(gun);
-        return spec != null && spec.seat() == ElectricGunSpec.Seat.BACKPACK_TETHER;
+        return spec != null && spec.tethered();
     }
 
     /** Whether the receiver's type takes a battery this big; says so if it does not. */

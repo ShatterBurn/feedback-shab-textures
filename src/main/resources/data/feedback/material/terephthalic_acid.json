@@ -1,0 +1,27 @@
+{
+  "color": "#f0eee6",
+  "kind": "fluid",
+  "traits": [
+    "corrosive"
+  ],
+  "hardness": 1,
+  "density": 1.3,
+  "thermal": {
+    "cooling_rate": 1,
+    "conductivity": 5e-05,
+    "melting_point": 427,
+    "boiling_point": 500,
+    "specific_heat": 1.2,
+    "latent_heat_fusion": 200,
+    "latent_heat_vaporisation": 500
+  },
+  "molten": {
+    "viscosity": 5.0,
+    "shear_thickening": 0
+  },
+  "toxicity": 0.3,
+  "separation": {
+    "reflectivity": 0.02
+  },
+  "corrosion_resistance": 0.8
+}

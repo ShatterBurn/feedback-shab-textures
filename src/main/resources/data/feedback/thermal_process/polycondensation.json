@@ -1,0 +1,42 @@
+{
+  "inputs": [],
+  "min_temperature": 260,
+  "optimal_temperature": 280,
+  "max_temperature": 300,
+  "required_tpu": 300,
+  "max_rate": 6,
+  "spoil_temperature": 450,
+  "reaction": {
+    "fluid_inputs": [
+      {
+        "fluid": "feedback:terephthalic_acid",
+        "mb": 50
+      },
+      {
+        "fluid": "feedback:ethylene_glycol",
+        "mb": 50
+      }
+    ],
+    "fluid_outputs": [
+      {
+        "fluid": "feedback:polyester_melt",
+        "mb": 20
+      },
+      {
+        "fluid": "minecraft:water",
+        "mb": 30
+      }
+    ],
+    "over_tu": [
+      {
+        "fluid": "feedback:polyester_melt",
+        "mb": 10
+      },
+      {
+        "fluid": "feedback:acetaldehyde",
+        "mb": 10
+      }
+    ],
+    "heat": -4
+  }
+}

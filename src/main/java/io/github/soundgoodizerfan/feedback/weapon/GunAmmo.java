@@ -41,7 +41,7 @@ public final class GunAmmo {
     public static int count(ItemStack gun) {
         if (gun.getItem() instanceof io.github.soundgoodizerfan.feedback.modular.item.ModularElectricGun) {
             var spec = io.github.soundgoodizerfan.feedback.modular.item.ModularElectricGun.specOf(gun);
-            float charge = spec != null && spec.seat() == io.github.soundgoodizerfan.feedback.modular.bake.ElectricGunSpec.Seat.BACKPACK_TETHER
+            float charge = spec != null && spec.tethered()
                     ? 1f : io.github.soundgoodizerfan.feedback.modular.item.ModularElectricGun.chargeFraction(gun);
             return charge <= 0f ? 0 : Math.max(1, Math.round(charge * (spec == null ? io.github.soundgoodizerfan.feedback.modular.bake.ModularTuning.EGUN_CHAMBERS : spec.chambers())));
         }

@@ -338,6 +338,7 @@ Plastics and rubbers. They are light, soft, poor conductors and cheap to shape, 
 | --- | --- | --- | --- | --- | --- | --- |
 | Polyethylene | 0.59 | 0.95 | 130 Tu | 80 Tu | 0.3 | HV |
 | Polypropylene | 0.98 | 0.9 | 165 Tu | 100 Tu | 0.3 | MV |
+| Polyester | 2 | 1.38 | 255 Tu | 115 Tu | 0.25 | HV |
 | Natural Rubber | 0.3 | 0.92 | 200 Tu | 70 Tu | 1.4 | HV |
 | PTFE | 0.49 | 2.2 | does not flow | 260 Tu | 0.05 | Trunk |
 | Synthetic Rubber | 0.39 | 1.1 | 200 Tu | 90 Tu | 1.2 | HV |
@@ -357,7 +358,9 @@ A polymer starts as a **melt**, a hot fluid.
 - **Polyethylene Melt** comes from the [Reactor](Reactor.md): ethylene gas, polymerized over a catalyst at 120 to 220 Tu and a little pressure.
 - **Soul Resin Melt** is the Nether's plastic, a stranger and tougher cousin of polyethylene. It comes from the Reactor too: [soul oil](Oil.md#soul-oil) polymerized over a catalyst at 180 to 300 Tu and a little pressure (100 mB gives 20 mB).
 
-Pour a melt into an **Ingot Mold** from a [crucible or ladle](Casting.md) and it sets into an **ingot** (polyethylene at 100 Tu, soul resin at 150). From the ingot the other forms follow:
+- **Polyester Melt** comes from the Reactor: terephthalic acid and ethylene glycol condensed at 260 to 300 Tu, no pressure needed ([Chemicals](Chemicals.md#polyester-chain)).
+
+Pour a melt into an **Ingot Mold** from a [crucible or ladle](Casting.md) and it sets into an **ingot** (polyethylene at 100 Tu, soul resin at 150, polyester at 255). From the ingot the other forms follow:
 
 | Form | Made by |
 | --- | --- |

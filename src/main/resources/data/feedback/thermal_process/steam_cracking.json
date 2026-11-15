@@ -1,0 +1,28 @@
+{
+  "inputs": [],
+  "min_temperature": 700,
+  "optimal_temperature": 780,
+  "max_temperature": 850,
+  "required_tpu": 200,
+  "max_rate": 10,
+  "spoil_temperature": 1100,
+  "reaction": {
+    "fluid_inputs": [
+      {
+        "fluid": "feedback:naphtha_vapour",
+        "mb": 100
+      }
+    ],
+    "fluid_outputs": [
+      {
+        "fluid": "feedback:ethylene",
+        "mb": 40
+      },
+      {
+        "fluid": "feedback:methane",
+        "mb": 20
+      }
+    ],
+    "heat": -10
+  }
+}

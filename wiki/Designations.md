@@ -299,7 +299,7 @@ A gun is named by its frame. A bore of **14 mm or wider** is a *wide* gauge; nar
 
 ### Electric guns
 
-A pulse gun is named by its seat first. A seat word replaces the class on any frame; a recoil dynamo or tether seat keeps **Pulse** plus a class by frame and size. A handgun receiver makes a pistol (a hand cannon on a wide bore). A long gun receiver makes a carbine on a short barrel, a rifle otherwise, a marksman rifle on a long barrel, a sniper rifle on a long barrel with a sight fitted, and a cannon on a wide bore. A machine gun receiver makes a machine gun. A **Light** or **Heavy** power tier adds that word before the name; Standard adds none. The first row that holds names the gun.
+A pulse gun is named by its seat first. A seat word replaces the class on any frame; a recoil dynamo seat keeps **Pulse** plus a class by frame and size. A handgun receiver makes a pistol (a hand cannon on a wide bore). A long gun receiver makes a carbine on a short barrel, a rifle otherwise, a marksman rifle on a long barrel, a sniper rifle on a long barrel with a sight fitted, and a cannon on a wide bore. A machine gun receiver makes a machine gun. A **Light** or **Heavy** power tier adds that word before the name; Standard adds none. The first row that holds names the gun.
 
 | Name | What gives it |
 | --- | --- |
@@ -309,15 +309,15 @@ A pulse gun is named by its seat first. A seat word replaces the class on any fr
 | **Spinner** | a flywheel seat |
 | **Flux Cycler** | a flux cycler seat |
 | **Hotshot** | a thermopile seat |
-| **Pulse Hand Cannon** | a recoil dynamo or tether seat, a handgun receiver, bore wide |
-| **Pulse Pistol** | a recoil dynamo or tether seat, a handgun receiver |
-| **Pulse Cannon** | a recoil dynamo or tether seat, a long gun receiver, bore wide |
-| **Pulse Sniper Rifle** | a recoil dynamo or tether seat, a long gun receiver, barrel length long, a sight fitted |
-| **Pulse Marksman Rifle** | a recoil dynamo or tether seat, a long gun receiver, barrel length long |
-| **Pulse Carbine** | a recoil dynamo or tether seat, a long gun receiver, barrel length short |
-| **Pulse Rifle** | a recoil dynamo or tether seat, a long gun receiver |
-| **Pulse Machine Gun** | a recoil dynamo or tether seat, a machine gun receiver |
-| **Pulse Gun** | a recoil dynamo or tether seat |
+| **Pulse Hand Cannon** | a recoil dynamo seat, a handgun receiver, bore wide |
+| **Pulse Pistol** | a recoil dynamo seat, a handgun receiver |
+| **Pulse Cannon** | a recoil dynamo seat, a long gun receiver, bore wide |
+| **Pulse Sniper Rifle** | a recoil dynamo seat, a long gun receiver, barrel length long, a sight fitted |
+| **Pulse Marksman Rifle** | a recoil dynamo seat, a long gun receiver, barrel length long |
+| **Pulse Carbine** | a recoil dynamo seat, a long gun receiver, barrel length short |
+| **Pulse Rifle** | a recoil dynamo seat, a long gun receiver |
+| **Pulse Machine Gun** | a recoil dynamo seat, a machine gun receiver |
+| **Pulse Gun** | a recoil dynamo seat |
 
 ## Food
 

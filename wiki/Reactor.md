@@ -46,6 +46,12 @@ Some reactions give off heat, which warms the reactor.
 | Reaction | Needs | Makes | Window |
 | --- | --- | --- | --- |
 | **Cracking** | 100 mB heavy oil, a catalyst bed | 60 mB diesel and 30 mB naphtha | 380 to 520 Tu, best 440 |
+| **Steam cracking** | 100 mB naphtha vapor | 40 mB [ethylene](Chemicals.md#ethylene) and 20 mB methane; it absorbs heat | 700 to 850 Tu, best 780 |
+| **Reforming** | 100 mB naphtha vapor, a platinum or palladium ingot bed | 30 mB [xylene](Chemicals.md#polyester-chain) and 20 mB hydrogen | 450 to 520 Tu, best 490 |
+| **Oxidize xylene** | 100 mB xylene, 150 mB air, a cobalt or manganese ingot bed | 80 mB [terephthalic acid](Chemicals.md#polyester-chain); held past 240 Tu, 80 mB carbon dioxide and 40 mB water instead | 180 to 240 Tu, best 210 |
+| **Epoxidize ethylene** | 100 mB ethylene, 50 mB oxygen, a silver ingot bed | 80 mB [ethylene oxide](Chemicals.md#polyester-chain) | 220 to 280 Tu, best 250 |
+| **Hydrate ethylene oxide** | 100 mB ethylene oxide, 100 mB water | 100 mB [ethylene glycol](Chemicals.md#polyester-chain) | 100 to 180 Tu, best 140 |
+| **Polycondensation** | 50 mB terephthalic acid, 50 mB ethylene glycol | 20 mB polyester melt and 30 mB water; held past 300 Tu, 10 mB melt and 10 mB [acetaldehyde](Chemicals.md#polyester-chain) instead | 260 to 300 Tu, best 280 |
 | **Polymerization** | 100 mB ethylene, a catalyst bed, **1 Pu** at least (best from 2 Pu) | 10 mB polyethylene melt, and some heat | 120 to 220 Tu, best 160 |
 | **Soul polymerization** | 100 mB soul oil, a catalyst bed, **1 Pu** at least (best from 2 Pu) | 20 mB soul resin melt | 180 to 300 Tu, best 220 |
 | **Soul retort** | one Soul Sand or Soul Soil in the hopper | 60 mB soul oil, 20 mB wisp gas and a **Husk Sand** | 300 to 600 Tu, best 420 |
@@ -87,7 +93,7 @@ Some reactions give off heat, which warms the reactor.
 
 **Leach rows.** Every ore concentrate has a leach row that dissolves its metal into a liquor, with a reagent (sulfuric acid, lye, or brine and hypochlorite) and a window of its own, and a row that precipitates a dissolved metal out with hydrogen or sulfur dioxide. They are laid out ore by ore in [Ore Processing](Ore_Processing.md#leaching-and-winning) and listed in JEI.
 
-The cold rows need no catalyst bed. Their temperatures are set by the Cryocooler against the reactor, not by a fire. A toxic gas the output tanks have no room for escapes as a [fume cloud](Hazards.md#fume-clouds). JEI shows every row, including the ones a pack adds. Polymerization and soul polymerization make the melts that become [Polymers](Materials.md#polymers); soul oil and wisp gas are fuels ([Soul Oil](Oil.md#soul-oil), [Fuels](Fuels.md)); the retort needs no bed.
+The cold rows need no catalyst bed. Their temperatures are set by the Cryocooler against the reactor, not by a fire. A toxic gas the output tanks have no room for escapes as a [fume cloud](Hazards.md#fume-clouds). JEI shows every row, including the ones a pack adds. Polymerization, soul polymerization and polycondensation make the melts that become [Polymers](Materials.md#polymers); soul oil and wisp gas are fuels ([Soul Oil](Oil.md#soul-oil), [Fuels](Fuels.md)); the retort needs no bed.
 
 ## Catalysts
 

@@ -1,0 +1,30 @@
+{
+  "inputs": [],
+  "min_temperature": 450,
+  "optimal_temperature": 490,
+  "max_temperature": 520,
+  "required_tpu": 300,
+  "max_rate": 8,
+  "spoil_temperature": 800,
+  "reaction": {
+    "fluid_inputs": [
+      {
+        "fluid": "feedback:naphtha_vapour",
+        "mb": 100
+      }
+    ],
+    "fluid_outputs": [
+      {
+        "fluid": "feedback:xylene",
+        "mb": 30
+      },
+      {
+        "fluid": "feedback:hydrogen",
+        "mb": 20
+      }
+    ],
+    "catalyst": "feedback:reforming_catalysts",
+    "activity_floor": 0.2,
+    "heat": -6
+  }
+}

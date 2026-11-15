@@ -1,0 +1,40 @@
+{
+  "inputs": [],
+  "min_temperature": 180,
+  "optimal_temperature": 210,
+  "max_temperature": 240,
+  "required_tpu": 250,
+  "max_rate": 6,
+  "spoil_temperature": 400,
+  "reaction": {
+    "fluid_inputs": [
+      {
+        "fluid": "feedback:xylene",
+        "mb": 100
+      },
+      {
+        "fluid": "feedback:air",
+        "mb": 150
+      }
+    ],
+    "fluid_outputs": [
+      {
+        "fluid": "feedback:terephthalic_acid",
+        "mb": 80
+      }
+    ],
+    "catalyst": "feedback:oxidation_catalysts",
+    "activity_floor": 0.2,
+    "over_tu": [
+      {
+        "fluid": "feedback:carbon_dioxide",
+        "mb": 80
+      },
+      {
+        "fluid": "minecraft:water",
+        "mb": 40
+      }
+    ],
+    "heat": 10
+  }
+}

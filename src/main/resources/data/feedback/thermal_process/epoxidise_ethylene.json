@@ -1,0 +1,30 @@
+{
+  "inputs": [],
+  "min_temperature": 220,
+  "optimal_temperature": 250,
+  "max_temperature": 280,
+  "required_tpu": 200,
+  "max_rate": 6,
+  "spoil_temperature": 450,
+  "reaction": {
+    "fluid_inputs": [
+      {
+        "fluid": "feedback:ethylene",
+        "mb": 100
+      },
+      {
+        "fluid": "feedback:oxygen",
+        "mb": 50
+      }
+    ],
+    "fluid_outputs": [
+      {
+        "fluid": "feedback:ethylene_oxide",
+        "mb": 80
+      }
+    ],
+    "catalyst": "feedback:epoxidation_catalysts",
+    "activity_floor": 0.2,
+    "heat": 10
+  }
+}

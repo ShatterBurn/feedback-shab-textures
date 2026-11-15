@@ -324,6 +324,9 @@
     "shock_lead": {
       "kind": "soak"
     },
+    "tether_lead": {
+      "kind": "soak"
+    },
     "heat_sink": {
       "kind": "soak"
     }

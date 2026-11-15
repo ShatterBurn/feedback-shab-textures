@@ -136,7 +136,7 @@ public final class GunHud {
         var spec = io.github.soundgoodizerfan.feedback.modular.item.ModularElectricGun.specOf(gun);
         long game = mc.level.getGameTime();
         int edge = left ? 12 : g.guiWidth() - 12, y = g.guiHeight() - 80;
-        boolean tether = spec != null && spec.seat() == io.github.soundgoodizerfan.feedback.modular.bake.ElectricGunSpec.Seat.BACKPACK_TETHER;
+        boolean tether = spec != null && spec.tethered();
         float charge = tether ? tetherCharge(mc, spec) : io.github.soundgoodizerfan.feedback.modular.item.ModularElectricGun.chargeFraction(gun);
         Component count = Component.literal(charge < 0f ? "--" : Math.round(charge * 100f) + "%");
         float heat = io.github.soundgoodizerfan.feedback.modular.item.ModularElectricGun.heatFraction(gun, mc.level);
