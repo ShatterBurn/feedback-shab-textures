@@ -69,4 +69,13 @@ public record AttunementKnowledge(Set<ResourceLocation> known) {
         player.setData(ATTACHMENT.get(), new AttunementKnowledge(now));
         return true;
     }
+
+    /** Makes {@code player} forget {@code effect}; false if it was not learned (a starter is known to everyone and stays). */
+    public static boolean forget(ServerPlayer player, Attunements.Effect effect) {
+        Set<ResourceLocation> now = new TreeSet<>(player.getData(ATTACHMENT.get()).known());
+        if (!now.remove(effect.id()))
+            return false;
+        player.setData(ATTACHMENT.get(), new AttunementKnowledge(now));
+        return true;
+    }
 }

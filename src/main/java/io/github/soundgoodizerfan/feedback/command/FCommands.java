@@ -89,9 +89,8 @@ public final class FCommands {
                                 .then(Commands.argument("material", ResourceLocationArgument.id())
                                         .suggests((c, b) -> SharedSuggestionProvider.suggestResource(MaterialTable.get().materials().keySet(), b))
                                         .executes(FCommands::part))))
-                .then(Commands.literal("potion").then(Commands.literal("reveal").executes(c -> revealMap(c, List.of(c.getSource().getPlayerOrException())))
-                        .then(Commands.argument("players", net.minecraft.commands.arguments.EntityArgument.players())
-                                .executes(c -> revealMap(c, net.minecraft.commands.arguments.EntityArgument.getPlayers(c, "players"))))))
+                .then(knowledge("learn", true))
+                .then(knowledge("unlearn", false))
                 .then(Commands.literal("summon").then(Commands.literal("gunskeleton").executes(c -> gunSkeleton(c, null))
                         .then(Commands.argument("gun", ResourceLocationArgument.id())
                                 .suggests((c, b) -> SharedSuggestionProvider.suggestResource(
@@ -178,12 +177,75 @@ public final class FCommands {
         throw new SimpleCommandExceptionType(Component.translatable("commands.feedback.no_part")).create();
     }
 
-    /** Testing: the brewing map fully known to each player (fog lifted, every node made and vortex used). */
-    private static int revealMap(CommandContext<CommandSourceStack> c, java.util.Collection<ServerPlayer> players) {
-        var all = io.github.soundgoodizerfan.feedback.potion.PotionKnowledge.everything(io.github.soundgoodizerfan.feedback.potion.PotionMap.get().on("water"));
+    private interface Run {
+        int run(CommandContext<CommandSourceStack> c, java.util.Collection<ServerPlayer> players) throws CommandSyntaxException;
+    }
+
+    /** {@code node} runs on the caller, or on each player of a trailing selector. */
+    private static <T extends com.mojang.brigadier.builder.ArgumentBuilder<CommandSourceStack, T>> T targets(T node, Run run) {
+        return node.executes(c -> run.run(c, List.of(c.getSource().getPlayerOrException())))
+                .then(Commands.argument("players", net.minecraft.commands.arguments.EntityArgument.players())
+                        .executes(c -> run.run(c, net.minecraft.commands.arguments.EntityArgument.getPlayers(c, "players"))));
+    }
+
+    /** Testing: {@code learn} / {@code unlearn} an attunement or a potion effect node by name, or {@code all} of either. */
+    private static com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> knowledge(String name, boolean learn) {
+        var attunement = Commands.literal("attunement")
+                .then(targets(Commands.literal("all"), (c, ps) -> attunements(c, ps, null, learn)))
+                .then(targets(Commands.argument("name", StringArgumentType.word())
+                        .suggests((c, b) -> SharedSuggestionProvider.suggest(
+                                io.github.soundgoodizerfan.feedback.modular.attunement.Attunements.get().effects().keySet().stream().map(ResourceLocation::getPath), b)),
+                        (c, ps) -> attunements(c, ps, StringArgumentType.getString(c, "name"), learn)));
+        var potion = Commands.literal("potion")
+                .then(targets(Commands.literal("all"), (c, ps) -> potions(c, ps, null, learn)))
+                .then(targets(Commands.argument("name", StringArgumentType.word())
+                        .suggests((c, b) -> SharedSuggestionProvider.suggest(potionNodes().stream().map(ResourceLocation::getPath), b)),
+                        (c, ps) -> potions(c, ps, StringArgumentType.getString(c, "name"), learn)));
+        return Commands.literal(name).then(attunement).then(potion);
+    }
+
+    private static List<ResourceLocation> potionNodes() {
+        var out = new ArrayList<ResourceLocation>();
+        for (var e : io.github.soundgoodizerfan.feedback.potion.PotionMap.get().on("water"))
+            if (e.getValue().kind() == io.github.soundgoodizerfan.feedback.potion.PotionFeature.Kind.EFFECT)
+                out.add(e.getKey());
+        return out;
+    }
+
+    private static int attunements(CommandContext<CommandSourceStack> c, java.util.Collection<ServerPlayer> players, String named, boolean learn) throws CommandSyntaxException {
+        var all = io.github.soundgoodizerfan.feedback.modular.attunement.Attunements.get().effects().values();
+        var picked = all.stream().filter(e -> named == null || e.id().getPath().equals(named)).toList();
+        if (picked.isEmpty())
+            throw new SimpleCommandExceptionType(Component.translatable("commands.feedback.no_such", named)).create();
         for (ServerPlayer p : players)
-            p.setData(io.github.soundgoodizerfan.feedback.potion.PotionAttachments.KNOWLEDGE.get(), all);
-        c.getSource().sendSuccess(() -> Component.translatable("commands.feedback.potion_revealed", players.size()), true);
+            for (var e : picked) {
+                if (learn)
+                    io.github.soundgoodizerfan.feedback.modular.attunement.AttunementKnowledge.learn(p, e);
+                else
+                    io.github.soundgoodizerfan.feedback.modular.attunement.AttunementKnowledge.forget(p, e);
+            }
+        return done(c, players, "attunement " + (named == null ? "all" : named), learn);
+    }
+
+    private static int potions(CommandContext<CommandSourceStack> c, java.util.Collection<ServerPlayer> players, String named, boolean learn) throws CommandSyntaxException {
+        var map = io.github.soundgoodizerfan.feedback.potion.PotionMap.get().on("water");
+        ResourceLocation node = null;
+        if (named != null) {
+            node = potionNodes().stream().filter(id -> id.getPath().equals(named)).findFirst()
+                    .orElseThrow(() -> new SimpleCommandExceptionType(Component.translatable("commands.feedback.no_such", named)).create());
+        }
+        var type = io.github.soundgoodizerfan.feedback.potion.PotionAttachments.KNOWLEDGE.get();
+        for (ServerPlayer p : players) {
+            var now = p.getData(type);
+            p.setData(type, named == null
+                    ? (learn ? io.github.soundgoodizerfan.feedback.potion.PotionKnowledge.everything(map) : io.github.soundgoodizerfan.feedback.potion.PotionKnowledge.EMPTY)
+                    : (learn ? now.made(node) : now.forgot(node)));
+        }
+        return done(c, players, "potion " + (named == null ? "all" : named), learn);
+    }
+
+    private static int done(CommandContext<CommandSourceStack> c, java.util.Collection<ServerPlayer> players, String what, boolean learn) {
+        c.getSource().sendSuccess(() -> Component.translatable(learn ? "commands.feedback.learned" : "commands.feedback.unlearned", what, players.size()), true);
         return players.size();
     }
 

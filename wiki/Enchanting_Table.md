@@ -288,7 +288,7 @@ Vanilla gear converted into modular gear keeps the enchantments it already had.
 
 ## Knowing an effect
 
-You start knowing five effects: **Edge, Ward, Mend, Yield and Hold**. Every other effect shows in the list as **???**, with no description, until you learn it. Four ways to learn one:
+You start knowing four effects: **Edge, Ward, Yield and Hold**. Every other effect shows in the list as **???**, with no description, until you learn it. Four ways to learn one:
 
 - **Read a book.** Right-click a vanilla enchanted book (a cleric's, or loot). For each enchantment in it that an effect names, you learn that effect and the book is used up. A book that teaches nothing new is kept and says so. Which enchantment teaches which effect:
 

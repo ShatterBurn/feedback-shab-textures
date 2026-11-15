@@ -44,7 +44,7 @@ A volume after the first takes an item built from the volume before it, and that
 
 ### Attunements
 
-Each attunement is about one material property: hardness, toughness, strength, weight, heat resistance, conduction or heat capacity. Its power sets a bar. The **offering** is any stock of a material, and it must rank at least that far up the property among all materials; the screen calls the bar modest, good, fine or exceptional. The further the offering is over the bar, the more ink it gives, up to 4 extra.
+Each attunement is about one material property: hardness, toughness, strength, weight, heat resistance, conduction or heat capacity. Its power sets a bar. The **offering** is any stock of a material, and it must rank at least that far up the property among all materials; the screen calls the bar modest, good, fine or exceptional. The further the offering is over the bar, the more ink it gives, up to 4 extra. **Mend** is about toughness and asks for an offering in the top tenth of materials by toughness; a vanilla mending book teaches it too (see [Knowing an effect](Enchanting_Table.md#knowing-an-effect)).
 
 The **reagent** is a brewed potion.
 

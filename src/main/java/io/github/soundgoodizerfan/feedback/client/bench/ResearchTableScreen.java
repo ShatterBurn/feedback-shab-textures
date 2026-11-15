@@ -64,7 +64,7 @@ public class ResearchTableScreen extends SkinnedScreen<ResearchTableMenu> {
         super.init();
         tabs();
         addRenderableWidget(GuiStyle.primary(skin, Component.translatable("gui.feedback.research_table.research"),
-                b -> press(ResearchTableMenu.BTN_RESEARCH), leftPos + PAGE_X + 4, topPos + 172, 70, 16, null));
+                b -> press(ResearchTableMenu.BTN_RESEARCH), leftPos + PAGE_X + 4, topPos + 191, 70, 16, null));
     }
 
     /** The two tabs, the picked one drawn as the primary (lit) button; rebuilt when the pick changes. */
@@ -162,8 +162,18 @@ public class ResearchTableScreen extends SkinnedScreen<ResearchTableMenu> {
             ls.row(g, x, y, LIST_W - 12, ROW - 2, picked, hover);
             ls.slot(g, x + 3, y + 3);
             GuiStyle.spinItem(g, icon(i), x + 11, y + 11, 1f, picked || hover);
-            String label = font.plainSubstrByWidth(names.get(i).getString().replace(" Treatise", ""), LIST_W - 46);
-            g.drawString(font, label, x + 26, y + 9, picked ? ls.accent() | 0xFF000000 : ls.ink(), false);
+            String label = names.get(i).getString().replace(" Treatise", "");
+            int avail = LIST_W - 46, over = font.width(label) - avail;
+            int shift = 0;
+            if (over > 0) {
+                // marquee: dwell at each end, glide between, ping-pong
+                double t = (net.minecraft.Util.getMillis() % (long) (over * 40 + 2400)) / (double) (over * 40 + 2400);
+                double ph = t < 0.5 ? t * 2 : 2 - t * 2;
+                shift = (int) (Mth.clamp((ph - 0.15) / 0.7, 0, 1) * over);
+            }
+            g.enableScissor(x + 26, y, x + 26 + avail, y + ROW);
+            g.drawString(font, label, x + 26 - shift, y + 9, picked ? ls.accent() | 0xFF000000 : ls.ink(), false);
+            g.disableScissor();
         }
         if (names.size() > visible)
             ls.scrollbar(g, leftPos + LIST_X + LIST_W - 8, topPos + LIST_Y + 2, LIST_H - 4, names.size(), visible, scroll);

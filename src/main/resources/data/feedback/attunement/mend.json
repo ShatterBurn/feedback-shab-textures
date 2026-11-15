@@ -1,5 +1,5 @@
 {
-  "target": 0.55,
+  "target": 0.9,
   "band": 0.1,
   "roles": {
     "head": {
@@ -551,7 +551,6 @@
       "kind": "tithe"
     }
   },
-  "starter": true,
   "books": [
     "minecraft:mending"
   ],

@@ -105,6 +105,13 @@ public record PotionKnowledge(Set<String> discovered, Set<String> vortices, List
         return new PotionKnowledge(d, vortices, r, fog);
     }
 
+    /** A node forgotten: no longer discovered. */
+    public PotionKnowledge forgot(ResourceLocation node) {
+        Set<String> d = new TreeSet<>(discovered);
+        d.remove(node.toString());
+        return new PotionKnowledge(d, vortices, residues, fog);
+    }
+
     public PotionKnowledge usedVortex(ResourceLocation vortex) {
         Set<String> v = new TreeSet<>(vortices);
         v.add(vortex.toString());
