@@ -30,8 +30,6 @@ import javax.annotation.Nullable;
 public final class SpaceTravel {
     public static final ResourceKey<Level> SHELF = ResourceKey.create(Registries.DIMENSION,
             ResourceLocation.fromNamespaceAndPath(Feedback.MOD_ID, "shelf"));
-    /** Where a body arrives in the Shelf: near the origin of the height range, away from the float-precision edge. */
-    public static final double SHELF_ENTRY_Y = 64;
     private static final double LOOK_REACH = 16;
 
     private SpaceTravel() {
@@ -54,15 +52,35 @@ public final class SpaceTravel {
         ServerLevel shelf = from.getServer().getLevel(SHELF);
         if (shelf == null) return -2;
         Vector3d at = new Vector3d(body.logicalPose().position());
-        return SubLevelWarper.warpConnectedSubLevels(body, shelf, at.set(at.x, SHELF_ENTRY_Y, at.z));
+        var aboard = aboard(from, body);
+        int n = SubLevelWarper.warpConnectedSubLevels(body, shelf, at.set(at.x, SpaceTuning.ENTRY_Y, at.z));
+        if (n > 0)
+            fade(aboard, true);
+        return n;
     }
 
-    /** Bodies moved, or -1 when {@code body} is not in the Shelf. Arrives at the Overworld's build ceiling. */
+    /** Bodies moved, or -1 when {@code body} is not in the Shelf. Arrives where the Overworld's air is thin but not zero. */
     public static int back(ServerLevel from, ServerSubLevel body) {
         if (!from.dimension().equals(SHELF)) return -1;
         ServerLevel overworld = from.getServer().overworld();
         Vector3d at = new Vector3d(body.logicalPose().position());
-        return SubLevelWarper.warpConnectedSubLevels(body, overworld, at.set(at.x, overworld.getMaxBuildHeight(), at.z));
+        var aboard = aboard(from, body);
+        int n = SubLevelWarper.warpConnectedSubLevels(body, overworld, at.set(at.x, SpaceTuning.RETURN_Y, at.z));
+        if (n > 0)
+            fade(aboard, false);
+        return n;
+    }
+
+    /** Players inside or beside the body: they see the crossing. */
+    private static java.util.List<ServerPlayer> aboard(ServerLevel level, ServerSubLevel body) {
+        var b = body.boundingBox();
+        return level.getEntitiesOfClass(ServerPlayer.class,
+                new net.minecraft.world.phys.AABB(b.minX(), b.minY(), b.minZ(), b.maxX(), b.maxY(), b.maxZ()).inflate(2));
+    }
+
+    private static void fade(java.util.List<ServerPlayer> players, boolean up) {
+        for (ServerPlayer p : players)
+            net.neoforged.neoforge.network.PacketDistributor.sendToPlayer(p, new io.github.soundgoodizerfan.feedback.net.SpaceFadePayload(up));
     }
 
     /** Sets the scale of {@code body} and every body joined to it (Sable Scaling walks the chain). */

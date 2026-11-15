@@ -173,6 +173,7 @@ public class FClientSetup {
     public static void registerGuiLayers(net.neoforged.neoforge.client.event.RegisterGuiLayersEvent event) {
         GunHud.register(event);
         HudReadouts.register(event);
+        io.github.soundgoodizerfan.feedback.client.hud.SpaceFade.register(event);
         AimHud.register(event);
         ItemInfoHud.register(event);
         FeelClient.register(event);

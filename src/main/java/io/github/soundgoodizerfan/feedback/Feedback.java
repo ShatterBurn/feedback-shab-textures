@@ -240,6 +240,9 @@ public class Feedback {
                 .playToClient(io.github.soundgoodizerfan.feedback.net.BeltRunPayload.TYPE,
                         io.github.soundgoodizerfan.feedback.net.BeltRunPayload.STREAM_CODEC,
                         io.github.soundgoodizerfan.feedback.net.BeltRunPayload::handle)
+                .playToClient(io.github.soundgoodizerfan.feedback.net.SpaceFadePayload.TYPE,
+                        io.github.soundgoodizerfan.feedback.net.SpaceFadePayload.STREAM_CODEC,
+                        io.github.soundgoodizerfan.feedback.net.SpaceFadePayload::handle)
                 .playToClient(io.github.soundgoodizerfan.feedback.net.HudReadoutPayload.TYPE,
                         io.github.soundgoodizerfan.feedback.net.HudReadoutPayload.STREAM_CODEC,
                         io.github.soundgoodizerfan.feedback.net.HudReadoutPayload::handle)

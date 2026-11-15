@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:block/cube",
   "textures": {
-    "particle": "minecraft:block/chiseled_bookshelf_side",
-    "down": "minecraft:block/chiseled_bookshelf_top",
-    "up": "minecraft:block/chiseled_bookshelf_top",
-    "north": "minecraft:block/chiseled_bookshelf_occupied",
-    "south": "minecraft:block/chiseled_bookshelf_occupied",
-    "east": "minecraft:block/chiseled_bookshelf_occupied",
-    "west": "minecraft:block/chiseled_bookshelf_occupied"
+    "particle": "feedback:block/debug_shelf_side",
+    "down": "feedback:block/debug_shelf_top",
+    "up": "feedback:block/debug_shelf_top",
+    "north": "feedback:block/debug_shelf_occupied",
+    "south": "feedback:block/debug_shelf_side",
+    "east": "feedback:block/debug_shelf_side",
+    "west": "feedback:block/debug_shelf_side"
   }
 }
