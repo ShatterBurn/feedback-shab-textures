@@ -227,6 +227,9 @@ public final class VillageEconomy {
 
     // --- a delivery ---
 
+    /** Rejected deliveries in a row per player and villager, for the Bad Review joke; in memory only, cleared by a delivery that lands. */
+    private static final java.util.Map<String, Integer> REJECTS = new java.util.HashMap<>();
+
     public static void deliver(ServerPlayer p, VillagerMenu menu, int index, int key) {
         AbstractVillager m = menu.merchant();
         if (!(m instanceof Villager v) || !menu.stillValid(p))
@@ -254,12 +257,18 @@ public final class VillageEconomy {
         if (r.grade() == CommissionJudge.Grade.REJECTED || (guildOrder && r.grade().ordinal() < CommissionJudge.Grade.GOOD.ordinal())) {
             v.getGossips().add(p.getUUID(), GossipType.MINOR_NEGATIVE, VillageTuning.GOSSIP_REJECTED);
             v.playSound(SoundEvents.VILLAGER_NO, 1f, v.getVoicePitch());
+            if (REJECTS.merge(p.getUUID() + ":" + v.getUUID(), 1, Integer::sum) >= 3)
+                io.github.soundgoodizerfan.feedback.core.Awards.give(p, "progress/joke/bad_review");
             send(p, menu, view(p, v).withResult(CommissionJudge.Grade.REJECTED.ordinal(), complaint(r), r.worstHigh(), 0));
             return;
         }
         String bin = DishProfile.is(item) ? order.type() + "|" + DishProfile.bin(figures) : binKey(order.type(), design);
         int paid = Math.round(order.pay() * r.grade().payFactor() * ledger.payKept(bin, day));
         menu.consume();
+        REJECTS.remove(p.getUUID() + ":" + v.getUUID());
+        io.github.soundgoodizerfan.feedback.core.Awards.give(p, "progress/survival/piece_work");
+        if (r.grade() == CommissionJudge.Grade.EXCEPTIONAL)
+            io.github.soundgoodizerfan.feedback.core.Awards.give(p, "progress/survival/masters_mark");
         if (paid > 0)
             p.getInventory().placeItemBackInInventory(new ItemStack(Items.EMERALD, paid));
         v.setData(FVillage.LEDGER, ledger.delivered(index, bin, day));
@@ -531,6 +540,7 @@ public final class VillageEconomy {
         if (m instanceof Villager v)
             sale(v, VillageTuning.BUY_XP);
         p.level().playSound(null, m.blockPosition(), SoundEvents.VILLAGER_YES, SoundSource.NEUTRAL, 1f, 1f);
+        io.github.soundgoodizerfan.feedback.core.Awards.give(p, "progress/survival/fair_trade");
         send(p, menu, view(p, m));
     }
 
@@ -560,7 +570,11 @@ public final class VillageEconomy {
             return;
         }
         int pay = Math.max(1, Math.round(n * w.priceFor(villagerType(m)) * fresh));
+        for (int line : shop(m))
+            if (GoodsTable.get().entries().get(line).item() == held.getItem())
+                io.github.soundgoodizerfan.feedback.core.Awards.give(p, "progress/joke/customer_always_right");
         held.shrink(n);
+        io.github.soundgoodizerfan.feedback.core.Awards.give(p, "progress/survival/fair_trade");
         p.getInventory().placeItemBackInInventory(new ItemStack(Items.EMERALD, pay));
         m.setData(FVillage.LEDGER, ledger.boughtMore(key, n, day));
         if (m instanceof Villager v)

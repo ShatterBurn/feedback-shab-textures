@@ -522,6 +522,8 @@ public class CounterBlockEntity extends BlockEntity {
         }
         walkInSales++;
         walkInCount++;
+        if (keeper != null && level instanceof net.minecraft.server.level.ServerLevel sl && sl.getPlayerByUUID(keeper) instanceof net.minecraft.server.level.ServerPlayer owner)
+            io.github.soundgoodizerfan.feedback.core.Awards.give(owner, "progress/survival/open_shop");
         gossip(v, s);
         setChanged();
     }

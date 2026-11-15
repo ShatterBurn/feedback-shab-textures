@@ -84,6 +84,8 @@ public class Ages extends SimpleJsonResourceReloadListener {
     /** The player made {@code stack}: enter the age of each material it is made of, and award a bed built. Server only. */
     public static void made(Player player, ItemStack stack) {
         io.github.soundgoodizerfan.feedback.modular.part.ModularBed.made(player, stack);
+        if (stack.getItem() instanceof io.github.soundgoodizerfan.feedback.modular.item.ModularHafted)
+            EventTrigger.fire(player, "progress/survival/hafted");
         if (!(player instanceof ServerPlayer) || stack.isEmpty() || INSTANCE.ages.isEmpty())
             return;
         Map<ResourceLocation, Material> table = MaterialTable.get().materials();

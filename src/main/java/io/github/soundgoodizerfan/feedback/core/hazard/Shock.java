@@ -61,7 +61,10 @@ public final class Shock {
         if (victim instanceof Player player && Protection.shockProof(player, band))
             return false;
         // Exposure scales the figure for any victim; a dry bare thing on stone reads 1.0.
-        return victim.hurt(Hazards.source(victim.level(), Hazards.SHOCK), damage(band, eu) * Exposure.of(victim)
+        boolean hurt = victim.hurt(Hazards.source(victim.level(), Hazards.SHOCK), damage(band, eu) * Exposure.of(victim)
                 * (victim instanceof LivingEntity body ? Ward.passes(body, Ward.Hazard.SHOCK) : 1f));
+        if (hurt && victim instanceof Player p && p.isAlive())
+            io.github.soundgoodizerfan.feedback.core.Awards.give(p, "progress/survival/live_wire");
+        return hurt;
     }
 }

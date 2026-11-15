@@ -123,6 +123,8 @@ public final class FumeCloud {
         if (victim instanceof ServerPlayer p) {
             int step = after >= HazardTuning.FUME_CLOUD_HURT ? 3 : after >= HazardTuning.FUME_CLOUD_BLIND ? 2 : after >= HazardTuning.FUME_CLOUD_NAUSEA ? 1 : 0;
             int was = before >= HazardTuning.FUME_CLOUD_HURT ? 3 : before >= HazardTuning.FUME_CLOUD_BLIND ? 2 : before >= HazardTuning.FUME_CLOUD_NAUSEA ? 1 : 0;
+            if (step > 0)
+                io.github.soundgoodizerfan.feedback.core.Awards.give(p, "progress/survival/cough");
             if (step > was)
                 p.displayClientMessage(Component.translatable("feedback.fume_cloud." + step), true);
         }

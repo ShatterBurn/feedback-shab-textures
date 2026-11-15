@@ -115,6 +115,7 @@ public class Feedback {
         NeoForge.EVENT_BUS.addListener(Feedback::onDatapackSync);
         NeoForge.EVENT_BUS.addListener(Feedback::onPlayerLoggedOut);
         NeoForge.EVENT_BUS.addListener(io.github.soundgoodizerfan.feedback.core.hazard.HazardEvents::onPlayerTick);
+        NeoForge.EVENT_BUS.addListener(io.github.soundgoodizerfan.feedback.core.hazard.HazardEvents::onDeath);
         NeoForge.EVENT_BUS.addListener(io.github.soundgoodizerfan.feedback.core.hazard.HazardEvents::onRightClickBlock);
         modBus.addListener(Feedback::registerPayloads);
         modBus.addListener(io.github.soundgoodizerfan.feedback.data.FeedbackData::gather);

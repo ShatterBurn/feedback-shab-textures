@@ -64,8 +64,10 @@ public final class HotContact {
         boolean hurt = victim.hurt(Hazards.source(victim.level(), Hazards.HOT_CONTACT), band.damage * share);
         if (band.igniteSeconds * share >= 1)
             victim.igniteForSeconds(Math.round(band.igniteSeconds * share));
-        if (hurt && victim instanceof net.minecraft.world.entity.player.Player player)
+        if (hurt && victim instanceof net.minecraft.world.entity.player.Player player) {
             io.github.soundgoodizerfan.feedback.core.Awards.give(player, "progress/joke/hot_take");
+            io.github.soundgoodizerfan.feedback.core.Awards.give(player, "progress/survival/burn_notice");
+        }
         return hurt;
     }
 }

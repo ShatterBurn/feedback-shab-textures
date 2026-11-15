@@ -88,6 +88,8 @@ public final class MarketDay {
         BlockPos stand = standing(level, cross);
         spawn(level, stand, cross, false);
         ServerPlayer near = level.getNearestPlayer(cross.getX(), cross.getY(), cross.getZ(), VillageTuning.MARKET_REACH, false) instanceof ServerPlayer p ? p : null;
+        if (near != null)
+            io.github.soundgoodizerfan.feedback.core.Awards.give(near, "progress/survival/market_day");
         if (near != null && VillageStanding.read(level, cross, near.getUUID()).tier() >= VillageTuning.STANDING_TIERS.length)
             spawn(level, stand.relative(net.minecraft.core.Direction.EAST), cross, true);
     }

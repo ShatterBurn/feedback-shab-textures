@@ -187,6 +187,8 @@ public class LedgerBoardBlockEntity extends BlockEntity {
     public BoardView view(ServerLevel level, UUID player) {
         long today = level.getGameTime() / VillageTuning.DAY_TICKS;
         VillageStanding.Reading standing = VillageStanding.read(level, worldPosition, player);
+        if (standing.tier() >= VillageTuning.STANDING_TIERS.length && level.getPlayerByUUID(player) instanceof net.minecraft.server.level.ServerPlayer who)
+            io.github.soundgoodizerfan.feedback.core.Awards.give(who, "progress/survival/well_regarded");
         List<BoardView.OrderLine> orders = new ArrayList<>();
         for (Villager v : VillageStanding.villagers(level, worldPosition, VillageTuning.BOARD_VILLAGERS_MAX)) {
             Ledger ledger = v.getData(io.github.soundgoodizerfan.feedback.registry.FVillage.LEDGER).on(today);

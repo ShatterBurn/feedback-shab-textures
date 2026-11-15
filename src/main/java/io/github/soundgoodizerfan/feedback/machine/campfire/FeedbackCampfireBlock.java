@@ -71,7 +71,10 @@ public class FeedbackCampfireBlock extends CampfireBlock {
         if (Cooking.findCookable(level, held).isPresent() || FeedbackCampfireBlockEntity.airlessInput(held)) {
             if (level.isClientSide)
                 return ItemInteractionResult.SUCCESS;
-            return fire.put(player, held) ? ItemInteractionResult.CONSUME : ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+            if (!fire.put(player, held))
+                return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+            io.github.soundgoodizerfan.feedback.core.Awards.give(player, "progress/survival/campfire");
+            return ItemInteractionResult.CONSUME;
         }
         if (!held.isEmpty() || !fire.hasFood())
             return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;

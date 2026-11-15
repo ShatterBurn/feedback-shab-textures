@@ -300,6 +300,8 @@ public class GrappleHook extends Projectile {
         rope = Math.min(maxRope(), Math.max(lastDistance, (float) ModularTuning.GRAPPLE_STOP_DISTANCE));
         Tethers.add(held, new Tether(getUUID(), anchor, maxRope(), dragTarget ? reelSpeed() : 0f, 1f,
                 new Tether.Release(ModularTuning.GRAPPLE_STOP_DISTANCE, ModularTuning.GRAPPLE_MAX_TICKS)));
+        if (owner instanceof net.minecraft.server.level.ServerPlayer line)
+            io.github.soundgoodizerfan.feedback.core.Awards.give(line, "progress/survival/lashed");
         setDeltaMovement(Vec3.ZERO);
         setPos(at);
         entityData.set(DATA_SWING_ROPE, !dragTarget && owner instanceof Player ? rope : 0f);

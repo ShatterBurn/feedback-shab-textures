@@ -255,6 +255,11 @@ public final class FoodEvents {
             if (level.random.nextFloat() < possible.probability() * share)
                 player.addEffect(new MobEffectInstance(effect.getEffect(), Math.max(1, Math.round(effect.getDuration() * share)), effect.getAmplifier()));
         }
+        if (hazard.equals("spoiled") || hazard.equals("burnt"))
+            io.github.soundgoodizerfan.feedback.core.Awards.give(player, "progress/joke/burnt_offering");
+        else if (hazard.equals("fine") && stack.get(FDataComponents.FOOD_STATE.get()) instanceof FoodState kept && kept.envTu() < 8f)
+            // Kept cold and still sound: an Ice Box or Cold Room did the work.
+            io.github.soundgoodizerfan.feedback.core.Awards.give(player, "progress/survival/winter_store");
         Component said = Component.translatable("message.feedback.bite." + hazard);
         // A potion laced in shows only as an aftertaste, and only when it stands out from the food (potions spec 7).
         var lace = stack.get(FDataComponents.LACING.get());

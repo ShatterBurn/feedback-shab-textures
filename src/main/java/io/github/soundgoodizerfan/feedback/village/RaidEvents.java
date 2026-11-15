@@ -50,6 +50,8 @@ public final class RaidEvents {
         List<ItemStack> loot = raider.getData(FVillage.LOOT);
         if (loot.isEmpty())
             return;
+        if (event.getSource().getEntity() instanceof net.minecraft.server.level.ServerPlayer killer)
+            io.github.soundgoodizerfan.feedback.core.Awards.give(killer, "progress/survival/recovered_goods");
         for (ItemStack s : loot)
             event.getDrops().add(new ItemEntity(raider.level(), raider.getX(), raider.getY(), raider.getZ(), s.copy()));
         raider.setData(FVillage.LOOT, List.of());

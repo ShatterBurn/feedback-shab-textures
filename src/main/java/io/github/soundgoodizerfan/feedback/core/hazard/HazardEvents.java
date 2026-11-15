@@ -39,6 +39,15 @@ public final class HazardEvents {
     private HazardEvents() {
     }
 
+    /** A player killed by a hot piece, scald or shock with no attacker: the invention did it. */
+    public static void onDeath(net.neoforged.neoforge.event.entity.living.LivingDeathEvent event) {
+        if (!(event.getEntity() instanceof net.minecraft.server.level.ServerPlayer p) || event.getSource().getEntity() != null)
+            return;
+        var src = event.getSource();
+        if (src.is(Hazards.HOT_CONTACT) || src.is(Hazards.SCALD) || src.is(Hazards.SHOCK))
+            io.github.soundgoodizerfan.feedback.core.Awards.give(p, "progress/joke/own_goal");
+    }
+
     /** A hot stack in either hand, checked twice a second. */
     public static void onPlayerTick(PlayerTickEvent.Post event) {
         Player player = event.getEntity();
@@ -65,8 +74,10 @@ public final class HazardEvents {
                 // The hand takes the heat the piece gives up.
                 ItemHeat.drain(held, player.level(), (tu.value() - AmbientTable.at(player.level()).value()) * HazardTuning.CONTACT_HEAT_TAKEN);
             }
-            else if (tu.value() > ThermalTuning.CONTACT_PAIN_TU.value() && tu.value() <= limit && Protection.insulatedFrom(player, tu.value()))
+            else if (tu.value() > ThermalTuning.CONTACT_PAIN_TU.value() && tu.value() <= limit && Protection.insulatedFrom(player, tu.value())) {
                 io.github.soundgoodizerfan.feedback.core.EventTrigger.fire(player, "progress/heat/tongs");
+                io.github.soundgoodizerfan.feedback.core.EventTrigger.fire(player, "progress/survival/hands_off");
+            }
         }
     }
 

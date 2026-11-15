@@ -339,6 +339,8 @@ public class ModularBackpack extends ModularItem {
                 load *= ModularTuning.PACK_WET_FACTOR;
             over = f != null && load > f.get(Fig.CARRY) * GearKinds.carryShare(bag) * io.github.soundgoodizerfan.feedback.suit.ExoSuit.carryFactor(player);
             if (over)
+                io.github.soundgoodizerfan.feedback.core.Awards.give(player, "progress/survival/heavy_load");
+            if (over)
                 speed.addTransientModifier(new AttributeModifier(LOAD_ID, -ModularTuning.PACK_OVERLOAD_SLOW, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
             lit = fitted(bag, LAMP) && !stored(bag, LAMP).isEmpty();
         }

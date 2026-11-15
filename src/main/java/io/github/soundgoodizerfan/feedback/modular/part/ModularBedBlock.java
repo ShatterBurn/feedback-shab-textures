@@ -135,6 +135,7 @@ public class ModularBedBlock extends BedBlock {
                 BlockPos head = bed.getValue(PART) == BedPart.HEAD ? pos : pos.relative(bed.getValue(FACING));
                 if (level.getBlockEntity(head) instanceof ModularBedBlockEntity be) {
                     ModularBed.soothe(player, level, be.bed());
+                    io.github.soundgoodizerfan.feedback.core.Awards.give(player, "progress/survival/slept");
                     be.changed();
                     if (level.getBlockEntity(pos) instanceof ModularBedBlockEntity foot && foot != be)
                         foot.setBed(be.bed());

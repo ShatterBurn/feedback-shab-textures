@@ -114,8 +114,11 @@ public class HearthBlockEntity extends BlockEntity implements ThermalBody, HeatS
         Heat.tick(this, fireTu, ambient, fireTu.value() > ambient.value());
         setChanged();
 
-        if (temperature > ThermalTuning.WARM_TU.value())
+        if (temperature > ThermalTuning.WARM_TU.value()) {
             reheatBeside();
+            if (level.getGameTime() % 100 == 0)
+                io.github.soundgoodizerfan.feedback.core.Awards.near(level, worldPosition, "progress/survival/warm_room");
+        }
     }
 
     /**
