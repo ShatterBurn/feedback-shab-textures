@@ -1,0 +1,114 @@
+{
+  "family": "respirator",
+  "required": [
+    "B",
+    "S"
+  ],
+  "wear_litres": 0.3,
+  "wear_role": "B",
+  "primary": "B",
+  "roles": {
+    "B": {
+      "name": "face_piece",
+      "class": "housing",
+      "forms": [
+        "respirator_face"
+      ],
+      "litres": 0.1,
+      "layer": 0,
+      "part": {
+        "item": "feedback:respirator_face",
+        "cells": 4,
+        "stock": [
+          "@skin",
+          "@mat",
+          "@sheet"
+        ],
+        "traits": []
+      }
+    },
+    "S": {
+      "name": "strap",
+      "class": "mount",
+      "forms": [
+        "@skin",
+        "@cord"
+      ],
+      "litres": 0.02,
+      "layer": 1,
+      "traits": [
+        "cordage"
+      ]
+    },
+    "F": {
+      "name": "filter",
+      "class": "working_face",
+      "forms": [
+        "filter_cartridge"
+      ],
+      "litres": 0.15,
+      "layer": 2,
+      "axes": {
+        "bed": {
+          "min": 1,
+          "max": 10,
+          "unit": "cm",
+          "default": 4,
+          "step": 1
+        }
+      },
+      "part": {
+        "item": "feedback:filter_cartridge",
+        "cells": 3,
+        "stock": [
+          "@lump",
+          "@loose"
+        ],
+        "traits": [
+          "porous"
+        ]
+      }
+    },
+    "T": {
+      "name": "cylinder",
+      "class": "housing",
+      "forms": [
+        "air_cylinder"
+      ],
+      "litres": 0.3,
+      "layer": 2,
+      "axes": {
+        "wall": {
+          "min": 1,
+          "max": 10,
+          "unit": "mm",
+          "default": 3,
+          "step": 1
+        }
+      },
+      "part": {
+        "item": "feedback:air_cylinder",
+        "cells": 5,
+        "stock": [
+          "plate"
+        ]
+      }
+    }
+  },
+  "patterns": [
+    [
+      "B",
+      "S",
+      "F"
+    ],
+    [
+      "B",
+      "S",
+      "T"
+    ]
+  ],
+  "defaults": {
+    "B": "feedback:leather"
+  },
+  "vanilla": {}
+}

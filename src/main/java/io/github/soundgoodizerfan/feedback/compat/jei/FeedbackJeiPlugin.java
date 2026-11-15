@@ -319,7 +319,7 @@ public class FeedbackJeiPlugin implements IModPlugin {
         registration.addIngredientInfo(FItems.CONTROL_ASSEMBLY.get(), Component.translatable("feedback.jei.info.control_assembly"));
         registration.addIngredientInfo(FItems.SCRAM_TRIP.get(), Component.translatable("feedback.jei.info.scram_trip"));
         registration.addIngredientInfo(FItems.GRAPHITE_MODERATOR.get(), Component.translatable("feedback.jei.info.graphite_moderator"));
-        registration.addIngredientInfo(FItems.RESPIRATOR.get(), Component.translatable("feedback.jei.info.respirator"));
+        registration.addIngredientInfo(FModular.RESPIRATOR.get(), Component.translatable("feedback.jei.info.respirator"));
         registration.addIngredientInfo(FItems.IMPACT_PENDULUM.get(), Component.translatable("feedback.jei.info.impact_pendulum"));
         registration.addIngredientInfo(FItems.STRIKE_POST.get(), Component.translatable("feedback.jei.info.strike_post"));
         registration.addIngredientInfo(FItems.SHEATHED_BILLET.get(), Component.translatable("feedback.jei.info.sheathed_billet"));

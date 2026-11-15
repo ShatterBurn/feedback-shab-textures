@@ -159,7 +159,7 @@ public final class Skills {
     /** Multiplier on the poison a fume dose gives. */
     public static float fumeShare(LivingEntity who) {
         float share = Math.max(0.1f, 1 - modifier(who, Figure.FUME_SOFTEN));
-        return io.github.soundgoodizerfan.feedback.item.RespiratorItem.wearing(who) ? share * io.github.soundgoodizerfan.feedback.core.FTuning.RESPIRATOR_FUME_SHARE : share;
+        return io.github.soundgoodizerfan.feedback.modular.item.ModularRespirator.filtering(who) ? share * io.github.soundgoodizerfan.feedback.core.FTuning.RESPIRATOR_FUME_SHARE : share;
     }
 
     /** Multiplier on how fast the radiation dose clears. */

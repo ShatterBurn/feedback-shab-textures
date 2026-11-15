@@ -95,7 +95,7 @@ public class FCreativeTabs {
 
     /** Worn, head to foot, then what the wearer carries. */
     private static final List<DeferredItem<?>> WORN = of(FModular.HELMET, FModular.CHESTPLATE, FModular.LEGGINGS,
-            FModular.BOOTS, FItems.RESPIRATOR, FModular.SUIT_MODULE, FModular.BACKPACK, FModular.BED);
+            FModular.BOOTS, FModular.RESPIRATOR, FModular.SUIT_MODULE, FModular.BACKPACK, FModular.BED);
 
     /** Knowledge: blank, then written, then what holds it. */
     private static final List<DeferredItem<?>> KNOWLEDGE = of(FModular.BLANK_TREATISE, FModular.BLANK_RITE, FModular.BLUEPRINT,

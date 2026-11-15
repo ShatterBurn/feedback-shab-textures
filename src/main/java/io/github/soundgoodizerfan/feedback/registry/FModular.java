@@ -106,6 +106,7 @@ public final class FModular {
     public static final java.util.List<DeferredItem<io.github.soundgoodizerfan.feedback.modular.part.ModularPartItem>> PARTS = java.util.stream.Stream.of(
             "pickaxe_head", "axe_head", "shovel_head", "hoe_head", "sickle_head", "maul_head",
             "cleaver_head", "spear_head", "sword_blade",
+            "respirator_face", "filter_cartridge", "air_cylinder",
             "helmet_plate", "chestplate_plate", "leggings_plate", "boots_plate",
             "tool_tip", "tool_binding", "sword_guard", "shield_rim", "crossbow_prod", "bow_limbs", "shield_face",
             "gun_barrel", "gun_grip", "receiver", "slide", "bolt", "trigger_group", "cylinder", "magazine_tube",
@@ -182,6 +183,10 @@ public final class FModular {
     /** A hand covering in the hands slot: a glove, which may carry a metacarpal plate. */
     public static final DeferredItem<io.github.soundgoodizerfan.feedback.modular.item.ModularGlove> GLOVE = ITEMS.register("glove",
             () -> new io.github.soundgoodizerfan.feedback.modular.item.ModularGlove(ModularStacks.properties()));
+
+    /** A mask worn in the Curios face slot: a filter (works down to a floor of thin air) or an air cylinder (carries air). */
+    public static final DeferredItem<io.github.soundgoodizerfan.feedback.modular.item.ModularRespirator> RESPIRATOR = ITEMS.register("respirator",
+            () -> new io.github.soundgoodizerfan.feedback.modular.item.ModularRespirator(ModularStacks.properties()));
 
     public static final DeferredItem<io.github.soundgoodizerfan.feedback.modular.item.ModularShears> SHEARS = ITEMS.register("shears",
             () -> new io.github.soundgoodizerfan.feedback.modular.item.ModularShears(ModularStacks.properties()));

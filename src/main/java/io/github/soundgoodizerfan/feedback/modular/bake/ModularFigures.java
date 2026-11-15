@@ -143,6 +143,15 @@ public record ModularFigures(List<Float> values, int step) {
         FIST,
         /** Share of attack speed a metacarpal plate's weight takes off the wearer's swing, 0 to 1. */
         SWING_DRAG,
+        // --- a respirator's (family RESPIRATOR) ---
+        /** The thinnest air (a lung's share of sea-level oxygen, 0 to 1) a filter still gives breathable air in; 1 for a mask with no filter or a tank (the tank needs no floor). */
+        BREATH_FLOOR,
+        /** mB of air the cylinder holds; 0 for a mask with no cylinder. */
+        AIR_CAPACITY,
+        /** Ticks of thin air a filter works through before it is spent; 0 for a mask with no filter. */
+        FILTER_LIFE,
+        /** Share of sprint speed the mask's breathing resistance takes off the wearer, 0 to 1. */
+        BREATH_DRAG,
         // --- a dish's profile as it is judged (DishProfile): live state, then composition. Baked to zero; read off the stack when a dish is judged or tasted. ---
         /** 0 to 1: how cooked through the dish is now. */
         DISH_COOK,

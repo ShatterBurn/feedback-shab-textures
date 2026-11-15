@@ -1,1 +1,6 @@
-{ "parent": "item/generated", "textures": { "layer0": "minecraft:item/leather_helmet" } }
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "feedback:item/tool_pouch_brown"
+  }
+}

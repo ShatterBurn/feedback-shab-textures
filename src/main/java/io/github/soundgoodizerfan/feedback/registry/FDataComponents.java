@@ -308,6 +308,13 @@ public class FDataComponents {
                     .networkSynchronized(SimpleFluidContent.STREAM_CODEC)
                     .build());
 
+    /** The air a respirator's cylinder holds: a fluid content like the bucket's, its capacity the cylinder's baked {@code AIR_CAPACITY}. */
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<SimpleFluidContent>> RESPIRATOR_AIR =
+            COMPONENTS.register("respirator_air", () -> DataComponentType.<SimpleFluidContent>builder()
+                    .persistent(SimpleFluidContent.CODEC)
+                    .networkSynchronized(SimpleFluidContent.STREAM_CODEC)
+                    .build());
+
     /** What a copper bucket holds -- see {@code CopperBucketItem}. */
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<SimpleFluidContent>> BUCKET_CONTENT =
             COMPONENTS.register("bucket_content", () -> DataComponentType.<SimpleFluidContent>builder()

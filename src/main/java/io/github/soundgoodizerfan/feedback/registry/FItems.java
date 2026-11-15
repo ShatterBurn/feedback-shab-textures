@@ -473,9 +473,6 @@ public class FItems {
     public static final DeferredItem<BlockItem> SHEAVE = ITEMS.registerSimpleBlockItem(FBlocks.SHEAVE);
     public static final DeferredItem<BlockItem> SHOCK_CAPSULE = ITEMS.registerSimpleBlockItem(FBlocks.SHOCK_CAPSULE);
     /** Nanodiamond from a shock capsule: too small to cut, enough to seed a growth. */
-    /** A head-slot mask that cuts fume doses; see {@code item/RespiratorItem}. */
-    public static final DeferredItem<io.github.soundgoodizerfan.feedback.item.RespiratorItem> RESPIRATOR =
-            ITEMS.registerItem("respirator", io.github.soundgoodizerfan.feedback.item.RespiratorItem::new, new Item.Properties().stacksTo(1));
     /** The refined-redstone superconductor chain (process/WorkHardening, thermal_process/superconductor_*): purified dust, the blend, the calcined powder, the silver-sheathed billet it is drawn from. */
     public static final DeferredItem<Item> PURIFIED_REDSTONE = ITEMS.registerSimpleItem("purified_redstone");
     public static final DeferredItem<Item> SUPERCONDUCTOR_BLEND = ITEMS.registerSimpleItem("superconductor_blend");

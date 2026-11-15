@@ -27,6 +27,7 @@ import io.github.soundgoodizerfan.feedback.modular.bench.Edge;
 import io.github.soundgoodizerfan.feedback.modular.bench.Filing;
 import io.github.soundgoodizerfan.feedback.modular.bench.ForgeRhythm;
 import io.github.soundgoodizerfan.feedback.modular.item.ModularGlove;
+import io.github.soundgoodizerfan.feedback.modular.item.ModularRespirator;
 import io.github.soundgoodizerfan.feedback.modular.part.ModularBackpack;
 import io.github.soundgoodizerfan.feedback.modular.part.ModularBed;
 import io.github.soundgoodizerfan.feedback.modular.prep.DishBake;
@@ -1076,6 +1077,33 @@ public final class ModularBake {
                                 * competence(pm) / (competence(pm) + ModularTuning.ARMOUR_HALF_COMPETENCE) * worn, Float::sum);
                         default -> { }
                     }
+                }
+            }
+            case RESPIRATOR -> {
+                float total = 0;
+                for (Part p : design.parts())
+                    total += mass(type.roles().get(p.role()), p, by.get(p.role()));
+                f.put(Fig.MASS, total);
+                f.put(Fig.BREATH_FLOOR, 1f);
+                f.put(Fig.DURABILITY, (float) ModularTuning.RESPIRATOR_BASE_DURABILITY);
+                // A filter: a deeper bed of porous media works down to thinner air and lasts longer, and resists the breath more.
+                Part filter = design.part(ModularRespirator.FILTER);
+                if (filter != null) {
+                    float bed = type.roles().get(ModularRespirator.FILTER).axis(filter, "bed");
+                    float depth = GearTuning.saturate(bed, ModularTuning.RESPIRATOR_BED_HALF_CM);
+                    f.put(Fig.BREATH_FLOOR, ModularTuning.RESPIRATOR_FLOOR_MIN
+                            + (1f - ModularTuning.RESPIRATOR_FLOOR_MIN) * (1f - depth));
+                    f.put(Fig.FILTER_LIFE, ModularTuning.RESPIRATOR_FILTER_TICKS_PER_CM * bed * worn);
+                    f.put(Fig.BREATH_DRAG, Math.min(ModularTuning.RESPIRATOR_DRAG_MAX, ModularTuning.RESPIRATOR_DRAG_PER_CM * bed));
+                    // One point of wear a second of thin air breathed through it: the bed is the life.
+                    f.put(Fig.DURABILITY, (float) Math.max(1, Math.round(f.get(Fig.FILTER_LIFE) / 20f)));
+                }
+                // A cylinder: capacity from its walls (a thicker wall holds more pressure), at the mass of the metal.
+                Part cylinder = design.part(ModularRespirator.CYLINDER);
+                if (cylinder != null) {
+                    float wall = type.roles().get(ModularRespirator.CYLINDER).axis(cylinder, "wall");
+                    float rating = GearTuning.saturate(wall * strength(by.get(ModularRespirator.CYLINDER)), ModularTuning.RESPIRATOR_RATING_HALF);
+                    f.put(Fig.AIR_CAPACITY, ModularTuning.RESPIRATOR_AIR_MB_MAX * rating * worn);
                 }
             }
             case BACKPACK -> {

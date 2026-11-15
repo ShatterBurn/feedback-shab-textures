@@ -10,6 +10,7 @@ import io.github.soundgoodizerfan.feedback.modular.type.ModularDesign.Part;
 import io.github.soundgoodizerfan.feedback.modular.bake.ModularFigures.Fig;
 import io.github.soundgoodizerfan.feedback.process.Material;
 import io.github.soundgoodizerfan.feedback.modular.item.ModularGlove;
+import io.github.soundgoodizerfan.feedback.modular.item.ModularRespirator;
 import io.github.soundgoodizerfan.feedback.modular.part.ModularBackpack;
 import io.github.soundgoodizerfan.feedback.modular.part.ModularBed;
 import io.github.soundgoodizerfan.feedback.modular.type.ModularDesign;
@@ -90,6 +91,8 @@ public final class ModularCause {
                 case CLIP, CLIP_FINE -> p.role().equals("B");
                 case COMFORT, WARMTH -> p.role().equals(ModularBed.MATTRESS) || p.role().equals(ModularBed.FRAME);
                 case FIST, SWING_DRAG -> p.role().equals(ModularGlove.PLATE);
+                case BREATH_FLOOR, FILTER_LIFE, BREATH_DRAG -> p.role().equals(ModularRespirator.FILTER);
+                case AIR_CAPACITY -> p.role().equals(ModularRespirator.CYLINDER);
                 // a dish's: the foods make the meal and carry its hazards, the container sets how much it holds
                 case HUNGER, SATURATION, PATHOGEN, TOXIN, CHARRED, FAT, FIBRE -> !p.role().equals(type.primary()) || p.kind().isEmpty();
                 case LITRES -> p.role().equals(type.primary());

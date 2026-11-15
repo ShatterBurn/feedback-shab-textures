@@ -1216,4 +1216,21 @@ public final class ModularTuning {
 
     /** Placeholder. Wither ticks a radiant strike gives per level, and glow ticks. */
     public static final int RADIANT_WITHER_TICKS_PER_LEVEL = 60, RADIANT_GLOW_TICKS = 100;
+
+    /** Placeholder. A respirator's filter bed (cm) at which its floor is halfway down: depth over depth plus this. */
+    public static final float RESPIRATOR_BED_HALF_CM = 4f;
+    /** Placeholder. The thinnest air (a lung's share of sea level) the deepest possible bed reaches; a shallow bed works down to nearly the unaided threshold. */
+    public static final float RESPIRATOR_FLOOR_MIN = 0.02f;
+    /** Placeholder. Running ticks of thin air a filter bed lasts per cm of depth (1200 ticks is a minute). */
+    public static final float RESPIRATOR_FILTER_TICKS_PER_CM = 3600f;
+    /** Placeholder. Share of sprint speed a filter takes per cm of bed, to a ceiling. */
+    public static final float RESPIRATOR_DRAG_PER_CM = 0.02f, RESPIRATOR_DRAG_MAX = 0.2f;
+    /** Placeholder. A cylinder's wall (mm) times its metal's strength at which its rating is halfway to full. */
+    public static final float RESPIRATOR_RATING_HALF = 6f;
+    /** Placeholder. mB of air a cylinder at full rating holds. */
+    public static final float RESPIRATOR_AIR_MB_MAX = 6000f;
+    /** Placeholder. Wear points of a mask with no filter (the cylinder drains instead; the mask only wears from misuse). */
+    public static final int RESPIRATOR_BASE_DURABILITY = 600;
+    /** Placeholder. mB of air a tank mask draws each tick while the air outside is too thin. */
+    public static final int RESPIRATOR_DRAW_MB_PER_TICK = 1;
 }

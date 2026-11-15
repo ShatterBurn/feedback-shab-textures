@@ -199,6 +199,8 @@ public record ModularType(Family family, Slot slot, List<Mine> mines, float stri
         HAND,
         /** A glove worn in the hands slot: its body decides what it keeps off the hand; an optional metacarpal plate adds barehanded damage, armour and a barehanded parry, and costs swing speed. */
         GLOVE,
+        /** A respirator worn in the Curios face slot: a face piece and strap, and either a filter cartridge (works down to a floor of thin air, wears with use) or an air cylinder (carries air, works anywhere); its bake is the figures {@code BREATH_FLOOR}, {@code AIR_CAPACITY}, {@code FILTER_LIFE} and {@code BREATH_DRAG}. */
+        RESPIRATOR,
         /** A pack worn on the back: the shell sets the slots, the strap sets the carry rating, the contents live on the stack. */
         BACKPACK,
         /** A sleeping roll: sheet, fill and shell; its bake is the comfort the fill and sheet give ({@link ModularBed}). */

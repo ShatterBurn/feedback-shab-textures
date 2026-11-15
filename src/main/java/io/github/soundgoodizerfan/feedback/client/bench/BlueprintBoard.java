@@ -808,7 +808,7 @@ public final class BlueprintBoard {
             return 0;
         return switch (t.family()) {
             case BLADE, MACE, SPEAR, BOW, CROSSBOW, SHIELD, GUN, AIR_GUN, ELECTRIC_GUN -> 1;
-            case ARMOUR, GLOVE, BACKPACK, BED -> 2;
+            case ARMOUR, GLOVE, RESPIRATOR, BACKPACK, BED -> 2;
             case CELL, MACHINE, BELT, ENGINE, GEARBOX, PROPELLER, PRESSURE, BLOCK, HEAD, VESSEL, CHARGE -> 3;
             case DISH -> 4;
             default -> 0;

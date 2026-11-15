@@ -35,6 +35,18 @@ public class FCapabilities {
         event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new net.neoforged.neoforge.fluids.capability.templates.FluidHandlerItemStack(
                 FDataComponents.BUCKET_CONTENT, stack, io.github.soundgoodizerfan.feedback.item.CopperBucketItem.CAPACITY_MB),
                 FItems.COPPER_BUCKET.get());
+        // A respirator's cylinder: air only, as much as the baked cylinder holds.
+        event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> {
+            var f = io.github.soundgoodizerfan.feedback.modular.item.ModularStacks.figures(stack);
+            int capacity = f == null ? 0 : (int) f.get(io.github.soundgoodizerfan.feedback.modular.bake.ModularFigures.Fig.AIR_CAPACITY);
+            return new net.neoforged.neoforge.fluids.capability.templates.FluidHandlerItemStack(
+                    FDataComponents.RESPIRATOR_AIR, stack, capacity) {
+                @Override
+                public boolean isFluidValid(int tank, net.neoforged.neoforge.fluids.FluidStack fluid) {
+                    return fluid.getFluid() == FFluids.AIR.get();
+                }
+            };
+        }, FModular.RESPIRATOR.get());
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, FBlockEntities.LEAD_CHEST.get(),
                 (chest, side) -> new net.neoforged.neoforge.items.wrapper.InvWrapper(chest));
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, FBlockEntities.POWER_CUTTER.get(),

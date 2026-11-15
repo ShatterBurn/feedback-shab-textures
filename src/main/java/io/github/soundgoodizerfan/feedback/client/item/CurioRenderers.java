@@ -92,6 +92,7 @@ public final class CurioRenderers {
             reg(FItems.SASH.get(), () -> new Worn(Limb.BODY, () -> box(-4.4f, 9f, -2.4f, 8.8f, 2f, 4.8f)));
             reg(FItems.BACK_PIECE.get(), () -> new Worn(Limb.BODY, () -> box(-3f, 1f, 2f, 6f, 7f, 2f)));
             reg(io.github.soundgoodizerfan.feedback.registry.FModular.GLOVE.get(), Gloves::new);
+            reg(io.github.soundgoodizerfan.feedback.registry.FModular.RESPIRATOR.get(), Mask::new);
             reg(io.github.soundgoodizerfan.feedback.registry.FModular.BACKPACK.get(), Packs::new);
         });
     }
@@ -433,6 +434,25 @@ public final class CurioRenderers {
             int rgb = plate == null ? LEATHER : io.github.soundgoodizerfan.feedback.modular.type.MaterialColors.of(plate.material());
             draw(right, m.rightArm, pose, buffer, light, rgb);
             draw(left, m.leftArm, pose, buffer, light, rgb);
+        }
+    }
+
+    /** The face slot holds one respirator: a box over the mouth and nose, tinted by the face piece. */
+    private static final class Mask implements ICurioRenderer {
+        private ModelPart box;
+
+        @Override
+        public <T extends LivingEntity, M extends EntityModel<T>> void render(ItemStack stack, SlotContext slot, PoseStack pose,
+                RenderLayerParent<T, M> parent, MultiBufferSource buffer, int light, float limbSwing, float limbSwingAmount,
+                float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+            if (!(parent.getModel() instanceof HumanoidModel<?> m))
+                return;
+            if (box == null)
+                box = box(-3f, -3f, -5f, 6f, 3f, 1.5f);
+            var design = io.github.soundgoodizerfan.feedback.modular.item.ModularStacks.design(stack);
+            var face = design == null ? null : design.part(io.github.soundgoodizerfan.feedback.modular.item.ModularRespirator.FACE);
+            int rgb = face == null ? LEATHER : io.github.soundgoodizerfan.feedback.modular.type.MaterialColors.of(face.material());
+            draw(box, m.head, pose, buffer, light, rgb);
         }
     }
 }
