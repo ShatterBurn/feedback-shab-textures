@@ -170,12 +170,55 @@ public class EnchantScreen extends SkinnedScreen<EnchantMenu> {
         return lines;
     }
 
-    /** One line per distinct behaviour, naming every role that has it; "anything" when it covers every non-gun role. */
+    private static final String DESC = "tooltip.feedback.attuned.desc.";
+    private static final List<String> BUCKETS = List.of("worn", "pack", "machine", "bed", "meal", "vessel", "charge", "held");
+    private static Object bucketsFor;
+    private static final java.util.Map<String, String> BUCKET_CACHE = new java.util.HashMap<>();
+
+    /** Where a role sits: the group of types it is a role of, for telling a worn plate from a machine housing. Worn and pack share a body. */
+    private static String bucket(String role) {
+        var types = ModularTypes.known();
+        if (bucketsFor != types) {
+            bucketsFor = types;
+            BUCKET_CACHE.clear();
+        }
+        return BUCKET_CACHE.computeIfAbsent(role, r -> {
+            java.util.Set<String> seen = new java.util.HashSet<>();
+            types.values().forEach(t -> {
+                if (t.roles().values().stream().noneMatch(x -> x.name().equals(r)))
+                    return;
+                seen.add(switch (t.family()) {
+                    case ARMOUR, SUIT_MODULE, GLOVE -> "worn";
+                    case BACKPACK -> "pack";
+                    case BED -> "bed";
+                    case DISH -> "meal";
+                    case VESSEL -> "vessel";
+                    case CHARGE -> "charge";
+                    case CELL, BELT, ENGINE, GEARBOX, PROPELLER, PRESSURE, BLOCK, MACHINE, HEAD -> "machine";
+                    default -> "held";
+                });
+            });
+            return BUCKETS.stream().filter(seen::contains).findFirst().orElse("held");
+        });
+    }
+
+    /** The description key a kind has on a role: the role's own, else its group's, else the kind's. Roles with different keys read on different lines. */
+    private static String descKey(String kind, String role) {
+        net.minecraft.locale.Language lang = net.minecraft.locale.Language.getInstance();
+        for (String k : new String[] {DESC + kind + "." + role, DESC + kind + "." + bucket(role)})
+            if (lang.has(k))
+                return k;
+        return DESC + kind;
+    }
+
+    /** One line per distinct behaviour and description, naming every role that has it; "anything" when it covers every non-gun role. */
     private static void roleLines(List<Component> out, java.util.Map<String, Attunements.Behaviour> roles) {
-        java.util.Map<Attunements.Behaviour, java.util.List<String>> byBehaviour = new java.util.LinkedHashMap<>();
-        new TreeMap<>(roles).forEach((role, b) -> byBehaviour.computeIfAbsent(b, k -> new ArrayList<>()).add(role));
-        byBehaviour.forEach((b, names) -> {
-            MutableComponent what = Component.translatable("tooltip.feedback.attuned.desc." + b.kind());
+        record Group(Attunements.Behaviour b, String key) {}
+        java.util.Map<Group, java.util.List<String>> byBehaviour = new java.util.LinkedHashMap<>();
+        new TreeMap<>(roles).forEach((role, b) -> byBehaviour.computeIfAbsent(new Group(b, descKey(b.kind(), role)), k -> new ArrayList<>()).add(role));
+        byBehaviour.forEach((g, names) -> {
+            Attunements.Behaviour b = g.b();
+            MutableComponent what = Component.translatable(g.key());
             if (b.flaw() != 0)
                 what.append(Component.translatable(b.flaw() > 0 ? "gui.feedback.enchant.effect.brittle" : "gui.feedback.enchant.effect.tough"));
             // The "On a ...:" lead in the skin's gold, the description in white, so the two read apart.
@@ -202,6 +245,18 @@ public class EnchantScreen extends SkinnedScreen<EnchantMenu> {
                     : Component.translatable("gui.feedback.enchant.effect.role", joined.apply(names));
             out.add(lead.withStyle(ChatFormatting.GOLD).append(" ").append(what.withStyle(ChatFormatting.WHITE)));
         });
+        // A kind's `.also.<n>` lines are its other contexts ("As a machine head: ..."): a line of their own, once per kind.
+        net.minecraft.locale.Language lang = net.minecraft.locale.Language.getInstance();
+        roles.values().stream().map(Attunements.Behaviour::kind).distinct().forEach(kind -> {
+            for (int n = 1; lang.has(DESC + kind + ".also." + n); n++) {
+                String text = lang.getOrDefault(DESC + kind + ".also." + n);
+                int colon = text.indexOf(": ");
+                MutableComponent line = colon < 0 ? Component.literal(text).withStyle(ChatFormatting.WHITE)
+                        : Component.literal(text.substring(0, colon + 1)).withStyle(ChatFormatting.GOLD)
+                                .append(Component.literal(text.substring(colon + 1)).withStyle(ChatFormatting.WHITE));
+                out.add(line);
+            }
+        });
     }
 
     /** Whether the part in the slot has a role the effect does nothing on; false when the part's roles are not known. */
@@ -215,7 +270,7 @@ public class EnchantScreen extends SkinnedScreen<EnchantMenu> {
         for (var role : menu.roles().entrySet()) {
             Attunements.Behaviour b = e.on(role.getKey(), role.getValue(), false);
             if (b != null)
-                return Component.translatable("tooltip.feedback.attuned.desc." + b.kind());
+                return Component.translatable(descKey(b.kind(), role.getKey()));
         }
         return null;
     }
