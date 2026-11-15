@@ -8648,5 +8648,12 @@
   "robot.feedback.cap_chunk": "Too many robots in this chunk",
   "robot.feedback.cap_dimension": "Too many robots in this dimension",
   "block.feedback.robot_arm": "Robot Arm",
-  "feedback.jei.info.robot_arm": "A robot fixed on a mount and run off an electrical line instead of a battery. It works the space it faces: breaks, places, picks up, drops, and puts items into or takes them out of a container or machine, and can switch a machine on or off. Right-click it with a Punch Card to load a program, with a Data Connector to step through its channels for a Programmer card, with any other item to put it in its cargo; sneak with an empty hand to take a stack out. It acts only while its line feeds it."
+  "feedback.jei.info.robot_arm": "A robot fixed on a mount and run off an electrical line instead of a battery. It works the space it faces: breaks, places, picks up, drops, and puts items into or takes them out of a container or machine, and can switch a machine on or off. Right-click it with a Punch Card to load a program, with a Data Connector to step through its channels for a Programmer card, with any other item to put it in its cargo; sneak with an empty hand to take a stack out. It acts only while its line feeds it.",
+  "jade.feedback.robot.charge.0": "Battery flat",
+  "jade.feedback.robot.charge.1": "Battery low",
+  "jade.feedback.robot.charge.2": "Battery half",
+  "jade.feedback.robot.charge.3": "Battery full",
+  "jade.feedback.robot.no_battery": "No battery",
+  "jade.feedback.robot.tethered": "Tied to a reel",
+  "config.jade.plugin_feedback.robot": "Robot"
 }

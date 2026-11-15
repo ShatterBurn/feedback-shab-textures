@@ -100,6 +100,12 @@ public class RobotEntity extends Entity implements ControllerCore.Locals, RobotW
         return core;
     }
 
+    /** The action it is carrying out, or null. */
+    @Nullable
+    public RobotChannel doing() {
+        return doing;
+    }
+
     @Override
     public float maxUpStep() {
         return spec.stepUp();

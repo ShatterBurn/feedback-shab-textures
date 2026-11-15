@@ -66,7 +66,7 @@ New here? Start with [Metalworking](Metalworking.md), then [Heat](Heat.md). Want
 
 **Experience:** [Experience](Experience.md) · [Sculk Culture](Sculk_Culture.md)
 
-**Control:** [Timer](Timer.md) · [Bimetallic Strip](Bimetallic_Strip.md) · [Controller](Controller.md) · [Electric Controller](Electric_Controller.md) · [Programming](Programming.md) · [Data Connector](Data_Connector.md) · [Robots](Robots.md)
+**Control:** [Timer](Timer.md) · [Bimetallic Strip](Bimetallic_Strip.md) · [Controller](Controller.md) · [Electric Controller](Electric_Controller.md) · [Programming](Programming.md) · [Data Connector](Data_Connector.md) · [Robots](Robots.md) · [Robot Arm](Robot_Arm.md) · [Robot Beacon](Robot_Beacon.md) · [Robot Dock](Robot_Dock.md) · [Tether Reel](Tether_Reel.md)
 
 **Guns:** [Gun Parts](Gun_Parts.md) · [Reloading Press](Reloading_Press.md) · [Magazine](Magazine.md) · [Mixer](Mixer.md) · [Demolition Charge](Demolition_Charge.md) · [Shock Capsule](Shock_Capsule.md)
 

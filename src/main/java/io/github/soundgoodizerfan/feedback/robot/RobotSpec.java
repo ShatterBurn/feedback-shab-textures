@@ -37,7 +37,9 @@ public record RobotSpec(float mass, float speed, float headSt, String sensor, St
         ModularDesign.Part driveGear = design.part("D");
         String drive = driveGear == null || driveGear.variant() == null || driveGear.variant().isEmpty() ? WHEELS : driveGear.variant();
         float factor = drive.equals(LEGS) ? RobotTuning.LEGS_SPEED : drive.equals(ROTOR) ? RobotTuning.ROTOR_SPEED : 1f;
-        float speed = RobotTuning.SPEED_MAX * factor * RobotTuning.SPEED_HALF_MASS / (RobotTuning.SPEED_HALF_MASS + mass);
+        // a rotor too heavy to lift has nothing to roll on: it stays where it was set down
+        float speed = drive.equals(ROTOR) && mass > RobotTuning.ROTOR_LIFT_MU ? 0f
+                : RobotTuning.SPEED_MAX * factor * RobotTuning.SPEED_HALF_MASS / (RobotTuning.SPEED_HALF_MASS + mass);
         ModularDesign.Part head = design.part("T");
         Material m = head == null ? null : MaterialTable.get().materials().get(head.material());
         float st = m == null ? 0f : m.mechanical().yieldStrength().map(s -> s.value()).orElse(0f);
