@@ -2,79 +2,85 @@
   "school": "materials",
   "volume": 1,
   "title": "What a blow does to metal",
-  "labels": {
-    "hammer": "A hammer",
-    "blow": "A blow",
-    "hardness": "Hardness",
-    "grain": "Grain",
-    "hot": "Heat",
-    "anneal": "Annealing",
-    "quench": "Quenching",
-    "temper": "Tempering",
-    "brittle": "Brittleness",
-    "tough": "Toughness",
-    "crystal": "Crystal"
+  "concepts": {
+    "hammer": {
+      "label": "A hammer",
+      "traits": [
+        "strike",
+        "hard"
+      ]
+    },
+    "blow": {
+      "label": "A blow",
+      "traits": [
+        "strike",
+        "deform"
+      ]
+    },
+    "hardness": {
+      "label": "Hardness",
+      "traits": [
+        "hard",
+        "ordered"
+      ]
+    },
+    "grain": {
+      "label": "Grain",
+      "traits": [
+        "deform",
+        "crystal"
+      ]
+    },
+    "hot": {
+      "label": "Heat",
+      "traits": [
+        "heat",
+        "soft"
+      ]
+    },
+    "anneal": {
+      "label": "Annealing",
+      "traits": [
+        "relax",
+        "soft"
+      ]
+    },
+    "quench": {
+      "label": "Quenching",
+      "traits": [
+        "heat",
+        "hard"
+      ]
+    },
+    "temper": {
+      "label": "Tempering",
+      "traits": [
+        "relax",
+        "tough"
+      ]
+    },
+    "brittle": {
+      "label": "Brittleness",
+      "traits": [
+        "hard",
+        "crystal"
+      ]
+    },
+    "tough": {
+      "label": "Toughness",
+      "traits": [
+        "tough",
+        "deform"
+      ]
+    },
+    "crystal": {
+      "label": "Crystal",
+      "traits": [
+        "crystal",
+        "ordered"
+      ]
+    }
   },
-  "relations": [
-    [
-      "hammer",
-      "blow"
-    ],
-    [
-      "blow",
-      "grain"
-    ],
-    [
-      "grain",
-      "hardness"
-    ],
-    [
-      "hardness",
-      "brittle"
-    ],
-    [
-      "brittle",
-      "temper"
-    ],
-    [
-      "temper",
-      "tough"
-    ],
-    [
-      "hot",
-      "anneal"
-    ],
-    [
-      "anneal",
-      "grain"
-    ],
-    [
-      "hot",
-      "quench"
-    ],
-    [
-      "quench",
-      "hardness"
-    ],
-    [
-      "quench",
-      "brittle"
-    ],
-    [
-      "crystal",
-      "grain"
-    ]
-  ],
-  "known": [
-    [
-      "hammer",
-      "blow"
-    ],
-    [
-      "quench",
-      "hardness"
-    ]
-  ],
   "start": "hammer",
   "goal": "temper",
   "replay": [

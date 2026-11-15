@@ -2,78 +2,92 @@
   "school": "weapons",
   "volume": 1,
   "title": "Why a blade cuts",
-  "labels": {
-    "muscle": "Your arm",
-    "force": "Force",
-    "point": "A point",
-    "wedge": "A wedge",
-    "edge": "An edge",
-    "hardness": "Hardness",
-    "steel": "Steel",
-    "grind": "Grinding",
-    "whetstone": "Whetstone",
-    "bruise": "A bruise"
+  "concepts": {
+    "muscle": {
+      "label": "Your arm",
+      "traits": [
+        "force",
+        "motion"
+      ]
+    },
+    "wedge": {
+      "label": "A wedge",
+      "traits": [
+        "thin",
+        "pressure"
+      ]
+    },
+    "edge": {
+      "label": "An edge",
+      "traits": [
+        "thin",
+        "hard"
+      ]
+    },
+    "steel": {
+      "label": "Steel",
+      "traits": [
+        "hard",
+        "metal"
+      ]
+    },
+    "grind": {
+      "label": "Grinding",
+      "traits": [
+        "grit",
+        "thin"
+      ]
+    },
+    "whetstone": {
+      "label": "Whetstone",
+      "traits": [
+        "grit",
+        "hard"
+      ]
+    },
+    "bruise": {
+      "label": "A bruise",
+      "traits": [
+        "force",
+        "soft"
+      ]
+    },
+    "swing": {
+      "label": "A swing",
+      "traits": [
+        "motion",
+        "speed"
+      ]
+    },
+    "impact": {
+      "label": "An impact",
+      "traits": [
+        "speed",
+        "pressure"
+      ]
+    },
+    "spot": {
+      "label": "A small spot",
+      "traits": [
+        "pressure",
+        "thin"
+      ]
+    },
+    "sliver": {
+      "label": "A thin sliver",
+      "traits": [
+        "thin",
+        "metal"
+      ]
+    },
+    "stick": {
+      "label": "A stick",
+      "traits": [
+        "soft",
+        "motion"
+      ]
+    }
   },
-  "relations": [
-    [
-      "muscle",
-      "force"
-    ],
-    [
-      "force",
-      "point"
-    ],
-    [
-      "force",
-      "wedge"
-    ],
-    [
-      "wedge",
-      "edge"
-    ],
-    [
-      "point",
-      "edge"
-    ],
-    [
-      "hardness",
-      "edge"
-    ],
-    [
-      "steel",
-      "hardness"
-    ],
-    [
-      "grind",
-      "edge"
-    ],
-    [
-      "grind",
-      "whetstone"
-    ],
-    [
-      "whetstone",
-      "hardness"
-    ],
-    [
-      "force",
-      "bruise"
-    ],
-    [
-      "muscle",
-      "bruise"
-    ]
-  ],
-  "known": [
-    [
-      "muscle",
-      "force"
-    ],
-    [
-      "wedge",
-      "edge"
-    ]
-  ],
   "start": "muscle",
   "goal": "edge",
   "replay": [

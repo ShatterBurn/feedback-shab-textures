@@ -2,83 +2,88 @@
   "school": "chemical",
   "volume": 3,
   "title": "The shaped blast",
-  "labels": {
-    "compressor": "A compressor",
-    "gas": "Gas",
-    "fuel": "Fuel",
-    "oxidiser": "An oxidiser",
-    "mix": "A mix",
-    "spark": "A spark",
-    "burn": "Burning",
-    "confine": "Confinement",
-    "casing": "A casing",
-    "fragment": "Fragments",
-    "blast": "A blast"
+  "concepts": {
+    "compressor": {
+      "label": "A compressor",
+      "traits": [
+        "dense",
+        "gas"
+      ]
+    },
+    "gas": {
+      "label": "Gas",
+      "traits": [
+        "gas",
+        "mix",
+        "dense"
+      ]
+    },
+    "fuel": {
+      "label": "Fuel",
+      "traits": [
+        "fuel",
+        "mix"
+      ]
+    },
+    "oxidiser": {
+      "label": "An oxidiser",
+      "traits": [
+        "mix",
+        "dense"
+      ]
+    },
+    "mix": {
+      "label": "A mix",
+      "traits": [
+        "mix",
+        "burn",
+        "spark"
+      ]
+    },
+    "spark": {
+      "label": "A spark",
+      "traits": [
+        "spark",
+        "burn"
+      ]
+    },
+    "burn": {
+      "label": "Burning",
+      "traits": [
+        "burn",
+        "expand",
+        "fuel"
+      ]
+    },
+    "confine": {
+      "label": "Confinement",
+      "traits": [
+        "expand",
+        "confined"
+      ]
+    },
+    "casing": {
+      "label": "A casing",
+      "traits": [
+        "confined",
+        "hard"
+      ]
+    },
+    "fragment": {
+      "label": "Fragments",
+      "traits": [
+        "hard",
+        "shatter"
+      ]
+    },
+    "blast": {
+      "label": "A blast",
+      "traits": [
+        "expand",
+        "shatter"
+      ]
+    }
   },
-  "relations": [
-    [
-      "compressor",
-      "gas"
-    ],
-    [
-      "gas",
-      "mix"
-    ],
-    [
-      "fuel",
-      "mix"
-    ],
-    [
-      "oxidiser",
-      "mix"
-    ],
-    [
-      "mix",
-      "spark"
-    ],
-    [
-      "spark",
-      "burn"
-    ],
-    [
-      "burn",
-      "confine"
-    ],
-    [
-      "confine",
-      "casing"
-    ],
-    [
-      "casing",
-      "fragment"
-    ],
-    [
-      "burn",
-      "blast"
-    ],
-    [
-      "confine",
-      "blast"
-    ],
-    [
-      "fragment",
-      "blast"
-    ],
-    [
-      "oxidiser",
-      "burn"
-    ]
-  ],
-  "known": [
-    [
-      "compressor",
-      "gas"
-    ],
-    [
-      "confine",
-      "blast"
-    ]
-  ],
   "start": "compressor",
   "goal": "blast",
   "replay": [

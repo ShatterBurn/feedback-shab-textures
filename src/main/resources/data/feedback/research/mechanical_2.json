@@ -2,83 +2,85 @@
   "school": "mechanical",
   "volume": 2,
   "title": "Torque for speed",
-  "labels": {
-    "engine": "An engine",
-    "shaft": "A shaft",
-    "torque": "Torque",
-    "speed": "Speed",
-    "lever": "A lever",
-    "gear": "A gear",
-    "teeth": "Teeth",
-    "ratio": "A ratio",
-    "clutch": "A clutch",
-    "friction": "Friction",
-    "gearbox": "A gearbox"
+  "concepts": {
+    "engine": {
+      "label": "An engine",
+      "traits": [
+        "spin",
+        "shaft"
+      ]
+    },
+    "shaft": {
+      "label": "A shaft",
+      "traits": [
+        "shaft",
+        "torque"
+      ]
+    },
+    "torque": {
+      "label": "Torque",
+      "traits": [
+        "torque",
+        "lever"
+      ]
+    },
+    "speed": {
+      "label": "Speed",
+      "traits": [
+        "speed",
+        "spin"
+      ]
+    },
+    "lever": {
+      "label": "A lever",
+      "traits": [
+        "lever",
+        "trade"
+      ]
+    },
+    "gear": {
+      "label": "A gear",
+      "traits": [
+        "mesh",
+        "trade"
+      ]
+    },
+    "teeth": {
+      "label": "Teeth",
+      "traits": [
+        "mesh",
+        "grip"
+      ]
+    },
+    "ratio": {
+      "label": "A ratio",
+      "traits": [
+        "trade",
+        "speed"
+      ]
+    },
+    "clutch": {
+      "label": "A clutch",
+      "traits": [
+        "grip",
+        "slip"
+      ]
+    },
+    "friction": {
+      "label": "Friction",
+      "traits": [
+        "grip",
+        "slip"
+      ]
+    },
+    "gearbox": {
+      "label": "A gearbox",
+      "traits": [
+        "mesh",
+        "trade"
+      ]
+    }
   },
-  "relations": [
-    [
-      "engine",
-      "shaft"
-    ],
-    [
-      "shaft",
-      "torque"
-    ],
-    [
-      "shaft",
-      "speed"
-    ],
-    [
-      "torque",
-      "lever"
-    ],
-    [
-      "lever",
-      "gear"
-    ],
-    [
-      "gear",
-      "teeth"
-    ],
-    [
-      "gear",
-      "ratio"
-    ],
-    [
-      "ratio",
-      "gearbox"
-    ],
-    [
-      "ratio",
-      "speed"
-    ],
-    [
-      "ratio",
-      "torque"
-    ],
-    [
-      "clutch",
-      "friction"
-    ],
-    [
-      "clutch",
-      "shaft"
-    ],
-    [
-      "clutch",
-      "gearbox"
-    ]
-  ],
-  "known": [
-    [
-      "engine",
-      "shaft"
-    ],
-    [
-      "gear",
-      "teeth"
-    ]
-  ],
   "start": "engine",
   "goal": "gearbox",
   "replay": [

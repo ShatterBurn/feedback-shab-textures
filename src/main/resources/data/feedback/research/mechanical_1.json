@@ -2,79 +2,85 @@
   "school": "mechanical",
   "volume": 1,
   "title": "Heat that turns",
-  "labels": {
-    "hand_crank": "A hand crank",
-    "rotation": "Rotation",
-    "crankshaft": "A crankshaft",
-    "piston": "A piston",
-    "cylinder": "A cylinder",
-    "stroke": "A stroke",
-    "fuel": "Fuel",
-    "spark": "A spark",
-    "heat": "Heat",
-    "pressure": "Pressure",
-    "engine": "An engine"
+  "concepts": {
+    "hand_crank": {
+      "label": "A hand crank",
+      "traits": [
+        "turn",
+        "offset"
+      ]
+    },
+    "rotation": {
+      "label": "Rotation",
+      "traits": [
+        "turn",
+        "shaft"
+      ]
+    },
+    "crankshaft": {
+      "label": "A crankshaft",
+      "traits": [
+        "shaft",
+        "offset"
+      ]
+    },
+    "piston": {
+      "label": "A piston",
+      "traits": [
+        "offset",
+        "slide"
+      ]
+    },
+    "cylinder": {
+      "label": "A cylinder",
+      "traits": [
+        "slide",
+        "hold"
+      ]
+    },
+    "stroke": {
+      "label": "A stroke",
+      "traits": [
+        "slide",
+        "cycle"
+      ]
+    },
+    "fuel": {
+      "label": "Fuel",
+      "traits": [
+        "burn",
+        "hold"
+      ]
+    },
+    "spark": {
+      "label": "A spark",
+      "traits": [
+        "burn",
+        "cycle"
+      ]
+    },
+    "heat": {
+      "label": "Heat",
+      "traits": [
+        "heat",
+        "burn"
+      ]
+    },
+    "pressure": {
+      "label": "Pressure",
+      "traits": [
+        "hold",
+        "heat"
+      ]
+    },
+    "engine": {
+      "label": "An engine",
+      "traits": [
+        "cycle",
+        "burn"
+      ]
+    }
   },
-  "relations": [
-    [
-      "hand_crank",
-      "rotation"
-    ],
-    [
-      "rotation",
-      "crankshaft"
-    ],
-    [
-      "crankshaft",
-      "piston"
-    ],
-    [
-      "piston",
-      "cylinder"
-    ],
-    [
-      "piston",
-      "stroke"
-    ],
-    [
-      "stroke",
-      "engine"
-    ],
-    [
-      "cylinder",
-      "pressure"
-    ],
-    [
-      "pressure",
-      "heat"
-    ],
-    [
-      "heat",
-      "fuel"
-    ],
-    [
-      "fuel",
-      "spark"
-    ],
-    [
-      "spark",
-      "stroke"
-    ],
-    [
-      "fuel",
-      "engine"
-    ]
-  ],
-  "known": [
-    [
-      "hand_crank",
-      "rotation"
-    ],
-    [
-      "stroke",
-      "engine"
-    ]
-  ],
   "start": "hand_crank",
   "goal": "engine",
   "replay": [

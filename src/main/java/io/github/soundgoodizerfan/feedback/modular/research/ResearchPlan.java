@@ -3,7 +3,7 @@
 package io.github.soundgoodizerfan.feedback.modular.research;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,9 +16,9 @@ import com.google.gson.JsonParser;
 
 /**
  * One piece of research, authored as data ({@code data/feedback/research/<school>_<volume>.json}): the concepts a person who only knows the old
- * way has to link up to reach the new idea. {@code labels} names every concept, {@code relations} are the pairs that really belong together
- * (the rest only look as if they might), {@code known} the few the researcher already sees, {@code start} the concept the researcher owns and
- * {@code goal} the one to be reached. {@code replay} is what the finished chain shows, {@code question} the one blank to fill after it, and
+ * way has to link up to reach the new idea. {@code concepts} maps each concept to its label and its two or three {@code traits}; two concepts
+ * link when they share a trait, which the screen shows, so a link is a fact the player can check and not the author's opinion. {@code start} is
+ * the concept the researcher owns and {@code goal} the one to be reached. {@code replay} is what the finished chain shows, {@code question} the one blank to fill after it, and
  * {@code eureka} the real thing whose counter earns extra ink when done beforehand ({@code kind}: used, crafted or mined; {@code item}; {@code threshold}; {@code ink}).
  * {@code specimens} lists the types a first volume takes (later volumes take the types gated by the volume before). The same text is
  * read on the server (to validate and to send) and on the client (to play), so it is parsed from the one string.
@@ -30,7 +30,8 @@ public final class ResearchPlan {
 
     public final String key, title, start, goal, question;
     public final Map<String, String> labels = new LinkedHashMap<>();
-    private final Set<String> relations = new HashSet<>(), known = new HashSet<>();
+    /** Each concept's traits, in the order authored. */
+    public final Map<String, Set<String>> traits = new LinkedHashMap<>();
     public final List<String> replay = new ArrayList<>(), options = new ArrayList<>(), specimens = new ArrayList<>();
     public final int answer;
     public final Eureka eureka;
@@ -44,10 +45,14 @@ public final class ResearchPlan {
         goal = o.get("goal").getAsString();
         question = o.get("question").getAsString();
         answer = o.get("answer").getAsInt();
-        for (var e : o.getAsJsonObject("labels").entrySet())
-            labels.put(e.getKey(), e.getValue().getAsString());
-        pairs(o.getAsJsonArray("relations"), relations);
-        pairs(o.getAsJsonArray("known"), known);
+        for (var e : o.getAsJsonObject("concepts").entrySet()) {
+            JsonObject c = e.getValue().getAsJsonObject();
+            labels.put(e.getKey(), c.get("label").getAsString());
+            Set<String> ts = new LinkedHashSet<>();
+            for (JsonElement t : c.getAsJsonArray("traits"))
+                ts.add(t.getAsString());
+            traits.put(e.getKey(), ts);
+        }
         strings(o.getAsJsonArray("replay"), replay);
         strings(o.getAsJsonArray("options"), options);
         if (o.has("specimens"))
@@ -72,25 +77,20 @@ public final class ResearchPlan {
             out.add(e.getAsString());
     }
 
-    private static void pairs(JsonArray a, Set<String> out) {
-        for (JsonElement e : a) {
-            JsonArray p = e.getAsJsonArray();
-            out.add(pair(p.get(0).getAsString(), p.get(1).getAsString()));
-        }
+    /** The traits the two concepts share, in {@code a}'s order; empty when they do not link. */
+    public List<String> shared(String a, String b) {
+        List<String> out = new ArrayList<>(3);
+        Set<String> other = traits.get(b);
+        if (other != null)
+            for (String t : traits.getOrDefault(a, Set.of()))
+                if (other.contains(t))
+                    out.add(t);
+        return out;
     }
 
-    private static String pair(String a, String b) {
-        return a.compareTo(b) < 0 ? a + "|" + b : b + "|" + a;
-    }
-
-    /** Whether the two concepts really belong together. */
+    /** Whether the two concepts link: they share a trait. */
     public boolean related(String a, String b) {
-        return relations.contains(pair(a, b));
-    }
-
-    /** Whether the researcher can already see that the two belong together. */
-    public boolean knows(String a, String b) {
-        return known.contains(pair(a, b));
+        return !shared(a, b).isEmpty();
     }
 
     /** The plan as the string it was parsed from. */

@@ -2,83 +2,85 @@
   "school": "attunement",
   "volume": 0,
   "title": "Marking the unseen",
-  "labels": {
-    "marking": "A marking",
-    "ink": "Ink",
-    "glyph": "A glyph",
-    "light": "Light",
-    "ritual": "A ritual",
-    "patience": "Patience",
-    "rhythm": "Rhythm",
-    "focus": "Focus",
-    "resonance": "Resonance",
-    "attunement": "An attunement",
-    "metal": "Metal"
+  "concepts": {
+    "marking": {
+      "label": "A marking",
+      "traits": [
+        "mark",
+        "line"
+      ]
+    },
+    "ink": {
+      "label": "Ink",
+      "traits": [
+        "mark",
+        "metal"
+      ]
+    },
+    "glyph": {
+      "label": "A glyph",
+      "traits": [
+        "line",
+        "meaning"
+      ]
+    },
+    "light": {
+      "label": "Light",
+      "traits": [
+        "meaning",
+        "glow"
+      ]
+    },
+    "ritual": {
+      "label": "A ritual",
+      "traits": [
+        "repeat",
+        "meaning"
+      ]
+    },
+    "patience": {
+      "label": "Patience",
+      "traits": [
+        "calm",
+        "repeat"
+      ]
+    },
+    "rhythm": {
+      "label": "Rhythm",
+      "traits": [
+        "repeat",
+        "resonance"
+      ]
+    },
+    "focus": {
+      "label": "Focus",
+      "traits": [
+        "calm",
+        "meaning"
+      ]
+    },
+    "resonance": {
+      "label": "Resonance",
+      "traits": [
+        "resonance",
+        "glow"
+      ]
+    },
+    "attunement": {
+      "label": "An attunement",
+      "traits": [
+        "resonance",
+        "calm"
+      ]
+    },
+    "metal": {
+      "label": "Metal",
+      "traits": [
+        "resonance",
+        "metal"
+      ]
+    }
   },
-  "relations": [
-    [
-      "marking",
-      "ink"
-    ],
-    [
-      "ink",
-      "glyph"
-    ],
-    [
-      "glyph",
-      "light"
-    ],
-    [
-      "glyph",
-      "focus"
-    ],
-    [
-      "focus",
-      "patience"
-    ],
-    [
-      "patience",
-      "rhythm"
-    ],
-    [
-      "rhythm",
-      "ritual"
-    ],
-    [
-      "ritual",
-      "resonance"
-    ],
-    [
-      "light",
-      "resonance"
-    ],
-    [
-      "resonance",
-      "attunement"
-    ],
-    [
-      "focus",
-      "attunement"
-    ],
-    [
-      "metal",
-      "resonance"
-    ],
-    [
-      "ink",
-      "metal"
-    ]
-  ],
-  "known": [
-    [
-      "marking",
-      "ink"
-    ],
-    [
-      "resonance",
-      "attunement"
-    ]
-  ],
   "start": "marking",
   "goal": "attunement",
   "replay": [

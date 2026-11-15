@@ -2,83 +2,86 @@
   "school": "robotics",
   "volume": 1,
   "title": "A motor that listens",
-  "labels": {
-    "dynamo": "A dynamo",
-    "current": "Current",
-    "motor": "A motor",
-    "coil": "A coil",
-    "field": "A field",
-    "torque": "Torque",
-    "sensor": "A sensor",
-    "feedback": "Feedback",
-    "controller": "A controller",
-    "position": "Position",
-    "servo": "A servo"
+  "concepts": {
+    "dynamo": {
+      "label": "A dynamo",
+      "traits": [
+        "turn",
+        "current"
+      ]
+    },
+    "current": {
+      "label": "Current",
+      "traits": [
+        "current",
+        "signal"
+      ]
+    },
+    "motor": {
+      "label": "A motor",
+      "traits": [
+        "field",
+        "magnet",
+        "torque"
+      ]
+    },
+    "coil": {
+      "label": "A coil",
+      "traits": [
+        "current",
+        "field"
+      ]
+    },
+    "field": {
+      "label": "A field",
+      "traits": [
+        "field",
+        "magnet"
+      ]
+    },
+    "torque": {
+      "label": "Torque",
+      "traits": [
+        "torque",
+        "turn"
+      ]
+    },
+    "sensor": {
+      "label": "A sensor",
+      "traits": [
+        "sense",
+        "signal"
+      ]
+    },
+    "feedback": {
+      "label": "Feedback",
+      "traits": [
+        "signal",
+        "control"
+      ]
+    },
+    "controller": {
+      "label": "A controller",
+      "traits": [
+        "control",
+        "signal"
+      ]
+    },
+    "position": {
+      "label": "Position",
+      "traits": [
+        "turn",
+        "sense"
+      ]
+    },
+    "servo": {
+      "label": "A servo",
+      "traits": [
+        "turn",
+        "control"
+      ]
+    }
   },
-  "relations": [
-    [
-      "dynamo",
-      "current"
-    ],
-    [
-      "current",
-      "coil"
-    ],
-    [
-      "coil",
-      "field"
-    ],
-    [
-      "field",
-      "motor"
-    ],
-    [
-      "motor",
-      "torque"
-    ],
-    [
-      "torque",
-      "position"
-    ],
-    [
-      "sensor",
-      "position"
-    ],
-    [
-      "sensor",
-      "feedback"
-    ],
-    [
-      "feedback",
-      "controller"
-    ],
-    [
-      "controller",
-      "motor"
-    ],
-    [
-      "controller",
-      "servo"
-    ],
-    [
-      "position",
-      "servo"
-    ],
-    [
-      "motor",
-      "servo"
-    ]
-  ],
-  "known": [
-    [
-      "dynamo",
-      "current"
-    ],
-    [
-      "controller",
-      "servo"
-    ]
-  ],
   "start": "dynamo",
   "goal": "servo",
   "replay": [

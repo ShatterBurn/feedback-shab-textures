@@ -2,83 +2,85 @@
   "school": "aerospace",
   "volume": 1,
   "title": "A screw in the air",
-  "labels": {
-    "water_wheel": "A water wheel",
-    "paddle": "A paddle",
-    "rotation": "Rotation",
-    "blade": "A blade",
-    "pitch": "Pitch",
-    "air": "Air",
-    "thrust": "Thrust",
-    "lift": "Lift",
-    "wing": "A wing",
-    "screw": "A screw",
-    "propeller": "A propeller"
+  "concepts": {
+    "water_wheel": {
+      "label": "A water wheel",
+      "traits": [
+        "turning",
+        "flow"
+      ]
+    },
+    "paddle": {
+      "label": "A paddle",
+      "traits": [
+        "turning",
+        "push"
+      ]
+    },
+    "rotation": {
+      "label": "Rotation",
+      "traits": [
+        "turning",
+        "bite"
+      ]
+    },
+    "blade": {
+      "label": "A blade",
+      "traits": [
+        "push",
+        "slant"
+      ]
+    },
+    "pitch": {
+      "label": "Pitch",
+      "traits": [
+        "slant",
+        "bite"
+      ]
+    },
+    "air": {
+      "label": "Air",
+      "traits": [
+        "flow",
+        "lift"
+      ]
+    },
+    "thrust": {
+      "label": "Thrust",
+      "traits": [
+        "push",
+        "flow"
+      ]
+    },
+    "lift": {
+      "label": "Lift",
+      "traits": [
+        "lift",
+        "flow"
+      ]
+    },
+    "wing": {
+      "label": "A wing",
+      "traits": [
+        "slant",
+        "lift"
+      ]
+    },
+    "screw": {
+      "label": "A screw",
+      "traits": [
+        "turning",
+        "slant"
+      ]
+    },
+    "propeller": {
+      "label": "A propeller",
+      "traits": [
+        "slant",
+        "flow"
+      ]
+    }
   },
-  "relations": [
-    [
-      "water_wheel",
-      "paddle"
-    ],
-    [
-      "paddle",
-      "rotation"
-    ],
-    [
-      "rotation",
-      "screw"
-    ],
-    [
-      "screw",
-      "blade"
-    ],
-    [
-      "blade",
-      "pitch"
-    ],
-    [
-      "pitch",
-      "thrust"
-    ],
-    [
-      "blade",
-      "air"
-    ],
-    [
-      "air",
-      "lift"
-    ],
-    [
-      "lift",
-      "wing"
-    ],
-    [
-      "thrust",
-      "propeller"
-    ],
-    [
-      "air",
-      "thrust"
-    ],
-    [
-      "pitch",
-      "propeller"
-    ],
-    [
-      "wing",
-      "blade"
-    ]
-  ],
-  "known": [
-    [
-      "water_wheel",
-      "paddle"
-    ],
-    [
-      "thrust",
-      "propeller"
-    ]
-  ],
   "start": "water_wheel",
   "goal": "propeller",
   "replay": [

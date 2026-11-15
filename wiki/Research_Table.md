@@ -54,14 +54,19 @@ One offering is used up per run, and the potion with it. No specimen is worn.
 
 ## The research board
 
-Each volume has its own story and its own concepts. Weapons II, for example, is a flash in a tube: a spring has to be linked to hot gas pushing. Attunements share one story, "Marking the unseen".
+Each volume has its own story and its own concepts. Attunements share one story, "Marking the unseen".
 
 The board is a hex board. The concept you already know sits at one end (the start) and the new idea at the other (the goal). Six hexes are rubble and cannot be used. Beside the board is a hand of concepts.
 
-1. Pick a concept from the hand. Some pairs are shown as known when you pick it.
-2. Pick a free hex beside the chain. If the concept really belongs with the cell it touches, it joins the chain with a rising note. If not, it fizzles, costs a point of **ink** and, on a volume, **strains** the specimen.
-3. A few joins in a row give an ink back.
-4. When the chain reaches the goal, the finding is replayed line by line and asks one question. Then a stamp grades the notes.
+Every concept shows two or three **traits** under its name, such as force, thin, hard or pressure. Two concepts link when they share a trait. Hover a concept on the board, or the goal, to see its traits.
+
+1. Pick a concept from the hand. The side list names which concepts on the board it shares traits with.
+2. Hover a free hex beside the chain. The chain concepts it would link with are outlined in green and the line names the shared trait; if it would share nothing, the line says so. Hovering costs nothing.
+3. Click the hex. If the concept shares a trait with a chain concept it touches, it joins the chain with a rising note. If not, it fizzles, naming the concepts the hex touched, costs a point of **ink** and, on a volume, **strains** the specimen.
+4. Three joins in a row give an ink back.
+5. To finish, place a concept on a hex beside the goal that shares one of the goal's traits. A line under the ink pips says what the goal needs. The finding is then replayed line by line and asks one question, and a stamp grades the notes.
+
+A three-step guide shows over the board the first time you open it in a game session; click to dismiss it.
 
 The notes' quality comes from the ink left, the longest run of joins and the answer to the question. Running out of ink first leaves a scrawl.
 

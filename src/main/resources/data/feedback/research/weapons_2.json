@@ -2,96 +2,92 @@
   "school": "weapons",
   "volume": 2,
   "title": "A flash in a tube",
-  "labels": {
-    "spring": "A spring",
-    "stored_energy": "Stored energy",
-    "release": "Release",
-    "bolt": "A bolt",
-    "powder": "Powder",
-    "flash": "A flash",
-    "heat": "Heat",
-    "gas": "Hot gas",
-    "pressure": "Pressure",
-    "tube": "A tube",
-    "plug": "A plug",
-    "gas_push": "Gas pushes"
+  "concepts": {
+    "spring": {
+      "label": "A spring",
+      "traits": [
+        "stored",
+        "push"
+      ]
+    },
+    "stored_energy": {
+      "label": "Stored energy",
+      "traits": [
+        "stored",
+        "release"
+      ]
+    },
+    "release": {
+      "label": "Release",
+      "traits": [
+        "release",
+        "fast"
+      ]
+    },
+    "bolt": {
+      "label": "A bolt",
+      "traits": [
+        "push",
+        "fast"
+      ]
+    },
+    "powder": {
+      "label": "Powder",
+      "traits": [
+        "stored",
+        "heat"
+      ]
+    },
+    "flash": {
+      "label": "A flash",
+      "traits": [
+        "fast",
+        "heat"
+      ]
+    },
+    "heat": {
+      "label": "Heat",
+      "traits": [
+        "heat",
+        "gas"
+      ]
+    },
+    "gas": {
+      "label": "Hot gas",
+      "traits": [
+        "gas",
+        "pressure"
+      ]
+    },
+    "pressure": {
+      "label": "Pressure",
+      "traits": [
+        "pressure",
+        "confined"
+      ]
+    },
+    "tube": {
+      "label": "A tube",
+      "traits": [
+        "confined",
+        "push"
+      ]
+    },
+    "plug": {
+      "label": "A plug",
+      "traits": [
+        "confined",
+        "heat"
+      ]
+    },
+    "gas_push": {
+      "label": "Gas pushes",
+      "traits": [
+        "gas",
+        "push"
+      ]
+    }
   },
-  "relations": [
-    [
-      "spring",
-      "stored_energy"
-    ],
-    [
-      "stored_energy",
-      "release"
-    ],
-    [
-      "release",
-      "bolt"
-    ],
-    [
-      "release",
-      "flash"
-    ],
-    [
-      "powder",
-      "flash"
-    ],
-    [
-      "powder",
-      "heat"
-    ],
-    [
-      "flash",
-      "heat"
-    ],
-    [
-      "heat",
-      "gas"
-    ],
-    [
-      "gas",
-      "pressure"
-    ],
-    [
-      "pressure",
-      "tube"
-    ],
-    [
-      "tube",
-      "plug"
-    ],
-    [
-      "plug",
-      "pressure"
-    ],
-    [
-      "pressure",
-      "gas_push"
-    ],
-    [
-      "gas",
-      "gas_push"
-    ],
-    [
-      "bolt",
-      "tube"
-    ]
-  ],
-  "known": [
-    [
-      "spring",
-      "stored_energy"
-    ],
-    [
-      "powder",
-      "flash"
-    ],
-    [
-      "pressure",
-      "gas_push"
-    ]
-  ],
   "start": "spring",
   "goal": "gas_push",
   "replay": [

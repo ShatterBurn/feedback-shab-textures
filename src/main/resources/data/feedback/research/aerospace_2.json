@@ -2,83 +2,86 @@
   "school": "aerospace",
   "volume": 2,
   "title": "No air needed",
-  "labels": {
-    "propeller": "A propeller",
-    "air": "Air",
-    "momentum": "Momentum",
-    "exhaust": "Exhaust",
-    "fuel": "Fuel",
-    "burn": "Burning",
-    "nozzle": "A nozzle",
-    "pressure": "Pressure",
-    "reaction": "Reaction",
-    "thruster": "A thruster",
-    "blade": "A blade"
+  "concepts": {
+    "propeller": {
+      "label": "A propeller",
+      "traits": [
+        "air",
+        "spin"
+      ]
+    },
+    "air": {
+      "label": "Air",
+      "traits": [
+        "air",
+        "gas"
+      ]
+    },
+    "momentum": {
+      "label": "Momentum",
+      "traits": [
+        "push",
+        "reaction"
+      ]
+    },
+    "exhaust": {
+      "label": "Exhaust",
+      "traits": [
+        "gas",
+        "jet"
+      ]
+    },
+    "fuel": {
+      "label": "Fuel",
+      "traits": [
+        "burn",
+        "gas"
+      ]
+    },
+    "burn": {
+      "label": "Burning",
+      "traits": [
+        "burn",
+        "heat"
+      ]
+    },
+    "nozzle": {
+      "label": "A nozzle",
+      "traits": [
+        "pressure",
+        "jet"
+      ]
+    },
+    "pressure": {
+      "label": "Pressure",
+      "traits": [
+        "gas",
+        "pressure",
+        "heat"
+      ]
+    },
+    "reaction": {
+      "label": "Reaction",
+      "traits": [
+        "reaction",
+        "jet"
+      ]
+    },
+    "thruster": {
+      "label": "A thruster",
+      "traits": [
+        "jet",
+        "pressure"
+      ]
+    },
+    "blade": {
+      "label": "A blade",
+      "traits": [
+        "spin",
+        "push"
+      ]
+    }
   },
-  "relations": [
-    [
-      "propeller",
-      "blade"
-    ],
-    [
-      "blade",
-      "air"
-    ],
-    [
-      "air",
-      "momentum"
-    ],
-    [
-      "momentum",
-      "exhaust"
-    ],
-    [
-      "momentum",
-      "reaction"
-    ],
-    [
-      "exhaust",
-      "nozzle"
-    ],
-    [
-      "fuel",
-      "burn"
-    ],
-    [
-      "burn",
-      "pressure"
-    ],
-    [
-      "pressure",
-      "nozzle"
-    ],
-    [
-      "nozzle",
-      "thruster"
-    ],
-    [
-      "reaction",
-      "thruster"
-    ],
-    [
-      "exhaust",
-      "reaction"
-    ],
-    [
-      "burn",
-      "exhaust"
-    ]
-  ],
-  "known": [
-    [
-      "propeller",
-      "blade"
-    ],
-    [
-      "nozzle",
-      "thruster"
-    ]
-  ],
   "start": "propeller",
   "goal": "thruster",
   "replay": [

@@ -2,88 +2,92 @@
   "school": "weapons",
   "volume": 3,
   "title": "Lightning on a leash",
-  "labels": {
-    "powder": "Powder",
-    "chemical_energy": "Chemical energy",
-    "charge": "Charge",
-    "current": "Current",
-    "wire": "A wire",
-    "coil": "A coil",
-    "field": "A field",
-    "magnet": "A magnet",
-    "capacitor": "A capacitor",
-    "release": "Release",
-    "pulse": "A pulse",
-    "heat": "Heat"
+  "concepts": {
+    "powder": {
+      "label": "Powder",
+      "traits": [
+        "chem",
+        "burst"
+      ]
+    },
+    "chemical_energy": {
+      "label": "Chemical energy",
+      "traits": [
+        "chem",
+        "store"
+      ]
+    },
+    "charge": {
+      "label": "Charge",
+      "traits": [
+        "store",
+        "electric"
+      ]
+    },
+    "current": {
+      "label": "Current",
+      "traits": [
+        "electric",
+        "flow"
+      ]
+    },
+    "wire": {
+      "label": "A wire",
+      "traits": [
+        "flow",
+        "metal"
+      ]
+    },
+    "coil": {
+      "label": "A coil",
+      "traits": [
+        "metal",
+        "field"
+      ]
+    },
+    "field": {
+      "label": "A field",
+      "traits": [
+        "field",
+        "iron"
+      ]
+    },
+    "magnet": {
+      "label": "A magnet",
+      "traits": [
+        "field",
+        "iron"
+      ]
+    },
+    "capacitor": {
+      "label": "A capacitor",
+      "traits": [
+        "store",
+        "burst"
+      ]
+    },
+    "release": {
+      "label": "Release",
+      "traits": [
+        "burst",
+        "store"
+      ]
+    },
+    "pulse": {
+      "label": "A pulse",
+      "traits": [
+        "burst",
+        "field"
+      ]
+    },
+    "heat": {
+      "label": "Heat",
+      "traits": [
+        "chem",
+        "flow"
+      ]
+    }
   },
-  "relations": [
-    [
-      "powder",
-      "chemical_energy"
-    ],
-    [
-      "powder",
-      "heat"
-    ],
-    [
-      "chemical_energy",
-      "charge"
-    ],
-    [
-      "charge",
-      "current"
-    ],
-    [
-      "current",
-      "wire"
-    ],
-    [
-      "wire",
-      "coil"
-    ],
-    [
-      "coil",
-      "field"
-    ],
-    [
-      "field",
-      "magnet"
-    ],
-    [
-      "charge",
-      "capacitor"
-    ],
-    [
-      "current",
-      "capacitor"
-    ],
-    [
-      "capacitor",
-      "release"
-    ],
-    [
-      "release",
-      "pulse"
-    ],
-    [
-      "field",
-      "pulse"
-    ],
-    [
-      "current",
-      "heat"
-    ]
-  ],
-  "known": [
-    [
-      "powder",
-      "chemical_energy"
-    ],
-    [
-      "release",
-      "pulse"
-    ]
-  ],
   "start": "powder",
   "goal": "pulse",
   "replay": [

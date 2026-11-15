@@ -28,8 +28,9 @@ import net.neoforged.neoforge.network.PacketDistributor;
 /**
  * The research board: a researcher who only knows the old way has to link what they know to a new idea. A hex board holds the concept they own
  * (the start) and, across it, the one they are after (the goal); a hand of concepts lies beside it. Pick a concept, then a free hex beside the
- * chain, and it is tried ({@link ResearchBoard}): a concept that really belongs with its neighbour joins the chain with a rising note, one that
- * does not fizzles, costs a point of ink and strains the specimen. A few joins in a row give an ink back. Reach the goal and the page replays what
+ * chain, and it is tried ({@link ResearchBoard}): a concept that shares a trait with a chain concept it touches joins the chain with a rising note (the pointer
+ * over a hex outlines the concepts it would link with and names the trait), one that shares nothing fizzles, says what it touched, costs a point of
+ * ink and strains the specimen. A few joins in a row give an ink back. Reach the goal and the page replays what
  * was found, line by line, and asks the one thing the chain does not say; then a stamp grades the notes. Out of ink first and the notes are
  * scrawl. What is sent is what was done (the placements and the answer); the server replays it and grades that. Esc before the end sends nothing
  * and spends nothing.
@@ -42,7 +43,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
 final class ResearchBoardScreen extends Screen {
 
     private static final GuiSkin SKIN = GuiSkin.WOOD;
-    private static final int W = 350, H = 250, HEX = 14, BOARD_X = 120, BOARD_Y = 138, CELLS = 37, CHIP_W = 52, CHIP_H = 20;
+    private static final int W = 400, H = 250, HEX = 14, BOARD_X = 135, BOARD_Y = 138, CELLS = 37, CHIP_W = 64, CHIP_H = 24, HAND_X = 262, HAND_DX = 68, HAND_DY = 26;
     private static final int PLAY = 0, REPLAY = 1, ASK = 2, END = 3;
     private static final int GREEN = 0xFF5DBB63, RED = 0xFFD2452F, GOLD = 0xFFE8B83A, BLOCKED = 0xFF3B2F22, FREE = 0xFFB89A6A, FREE_HI = 0xFFD8BC88, CHAIN = 0xFF8A6A3A,
             RUBBLE_EDGE = 0xFF2A1D10, PAGE = 0xFFEDE3C4, PAGE_INK = 0xFF1F2A5C;
@@ -60,6 +61,16 @@ final class ResearchBoardScreen extends Screen {
     private final int[] cellX = new int[CELLS], cellY = new int[CELLS];
     private final boolean[] usable = new boolean[CELLS];
     private final Map<String, FormattedCharSequence> chipLabels = new HashMap<>();
+    private final Map<String, String> traitText = new HashMap<>();
+    private final boolean[] ring = new boolean[CELLS];
+    /** The how-to over the board shows until the first click, once per game session. */
+    private static boolean howtoSeen;
+    private String hoverText = "", fizzleText = "";
+    private long fizzleUntil;
+    private int hoverCell = -1, hoverStamp = -1;
+    private String hoverHeld;
+    private Component goalLine;
+    private final Component[] howto = new Component[3];
     private Component linkLine, handLine, helpLine, clickLine, foundLine, lostLine, tallyLine, answerLine, streakLine;
     private List<String> replayLines = List.of();
     private List<FormattedCharSequence> knownLines = List.of();
@@ -90,6 +101,11 @@ final class ResearchBoardScreen extends Screen {
                 }
         placedAt.put(board.startCell, 0L);
         linkLine = Component.translatable("gui.feedback.research.link", plan.labels.get(plan.start), plan.labels.get(plan.goal));
+        for (String id : plan.labels.keySet())
+            traitText.put(id, traitsOf(id));
+        goalLine = Component.translatable("gui.feedback.research.goal", traitText.get(plan.goal));
+        for (int i = 0; i < howto.length; i++)
+            howto[i] = Component.translatable("gui.feedback.research.howto." + (i + 1));
         handLine = Component.translatable("gui.feedback.research.hand");
         helpLine = Component.translatable("gui.feedback.research.help");
         clickLine = Component.translatable("gui.feedback.research.click");
@@ -133,16 +149,92 @@ final class ResearchBoardScreen extends Screen {
             knownLines = List.of();
         else {
             List<FormattedCharSequence> lines = new ArrayList<>();
-            lines.add(font.split(Component.translatable("gui.feedback.research.knows", plan.labels.get(held)), 90).get(0));
-            for (String other : plan.labels.keySet())
-                if (!other.equals(held) && plan.knows(held, other) && lines.size() < 5)
-                    lines.add(Component.literal("- " + plan.labels.get(other)).getVisualOrderText());
+            lines.add(font.split(Component.translatable("gui.feedback.research.shares", plan.labels.get(held)), 104).get(0));
+            for (var e : board.placed.entrySet()) {
+                List<String> same = plan.shared(held, e.getValue());
+                if (!same.isEmpty() && lines.size() < 5)
+                    lines.add(font.split(Component.literal("- " + plan.labels.get(e.getValue()) + ": " + traitNames(same)), 104).get(0));
+            }
+            if (lines.size() == 1)
+                lines.addAll(font.split(Component.translatable("gui.feedback.research.shares_none"), 104).subList(0, 2));
             knownLines = lines;
         }
     }
 
     private void ui(SoundEvent sound, float pitch, float volume) {
         Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(sound, pitch, volume));
+    }
+
+    /** The trait names of a concept, as the player reads them: {@code thin, hard}. */
+    private String traitsOf(String id) {
+        return traitNames(plan.traits.get(id));
+    }
+
+    private static String traitNames(java.util.Collection<String> ids) {
+        StringBuilder out = new StringBuilder();
+        for (String t : ids)
+            out.append(out.length() == 0 ? "" : ", ").append(Component.translatable("gui.feedback.research.trait." + t).getString());
+        return out.toString();
+    }
+
+    private int handX(int i) {
+        return px + HAND_X + (i % 2) * HAND_DX;
+    }
+
+    private int handY(int i) {
+        return py + 52 + (i / 2) * HAND_DY;
+    }
+
+    private int cellAt(double mx, double my) {
+        for (int i = 0; i < CELLS; i++) {
+            double dx = mx - px - cellX[i], dy = my - py - cellY[i];
+            if (dx * dx + dy * dy < (HEX * 0.86) * (HEX * 0.86))
+                return i;
+        }
+        return -1;
+    }
+
+    /** Works out what the hover line says and which chain hexes to outline; redone only when the cell, the held concept or the board changed. */
+    private void updateHover(int mx, int my) {
+        int cell = cellAt(mx, my);
+        int stamp = board.links * 64 + board.fizzles;
+        if (cell == hoverCell && stamp == hoverStamp && java.util.Objects.equals(held, hoverHeld))
+            return;
+        hoverCell = cell;
+        hoverStamp = stamp;
+        hoverHeld = held;
+        java.util.Arrays.fill(ring, false);
+        hoverText = "";
+        if (cell < 0)
+            return;
+        long c = cells[cell];
+        if (held != null && usable[cell]) {
+            StringBuilder out = new StringBuilder();
+            for (long n : board.neighbours(c)) {
+                String other = board.placed.get(n);
+                List<String> same = other == null ? List.of() : plan.shared(held, other);
+                if (same.isEmpty())
+                    continue;
+                for (int k = 0; k < CELLS; k++)
+                    if (cells[k] == n)
+                        ring[k] = true;
+                out.append(out.length() == 0 ? "" : "; ").append(Component.translatable("gui.feedback.research.hover", traitNames(same), plan.labels.get(other)).getString());
+            }
+            hoverText = out.length() == 0 ? Component.translatable("gui.feedback.research.fizzle", plan.labels.get(held), touched(c)).getString() : out.toString();
+        } else {
+            String concept = c == board.goalCell ? plan.goal : board.placed.get(c);
+            if (concept != null)
+                hoverText = plan.labels.get(concept) + ": " + traitText.get(concept);
+        }
+    }
+
+    /** The labels of the chain concepts a hex touches, for the fizzle line. */
+    private String touched(long cell) {
+        StringBuilder out = new StringBuilder();
+        for (long n : board.neighbours(cell))
+            if (board.placed.containsKey(n))
+                out.append(out.length() == 0 ? "" : ", ").append(plan.labels.get(board.placed.get(n)));
+        return out.toString();
     }
 
     private void to(int next) {
@@ -162,8 +254,12 @@ final class ResearchBoardScreen extends Screen {
         if (!opening.settled() || button != 0)
             return !opening.settled() || super.mouseClicked(mx, my, button);
         if (phase == PLAY) {
+            if (!howtoSeen) {
+                howtoSeen = true;
+                return true;
+            }
             for (int i = 0; i < hand.size(); i++) {
-                int x = px + 232 + (i % 2) * 54, y = py + 52 + (i / 2) * 22;
+                int x = handX(i), y = handY(i);
                 if (mx >= x && mx < x + CHIP_W && my >= y && my < y + CHIP_H) {
                     String id = hand.get(i);
                     if (board.placed.containsValue(id))
@@ -174,14 +270,9 @@ final class ResearchBoardScreen extends Screen {
                     return true;
                 }
             }
-            for (int i = 0; i < CELLS; i++) {
-                double dx = mx - px - cellX[i], dy = my - py - cellY[i];
-                if (dx * dx + dy * dy < (HEX * 0.86) * (HEX * 0.86)) {
-                    if (held != null)
-                        place(i);
-                    return true;
-                }
-            }
+            int hit = cellAt(mx, my);
+            if (hit >= 0 && held != null)
+                place(hit);
             return true;
         }
         if (phase == REPLAY) {
@@ -206,6 +297,8 @@ final class ResearchBoardScreen extends Screen {
         held = null;
         switch (result) {
             case FIZZLE -> {
+                fizzleText = Component.translatable("gui.feedback.research.fizzle", plan.labels.get(concept), touched(cell)).getString();
+                fizzleUntil = System.currentTimeMillis() + 4000;
                 shakeAt = GuiStyle.time();
                 specks.burst(x, y, 14, 1.8f, 0.4f, RED, 18, 2);
                 ui(SoundEvents.NOTE_BLOCK_BASS.value(), 0.5f, 0.9f);
@@ -324,8 +417,13 @@ final class ResearchBoardScreen extends Screen {
                 streakLine = Component.translatable("gui.feedback.research.streak", board.streak);
                 lastStreak = board.streak;
             }
-            g.drawString(font, streakLine, px + 12, py + 42, GOLD, false);
+            g.drawString(font, streakLine, px + 100, py + 31, GOLD, false);
         }
+        g.drawString(font, goalLine, px + 12, py + 42, SKIN.dim(), false);
+        updateHover(mx, my);
+        for (int i = 0; i < CELLS; i++)
+            if (ring[i])
+                hex(g, px + cellX[i], py + cellY[i], HEX + 1, GREEN);
         for (var e : board.from.entrySet())
             GuiStyle.line(g, px + cellXOf(e.getKey()), py + cellYOf(e.getKey()), px + cellXOf(e.getValue()), py + cellYOf(e.getValue()), CHAIN);
         float now = GuiStyle.time();
@@ -352,19 +450,35 @@ final class ResearchBoardScreen extends Screen {
                     g.drawString(font, "?", x - 2, y - 3, SKIN.dim(), false);
             }
         }
-        g.drawString(font, handLine, px + 232, py + 40, SKIN.dim(), false);
+        g.drawString(font, handLine, px + HAND_X, py + 40, SKIN.dim(), false);
         for (int i = 0; i < hand.size(); i++) {
-            int x = px + 232 + (i % 2) * 54, y = py + 52 + (i / 2) * 22;
+            int x = handX(i), y = handY(i);
             String id = hand.get(i);
             boolean used = board.placed.containsValue(id);
             g.fill(x, y, x + CHIP_W, y + CHIP_H, used ? 0xFF4A3B26 : id.equals(held) ? GOLD : 0xFF8C7650);
             g.renderOutline(x, y, CHIP_W, CHIP_H, RUBBLE_EDGE);
-            g.drawString(font, chipLabels.get(id), x + 3, y + 6, used ? SKIN.dim() : 0xFF22160A, false);
+            g.drawString(font, chipLabels.get(id), x + 3, y + 3, used ? SKIN.dim() : 0xFF22160A, false);
+            g.pose().pushPose();
+            g.pose().translate(x + 3, y + 14, 0);
+            g.pose().scale(0.7f, 0.7f, 1f);
+            g.drawString(font, traitText.get(id), 0, 0, used ? SKIN.dim() : 0xFF4A3B26, false);
+            g.pose().popPose();
         }
-        int ky = py + 52 + ((hand.size() + 1) / 2) * 22 + 6;
+        int ky = py + 52 + ((hand.size() + 1) / 2) * HAND_DY + 4;
         for (int i = 0; i < knownLines.size(); i++)
-            g.drawString(font, knownLines.get(i), px + 232, ky + i * 9, i == 0 ? SKIN.ink() : SKIN.dim(), false);
+            g.drawString(font, knownLines.get(i), px + HAND_X, ky + i * 9, i == 0 ? SKIN.ink() : SKIN.dim(), false);
+        if (System.currentTimeMillis() < fizzleUntil)
+            g.drawString(font, fizzleText, px + 12, py + H - 27, RED, false);
+        else if (!hoverText.isEmpty())
+            g.drawString(font, hoverText, px + 12, py + H - 27, GOLD, false);
         g.drawString(font, helpLine, px + 12, py + H - 14, SKIN.dim(), false);
+        if (!howtoSeen) {
+            g.fill(px + 40, py + 70, px + W - 40, py + 160, PAGE);
+            g.renderOutline(px + 40, py + 70, W - 80, 90, CHAIN);
+            for (int i = 0; i < howto.length; i++)
+                g.drawString(font, howto[i], px + 52, py + 82 + i * 16, PAGE_INK, false);
+            g.drawString(font, clickLine, px + 52, py + 140, 0xFF6C6C70, false);
+        }
     }
 
     private int cellXOf(long c) {

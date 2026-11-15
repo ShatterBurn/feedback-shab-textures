@@ -2,78 +2,78 @@
   "school": "chemical",
   "volume": 2,
   "title": "Squeezing the air",
-  "labels": {
-    "vessel": "A vessel",
-    "pressure": "Pressure",
-    "gas": "Gas",
-    "volume": "Volume",
-    "piston": "A piston",
-    "stroke": "A stroke",
-    "valve": "A valve",
-    "heat": "Heat",
-    "cooling": "Cooling",
-    "compressor": "A compressor"
+  "concepts": {
+    "vessel": {
+      "label": "A vessel",
+      "traits": [
+        "pressure",
+        "heat"
+      ]
+    },
+    "pressure": {
+      "label": "Pressure",
+      "traits": [
+        "pressure",
+        "gas"
+      ]
+    },
+    "gas": {
+      "label": "Gas",
+      "traits": [
+        "gas",
+        "volume"
+      ]
+    },
+    "volume": {
+      "label": "Volume",
+      "traits": [
+        "volume",
+        "sweep"
+      ]
+    },
+    "piston": {
+      "label": "A piston",
+      "traits": [
+        "sweep",
+        "stroke"
+      ]
+    },
+    "stroke": {
+      "label": "A stroke",
+      "traits": [
+        "stroke",
+        "cycle"
+      ]
+    },
+    "valve": {
+      "label": "A valve",
+      "traits": [
+        "cycle",
+        "oneway"
+      ]
+    },
+    "heat": {
+      "label": "Heat",
+      "traits": [
+        "gas",
+        "heat"
+      ]
+    },
+    "cooling": {
+      "label": "Cooling",
+      "traits": [
+        "heat",
+        "cycle"
+      ]
+    },
+    "compressor": {
+      "label": "A compressor",
+      "traits": [
+        "stroke",
+        "oneway"
+      ]
+    }
   },
-  "relations": [
-    [
-      "vessel",
-      "pressure"
-    ],
-    [
-      "pressure",
-      "gas"
-    ],
-    [
-      "gas",
-      "volume"
-    ],
-    [
-      "volume",
-      "piston"
-    ],
-    [
-      "piston",
-      "stroke"
-    ],
-    [
-      "stroke",
-      "valve"
-    ],
-    [
-      "valve",
-      "compressor"
-    ],
-    [
-      "stroke",
-      "heat"
-    ],
-    [
-      "heat",
-      "cooling"
-    ],
-    [
-      "cooling",
-      "compressor"
-    ],
-    [
-      "gas",
-      "heat"
-    ],
-    [
-      "piston",
-      "compressor"
-    ]
-  ],
-  "known": [
-    [
-      "vessel",
-      "pressure"
-    ],
-    [
-      "valve",
-      "compressor"
-    ]
-  ],
   "start": "vessel",
   "goal": "compressor",
   "replay": [
