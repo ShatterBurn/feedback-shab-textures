@@ -26,6 +26,10 @@ A running [Fission Reactor](Fission_Reactor.md) core gives off radiation in prop
 
 The dense shell of the reactor is what holds it in: blocks between a source and you cut the dose by their material's density, so lead and steel walls matter ([What shields](#what-shields)). Stand far off, or behind the shell.
 
+## In the Shelf
+
+The sky gives off radiation of its own in the [Shelf](The_Shelf.md), and it adds to your dose there. Armor and the dense plates of a hull around you shield it.
+
 ## What shields
 
 Distance, armor and dense blocks standing between you and the source cut the dose. Each block in the way counts by its material's density, so a thick wall of lead or steel does far more than a light block, and air does nothing.

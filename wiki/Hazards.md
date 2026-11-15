@@ -120,7 +120,11 @@ A [Breaker](Breaker.md#arc-flash) that opens under heavy current on an EHV line 
 
 A toxic gas that has nowhere to go does not poison at once; it hangs as a **cloud** about 3 blocks across where it was let go. [Osmium tetroxide](Chemicals.md#osmium-tetroxide) makes one when a [Reactor](Reactor.md) has no room for it, when osmium powder is heated without its protective gas (see the [Heavy Core](Heavy_Core.md#making-it)), and when a batch of toxic [dust](Materials.md#dust) finishes in an open vessel. Fine dust of a fuel such as coal or sulfur in an open vessel at its ignition temperature flashes and lights the air above it.
 
-Staying inside builds up exposure, and leaving lets it drain, twice as fast. First the eyes sting and the head swims (nausea); then the sight goes (blindness); then the lungs burn and you take slow damage. The damage stops with **one heart** left, so a cloud can be walked out of. A [Respirator](Respirator.md) worn on the head cuts the poison from any fume to a fifth. A sealed vessel with room in its tank lets nothing out.
+Staying inside builds up exposure, and leaving lets it drain, twice as fast. First the eyes sting and the head swims (nausea); then the sight goes (blindness); then the lungs burn and you take slow damage. The damage stops with **one heart** left, so a cloud can be walked out of. A [Respirator](Respirator.md) worn in the Face slot cuts the poison from any fume to a fifth. A sealed vessel with room in its tank lets nothing out.
+
+## Thin air
+
+Where the air carries less than half of the breathable air at sea level (about y 192 in the Overworld, and everywhere in the [Shelf](The_Shelf.md)), your air bar drains. A breath sound, nausea and darkness come first, then the bar empties and you take damage. A [Respirator](Respirator.md) or the air of a sealed cabin (see [Air Valve](Air_Valve.md)) gives breath back.
 
 ## Creeper charge
 

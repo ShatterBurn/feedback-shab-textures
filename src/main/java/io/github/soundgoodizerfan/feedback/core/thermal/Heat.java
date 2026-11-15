@@ -135,9 +135,10 @@ public final class Heat {
     public static Tu equilibrium(ThermalBody body, Tu fireTu, Tu ambient) {
         // The two conductances are added, which is only a legal thing to write because they share
         // a dimension. Nothing said so until Conductance existed; now the types do.
+        float leak = AirCoupling.leak(body);
         return new Tu((ThermalTuning.FIRE_CONDUCTANCE.workPerTickPerTu() * fireTu.value()
-                + AirCoupling.leak(body) * ambient.value())
-                / (ThermalTuning.FIRE_CONDUCTANCE.workPerTickPerTu() + AirCoupling.leak(body)));
+                + leak * ambient.value())
+                / (ThermalTuning.FIRE_CONDUCTANCE.workPerTickPerTu() + leak));
     }
 
     /**

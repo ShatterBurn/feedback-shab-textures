@@ -75,8 +75,11 @@ public final class SpaceTrigger {
         ServerLevel level = event.getPhysicsSystem().getLevel();
         if (!level.dimension().equals(SpaceTravel.SHELF))
             return;
+        var container = ServerSubLevelContainer.getContainer(level);
+        if (container == null)
+            return;
         var pipeline = event.getPhysicsSystem().getPipeline();
-        for (ServerSubLevel body : ServerSubLevelContainer.getContainer(level).getAllSubLevels())
+        for (ServerSubLevel body : container.getAllSubLevels())
             if (!body.isRemoved()
                     && event.getPhysicsSystem().getPhysicsHandle(body).getLinearVelocity(new org.joml.Vector3d()).lengthSquared()
                             > SpaceTuning.DRIFT_MIN_SPEED * SpaceTuning.DRIFT_MIN_SPEED)

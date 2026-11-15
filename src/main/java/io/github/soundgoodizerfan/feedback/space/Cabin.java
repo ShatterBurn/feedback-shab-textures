@@ -31,6 +31,7 @@ import org.jetbrains.annotations.Nullable;
  * shortcut: the air lives in memory, keyed by body and the cabin's smallest cell, so a restart refills every cabin and a
  * cabin that nobody is in does not leak; upgrade to saved data when cabins matter between sessions.
  */
+@net.neoforged.fml.common.EventBusSubscriber(modid = io.github.soundgoodizerfan.feedback.Feedback.MOD_ID)
 public final class Cabin {
     /** One cabin: the body and its smallest cell, which names it while its walls do not move. */
     public record Key(UUID body, long anchor) {
@@ -47,6 +48,18 @@ public final class Cabin {
     private static final Map<UUID, Seen> SEEN = new HashMap<>();
 
     private Cabin() {
+    }
+
+    /** Forgets everything held in memory: a stopped server, or a player who left. */
+    @net.neoforged.bus.api.SubscribeEvent
+    public static void onStopped(net.neoforged.neoforge.event.server.ServerStoppedEvent event) {
+        AIR.clear();
+        SEEN.clear();
+    }
+
+    @net.neoforged.bus.api.SubscribeEvent
+    public static void onLogout(net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent event) {
+        SEEN.remove(event.getEntity().getUUID());
     }
 
     /** The cabin around plot cell {@code start} of {@code body}, or null if that cell is solid. */

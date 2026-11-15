@@ -84,7 +84,7 @@ A hot enough crucible, furnace or casting basin that holds metal gives off real 
 
 ## Room temperature
 
-Everything cools toward the room's temperature: **20 Tu** in the Overworld, **40 Tu** in the Nether.
+Everything cools toward the room's temperature: **20 Tu** in the Overworld, **40 Tu** in the Nether. A vessel loses heat to the room through the air, so thin air slows its cooling and in a vacuum it keeps all its heat; a [Radiator Panel](Radiator_Panel.md) sheds it.
 
 ## Processes
 
@@ -144,6 +144,7 @@ What isn't caught up is **progress**. A batch in the crucible doesn't finish whi
 | [Reactor](Reactor.md) | A heated, pressurized vessel for oil and plastic chemistry |
 | [Fission Reactor](Fission_Reactor.md) | Uranium fuel in a shielded lattice; makes heat for a boiler |
 | [Gas Turbine](Gas_Turbine.md) / [Flare Stack](Flare_Stack.md) | Burn fuel gas for rotation / burn it off |
+| [Radiator Panel](Radiator_Panel.md) | Sheds heat from a vessel where the air is thin or gone |
 | [Pressure Vessel](Pressure_Vessel.md) | Stores compressed air, and explodes |
 
 ## Guides

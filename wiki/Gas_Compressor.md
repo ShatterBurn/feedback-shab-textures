@@ -38,6 +38,8 @@ S B S
 
 Use the item on a compressor to fit it (one per compressor); a [Crowbar](Crowbar.md) takes it off. With it, a compressor that has no gas behind it draws open air into its front. How much it draws scales with the air density of the dimension; the End gives 5% of the Overworld's. A compressor with gas behind it works as before.
 
+A [Respirator](Respirator.md) air cylinder is filled with the compressor.
+
 ## Surge
 
 If the front can take nothing more, the compressor **surges**: its condition falls, down to a floor of 20%, and it moves proportionally less. Only this wears it. Running into a line with room never does. Back off, or open the line to a [Gas Tank](Gas_Tank.md) or a consumer.
