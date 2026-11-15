@@ -140,6 +140,17 @@ public final class Researching {
         return ModularTuning.RESEARCH_BASE_INK + Math.max(0, offer) + (potion ? ModularTuning.RESEARCH_REAGENT_INK : 0);
     }
 
+    /**
+     * The experience points a player has now, from their level and the bar. {@code totalExperience} is only a running score that a level set by
+     * command or lost to a vanilla enchant never touches, so it is not what a level is worth; spending points ({@code giveExperiencePoints})
+     * does take them from the bar and then from the level below.
+     */
+    public static long points(Player player) {
+        long level = player.experienceLevel;
+        long atLevel = level <= 16 ? level * level + 6 * level : level <= 31 ? (long) (2.5 * level * level - 40.5 * level + 360) : (long) (4.5 * level * level - 162.5 * level + 2220);
+        return atLevel + Math.round(player.experienceProgress * player.getXpNeededForNextLevel());
+    }
+
     /** Whether {@code specimen} is what research of the {@code index}-th thing of {@code mode} takes. */
     public static boolean specimenFits(ItemStack specimen, int mode, int index) {
         var design = ModularStacks.design(specimen);

@@ -176,7 +176,7 @@ public class ResearchTableMenu extends AbstractContainerMenu {
         if (mode.get() == 1 && Researching.attunementInk(effect(server), table.getItem(ResearchTableBlockEntity.OFFERING),
                 table.getItem(ResearchTableBlockEntity.REAGENT), server.level()) < 0)
             return NOTE_NO_OFFERING;
-        if (server.totalExperience < ModularTuning.RESEARCH_XP && !server.getAbilities().instabuild)
+        if (Researching.points(server) < ModularTuning.RESEARCH_XP && !server.getAbilities().instabuild)
             return NOTE_NO_XP;
         return 0;
     }
