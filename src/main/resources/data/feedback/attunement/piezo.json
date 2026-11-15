@@ -112,5 +112,6 @@
     "container": {
       "kind": "meal_sense"
     }
-  }
+  },
+  "offering": "hardness"
 }

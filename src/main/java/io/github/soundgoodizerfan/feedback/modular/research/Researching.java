@@ -5,6 +5,7 @@ package io.github.soundgoodizerfan.feedback.modular.research;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.OptionalDouble;
 
 import io.github.soundgoodizerfan.feedback.modular.attunement.AttunementKnowledge;
 import io.github.soundgoodizerfan.feedback.modular.attunement.Attunements;
@@ -68,6 +69,75 @@ public final class Researching {
             return ResearchPlans.get().attunement();
         int[] v = volume(index);
         return ResearchPlans.get().volume(School.values()[v[0]], v[1]);
+    }
+
+    /** The figure of the material property called {@code key} that {@code m} states, if it does. */
+    private static OptionalDouble figure(String key, io.github.soundgoodizerfan.feedback.process.Material m) {
+        return switch (key) {
+            case "hardness" -> OptionalDouble.of(m.hardness().value());
+            case "toughness" -> m.mechanical().toughness().map(x -> OptionalDouble.of(x.value())).orElse(OptionalDouble.empty());
+            case "yield" -> m.mechanical().yieldStrength().map(x -> OptionalDouble.of(x.value())).orElse(OptionalDouble.empty());
+            case "density" -> OptionalDouble.of(m.density().muPerMb());
+            case "melting_point" -> m.thermal().meltingPoint().map(x -> OptionalDouble.of(x.value())).orElse(OptionalDouble.empty());
+            case "conductivity" -> m.electrical().conductivity().map(x -> OptionalDouble.of(x)).orElse(OptionalDouble.empty());
+            case "specific_heat" -> m.thermal().specificHeat().map(x -> OptionalDouble.of(x.workPerMuPerTu())).orElse(OptionalDouble.empty());
+            default -> OptionalDouble.empty();
+        };
+    }
+
+    /**
+     * How far up the property {@code key} {@code stack}'s material ranks among all the materials that state it, 0 to 1 (the share of them it matches
+     * or beats); -1 when the stack is no material or states none. A rare, hard, hot or dense thing ranks high, so the bar an attunement sets
+     * ({@code Effect.target}) is a rank, never an item.
+     */
+    public static float rank(String key, ItemStack stack) {
+        var materials = io.github.soundgoodizerfan.feedback.process.MaterialTable.get().materials();
+        var found = io.github.soundgoodizerfan.feedback.process.Material.find(materials, stack);
+        if (found.isEmpty())
+            return -1f;
+        OptionalDouble mine = figure(key, found.get().material());
+        if (mine.isEmpty())
+            return -1f;
+        int below = 0, all = 0;
+        for (var m : materials.values()) {
+            OptionalDouble v = figure(key, m);
+            if (v.isEmpty())
+                continue;
+            all++;
+            if (v.getAsDouble() <= mine.getAsDouble())
+                below++;
+        }
+        return all == 0 ? -1f : below / (float) all;
+    }
+
+    /** The ink an offering earns for {@code effect}: -1 when it does not clear the bar, else 0 to {@link ModularTuning#RESEARCH_OFFER_INK} by how far over it is. */
+    public static int offeringInk(Attunements.Effect effect, ItemStack offering) {
+        if (offering.isEmpty() || effect.offering().isEmpty())
+            return -1;
+        float rank = rank(effect.offering().get(), offering);
+        if (rank < 0f || rank < effect.target())
+            return -1;
+        return Math.round(ModularTuning.RESEARCH_OFFER_INK * (rank - effect.target()) / Math.max(0.05f, 1f - effect.target()));
+    }
+
+    /** Whether {@code stack} is a brewed potion carrying the effect's reagent effect, still potent. */
+    public static boolean reagentFits(Attunements.Effect effect, ItemStack stack, net.minecraft.world.level.Level level) {
+        if (effect.reagent().isEmpty() || !(stack.getItem() instanceof io.github.soundgoodizerfan.feedback.potion.PotionItem))
+            return false;
+        var state = stack.get(io.github.soundgoodizerfan.feedback.registry.FDataComponents.POTION_STATE.get());
+        return state != null && state.effect().filter(effect.reagent().get()::equals).isPresent() && state.amplifierNow(level) >= 0;
+    }
+
+    /**
+     * Whether an attunement can be tried: an offering that clears the bar of the property the attunement is about, or the reagent potion it
+     * names. The ink is a base, the offering's (more the further it is over the bar) and a flat bonus for the reagent.
+     */
+    public static int attunementInk(Attunements.Effect effect, ItemStack offering, ItemStack reagent, net.minecraft.world.level.Level level) {
+        int offer = offeringInk(effect, offering);
+        boolean potion = reagentFits(effect, reagent, level);
+        if (offer < 0 && !potion)
+            return -1;
+        return ModularTuning.RESEARCH_BASE_INK + Math.max(0, offer) + (potion ? ModularTuning.RESEARCH_REAGENT_INK : 0);
     }
 
     /** Whether {@code specimen} is what research of the {@code index}-th thing of {@code mode} takes. */

@@ -130,5 +130,6 @@
     "stock": {
       "kind": "away_flammable"
     }
-  }
+  },
+  "offering": "specific_heat"
 }

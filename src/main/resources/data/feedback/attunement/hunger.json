@@ -118,5 +118,6 @@
     "wiring": {
       "kind": "worn_famine"
     }
-  }
+  },
+  "offering": "specific_heat"
 }

@@ -148,5 +148,6 @@
     "mattress": {
       "kind": "bed_dim"
     }
-  }
+  },
+  "offering": "melting_point"
 }

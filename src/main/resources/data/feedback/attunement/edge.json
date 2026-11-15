@@ -124,5 +124,6 @@
   "starter": true,
   "books": [
     "minecraft:sharpness"
-  ]
+  ],
+  "offering": "hardness"
 }

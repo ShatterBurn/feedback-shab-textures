@@ -108,5 +108,6 @@
   "starter": true,
   "books": [
     "minecraft:unbreaking"
-  ]
+  ],
+  "offering": "yield"
 }

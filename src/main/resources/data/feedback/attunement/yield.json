@@ -98,5 +98,6 @@
   "books": [
     "minecraft:fortune",
     "minecraft:looting"
-  ]
+  ],
+  "offering": "yield"
 }

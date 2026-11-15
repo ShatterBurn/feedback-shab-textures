@@ -121,5 +121,6 @@
   },
   "books": [
     "minecraft:silk_touch"
-  ]
+  ],
+  "offering": "density"
 }

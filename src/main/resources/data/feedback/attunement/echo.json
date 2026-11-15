@@ -112,5 +112,6 @@
     "mattress": {
       "kind": "bed_lag"
     }
-  }
+  },
+  "offering": "toughness"
 }

@@ -85,5 +85,6 @@
   },
   "books": [
     "minecraft:loyalty"
-  ]
+  ],
+  "offering": "conductivity"
 }

@@ -139,5 +139,6 @@
     "wiring": {
       "kind": "worn_hush"
     }
-  }
+  },
+  "offering": "toughness"
 }

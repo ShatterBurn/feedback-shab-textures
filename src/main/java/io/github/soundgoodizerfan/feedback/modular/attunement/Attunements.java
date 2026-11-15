@@ -60,11 +60,13 @@ public final class Attunements extends SimpleJsonResourceReloadListener {
      *               coupling reversed. Empty means no mirror, and a landing below zero is a miss.
      * @param starter every player knows this effect from the start ({@link AttunementKnowledge}).
      * @param books   the vanilla enchantments whose enchanted book teaches this effect when read.
+     * @param offering the material property research of this effect is about (hardness, toughness, yield, density, melting_point, conductivity or
+     *                 specific_heat): an offering must rank at least {@code target} of the way up that property among materials ({@code Researching}).
      * @param reagent optional potion effect id: a bottle of that potion in the player's inventory is burned for the session and lowers its experience cost
      *                (potions spec 12.4, 14.9).
      */
     public record Effect(ResourceLocation id, float target, float band, Map<String, Behaviour> roles, Map<String, Behaviour> mirror,
-            java.util.Optional<ResourceLocation> reagent, boolean starter, java.util.List<ResourceLocation> books) {
+            java.util.Optional<ResourceLocation> reagent, boolean starter, java.util.List<ResourceLocation> books, java.util.Optional<String> offering) {
         public static final Codec<Effect> CODEC = RecordCodecBuilder.create(i -> i.group(
                 ResourceLocation.CODEC.fieldOf("id").forGetter(Effect::id),
                 Codec.floatRange(0.05f, 1f).fieldOf("target").forGetter(Effect::target),
@@ -73,7 +75,8 @@ public final class Attunements extends SimpleJsonResourceReloadListener {
                 Codec.unboundedMap(Codec.STRING, Behaviour.CODEC).optionalFieldOf("mirror", Map.of()).forGetter(Effect::mirror),
                 ResourceLocation.CODEC.optionalFieldOf("reagent").forGetter(Effect::reagent),
                 Codec.BOOL.optionalFieldOf("starter", false).forGetter(Effect::starter),
-                ResourceLocation.CODEC.listOf().optionalFieldOf("books", java.util.List.of()).forGetter(Effect::books)
+                ResourceLocation.CODEC.listOf().optionalFieldOf("books", java.util.List.of()).forGetter(Effect::books),
+                Codec.STRING.optionalFieldOf("offering").forGetter(Effect::offering)
         ).apply(i, Effect::new));
 
         public String key() {

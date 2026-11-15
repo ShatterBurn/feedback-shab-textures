@@ -98,5 +98,6 @@
       "kind": "taunt",
       "flaw": 2
     }
-  }
+  },
+  "offering": "melting_point"
 }

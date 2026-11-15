@@ -70,5 +70,6 @@
     "bed_frame": {
       "kind": "bed_slick"
     }
-  }
+  },
+  "offering": "yield"
 }

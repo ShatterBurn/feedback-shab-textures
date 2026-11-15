@@ -44,9 +44,9 @@ public class ResearchTableMenu extends AbstractContainerMenu {
     /** {@code BTN_TREATISES} and {@code BTN_ATTUNEMENTS} choose what is listed, {@code BTN_PICK + i} picks the i-th entry, {@code BTN_RESEARCH} opens the board. */
     public static final int BTN_TREATISES = 1, BTN_ATTUNEMENTS = 2, BTN_RESEARCH = 3, BTN_PICK = 100;
     public static final int NOTE_NONE = 0, NOTE_NO_BLANK = 1, NOTE_NO_SPECIMEN = 2, NOTE_NO_XP = 3, NOTE_NOTHING = 4, NOTE_WRITTEN = 5, NOTE_LEARNED = 6,
-            NOTE_NO_EARLIER = 7, NOTE_NO_PLAN = 8;
+            NOTE_NO_EARLIER = 7, NOTE_NO_PLAN = 8, NOTE_NO_OFFERING = 9;
 
-    public static final int W = 232, H = 292, SLOT_X = 14, BLANK_Y = 40, SPECIMEN_Y = 70, INV_X = 35, INV_Y = 212;
+    public static final int W = 304, H = 298, PAGE_X = 156, BLANK_X = 160, SPECIMEN_X = 214, SLOT_Y = 148, INV_X = 71, INV_Y = 212;
 
     private final Container table;
     private final DataSlot mode = DataSlot.standalone(), index = DataSlot.standalone(), note = DataSlot.standalone();
@@ -70,7 +70,12 @@ public class ResearchTableMenu extends AbstractContainerMenu {
         this.table = table;
         this.player = inventory.player;
         this.pos = pos;
-        addSlot(new Slot(table, ResearchTableBlockEntity.BLANK, SLOT_X, BLANK_Y) {
+        addSlot(new Slot(table, ResearchTableBlockEntity.BLANK, BLANK_X, SLOT_Y) {
+            @Override
+            public boolean isActive() {
+                return mode.get() == 0;
+            }
+
             @Override
             public boolean mayPlace(ItemStack s) {
                 return s.is(FModular.BLANK_TREATISE.get());
@@ -81,10 +86,42 @@ public class ResearchTableMenu extends AbstractContainerMenu {
                 return 1;
             }
         });
-        addSlot(new Slot(table, ResearchTableBlockEntity.SPECIMEN, SLOT_X, SPECIMEN_Y) {
+        addSlot(new Slot(table, ResearchTableBlockEntity.SPECIMEN, SPECIMEN_X, SLOT_Y) {
+            @Override
+            public boolean isActive() {
+                return mode.get() == 0;
+            }
+
             @Override
             public boolean mayPlace(ItemStack s) {
                 return ModularStacks.design(s) != null;
+            }
+
+            @Override
+            public int getMaxStackSize() {
+                return 1;
+            }
+        });
+        addSlot(new Slot(table, ResearchTableBlockEntity.OFFERING, BLANK_X, SLOT_Y) {
+            @Override
+            public boolean isActive() {
+                return mode.get() == 1;
+            }
+
+            @Override
+            public boolean mayPlace(ItemStack s) {
+                return Researching.rank("hardness", s) >= 0f || Researching.rank("density", s) >= 0f;
+            }
+        });
+        addSlot(new Slot(table, ResearchTableBlockEntity.REAGENT, SPECIMEN_X, SLOT_Y) {
+            @Override
+            public boolean isActive() {
+                return mode.get() == 1;
+            }
+
+            @Override
+            public boolean mayPlace(ItemStack s) {
+                return s.getItem() instanceof io.github.soundgoodizerfan.feedback.potion.PotionItem;
             }
 
             @Override
@@ -118,6 +155,12 @@ public class ResearchTableMenu extends AbstractContainerMenu {
         return ContainerLevelAccess.create(player.level(), pos);
     }
 
+    /** The attunement picked in attunement mode (the table has checked there is one). */
+    private io.github.soundgoodizerfan.feedback.modular.attunement.Attunements.Effect effect(ServerPlayer server) {
+        var list = Researching.unknown(server);
+        return list.get(Math.floorMod(index.get(), list.size()));
+    }
+
     /** 0 when a run can start, else the note. */
     private int ready(ServerPlayer server) {
         if (Researching.count(server, mode.get()) == 0)
@@ -128,8 +171,11 @@ public class ResearchTableMenu extends AbstractContainerMenu {
             return NOTE_NO_PLAN;
         if (!Researching.builtOn(server, access(), mode.get(), index.get()))
             return NOTE_NO_EARLIER;
-        if (!Researching.specimenFits(table.getItem(ResearchTableBlockEntity.SPECIMEN), mode.get(), index.get()))
+        if (mode.get() == 0 && !Researching.specimenFits(table.getItem(ResearchTableBlockEntity.SPECIMEN), mode.get(), index.get()))
             return NOTE_NO_SPECIMEN;
+        if (mode.get() == 1 && Researching.attunementInk(effect(server), table.getItem(ResearchTableBlockEntity.OFFERING),
+                table.getItem(ResearchTableBlockEntity.REAGENT), server.level()) < 0)
+            return NOTE_NO_OFFERING;
         if (server.totalExperience < ModularTuning.RESEARCH_XP && !server.getAbilities().instabuild)
             return NOTE_NO_XP;
         return 0;
@@ -168,7 +214,9 @@ public class ResearchTableMenu extends AbstractContainerMenu {
         sentMode = mode.get();
         sentIndex = index.get();
         sentPlan = plan;
-        sentInk = Researching.ink(server, table.getItem(ResearchTableBlockEntity.SPECIMEN), plan);
+        sentInk = mode.get() == 1 ? Researching.attunementInk(effect(server), table.getItem(ResearchTableBlockEntity.OFFERING),
+                table.getItem(ResearchTableBlockEntity.REAGENT), server.level())
+                : Researching.ink(server, table.getItem(ResearchTableBlockEntity.SPECIMEN), plan);
         sentSeed = (int) (now ^ containerId * 31L);
         PacketDistributor.sendToPlayer(server, new ResearchOpenPayload(containerId, plan.json(), sentInk, sentSeed));
         return true;
@@ -197,7 +245,7 @@ public class ResearchTableMenu extends AbstractContainerMenu {
             }
         }
         float quality = elapsed < ModularTuning.RESEARCH_MIN_TICKS ? 0f : board.quality(board.reached && answer == sentPlan.answer);
-        int pushed = board.strain(Researching.forgiving(table.getItem(ResearchTableBlockEntity.SPECIMEN)));
+        int pushed = mode.get() == 0 ? board.strain(Researching.forgiving(table.getItem(ResearchTableBlockEntity.SPECIMEN))) : 0;
         int why = ready(server);
         if (why != 0) {
             note.set(why);
@@ -205,7 +253,12 @@ public class ResearchTableMenu extends AbstractContainerMenu {
         }
         if (!server.getAbilities().instabuild)
             server.giveExperiencePoints(-ModularTuning.RESEARCH_XP);
-        strainSpecimen(server, pushed);
+        if (mode.get() == 0)
+            strainSpecimen(server, pushed);
+        else {
+            table.getItem(ResearchTableBlockEntity.OFFERING).shrink(1);
+            table.setItem(ResearchTableBlockEntity.REAGENT, ItemStack.EMPTY);
+        }
         if (mode.get() == 0) {
             int[] v = Researching.volume(sentIndex);
             School school = School.values()[v[0]];

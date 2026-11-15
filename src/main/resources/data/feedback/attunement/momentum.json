@@ -115,5 +115,6 @@
   "books": [
     "minecraft:sweeping_edge",
     "minecraft:efficiency"
-  ]
+  ],
+  "offering": "density"
 }

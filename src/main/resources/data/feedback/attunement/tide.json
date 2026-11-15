@@ -104,5 +104,6 @@
   "books": [
     "minecraft:depth_strider",
     "minecraft:riptide"
-  ]
+  ],
+  "offering": "specific_heat"
 }

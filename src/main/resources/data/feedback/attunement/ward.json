@@ -336,5 +336,6 @@
     "minecraft:fire_protection",
     "minecraft:feather_falling"
   ],
-  "mirror": {}
+  "mirror": {},
+  "offering": "toughness"
 }

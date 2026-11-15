@@ -190,5 +190,6 @@
   "books": [
     "minecraft:knockback",
     "minecraft:punch"
-  ]
+  ],
+  "offering": "yield"
 }

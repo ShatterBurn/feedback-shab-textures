@@ -310,7 +310,7 @@ public final class ModularTuning {
     public static final int NOTES_MAX_PARTS = 6;
     public static final int NOTES_MIN_READ_TICKS = 16;
     /** Research: experience points a trial run spends, the fewest ticks an honest play takes, and the ink a run starts with (a base and a bonus for a specimen in good shape). */
-    public static final int RESEARCH_XP = 40, RESEARCH_MIN_TICKS = 60, RESEARCH_BASE_INK = 7, RESEARCH_SPECIMEN_INK = 3;
+    public static final int RESEARCH_XP = 40, RESEARCH_MIN_TICKS = 60, RESEARCH_BASE_INK = 7, RESEARCH_SPECIMEN_INK = 3, RESEARCH_OFFER_INK = 4, RESEARCH_REAGENT_INK = 3;
     /** Toughness (St) at which a specimen forgives half of what a clumsy run would strain it. */
     public static final float RESEARCH_TOUGH_HALF = 20f;
     /** Research strain (percent) past which the specimen is worn, and past which it comes apart; and the share of its life a full-strain run costs it. */

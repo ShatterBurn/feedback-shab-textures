@@ -54,5 +54,6 @@
       "kind": "gamble_ward"
     }
   },
-  "mirror": {}
+  "mirror": {},
+  "offering": "melting_point"
 }

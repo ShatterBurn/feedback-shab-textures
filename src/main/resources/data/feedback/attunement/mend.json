@@ -554,5 +554,6 @@
   "starter": true,
   "books": [
     "minecraft:mending"
-  ]
+  ],
+  "offering": "toughness"
 }

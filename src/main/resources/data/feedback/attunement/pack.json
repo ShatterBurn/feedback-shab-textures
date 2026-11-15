@@ -156,5 +156,6 @@
     "mattress": {
       "kind": "bed_lone"
     }
-  }
+  },
+  "offering": "toughness"
 }

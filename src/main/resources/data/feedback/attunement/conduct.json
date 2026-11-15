@@ -94,5 +94,6 @@
   },
   "books": [
     "minecraft:channeling"
-  ]
+  ],
+  "offering": "conductivity"
 }

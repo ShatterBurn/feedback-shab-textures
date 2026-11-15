@@ -130,5 +130,6 @@
     "stock": {
       "kind": "away_dense"
     }
-  }
+  },
+  "offering": "density"
 }

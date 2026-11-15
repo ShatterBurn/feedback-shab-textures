@@ -87,5 +87,6 @@
   "books": [
     "minecraft:infinity"
   ],
-  "mirror": {}
+  "mirror": {},
+  "offering": "specific_heat"
 }

@@ -191,5 +191,6 @@
   },
   "books": [
     "minecraft:thorns"
-  ]
+  ],
+  "offering": "hardness"
 }

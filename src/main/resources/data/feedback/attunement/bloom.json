@@ -94,5 +94,6 @@
     "module_plating": {
       "kind": "worn_reap"
     }
-  }
+  },
+  "offering": "specific_heat"
 }
