@@ -1,0 +1,22 @@
+{
+  "ladder": {
+    "figure": "weight",
+    "bands": [
+      {
+        "name": "light",
+        "max": 1.0
+      },
+      {
+        "name": "medium",
+        "max": 3
+      },
+      {
+        "name": "heavy",
+        "max": 9
+      },
+      {
+        "name": "very_heavy"
+      }
+    ]
+  }
+}

@@ -1,6 +1,8 @@
 {
   "family": "armour",
-  "required": ["P"],
+  "required": [
+    "P"
+  ],
   "minigame": "feedback:fitting",
   "fit_order": [
     "L",
@@ -27,13 +29,12 @@
         "item": "feedback:boots_plate",
         "cells": 4,
         "stock": [
-          "ingot",
-          "block",
-          "plate",
-          "leather",
-          "chain",
-          "gem",
-          "*_planks"
+          "@lump",
+          "@sheet",
+          "@skin",
+          "@cord",
+          "@gem",
+          "@board"
         ],
         "variants": [
           {
@@ -57,7 +58,8 @@
             "section": 0.7
           }
         ],
-        "base": "plain_boots"
+        "base": "plain_boots",
+        "traits": []
       },
       "axes": {
         "shaft": {
@@ -124,10 +126,13 @@
       "name": "underlayer",
       "class": "housing",
       "forms": [
-        "*"
+        "@loose",
+        "@cord",
+        "@mat",
+        "@skin"
       ],
       "traits": [
-        "fibrous"
+        "stuffing"
       ],
       "litres": 0.02,
       "layer": 1
@@ -136,9 +141,8 @@
       "name": "studs",
       "class": "working_face",
       "forms": [
-        "gem",
-        "shard",
-        "nugget"
+        "nugget",
+        "@gem"
       ],
       "litres": 0.01,
       "bulk": 2,
@@ -148,7 +152,8 @@
         "per_stud": 1,
         "max": 3,
         "wear": 1
-      }
+      },
+      "traits": []
     },
     "S": {
       "name": "servo",
@@ -165,11 +170,14 @@
       "school": "robotics:1",
       "forms": [
         "lens",
-        "gem"
+        "@gem"
       ],
       "litres": 0.005,
       "layer": 6,
-      "mount": "plate"
+      "mount": "plate",
+      "traits": [
+        "transparent"
+      ]
     },
     "M": {
       "name": "upgrade",
@@ -185,9 +193,8 @@
     "E": {
       "name": "spurs",
       "forms": [
-        "ingot",
-        "nugget",
-        "gem"
+        "@lump",
+        "@gem"
       ],
       "litres": 0.01,
       "bulk": 2,
@@ -197,14 +204,15 @@
         "level": 1,
         "cooldown_ticks": 200
       },
-      "mount": "foot"
+      "mount": "foot",
+      "traits": []
     },
     "H": {
       "name": "hobnails",
       "forms": [
         "nugget",
-        "shard",
-        "ingot"
+        "ingot",
+        "@gem"
       ],
       "litres": 0.01,
       "bulk": 4,
@@ -213,16 +221,20 @@
         "grip_mult": 0.3,
         "visibility_mult": 1.15
       },
-      "mount": "foot"
+      "mount": "foot",
+      "traits": []
     },
     "U": {
       "name": "underlayer",
       "class": "housing",
       "forms": [
-        "chain"
+        "@cord"
       ],
       "litres": 0.02,
-      "layer": 1
+      "layer": 1,
+      "traits": [
+        "strength>=strong"
+      ]
     }
   },
   "patterns": [

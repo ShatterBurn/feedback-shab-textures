@@ -21,12 +21,9 @@
         "item": "feedback:sword_blade",
         "cells": 2,
         "stock": [
-          "ingot",
-          "block",
-          "gem",
-          "*_planks",
-          "cobble",
-          "bone"
+          "@lump",
+          "@gem",
+          "@board"
         ],
         "variants": [
           {
@@ -115,13 +112,14 @@
           {
             "name": "edge",
             "forms": [
-              "ingot",
-              "nugget",
-              "gem"
+              "@lump",
+              "@gem"
             ],
-            "share": 1
+            "share": 1,
+            "traits": []
           }
-        ]
+        ],
+        "traits": []
       },
       "axes": {
         "length": {
@@ -207,15 +205,15 @@
       "name": "grip",
       "class": "mount",
       "forms": [
-        "stick",
-        "rod",
-        "bone",
-        "leather",
-        "grip"
+        "@long",
+        "@skin"
       ],
       "litres": 0.04,
       "length": 0.12,
-      "layer": 1
+      "layer": 1,
+      "traits": [
+        "toughness>=tough"
+      ]
     },
     "G": {
       "name": "guard",
@@ -230,13 +228,10 @@
         "item": "feedback:sword_guard",
         "cells": 1,
         "stock": [
-          "ingot",
-          "block",
-          "plate",
-          "*_planks",
-          "bone",
-          "cobble",
-          "gem"
+          "@lump",
+          "@sheet",
+          "@board",
+          "@gem"
         ],
         "variants": [
           {
@@ -265,7 +260,8 @@
             "share": 1,
             "standard": "feedback:leather"
           }
-        ]
+        ],
+        "traits": []
       }
     },
     "P": {
@@ -281,12 +277,9 @@
         "item": "feedback:tool_pommel",
         "cells": 1,
         "stock": [
-          "nugget",
-          "ingot",
-          "gem",
-          "*_planks",
-          "cobble",
-          "bone"
+          "@lump",
+          "@gem",
+          "@board"
         ],
         "slots": [
           {
@@ -298,7 +291,8 @@
             "share": 1,
             "standard": "feedback:leather"
           }
-        ]
+        ],
+        "traits": []
       },
       "axes": {
         "weight": {
@@ -323,9 +317,8 @@
         "item": "feedback:tool_tip",
         "cells": 1,
         "stock": [
-          "gem",
-          "shard",
-          "nugget"
+          "nugget",
+          "@gem"
         ],
         "slots": [
           {
@@ -337,7 +330,8 @@
             "share": 1,
             "standard": "feedback:leather"
           }
-        ]
+        ],
+        "traits": []
       },
       "axes": {
         "thickness": {
@@ -363,7 +357,10 @@
         "rating": 12,
         "throw_rating": 6,
         "lunge": 1
-      }
+      },
+      "traits": [
+        "strength>=fair"
+      ]
     },
     "N": {
       "name": "binding",
@@ -377,9 +374,8 @@
         "item": "feedback:tool_binding",
         "cells": 1,
         "stock": [
-          "leather",
-          "wire",
-          "string"
+          "@skin",
+          "@cord"
         ],
         "slots": [
           {
@@ -391,6 +387,9 @@
             "share": 1,
             "standard": "feedback:leather"
           }
+        ],
+        "traits": [
+          "cordage"
         ]
       },
       "axes": {
@@ -407,7 +406,7 @@
       "name": "lanyard",
       "class": "mount",
       "forms": [
-        "chain"
+        "@cord"
       ],
       "litres": 0.02,
       "bulk": 2,
@@ -417,7 +416,10 @@
         "rope": 10,
         "pull": 0.3,
         "return": 0.1
-      }
+      },
+      "traits": [
+        "cordage"
+      ]
     }
   },
   "patterns": [

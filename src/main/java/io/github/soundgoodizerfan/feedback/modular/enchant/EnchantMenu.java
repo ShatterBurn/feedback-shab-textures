@@ -111,7 +111,7 @@ public class EnchantMenu extends AbstractContainerMenu {
             return stack.has(FDataComponents.MADE_OF.get());
         return Material.find(ClientMaterials.on(player.level()), stack)
                 .filter(l -> ModularTypes.known().values().stream()
-                        .anyMatch(t -> t.roles().values().stream().anyMatch(r -> r.part().isEmpty() && r.forms().contains(l.form()))))
+                        .anyMatch(t -> t.roles().values().stream().anyMatch(r -> r.part().isEmpty() && ModularType.fits(r.forms(), l.form()))))
                 .isPresent();
     }
 
@@ -138,7 +138,7 @@ public class EnchantMenu extends AbstractContainerMenu {
         if (form != null)
             for (ModularType t : ModularTypes.known().values())
                 t.roles().values().forEach(r -> {
-                    if (r.forms().contains(form))
+                    if (ModularType.fits(r.forms(), form))
                         out.put(r.name(), r.cls());
                 });
         return out;

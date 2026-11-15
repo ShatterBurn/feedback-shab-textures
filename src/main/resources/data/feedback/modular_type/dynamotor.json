@@ -1,6 +1,11 @@
 {
   "family": "machine",
-  "required": ["F", "W", "C", "H"],
+  "required": [
+    "F",
+    "W",
+    "C",
+    "H"
+  ],
   "minigame": "feedback:fitting",
   "slot": "mainhand",
   "wear_litres": 0.125,
@@ -164,7 +169,10 @@
         "pipe"
       ],
       "litres": 0.02,
-      "bulk": 2
+      "bulk": 2,
+      "traits": [
+        "heat_conduction>=good"
+      ]
     }
   },
   "patterns": [

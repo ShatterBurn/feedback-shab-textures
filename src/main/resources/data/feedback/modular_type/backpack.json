@@ -20,10 +20,11 @@
         "item": "feedback:backpack_shell",
         "cells": 3,
         "stock": [
-          "leather",
-          "*_carpet",
-          "plate"
-        ]
+          "@skin",
+          "@mat",
+          "@sheet"
+        ],
+        "traits": []
       },
       "axes": {
         "capacity": {
@@ -39,88 +40,114 @@
       "name": "strap",
       "class": "mount",
       "forms": [
-        "leather",
-        "string",
-        "wire"
+        "@skin",
+        "@cord"
       ],
       "litres": 0.02,
-      "layer": 1
+      "layer": 1,
+      "traits": [
+        "cordage"
+      ]
     },
     "F": {
       "name": "pack_frame",
       "class": "mount",
       "forms": [
-        "rod",
-        "stick",
-        "bone"
+        "@long"
       ],
       "litres": 0.02,
       "layer": 2,
-      "bulk": 4
+      "bulk": 4,
+      "traits": [
+        "toughness>=tough",
+        "strength>=fair"
+      ]
     },
     "H": {
       "name": "holster",
       "forms": [
-        "hide"
+        "@skin"
       ],
       "litres": 0.03,
       "layer": 3,
-      "bulk": 2
+      "bulk": 2,
+      "traits": [
+        "fabric"
+      ]
     },
     "B": {
       "name": "bottle_loops",
       "forms": [
-        "bundle"
+        "@cord"
       ],
       "litres": 0.02,
       "layer": 4,
-      "bulk": 1
+      "bulk": 1,
+      "traits": [
+        "cordage",
+        "fabric"
+      ]
     },
     "A": {
       "name": "bandolier",
       "forms": [
-        "bundle"
+        "@cord"
       ],
       "litres": 0.02,
       "layer": 5,
-      "bulk": 2
+      "bulk": 2,
+      "traits": [
+        "cordage",
+        "fabric"
+      ]
     },
     "W": {
       "name": "hip_belt",
       "class": "mount",
       "forms": [
-        "hide"
+        "@skin"
       ],
       "litres": 0.03,
       "layer": 6,
-      "bulk": 3
+      "bulk": 3,
+      "traits": [
+        "fabric"
+      ]
     },
     "R": {
       "name": "lashing",
       "forms": [
-        "stick"
+        "@long"
       ],
       "litres": 0.01,
       "layer": 7,
-      "bulk": 2
+      "bulk": 2,
+      "traits": [
+        "toughness>=tough",
+        "strength>=fair"
+      ]
     },
     "P": {
       "name": "panel",
       "forms": [
-        "*_carpet"
+        "@mat"
       ],
       "litres": 0.03,
       "layer": 8,
-      "bulk": 2
+      "bulk": 2,
+      "traits": [
+        "cushioning"
+      ]
     },
     "C": {
       "name": "pad",
       "forms": [
-        "*_planks"
+        "@board"
       ],
       "litres": 0.08,
       "layer": 9,
-      "bulk": 2
+      "bulk": 2,
+      "traits": []
     },
     "L": {
       "name": "hard_liner",
@@ -139,25 +166,34 @@
       ],
       "litres": 0.02,
       "layer": 11,
-      "bulk": 1
+      "bulk": 1,
+      "traits": [
+        "heat_limit>=moderate"
+      ]
     },
     "O": {
       "name": "oiled_coat",
       "forms": [
-        "hide"
+        "@skin"
       ],
       "litres": 0.02,
       "layer": 12,
-      "bulk": 1
+      "bulk": 1,
+      "traits": [
+        "fabric"
+      ]
     },
     "I": {
       "name": "warm_liner",
       "forms": [
-        "*_carpet"
+        "@mat"
       ],
       "litres": 0.04,
       "layer": 13,
-      "bulk": 3
+      "bulk": 3,
+      "traits": [
+        "cushioning"
+      ]
     },
     "Q": {
       "name": "buckle",
@@ -185,7 +221,10 @@
       ],
       "litres": 0.04,
       "layer": 16,
-      "bulk": 2
+      "bulk": 2,
+      "traits": [
+        "electric_conduction>=good"
+      ]
     }
   },
   "patterns": [

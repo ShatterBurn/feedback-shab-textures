@@ -46,9 +46,7 @@
         "item": "feedback:crossbow_prod",
         "cells": 2,
         "stock": [
-          "stick",
-          "rod",
-          "bone"
+          "@long"
         ],
         "slots": [
           {
@@ -58,10 +56,17 @@
           {
             "name": "back",
             "forms": [
-              "bone"
+              "@long"
             ],
-            "share": 1
+            "share": 1,
+            "traits": [
+              "toughness>=tough"
+            ]
           }
+        ],
+        "traits": [
+          "toughness>=tough",
+          "strength>=fair"
         ]
       },
       "offers": [
@@ -81,26 +86,29 @@
       "name": "string",
       "class": "working_face",
       "forms": [
-        "string",
-        "wire",
-        "fine_wire"
+        "@cord"
       ],
       "litres": 0.01,
-      "layer": 1
+      "layer": 1,
+      "traits": [
+        "cordage"
+      ]
     },
     "S": {
       "name": "stock",
       "class": "mount",
       "forms": [
-        "stick",
-        "rod",
-        "bone",
-        "*_planks"
+        "@long",
+        "@board"
       ],
       "litres": 0.05,
       "layer": 2,
       "offers": [
         "grip"
+      ],
+      "traits": [
+        "toughness>=tough",
+        "strength>=fair"
       ]
     },
     "L": {
@@ -119,7 +127,7 @@
       "name": "magazine",
       "forms": [
         "plate",
-        "*_planks"
+        "@board"
       ],
       "litres": 0.06,
       "bulk": 2,
@@ -129,7 +137,8 @@
         "damage_mult": 0.85,
         "spread_mult": 5
       },
-      "mount": "lock"
+      "mount": "lock",
+      "traits": []
     },
     "B": {
       "name": "binding",
@@ -143,9 +152,8 @@
         "item": "feedback:tool_binding",
         "cells": 1,
         "stock": [
-          "leather",
-          "wire",
-          "string"
+          "@skin",
+          "@cord"
         ],
         "slots": [
           {
@@ -157,6 +165,9 @@
             "share": 1,
             "standard": "feedback:leather"
           }
+        ],
+        "traits": [
+          "cordage"
         ]
       },
       "mount": "riser",
@@ -173,7 +184,7 @@
     "E": {
       "name": "rest",
       "forms": [
-        "leather"
+        "@skin"
       ],
       "litres": 0.02,
       "bulk": 2,
@@ -181,12 +192,15 @@
       "params": {
         "spread_mult": 0.8
       },
-      "mount": "riser"
+      "mount": "riser",
+      "traits": [
+        "fabric"
+      ]
     },
     "X": {
       "name": "stabiliser",
       "forms": [
-        "slug"
+        "@lump"
       ],
       "litres": 0.05,
       "bulk": 1,
@@ -195,7 +209,10 @@
         "spread_mult": 0.85,
         "draw_mult": 1.2
       },
-      "mount": "riser"
+      "mount": "riser",
+      "traits": [
+        "weight>=heavy"
+      ]
     }
   },
   "patterns": [

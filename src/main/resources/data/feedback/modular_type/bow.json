@@ -21,9 +21,7 @@
         "item": "feedback:bow_limbs",
         "cells": 3,
         "stock": [
-          "stick",
-          "rod",
-          "bone"
+          "@long"
         ],
         "variants": [
           {
@@ -45,10 +43,17 @@
           {
             "name": "back",
             "forms": [
-              "bone"
+              "@long"
             ],
-            "share": 1
+            "share": 1,
+            "traits": [
+              "toughness>=tough"
+            ]
           }
+        ],
+        "traits": [
+          "toughness>=tough",
+          "strength>=fair"
         ]
       },
       "axes": {
@@ -91,12 +96,13 @@
       "name": "string",
       "class": "working_face",
       "forms": [
-        "string",
-        "wire",
-        "fine_wire"
+        "@cord"
       ],
       "litres": 0.01,
-      "layer": 1
+      "layer": 1,
+      "traits": [
+        "cordage"
+      ]
     },
     "B": {
       "name": "binding",
@@ -110,9 +116,8 @@
         "item": "feedback:tool_binding",
         "cells": 1,
         "stock": [
-          "leather",
-          "wire",
-          "string"
+          "@skin",
+          "@cord"
         ],
         "slots": [
           {
@@ -124,6 +129,9 @@
             "share": 1,
             "standard": "feedback:leather"
           }
+        ],
+        "traits": [
+          "cordage"
         ]
       },
       "mount": "riser",
@@ -140,7 +148,7 @@
     "E": {
       "name": "rest",
       "forms": [
-        "leather"
+        "@skin"
       ],
       "litres": 0.02,
       "bulk": 2,
@@ -148,12 +156,15 @@
       "params": {
         "spread_mult": 0.8
       },
-      "mount": "riser"
+      "mount": "riser",
+      "traits": [
+        "fabric"
+      ]
     },
     "X": {
       "name": "stabiliser",
       "forms": [
-        "slug"
+        "@lump"
       ],
       "litres": 0.05,
       "bulk": 1,
@@ -162,7 +173,10 @@
         "spread_mult": 0.85,
         "draw_mult": 1.2
       },
-      "mount": "riser"
+      "mount": "riser",
+      "traits": [
+        "weight>=heavy"
+      ]
     }
   },
   "patterns": [

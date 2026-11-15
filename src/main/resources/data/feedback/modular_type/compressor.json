@@ -1,6 +1,8 @@
 {
   "family": "block",
-  "required": ["S"],
+  "required": [
+    "S"
+  ],
   "slot": "mainhand",
   "wear_litres": 0.5,
   "wear_role": "S",
@@ -80,7 +82,10 @@
       ],
       "litres": 0.02,
       "layer": 1,
-      "bulk": 2
+      "bulk": 2,
+      "traits": [
+        "heat_conduction>=good"
+      ]
     }
   },
   "patterns": [

@@ -1,0 +1,10 @@
+{
+  "forms": [
+    "string",
+    "wire",
+    "fine_wire",
+    "fibre",
+    "chain",
+    "bundle"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "forms": [
+    "plate",
+    "drilled_plate",
+    "crystal_plate",
+    "sheet",
+    "pane",
+    "foil",
+    "vein"
+  ],
+  "suffixes": [
+    "_pane"
+  ]
+}

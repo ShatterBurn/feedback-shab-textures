@@ -128,8 +128,7 @@
           {
             "name": "media",
             "forms": [
-              "lump",
-              "brick"
+              "@lump"
             ],
             "traits": [
               "porous"
@@ -175,6 +174,9 @@
           "ingot",
           "plate",
           "rod"
+        ],
+        "traits": [
+          "heat_conduction>=good"
         ]
       },
       "params": {
@@ -343,6 +345,9 @@
           "ingot",
           "plate",
           "rod"
+        ],
+        "traits": [
+          "electric_conduction>=good"
         ]
       },
       "params": {
@@ -419,10 +424,11 @@
         "item": "feedback:module_tread",
         "cells": 1,
         "stock": [
-          "plate",
-          "leather",
+          "@sheet",
+          "@skin",
           "ingot"
-        ]
+        ],
+        "traits": []
       },
       "params": {
         "module": 4.0,

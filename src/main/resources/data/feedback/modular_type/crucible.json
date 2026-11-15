@@ -38,8 +38,11 @@
         "item": "feedback:crucible_shell",
         "cells": 4,
         "stock": [
-          "brick",
+          "@lump",
           "plate"
+        ],
+        "traits": [
+          "heat_limit>=moderate"
         ]
       }
     }

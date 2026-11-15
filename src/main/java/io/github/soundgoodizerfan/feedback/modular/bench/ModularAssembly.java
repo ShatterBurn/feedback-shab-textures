@@ -11,6 +11,7 @@ import java.util.Optional;
 import io.github.soundgoodizerfan.feedback.modular.type.ModularDesign.Part;
 import io.github.soundgoodizerfan.feedback.process.MadeOf;
 import io.github.soundgoodizerfan.feedback.process.Measures;
+import io.github.soundgoodizerfan.feedback.process.FormShape;
 import io.github.soundgoodizerfan.feedback.process.Material;
 import io.github.soundgoodizerfan.feedback.registry.FDataComponents;
 import io.github.soundgoodizerfan.feedback.registry.FModular;
@@ -543,22 +544,19 @@ public final class ModularAssembly {
     private static boolean overlap(ModularType.Role a, ModularType.Role b) {
         boolean sa = a.part().isPresent() || a.striker(), sb = b.part().isPresent() || b.striker();
         for (String f : a.forms())
-            for (String g : b.forms())
-                if (!(sb && f.startsWith("*")) && !(sa && g.startsWith("*"))
-                        && !(f.startsWith("*") && !a.seen().isEmpty() && !g.startsWith("*"))
-                        && !(g.startsWith("*") && !b.seen().isEmpty() && !f.startsWith("*")) && formsMeet(f, g))
+            for (String g : b.forms()) {
+                // A shape class or wildcard narrowed by needs is trusted not to meet a role whose needs are neither the same nor a subset of its own (a lining that
+                // must cushion against a mail that must be strong); anything else that names a form both roles can take is reported.
+                java.util.Set<String> na = new java.util.HashSet<>(a.seen()), nb = new java.util.HashSet<>(b.seen());
+                boolean trusted = (wide(f) || wide(g)) && !na.isEmpty() && !nb.isEmpty() && !na.containsAll(nb) && !nb.containsAll(na);
+                if (!(sb && wide(f)) && !(sa && wide(g)) && !trusted && FormShape.meet(f, g))
                     return true;
+            }
         return false;
     }
 
-    private static boolean formsMeet(String a, String b) {
-        boolean wa = a.startsWith("*"), wb = b.startsWith("*");
-        if (!wa && !wb)
-            return a.equals(b);
-        if (wa && !wb)
-            return b.endsWith(a.substring(1));
-        if (wb && !wa)
-            return a.endsWith(b.substring(1));
-        return a.endsWith(b.substring(1)) || b.endsWith(a.substring(1));
+    /** Whether a role entry names more than one form: any form, or a shape class. */
+    private static boolean wide(String entry) {
+        return entry.equals("*") || entry.startsWith("@");
     }
 }

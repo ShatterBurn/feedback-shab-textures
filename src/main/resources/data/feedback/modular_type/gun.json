@@ -497,10 +497,8 @@
             "name": "lens",
             "forms": [
               "lens",
-              "plate",
-              "pane",
-              "gem",
-              "shard",
+              "@sheet",
+              "@gem",
               "ingot"
             ],
             "traits": [
@@ -739,8 +737,8 @@
         "item": "feedback:obturator",
         "cells": 1,
         "stock": [
-          "leather",
-          "raw"
+          "@skin",
+          "@loose"
         ],
         "variants": [
           {
@@ -779,7 +777,8 @@
             }
           }
         ],
-        "base": "flat_ring"
+        "base": "flat_ring",
+        "traits": []
       },
       "mount": "receiver"
     },
@@ -800,7 +799,7 @@
         ],
         "cells": 1,
         "stock": [
-          "raw"
+          "@loose"
         ],
         "variants": []
       },
@@ -823,11 +822,9 @@
         ],
         "cells": 1,
         "stock": [
-          "dust",
-          "block",
-          "rod",
-          "ingot",
-          "raw"
+          "@loose",
+          "@lump",
+          "rod"
         ],
         "variants": [
           {
@@ -891,7 +888,7 @@
         "cells": 2,
         "stock": [
           "plate",
-          "*_planks"
+          "@board"
         ],
         "base": "fixed",
         "variants": [
@@ -928,7 +925,8 @@
             "name": "pad",
             "share": 1
           }
-        ]
+        ],
+        "traits": []
       },
       "mount": "receiver"
     },

@@ -73,8 +73,8 @@
         "item": "feedback:charge_fuse",
         "cells": 1,
         "stock": [
-          "raw",
-          "leather",
+          "@loose",
+          "@skin",
           "nugget"
         ],
         "variants": [
@@ -85,7 +85,8 @@
               "impact": 1.0
             }
           }
-        ]
+        ],
+        "traits": []
       },
       "axes": {
         "ticks": {
@@ -111,7 +112,7 @@
         "cells": 1,
         "stock": [
           "nugget",
-          "raw"
+          "@loose"
         ],
         "base": "booster_primer",
         "variants": [
@@ -129,7 +130,8 @@
               "fire": 1.0
             }
           }
-        ]
+        ],
+        "traits": []
       }
     },
     "P": {
@@ -137,11 +139,11 @@
       "class": "working_face",
       "forms": [
         "nugget",
-        "flint",
-        "dust"
+        "@loose"
       ],
       "litres": 0.01,
-      "layer": 5
+      "layer": 5,
+      "traits": []
     }
   },
   "patterns": [

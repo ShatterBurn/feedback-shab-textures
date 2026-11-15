@@ -155,6 +155,11 @@ public final class FormItems {
         return out;
     }
 
+    /** The jar's own data files under {@code data/feedback/<directory>}, by file name, read once by a caller that wants a table both sides share without a datapack sync. */
+    public static Map<ResourceLocation, com.google.gson.JsonElement> jarJson(String directory) {
+        return readJson(directory);
+    }
+
     private static Map<ResourceLocation, com.google.gson.JsonElement> readJson(String directory) {
         Map<ResourceLocation, com.google.gson.JsonElement> out = new TreeMap<>();
         Path dir = ModList.get().getModFileById(Feedback.MOD_ID).getFile()

@@ -12,7 +12,9 @@ import java.util.Optional;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
+import io.github.soundgoodizerfan.feedback.process.FormShape;
 import io.github.soundgoodizerfan.feedback.process.Material;
+import io.github.soundgoodizerfan.feedback.process.MaterialNeeds;
 import io.github.soundgoodizerfan.feedback.modular.bake.BlockFigures;
 import io.github.soundgoodizerfan.feedback.modular.bake.ElectricGunSpec;
 import io.github.soundgoodizerfan.feedback.modular.bake.FigureStore;
@@ -278,8 +280,8 @@ public record ModularType(Family family, Slot slot, List<Mine> mines, float stri
      * One place in the item a part goes.
      *
      * @param name   lang key tail, and what a tooltip calls it.
-     * @param forms  forms of a material that fit, {@code *_planks} meaning any form ending so.
-     * @param traits observations the material must show (a lining is fibrous).
+     * @param forms  forms of a material that fit: a form's own name, or {@code @long} for any form of that shape class.
+     * @param traits needs the material must meet, all of them ({@link MaterialNeeds}): a stated trait, a ladder band or a composite.
      * @param litres volume of one cell of it.
      * @param length for a rod (handle, haft, shaft): how long one cell is. A rod's cells run from
      *               the hand outward and add up.
@@ -321,14 +323,14 @@ public record ModularType(Family family, Slot slot, List<Mine> mines, float stri
      *               An attunement row keyed {@code class:<name>} acts on every role of that class, tool or machine.
      * @param school for an addon: the treatise volume ({@code robotics:1}, as a type's) the table must hold before it offers this role; empty for none.
      */
-    public record Role(String name, List<String> forms, List<Material.Trait> traits, float litres, float length,
+    public record Role(String name, List<String> forms, List<String> traits, float litres, float length,
                        float at, boolean rides, Map<String, Float> factor, int layer, Optional<Shaping> part,
                        List<String> stock, boolean set, Map<String, Axis> axes, String alt, int bulk, boolean after, int seal,
-                       List<Material.Trait> anyTraits, String trait, Map<String, Float> params, String mount, List<String> offers, String school, String cls) {
+                       List<String> anyTraits, String trait, Map<String, Float> params, String mount, List<String> offers, String school, String cls) {
         static final Codec<Role> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 Codec.STRING.fieldOf("name").forGetter(Role::name),
                 Codec.STRING.listOf().fieldOf("forms").forGetter(Role::forms),
-                Material.Trait.CODEC.listOf().optionalFieldOf("traits", List.of()).forGetter(Role::traits),
+                Codec.STRING.listOf().optionalFieldOf("traits", List.of()).forGetter(Role::traits),
                 Codec.FLOAT.fieldOf("litres").forGetter(Role::litres),
                 Codec.FLOAT.optionalFieldOf("length", 0f).forGetter(Role::length),
                 Codec.FLOAT.optionalFieldOf("at", 0f).forGetter(Role::at),
@@ -339,7 +341,7 @@ public record ModularType(Family family, Slot slot, List<Mine> mines, float stri
                 Codec.STRING.listOf().optionalFieldOf("stock", List.of()).forGetter(Role::stock),
                 Codec.BOOL.optionalFieldOf("set", false).forGetter(Role::set),
                 Codec.unboundedMap(Codec.STRING, Axis.CODEC).optionalFieldOf("axes", Map.of()).forGetter(Role::axes),
-                Codec.mapPair(Codec.STRING.optionalFieldOf("alt", ""), Material.Trait.CODEC.listOf().optionalFieldOf("any_traits", List.of()))
+                Codec.mapPair(Codec.STRING.optionalFieldOf("alt", ""), Codec.STRING.listOf().optionalFieldOf("any_traits", List.of()))
                         .forGetter(r -> com.mojang.datafixers.util.Pair.of(r.alt(), r.anyTraits())),
                 Codec.INT.optionalFieldOf("bulk", 1).forGetter(Role::bulk),
                 // A group holds sixteen fields, so these two share one.
@@ -382,18 +384,18 @@ public record ModularType(Family family, Slot slot, List<Mine> mines, float stri
         }
 
         public boolean accepts(Material.Located l) {
-            return fits(forms, l.form()) && traits.stream().allMatch(l.material().traits()::contains) && anyFits(l);
+            return fits(forms, l.form()) && MaterialNeeds.hasAll(l.material(), traits) && anyFits(l);
         }
 
         private boolean anyFits(Material.Located l) {
-            return anyTraits.isEmpty() || anyTraits.stream().anyMatch(l.material().traits()::contains);
+            return anyTraits.isEmpty() || anyTraits.stream().anyMatch(n -> MaterialNeeds.has(l.material(), n));
         }
 
         /** Every trait that decides whether a material fits, all-of or any-of: two food roles with none in common never take one item. */
-        public List<Material.Trait> seen() {
+        public List<String> seen() {
             if (anyTraits.isEmpty())
                 return traits;
-            List<Material.Trait> out = new ArrayList<>(traits);
+            List<String> out = new ArrayList<>(traits);
             out.addAll(anyTraits);
             return out;
         }
@@ -419,7 +421,7 @@ public record ModularType(Family family, Slot slot, List<Mine> mines, float stri
 
         /** Whether {@code l} is the stock this role is made of -- what mends it. */
         public boolean acceptsStock(Material.Located l) {
-            return fits(stockForms(), l.form()) && traits.stream().allMatch(l.material().traits()::contains) && anyFits(l);
+            return fits(stockForms(), l.form()) && MaterialNeeds.hasAll(l.material(), traits) && anyFits(l);
         }
 
         public float factor(String form) {
@@ -770,14 +772,14 @@ public record ModularType(Family family, Slot slot, List<Mine> mines, float stri
      *              Empty for a part of one material. Slots add no choice of shape: every variant has the same ones.
      */
     public record Shaping(ResourceLocation item, float cells, List<String> stock, List<Variant> variants, String base,
-                          List<Material.Trait> traits, List<PartSlot> slots, List<Material.Kind> kinds) {
+                          List<String> traits, List<PartSlot> slots, List<Material.Kind> kinds) {
         static final Codec<Shaping> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 ResourceLocation.CODEC.fieldOf("item").forGetter(Shaping::item),
                 Codec.FLOAT.fieldOf("cells").forGetter(Shaping::cells),
                 Codec.STRING.listOf().fieldOf("stock").forGetter(Shaping::stock),
                 Variant.CODEC.listOf().optionalFieldOf("variants", List.of()).forGetter(Shaping::variants),
                 Codec.STRING.optionalFieldOf("base", "").forGetter(Shaping::base),
-                Material.Trait.CODEC.listOf().optionalFieldOf("traits", List.of()).forGetter(Shaping::traits),
+                Codec.STRING.listOf().optionalFieldOf("traits", List.of()).forGetter(Shaping::traits),
                 PartSlot.CODEC.listOf().optionalFieldOf("slots", List.of()).forGetter(Shaping::slots),
                 Material.Kind.CODEC.listOf().optionalFieldOf("kinds", List.of()).forGetter(Shaping::kinds)
         ).apply(instance, Shaping::new));
@@ -839,11 +841,11 @@ public record ModularType(Family family, Slot slot, List<Mine> mines, float stri
      * @param standard for a slot that does not matter as a choice: the material every part is made with there. The part still requires the stock (its share
      *               of the cells is in the cost), but the player picks nothing for it.
      */
-    public record PartSlot(String name, List<String> forms, List<Material.Trait> traits, float share, Optional<ResourceLocation> standard) {
+    public record PartSlot(String name, List<String> forms, List<String> traits, float share, Optional<ResourceLocation> standard) {
         static final Codec<PartSlot> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 Codec.STRING.fieldOf("name").forGetter(PartSlot::name),
                 Codec.STRING.listOf().optionalFieldOf("forms", List.of()).forGetter(PartSlot::forms),
-                Material.Trait.CODEC.listOf().optionalFieldOf("traits", List.of()).forGetter(PartSlot::traits),
+                Codec.STRING.listOf().optionalFieldOf("traits", List.of()).forGetter(PartSlot::traits),
                 Codec.FLOAT.optionalFieldOf("share", 0f).forGetter(PartSlot::share),
                 ResourceLocation.CODEC.optionalFieldOf("standard").forGetter(PartSlot::standard)
         ).apply(instance, PartSlot::new));
@@ -855,7 +857,7 @@ public record ModularType(Family family, Slot slot, List<Mine> mines, float stri
 
         /** Whether {@code l} is stock this slot takes, given the part's own stock forms {@code partForms}. */
         public boolean accepts(Material.Located l, List<String> partForms) {
-            return fits(forms.isEmpty() ? partForms : forms, l.form()) && l.material().traits().containsAll(traits);
+            return fits(forms.isEmpty() ? partForms : forms, l.form()) && MaterialNeeds.hasAll(l.material(), traits);
         }
     }
 
@@ -912,10 +914,10 @@ public record ModularType(Family family, Slot slot, List<Mine> mines, float stri
 
     }
 
-    /** Whether {@code form} is one of {@code forms}, {@code *_planks} meaning any form ending so. */
+    /** Whether {@code form} is one of {@code forms}: a form's own name, {@code @long} any form of that shape class ({@link FormShape}), {@code *} any form. */
     public static boolean fits(List<String> forms, String form) {
         for (String f : forms)
-            if (f.startsWith("*") ? form.endsWith(f.substring(1)) : f.equals(form))
+            if (FormShape.fits(f, form))
                 return true;
         return false;
     }

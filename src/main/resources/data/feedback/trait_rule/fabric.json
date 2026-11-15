@@ -1,0 +1,13 @@
+{
+  "all": [
+    "hardness<=yielding",
+    "toughness>=tough",
+    "weight<=medium"
+  ],
+  "none": [
+    "edible",
+    "propellant",
+    "corrosive",
+    "fluid"
+  ]
+}

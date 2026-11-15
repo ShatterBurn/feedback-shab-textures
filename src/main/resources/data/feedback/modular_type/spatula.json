@@ -1,6 +1,9 @@
 {
   "family": "hand",
-  "required": ["B", "S"],
+  "required": [
+    "B",
+    "S"
+  ],
   "strike": 0.0,
   "wear_litres": 0.3,
   "wear_role": "B",
@@ -21,8 +24,8 @@
         "cells": 1,
         "stock": [
           "plate",
-          "*_planks",
-          "bone"
+          "@board",
+          "@lump"
         ],
         "base": "turner",
         "variants": [
@@ -36,19 +39,23 @@
               "drain": 0.1
             }
           }
-        ]
+        ],
+        "traits": []
       }
     },
     "S": {
       "name": "handle",
       "class": "mount",
       "forms": [
-        "stick",
-        "bone"
+        "@long"
       ],
       "litres": 0.03,
       "length": 0.12,
-      "layer": 1
+      "layer": 1,
+      "traits": [
+        "toughness>=tough",
+        "strength>=fair"
+      ]
     }
   },
   "patterns": [

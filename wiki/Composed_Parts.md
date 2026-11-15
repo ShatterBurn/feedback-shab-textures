@@ -20,6 +20,8 @@ When a part has a slot you choose, the part bench shows **one more stock slot** 
 
 A slot you choose only counts when something is in it. Mass uses the main material across the whole part.
 
+Each slot accepts stock by shape and by property; see [What a Part Slot Takes](What_a_Part_Slot_Takes.md).
+
 ## Fixed materials
 
 Most other parts carry a slot whose material is fixed: the lining of a boiler, vessel or tank, the valves of a cylinder head, the surface of a machine part or fitting, the leather wrap of a binding, pommel or tip, the facing of a shield, the pad of a stock. You never pick it and it asks for no extra stock slot; it takes a share of the same stock you already put in.

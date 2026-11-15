@@ -32,11 +32,11 @@
           {
             "name": "edge",
             "forms": [
-              "ingot",
-              "nugget",
-              "gem"
+              "@lump",
+              "@gem"
             ],
-            "share": 1
+            "share": 1,
+            "traits": []
           }
         ]
       }
@@ -55,9 +55,8 @@
         "item": "feedback:tool_tip",
         "cells": 1,
         "stock": [
-          "gem",
-          "shard",
-          "nugget"
+          "nugget",
+          "@gem"
         ],
         "slots": [
           {
@@ -69,7 +68,8 @@
             "share": 1,
             "standard": "feedback:leather"
           }
-        ]
+        ],
+        "traits": []
       },
       "axes": {
         "thickness": {

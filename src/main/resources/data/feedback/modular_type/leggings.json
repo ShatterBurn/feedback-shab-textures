@@ -1,6 +1,8 @@
 {
   "family": "armour",
-  "required": ["P"],
+  "required": [
+    "P"
+  ],
   "minigame": "feedback:fitting",
   "fit_order": [
     "L",
@@ -27,13 +29,12 @@
         "item": "feedback:leggings_plate",
         "cells": 7,
         "stock": [
-          "ingot",
-          "block",
-          "plate",
-          "leather",
-          "chain",
-          "gem",
-          "*_planks"
+          "@lump",
+          "@sheet",
+          "@skin",
+          "@cord",
+          "@gem",
+          "@board"
         ],
         "variants": [
           {
@@ -67,7 +68,8 @@
             "section": 0.8
           }
         ],
-        "base": "plain_leggings"
+        "base": "plain_leggings",
+        "traits": []
       },
       "axes": {
         "length": {
@@ -130,10 +132,13 @@
       "name": "underlayer",
       "class": "housing",
       "forms": [
-        "*"
+        "@loose",
+        "@cord",
+        "@mat",
+        "@skin"
       ],
       "traits": [
-        "fibrous"
+        "stuffing"
       ],
       "litres": 0.02,
       "layer": 1
@@ -142,9 +147,8 @@
       "name": "studs",
       "class": "working_face",
       "forms": [
-        "gem",
-        "shard",
-        "nugget"
+        "nugget",
+        "@gem"
       ],
       "litres": 0.01,
       "bulk": 2,
@@ -154,7 +158,8 @@
         "per_stud": 1,
         "max": 3,
         "wear": 1
-      }
+      },
+      "traits": []
     },
     "S": {
       "name": "servo",
@@ -171,11 +176,14 @@
       "school": "robotics:1",
       "forms": [
         "lens",
-        "gem"
+        "@gem"
       ],
       "litres": 0.005,
       "layer": 6,
-      "mount": "plate"
+      "mount": "plate",
+      "traits": [
+        "transparent"
+      ]
     },
     "M": {
       "name": "upgrade",
@@ -193,9 +201,9 @@
       "class": "housing",
       "forms": [
         "ingot",
-        "plate",
-        "chain",
-        "leather"
+        "@sheet",
+        "@skin",
+        "@cord"
       ],
       "litres": 0.03,
       "bulk": 2,
@@ -204,16 +212,20 @@
         "fall_mult": 0.75,
         "stagger_mult": 0.5
       },
-      "mount": "knee"
+      "mount": "knee",
+      "traits": []
     },
     "U": {
       "name": "underlayer",
       "class": "housing",
       "forms": [
-        "chain"
+        "@cord"
       ],
       "litres": 0.02,
-      "layer": 1
+      "layer": 1,
+      "traits": [
+        "strength>=strong"
+      ]
     }
   },
   "patterns": [

@@ -21,11 +21,10 @@
         "item": "feedback:shield_face",
         "cells": 6,
         "stock": [
-          "*_planks",
-          "plate",
-          "ingot",
-          "cobble",
-          "gem"
+          "@board",
+          "@sheet",
+          "@lump",
+          "@gem"
         ],
         "variants": [
           {
@@ -61,7 +60,8 @@
             "share": 1,
             "standard": "feedback:leather"
           }
-        ]
+        ],
+        "traits": []
       },
       "axes": {
         "face_size": {
@@ -170,16 +170,16 @@
       "name": "grip",
       "class": "mount",
       "forms": [
-        "stick",
-        "rod",
-        "leather",
-        "bone",
-        "grip"
+        "@long",
+        "@skin"
       ],
       "litres": 0.03,
       "layer": 2,
       "offers": [
         "grip"
+      ],
+      "traits": [
+        "toughness>=tough"
       ]
     },
     "O": {
@@ -202,15 +202,17 @@
       "name": "strap",
       "class": "mount",
       "forms": [
-        "string",
-        "wire"
+        "@cord"
       ],
       "litres": 0.01,
       "bulk": 2,
       "params": {
         "capacity_mult": 1.1
       },
-      "mount": "grip"
+      "mount": "grip",
+      "traits": [
+        "cordage"
+      ]
     }
   },
   "patterns": [

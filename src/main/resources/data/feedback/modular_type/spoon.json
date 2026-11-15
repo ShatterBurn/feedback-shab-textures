@@ -23,8 +23,8 @@
         "cells": 1,
         "stock": [
           "plate",
-          "*_planks",
-          "bone"
+          "@board",
+          "@lump"
         ],
         "base": "short_spoon",
         "variants": [
@@ -45,7 +45,8 @@
               "reach": 1.6
             }
           }
-        ]
+        ],
+        "traits": []
       },
       "axes": {
         "depth": {
@@ -75,12 +76,15 @@
       "name": "handle",
       "class": "mount",
       "forms": [
-        "stick",
-        "bone"
+        "@long"
       ],
       "litres": 0.03,
       "length": 0.12,
-      "layer": 1
+      "layer": 1,
+      "traits": [
+        "toughness>=tough",
+        "strength>=fair"
+      ]
     }
   },
   "patterns": [

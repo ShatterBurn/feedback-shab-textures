@@ -1,0 +1,13 @@
+{
+  "all": [
+    "hardness<=yielding",
+    "weight<=medium",
+    "heat_conduction:insulator"
+  ],
+  "none": [
+    "edible",
+    "propellant",
+    "corrosive",
+    "fluid"
+  ]
+}

@@ -1,6 +1,8 @@
 {
   "family": "block",
-  "required": ["S"],
+  "required": [
+    "S"
+  ],
   "slot": "mainhand",
   "wear_litres": 0.5,
   "wear_role": "S",
@@ -19,8 +21,7 @@
         "item": "feedback:crank_arm",
         "cells": 6,
         "stock": [
-          "rod",
-          "stick"
+          "@long"
         ],
         "variants": [
           {
@@ -31,6 +32,10 @@
               "rpm": 0.9
             }
           }
+        ],
+        "traits": [
+          "toughness>=tough",
+          "strength>=fair"
         ]
       },
       "axes": {

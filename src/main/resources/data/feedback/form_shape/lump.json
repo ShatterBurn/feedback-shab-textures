@@ -1,0 +1,16 @@
+{
+  "forms": [
+    "ingot",
+    "ground_ingot",
+    "nugget",
+    "cobble",
+    "block",
+    "slug",
+    "heavy_core",
+    "brick",
+    "ball",
+    "lump",
+    "bloom",
+    "green_compact"
+  ]
+}

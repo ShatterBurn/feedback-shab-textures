@@ -1,0 +1,13 @@
+{
+  "forms": [
+    "dust",
+    "raw",
+    "feather",
+    "crushed",
+    "meal",
+    "flint"
+  ],
+  "suffixes": [
+    "_powder"
+  ]
+}

@@ -88,11 +88,11 @@
         "item": "feedback:spring_gun_receiver",
         "cells": 2,
         "stock": [
-          "ingot",
-          "plate",
-          "bone",
-          "*_planks"
-        ]
+          "@lump",
+          "@sheet",
+          "@board"
+        ],
+        "traits": []
       },
       "offers": [
         "rail",
@@ -116,7 +116,10 @@
         "rod"
       ],
       "litres": 0.05,
-      "layer": 3
+      "layer": 3,
+      "traits": [
+        "strength>=fair"
+      ]
     }
   },
   "patterns": [

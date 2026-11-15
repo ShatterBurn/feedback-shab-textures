@@ -13,6 +13,7 @@ import io.github.soundgoodizerfan.feedback.core.thermal.ItemHeat;
 import io.github.soundgoodizerfan.feedback.core.unit.Tu;
 import io.github.soundgoodizerfan.feedback.process.MadeOf;
 import io.github.soundgoodizerfan.feedback.process.Material;
+import io.github.soundgoodizerfan.feedback.process.MaterialNeeds;
 import io.github.soundgoodizerfan.feedback.registry.FDataComponents;
 import io.github.soundgoodizerfan.feedback.registry.FormItems;
 import io.github.soundgoodizerfan.feedback.modular.bake.ModularBake;
@@ -119,7 +120,7 @@ public final class PartBenchShaping {
     public static boolean takes(Station station, Option option, Material.Located what) {
         return (!option.forged() || station.forges()) && station.accepts(what.material())
                 && ModularType.fits(option.shaping().stock(), what.form())
-                && what.material().traits().containsAll(option.shaping().traits())
+                && MaterialNeeds.hasAll(what.material(), option.shaping().traits())
                 && (option.shaping().kinds().isEmpty() || what.material().kind().filter(option.shaping().kinds()::contains).isPresent())
                 && holdsExperience(option, what);
     }
@@ -304,7 +305,7 @@ public final class PartBenchShaping {
         if (m.minTemperature().value() > 0 && (coldest < m.minTemperature().value() || coldest > m.maxTemperature().value()))
             return Optional.empty();
         if (!option.shaping().slots().isEmpty() && !option.shaping().slots().get(0).traits().isEmpty()
-                && !what.material().traits().containsAll(option.shaping().slots().get(0).traits()))
+                && !MaterialNeeds.hasAll(what.material(), option.shaping().slots().get(0).traits()))
             return Optional.empty();
         return Optional.of(new Stock(what, option.cells(), need, coldest, mb));
     }

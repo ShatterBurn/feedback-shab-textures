@@ -20,11 +20,10 @@
         "item": "feedback:vial_body",
         "cells": 1,
         "stock": [
-          "gem",
-          "shard",
-          "sheet",
-          "vein"
-        ]
+          "@gem",
+          "@sheet"
+        ],
+        "traits": []
       },
       "axes": {
         "volume": {

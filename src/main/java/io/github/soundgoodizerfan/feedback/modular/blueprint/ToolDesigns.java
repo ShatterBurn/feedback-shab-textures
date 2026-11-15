@@ -15,6 +15,7 @@ import java.util.Set;
 import io.github.soundgoodizerfan.feedback.modular.type.ModularDesign.Part;
 import io.github.soundgoodizerfan.feedback.process.MadeOf;
 import io.github.soundgoodizerfan.feedback.process.Material;
+import io.github.soundgoodizerfan.feedback.process.MaterialNeeds;
 import io.github.soundgoodizerfan.feedback.registry.FDataComponents;
 import io.github.soundgoodizerfan.feedback.modular.bake.ModularBake;
 import io.github.soundgoodizerfan.feedback.modular.bake.ModularFigures;
@@ -153,7 +154,7 @@ public final class ToolDesigns {
             for (String form : m.items(id).keySet()) {
                 Material.Located l = new Material.Located(id, m, form);
                 boolean fits = shape != null
-                        ? ModularType.fits(shape.shaping().stock(), form) && role.traits().stream().allMatch(m.traits()::contains)
+                        ? ModularType.fits(shape.shaping().stock(), form) && MaterialNeeds.hasAll(m, role.traits())
                                 && (shape.shaping().kinds().isEmpty() || m.kind().filter(shape.shaping().kinds()::contains).isPresent())
                                 && shape.stockMb(1f) % io.github.soundgoodizerfan.feedback.registry.FormItems.volume(form) == 0
                         : role.accepts(l);

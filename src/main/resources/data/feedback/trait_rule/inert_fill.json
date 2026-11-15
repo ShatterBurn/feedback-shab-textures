@@ -1,0 +1,11 @@
+{
+  "all": [
+    "weight>=medium"
+  ],
+  "none": [
+    "edible",
+    "propellant",
+    "corrosive",
+    "fluid"
+  ]
+}

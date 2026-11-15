@@ -445,6 +445,7 @@ public final class BlueprintBoard {
         out.add(roleName(role));
         if (I18n.exists("modular.feedback.role." + name + ".tip"))
             out.add(Component.translatable("modular.feedback.role." + name + ".tip"));
+        out.addAll(RoleNeeds.lines(current().roles().get(role)));
         return out;
     }
 

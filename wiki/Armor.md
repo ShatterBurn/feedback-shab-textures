@@ -17,7 +17,7 @@ Stock is ingots, plates, leather, gems or chain, all the same material. A metal 
 
 ## Lining and studs
 
-Put the piece in the item slot of the Engineering Table's [Fit tab](Engineering_Table.md#fit-tab) and the **lining** (anything fibrous: leather, wool) for a little extra protection, and/or **studs** (a pair) in the attachment slots, one stack of stock to a slot, and press **Apply**:
+Put the piece in the item slot of the Engineering Table's [Fit tab](Engineering_Table.md#fit-tab) and the **lining** (any stuffing material: leather, wool; see [What a Part Slot Takes](What_a_Part_Slot_Takes.md#uses)) for a little extra protection, and/or **studs** (a pair) in the attachment slots, one stack of stock to a slot, and press **Apply**:
 
 | On the piece | Gives |
 | --- | --- |

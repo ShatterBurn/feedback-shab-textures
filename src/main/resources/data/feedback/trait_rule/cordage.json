@@ -1,0 +1,11 @@
+{
+  "all": [
+    "toughness>=tough"
+  ],
+  "none": [
+    "edible",
+    "propellant",
+    "corrosive",
+    "fluid"
+  ]
+}

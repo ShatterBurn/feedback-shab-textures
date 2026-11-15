@@ -151,7 +151,7 @@
         "cells": 2,
         "stock": [
           "plate",
-          "*_planks"
+          "@board"
         ],
         "base": "fixed",
         "variants": [
@@ -188,7 +188,8 @@
             "name": "pad",
             "share": 1
           }
-        ]
+        ],
+        "traits": []
       },
       "mount": "receiver"
     }

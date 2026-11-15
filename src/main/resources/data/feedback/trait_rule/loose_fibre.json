@@ -1,0 +1,12 @@
+{
+  "all": [
+    "fibrous",
+    "heat_conduction:insulator"
+  ],
+  "none": [
+    "edible",
+    "propellant",
+    "corrosive",
+    "fluid"
+  ]
+}

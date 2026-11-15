@@ -1,0 +1,26 @@
+{
+  "ladder": {
+    "figure": "heat_conduction",
+    "bands": [
+      {
+        "name": "insulator",
+        "max": 0.0001
+      },
+      {
+        "name": "poor",
+        "max": 0.0005
+      },
+      {
+        "name": "fair",
+        "max": 0.005
+      },
+      {
+        "name": "good",
+        "max": 0.03
+      },
+      {
+        "name": "excellent"
+      }
+    ]
+  }
+}

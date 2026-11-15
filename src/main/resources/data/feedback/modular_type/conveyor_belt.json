@@ -1,6 +1,8 @@
 {
   "family": "belt",
-  "required": ["B"],
+  "required": [
+    "B"
+  ],
   "slot": "mainhand",
   "wear_litres": 0.25,
   "wear_role": "B",
@@ -18,8 +20,8 @@
         "item": "feedback:belt_band",
         "cells": 3,
         "stock": [
-          "leather",
-          "plate"
+          "@skin",
+          "@sheet"
         ],
         "variants": [
           {
@@ -37,6 +39,9 @@
               "heat": 1.6
             }
           }
+        ],
+        "traits": [
+          "toughness>=tough"
         ]
       }
     },
@@ -44,11 +49,14 @@
       "name": "cleat",
       "class": "working_face",
       "forms": [
-        "rod",
-        "stick"
+        "@long"
       ],
       "litres": 0.05,
-      "layer": 1
+      "layer": 1,
+      "traits": [
+        "toughness>=tough",
+        "strength>=fair"
+      ]
     }
   },
   "patterns": [

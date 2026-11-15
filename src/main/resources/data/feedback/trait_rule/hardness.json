@@ -1,0 +1,26 @@
+{
+  "ladder": {
+    "figure": "hardness",
+    "bands": [
+      {
+        "name": "yielding",
+        "max": 1.5
+      },
+      {
+        "name": "soft",
+        "max": 4
+      },
+      {
+        "name": "firm",
+        "max": 15
+      },
+      {
+        "name": "hard",
+        "max": 60
+      },
+      {
+        "name": "adamant"
+      }
+    ]
+  }
+}

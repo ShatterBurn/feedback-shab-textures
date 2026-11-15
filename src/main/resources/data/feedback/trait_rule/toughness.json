@@ -1,0 +1,18 @@
+{
+  "ladder": {
+    "figure": "toughness",
+    "bands": [
+      {
+        "name": "brittle",
+        "max": 2
+      },
+      {
+        "name": "tough",
+        "max": 20
+      },
+      {
+        "name": "very_tough"
+      }
+    ]
+  }
+}

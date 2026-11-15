@@ -1,0 +1,18 @@
+{
+  "ladder": {
+    "figure": "electric_conduction",
+    "bands": [
+      {
+        "name": "poor",
+        "max": 0.05
+      },
+      {
+        "name": "good",
+        "max": 0.5
+      },
+      {
+        "name": "excellent"
+      }
+    ]
+  }
+}

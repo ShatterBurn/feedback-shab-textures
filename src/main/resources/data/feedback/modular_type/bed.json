@@ -18,8 +18,8 @@
         "item": "feedback:bed_mattress",
         "cells": 2,
         "stock": [
-          "leather",
-          "*_carpet"
+          "@skin",
+          "@mat"
         ],
         "base": "bedroll",
         "variants": [
@@ -48,10 +48,13 @@
           {
             "name": "padding",
             "forms": [
-              "*"
+              "@loose",
+              "@cord",
+              "@mat",
+              "@skin"
             ],
             "traits": [
-              "fibrous"
+              "stuffing"
             ],
             "share": 3
           },
@@ -60,6 +63,9 @@
             "share": 1,
             "standard": "feedback:leather"
           }
+        ],
+        "traits": [
+          "fabric"
         ]
       }
     },
@@ -75,7 +81,7 @@
         "item": "feedback:bed_frame",
         "cells": 4,
         "stock": [
-          "*_planks",
+          "@board",
           "rod",
           "ingot"
         ],
@@ -95,6 +101,9 @@
               "lift": 0.6
             }
           }
+        ],
+        "traits": [
+          "strength>=fair"
         ]
       }
     }

@@ -1,0 +1,9 @@
+{
+  "forms": [
+    "planks",
+    "mosaic"
+  ],
+  "suffixes": [
+    "_planks"
+  ]
+}

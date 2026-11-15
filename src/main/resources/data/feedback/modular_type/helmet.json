@@ -1,6 +1,8 @@
 {
   "family": "armour",
-  "required": ["P"],
+  "required": [
+    "P"
+  ],
   "minigame": "feedback:fitting",
   "fit_order": [
     "L",
@@ -27,13 +29,12 @@
         "item": "feedback:helmet_plate",
         "cells": 5,
         "stock": [
-          "ingot",
-          "block",
-          "plate",
-          "leather",
-          "chain",
-          "gem",
-          "*_planks"
+          "@lump",
+          "@sheet",
+          "@skin",
+          "@cord",
+          "@gem",
+          "@board"
         ],
         "variants": [
           {
@@ -62,7 +63,8 @@
             "section": 1.15
           }
         ],
-        "base": "round"
+        "base": "round",
+        "traits": []
       },
       "axes": {
         "face_opening": {
@@ -130,10 +132,13 @@
       "name": "underlayer",
       "class": "housing",
       "forms": [
-        "*"
+        "@loose",
+        "@cord",
+        "@mat",
+        "@skin"
       ],
       "traits": [
-        "fibrous"
+        "stuffing"
       ],
       "litres": 0.02,
       "layer": 1
@@ -142,9 +147,8 @@
       "name": "studs",
       "class": "working_face",
       "forms": [
-        "gem",
-        "shard",
-        "nugget"
+        "nugget",
+        "@gem"
       ],
       "litres": 0.01,
       "bulk": 2,
@@ -154,7 +158,8 @@
         "per_stud": 1,
         "max": 3,
         "wear": 1
-      }
+      },
+      "traits": []
     },
     "S": {
       "name": "servo",
@@ -171,24 +176,30 @@
       "school": "robotics:1",
       "forms": [
         "lens",
-        "gem"
+        "@gem"
       ],
       "litres": 0.005,
       "layer": 6,
-      "mount": "plate"
+      "mount": "plate",
+      "traits": [
+        "transparent"
+      ]
     },
     "H": {
       "name": "sensor_head",
       "school": "robotics:1",
       "forms": [
-        "fibre",
-        "wire",
-        "fine_wire"
+        "@cord"
       ],
       "litres": 0.01,
       "layer": 7,
       "bulk": 2,
-      "mount": "plate"
+      "mount": "plate",
+      "traits": [],
+      "any_traits": [
+        "electric_conduction>=good",
+        "transparent"
+      ]
     },
     "M": {
       "name": "upgrade",
@@ -206,10 +217,9 @@
       "class": "housing",
       "forms": [
         "ingot",
-        "plate",
-        "chain",
-        "leather",
-        "fibre"
+        "@sheet",
+        "@skin",
+        "@cord"
       ],
       "litres": 0.02,
       "bulk": 1,
@@ -218,16 +228,20 @@
         "stiff_share": 0.5,
         "flex_share": 0.2
       },
-      "mount": "neck"
+      "mount": "neck",
+      "traits": []
     },
     "U": {
       "name": "underlayer",
       "class": "housing",
       "forms": [
-        "chain"
+        "@cord"
       ],
       "litres": 0.02,
-      "layer": 1
+      "layer": 1,
+      "traits": [
+        "strength>=strong"
+      ]
     }
   },
   "patterns": [

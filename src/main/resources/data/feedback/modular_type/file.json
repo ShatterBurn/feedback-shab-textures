@@ -58,11 +58,11 @@
           {
             "name": "edge",
             "forms": [
-              "ingot",
-              "nugget",
-              "gem"
+              "@lump",
+              "@gem"
             ],
-            "share": 1
+            "share": 1,
+            "traits": []
           }
         ]
       },
@@ -94,13 +94,15 @@
       "name": "handle",
       "class": "mount",
       "forms": [
-        "stick",
-        "rod",
-        "bone"
+        "@long"
       ],
       "litres": 0.05,
       "length": 0.3,
-      "layer": 1
+      "layer": 1,
+      "traits": [
+        "toughness>=tough",
+        "strength>=fair"
+      ]
     },
     "B": {
       "name": "binding",
@@ -114,9 +116,8 @@
         "item": "feedback:tool_binding",
         "cells": 1,
         "stock": [
-          "leather",
-          "wire",
-          "string"
+          "@skin",
+          "@cord"
         ],
         "slots": [
           {
@@ -128,6 +129,9 @@
             "share": 1,
             "standard": "feedback:leather"
           }
+        ],
+        "traits": [
+          "cordage"
         ]
       },
       "axes": {

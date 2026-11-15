@@ -1,0 +1,26 @@
+{
+  "ladder": {
+    "figure": "strength",
+    "bands": [
+      {
+        "name": "weak",
+        "max": 1.0
+      },
+      {
+        "name": "fair",
+        "max": 3
+      },
+      {
+        "name": "strong",
+        "max": 12
+      },
+      {
+        "name": "very_strong",
+        "max": 40
+      },
+      {
+        "name": "extreme"
+      }
+    ]
+  }
+}

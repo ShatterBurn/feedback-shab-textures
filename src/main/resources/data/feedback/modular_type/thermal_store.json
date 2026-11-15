@@ -1,6 +1,8 @@
 {
   "family": "block",
-  "required": ["S"],
+  "required": [
+    "S"
+  ],
   "slot": "mainhand",
   "wear_litres": 0.5,
   "wear_role": "S",
@@ -28,7 +30,7 @@
         "item": "feedback:store_core",
         "cells": 6,
         "stock": [
-          "brick"
+          "@lump"
         ],
         "base": "store_walled",
         "variants": [
@@ -66,6 +68,9 @@
             "share": 1,
             "standard": "feedback:ceramic"
           }
+        ],
+        "traits": [
+          "heat_limit>=high"
         ]
       }
     },
@@ -73,20 +78,28 @@
       "name": "lagging",
       "class": "housing",
       "forms": [
-        "*_carpet"
+        "@mat",
+        "@cord",
+        "@loose"
       ],
       "litres": 0.02,
       "layer": 1,
-      "bulk": 2
+      "bulk": 2,
+      "traits": [
+        "insulating"
+      ]
     },
     "F": {
       "name": "salt_fill",
       "forms": [
-        "raw"
+        "@loose"
       ],
       "litres": 0.02,
       "layer": 2,
-      "bulk": 4
+      "bulk": 4,
+      "traits": [
+        "inert_fill"
+      ]
     }
   },
   "patterns": [

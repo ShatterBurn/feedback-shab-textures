@@ -25,12 +25,9 @@
         "driver_bit"
       ],
       "stock": [
-        "ingot",
-        "block",
-        "gem",
-        "*_planks",
-        "cobble",
-        "bone"
+        "@lump",
+        "@gem",
+        "@board"
       ],
       "litres": 0.125,
       "at": 0.08,
@@ -38,17 +35,15 @@
       "layer": 0,
       "offers": [
         "face"
-      ]
+      ],
+      "traits": []
     },
     "S": {
       "name": "handle",
       "class": "mount",
       "forms": [
-        "stick",
-        "rod",
-        "bone",
-        "leather",
-        "grip"
+        "@long",
+        "@skin"
       ],
       "litres": 0.05,
       "length": 0.35,
@@ -57,6 +52,9 @@
         "grip",
         "butt",
         "head"
+      ],
+      "traits": [
+        "toughness>=tough"
       ]
     },
     "G": {
@@ -72,12 +70,10 @@
         "item": "feedback:sword_guard",
         "cells": 1,
         "stock": [
-          "ingot",
-          "block",
-          "plate",
-          "*_planks",
-          "bone",
-          "gem"
+          "@lump",
+          "@sheet",
+          "@board",
+          "@gem"
         ],
         "variants": [
           {
@@ -106,7 +102,8 @@
             "share": 1,
             "standard": "feedback:leather"
           }
-        ]
+        ],
+        "traits": []
       },
       "mount": "grip"
     },
@@ -123,12 +120,9 @@
         "item": "feedback:tool_pommel",
         "cells": 1,
         "stock": [
-          "nugget",
-          "ingot",
-          "gem",
-          "*_planks",
-          "cobble",
-          "bone"
+          "@lump",
+          "@gem",
+          "@board"
         ],
         "slots": [
           {
@@ -140,7 +134,8 @@
             "share": 1,
             "standard": "feedback:leather"
           }
-        ]
+        ],
+        "traits": []
       },
       "mount": "butt",
       "axes": {
@@ -172,12 +167,9 @@
         "driver_bit"
       ],
       "stock": [
-        "ingot",
-        "block",
-        "gem",
-        "*_planks",
-        "cobble",
-        "bone"
+        "@lump",
+        "@gem",
+        "@board"
       ],
       "litres": 0.125,
       "at": 0.08,
@@ -185,7 +177,8 @@
       "layer": 5,
       "offers": [
         "face"
-      ]
+      ],
+      "traits": []
     },
     "K": {
       "name": "third_head",
@@ -206,12 +199,9 @@
         "driver_bit"
       ],
       "stock": [
-        "ingot",
-        "block",
-        "gem",
-        "*_planks",
-        "cobble",
-        "bone"
+        "@lump",
+        "@gem",
+        "@board"
       ],
       "litres": 0.125,
       "at": 0.08,
@@ -219,7 +209,8 @@
       "layer": 6,
       "offers": [
         "face"
-      ]
+      ],
+      "traits": []
     },
     "B": {
       "name": "binding",
@@ -233,9 +224,8 @@
         "item": "feedback:tool_binding",
         "cells": 1,
         "stock": [
-          "leather",
-          "wire",
-          "string"
+          "@skin",
+          "@cord"
         ],
         "slots": [
           {
@@ -247,6 +237,9 @@
             "share": 1,
             "standard": "feedback:leather"
           }
+        ],
+        "traits": [
+          "cordage"
         ]
       },
       "mount": "head",
@@ -274,9 +267,8 @@
         "item": "feedback:tool_tip",
         "cells": 1,
         "stock": [
-          "gem",
-          "shard",
-          "nugget"
+          "nugget",
+          "@gem"
         ],
         "slots": [
           {
@@ -288,7 +280,8 @@
             "share": 1,
             "standard": "feedback:leather"
           }
-        ]
+        ],
+        "traits": []
       },
       "mount": "face",
       "axes": {
@@ -315,13 +308,16 @@
         "rating": 12,
         "throw_rating": 6
       },
-      "mount": "head"
+      "mount": "head",
+      "traits": [
+        "strength>=fair"
+      ]
     },
     "Y": {
       "name": "lanyard",
       "class": "mount",
       "forms": [
-        "chain"
+        "@cord"
       ],
       "litres": 0.02,
       "bulk": 2,
@@ -332,7 +328,10 @@
         "pull": 0.3,
         "return": 0.1
       },
-      "mount": "butt"
+      "mount": "butt",
+      "traits": [
+        "cordage"
+      ]
     },
     "Z": {
       "name": "edge_guard",

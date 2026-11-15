@@ -12,6 +12,7 @@ import io.github.soundgoodizerfan.feedback.modular.type.ModularType;
 import io.github.soundgoodizerfan.feedback.modular.bench.PartBenchShaping;
 import io.github.soundgoodizerfan.feedback.process.ClientMaterials;
 import io.github.soundgoodizerfan.feedback.process.MadeOf;
+import io.github.soundgoodizerfan.feedback.process.MaterialNeeds;
 import io.github.soundgoodizerfan.feedback.registry.FDataComponents;
 import io.github.soundgoodizerfan.feedback.registry.FItems;
 import io.github.soundgoodizerfan.feedback.registry.FModular;
@@ -82,7 +83,7 @@ public class PartBenchPartCategory implements IRecipeCategory<PartBenchShaping.O
         List<ItemStack> stock = new ArrayList<>(), parts = new ArrayList<>();
         ClientMaterials.get().forEach((id, m) -> {
             // Same trait gate as PartBenchShaping.check: a food shape takes only dough (kneadable).
-            if (m.traits().containsAll(option.shaping().traits()))
+            if (MaterialNeeds.hasAll(m, option.shaping().traits()))
                 m.items(id).entrySet().stream()
                         .filter(e -> ModularType.fits(option.shaping().stock(), e.getKey()))
                         .filter(e -> option.stockMb(1f) % FormItems.volume(e.getKey()) == 0)

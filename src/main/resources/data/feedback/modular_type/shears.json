@@ -21,9 +21,8 @@
         "item": "feedback:shears_blade",
         "cells": 2,
         "stock": [
-          "ingot",
-          "gem",
-          "bone"
+          "@lump",
+          "@gem"
         ],
         "base": "pivot_scissor",
         "variants": [
@@ -54,13 +53,14 @@
           {
             "name": "edge",
             "forms": [
-              "ingot",
-              "nugget",
-              "gem"
+              "@lump",
+              "@gem"
             ],
-            "share": 1
+            "share": 1,
+            "traits": []
           }
-        ]
+        ],
+        "traits": []
       },
       "axes": {
         "length": {

@@ -1,0 +1,22 @@
+{
+  "ladder": {
+    "figure": "heat_limit",
+    "bands": [
+      {
+        "name": "low",
+        "max": 200
+      },
+      {
+        "name": "moderate",
+        "max": 500
+      },
+      {
+        "name": "high",
+        "max": 1000
+      },
+      {
+        "name": "extreme"
+      }
+    ]
+  }
+}

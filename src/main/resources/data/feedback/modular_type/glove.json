@@ -1,6 +1,8 @@
 {
   "family": "glove",
-  "required": ["B"],
+  "required": [
+    "B"
+  ],
   "wear_litres": 0.3,
   "wear_role": "B",
   "primary": "B",
@@ -17,8 +19,11 @@
         "item": "feedback:glove_body",
         "cells": 4,
         "stock": [
-          "leather",
-          "*_carpet"
+          "@skin",
+          "@mat"
+        ],
+        "traits": [
+          "fabric"
         ]
       },
       "offers": [
@@ -30,10 +35,13 @@
       "name": "lining",
       "class": "housing",
       "forms": [
-        "*"
+        "@loose",
+        "@cord",
+        "@mat",
+        "@skin"
       ],
       "traits": [
-        "fibrous"
+        "stuffing"
       ],
       "litres": 0.02,
       "layer": 1
@@ -80,8 +88,8 @@
       "class": "housing",
       "forms": [
         "ingot",
-        "plate",
-        "leather"
+        "@sheet",
+        "@skin"
       ],
       "litres": 0.05,
       "bulk": 2,
@@ -91,7 +99,8 @@
         "stagger_mult": 0.5,
         "light_damage": 4
       },
-      "mount": "wrist"
+      "mount": "wrist",
+      "traits": []
     }
   },
   "patterns": [

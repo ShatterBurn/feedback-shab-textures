@@ -30,12 +30,9 @@
         "item": "feedback:cleaver_head",
         "cells": 4,
         "stock": [
-          "ingot",
-          "block",
-          "gem",
-          "*_planks",
-          "cobble",
-          "bone"
+          "@lump",
+          "@gem",
+          "@board"
         ],
         "variants": [
           {
@@ -77,13 +74,14 @@
           {
             "name": "edge",
             "forms": [
-              "ingot",
-              "nugget",
-              "gem"
+              "@lump",
+              "@gem"
             ],
-            "share": 1
+            "share": 1,
+            "traits": []
           }
-        ]
+        ],
+        "traits": []
       },
       "axes": {
         "edge_length": {
@@ -134,13 +132,15 @@
       "name": "handle",
       "class": "mount",
       "forms": [
-        "stick",
-        "rod",
-        "bone"
+        "@long"
       ],
       "litres": 0.05,
       "length": 0.35,
-      "layer": 1
+      "layer": 1,
+      "traits": [
+        "toughness>=tough",
+        "strength>=fair"
+      ]
     },
     "B": {
       "name": "binding",
@@ -154,9 +154,8 @@
         "item": "feedback:tool_binding",
         "cells": 1,
         "stock": [
-          "leather",
-          "wire",
-          "string"
+          "@skin",
+          "@cord"
         ],
         "slots": [
           {
@@ -168,6 +167,9 @@
             "share": 1,
             "standard": "feedback:leather"
           }
+        ],
+        "traits": [
+          "cordage"
         ]
       },
       "axes": {
@@ -194,9 +196,8 @@
         "item": "feedback:tool_tip",
         "cells": 1,
         "stock": [
-          "gem",
-          "shard",
-          "nugget"
+          "nugget",
+          "@gem"
         ],
         "slots": [
           {
@@ -208,7 +209,8 @@
             "share": 1,
             "standard": "feedback:leather"
           }
-        ]
+        ],
+        "traits": []
       },
       "axes": {
         "thickness": {
