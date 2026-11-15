@@ -46,7 +46,7 @@ public class ResearchTableMenu extends AbstractContainerMenu {
     public static final int NOTE_NONE = 0, NOTE_NO_BLANK = 1, NOTE_NO_SPECIMEN = 2, NOTE_NO_XP = 3, NOTE_NOTHING = 4, NOTE_WRITTEN = 5, NOTE_LEARNED = 6,
             NOTE_NO_EARLIER = 7, NOTE_NO_PLAN = 8;
 
-    public static final int W = 232, H = 278, SLOT_X = 14, BLANK_Y = 40, SPECIMEN_Y = 70, INV_X = 35, INV_Y = 198;
+    public static final int W = 232, H = 292, SLOT_X = 14, BLANK_Y = 40, SPECIMEN_Y = 70, INV_X = 35, INV_Y = 212;
 
     private final Container table;
     private final DataSlot mode = DataSlot.standalone(), index = DataSlot.standalone(), note = DataSlot.standalone();
