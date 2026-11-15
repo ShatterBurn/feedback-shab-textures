@@ -69,11 +69,14 @@ public final class RobotWorker {
 
     // --- what it senses ahead --------------------------------------------------------------------------
 
+    /** A sense never loads a chunk: ground that is not loaded reads as solid and unbreakable. */
     public static boolean solid(Body b, BlockPos pos) {
-        return !b.level().getBlockState(pos).getCollisionShape(b.level(), pos).isEmpty();
+        return !b.level().isLoaded(pos) || !b.level().getBlockState(pos).getCollisionShape(b.level(), pos).isEmpty();
     }
 
     public static boolean breakable(Body b, BlockPos pos) {
+        if (!b.level().isLoaded(pos))
+            return false;
         BlockState state = b.level().getBlockState(pos);
         return !state.isAir() && state.getFluidState().isEmpty() && b.spec().canBreak(state.getDestroySpeed(b.level(), pos));
     }
@@ -93,13 +96,15 @@ public final class RobotWorker {
     public static float range(Body b, BlockPos.MutableBlockPos scan) {
         for (int i = 1; i <= RobotTuning.RANGE_MAX; i++) {
             scan.set(b.pos()).move(b.facing(), i);
-            if (!b.level().getBlockState(scan).getCollisionShape(b.level(), scan).isEmpty())
+            if (solid(b, scan))
                 return i;
         }
         return RobotTuning.RANGE_MAX;
     }
 
     public static float hardness(Body b, BlockPos pos) {
+        if (!b.level().isLoaded(pos))
+            return 100f;
         BlockState state = b.level().getBlockState(pos);
         if (state.isAir())
             return 0f;
@@ -118,7 +123,7 @@ public final class RobotWorker {
             case BREAKABLE_AHEAD -> breakable(b, ahead) ? 1f : 0f;
             case ITEM_AHEAD -> items(b.level(), ahead).isEmpty() ? 0f : 1f;
             case CARGO_FULL -> cargoFull(b.cargo()) ? 1f : 0f;
-            case DOCK_AHEAD -> b.level().getBlockState(ahead).is(FTags.ROBOT_DOCKS) ? 1f : 0f;
+            case DOCK_AHEAD -> b.level().isLoaded(ahead) && b.level().getBlockState(ahead).is(FTags.ROBOT_DOCKS) ? 1f : 0f;
             case RANGE_AHEAD -> spec.sensor().equals(RobotSpec.RANGEFINDER) ? range(b, scan) : 0f;
             case HARDNESS_AHEAD -> spec.sensor().equals(RobotSpec.PROBE) ? hardness(b, ahead) : 0f;
             default -> Float.NaN;
@@ -225,12 +230,11 @@ public final class RobotWorker {
         if (handler == null)
             return;
         for (int i = 0; i < handler.getSlots(); i++) {
-            ItemStack out = handler.extractItem(i, 64, false);
-            if (out.isEmpty())
+            ItemStack peek = handler.extractItem(i, 64, true);
+            // only what the whole cargo can take is extracted: a port that refuses a stack back (an output slot) must not lose a remainder
+            if (peek.isEmpty() || !b.cargo().canAddItem(peek))
                 continue;
-            ItemStack left = b.cargo().addItem(out);
-            if (!left.isEmpty())
-                ItemHandlerHelper.insertItem(handler, left, false);
+            b.cargo().addItem(handler.extractItem(i, peek.getCount(), false));
             return;
         }
     }

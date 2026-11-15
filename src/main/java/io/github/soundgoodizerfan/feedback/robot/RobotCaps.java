@@ -25,6 +25,11 @@ public final class RobotCaps {
 
     private static final Map<ResourceKey<Level>, Integer> COUNT = new HashMap<>();
 
+    /** A new server: no robots are counted. */
+    public static void reset() {
+        COUNT.clear();
+    }
+
     static void add(Level level) {
         COUNT.merge(level.dimension(), 1, Integer::sum);
     }

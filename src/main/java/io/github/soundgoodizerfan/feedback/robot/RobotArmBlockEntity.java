@@ -40,6 +40,7 @@ public class RobotArmBlockEntity extends ElectricNode implements ControllerCore.
 
     public RobotArmBlockEntity(BlockPos pos, BlockState state) {
         super(FBlockEntities.ROBOT_ARM.get(), pos, state);
+        cargo.addListener(c -> setChanged());
     }
 
     public ControllerCore core() {
@@ -159,10 +160,12 @@ public class RobotArmBlockEntity extends ElectricNode implements ControllerCore.
     }
 
     private void begin() {
-        BlockPos ahead = worldPosition.relative(facing());
+        BlockPos ahead = null;
         for (RobotChannel c : ORDER) {
             if (!on[c.ordinal()])
                 continue;
+            if (ahead == null)
+                ahead = worldPosition.relative(facing());
             int ticks = RobotWorker.begin(this, c, ahead);
             if (ticks < 0)
                 continue;

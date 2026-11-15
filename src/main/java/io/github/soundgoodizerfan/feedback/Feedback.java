@@ -89,7 +89,10 @@ public class Feedback {
         container.registerConfig(net.neoforged.fml.config.ModConfig.Type.SERVER, io.github.soundgoodizerfan.feedback.robot.RobotConfig.SPEC);
         modBus.addListener(io.github.soundgoodizerfan.feedback.robot.RobotTickets::register);
         NeoForge.EVENT_BUS.addListener((net.neoforged.neoforge.event.server.ServerStoppedEvent e) ->
-                io.github.soundgoodizerfan.feedback.robot.RobotTickets.reset());
+        {
+            io.github.soundgoodizerfan.feedback.robot.RobotTickets.reset();
+            io.github.soundgoodizerfan.feedback.robot.RobotCaps.reset();
+        });
         if (net.neoforged.fml.loading.FMLEnvironment.dist.isClient())
             container.registerConfig(net.neoforged.fml.config.ModConfig.Type.CLIENT,
                     io.github.soundgoodizerfan.feedback.client.ClientSettings.SPEC);

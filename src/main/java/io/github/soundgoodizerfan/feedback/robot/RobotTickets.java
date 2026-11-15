@@ -44,7 +44,8 @@ public final class RobotTickets {
     public static boolean hold(ServerLevel level, Entity robot, int chunkX, int chunkZ) {
         if (held >= RobotConfig.LOADED_CHUNKS.get())
             return false;
-        CONTROLLER.forceChunk(level, robot, chunkX, chunkZ, true, true);
+        if (!CONTROLLER.forceChunk(level, robot, chunkX, chunkZ, true, true))
+            return false;
         held++;
         return true;
     }

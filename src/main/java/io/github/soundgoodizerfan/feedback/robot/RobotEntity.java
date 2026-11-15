@@ -227,7 +227,10 @@ public class RobotEntity extends Entity implements ControllerCore.Locals, RobotW
 
     /** Whether the robot is within its cable's length of its reel (always true untied). */
     public boolean withinTether() {
-        return tether == null || position().distanceToSqr(Vec3.atCenterOf(tether)) <= RobotTuning.TETHER_LENGTH * RobotTuning.TETHER_LENGTH;
+        if (tether == null)
+            return true;
+        double dx = getX() - (tether.getX() + 0.5), dy = getY() - (tether.getY() + 0.5), dz = getZ() - (tether.getZ() + 0.5);
+        return dx * dx + dy * dy + dz * dz <= RobotTuning.TETHER_LENGTH * RobotTuning.TETHER_LENGTH;
     }
 
     // --- the program's own channels --------------------------------------------------------------------
@@ -266,9 +269,11 @@ public class RobotEntity extends Entity implements ControllerCore.Locals, RobotW
         BlockPos at = blockPosition();
         for (int dx = -r; dx <= r; dx++)
             for (int dy = -1; dy <= 1; dy++)
-                for (int dz = -r; dz <= r; dz++)
-                    if (level().getBlockState(scan.set(at.getX() + dx, at.getY() + dy, at.getZ() + dz)).is(FTags.ROBOT_BEACONS))
+                for (int dz = -r; dz <= r; dz++) {
+                    scan.set(at.getX() + dx, at.getY() + dy, at.getZ() + dz);
+                    if (level().isLoaded(scan) && level().getBlockState(scan).is(FTags.ROBOT_BEACONS))
                         return true;
+                }
         return false;
     }
 
@@ -346,6 +351,8 @@ public class RobotEntity extends Entity implements ControllerCore.Locals, RobotW
         }
         boolean live = powered();
         if (!live) {
+            if (doing == RobotChannel.MINE)
+                RobotClaims.release(level(), doingPos, owner());
             doing = null;
             for (int i = 0; i < on.length; i++)
                 on[i] = false;
@@ -385,7 +392,7 @@ public class RobotEntity extends Entity implements ControllerCore.Locals, RobotW
         } else if (!walking && onGround()) {
             return; // idle on the ground: nothing to move, nothing allocated
         } else {
-            setDeltaMovement(walking ? heading.getStepX() * spec.speed() : 0, onGround() ? 0 : getDeltaMovement().y - 0.08,
+            setDeltaMovement(walking ? heading.getStepX() * spec.speed() : 0, onGround() ? 0 : Math.max(-1.0, getDeltaMovement().y - 0.08),
                     walking ? heading.getStepZ() * spec.speed() : 0);
         }
         move(MoverType.SELF, getDeltaMovement());
@@ -393,10 +400,12 @@ public class RobotEntity extends Entity implements ControllerCore.Locals, RobotW
 
     /** Starts the first action the program holds on and the robot can afford. */
     private void begin() {
-        BlockPos ahead = blockPosition().relative(facing());
+        BlockPos ahead = null;
         for (RobotChannel c : ORDER) {
             if (!on[c.ordinal()])
                 continue;
+            if (ahead == null)
+                ahead = blockPosition().relative(facing()); // only when a program holds an action on
             int ticks = RobotWorker.begin(this, c, ahead);
             if (ticks < 0)
                 continue;
@@ -494,7 +503,8 @@ public class RobotEntity extends Entity implements ControllerCore.Locals, RobotW
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        if (level().isClientSide || isRemoved() || isInvulnerableTo(source))
+        // only a blow from something (a player, a mob) knocks a robot into its item; fire, lava and the void do not
+        if (level().isClientSide || isRemoved() || isInvulnerableTo(source) || source.getEntity() == null)
             return false;
         pack();
         return true;

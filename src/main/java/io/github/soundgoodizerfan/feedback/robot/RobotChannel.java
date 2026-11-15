@@ -87,10 +87,11 @@ public enum RobotChannel {
         return DataNodeRef.local(ordinal());
     }
 
+    private static final RobotChannel[] ALL = values();
+
     @Nullable
     public static RobotChannel of(int ordinal) {
-        RobotChannel[] all = values();
-        return ordinal >= 0 && ordinal < all.length ? all[ordinal] : null;
+        return ordinal >= 0 && ordinal < ALL.length ? ALL[ordinal] : null;
     }
 
     public String langKey() {
