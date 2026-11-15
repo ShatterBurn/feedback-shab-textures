@@ -47,7 +47,7 @@ import net.minecraft.world.item.ItemStack;
  */
 public class EnchantMenu extends AbstractContainerMenu {
 
-    public static final int W = 292, H = 232, PART_X = 16, PART_Y = 27, INV_X = 65, INV_Y = 148;
+    public static final int W = 306, H = 280, PART_X = 200, PART_Y = 28, INV_X = 72, INV_Y = 198;
 
     private final Container part;
     private final ContainerLevelAccess access;

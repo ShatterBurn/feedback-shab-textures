@@ -58,12 +58,16 @@ import net.neoforged.neoforge.network.PacketDistributor;
  */
 public class EnchantScreen extends SkinnedScreen<EnchantMenu> {
 
-    private static final int LIST_X = 10, LIST_Y = 62, LIST_W = 104, LIST_H = 80, ROW = 11, ROWS = 7;
-    private static final int SCOPE_X = 122, SCOPE_Y = 24, SCOPE_W = 138, SCOPE_H = 84;
-    private static final int HEAT_X = 266, HEAT_W = 10;
-    private static final int LAMP_Y = 113;
-    private static final int BTN_X = 122, BTN_Y = 128, BTN_W = 154;
+    /** Left page: the list, full height. Right page: the showcase (spinning part, its socket, name, pips), the pad, lamps, Begin. */
+    private static final int LIST_X = 10, LIST_Y = 24, LIST_W = 120, LIST_H = 148, ROW = 16, ROWS = 9;
+    private static final int SHOW_X = 140, SHOW_Y = 8, SHOW_W = 156, SHOW_H = 52;
+    private static final int SCOPE_X = 140, SCOPE_Y = 74, SCOPE_W = 138, SCOPE_H = 84;
+    private static final int HEAT_X = 284, HEAT_W = 10;
+    private static final int LAMP_Y = 166;
+    private static final int BTN_X = 140, BTN_Y = 180, BTN_W = 154;
     private static final int GOLD = 0xF2CC5A, GOLD_HI = 0xF6DD8A, VIOLET = 0x9A6AE0, ROSE = 0xFF6A8A, AMBER = 0xFFB060;
+    private static final int PART_NAME_X = 200;
+    private static final int PIP_X = 224, PIP_Y = 38;
     private static final String[] LAMPS = {"part", "heat", "effect", "xp"};
 
     private final List<Attunements.Effect> effects = new ArrayList<>(Attunements.known().values());
@@ -93,16 +97,25 @@ public class EnchantScreen extends SkinnedScreen<EnchantMenu> {
     private long resultAt = -10_000;
     private float shakeAt = Float.NEGATIVE_INFINITY;
     private final Specks specks = new Specks(96);
+    /** Ticks since the screen opened, for the ambient motes over the pad. */
+    private int ambient;
+    /** First letter of each effect's word, as glyph cells, for the list's gutter (indexed like {@link #effects}). */
+    private int[][][] initials;
     private final Gauge ink = Gauge.of(() -> pen == null ? 1f : pen.inkFraction()).vertical().lead(() -> skin.accent());
 
     public EnchantScreen(EnchantMenu menu, Inventory inventory, Component title) {
         super(menu, inventory, title, GuiSkin.MYSTIC);
         imageWidth = EnchantMenu.W;
         imageHeight = EnchantMenu.H;
-        titleLabelX = 12;
+        titleLabelX = 10;
         titleLabelY = 10;
         inventoryLabelY = 10000; // the list column sits where the label would be
         effects.sort(Comparator.comparing(e -> labelOf(e).getString()));
+        initials = new int[effects.size()][][];
+        for (int i = 0; i < initials.length; i++) {
+            String w = Sigil.word(effects.get(i));
+            initials[i] = w.isEmpty() ? new int[0][] : SgaGlyphs.cells(w.charAt(0));
+        }
     }
 
     @Override
@@ -394,6 +407,12 @@ public class EnchantScreen extends SkinnedScreen<EnchantMenu> {
             skin.cue(GuiSkin.Cue.SEAT, m == null ? null : m.kind().orElse(null), 1f);
         }
         hadPart = has;
+        if (!playing && !ClientSettings.reduceMotion() && ++ambient % 3 == 0) {
+            java.util.concurrent.ThreadLocalRandom r = java.util.concurrent.ThreadLocalRandom.current();
+            boolean ready = why().equals("ready");
+            specks.spawn(leftPos + SCOPE_X + 6 + r.nextFloat() * (SCOPE_W - 12), topPos + SCOPE_Y + SCOPE_H - 6,
+                    (r.nextFloat() - 0.5f) * 0.3f, -0.35f - r.nextFloat() * 0.3f, ready ? GOLD_HI : VIOLET, 40, 1);
+        }
         Attunements.Effect picked = effect();
         study.visible = !playing && picked != null && owned(picked) && !known(picked);
         begin.visible = !playing && !study.visible;
@@ -548,6 +567,7 @@ public class EnchantScreen extends SkinnedScreen<EnchantMenu> {
         Attunements.Effect e = effect();
         Material.Attuning p = attuning();
 
+        showcase(g, t);
         // The socket: a gold ring marches round a part that is seated, faster while it is being worked.
         if (!menu.part().isEmpty()) {
             int x0 = leftPos + EnchantMenu.PART_X - 3, y0 = topPos + EnchantMenu.PART_Y - 3;
@@ -562,7 +582,7 @@ public class EnchantScreen extends SkinnedScreen<EnchantMenu> {
         if (m != null) {
             int cap = EnchantGame.capacity(m), have = held();
             for (int i = 0; i < cap; i++)
-                pip(g, leftPos + 43 + i * 8, topPos + 42, i < have ? skin.accent() : 0x50FFFFFF & (skin.dim() | 0xFF000000));
+                pip(g, leftPos + PIP_X + i * 8, topPos + PIP_Y, i < have ? skin.accent() : 0x50FFFFFF & (skin.dim() | 0xFF000000));
         }
 
         // The effect list.
@@ -574,7 +594,10 @@ public class EnchantScreen extends SkinnedScreen<EnchantMenu> {
             boolean picked = scroll + r == chosen;
             skin.row(g, rx, ry, rw, ROW, picked, !playing && over(mx, my, LIST_X + 1, LIST_Y + 2 + r * ROW, rw, ROW));
             int colour = picked ? skin.accent() : inert(row) ? skin.dim() : skin.ink();
-            g.drawString(font, font.plainSubstrByWidth(shown(row).getString(), rw - 14), rx + 4, ry + 2, colour, false);
+            if (known(row))
+                for (int[] c : initials[scroll + r])
+                    g.fill(rx + 4 + c[0] * 2, ry + 1 + c[1] * 2, rx + 6 + c[0] * 2, ry + 3 + c[1] * 2, 0xFF000000 | colour);
+            g.drawString(font, font.plainSubstrByWidth(shown(row).getString(), rw - 27), rx + 4 + SgaGlyphs.COLUMNS * 2 + 5, ry + 4, colour, false);
             if (owned(row))
                 pip(g, rx + rw - 6, ry + ROW / 2, skin.accent());
         }
@@ -594,7 +617,17 @@ public class EnchantScreen extends SkinnedScreen<EnchantMenu> {
             g.fillGradient(hx, wTop, hx + HEAT_W, wBottom, 0x70F2CC5A, 0x30F2CC5A);
             g.fill(hx, wBottom, hx + HEAT_W, top + h, 0x302A4AA0);
             int y = top + Math.round((1f - Mth.clamp((heat() - lo) / (hi - lo), 0f, 1f)) * h);
+            int beat = ClientSettings.reduceMotion() ? 0x20 : (int) (0x28 + 0x18 * Mth.sin(t * 0.2f));
+            g.fillGradient(hx - 2, y - 7, hx + HEAT_W + 2, y, 0x00F2CC5A, beat << 24 | GOLD);
+            g.fillGradient(hx - 2, y, hx + HEAT_W + 2, y + 7, beat << 24 | GOLD, 0x00F2CC5A);
             g.fill(hx - 2, y - 1, hx + HEAT_W + 2, y + 1, skin.ink());
+        }
+
+        // Begin, once nothing stands in its way: a gold ring marches round it.
+        if (begin != null && begin.visible && begin.active && !ClientSettings.reduceMotion()) {
+            int bx = leftPos + BTN_X - 2, by = topPos + BTN_Y - 2;
+            for (int k = 0; k < 348; k += 29)
+                GuiStyle.perimeter(g, bx, by, bx + BTN_W + 4, by + 18, (int) (t * 0.8f) + k, 10, skin.accent());
         }
 
         // Lamps: what stands between you and Begin.
@@ -611,6 +644,50 @@ public class EnchantScreen extends SkinnedScreen<EnchantMenu> {
         }
     }
 
+    /**
+     * The showcase: a sunken box with the seated part turning large in a halo, tinted by its heat (cold violet, hot gold);
+     * an empty box shows a dim ghost ring. The real slot sits beside it, so clicks and tooltips are vanilla's.
+     */
+    private void showcase(GuiGraphics g, float t) {
+        int x = leftPos + SHOW_X, y = topPos + SHOW_Y;
+        skin.inset(g, x, y, SHOW_W, SHOW_H);
+        int cx = x + 30, cy = y + SHOW_H / 2;
+        boolean has = !menu.part().isEmpty();
+        boolean quiet = ClientSettings.reduceMotion();
+        float breath = quiet ? 0.5f : 0.5f + 0.5f * Mth.sin(t * 0.06f);
+        Material.Attuning p = attuning();
+        // Heat decides the tint: 0 at the part's lock, 1 at its attuning temperature and above.
+        float warm = p == null ? 0f : Mth.clamp((heat() - p.lock().value()) / Math.max(1f, p.temperature().value() - p.lock().value()), 0f, 1f);
+        int tint = GuiSkin.lerp(VIOLET, GOLD, warm);
+        if (has) {
+            for (int i = 0; i < 5; i++) {
+                int r = 26 - i * 5;
+                g.fill(cx - r, cy - r, cx + r, cy + r, (int) (0x0A + 0x08 * breath + (playing ? 4 : 0)) << 24 | tint);
+            }
+            GuiStyle.spinItem(g, menu.part(), cx, cy, 2.8f, true);
+        } else {
+            for (int k = 0; k < 24; k += 4)
+                GuiStyle.perimeter(g, cx - 14, cy - 14, cx + 14, cy + 14, (int) (t * 0.2f) + k * 4, 5, 0x50FFFFFF & (skin.dim() | 0xFF000000));
+        }
+    }
+
+    /** The pad's floor: a glow that breathes (gold once Begin is open, violet before) and a field of twinkling stars. */
+    private void backdrop(GuiGraphics g, float t, int x, int y, int w, int h) {
+        boolean ready = why().equals("ready"), quiet = ClientSettings.reduceMotion();
+        int tint = ready ? GOLD : VIOLET;
+        float breath = quiet ? 0.5f : 0.5f + 0.5f * Mth.sin(t * 0.05f);
+        int cx = x + w / 2, cy = y + h / 2;
+        for (int i = 0; i < 6; i++) {
+            int a = (int) ((playing ? 0x05 : 0x04 + 0x04 * breath) + (ready ? 2 : 0));
+            g.fill(cx - (w / 2 - 4) + i * 10, cy - (h / 2 - 2) + i * 6, cx + (w / 2 - 4) - i * 10, cy + (h / 2 - 2) - i * 6, a << 24 | tint);
+        }
+        for (int k = 0; k < 22; k++) {
+            int sx = x + 3 + k * 47 % (w - 6), sy = y + 3 + k * 29 % (h - 6);
+            int a = quiet ? 0x30 : (int) (0x30 + 0x30 * Mth.sin(t * 0.06f + k * 1.7f));
+            g.fill(sx, sy, sx + 1, sy + 1, Math.max(a, 8) << 24 | GOLD_HI);
+        }
+    }
+
     /** A glyph's lit cells as {@code cell}-px squares from (x, y). */
     private void glyph(GuiGraphics g, int[][] cells, int x, int y, int cell, int colour) {
         for (int[] c : cells)
@@ -622,6 +699,7 @@ public class EnchantScreen extends SkinnedScreen<EnchantMenu> {
         int sx = leftPos + SCOPE_X + GuiStyle.shake(shakeAt, 2), sy = topPos + SCOPE_Y;
         int ix = sx + 1, iw = SCOPE_W - 2, iy = sy + 1, ih = SCOPE_H - 2;
         skin.inset(g, sx, sy, SCOPE_W, SCOPE_H);
+        backdrop(g, t, sx + 1, sy + 1, SCOPE_W - 2, SCOPE_H - 2);
         boolean session = pen != null && (playing || !result.isEmpty());
         if (playing && pen != null) {
             if (!pen.done() && !blind()) {
@@ -659,16 +737,24 @@ public class EnchantScreen extends SkinnedScreen<EnchantMenu> {
         }
         // Idle or finished: the whole word, readable; coloured by accuracy once written.
         if (!word.isEmpty() && !blind()) {
-            int wx = ix + (iw - (word.length() * 19 - 4)) / 2, wy = iy + 8;
-            for (int i = 0; i < glyphs.length; i++)
-                glyph(g, glyphs[i], wx + i * 19, wy, 3, 0xFF000000 | (!session ? skin.ink() : accuracy[i] >= 0.75f ? GOLD : skin.dim()));
+            int cell = word.length() * 25 - 5 <= iw - 8 ? 4 : 3, step = SgaGlyphs.COLUMNS * cell + 4;
+            int wx = ix + (iw - (word.length() * step - 4)) / 2, wy = iy + 8;
+            for (int i = 0; i < glyphs.length; i++) {
+                // A slow wave of light runs along the word while it idles.
+                float wave = session || ClientSettings.reduceMotion() ? 0f : (float) Math.pow(Math.max(0f, Mth.sin(t * 0.07f - i * 0.9f)), 4);
+                int base = !session ? skin.ink() : accuracy[i] >= 0.75f ? GOLD : skin.dim();
+                int halo = (int) (0x14 + 0x30 * wave);
+                for (int[] c : glyphs[i])
+                    g.fill(wx + i * step + c[0] * cell - 1, wy + c[1] * cell - 1, wx + i * step + c[0] * cell + cell + 1, wy + c[1] * cell + cell + 1, halo << 24 | VIOLET);
+                glyph(g, glyphs[i], wx + i * step, wy, cell, 0xFF000000 | GuiSkin.lerp(base, GOLD_HI, wave));
+            }
         }
         if (session && !result.isEmpty()) {
             g.drawString(font, Component.translatable(result, Math.abs(resultLevel)), ix + 4, iy + ih - 11, skin.accent(), false);
         } else {
             String why = why();
             Component line = Component.translatable(why.equals("ready") ? "gui.feedback.enchant.begin_hint" : "gui.feedback.enchant.state." + why);
-            int y = word.isEmpty() ? iy + (ih - 10 * font.split(line, iw - 16).size()) / 2 : iy + 40;
+            int y = word.isEmpty() ? iy + (ih - 10 * font.split(line, iw - 16).size()) / 2 : iy + 42;
             paragraph(g, line, ix + 8, y, iw - 16, why.equals("ready") ? lerpHint(t) : skin.warn());
         }
     }
@@ -715,7 +801,7 @@ public class EnchantScreen extends SkinnedScreen<EnchantMenu> {
                 g.renderTooltip(font, tip, mouseX, mouseY);
                 return;
             }
-        if (over(mouseX, mouseY, EnchantMenu.PART_X + 24, 40, 60, 6) && attuning() != null)
+        if (over(mouseX, mouseY, PIP_X - 3, PIP_Y - 3, 70, 6) && attuning() != null)
             g.renderTooltip(font, Component.translatable("gui.feedback.enchant.pips", held(), EnchantGame.capacity(menu.material())), mouseX, mouseY);
         else if (over(mouseX, mouseY, SCOPE_X, SCOPE_Y, SCOPE_W, SCOPE_H))
             g.renderTooltip(font, Component.translatable("gui.feedback.enchant.tip.gauge"), mouseX, mouseY);
@@ -728,10 +814,9 @@ public class EnchantScreen extends SkinnedScreen<EnchantMenu> {
         super.renderLabels(g, mouseX, mouseY);
         // Beside the socket: the part, or the invitation.
         if (menu.part().isEmpty())
-            g.drawString(font, Component.translatable("gui.feedback.enchant.seat"), 40, 31, skin.dim(), false);
+            g.drawString(font, Component.translatable("gui.feedback.enchant.seat"), PIP_X, 32, skin.dim(), false);
         else
-            g.drawString(font, font.plainSubstrByWidth(menu.part().getHoverName().getString(), 72), 40, 27, skin.ink(), false);
-        g.drawString(font, Component.translatable("gui.feedback.enchant.list"), LIST_X + 2, LIST_Y - 10, skin.dim(), false);
+            g.drawString(font, font.plainSubstrByWidth(menu.part().getHoverName().getString(), SHOW_X + SHOW_W - 200 - 4), PART_NAME_X, 16, skin.ink(), false);
         Attunements.Effect e = effect();
         g.drawString(font, e == null ? Component.translatable("gui.feedback.enchant.no_effect").getString() : font.plainSubstrByWidth(shown(e).getString(), SCOPE_W - 4),
                 SCOPE_X + 2, SCOPE_Y - 11, e == null ? skin.dim() : skin.accent(), false);

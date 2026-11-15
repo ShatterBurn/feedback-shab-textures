@@ -1,33 +1,30 @@
 # feedback
 
-a tech-themed total conversion of minecraft. it started as a tech mod about building and controlling physical processes, and it's turned into a rebuild of the whole game out of physical properties instead of fixed item lists.
+a science overhaul of minecraft, close to a total conversion where the physics demands it. it's still minecraft, not a new game running on minecraft's engine: it's what the game becomes when the player is an inventor in a world whose physics is the same everywhere.
 
 ## the pitch
 
-machines don't know when a recipe is done. a furnace, a mixer, a stamp, whatever, it keeps doing its physical action for as long as it has power and input. it has no idea whether the thing inside is finished.
+the player builds everything out of parts they put together themselves. a sword, a furnace, an engine, a gun, a dish and a potion are all things you design from parts and materials, and the properties of those materials decide what they do.
 
-other tech mods already have machines that idle forever. that's not the new part. the new part is what happens if you let it keep going: **continued operation past completion acts on the already-finished output.** it doesn't just waste power, it degrades, burns, overworks, or ruins the thing you just made.
+the test for every decision: **does this let the player make something that doesn't exist in real life, or only pick from a short list of things other people already make?** the short menu of premade variants is the failure. so things are named after they're built, not built from names. parts have measurements to set, not just styles to pick. you can add to anything. behaviour is never chosen by a click, it falls out of what you built.
 
-so you've actually got two problems, always:
+minecraft's world lets you watch things happen. if those things are scientifically consistent, you can invent ways to use them. so the oddities are real science here: blazes, ender, experience and sculk are magic to us and ordinary to the people who live in this world. it's hard magic, every rule has a reason and means exactly what it says, and there's no magic path and no exotic material.
 
-1. make the process happen
-2. notice when it's done, and stop or redirect it before it eats its own output
-
-everything in the mod serves one of those two jobs. sensing is one system, control is another, actuation is a third, and none of them know about each other. a sensor doesn't control anything. an actuator doesn't know anything. the controller is a switch, not a dial, it can only start or stop a supply.
+it keeps what makes minecraft feel like minecraft. it's a sandbox first: getting from spawn to owning machines and instruments is a prologue, and after that you choose which sciences to chase, in any order. vanilla blocks and systems are replaced only where they contradict the physics.
 
 ## what it isn't
 
-not a tier ladder where the tier-3 furnace is a faster tier-2 furnace. a machine states a physical operation ("apply heat," "apply force"), never a recipe. there's no `if item == copper ingot` anywhere, sorting and processing work off real properties like density, magnetism, and particle size instead.
+not a tech tree where the tier-3 furnace is a faster tier-2 furnace. progress means a growing ability to make, observe, control and reproduce physical things, and a stage that only does the same job faster hasn't advanced anything. old work gets easier, never harder, and what changes is the kind of hard.
 
-precision never locks a recipe behind a tier. if you have the raw physical ability, you can attempt it by hand, badly, at a tiny rate, forever. automation makes things practical. it doesn't unlock them.
+not a tech mod with other systems bolted on. technology is one part of the world and a shrinking share of the mod: combat, survival, food, potions, enchanting and villages obey the same physics and the same inventor rule.
 
-mechanical, thermal, and chemical power are all usable on their own, none of them have to funnel through electricity first.
+no item id checks. a machine states a physical operation ("apply heat," "apply force"), never a recipe, and sorting and processing work off real properties like density, magnetism and particle size. precision never locks anything behind a tier: if you have the raw physical ability you can attempt it by hand, badly, forever. automation makes things practical, it doesn't unlock them.
 
-## the total conversion
+## how it plays
 
-the same rule, "what a thing does comes from what it's made of," is applied to the rest of the game:
-
-- **tools, weapons, shields, bows and armour** are assembled from parts at a tool table. there is no iron sword item, there's a blade of some metal on a grip of something else, and every figure comes from the materials. vanilla's gear is converted on the spot.
+- **machines don't know when they're done.** a furnace, a mixer or a stamp keeps doing its physical action for as long as it has power and input, and continued operation past completion acts on the finished output: it degrades, burns or ruins it. so there are always two jobs, make the process happen and notice when to stop it. sensing, control and actuation are separate systems that know nothing about each other, and a controller is a switch, not a dial.
+- **energies are plural.** mechanical, thermal, chemical, electrical (and magic) are each usable on their own and each fails and stops differently. electricity is the backbone from mid-game, but it isn't what everything runs on.
+- **tools, weapons, shields, bows and armour** are assembled from parts at a tool table. there's no iron sword item, there's a blade of some metal on a grip of something else, and every figure comes from the materials. vanilla's gear is converted on the spot.
 - **guns** are the same kind of thing: a receiver, barrel, action and grip you machine yourself, ammunition you make yourself, and a pressure rating that decides whether it holds or lets go.
 - **combat** is more than a click: swept hits, a parry and roll, kicks, grabs, a grapple, off-hand weapons, gun-fu, and a skill tree that unlocks technique, never capability. materials carry perks (silver smites the undead, a blaze rod sets things alight and burns your hand).
 - **vehicles** are real physics bodies (via sable) built from a welded frame, with engines, tires and drivetrains you design.
