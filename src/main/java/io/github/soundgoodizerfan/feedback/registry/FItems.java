@@ -753,6 +753,7 @@ public class FItems {
             ITEMS.register("relief_valve", () -> new ReliefValveItem(new Item.Properties().stacksTo(16)));
 
     /** The gas compressor's air intake. See {@code fitting.upgrade.AirIntakeFitting}. */
+    public static final DeferredItem<BlockItem> RADIATOR_PANEL = ITEMS.registerSimpleBlockItem(FBlocks.RADIATOR_PANEL);
     public static final DeferredItem<Item> AIR_INTAKE =
             ITEMS.register("air_intake", () -> new io.github.soundgoodizerfan.feedback.item.AirIntakeItem(new Item.Properties().stacksTo(16)));
 

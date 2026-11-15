@@ -58,7 +58,7 @@ public final class Heat {
         float fromFire = conducted
                 ? contact * ThermalTuning.FIRE_CONDUCTANCE.workPerTickPerTu() * (fireTu.value() - temperature)
                 : 0;
-        float toRoom = body.getLeak().workPerTickPerTu()
+        float toRoom = AirCoupling.leak(body)
                 * (temperature - ambient.value());
 
         float delta = (fromFire - toRoom) / Math.max(1f, body.getThermalMass().workPerTu());
@@ -84,7 +84,7 @@ public final class Heat {
         if (ticks <= 0)
             return;
         float fire = conducted ? ThermalTuning.FIRE_CONDUCTANCE.workPerTickPerTu() : 0f;
-        float leak = body.getLeak().workPerTickPerTu();
+        float leak = AirCoupling.leak(body);
         float total = fire + leak;
         if (total <= 0f)
             return;
@@ -136,8 +136,8 @@ public final class Heat {
         // The two conductances are added, which is only a legal thing to write because they share
         // a dimension. Nothing said so until Conductance existed; now the types do.
         return new Tu((ThermalTuning.FIRE_CONDUCTANCE.workPerTickPerTu() * fireTu.value()
-                + body.getLeak().workPerTickPerTu() * ambient.value())
-                / (ThermalTuning.FIRE_CONDUCTANCE.workPerTickPerTu() + body.getLeak().workPerTickPerTu()));
+                + AirCoupling.leak(body) * ambient.value())
+                / (ThermalTuning.FIRE_CONDUCTANCE.workPerTickPerTu() + AirCoupling.leak(body)));
     }
 
     /**

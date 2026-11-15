@@ -94,6 +94,12 @@ public final class ThermalTuning {
     public static final Conductance VESSEL_LEAK = new Conductance(0.025f);
 
     /**
+     * Invented. What one radiator panel touching a vessel sheds, in Work per tick per Tu above ambient, whatever the
+     * air: about four vessels' leaks, so a couple of panels hold a working vessel in a vacuum.
+     */
+    public static final Conductance RADIATOR_CONDUCTANCE = new Conductance(0.1f);
+
+    /**
      * Invented. The share of the gap between the Hearth and a piece of stock beside it that closes
      * each tick: heat flows on the difference, so stock approaches the pan and never passes it.
      * Item cooling is {@link #ITEM_COOLING_TU_PER_TICK} (1.5 Tu/t), so stock beside a pan settles

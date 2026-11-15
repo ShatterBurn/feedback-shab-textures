@@ -1278,6 +1278,9 @@ public class FBlocks {
             () -> new io.github.soundgoodizerfan.feedback.combat.tether.SheaveBlock(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(2.0f, 4.0f).sound(SoundType.METAL).noOcclusion().noCollission()));
     public static final DeferredBlock<io.github.soundgoodizerfan.feedback.weapon.ShockCapsuleBlock> SHOCK_CAPSULE = BLOCKS.register("shock_capsule",
             () -> new io.github.soundgoodizerfan.feedback.weapon.ShockCapsuleBlock(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(1.0f, 1.0f).sound(SoundType.METAL)));
+    /** A plate that sheds a touching vessel's heat whatever the air: the way out in a vacuum ({@code core/thermal/AirCoupling}). */
+    public static final DeferredBlock<net.minecraft.world.level.block.Block> RADIATOR_PANEL = BLOCKS.register("radiator_panel",
+            () -> new net.minecraft.world.level.block.Block(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(2.0f, 4.0f).sound(SoundType.METAL)));
     public static final DeferredBlock<io.github.soundgoodizerfan.feedback.machine.reactor.CoreSlagBlock> CORE_SLAG = BLOCKS.register("core_slag",
             () -> new io.github.soundgoodizerfan.feedback.machine.reactor.CoreSlagBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.COLOR_BLACK).strength(2.0f, 3.0f).sound(SoundType.NETHER_BRICKS).requiresCorrectToolForDrops()));

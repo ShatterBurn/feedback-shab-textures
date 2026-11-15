@@ -8821,5 +8821,8 @@
   "modular.feedback.fig.filter_life": "Filter life",
   "modular.feedback.fig.filter_life.tip": "How long the filter works in thin air before it is spent. A deeper bed lasts longer.",
   "modular.feedback.fig.breath_drag": "Breathing resistance",
-  "modular.feedback.fig.breath_drag.tip": "Share of sprint speed a filter takes off while the mask is worn. A deeper bed resists more."
+  "modular.feedback.fig.breath_drag.tip": "Share of sprint speed a filter takes off while the mask is worn. A deeper bed resists more.",
+  "block.feedback.radiator_panel": "Radiator Panel",
+  "item.feedback.radiator_panel": "Radiator Panel",
+  "feedback.jei.info.radiator_panel": "A plate that sheds heat from a vessel it touches where the air is thin or gone. In a vacuum a vessel keeps all its heat, so a panel is the only way it cools."
 }
