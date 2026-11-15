@@ -150,7 +150,7 @@ public final class RobotWorker {
                 yield ticks;
             }
             case TURN_LEFT, TURN_RIGHT -> RobotTuning.TURN_TICKS;
-            case PLACE, PICK_UP, DROP, GIVE, TAKE -> RobotTuning.PLACE_TICKS;
+            case PLACE, PICK_UP, DROP, GIVE, TAKE, USE -> RobotTuning.PLACE_TICKS;
             default -> -1;
         };
     }
@@ -164,8 +164,62 @@ public final class RobotWorker {
             case DROP -> drop(b, ahead);
             case GIVE -> give(b, ahead);
             case TAKE -> take(b, ahead);
+            case USE -> use(b, ahead);
             default -> { }
         }
+    }
+
+    /**
+     * Uses the first stack it carries on the block ahead, as a hand does through the block's own use: lay food in a pan, flip a piece with a
+     * spatula, pour from a bottle. The hand lands where it aims only as well as its dexterity: a clumsy one lands off the centre of the face,
+     * so it may lay in the wrong place. Never refused, only worse.
+     */
+    private static void use(Body b, BlockPos pos) {
+        if (!(b.level() instanceof ServerLevel server) || !server.isLoaded(pos))
+            return;
+        var fake = actor(b, server);
+        ItemStack held = ItemStack.EMPTY;
+        int slot = -1;
+        SimpleContainer cargo = b.cargo();
+        for (int i = 0; i < cargo.getContainerSize(); i++)
+            if (!cargo.getItem(i).isEmpty()) {
+                held = cargo.getItem(i);
+                slot = i;
+                break;
+            }
+        Direction face = b.facing().getOpposite();
+        float slack = (1f - b.spec().dexterity()) * 0.45f;
+        double jitter = (server.random.nextDouble() - 0.5) * 2 * slack, jitter2 = (server.random.nextDouble() - 0.5) * 2 * slack;
+        Vec3 at = Vec3.atCenterOf(pos).add(face.getStepX() * 0.5 + (face.getAxis() == Direction.Axis.X ? 0 : jitter),
+                face.getStepY() * 0.5 + (face.getAxis() == Direction.Axis.Y ? 0 : jitter2),
+                face.getStepZ() * 0.5 + (face.getAxis() == Direction.Axis.Z ? 0 : jitter));
+        fake.setItemInHand(InteractionHand.MAIN_HAND, held);
+        var hit = new BlockHitResult(at, face, pos, false);
+        var result = server.getBlockState(pos).useItemOn(held, server, fake, InteractionHand.MAIN_HAND, hit);
+        if (!result.consumesAction())
+            server.getBlockState(pos).useWithoutItem(server, fake, hit);
+        ItemStack after = fake.getItemInHand(InteractionHand.MAIN_HAND);
+        fake.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
+        if (slot >= 0)
+            cargo.setItem(slot, after);
+        else if (!after.isEmpty())
+            drain(b, after);
+        // whatever a use put in the fake's pockets (a bottle that came back filled) is the robot's, never the next robot's
+        var pockets = fake.getInventory();
+        for (int i = 0; i < pockets.getContainerSize(); i++) {
+            ItemStack got = pockets.getItem(i);
+            if (got.isEmpty())
+                continue;
+            pockets.setItem(i, ItemStack.EMPTY);
+            drain(b, got);
+        }
+    }
+
+    /** Puts a stack into the cargo; what does not fit lies on the ground ahead of the body. */
+    private static void drain(Body b, ItemStack stack) {
+        ItemStack left = b.cargo().addItem(stack);
+        if (!left.isEmpty())
+            b.level().addFreshEntity(new ItemEntity(b.level(), b.centre().x, b.centre().y + 0.3, b.centre().z, left));
     }
 
     private static net.neoforged.neoforge.common.util.FakePlayer actor(Body b, ServerLevel server) {

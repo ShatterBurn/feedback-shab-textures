@@ -983,8 +983,14 @@ public final class ProgramEditor {
     private Runnable extraControl(ProgramNode node, int row) {
         if (row != 1)
             return null;
-        if (node instanceof SensorNode s && s.quantity() == Quantity.CONTROL)
+        if (node instanceof SensorNode s && s.quantity() == Quantity.CONTROL) {
+            if (senseKeys(s).length > 0)
+                return () -> {
+                    pushUndo();
+                    replaceNode(s.withChannel((s.channel() + 1) % senseKeys(s).length));
+                };
             return () -> awaitingKey = s.id();
+        }
         if (node instanceof ActuatorNode a && channelKeys(a).length > 1)
             return () -> {
                 pushUndo();
@@ -995,6 +1001,15 @@ public final class ProgramEditor {
 
     /** A Sensor card waiting for the next key pressed to read it from its seat; -1 for none. */
     private int awaitingKey = -1;
+
+    /** The named sense channels of the node a Sensor card reads (a robot behind a radio mast, another Controller's variables), or none. */
+    private static String[] senseKeys(SensorNode node) {
+        var level = Minecraft.getInstance().level;
+        if (node.target() == null || node.target().isLocal() || level == null)
+            return new String[0];
+        return level.getBlockEntity(node.target().pos()) instanceof io.github.soundgoodizerfan.feedback.control.RemoteChannels remote
+                ? remote.senseKeys() : new String[0];
+    }
 
     /** The inputs of the analog part an actuator card names, looked up in the client's own world. */
     private static String[] channelKeys(ActuatorNode node) {
@@ -1637,10 +1652,16 @@ public final class ProgramEditor {
         switch (node) {
             case SensorNode n -> {
                 graphics.drawString(font, linkText(n.target()), 8, rowTextY(0), COLOR_MUTED, false);
-                if (n.quantity() == Quantity.CONTROL)
-                    graphics.drawString(font, awaitingKey == n.id() ? Component.translatable("feedback.programmer.press_key")
-                            : Component.translatable("feedback.programmer.key",
-                            InputConstants.Type.KEYSYM.getOrCreate(n.channel()).getDisplayName()), 8, rowTextY(1), COLOR_TEXT, false);
+                if (n.quantity() == Quantity.CONTROL) {
+                    String[] senses = senseKeys(n);
+                    if (senses.length > 0)
+                        graphics.drawString(font, Component.translatable(senses[Math.floorMod(n.channel(), senses.length)]), 8, rowTextY(1),
+                                COLOR_TEXT, false);
+                    else
+                        graphics.drawString(font, awaitingKey == n.id() ? Component.translatable("feedback.programmer.press_key")
+                                : Component.translatable("feedback.programmer.key",
+                                InputConstants.Type.KEYSYM.getOrCreate(n.channel()).getDisplayName()), 8, rowTextY(1), COLOR_TEXT, false);
+                }
             }
             case ActuatorNode n -> {
                 graphics.drawString(font, linkText(n.target()), 8, rowTextY(0), COLOR_MUTED, false);

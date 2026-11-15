@@ -30,6 +30,8 @@ Anything you can link as a sensor:
 - a [Lathe](Lathe.md) (how much it has cut off its workpiece)
 - anything it can switch (below): **whether it's on**, as a yes/no. See [Holding a band](#holding-a-band).
 - a [Driver's Seat](Vehicles.md#the-drivers-seat): how far a key is pressed
+- another Controller's declared variables (see [Reading another Controller's variables](#reading-another-controllers-variables))
+- a robot, through a [Radio Mast](Radio_Mast.md): its senses
 
 ## What it can switch
 
@@ -40,6 +42,8 @@ Anything that turns on and off:
 - [Damper](Damper.md)
 - [Engine](Engine.md)
 - [Breaker](Breaker.md)
+- a robot's actions, through a [Radio Mast](Radio_Mast.md)
+- another Controller's variables, as 1/0 or true/false (see [Reading another Controller's variables](#reading-another-controllers-variables))
 
 A **true** signal switches the target **on**: clutch engaged, valve open, damper open, engine running, breaker closed. **False** switches it **off**.
 
@@ -60,6 +64,15 @@ The fix is a **band** (a deadband): turn on below the bottom, turn off above the
 > **on** if (temperature < 1360) **OR** (temperature < 1400 **AND** the bellows clutch is already on)
 
 Link an *Input* card to the clutch itself and it reads yes while the clutch is engaged. Inside the band the clutch keeps doing whatever it was doing.
+
+## Reading another Controller's variables
+
+Any Controller's declared [variables](Programming.md#variables) can be shared. Select the other Controller with the [Data Connector](Data_Connector.md) and link a card to it as for any block:
+
+- A **Sensor** card reads one of its variables. Click the card's channel row to pick which; a yes/no variable reads 1 or 0.
+- An **Actuator** card sets one of its variables, as 1 or 0 for a number and true or false for a yes/no. Click the channel row to pick which. The first choice sets nothing.
+
+The other Controller sees the value on its next step, as with its own *Write*. A fleet of robots, or several Controllers, can share state this way.
 
 ## Memory and upgrades
 

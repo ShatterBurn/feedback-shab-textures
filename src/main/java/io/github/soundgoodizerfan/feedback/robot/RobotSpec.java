@@ -21,12 +21,14 @@ import net.minecraft.world.item.ItemStack;
  * @param sensor  the sensor part's variant ({@link #PROBE}, {@link #RANGEFINDER}, {@link #INERTIAL}), or empty for none.
  * @param drive   the drive part's variant ({@link #WHEELS}, {@link #LEGS}, {@link #ROTOR}).
  * @param loader  whether a chunk-loading part is fitted.
+ * @param radio   whether a radio part is fitted.
+ * @param dexterity how steadily its hand lands, 0 to 1, from the circuit in its brain: speed times quiet, halved by a cold joint; 0 with no circuit.
  */
-public record RobotSpec(float mass, float speed, float headSt, String sensor, String drive, boolean loader) {
+public record RobotSpec(float mass, float speed, float headSt, String sensor, String drive, boolean loader, boolean radio, float dexterity) {
 
     public static final String PROBE = "probe", RANGEFINDER = "rangefinder", INERTIAL = "inertial";
     public static final String WHEELS = "wheels", LEGS = "legs", ROTOR = "rotor";
-    public static final RobotSpec NONE = new RobotSpec(0f, 0f, 0f, "", WHEELS, false);
+    public static final RobotSpec NONE = new RobotSpec(0f, 0f, 0f, "", WHEELS, false, false, 0f);
 
     public static RobotSpec of(ItemStack stack) {
         ModularDesign design = ModularStacks.design(stack);
@@ -44,8 +46,23 @@ public record RobotSpec(float mass, float speed, float headSt, String sensor, St
         Material m = head == null ? null : MaterialTable.get().materials().get(head.material());
         float st = m == null ? 0f : m.mechanical().yieldStrength().map(s -> s.value()).orElse(0f);
         ModularDesign.Part sensor = design.part("S");
+        ModularDesign.Part brain = design.part("K");
         return new RobotSpec(mass, speed, st, sensor == null || sensor.variant() == null ? "" : sensor.variant(), drive,
-                design.part("L") != null);
+                design.part("L") != null, design.part("R") != null, brain == null ? 0f : dexterity(brain.sub()));
+    }
+
+    /** How steadily a hand lands, from a circuit: its speed times how quiet it is, halved by a cold joint; a dead or missing one reads 0. */
+    public static float dexterity(ItemStack circuit) {
+        var c = io.github.soundgoodizerfan.feedback.process.Circuit.of(circuit);
+        if (c.elements() <= 0)
+            return 0f;
+        float d = c.speed() * (1f - c.noise());
+        return c.joint() == io.github.soundgoodizerfan.feedback.process.Board.Joint.COLD ? d * 0.5f : d;
+    }
+
+    /** The same figures with a brain fitted: the arm takes its circuit by hand. */
+    public RobotSpec withBrain(ItemStack circuit) {
+        return new RobotSpec(mass, speed, headSt, sensor, drive, loader, radio, dexterity(circuit));
     }
 
     /** Whether the head can break a block of this hardness at all. */

@@ -25,9 +25,9 @@ import net.minecraft.world.phys.Vec3;
  */
 public class RobotArmBlockEntity extends ElectricNode implements ControllerCore.Locals, RobotWorker.Body {
 
-    private static final RobotSpec SPEC = new RobotSpec(0f, 0f, RobotTuning.ARM_HEAD_ST, "", RobotSpec.WHEELS, false);
+    private static final RobotSpec BARE = new RobotSpec(0f, 0f, RobotTuning.ARM_HEAD_ST, "", RobotSpec.WHEELS, false, false, 0f);
     private static final RobotChannel[] ORDER = { RobotChannel.MINE, RobotChannel.PLACE, RobotChannel.PICK_UP, RobotChannel.DROP,
-            RobotChannel.TURN_LEFT, RobotChannel.TURN_RIGHT, RobotChannel.GIVE, RobotChannel.TAKE };
+            RobotChannel.TURN_LEFT, RobotChannel.TURN_RIGHT, RobotChannel.GIVE, RobotChannel.TAKE, RobotChannel.USE };
 
     private final SimpleContainer cargo = new SimpleContainer(RobotTuning.CARGO);
     private final boolean[] on = new boolean[RobotChannel.values().length];
@@ -37,6 +37,9 @@ public class RobotArmBlockEntity extends ElectricNode implements ControllerCore.
     private int doingTicks;
     private BlockPos doingPos;
     private boolean switched;
+    /** The circuit seated in the arm, whose figures are its dexterity. */
+    private ItemStack brain = ItemStack.EMPTY;
+    private RobotSpec spec = BARE;
 
     public RobotArmBlockEntity(BlockPos pos, BlockState state) {
         super(FBlockEntities.ROBOT_ARM.get(), pos, state);
@@ -81,7 +84,23 @@ public class RobotArmBlockEntity extends ElectricNode implements ControllerCore.
 
     @Override
     public RobotSpec spec() {
-        return SPEC;
+        return spec;
+    }
+
+    private void setBrainQuietly(ItemStack circuit) {
+        brain = circuit;
+        spec = brain.isEmpty() ? BARE : BARE.withBrain(brain);
+    }
+
+    public ItemStack brain() {
+        return brain;
+    }
+
+    /** Seats a circuit as the arm's brain (replacing any); its figures become the arm's dexterity. */
+    public void setBrain(ItemStack circuit) {
+        brain = circuit;
+        spec = brain.isEmpty() ? BARE : BARE.withBrain(brain);
+        setChanged();
     }
 
     @Override
@@ -194,6 +213,8 @@ public class RobotArmBlockEntity extends ElectricNode implements ControllerCore.
                 out.add(cargo.getItem(i));
         if (!core.getItem(0).isEmpty())
             out.add(core.getItem(0));
+        if (!brain.isEmpty())
+            out.add(brain);
         return out;
     }
 
@@ -204,6 +225,8 @@ public class RobotArmBlockEntity extends ElectricNode implements ControllerCore.
         CompoundTag c = new CompoundTag();
         core.save(c, registries);
         tag.put("Core", c);
+        if (!brain.isEmpty())
+            tag.put("Brain", brain.save(registries));
     }
 
     @Override
@@ -212,5 +235,7 @@ public class RobotArmBlockEntity extends ElectricNode implements ControllerCore.
         if (tag.contains("Cargo", Tag.TAG_LIST))
             cargo.fromTag(tag.getList("Cargo", Tag.TAG_COMPOUND), registries);
         core.load(tag.getCompound("Core"), registries);
+        if (tag.contains("Brain"))
+            setBrainQuietly(ItemStack.parseOptional(registries, tag.getCompound("Brain")));
     }
 }

@@ -155,6 +155,36 @@ public class ControllerCore implements Container, Fittable {
         changed.run();
     }
 
+    /** The variables the loaded program declares, in declaration order: what another controller's Sensor card can pick between. */
+    public List<ProgramVariable> declared() {
+        return card.getOrDefault(FDataComponents.PROGRAM_GRAPH, ProgramGraph.EMPTY).variables();
+    }
+
+    /** The value of the {@code index}th declared variable as a number (a boolean reads 1 or 0); 0 for none. */
+    public float variableValue(int index) {
+        List<ProgramVariable> all = declared();
+        if (index < 0 || index >= all.size())
+            return 0f;
+        Object v = variables.get(all.get(index).name());
+        return v instanceof Float f ? f : v instanceof Boolean b && b ? 1f : 0f;
+    }
+
+    /**
+     * Another controller sets the {@code index}th declared variable: a boolean variable takes the value, a number variable 1 or 0. It reads
+     * next step, as the controller's own writes do. A switch, never a dial: only a boolean crosses.
+     */
+    public void writeVariable(int index, boolean on) {
+        List<ProgramVariable> all = declared();
+        if (index < 0 || index >= all.size())
+            return;
+        ProgramVariable v = all.get(index);
+        Object value = v.type() == ValueType.NUMBER ? (Object) (on ? 1f : 0f) : (Object) on;
+        if (!value.equals(variables.put(v.name(), value))) {
+            dirty = true;
+            setChanged();
+        }
+    }
+
     /** The program's variables and their values (a Float or a Boolean each), as last saved or synced; for a monitor. */
     public Map<String, Object> variables() {
         return java.util.Collections.unmodifiableMap(variables);

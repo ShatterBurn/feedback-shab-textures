@@ -894,6 +894,11 @@ public class FBlocks {
                             .sound(SoundType.METAL)
                             .noOcclusion()));
 
+    /** The base end of a robot radio link; see {@code robot/RobotMastBlockEntity}. */
+    public static final DeferredBlock<io.github.soundgoodizerfan.feedback.robot.RobotMastBlock> ROBOT_MAST =
+            BLOCKS.register("robot_mast", () -> new io.github.soundgoodizerfan.feedback.robot.RobotMastBlock(
+                    BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_ORANGE).strength(1.0f).sound(SoundType.COPPER).noOcclusion()));
+
     /** A robot arm on a mount, run off a line; see {@code robot/RobotArmBlockEntity}. */
     public static final DeferredBlock<io.github.soundgoodizerfan.feedback.robot.RobotArmBlock> ROBOT_ARM =
             BLOCKS.register("robot_arm", () -> new io.github.soundgoodizerfan.feedback.robot.RobotArmBlock(

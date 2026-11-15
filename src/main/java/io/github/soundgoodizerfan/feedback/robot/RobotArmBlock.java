@@ -61,6 +61,13 @@ public class RobotArmBlock extends Block implements EntityBlock {
             return ItemInteractionResult.SUCCESS;
         if (stack.getItem() instanceof DataConnectorItem) {
             RobotWorker.selectNext(player);
+        } else if (io.github.soundgoodizerfan.feedback.process.Circuit.of(stack).elements() > 0 && stack.getCount() == 1) {
+            ItemStack old = arm.brain();
+            arm.setBrain(stack.copyWithCount(1));
+            if (!player.getAbilities().instabuild)
+                stack.shrink(1);
+            if (!old.isEmpty())
+                player.getInventory().placeItemBackInInventory(old);
         } else if (stack.is(FTags.PUNCH_CARDS)) {
             var refusal = arm.core().refusalFor(stack);
             if (refusal.isPresent()) {

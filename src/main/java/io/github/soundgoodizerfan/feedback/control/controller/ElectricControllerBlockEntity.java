@@ -56,6 +56,42 @@ public class ElectricControllerBlockEntity extends ElectricNode implements Contr
         return VoltageBand.MV;
     }
 
+    /** The card goes to the client with the chunk and when it changes, so the Programmer can name this controller's variables to another card. */
+    @Override
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        return saveCustomOnly(registries);
+    }
+
+    @Override
+    public net.minecraft.network.protocol.Packet<net.minecraft.network.protocol.game.ClientGamePacketListener> getUpdatePacket() {
+        return net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    private void syncCard() {
+        if (level != null && !level.isClientSide)
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+    }
+
+    @Override
+    public void setItem(int slot, net.minecraft.world.item.ItemStack stack) {
+        ControllerHost.super.setItem(slot, stack);
+        syncCard();
+    }
+
+    @Override
+    public net.minecraft.world.item.ItemStack removeItem(int slot, int count) {
+        net.minecraft.world.item.ItemStack out = ControllerHost.super.removeItem(slot, count);
+        syncCard();
+        return out;
+    }
+
+    @Override
+    public net.minecraft.world.item.ItemStack removeItemNoUpdate(int slot) {
+        net.minecraft.world.item.ItemStack out = ControllerHost.super.removeItemNoUpdate(slot);
+        syncCard();
+        return out;
+    }
+
     @Override
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);

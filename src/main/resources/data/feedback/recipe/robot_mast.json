@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "W": {
+      "item": "feedback:copper_wire"
+    },
+    "P": {
+      "item": "feedback:copper_plate"
+    }
+  },
+  "pattern": [
+    " W ",
+    "WPW",
+    "PPP"
+  ],
+  "result": {
+    "count": 1,
+    "id": "feedback:robot_mast"
+  }
+}
