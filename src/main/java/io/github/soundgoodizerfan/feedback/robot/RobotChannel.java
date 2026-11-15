@@ -3,13 +3,15 @@
 package io.github.soundgoodizerfan.feedback.robot;
 
 import io.github.soundgoodizerfan.feedback.control.data.DataNodeRef;
+import io.github.soundgoodizerfan.feedback.instrument.Quantity;
 
 import org.jetbrains.annotations.Nullable;
 
 /**
  * A robot's own senses and actions, named by a program card through {@link DataNodeRef#local}. An action is a switch the program holds
- * on or off (the Controller is a switch, never a dial); a sense reads back as a boolean, or for {@link #CHARGE} as a share. The ordinal is
- * what a printed card stores, so a program moves between robots of any form that carry the channel.
+ * on or off (the Controller is a switch, never a dial); a sense reads back as a boolean, or as a number. The ordinal is what a printed
+ * card stores, so a program moves between robots of any form that carry the channel. A sense that needs a fitted sensor part reads 0 on
+ * a robot without it (see {@link RobotSpec}).
  */
 public enum RobotChannel {
     /** Roll forward while on. */
@@ -31,7 +33,27 @@ public enum RobotChannel {
     ITEM_AHEAD(false, true),
     CARGO_FULL(false, true),
     /** Share of the battery's charge left; a number, not a boolean. */
-    CHARGE(false, false);
+    CHARGE(false, false),
+    /** Put the first stack it carries into the container ahead (any block that offers an item port). */
+    GIVE(true, true),
+    /** Take the first stack the container ahead lets out. */
+    TAKE(true, true),
+    /** Hold the switchable machine ahead engaged while on, released while off. */
+    SWITCH(true, true),
+    /** Blocks to the first solid thing ahead, up to the sensor's reach. Needs a rangefinder. */
+    RANGE_AHEAD(false, false),
+    /** How hard the block ahead is. Needs a probe. */
+    HARDNESS_AHEAD(false, false),
+    /** Which way it faces, in quarter turns from south. Needs an inertial unit. */
+    HEADING(false, false),
+    /** A beacon is within reach: standing by a landmark. */
+    BEACON_NEAR(false, true),
+    /** A charging dock or reel is the block ahead. */
+    DOCK_AHEAD(false, true),
+    /** Where dead reckoning puts it east of where it was set down, in blocks; drifts until a beacon corrects it. */
+    POS_X(false, false),
+    /** Where dead reckoning puts it south of where it was set down. */
+    POS_Z(false, false);
 
     private final boolean actuator;
     private final boolean bool;
@@ -48,6 +70,11 @@ public enum RobotChannel {
     /** Whether it reads as a boolean (a state) rather than a number. */
     public boolean bool() {
         return bool;
+    }
+
+    /** What a sensor card on this channel reads: a state, the battery's charge, or a figure no instrument quantity covers. */
+    public Quantity quantity() {
+        return bool ? Quantity.STATE : this == CHARGE ? Quantity.CHARGE : Quantity.FIGURE;
     }
 
     public DataNodeRef ref() {

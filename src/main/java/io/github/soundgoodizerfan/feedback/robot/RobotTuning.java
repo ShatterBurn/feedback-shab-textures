@@ -22,6 +22,12 @@ public final class RobotTuning {
     public static final float HEAD_ST_REF = 250f, HEAD_ST_PER_HARDNESS = 6f;
     /** Ticks a quarter turn, a place, a pick-up and a drop take. */
     public static final int TURN_TICKS = 8, PLACE_TICKS = 6, HANDLE_TICKS = 6;
+    /** Blocks of position error a wheeled robot gathers per block rolled; an inertial unit keeps {@link #INERTIAL_DRIFT_SHARE} of it. */
+    public static final float DRIFT_PER_BLOCK = 0.06f, INERTIAL_DRIFT_SHARE = 0.25f;
+    /** Blocks within which a beacon corrects a robot's position; how far a rangefinder reaches. */
+    public static final int BEACON_RANGE = 3, RANGE_MAX = 8;
+    /** Blocks a tethered robot may roam from its reel. */
+    public static final float TETHER_LENGTH = 12f;
     /** Slots of cargo a robot carries. */
     public static final int CARGO = 9;
 }

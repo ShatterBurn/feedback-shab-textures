@@ -249,7 +249,7 @@ public class ProgrammerBlockEntity extends BlockEntity implements Container, Men
             if (channel == null)
                 return null;
             if (node instanceof SensorNode sensor)
-                return channel.actuator() ? null : new SensorNode(sensor.id(), ref, channel.bool() ? Quantity.STATE : Quantity.CHARGE);
+                return channel.actuator() ? null : new SensorNode(sensor.id(), ref, channel.quantity());
             if (node instanceof ActuatorNode actuator)
                 return channel.actuator() ? new ActuatorNode(actuator.id(), actuator.input(), ref, 0) : null;
             return null;

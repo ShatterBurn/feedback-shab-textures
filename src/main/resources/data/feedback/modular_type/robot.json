@@ -58,6 +58,39 @@
           "plate"
         ]
       }
+    },
+    "S": {
+      "name": "robot_sensor",
+      "class": "housing",
+      "forms": [
+        "robot_sensor"
+      ],
+      "litres": 0.02,
+      "layer": 3,
+      "part": {
+        "item": "feedback:robot_sensor",
+        "cells": 2,
+        "stock": [
+          "plate"
+        ],
+        "variants": [
+          {
+            "name": "probe",
+            "cells": 2,
+            "adjective": true
+          },
+          {
+            "name": "rangefinder",
+            "cells": 2,
+            "adjective": true
+          },
+          {
+            "name": "inertial",
+            "cells": 2,
+            "adjective": true
+          }
+        ]
+      }
     }
   },
   "patterns": [
@@ -65,6 +98,12 @@
       "C",
       "D",
       "T"
+    ],
+    [
+      "C",
+      "D",
+      "T",
+      "S"
     ]
   ],
   "defaults": {},

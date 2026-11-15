@@ -13,6 +13,8 @@ import io.github.soundgoodizerfan.feedback.registry.FTags;
 
 import java.util.UUID;
 
+import org.jetbrains.annotations.Nullable;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -61,7 +63,7 @@ public class RobotEntity extends Entity implements ControllerCore.Locals {
     private static final String STATE = "Robot";
     /** The actions a robot starts first to last when the program holds several on. */
     private static final RobotChannel[] ORDER = { RobotChannel.MINE, RobotChannel.PLACE, RobotChannel.PICK_UP, RobotChannel.DROP,
-            RobotChannel.TURN_LEFT, RobotChannel.TURN_RIGHT };
+            RobotChannel.TURN_LEFT, RobotChannel.TURN_RIGHT, RobotChannel.GIVE, RobotChannel.TAKE };
 
     private ItemStack battery = ItemStack.EMPTY;
     private final SimpleContainer cargo = new SimpleContainer(RobotTuning.CARGO);
@@ -74,6 +76,14 @@ public class RobotEntity extends Entity implements ControllerCore.Locals {
     private RobotChannel doing;
     private int doingTicks;
     private BlockPos doingPos;
+    /** Where dead reckoning starts (the block it was set down on) and the error it has gathered since a beacon last corrected it. */
+    private int originX, originZ;
+    private float errX, errZ;
+    private boolean beaconNear, switched;
+    private final BlockPos.MutableBlockPos scan = new BlockPos.MutableBlockPos();
+    /** The reel this robot is tied to, or null; it may roam {@link RobotTuning#TETHER_LENGTH} blocks from it. */
+    @Nullable
+    private BlockPos tether;
 
     public RobotEntity(EntityType<?> type, Level level) {
         super(type, level);
@@ -105,6 +115,8 @@ public class RobotEntity extends Entity implements ControllerCore.Locals {
         design.remove(DataComponents.CUSTOM_DATA);
         entityData.set(DESIGN, design);
         spec = RobotSpec.of(design);
+        originX = blockPosition().getX();
+        originZ = blockPosition().getZ();
         if (state != null && !state.isEmpty())
             loadState(state, registryAccess());
         refreshCharge();
@@ -148,6 +160,37 @@ public class RobotEntity extends Entity implements ControllerCore.Locals {
         return cap <= 0f ? 0f : Math.max(0f, Math.min(1f, (chargeEu - pendingEu) / cap));
     }
 
+    /** The battery's saved state, or null without one; the dock reads it to ask for the right current. */
+    @Nullable
+    public CompoundTag batteryState() {
+        return BatteryStack.state(battery);
+    }
+
+    /** Puts what a dock or reel is delivered into the battery, as a charger does a battery item. */
+    public void charge(float amps, io.github.soundgoodizerfan.feedback.core.unit.VoltageBand band, float packetEu) {
+        CompoundTag t = BatteryStack.state(battery);
+        if (t == null)
+            return;
+        CompoundTag next = t.copy();
+        BatteryStack.charge(next, amps, band, packetEu);
+        battery.set(FDataComponents.BATTERY.get(), next);
+        refreshCharge();
+    }
+
+    @Nullable
+    public BlockPos tether() {
+        return tether;
+    }
+
+    public void tetherTo(@Nullable BlockPos reel) {
+        tether = reel;
+    }
+
+    /** Whether the robot is within its cable's length of its reel (always true untied). */
+    public boolean withinTether() {
+        return tether == null || position().distanceToSqr(Vec3.atCenterOf(tether)) <= RobotTuning.TETHER_LENGTH * RobotTuning.TETHER_LENGTH;
+    }
+
     // --- the program's own channels --------------------------------------------------------------------
 
     @Override
@@ -164,8 +207,56 @@ public class RobotEntity extends Entity implements ControllerCore.Locals {
             case ITEM_AHEAD -> items(ahead).isEmpty() ? 0f : 1f;
             case CARGO_FULL -> cargoFull() ? 1f : 0f;
             case CHARGE -> chargeShare();
+            case BEACON_NEAR -> beaconNear ? 1f : 0f;
+            case DOCK_AHEAD -> level().getBlockState(ahead).is(FTags.ROBOT_DOCKS) ? 1f : 0f;
+            case POS_X -> (float) (getX() - (originX + 0.5)) + errX;
+            case POS_Z -> (float) (getZ() - (originZ + 0.5)) + errZ;
+            case RANGE_AHEAD -> spec.sensor().equals(RobotSpec.RANGEFINDER) ? range() : 0f;
+            case HARDNESS_AHEAD -> spec.sensor().equals(RobotSpec.PROBE) ? hardness(ahead) : 0f;
+            case HEADING -> spec.sensor().equals(RobotSpec.INERTIAL) ? facing().get2DDataValue() : 0f;
             default -> 0f;
         };
+    }
+
+    /** Blocks to the first solid thing ahead, as far as a rangefinder reaches. */
+    private float range() {
+        Direction f = facing();
+        for (int i = 1; i <= RobotTuning.RANGE_MAX; i++) {
+            scan.set(blockPosition()).move(f, i);
+            if (!level().getBlockState(scan).getCollisionShape(level(), scan).isEmpty())
+                return i;
+        }
+        return RobotTuning.RANGE_MAX;
+    }
+
+    private float hardness(BlockPos pos) {
+        BlockState state = level().getBlockState(pos);
+        if (state.isAir())
+            return 0f;
+        float h = state.getDestroySpeed(level(), pos);
+        return h < 0f ? 100f : h;
+    }
+
+    /** Whether a landmark block stands within reach; a beacon wipes the position error. */
+    private boolean scanBeacon() {
+        int r = RobotTuning.BEACON_RANGE;
+        BlockPos at = blockPosition();
+        for (int dx = -r; dx <= r; dx++)
+            for (int dy = -1; dy <= 1; dy++)
+                for (int dz = -r; dz <= r; dz++)
+                    if (level().getBlockState(scan.set(at.getX() + dx, at.getY() + dy, at.getZ() + dz)).is(FTags.ROBOT_BEACONS))
+                        return true;
+        return false;
+    }
+
+    /** A machine ahead that can be switched is held on or off by the SWITCH channel, once each time the program changes it. */
+    private void applySwitch() {
+        boolean want = on[RobotChannel.SWITCH.ordinal()];
+        if (want == switched)
+            return;
+        switched = want;
+        if (level().getBlockEntity(blockPosition().relative(facing())) instanceof io.github.soundgoodizerfan.feedback.control.Switchable sw)
+            sw.setEngaged(want);
     }
 
     @Override
@@ -205,8 +296,17 @@ public class RobotEntity extends Entity implements ControllerCore.Locals {
         pendingEu += RobotTuning.EU_IDLE_PER_TICK;
         if (tickCount % RobotTuning.STEP_TICKS == 0) {
             flush();
-            if (powered())
+            if (powered()) {
                 core.tickServer();
+                applySwitch();
+            }
+            if (tickCount % (RobotTuning.STEP_TICKS * 5) == 0) {
+                beaconNear = scanBeacon();
+                if (beaconNear) {
+                    errX = 0f;
+                    errZ = 0f;
+                }
+            }
         }
         boolean live = powered();
         if (!live) {
@@ -224,9 +324,16 @@ public class RobotEntity extends Entity implements ControllerCore.Locals {
         }
         if (doing == null && live)
             begin();
-        boolean walking = doing == null && live && on[RobotChannel.WALK.ordinal()];
-        if (walking)
+        if (tether != null && tickCount % RobotTuning.STEP_TICKS == 0 && level().isLoaded(tether)
+                && !level().getBlockState(tether).is(io.github.soundgoodizerfan.feedback.registry.FBlocks.ROBOT_REEL.get()))
+            tether = null; // the reel is gone: the cable lies slack
+        boolean walking = doing == null && live && on[RobotChannel.WALK.ordinal()] && withinTether();
+        if (walking) {
             pendingEu += RobotTuning.EU_MOVE_PER_TICK;
+            float wobble = RobotTuning.DRIFT_PER_BLOCK * spec.drift() * spec.speed();
+            errX += (random.nextFloat() - 0.5f) * 2f * wobble;
+            errZ += (random.nextFloat() - 0.5f) * 2f * wobble;
+        }
         else if (onGround())
             return; // idle on the ground: nothing to move, nothing allocated
         Direction heading = facing();
@@ -268,6 +375,8 @@ public class RobotEntity extends Entity implements ControllerCore.Locals {
             case PLACE -> place(ahead);
             case PICK_UP -> pickUp(ahead);
             case DROP -> drop(ahead);
+            case GIVE -> give(ahead);
+            case TAKE -> take(ahead);
             default -> { }
         }
     }
@@ -304,6 +413,40 @@ public class RobotEntity extends Entity implements ControllerCore.Locals {
         }
     }
 
+    private net.neoforged.neoforge.items.IItemHandler port(BlockPos pos) {
+        return level().getCapability(net.neoforged.neoforge.capabilities.Capabilities.ItemHandler.BLOCK, pos, facing().getOpposite());
+    }
+
+    /** Offers the first stack it carries to the item port ahead; what the port will not take stays in the cargo. */
+    private void give(BlockPos pos) {
+        var handler = port(pos);
+        if (handler == null)
+            return;
+        for (int i = 0; i < cargo.getContainerSize(); i++) {
+            ItemStack s = cargo.getItem(i);
+            if (s.isEmpty())
+                continue;
+            cargo.setItem(i, net.neoforged.neoforge.items.ItemHandlerHelper.insertItem(handler, s, false));
+            return;
+        }
+    }
+
+    /** Takes the first stack the item port ahead lets out, as much as the cargo has room for. */
+    private void take(BlockPos pos) {
+        var handler = port(pos);
+        if (handler == null)
+            return;
+        for (int i = 0; i < handler.getSlots(); i++) {
+            ItemStack out = handler.extractItem(i, 64, false);
+            if (out.isEmpty())
+                continue;
+            ItemStack left = cargo.addItem(out);
+            if (!left.isEmpty())
+                net.neoforged.neoforge.items.ItemHandlerHelper.insertItem(handler, left, false);
+            return;
+        }
+    }
+
     private void pickUp(BlockPos pos) {
         for (ItemEntity item : items(pos)) {
             ItemStack left = cargo.addItem(item.getItem().copy());
@@ -336,6 +479,19 @@ public class RobotEntity extends Entity implements ControllerCore.Locals {
             return InteractionResult.SUCCESS;
         if (held.getItem() instanceof DataConnectorItem) {
             selectNext(player);
+            return InteractionResult.CONSUME;
+        }
+        if (held.getItem() instanceof TetherCableItem) {
+            BlockPos reel = TetherCableItem.reel(held);
+            if (player.isShiftKeyDown() && tether != null) {
+                tether = null;
+                player.displayClientMessage(Component.translatable("robot.feedback.tether_cut"), true);
+            } else if (reel != null) {
+                tether = reel;
+                player.displayClientMessage(Component.translatable("robot.feedback.tether_tied"), true);
+            } else {
+                player.displayClientMessage(Component.translatable("robot.feedback.tether_none"), true);
+            }
             return InteractionResult.CONSUME;
         }
         if (player.isShiftKeyDown() && held.isEmpty()) {
@@ -432,6 +588,12 @@ public class RobotEntity extends Entity implements ControllerCore.Locals {
         CompoundTag c = new CompoundTag();
         core.save(c, provider);
         t.put("Core", c);
+        if (tether != null)
+            t.putLong("Tether", tether.asLong());
+        t.putInt("OriginX", originX);
+        t.putInt("OriginZ", originZ);
+        t.putFloat("ErrX", errX);
+        t.putFloat("ErrZ", errZ);
         return t;
     }
 
@@ -440,6 +602,13 @@ public class RobotEntity extends Entity implements ControllerCore.Locals {
         if (t.contains("Cargo", Tag.TAG_LIST))
             cargo.fromTag(t.getList("Cargo", Tag.TAG_COMPOUND), provider);
         core.load(t.getCompound("Core"), provider);
+        tether = t.contains("Tether") ? BlockPos.of(t.getLong("Tether")) : null;
+        if (t.contains("OriginX")) {
+            originX = t.getInt("OriginX");
+            originZ = t.getInt("OriginZ");
+        }
+        errX = t.getFloat("ErrX");
+        errZ = t.getFloat("ErrZ");
     }
 
     @Override

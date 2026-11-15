@@ -289,6 +289,10 @@ public class FeedbackJeiPlugin implements IModPlugin {
         registration.addIngredientInfo(FItems.BLOOMERY_SLAG.get(), Component.translatable("feedback.jei.info.bloomery_slag"));
         registration.addIngredientInfo(FItems.CHARGING_GANTRY.get(), Component.translatable("feedback.jei.info.charging_gantry"));
         registration.addIngredientInfo(FItems.CHARGER.get(), Component.translatable("feedback.jei.info.charger"));
+        registration.addIngredientInfo(FItems.ROBOT_DOCK.get(), Component.translatable("feedback.jei.info.robot_dock"));
+        registration.addIngredientInfo(FItems.ROBOT_BEACON.get(), Component.translatable("feedback.jei.info.robot_beacon"));
+        registration.addIngredientInfo(FItems.ROBOT_REEL.get(), Component.translatable("feedback.jei.info.robot_reel"));
+        registration.addIngredientInfo(FItems.ROBOT_TETHER.get(), Component.translatable("feedback.jei.info.robot_tether"));
         registration.addIngredientInfo(io.github.soundgoodizerfan.feedback.registry.FModular.CHESTPLATE.get(), Component.translatable("feedback.jei.info.exosuit"));
         registration.addIngredientInfo(io.github.soundgoodizerfan.feedback.registry.FModular.TREATISE_BINDER.get(), Component.translatable("feedback.jei.info.treatise_binder"));
         registration.addIngredientInfo(io.github.soundgoodizerfan.feedback.registry.FModular.TREATISE_SHELF_ITEM.get(), Component.translatable("feedback.jei.info.treatise_shelf"));

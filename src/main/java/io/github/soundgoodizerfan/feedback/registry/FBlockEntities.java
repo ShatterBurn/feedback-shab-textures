@@ -306,6 +306,11 @@ public class FBlockEntities {
                     .of(io.github.soundgoodizerfan.feedback.machine.refrigeration.RefrigerationUnitBlockEntity::new, FBlocks.REFRIGERATION_UNIT.get())
                     .build(null));
 
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<io.github.soundgoodizerfan.feedback.robot.RobotDockBlockEntity>> ROBOT_DOCK =
+            BLOCK_ENTITIES.register("robot_dock", () -> BlockEntityType.Builder
+                    .of(io.github.soundgoodizerfan.feedback.robot.RobotDockBlockEntity::new, FBlocks.ROBOT_DOCK.get(), FBlocks.ROBOT_REEL.get())
+                    .build(null));
+
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<io.github.soundgoodizerfan.feedback.machine.charger.ChargerBlockEntity>> CHARGER =
             BLOCK_ENTITIES.register("charger", () -> BlockEntityType.Builder
                     .of(io.github.soundgoodizerfan.feedback.machine.charger.ChargerBlockEntity::new, FBlocks.CHARGER.get())

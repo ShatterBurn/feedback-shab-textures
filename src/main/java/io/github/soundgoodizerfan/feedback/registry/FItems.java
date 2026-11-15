@@ -395,6 +395,12 @@ public class FItems {
     public static final DeferredItem<BlockItem> ELECTROLYTIC_CELL =
             ITEMS.registerSimpleBlockItem(FBlocks.ELECTROLYTIC_CELL);
     public static final DeferredItem<BlockItem> CHARGER = ITEMS.registerSimpleBlockItem(FBlocks.CHARGER);
+    public static final DeferredItem<BlockItem> ROBOT_DOCK = ITEMS.registerSimpleBlockItem(FBlocks.ROBOT_DOCK);
+    public static final DeferredItem<BlockItem> ROBOT_BEACON = ITEMS.registerSimpleBlockItem(FBlocks.ROBOT_BEACON);
+    public static final DeferredItem<BlockItem> ROBOT_REEL = ITEMS.registerSimpleBlockItem(FBlocks.ROBOT_REEL);
+    /** The cable between a tether reel and a robot; see {@code robot/TetherCableItem}. */
+    public static final DeferredItem<io.github.soundgoodizerfan.feedback.robot.TetherCableItem> ROBOT_TETHER = ITEMS.register("robot_tether",
+            () -> new io.github.soundgoodizerfan.feedback.robot.TetherCableItem(new net.minecraft.world.item.Item.Properties().stacksTo(1)));
     public static final DeferredItem<BlockItem> CHARGING_GANTRY = ITEMS.registerSimpleBlockItem(FBlocks.CHARGING_GANTRY);
     public static final DeferredItem<BlockItem> RECTIFIER = ITEMS.registerSimpleBlockItem(FBlocks.RECTIFIER);
     public static final DeferredItem<BlockItem> CONVERTER = ITEMS.registerSimpleBlockItem(FBlocks.CONVERTER);
