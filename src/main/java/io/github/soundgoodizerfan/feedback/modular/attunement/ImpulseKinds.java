@@ -7,6 +7,8 @@ import static io.github.soundgoodizerfan.feedback.modular.attunement.AttunementK
 
 import io.github.soundgoodizerfan.feedback.Feedback;
 import io.github.soundgoodizerfan.feedback.combat.tether.BodyMass;
+import io.github.soundgoodizerfan.feedback.modular.combat.StrikeSource;
+import io.github.soundgoodizerfan.feedback.weapon.GunSpec;
 
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -68,7 +70,9 @@ public final class ImpulseKinds {
                     target.getX() - attacker.getX(), target.getZ() - attacker.getZ());
         });
         onStrike("recoil", (event, a) -> {
-            if (event.getSource().getEntity() instanceof LivingEntity attacker) {
+            // A gun kicks its shooter at the shot, hit or not: see fired.
+            if (event.getSource().getEntity() instanceof LivingEntity attacker
+                    && GunSpec.of(StrikeSource.weapon(attacker, event.getSource())).isEmpty()) {
                 attacker.knockback(a.level() * RECOIL_PER_LEVEL,
                         event.getEntity().getX() - attacker.getX(), event.getEntity().getZ() - attacker.getZ());
                 // A player moves by what its client is told: knockback alone is not sent, so the kick never lands.
@@ -94,6 +98,15 @@ public final class ImpulseKinds {
         shooter.setDeltaMovement(shooter.getDeltaMovement().add(arrow.getDeltaMovement().normalize().scale(-KICKBACK_PER_LEVEL * level)));
         shooter.hurtMarked = true;
         arrow.getPersistentData().putInt(KICK_TAG, level);
+    }
+
+    /** An impulse grip throws the shooter opposite the shot's line, up and down as well as sideways, whether or not it hits. */
+    public static void fired(Player shooter, ItemStack gun) {
+        int level = recoilLevel(gun);
+        if (level == 0)
+            return;
+        shooter.setDeltaMovement(shooter.getDeltaMovement().add(shooter.getLookAngle().scale(-level * RECOIL_PER_LEVEL)));
+        shooter.hurtMarked = true;
     }
 
     /** The impulse grip levels of a gun: with any, recoil cannot knock it from the hand and throws the shooter instead. */

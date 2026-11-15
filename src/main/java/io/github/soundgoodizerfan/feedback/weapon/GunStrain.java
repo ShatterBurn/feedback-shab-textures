@@ -45,6 +45,7 @@ public final class GunStrain {
 
     /** One more shot from {@code shooter}'s {@code hand}; throws the gun or hurts them when it is too much. */
     public static void shot(ServerPlayer shooter, ItemStack gun, InteractionHand hand, float kickDeg, boolean aimed) {
+        ImpulseKinds.fired(shooter, gun);
         float kick = kickDeg * (aimed ? GunTuning.GUN_ADS_KICK : 1f);
         long now = shooter.level().getGameTime();
         float[] s = STRAIN.computeIfAbsent(shooter.getUUID(), k -> new float[] {0f, now});

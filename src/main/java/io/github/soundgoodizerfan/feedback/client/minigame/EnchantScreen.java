@@ -156,16 +156,16 @@ public class EnchantScreen extends SkinnedScreen<EnchantMenu> {
     }
 
     /** The effect's name, then a line per distinct behaviour, from the row's kinds and flaws. */
-    private static List<Component> effectLines(Attunements.Effect e) {
+    private List<Component> effectLines(Attunements.Effect e) {
         List<Component> lines = new ArrayList<>();
         lines.add(labelOf(e).copy().withStyle(ChatFormatting.LIGHT_PURPLE));
         e.reagent().ifPresent(r -> lines.add(Component.translatable("gui.feedback.enchant.effect.reagent",
                 io.github.soundgoodizerfan.feedback.potion.PotionEffects.name(r)).withStyle(ChatFormatting.GRAY)));
-        roleLines(lines, e.roles());
+        roleLines(lines, e.roles(), menu.roles());
         if (e.hasMirror()) {
             lines.add(Component.translatable("gui.feedback.enchant.effect.mirror",
                     Component.translatable("attunement.feedback." + e.id().getPath() + ".mirror")).withStyle(ChatFormatting.LIGHT_PURPLE));
-            roleLines(lines, e.mirror());
+            roleLines(lines, e.mirror(), menu.roles());
         }
         return lines;
     }
@@ -212,11 +212,17 @@ public class EnchantScreen extends SkinnedScreen<EnchantMenu> {
     }
 
     /** One line per distinct behaviour and description, naming every role that has it; "anything" when it covers every non-gun role. */
-    private static void roleLines(List<Component> out, java.util.Map<String, Attunements.Behaviour> roles) {
+    private static void roleLines(List<Component> out, java.util.Map<String, Attunements.Behaviour> roles, java.util.Map<String, String> part) {
         record Group(Attunements.Behaviour b, String key) {}
         java.util.Map<Group, java.util.List<String>> byBehaviour = new java.util.LinkedHashMap<>();
         new TreeMap<>(roles).forEach((role, b) -> byBehaviour.computeIfAbsent(new Group(b, descKey(b.kind(), role)), k -> new ArrayList<>()).add(role));
         byBehaviour.forEach((g, names) -> {
+            // A part in the slot: only the roles it fills, named as they are ("On a head:"), nothing for the rest.
+            java.util.List<String> mine = part.entrySet().stream()
+                    .filter(r -> names.contains(r.getKey()) || (!r.getValue().isEmpty() && names.contains(Attunements.CLASS_KEY + r.getValue())))
+                    .map(java.util.Map.Entry::getKey).sorted().toList();
+            if (!part.isEmpty() && mine.isEmpty())
+                return;
             Attunements.Behaviour b = g.b();
             MutableComponent what = Component.translatable(g.key());
             if (b.flaw() != 0)
@@ -240,13 +246,17 @@ public class EnchantScreen extends SkinnedScreen<EnchantMenu> {
                     .map(n -> Component.translatable(n.startsWith(Attunements.CLASS_KEY)
                             ? "modular.feedback.roleclass." + n.substring(Attunements.CLASS_KEY.length()) : "modular.feedback.role." + n).getString())
                     .collect(java.util.stream.Collectors.joining("/"));
-            MutableComponent lead = missing.isEmpty() ? Component.translatable("gui.feedback.enchant.effect.any")
+            MutableComponent lead = !part.isEmpty() ? Component.translatable("gui.feedback.enchant.effect.role", joined.apply(mine))
+                    : missing.isEmpty() ? Component.translatable("gui.feedback.enchant.effect.any")
                     : missing.size() * 3 <= names.size() ? Component.translatable("gui.feedback.enchant.effect.but", joined.apply(missing))
                     : Component.translatable("gui.feedback.enchant.effect.role", joined.apply(names));
             out.add(lead.withStyle(ChatFormatting.GOLD).append(" ").append(what.withStyle(ChatFormatting.WHITE)));
         });
         // A kind's `.also.<n>` lines are its other contexts ("As a machine head: ..."): a line of their own, once per kind.
         net.minecraft.locale.Language lang = net.minecraft.locale.Language.getInstance();
+        // With a part in the slot they show only for a part that is a machine's.
+        if (!part.isEmpty() && part.keySet().stream().noneMatch(r -> bucket(r).equals("machine")))
+            return;
         roles.values().stream().map(Attunements.Behaviour::kind).distinct().forEach(kind -> {
             for (int n = 1; lang.has(DESC + kind + ".also." + n); n++) {
                 String text = lang.getOrDefault(DESC + kind + ".also." + n);
@@ -880,7 +890,8 @@ public class EnchantScreen extends SkinnedScreen<EnchantMenu> {
         Attunements.Effect e = effect();
         g.drawString(font, e == null ? Component.translatable("gui.feedback.enchant.no_effect").getString() : font.plainSubstrByWidth(shown(e).getString(), SCOPE_W - 4),
                 SCOPE_X + 2, SCOPE_Y - 11, e == null ? skin.dim() : skin.accent(), false);
-        g.drawString(font, room(e), PIP_X, PIP_Y + 8, skin.dim(), false);
+        // Wrapped to the page's right edge: the line is longer than the room beside the socket and spilled out under JEI.
+        g.drawWordWrap(font, room(e), PIP_X, PIP_Y + 8, SHOW_X + SHOW_W - PIP_X - 2, skin.dim());
         g.drawString(font, Component.translatable("gui.feedback.enchant.heat"), HEAT_X + HEAT_W / 2 - font.width(Component.translatable("gui.feedback.enchant.heat")) / 2,
                 SCOPE_Y - 11, skin.dim(), false);
     }

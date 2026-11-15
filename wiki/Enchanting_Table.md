@@ -107,7 +107,7 @@ Each effect does something different on a different **role** (the part's place i
 | **Wager** | flips a coin on each blow: double damage, or it heals the target; armor flips on each hit you take | none |
 | **Dowse** | a needle orbits the crosshair and points toward the nearest magnetic, dense, conductive or flammable block (four separate effects), in eighths relative to where you face; *"Right over it"* when you stand directly over or under it | **Shun**: it leans away |
 
-Some effects need the material to be right: **Heat** on a handle is only as hot as the material burns, **Lode** and the magnetic **Dowse** die when the part is heated past its Curie point, and **Impulse** on a crossbow's stock recoils the shooter. **Impulse** on a gun's grip locks it in the hand against hard recoil and throws the shooter back instead (see [Guns](Guns.md#recoil)).
+Some effects need the material to be right: **Heat** on a handle is only as hot as the material burns, **Lode** and the magnetic **Dowse** die when the part is heated past its Curie point, and **Impulse** on a crossbow's stock recoils the shooter. **Impulse** on a gun's grip locks it in the hand against hard recoil and throws the shooter back instead (see [Guns](Guns.md#recoil)); every shot also throws the shooter away from where it is aimed, up and down as well as sideways, whether or not it hits, so firing straight down launches you up.
 
 ## On a machine
 

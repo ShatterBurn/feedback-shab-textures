@@ -21,4 +21,9 @@ public final class SpaceTuning {
     public static final double DRIFT_MIN_SPEED = 0.005;
     /** Ticks the crossing overlay takes to clear. */
     public static final int FADE_TICKS = 60;
+
+    /** What a lung finds ({@code AirDensityTable.breathable}, 1 at sea level) at or above which a person breathes unaided. The Overworld curve gives 0.5 at y 192. */
+    public static final float UNAIDED_BREATHABLE = 0.5f;
+    /** Ticks between the warning cues (laboured breath, swimming head) while the air is too thin and nothing supplies it. */
+    public static final int WARNING_INTERVAL = 40;
 }
