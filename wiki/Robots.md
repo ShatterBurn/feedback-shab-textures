@@ -18,7 +18,7 @@ C is a Robot Chassis, D is a Robot Drive, T is a Robot Tool Head.
 - **Robot Drive**: what moves it. A lighter robot on the same drive moves faster. It comes in three kinds, see [Drives](#drives).
 - **Robot Tool Head**: the working end. Its material decides what the robot can dig and how fast.
 
-Two optional parts go below the tool head in the column, in either order after it: a **Robot Sensor** and a **Robot Chunk Loader** (see [Sensors and the chunk loader](#sensors-and-the-chunk-loader)). A robot may carry one of each.
+Three optional parts go below the tool head in the column, in this order: a **Robot Sensor**, a **Robot Chunk Loader** and a **Robot Radio** (see [Sensors and the chunk loader](#sensors-and-the-chunk-loader) and [The radio](#the-radio)). A robot may carry one of each, and may leave any out.
 
 ```
  C 
@@ -26,9 +26,12 @@ Two optional parts go below the tool head in the column, in either order after i
  T 
  S 
  L 
+ R 
 ```
 
-S is a Robot Sensor, L is a Robot Chunk Loader.
+S is a Robot Sensor, L is a Robot Chunk Loader, R is a Robot Radio.
+
+A robot may also carry an electronic circuit as its **brain** (see [The brain](#the-brain)).
 
 ## Using it
 
@@ -60,6 +63,14 @@ A robot with no sensor still feels what is directly ahead through its other read
 
 A **Robot Chunk Loader** keeps the chunk the robot stands in loaded while it runs a program, so it does not halt when you walk away. It drains the battery, and the server limits how many chunks may be held this way.
 
+## The radio
+
+A **Robot Radio** is the robot's end of a link to a [Radio Mast](Radio_Mast.md). Paired with a mast, the robot's senses can be read, and its actions held on or off, by an ordinary [Controller](Controller.md) at the mast, from as far as the mast's power reaches. See [Radio Mast](Radio_Mast.md) for pairing, range and noise.
+
+## The brain
+
+A live [circuit](Basic_Electronic_Circuit.md) seated in a robot when it is assembled at the [Engineering Table](Engineering_Table.md) is its brain. It gives the robot **dexterity**: a faster, quieter circuit is better, and a cold joint halves it. Dexterity decides how steadily the hand lands when the robot uses a held item (see *Use held item ahead* below). A robot with no circuit is clumsy; nothing is refused.
+
 ## Programming a robot
 
 A robot has its own channels. Point a card at them with the [Data Connector](Data_Connector.md): each right-click on the robot steps the selection to the next channel and the bar shows *"Selected"* and its name. Then press **link** on the card in the Programmer, as for any other block ([Linking cards to real blocks](Programming.md#linking-cards-to-real-blocks)).
@@ -78,6 +89,7 @@ Switches (a *Switch* card turns them on and off):
 | Put into container ahead | Moves the first stack of cargo into the container or machine in front |
 | Take from container ahead | Takes the first stack the container in front lets out |
 | Switch machine ahead | Holds a switchable machine in front engaged while on, released while off |
+| Use held item ahead | Uses the first stack of cargo on the block in front, as a hand does, through that block's own use |
 | Climb | Rises while on; only a rotor robot light enough to fly answers |
 | Descend | Sinks while on |
 
@@ -98,6 +110,10 @@ Readings (an *Input* card reads them):
 | Position east | Blocks east of where it was set down, by dead reckoning |
 | Position south | Blocks south of where it was set down, by dead reckoning |
 | Height above start | Blocks above the block it was set down on |
+
+### Using the held item
+
+*Use held item ahead* lays food in a [Skillet](Skillet.md), flips it with a [Spatula](Spatula.md), or does whatever a right-click with that item does on the block in front. A clumsy hand lands off the center of the face, so it may act on the wrong spot; a better brain lands closer to the center.
 
 ## How it works
 

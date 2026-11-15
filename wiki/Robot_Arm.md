@@ -18,13 +18,14 @@ It faces the way you looked when you placed it.
 
 - **Right-click with a Punch Card** to load a program.
 - **Right-click with a [Data Connector](Data_Connector.md)** to step through its channels, as on a robot, then link a card in the [Programmer](Programming.md).
+- **Right-click with a circuit** to seat it as the arm's brain. It gives the arm dexterity as on a [robot](Robots.md#the-brain); an arm with no circuit is clumsy. A circuit already seated comes back to you.
 - **Right-click with any other item** to put it in its cargo.
 - **Sneak and right-click with an empty hand** to take the last stack out.
 
-Breaking the block drops its cargo.
+Breaking the block drops its cargo and its circuit.
 
 ## How it works
 
-It breaks, places, picks up and drops, puts items into and takes them out of a container or machine, and switches a machine on or off, with the same channels and program as a robot. Turning swings it a quarter on its mount. It shares the readings *Blocked ahead*, *Breakable ahead*, *Items ahead*, *Cargo full* and *Dock ahead*. Its tool head has a fixed strength.
+It breaks, places, picks up and drops, uses the first carried stack on the block ahead ([Robots](Robots.md#using-the-held-item)), puts items into and takes them out of a container or machine, and switches a machine on or off, with the same channels and program as a robot. Turning swings it a quarter on its mount. It shares the readings *Blocked ahead*, *Breakable ahead*, *Items ahead*, *Cargo full* and *Dock ahead*. Its tool head has a fixed strength.
 
 It acts only while its line feeds it.
