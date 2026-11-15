@@ -111,6 +111,7 @@ public class BallastTankBlockEntity extends AnalogPartBlockEntity implements Blo
         subLevel.logicalPose().transformNormalInverse(down.set(0, -weight * dt, 0), local);
         force.applyImpulseAtPoint(subLevel.getMassTracker(), at.set(worldPosition.getX() + 0.5,
                 worldPosition.getY() + 0.5, worldPosition.getZ() + 0.5), local);
+        io.github.soundgoodizerfan.feedback.vehicle.ForceLedger.record(subLevel, io.github.soundgoodizerfan.feedback.vehicle.ForceLedger.Cause.BALLAST, at.x, at.y, at.z, local.x, local.y, local.z);
         handle.applyForcesAndReset(force);
     }
 

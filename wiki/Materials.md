@@ -103,9 +103,9 @@ Electrical behavior is on the pages that use it: how much current a wire of each
 
 Beyond the table, every material carries figures JEI's *Material Stats* page shows:
 
-- **Specific heat** (Fu/Mu/Tu): the work to warm one Mu of it by one Tu. High means it soaks up a lot of heat before it gets hot. A vessel's thermal mass is its walls plus what it holds, each by its mass and specific heat, so a full crucible heats slower than an empty one, and food warms at its own rate.
-- **Melting heat** (Fu/Mu): the work to melt one Mu at its melting point, with no change in temperature. Melting takes it out of the vessel, so the pot cools while a charge melts.
-- **Boiling heat** (Fu/Mu): the same at the boiling point.
+- **Specific heat** (Wu/Mu/Tu): the work to warm one Mu of it by one Tu. High means it soaks up a lot of heat before it gets hot. A vessel's thermal mass is its walls plus what it holds, each by its mass and specific heat, so a full crucible heats slower than an empty one, and food warms at its own rate.
+- **Melting heat** (Wu/Mu): the work to melt one Mu at its melting point, with no change in temperature. Melting takes it out of the vessel, so the pot cools while a charge melts.
+- **Boiling heat** (Wu/Mu): the same at the boiling point.
 - **Hydrogen uptake and release temperature**: palladium, magnesium, titanium and titanium 6Al-4V soak up hydrogen and give it back when hot. See the [Hydride Bed](Hydride_Bed.md).
 - **Shock limit** (Tu): glass, ceramic, brick, concrete and obsidian crack when dipped into a bath whose temperature differs from the part's by more than this. See [Thermal shock](Heat.md#thermal-shock). Obsidian 50, mud brick 60, glass, optical glass, uranium glass, terracotta and concrete 100, ceramic and glazed ceramic 120, brick 150, borosilicate glass 170, alumina and nether brick 200, silica glass and quartz glass 1000.
 - **Toxicity**: how harmful it is swallowed, a log scale of the real lethal dose. 0 is harmless; each step is ten times deadlier.
@@ -486,7 +486,7 @@ Every metal comes in a family of **forms**, each made by a particular machine:
 
 So there's a *Bronze Plate*, *Lead Wire*, *Gold Foil* and so on, for every metal. A few don't exist: cast iron is too brittle to be made into plates, rods or wire, and neither is hardened steel. Tempered steel is: plate, rod, wire and the machined parts, but no foil, nuggets or blocks.
 
-How much work each step takes depends on the metal: **a fixed amount plus a little more for every point of hardness**. A copper plate takes about 19 Fu; a steel plate about 42. JEI shows the figure for every step and every metal.
+How much work each step takes depends on the metal: **a fixed amount plus a little more for every point of hardness**. A copper plate takes about 19 Wu; a steel plate about 42. JEI shows the figure for every step and every metal.
 
 ## Dust
 

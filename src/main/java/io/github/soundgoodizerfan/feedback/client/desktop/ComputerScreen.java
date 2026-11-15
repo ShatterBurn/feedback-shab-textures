@@ -76,6 +76,7 @@ public class ComputerScreen extends SkinnedScreen<ComputerMenu> implements Compu
         desktop.register(new DesktopApp("drive", Component.translatable("gui.feedback.computer.drives"), Glyph.DRIVE, false, () -> new DriveWindow(this)));
         desktop.register(new DesktopApp("files", Component.translatable("gui.feedback.computer.files"), Glyph.FILES, true, () -> new FilesWindow(this)));
         desktop.register(new DesktopApp("monitor", Component.translatable("gui.feedback.computer.monitor"), Glyph.MONITOR, true, () -> new MonitorWindow(this)));
+        desktop.register(new DesktopApp("diagram", Component.translatable("gui.feedback.computer.diagram"), Glyph.DIAGRAM, true, () -> new DiagramWindow(this)));
         desktop.register(new DesktopApp("links", Component.translatable("gui.feedback.computer.links"), Glyph.LINKS, true, () -> new LinksWindow(this)));
         desktop.register(new DesktopApp("editor", Component.translatable("gui.feedback.computer.editor"), Glyph.EDITOR, false, () -> new EditorWindow(this)));
         desktop.register(new DesktopApp("settings", Component.translatable("gui.feedback.computer.settings"), Glyph.SETTINGS, true, () -> new SettingsWindow(this)));

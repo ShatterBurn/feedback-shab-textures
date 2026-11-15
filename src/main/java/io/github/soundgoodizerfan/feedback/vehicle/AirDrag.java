@@ -65,9 +65,13 @@ public final class AirDrag {
                 area = Math.abs(back.x) * dy * dz + Math.abs(back.y) * dx * dz + Math.abs(back.z) * dx * dy;
             }
             double drag = VehicleTuning.AIR_DRAG * area;
-            if (density > 0)
-                force.applyLinearImpulse(new Vector3d(back).mul(
-                        Math.min(drag * density * speed * speed * dt, mass * speed)));
+            if (density > 0) {
+                Vector3d pushed = new Vector3d(back).mul(Math.min(drag * density * speed * speed * dt, mass * speed));
+                force.applyLinearImpulse(pushed);
+                var com = ForceLedger.watching(body) ? body.getMassTracker().getCenterOfMass() : null;
+                if (com != null)
+                    ForceLedger.record(body, ForceLedger.Cause.DRAG, com.x(), com.y(), com.z(), pushed.x, pushed.y, pushed.z);
+            }
             // shortcut: speed ceiling = BODY_MAX_STEP_BLOCKS / step, a tunnelling guard against walls, only
             // for bodies with a thruster (the ones that outrun it); upgrade to continuous collision if
             // other bodies need it.

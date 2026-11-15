@@ -18,7 +18,7 @@ A vehicle is a build of [micro cells](Micro_Core.md) and full-size blocks that a
 | **[Thruster](Thruster.md)** | Pushes the whole body along its facing; burns liquid fuel. |
 | **[Propeller](Propeller.md)** | Pulls the whole body along its facing from a turning shaft. |
 | **[Gas Cell](Gas_Cell.md)** | Holds a lift gas; an [Airship](Airship.md) floats on a block of them. |
-| **[Flight Sensor](Instruments.md#flight-sensor)** | Reads altitude, airspeed, pitch, roll, vertical speed or air density for a program. |
+| **[Flight Sensor](Instruments.md#flight-sensor)** | Reads altitude, airspeed, pitch, roll, vertical speed or air density for a program; right-click opens the [Contraption Diagram](Instruments.md#contraption-diagram) of every force on the vehicle. |
 | **[Driver's Seat](#the-drivers-seat)** | Sit in it; your keyboard becomes the car's controls. |
 
 ## The Lift

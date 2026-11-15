@@ -132,6 +132,7 @@ public class FlightSensorBlockEntity extends BlockEntity implements SensorFittin
             case AIRSPEED -> VehicleTuning.FLIGHT_AIRSPEED_RESOLUTION;
             case VERTICAL_SPEED -> VehicleTuning.FLIGHT_CLIMB_RESOLUTION;
             case AIR_DENSITY -> VehicleTuning.FLIGHT_DENSITY_RESOLUTION;
+            case FORCE -> VehicleTuning.FLIGHT_FORCE_RESOLUTION;
             default -> VehicleTuning.FLIGHT_ATTITUDE_RESOLUTION;
         };
     }

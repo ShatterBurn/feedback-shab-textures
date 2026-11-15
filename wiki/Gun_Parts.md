@@ -8,7 +8,7 @@ Parts can also be shaped from stock at the bench for the stock's material (metal
 
 Every metal has these part forms. Each is made by one step on a machine, like any other [form](Materials.md#forms). A part is one item (a *Gun Barrel*, say) and the metal it's made of rides on it, shown on its tooltip:
 
-| Part | Made from | By | Work (Fu) | Steel |
+| Part | Made from | By | Work (Wu) | Steel |
 | --- | --- | --- | --- | --- |
 | **Gun Barrel** | Turned Rod | [Drill Press](Drill_Press.md) | 6 + hardness | 21 |
 | **Receiver** | Ingot | Drill Press | 8 + 1.5 × hardness | 31 |
@@ -32,7 +32,7 @@ The cutting machines also have to be **harder than the metal**: the drill bit is
 
 A grip carries no load, so it doesn't have to be a strong metal. The lathe also turns grips from:
 
-| From | Grip | Work (Fu) | Grip friction |
+| From | Grip | Work (Wu) | Grip friction |
 | --- | --- | --- | --- |
 | Stick | Wood | 3 | 0.4 |
 | Bamboo | Bamboo | 4 | 0.4 |
@@ -59,7 +59,7 @@ A stock has a **core** and a **pad**, each a choice of material. The cut it make
 
 The drill press makes a Gun Barrel by piercing a turned rod. A fresh barrel is a **3 mm** pilot bore through a rod **30 mm** across and **0.6 m** long. It's nowhere near a gun yet. You cut it to shape, and **each machine changes one dimension** for as long as you keep it working:
 
-| Machine | Changes | Per Fu of work |
+| Machine | Changes | Per Wu of work |
 | --- | --- | --- |
 | Drill Press | widens the **bore** | +0.1 mm |
 | Lathe | thins the **outside** | −0.2 mm |
@@ -69,7 +69,7 @@ The **wall** is what's left between the bore and the outside: (outside − bore)
 
 The machines don't know what you're aiming for. Drill until the wall is under **0.5 mm**, or grind it shorter than **5 cm**, and the barrel is **swarf**.
 
-Work per cut is the machine's strength (St) divided by the metal's hardness. For example, a fast drill feed (48 St) on steel (15) is 3 Fu a push, so each push widens the bore by 0.3 mm.
+Work per cut is the machine's strength (St) divided by the metal's hardness. For example, a fast drill feed (48 St) on steel (15) is 3 Wu a push, so each push widens the bore by 0.3 mm.
 
 **Without [Calipers](Instruments.md#calipers)** a barrel just says *"A bored barrel. Calipers would say how wide."* With calipers in your inventory you get its bore, wall and length to 0.1 mm.
 

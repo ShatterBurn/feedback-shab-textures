@@ -41,7 +41,7 @@ It also turns [gun parts](Gun_Parts.md):
 - **Grips**: from an ingot of any gun metal, or from a **Stick** (wood), a **Bone** or **Bamboo**. A grip doesn't need to be strong.
 - **Suppressors**, from a cylinder.
 - **Coins**, from a plate (the coin a [Coin flip](Skills.md) throws).
-- **Gun Barrels**: chucked in the lathe, a barrel's **outside** gets thinner, 0.2 mm per Fu, for as long as it turns. Thin the wall too far and it's swarf.
+- **Gun Barrels**: chucked in the lathe, a barrel's **outside** gets thinner, 0.2 mm per Wu, for as long as it turns. Thin the wall too far and it's swarf.
 
 The bit is **150**, so it cuts everything softer than that: steel (15), hardened steel (69) and netherite (130). Tungsten carbide (157) needs the [Grinding Wheel](Grinding_Wheel.md).
 

@@ -32,9 +32,9 @@ import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 public class HandDeformationGameTests {
 
     /**
-     * A copper ingot's deformation entry costs 14 Fu; the Hand Hammer delivers
-     * {@code St / hardness = 3 / 1 = 3} Fu per blow (see {@code Deformation.workFrom}). Five
-     * blows land 15 Fu, which is the first blow to clear 14 -- so the fifth craft, and no
+     * A copper ingot's deformation entry costs 14 Wu; the Hand Hammer delivers
+     * {@code St / hardness = 3 / 1 = 3} Wu per blow (see {@code Deformation.workFrom}). Five
+     * blows land 15 Wu, which is the first blow to clear 14 -- so the fifth craft, and no
      * earlier one, should turn the ingot into a plate.
      */
     @GameTest(template = "empty")
@@ -60,14 +60,14 @@ public class HandDeformationGameTests {
         workpiece = recipe.assemble(fifthBlow, level.registryAccess());
 
         helper.assertTrue(workpiece.is(net.minecraft.core.registries.BuiltInRegistries.ITEM.get(io.github.soundgoodizerfan.feedback.Feedback.id("copper_plate"))),
-                "five blows at 3 St (15 Fu) should have produced a copper plate (14 Fu), got " + workpiece);
+                "five blows at 3 St (15 Wu) should have produced a copper plate (14 Wu), got " + workpiece);
         helper.succeed();
     }
 
     /**
      * TODO.md's own §3c guessed "a sixth [blow] makes foil," flagged unverified. The arithmetic
-     * says otherwise: the plate costs 9 more Fu on top of the 1 Fu carried over from blow five
-     * (see {@link #fiveBlowsMakeAPlate}), and 3 Fu a blow does not clear 9 until the third blow
+     * says otherwise: the plate costs 9 more Wu on top of the 1 Wu carried over from blow five
+     * (see {@link #fiveBlowsMakeAPlate}), and 3 Wu a blow does not clear 9 until the third blow
      * past the plate -- the eighth blow overall. This test is the correction, run rather than
      * guessed a second time.
      */

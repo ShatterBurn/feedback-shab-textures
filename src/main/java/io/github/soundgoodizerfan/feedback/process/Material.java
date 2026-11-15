@@ -687,7 +687,7 @@ public record Material(St hardness, Tu minTemperature, Tu maxTemperature,
         }
     }, rgb -> String.format("#%06x", rgb & 0xFFFFFF));
 
-    /** Hardness divides, so zero or less is refused at load rather than turning into Infinity Fu. */
+    /** Hardness divides, so zero or less is refused at load rather than turning into Infinity Wu. */
     static final Codec<St> HARDNESS_CODEC = Units.codec(St::new).validate(st -> st.value() > 0
             ? DataResult.success(st) : DataResult.error(() -> "hardness must be positive: " + st.value()));
 

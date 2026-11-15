@@ -39,7 +39,7 @@ import net.minecraft.world.level.block.state.BlockState;
  *
  * <h2>Calipers' real second job</h2>
  * Nothing new is built for reading a live diameter. Calipers already read {@link Quantity#WORK}
- * off a workpiece's accumulated-Fu components ({@code WorkpieceTooltip}, {@code CalipersItem}) --
+ * off a workpiece's accumulated-Wu components ({@code WorkpieceTooltip}, {@code CalipersItem}) --
  * a Lathe's workpiece is no different from a Hammer's, so it is already "readable" the moment it
  * exists. What is genuinely new is exposing that same number to a *controller* -- this class
  * implements {@link SensorFitting} directly (an unsided sensor, the same shape a Clutch implements
@@ -59,9 +59,9 @@ public class LatheBlockEntity extends ShopMachineBlockEntity implements SensorFi
 
     private ItemStack toolBit = ItemStack.EMPTY;
     private final Set<DataNodeRef> links = new HashSet<>();
-    /** Fu turned off the piece now chucked -- what the sensor reads. Unlike the workpiece's own
+    /** Wu turned off the piece now chucked -- what the sensor reads. Unlike the workpiece's own
      * WORK it does not reset when a stage completes, so done and not-started read differently. */
-    private float turnedFu;
+    private float turnedWu;
 
     public LatheBlockEntity(BlockPos pos, BlockState state) {
         super(FBlockEntities.LATHE.get(), pos, state);
@@ -71,7 +71,7 @@ public class LatheBlockEntity extends ShopMachineBlockEntity implements SensorFi
     public boolean insert(ItemStack stack) {
         boolean inserted = super.insert(stack);
         if (inserted)
-            turnedFu = 0;
+            turnedWu = 0;
         return inserted;
     }
 
@@ -123,15 +123,15 @@ public class LatheBlockEntity extends ShopMachineBlockEntity implements SensorFi
         // which would have turned wear into a hard gate on steel.
         St driveForce = new St((isHeavyPass() ? MachineTuning.LATHE_ST_HEAVY : MachineTuning.LATHE_ST_LIGHT).value() * getCondition());
         Removing.Cut cut = Removing.apply(workpiece, driveForce, MachineTuning.LATHE_BIT_HARDNESS, Operation.TURN,
-                passes, carriedFu, level);
-        carriedFu = cut.carried();
+                passes, carriedWu, level);
+        carriedWu = cut.carried();
 
         if (!cut.landed()) {
             wearBit(driveForce.value() * passes);
             return;
         }
 
-        turnedFu += cut.delivered();
+        turnedWu += cut.delivered();
         workpiece = cut.result();
         maybeDropSwarf(cut);
         sync();
@@ -159,7 +159,7 @@ public class LatheBlockEntity extends ShopMachineBlockEntity implements SensorFi
 
     @Override
     public float resolution(Quantity quantity) {
-        return 1f;   // Fu is whole numbers, same as the Hand Calipers reading Quantity.WORK.
+        return 1f;   // Wu is whole numbers, same as the Hand Calipers reading Quantity.WORK.
     }
 
     @Override
@@ -169,7 +169,7 @@ public class LatheBlockEntity extends ShopMachineBlockEntity implements SensorFi
 
     @Override
     public float readRaw() {
-        return Instruments.quantise(turnedFu, resolution(Quantity.WORK));
+        return Instruments.quantise(turnedWu, resolution(Quantity.WORK));
     }
 
     @Override
@@ -218,7 +218,7 @@ public class LatheBlockEntity extends ShopMachineBlockEntity implements SensorFi
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
         tag.put("ToolBit", toolBit.saveOptional(registries));
-        tag.putFloat("TurnedFu", turnedFu);
+        tag.putFloat("TurnedWu", turnedWu);
         ListTag list = new ListTag();
         for (DataNodeRef ref : links)
             list.add(ref.toTag());
@@ -229,7 +229,7 @@ public class LatheBlockEntity extends ShopMachineBlockEntity implements SensorFi
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
         toolBit = ItemStack.parseOptional(registries, tag.getCompound("ToolBit"));
-        turnedFu = tag.getFloat("TurnedFu");
+        turnedWu = tag.getFloat("TurnedWu");
         links.clear();
         for (Tag entry : tag.getList(LINKS, Tag.TAG_COMPOUND))
             links.add(DataNodeRef.fromTag((CompoundTag) entry));

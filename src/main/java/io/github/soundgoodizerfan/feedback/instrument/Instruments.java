@@ -352,7 +352,7 @@ public final class Instruments {
     }
 
     /**
-     * A figure with the instrument that took it on the front: {@code Calipers: 9 / 14 Fu}.
+     * A figure with the instrument that took it on the front: {@code Calipers: 9 / 14 Wu}.
      *
      * <h3>Why the wording lives here and not in the readout</h3>
      * Philosophy 10 promises instruments never lie, not that they are accurate, so every figure the

@@ -14,7 +14,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 
 /**
  * What a material becomes when enough of it is cut away -- the removal family's own version of
- * {@link Deformation}, and deliberately the same shape: an input, a total {@code Fu}, a hardness,
+ * {@link Deformation}, and deliberately the same shape: an input, a total {@code Wu}, a hardness,
  * a result, and now an {@link Operation}.
  *
  * <h2>{@code Operation} was missing, and that was a real bug, not a simplification</h2>
@@ -37,9 +37,9 @@ import net.minecraft.world.item.crafting.Ingredient;
  * still eats more of the same cutting force before anything registers.
  *
  * @param input     what is being cut. An Ingredient, same reasoning as {@link Deformation#input}.
- * @param work      cumulative Fu of removal required to reach {@link #result}.
+ * @param work      cumulative Wu of removal required to reach {@link #result}.
  * @param hardness  how stubborn this material is against a cutting edge, in St -- the tool must
- *                  clear it before any Fu accumulates at all (see {@link #cutFrom}).
+ *                  clear it before any Wu accumulates at all (see {@link #cutFrom}).
  * @param result    what remains once the removal is complete.
  * @param operation which of {@code TURN}/{@code DRILL}/{@code GRIND} this entry is for.
  * @param swarf     what the cut-away metal is as loose scrap, or empty. Named per entry so swarf
@@ -82,9 +82,9 @@ public record Removal(Ingredient input, int work, St hardness, ItemStack result,
     }
 
     /**
-     * Fu this material yields to one pass of {@code driveForce}, once {@link #canBeCutBy} has
+     * Wu this material yields to one pass of {@code driveForce}, once {@link #canBeCutBy} has
      * already been checked. Fractional on purpose: the earlier {@code max(1, round(...))} made
-     * every feed, pass and grit deliver exactly 1 Fu against steel, so the discrete choices did
+     * every feed, pass and grit deliver exactly 1 Wu against steel, so the discrete choices did
      * nothing (§5). {@link Removing} carries the fraction between passes instead.
      */
     public float cutFrom(St driveForce) {

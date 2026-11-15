@@ -288,7 +288,7 @@ public final class ModularTuning {
     /**
      * Thermopile: the share of a shot's energy a pair of metals returns per microvolt a kelvin of Seebeck gap at the barrel's limit, the cap on that
      * return of a heavy-tier seat (lighter tiers take a share), the Seebeck a metal with no figure of its own is estimated at per unit of electrode
-     * potential, the heat capacity (Fu per Tu, a kilogram of copper) at which a sink fills in {@link #EGUN_PILE_SOAK_SHOTS} returning shots, and the
+     * potential, the heat capacity (Wu per Tu, a kilogram of copper) at which a sink fills in {@link #EGUN_PILE_SOAK_SHOTS} returning shots, and the
      * ticks a full sink takes to give its heat up.
      */
     public static final float EGUN_PILE_RETURN_PER_UV = 0.01f, EGUN_PILE_CAP = 0.45f, EGUN_PILE_EST_UV_PER_POTENTIAL = 40f,

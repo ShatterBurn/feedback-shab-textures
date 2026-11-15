@@ -32,7 +32,7 @@ import net.minecraft.resources.ResourceLocation;
  *
  * <h2>No server data needed</h2>
  * Unlike rotation, everything here is already on the client: the workpiece is synced for rendering
- * and carries its own {@code Fu} as data components.
+ * and carries its own {@code Wu} as data components.
  */
 public class HammerComponent implements IBlockComponentProvider {
 

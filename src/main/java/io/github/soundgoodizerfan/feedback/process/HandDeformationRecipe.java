@@ -32,7 +32,7 @@ import net.minecraft.world.level.Level;
  * without removing a single fact about copper.
  *
  * <h2>What the player sees, and why that is not a leak</h2>
- * The result slot previews the next blow, so a player can watch an ingot go 3, 6, 9, 12 Fu and
+ * The result slot previews the next blow, so a player can watch an ingot go 3, 6, 9, 12 Wu and
  * then become a plate. That is the player gaining information, which philosophy 8 is entirely in
  * favour of. The machine still cannot tell -- put the same ingot on an anvil and the hammer will
  * beat it into foil without noticing.

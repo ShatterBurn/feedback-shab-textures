@@ -10,9 +10,13 @@ Every figure in Feedback has a unit, and the same symbol is used on screens, too
 
 **Su** is rotational load and supply. Every source of turning power carries some, and every machine adds load to the line it sits on. **RPM** is how fast a shaft turns, in revolutions per minute. See [Rotation](Rotation.md#power-su).
 
-## Blows (St, Fu)
+## Blows (St, Wu)
 
-**St** is the strength of one blow: how hard a hammer or press lands. A metal's hardness is a strength too, and a blow weaker than it does nothing. **Fu** is the work a piece has taken so far, counted up blow by blow until the step is done. See [Metalworking](Metalworking.md#work-strength-and-hardness).
+**St** is the strength of one blow: how hard a hammer or press lands. A metal's hardness is a strength too, and a blow weaker than it does nothing. **Wu** is the work a piece has taken so far, counted up blow by blow until the step is done. See [Metalworking](Metalworking.md#work-strength-and-hardness).
+
+## Force (Fu)
+
+**Fu** is force on a body, in kilonewtons: a thruster's push, a wing's lift, a body's weight. A block is a meter, so 1 Fu moves a tonne (1000 [Mu](#mass-mu)) at 1 block per second squared. The [Flight Sensor](Instruments.md#contraption-diagram) draws every force on a vehicle and reads each in Fu.
 
 ## Energy (Work)
 
@@ -20,7 +24,7 @@ Every figure in Feedback has a unit, and the same symbol is used on screens, too
 
 ## Mass (Mu)
 
-**Mu** is mass. A heavier head hits harder and swings slower, and the mass a body carries sets how long it staggers. A [Balance Scale](Instruments.md#balance-scale) reads it. Materials carry a density, mass per mB, on [Materials](Materials.md).
+**Mu** is mass. A heavier head hits harder and swings slower, and the mass a body carries sets how long it staggers. A [Balance Scale](Instruments.md#balance-scale) reads it, and a vehicle's total shows on its [Contraption Diagram](Instruments.md#contraption-diagram). Materials carry a density, mass per mB, on [Materials](Materials.md).
 
 ## Volume (mB)
 

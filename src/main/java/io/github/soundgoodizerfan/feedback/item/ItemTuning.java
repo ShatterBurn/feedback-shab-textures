@@ -18,7 +18,7 @@ public final class ItemTuning {
 
     private ItemTuning() {
     }
-    /** Invented. A tap: one Fu on copper, the finishing blow, and the only kind lead forgives. */
+    /** Invented. A tap: one Wu on copper, the finishing blow, and the only kind lead forgives. */
     public static final St HAND_SWING_TAP_ST = new St(2f);
 
     /**

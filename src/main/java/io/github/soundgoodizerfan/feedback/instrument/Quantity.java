@@ -26,7 +26,7 @@ import net.minecraft.util.StringRepresentable;
  */
 public enum Quantity implements StringRepresentable {
 
-    /** Mechanical work beaten into a workpiece, in Fu. */
+    /** Mechanical work beaten into a workpiece, in Wu. */
     WORK("work"),
     /** How fast a run is turning, in RPM. */
     SPEED("speed"),
@@ -114,7 +114,9 @@ public enum Quantity implements StringRepresentable {
     /** Speed along the vertical, in blocks per second, signed (climb positive): a flight sensor reads it. Appended, never inserted. */
     VERTICAL_SPEED("vertical_speed"),
     /** Density of the air at a body, 1 at the surface ordinary air: a flight sensor reads it. Appended, never inserted. */
-    AIR_DENSITY("air_density");
+    AIR_DENSITY("air_density"),
+    /** A force on a body, in Fu (kN): a flight sensor's Contraption Diagram resolves it. Appended, never inserted. */
+    FORCE("force");
 
     private final String key;
 

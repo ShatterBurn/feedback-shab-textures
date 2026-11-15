@@ -52,9 +52,9 @@ public final class MaterialDescription {
                 num(v.value()) + " Tu"));
         t.coolingRate().ifPresent(v -> row(out, 1, "cooling", num(v.tuPerTick()) + " Tu/t"));
         t.conductivity().ifPresent(v -> row(out, 1, "conductivity", num(v.workPerTickPerTu())));
-        t.specificHeat().ifPresent(v -> row(out, 1, "specific_heat", num(v.workPerMuPerTu()) + " Fu/Mu/Tu"));
-        t.latentHeatFusion().ifPresent(v -> row(out, 1, "latent_fusion", num(v.workPerMu()) + " Fu/Mu"));
-        t.latentHeatVaporisation().ifPresent(v -> row(out, 1, "latent_vaporisation", num(v.workPerMu()) + " Fu/Mu"));
+        t.specificHeat().ifPresent(v -> row(out, 1, "specific_heat", num(v.workPerMuPerTu()) + " Wu/Mu/Tu"));
+        t.latentHeatFusion().ifPresent(v -> row(out, 1, "latent_fusion", num(v.workPerMu()) + " Wu/Mu"));
+        t.latentHeatVaporisation().ifPresent(v -> row(out, 1, "latent_vaporisation", num(v.workPerMu()) + " Wu/Mu"));
         m.combustion().ifPresent(c -> c.flameTemperature().ifPresent(f -> c.burnTicks().ifPresent(n ->
                 row(out, 1, "flame", num(f.value()) + " Tu, " + n + " t"))));
 

@@ -133,7 +133,7 @@ public final class ThermalTuning {
      */
     public static final Tu FIRE_TU_LAVA = new Tu(1200f);
 
-    // Left a bare float on purpose. Instrument#resolution answers for every Quantity -- Fu as
+    // Left a bare float on purpose. Instrument#resolution answers for every Quantity -- Wu as
     // well as Tu -- so its return type cannot be a temperature. The unit lives in the name here,
     // which is the honest place for it when the seam it crosses is quantity-agnostic.
     // --- readouts, thermal ------------------------------------------------------------------

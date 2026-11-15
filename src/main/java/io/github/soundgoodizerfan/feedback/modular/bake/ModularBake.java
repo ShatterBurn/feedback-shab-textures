@@ -640,7 +640,7 @@ public final class ModularBake {
             else if (k.containsKey("grip"))
                 power = m.mechanical().friction().orElse(0.5f) / k.get("grip");
             // A bored part (a cylinder, a nozzle) works as well as its bore is cut to the size the upgrade wants: uncut or overbored, it still
-            // works, only worse. The cut comes off the part (a drill, per Fu), never a gate.
+            // works, only worse. The cut comes off the part (a drill, per Wu), never a gate.
             if (k.containsKey("bore_target") && role.axes().containsKey("bore")) {
                 float want = k.get("bore_target"), cut = p.axis("bore", role.axes().get("bore").def());
                 float closeness = Math.max(0f, 1f - Math.abs(cut - want) / want);

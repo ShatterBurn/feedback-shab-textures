@@ -30,18 +30,18 @@ The wheel's hardness is **196** (alumina grit). It cuts everything softer than t
 
 It doesn't stop when the ingot is ground. Leave it and the ingot is ground down to swarf.
 
-It also grinds [gun parts](Gun_Parts.md): a plate into a **Slide**, a rod into a **Bolt**, a drilled plate into a **Trigger Group**. And it shortens a **Gun Barrel**, 5 mm per Fu: grind it under 5 cm and it's swarf.
+It also grinds [gun parts](Gun_Parts.md): a plate into a **Slide**, a rod into a **Bolt**, a drilled plate into a **Trigger Group**. And it shortens a **Gun Barrel**, 5 mm per Wu: grind it under 5 cm and it's swarf.
 
 ## Grinding makes heat
 
-The wheel **heats whatever it's grinding**, 0.4 Tu for every Fu it grinds. Enough grinding on hardened steel can push it back into tempering range. A piece that has been on the wheel a while comes off warm or hot, and it cools down like any other [hot item](Heat.md#hot-items-stay-hot-and-cool-down-anywhere).
+The wheel **heats whatever it's grinding**, 0.4 Tu for every Wu it grinds. Enough grinding on hardened steel can push it back into tempering range. A piece that has been on the wheel a while comes off warm or hot, and it cools down like any other [hot item](Heat.md#hot-items-stay-hot-and-cool-down-anywhere).
 
 ## The wheel wears out, and that's normal
 
 Every other machine wears only when misused. A grinding wheel is different: **it wears every time it cuts**, because the grit is being used up.
 
-- **Coarse** (35 St) cuts fast and wears the wheel fast: a wheel lasts **250 Fu** of grinding.
-- **Fine** (13 St) cuts slower and makes the wheel last longer: about **670 Fu**.
+- **Coarse** (35 St) cuts fast and wears the wheel fast: a wheel lasts **250 Wu** of grinding.
+- **Fine** (13 St) cuts slower and makes the wheel last longer: about **670 Wu**.
 
 A fully worn (bald) wheel **can't cut anything at all**. Breaking and replacing it doesn't help, because the wear goes with the item. Craft a new one.
 
@@ -57,4 +57,4 @@ C B C
 
 D is a Diamond, C is Cobblestone, B is a [Bearing](Bearing.md) and S is a [Shaft](Shaft.md).
 
-It works exactly like the stone wheel: it sits on a shaft line, 45 Su, coarse and fine grit by sneak-right-click, heats what it grinds. **Grit is still the consumable**: it wears at the same rate per Fu as the stone wheel and a bald one cuts nothing.
+It works exactly like the stone wheel: it sits on a shaft line, 45 Su, coarse and fine grit by sneak-right-click, heats what it grinds. **Grit is still the consumable**: it wears at the same rate per Wu as the stone wheel and a bald one cuts nothing.

@@ -67,7 +67,7 @@ final class WorkCard {
         ItemStack[] accepted = input.getItems();
         row(graphics, font, 18, "feedback.jei.operation", Component.translatable(operation.translationKey()).getString());
         row(graphics, font, 30, "feedback.jei.input", quantity(accepted.length == 0 ? ItemStack.EMPTY : accepted[0]));
-        row(graphics, font, 42, "feedback.jei.work", work + " Fu");
+        row(graphics, font, 42, "feedback.jei.work", work + " Wu");
         row(graphics, font, 54, hardnessKey, Readout.number(hardness.value()));
         row(graphics, font, 66, "feedback.jei.output", quantity(result));
         if (lastKey != null)

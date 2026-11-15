@@ -18,7 +18,7 @@ import net.minecraft.world.item.crafting.Ingredient;
  *
  * <h2>This is a material property, not a recipe</h2>
  * The distinction matters and the philosophy is strict about it. A machine never consults this.
- * The Mechanical Hammer knows only how to deliver {@code Fu} at a given {@code St} to whatever is
+ * The Mechanical Hammer knows only how to deliver {@code Wu} at a given {@code St} to whatever is
  * in front of it; it has no list of things it can make and cannot be asked what it produces.
  * <p>
  * What this table describes is how a <em>material</em> responds to being hit -- the same way a
@@ -33,10 +33,10 @@ import net.minecraft.world.item.crafting.Ingredient;
  * slam copper -- so what a blow accomplishes is not a property of the machine at all. It is what
  * the <em>material</em> does with the force it is handed:
  * <pre>
- *     Fu per blow  =  blow force (St)  /  hardness
+ *     Wu per blow  =  blow force (St)  /  hardness
  * </pre>
  * One number, doing both jobs. It is the floor below which nothing happens, and the divisor for
- * how much lands above it. Copper's hardness of 1 means a 12 St blow dumps 12 Fu into it; steel's
+ * how much lands above it. Copper's hardness of 1 means a 12 St blow dumps 12 Wu into it; steel's
  * 15 means the same blow does nothing whatsoever.
  * <p>
  * The consequence is the interesting part. A hard blow on a soft material <em>overshoots</em> --
@@ -46,7 +46,7 @@ import net.minecraft.world.item.crafting.Ingredient;
  *
  * @param input     what is being worked. An Ingredient, so tags work and identity need not be
  *                  named -- "any copper ingot" is a property, "this exact item" is not.
- * @param work      cumulative Fu required to complete the change.
+ * @param work      cumulative Wu required to complete the change.
  * @param hardness  how stubborn the material is, in St -- the same unit a blow is delivered in,
  *                  since a blow lands or fails by direct comparison against this figure and what
  *                  it delivers is that comparison's quotient (see {@link #workFrom}). Both the
@@ -88,7 +88,7 @@ public record Deformation(Ingredient input, int work, St hardness, ItemStack res
      *
      * <h3>Why the client is told at all</h3>
      * Philosophy 10: what a process requires is published data and costs nothing. The recipe
-     * browser is allowed to state {@code 14 Fu} exactly, on day one, with no instrument owned --
+     * browser is allowed to state {@code 14 Wu} exactly, on day one, with no instrument owned --
      * so the figures have to get across. Nothing on the client ever computes with them.
      */
     public static final StreamCodec<RegistryFriendlyByteBuf, Deformation> STREAM_CODEC = new StreamCodec<>() {
@@ -138,7 +138,7 @@ public record Deformation(Ingredient input, int work, St hardness, ItemStack res
     }
 
     /**
-     * Fu this material absorbs from one blow of the given force, or 0 if the blow is too weak.
+     * Wu this material absorbs from one blow of the given force, or 0 if the blow is too weak.
      * Always at least 1 once the threshold is met, so a barely-sufficient blow still progresses
      * rather than hammering forever at zero.
      */

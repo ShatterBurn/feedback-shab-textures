@@ -56,7 +56,7 @@ public record FormStep(String from, String to, Operation operation, boolean fine
         return kinds.isEmpty() || material.kind().map(kinds::contains).orElse(false);
     }
 
-    /** Cumulative Fu this step costs a material of the given hardness. Never below 1. */
+    /** Cumulative Wu this step costs a material of the given hardness. Never below 1. */
     public int work(float hardness) {
         return Math.max(1, Math.round(base + slope * hardness));
     }

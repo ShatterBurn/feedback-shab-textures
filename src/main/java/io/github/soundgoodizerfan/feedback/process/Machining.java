@@ -28,11 +28,11 @@ import java.util.Optional;
 /**
  * Cutting that changes a part's shape rather than turning it into the next form (spec 12):
  * datapack {@code machining/}, one row per form, operation and dimension. A drill on a gun barrel
- * grows its bore by so much per Fu, a lathe thins its outside, a cutoff wheel shortens it -- and
+ * grows its bore by so much per Wu, a lathe thins its outside, a cutoff wheel shortens it -- and
  * none of them knows the target, so the part keeps changing for as long as the machine runs. Cut
  * until the wall or the length is gone and it is the material's swarf: the core pitch, on a part.
  *
- * <p>Fu are reckoned as a removal's are -- force over the material's hardness, a tool softer than
+ * <p>Wu are reckoned as a removal's are -- force over the material's hardness, a tool softer than
  * the material does nothing -- so the same drive on steel is a slower, more controllable cut than
  * on copper. {@link Removing} asks here when its own table has no answer.
  */
@@ -58,8 +58,8 @@ public class Machining extends SimpleJsonResourceReloadListener {
     }
 
     /**
-     * One row: {@code per_fu} is mm of diameter per Fu for bore and outer (bore grows, outer
-     * shrinks), metres per Fu for length (it shrinks).
+     * One row: {@code per_fu} is mm of diameter per Wu for bore and outer (bore grows, outer
+     * shrinks), metres per Wu for length (it shrinks).
      */
     public record Step(String form, Operation operation, Dimension dimension, float perFu) {
         public static final Codec<Step> CODEC = RecordCodecBuilder.create(i -> i.group(

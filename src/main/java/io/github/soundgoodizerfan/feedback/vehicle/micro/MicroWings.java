@@ -234,6 +234,8 @@ public final class MicroWings {
                     lift * (sg * ny[i] + sinA * vy / s) - drag * vy,
                     lift * (sg * nz[i] + sinA * vz / s) - drag * vz);
             total.applyImpulseAtPoint(mass, at.set(cx[i], cy[i], cz[i]), imp);
+            io.github.soundgoodizerfan.feedback.vehicle.ForceLedger.record(body, io.github.soundgoodizerfan.feedback.vehicle.ForceLedger.Cause.WING_LIFT,
+                    at.x, at.y, at.z, imp.x, imp.y, imp.z);
             any = true;
         }
         if (any)

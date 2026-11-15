@@ -190,6 +190,8 @@ public class PropBlockEntity extends RotationNode implements BlockEntitySubLevel
         centre.set(worldPosition.getX() + 0.5, worldPosition.getY() + 0.5, worldPosition.getZ() + 0.5);
         pushed.set(dir).mul(sense * thrustKpg * dt);
         force.applyImpulseAtPoint(subLevel.getMassTracker(), centre, pushed);
+        io.github.soundgoodizerfan.feedback.vehicle.ForceLedger.record(subLevel, io.github.soundgoodizerfan.feedback.vehicle.ForceLedger.Cause.PROPULSION,
+                centre.x, centre.y, centre.z, pushed.x, pushed.y, pushed.z);
         // The spin's reaction on the airframe: the torque the disc takes from the shaft, against its sense.
         double q = torqueNm(d, n, rho) / Units.SU_PER_KPG_TORQUE;
         force.applyTorqueImpulse(torque.set(dir).mul(-Math.signum(turn) * q * dt));

@@ -31,6 +31,16 @@ public final class ClientPayloads {
             MinigameScreens.open(screen, payload);
     }
 
+    /** A Flight Sensor was used: open the Contraption Diagram for the body it sits on. */
+    public static void openDiagram(io.github.soundgoodizerfan.feedback.vehicle.diagram.DiagramOpenPayload payload) {
+        Minecraft.getInstance().setScreen(new io.github.soundgoodizerfan.feedback.client.diagram.DiagramScreen(payload.sensor()));
+    }
+
+    /** The server's figures for the diagram that asked. */
+    public static void diagramData(io.github.soundgoodizerfan.feedback.vehicle.diagram.DiagramDataPayload payload) {
+        io.github.soundgoodizerfan.feedback.client.diagram.DiagramFeed.accept(payload);
+    }
+
     /** The Research Table's trial wants playing. */
     public static void openResearch(io.github.soundgoodizerfan.feedback.net.ResearchOpenPayload payload) {
         if (Minecraft.getInstance().screen instanceof io.github.soundgoodizerfan.feedback.client.bench.ResearchTableScreen screen

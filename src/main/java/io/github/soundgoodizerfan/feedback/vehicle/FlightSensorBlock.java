@@ -27,8 +27,8 @@ import org.jetbrains.annotations.Nullable;
 /**
  * The flight sensor (vehicles spec, instruments): a block in a vehicle that reads its height, its
  * speed through the air or its tilt and feeds a Controller's Input card, so an autopilot is only
- * cards. Use steps which reading it takes (altitude, airspeed, pitch, roll); the facing is its front,
- * which pitch and roll are measured about. Model: placeholder cube, art not drawn.
+ * cards. Sneak-use steps which reading it takes (altitude, airspeed, pitch, roll); the facing is its front,
+ * which pitch and roll are measured about. Use opens the Contraption Diagram of the body it sits on. Model: placeholder cube, art not drawn.
  */
 public class FlightSensorBlock extends BaseEntityBlock {
 
@@ -63,8 +63,11 @@ public class FlightSensorBlock extends BaseEntityBlock {
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
         if (!level.isClientSide && level.getBlockEntity(pos) instanceof FlightSensorBlockEntity sensor) {
-            if (player.isShiftKeyDown()) {
-                io.github.soundgoodizerfan.feedback.net.AimPayloads.report(player, pos, sensor.readValue());
+            if (!player.isShiftKeyDown()) {
+                // The Contraption Diagram: the forces on the body this sensor sits on (vehicle/diagram).
+                if (player instanceof net.minecraft.server.level.ServerPlayer sp)
+                    net.neoforged.neoforge.network.PacketDistributor.sendToPlayer(sp,
+                            new io.github.soundgoodizerfan.feedback.vehicle.diagram.DiagramOpenPayload(pos));
             } else {
                 sensor.nextMode();
                 io.github.soundgoodizerfan.feedback.net.AimPayloads.modes(player, state.getBlock().getName(), io.github.soundgoodizerfan.feedback.net.AimPayloads.keys("feedback.flight_sensor.", "altitude", "airspeed", "pitch", "roll"),

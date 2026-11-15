@@ -35,12 +35,12 @@ package io.github.soundgoodizerfan.feedback.core.unit;
  * {@code raw()} belongs to codecs and to the display layer.</b> A {@code raw()} inside a machine
  * or a process is a smell, and reviewing for it is cheap because the name is deliberately blunt.
  *
- * <h2>Why it returns a float even though {@link Fu} counts in integers</h2>
- * Fu is cumulative discrete work -- it is an {@code int} on the item, an {@code int} in the
+ * <h2>Why it returns a float even though {@link Wu} counts in integers</h2>
+ * Wu is cumulative discrete work -- it is an {@code int} on the item, an {@code int} in the
  * deformation table and a VAR_INT on the wire, and widening it here would be lying about the
  * model. What {@code raw()} promises is narrower than "the value": it promises <em>a float good
- * enough to draw and to compare</em>. Anything that must round-trip a Fu exactly uses
- * {@link Fu#value()} and the integer codec, and {@link Units} provides both flavours for that
+ * enough to draw and to compare</em>. Anything that must round-trip a Wu exactly uses
+ * {@link Wu#value()} and the integer codec, and {@link Units} provides both flavours for that
  * reason.
  *
  * <h2>Adding a unit</h2>
@@ -61,7 +61,7 @@ public interface Unit {
      * <p>
      * A key rather than a literal because §17's symbols are player-visible text, and the mod does
      * not hard-code player-visible text anywhere else either. Composite readouts that want
-     * {@code "9 / 14 Fu"} keep their own keys; this is for the generic
+     * {@code "9 / 14 Wu"} keep their own keys; this is for the generic
      * {@code <figure> <symbol>} case.
      */
     String unitKey();

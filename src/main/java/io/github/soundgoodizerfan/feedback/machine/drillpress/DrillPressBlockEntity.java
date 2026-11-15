@@ -66,8 +66,8 @@ public class DrillPressBlockEntity extends ShopMachineBlockEntity {
 
         St driveForce = new St((fast ? MachineTuning.DRILL_PRESS_ST_FAST : MachineTuning.DRILL_PRESS_ST_SLOW).value() * condition);
         Removing.Cut cut = Removing.apply(workpiece, driveForce, MachineTuning.DRILL_BIT_HARDNESS, Operation.DRILL,
-                1f, carriedFu, level);
-        carriedFu = cut.carried();
+                1f, carriedWu, level);
+        carriedWu = cut.carried();
         if (!cut.landed()) {
             // A bit that cannot cut, or nothing left to cut: the push goes into the machine.
             wear(driveForce.value());

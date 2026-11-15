@@ -68,7 +68,7 @@ public class WorkpieceItemHandler implements IItemHandler {
 
     /**
      * One, whatever the item says it stacks to. Two ingots on an anvil are not a workpiece, and a
-     * stack of them would have to share a single {@code Fu} figure -- which would silently make
+     * stack of them would have to share a single {@code Wu} figure -- which would silently make
      * the overrun chain operate on a stack at a time.
      */
     @Override

@@ -69,7 +69,7 @@ public class CalipersItem extends Item implements Instrument {
         return switch (quantity) {
             case CONDITION -> ItemTuning.CALIPERS_RESOLUTION_CONDITION;
             case LENGTH -> ItemTuning.CALIPERS_RESOLUTION_MM;
-            default -> 1f;   // Fu is whole numbers; there is nothing finer to resolve.
+            default -> 1f;   // Wu is whole numbers; there is nothing finer to resolve.
         };
     }
 

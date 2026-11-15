@@ -144,6 +144,7 @@ public class ThrusterBlockEntity extends BlockEntity implements BlockEntitySubLe
                 .mul(force() * p * timeStep);
         ForceTotal one = new ForceTotal();
         one.applyImpulseAtPoint(subLevel.getMassTracker(), at, impulse);
+        ForceLedger.record(subLevel, ForceLedger.Cause.PROPULSION, at.x, at.y, at.z, impulse.x, impulse.y, impulse.z);
 
         handle.applyForcesAndReset(one);
     }

@@ -46,7 +46,7 @@ Hammering is about **force**. Cutting is about the **tool being harder than the 
 - **Slow** (22 St) cuts less per push and never jams.
 - **Fast** (48 St) cuts more than twice as much per push, but **one push in twenty** the bit **binds**: you hear a clank and that push is wasted. Nothing is damaged.
 
-Each push removes strength ÷ hardness in work. A drilled steel plate (about 13 Fu) is about 5 fast pushes or 13 slow ones.
+Each push removes strength ÷ hardness in work. A drilled steel plate (about 13 Wu) is about 5 fast pushes or 13 slow ones.
 
 ## Wear
 

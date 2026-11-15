@@ -326,7 +326,7 @@ public final class MachineTuning {
      * Invented. Chance that a landed removal cut also drops one of its entry's swarf into
      * the world -- philosophy §8's "failed batches must consume their inputs," read the other way
      * round: the removed mass is real material, not deleted, so a cut is allowed to pay some of
-     * itself back. Deliberately probabilistic rather than "one swarf per Fu removed": the exact
+     * itself back. Deliberately probabilistic rather than "one swarf per Wu removed": the exact
      * accounting is a tuning question the spec explicitly defers, and this is the cheapest honest
      * version of "removal produces recoverable scrap."
      */
@@ -391,15 +391,15 @@ public final class MachineTuning {
     public static final Su GRINDING_WHEEL_LOAD_SU = new Su(45f);
 
     /**
-     * Invented. Condition lost per Fu ground, under *correct* use -- the stated exception to the
+     * Invented. Condition lost per Wu ground, under *correct* use -- the stated exception to the
      * Hammer's "wear only from misuse" rule. A real grinding wheel sheds grit whether or not the
      * cut was a mistake, so this fires on every landed grind, not on a failed one -- see {@code
      * GrindingWheelBlockEntity}'s own class doc for why this diverges from the Lathe and the
-     * Hammer. Coarse wastes more grit per Fu than fine, matching real abrasive wear.
+     * Hammer. Coarse wastes more grit per Wu than fine, matching real abrasive wear.
      */
-    public static final float GRINDING_WHEEL_WEAR_PER_FU_COARSE = 0.004f;
+    public static final float GRINDING_WHEEL_WEAR_PER_WU_COARSE = 0.004f;
 
-    public static final float GRINDING_WHEEL_WEAR_PER_FU_FINE = 0.0015f;
+    public static final float GRINDING_WHEEL_WEAR_PER_WU_FINE = 0.0015f;
 
     /**
      * Invented. Unlike every other condition floor in the mod ({@link #HAMMER_CONDITION_FLOOR},
@@ -412,11 +412,11 @@ public final class MachineTuning {
      */
     public static final float GRINDING_WHEEL_CONDITION_FLOOR = 0f;
 
-    /** Invented. Tu added to the workpiece per Fu ground, proportional and small -- real
+    /** Invented. Tu added to the workpiece per Wu ground, proportional and small -- real
      * interface heat, not a process. Lets overrun grinding a hardened part re-soften it by
      * pushing it back into a tempering-relevant range, which needs no new mechanic: {@code
      * ItemHeat} already treats every workpiece this way regardless of how it got hot. */
-    public static final float GRINDING_HEAT_PER_FU = 0.4f;
+    public static final float GRINDING_HEAT_PER_WU = 0.4f;
 
     public static final Drag PULLEY_DRAG_SU_PER_RPM = new Drag(0.1f);
 

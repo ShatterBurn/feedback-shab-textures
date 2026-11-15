@@ -35,8 +35,8 @@ import net.minecraft.world.entity.player.Player;
  *   <li><b>There is a noise floor</b> (philosophy 10): a clean hit is sometimes only loose, whatever
  *       the player does.</li>
  *   <li><b>Work done against work required moves the as-built geometry</b> ({@link #work}): every
- *       blow that lands puts {@code St / hardness} Fu into the part ({@link Deformation#landed}, the
- *       hammer's own rule), a clean run of the pattern is the Fu the pattern asks, and the ratio
+ *       blow that lands puts {@code St / hardness} Wu into the part ({@link Deformation#landed}, the
+ *       hammer's own rule), a clean run of the pattern is the Wu the pattern asks, and the ratio
  *       is stored on the part. Under it the part is thick and heavy (a blunt, unfinished bar); over
  *       it, thin and light (drawn out, scaled away). A blow that cannot land -- cold metal, or under
  *       the material's hardness -- goes into the striker, not the part.</li>
@@ -46,7 +46,7 @@ import net.minecraft.world.entity.player.Player;
  * counts misses and strays and a flaw is one integer on the part. But a flaw is a verdict on the
  * <em>timing</em>, and says nothing about how much metal was moved: a player who hammers twice as
  * much as the pattern asks and one who stops halfway can both be "a little rough". Work is the
- * conserved quantity (the hammer's {@code Fu}), so it is the one that can say overrun from short.
+ * conserved quantity (the hammer's {@code Wu}), so it is the one that can say overrun from short.
  */
 public final class ForgeRhythm {
 
@@ -183,8 +183,8 @@ public final class ForgeRhythm {
     /**
      * What the blows did to the metal.
      *
-     * @param done     Fu the blows that landed put in, each with the noise floor's jitter.
-     * @param required Fu a clean run of the pattern puts in: one blow per note, at least one Fu each, so a
+     * @param done     Wu the blows that landed put in, each with the noise floor's jitter.
+     * @param required Wu a clean run of the pattern puts in: one blow per note, at least one Wu each, so a
      *                 note whose blow cannot land is a shortfall and not a note that costs nothing.
      * @param wasted   blows that went into the striker: struck cold, still too hot, or under the hardness.
      * @param absorbed their St summed, which is what a machine wears by ({@code MechanicalHammerBlockEntity#absorb}).
@@ -256,7 +256,7 @@ public final class ForgeRhythm {
     }
 
     /**
-     * Fu of the blows in {@code hits} against {@code rhythm}, by the same live window the judge used. A
+     * Wu of the blows in {@code hits} against {@code rhythm}, by the same live window the judge used. A
      * blow struck at a tempo step lands that much more, but the bonus only fills what the pattern still
      * lacks (never past {@code required}), so tempo makes up for light blows and cannot overrun the part.
      */

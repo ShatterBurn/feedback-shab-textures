@@ -24,7 +24,7 @@ public class FDataComponents {
             DeferredRegister.create(Registries.DATA_COMPONENT_TYPE, Feedback.MOD_ID);
 
     /**
-     * Cumulative mechanical work beaten into this stack, in Fu.
+     * Cumulative mechanical work beaten into this stack, in Wu.
      * <p>
      * Lives on the item rather than in the machine, so a half-worked ingot stays half-worked when
      * it is carried out, dropped, or put in a chest. Philosophy 9: material carries its own
@@ -165,11 +165,11 @@ public class FDataComponents {
                     .build());
 
     /**
-     * Fu this workpiece needs before it becomes the next thing.
+     * Wu this workpiece needs before it becomes the next thing.
      * <p>
      * Stored on the stack next to {@link #WORK} so the two travel together. That is what lets a
      * tooltip say "nearly there" without the client knowing the deformation table, and it is the
-     * same pair the calipers will eventually report as {@code 16 / 20 Fu}.
+     * same pair the calipers will eventually report as {@code 16 / 20 Wu}.
      */
     /** Cold draw and roll steps taken since the piece was last annealed (process/WorkHardening). Absent means none. */
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> STRAIN =

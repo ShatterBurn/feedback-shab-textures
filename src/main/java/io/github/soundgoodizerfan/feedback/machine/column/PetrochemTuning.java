@@ -153,8 +153,8 @@ public final class PetrochemTuning {
 
     public static final float DERRICK_RATED_RPM = 60f, DERRICK_OVERSPEED_ST_PER_RPM = 0.5f;
 
-    /** Invented. Fu to bore one block; rock hardness per vanilla destroy time when no material names the block; a bit's wear per St it absorbs, its floor, and its hardness with no material. */
-    public static final float DERRICK_FU_PER_BLOCK = 400f, DERRICK_ROCK_HARDNESS_PER_DESTROY_TIME = 6f;
+    /** Invented. Wu to bore one block; rock hardness per vanilla destroy time when no material names the block; a bit's wear per St it absorbs, its floor, and its hardness with no material. */
+    public static final float DERRICK_WU_PER_BLOCK = 400f, DERRICK_ROCK_HARDNESS_PER_DESTROY_TIME = 6f;
 
     public static final float DERRICK_BIT_WEAR_PER_ST = 0.0002f, DERRICK_BIT_CONDITION_FLOOR = 0.05f,
             DERRICK_BIT_DEFAULT_HARDNESS = 30f;

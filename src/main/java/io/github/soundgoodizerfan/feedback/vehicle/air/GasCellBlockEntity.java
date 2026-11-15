@@ -324,6 +324,8 @@ public class GasCellBlockEntity extends BlockEntity implements BlockEntitySubLev
             return;
         pose.transformNormalInverse(up.set(0, lift * dt, 0), local);
         force.applyImpulseAtPoint(subLevel.getMassTracker(), centre, local);
+        io.github.soundgoodizerfan.feedback.vehicle.ForceLedger.record(subLevel, io.github.soundgoodizerfan.feedback.vehicle.ForceLedger.Cause.BUOYANCY,
+                centre.x, centre.y, centre.z, local.x, local.y, local.z);
         handle.applyForcesAndReset(force);
     }
 

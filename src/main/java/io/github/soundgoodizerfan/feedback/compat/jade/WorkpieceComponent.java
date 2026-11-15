@@ -23,7 +23,7 @@ import net.minecraft.world.item.ItemStack;
  * What is in any one-slot machine -- the Hammer and the whole machine shop -- roughly how far
  * along it is, and the machine's condition. Progress is an adjective until calipers are owned,
  * the same rule {@link HammerComponent} states for the spec sheet's other half. Everything here
- * is already on the client: the workpiece is synced for rendering and carries its own Fu.
+ * is already on the client: the workpiece is synced for rendering and carries its own Wu.
  */
 public class WorkpieceComponent implements IBlockComponentProvider {
 

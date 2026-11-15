@@ -43,8 +43,8 @@ public abstract class ShopMachineBlockEntity extends RotationNode implements Wel
     private float maxCondition = 1f;
     /** Strokes owed but not yet delivered. */
     private float progress;
-    /** The fraction of a Fu of removal not yet credited -- see {@link Removing#apply}. */
-    protected float carriedFu;
+    /** The fraction of a Wu of removal not yet credited -- see {@link Removing#apply}. */
+    protected float carriedWu;
 
     protected ShopMachineBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -58,7 +58,7 @@ public abstract class ShopMachineBlockEntity extends RotationNode implements Wel
         if (!workpiece.isEmpty() || stack.isEmpty())
             return false;
         workpiece = stack.split(1);
-        carriedFu = 0;
+        carriedWu = 0;
         sync();
         return true;
     }
@@ -66,7 +66,7 @@ public abstract class ShopMachineBlockEntity extends RotationNode implements Wel
     public ItemStack removeWorkpiece() {
         ItemStack taken = workpiece;
         workpiece = ItemStack.EMPTY;
-        carriedFu = 0;
+        carriedWu = 0;
         if (level != null)
             ItemHeat.settle(taken, level);
         sync();
@@ -173,7 +173,7 @@ public abstract class ShopMachineBlockEntity extends RotationNode implements Wel
         tag.putFloat("Condition", condition);
         tag.putFloat("MaxCondition", maxCondition);
         tag.putFloat("StrokeProgress", progress);
-        tag.putFloat("CarriedFu", carriedFu);
+        tag.putFloat("CarriedWu", carriedWu);
     }
 
     @Override
@@ -183,6 +183,6 @@ public abstract class ShopMachineBlockEntity extends RotationNode implements Wel
         condition = tag.contains("Condition") ? tag.getFloat("Condition") : 1f;
         maxCondition = tag.contains("MaxCondition") ? tag.getFloat("MaxCondition") : 1f;
         progress = tag.getFloat("StrokeProgress");
-        carriedFu = tag.getFloat("CarriedFu");
+        carriedWu = tag.getFloat("CarriedWu");
     }
 }

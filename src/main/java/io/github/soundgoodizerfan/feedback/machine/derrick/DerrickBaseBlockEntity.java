@@ -40,7 +40,7 @@ import net.minecraft.world.level.block.state.BlockState;
  * The bottom of the derrick stack: a rotation load that turns a bit down through the rock under it
  * (spec 3.1). Boring is the Removal comparison done a block at a time: the bit's material hardness
  * must exceed the rock's ({@code Removal#canBeCutBy}), and once it does, a turn delivers drive over
- * rock hardness in Fu ({@code Removal#cutFrom}). A bit too soft for the rock delivers nothing and
+ * rock hardness in Wu ({@code Removal#cutFrom}). A bit too soft for the rock delivers nothing and
  * takes the force itself -- it wears, the machine does not, and nothing is ever refused. Turning
  * past the rated RPM wears the bit the same way.
  * <p>
@@ -60,7 +60,7 @@ public class DerrickBaseBlockEntity extends RotationNode implements Part {
 
     private ItemStack bit = ItemStack.EMPTY;
     private int bored;
-    private float fu;
+    private float wu;
     private Status status = Status.IDLE;
 
     @Nullable
@@ -193,7 +193,7 @@ public class DerrickBaseBlockEntity extends RotationNode implements Part {
                 ? (rpm - PetrochemTuning.DERRICK_RATED_RPM) * PetrochemTuning.DERRICK_OVERSPEED_ST_PER_RPM : 0f;
         if (DerrickBitItem.hardness(bit) > rock) {
             status = Status.BORING;
-            fu += drive / rock * passes * DerrickBitItem.condition(bit);
+            wu += drive / rock * passes * DerrickBitItem.condition(bit);
         } else {
             status = Status.TOO_SOFT;
             absorbed += drive * passes;
@@ -204,8 +204,8 @@ public class DerrickBaseBlockEntity extends RotationNode implements Part {
         if (server.getGameTime() % 5 == 0)
             server.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, rockState), worldPosition.getX() + 0.5,
                     worldPosition.getY() + 1.0, worldPosition.getZ() + 0.5, 3, 0.25, 0.1, 0.25, 0.05);
-        if (fu >= PetrochemTuning.DERRICK_FU_PER_BLOCK) {
-            fu -= PetrochemTuning.DERRICK_FU_PER_BLOCK;
+        if (wu >= PetrochemTuning.DERRICK_WU_PER_BLOCK) {
+            wu -= PetrochemTuning.DERRICK_WU_PER_BLOCK;
             bored++;
             setChanged();
         }
@@ -265,7 +265,7 @@ public class DerrickBaseBlockEntity extends RotationNode implements Part {
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
         tag.putInt("Bored", bored);
-        tag.putFloat("Fu", fu);
+        tag.putFloat("Wu", wu);
         if (!bit.isEmpty())
             tag.put("Bit", bit.save(registries));
     }
@@ -274,7 +274,7 @@ public class DerrickBaseBlockEntity extends RotationNode implements Part {
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
         bored = tag.getInt("Bored");
-        fu = tag.getFloat("Fu");
+        wu = tag.getFloat("Wu");
         bit = tag.contains("Bit") ? ItemStack.parseOptional(registries, tag.getCompound("Bit")) : ItemStack.EMPTY;
     }
 }

@@ -89,6 +89,8 @@ public class LevitationPlateBlockEntity extends BlockEntity implements BlockEnti
         subLevel.logicalPose().transformNormalInverse(impulse.set(0, push * dt, 0), local);
         force.applyImpulseAtPoint(subLevel.getMassTracker(), this.at.set(worldPosition.getX() + 0.5, worldPosition.getY() + 0.5,
                 worldPosition.getZ() + 0.5), local);
+        io.github.soundgoodizerfan.feedback.vehicle.ForceLedger.record(subLevel, io.github.soundgoodizerfan.feedback.vehicle.ForceLedger.Cause.LEVITATION,
+                this.at.x, this.at.y, this.at.z, local.x, local.y, local.z);
         handle.applyForcesAndReset(force);
         if (++sinceSpark >= LevitationTuning.SPARK_INTERVAL_TICKS) {
             sinceSpark = 0;

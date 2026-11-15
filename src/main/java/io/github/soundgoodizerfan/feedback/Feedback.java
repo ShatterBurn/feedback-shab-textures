@@ -358,6 +358,15 @@ public class Feedback {
                 .playToServer(io.github.soundgoodizerfan.feedback.net.GunSwingPayload.TYPE,
                         io.github.soundgoodizerfan.feedback.net.GunSwingPayload.STREAM_CODEC,
                         io.github.soundgoodizerfan.feedback.net.GunSwingPayload::handle)
+                .playToClient(io.github.soundgoodizerfan.feedback.vehicle.diagram.DiagramOpenPayload.TYPE,
+                        io.github.soundgoodizerfan.feedback.vehicle.diagram.DiagramOpenPayload.STREAM_CODEC,
+                        io.github.soundgoodizerfan.feedback.vehicle.diagram.DiagramOpenPayload::handle)
+                .playToClient(io.github.soundgoodizerfan.feedback.vehicle.diagram.DiagramDataPayload.TYPE,
+                        io.github.soundgoodizerfan.feedback.vehicle.diagram.DiagramDataPayload.STREAM_CODEC,
+                        io.github.soundgoodizerfan.feedback.vehicle.diagram.DiagramDataPayload::handle)
+                .playToServer(io.github.soundgoodizerfan.feedback.vehicle.diagram.DiagramRequestPayload.TYPE,
+                        io.github.soundgoodizerfan.feedback.vehicle.diagram.DiagramRequestPayload.STREAM_CODEC,
+                        io.github.soundgoodizerfan.feedback.vehicle.diagram.DiagramRequestPayload::handle)
                 .playToServer(io.github.soundgoodizerfan.feedback.vehicle.seat.SeatKeyPayload.TYPE,
                         io.github.soundgoodizerfan.feedback.vehicle.seat.SeatKeyPayload.STREAM_CODEC,
                         io.github.soundgoodizerfan.feedback.vehicle.seat.SeatKeyPayload::handle)

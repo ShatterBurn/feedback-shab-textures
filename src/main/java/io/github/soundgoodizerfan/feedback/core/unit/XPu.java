@@ -4,7 +4,7 @@ package io.github.soundgoodizerfan.feedback.core.unit;
 
 /**
  * Experience as a quantity, in XPu: vanilla's experience points, an integer for the
- * same reason {@link Fu} is. Level is not quantity but quantity over a container's capacity ({@code core.xp.XpStore}), so nothing here knows a
+ * same reason {@link Wu} is. Level is not quantity but quantity over a container's capacity ({@code core.xp.XpStore}), so nothing here knows a
  * level. Not a power currency: no engine converts it to Work; it only conditions a process already running (the
  * Enchanting Table spends it per session).
  */

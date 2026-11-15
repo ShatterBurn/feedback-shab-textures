@@ -28,7 +28,7 @@ Nothing is locked behind an instrument; they are how you do on purpose what you 
 | [XP Meter](#xp-meter) | Experience levels and points | Whole levels, points to the nearest 5 |
 | [Survey Meter](#survey-meter) | Ore and oil within 16 blocks | Counts rounded to 8, wobbling |
 | [Mass Probe](#mass-probe) | Metal the Electrolytic Cell plates onto it | Depends on the cut: 0.009 to 0.09 Qu |
-| [Flight Sensor](#flight-sensor) | Altitude, airspeed, pitch, roll, vertical speed and air density of a vehicle | Nearest block, 0.5 block/s, 2 degrees |
+| [Flight Sensor](#flight-sensor) | Altitude, airspeed, pitch, roll, vertical speed and air density of a vehicle | Nearest block, 0.5 block/s, 2 degrees; forces 0.5 Fu, mass 10 Mu |
 
 The [Phosphor Screen](Phosphor_Screen.md) is a block with its own sealing and burn-in rules and has its own page. The [Instrument Bag](#instrument-bag) holds instruments in one slot.
 
@@ -59,7 +59,7 @@ P   P
 
 P is a Copper Plate and N is an Iron Nugget. Craft it at the [Engineering Table](Engineering_Table.md) with a [file](Hand_Tools.md#file) in the tool row.
 
-**Work in progress.** Without calipers, a half-worked item tells you what it **needs** as a number (*"Needs 14 Fu"*) but only roughly how far it has got: *Barely marked*, *Taking shape*, *Visibly worked*, *Nearly there*. Carry calipers anywhere in your inventory and that changes to an exact figure, like *"Calipers: 9 / 14 Fu"*, on the item's tooltip and in Jade, on whatever is sitting in a hammer, press, mill, drawer, drill, lathe or grinder. You do not need calipers to make a plate; the words are enough to avoid ruining one. You need them to **aim** at something that only lasts a blow or two, like copper foil, and hit it every time.
+**Work in progress.** Without calipers, a half-worked item tells you what it **needs** as a number (*"Needs 14 Wu"*) but only roughly how far it has got: *Barely marked*, *Taking shape*, *Visibly worked*, *Nearly there*. Carry calipers anywhere in your inventory and that changes to an exact figure, like *"Calipers: 9 / 14 Wu"*, on the item's tooltip and in Jade, on whatever is sitting in a hammer, press, mill, drawer, drill, lathe or grinder. You do not need calipers to make a plate; the words are enough to avoid ruining one. You need them to **aim** at something that only lasts a blow or two, like copper foil, and hit it every time.
 
 **Machine wear.** **Right-click a machine** with the calipers to measure its condition, e.g. *"Calipers: 85% condition"*, in steps of 5%. The machine has to be stopped; on a running machine you get *"Stop the machine before measuring it."* Without calipers, Jade still warns when a machine is worn (*Head is marked / battered / spent*), just not by how much. See [Metalworking](Metalworking.md) for what work, hardness and wear mean.
 
@@ -348,7 +348,7 @@ A thin cut sees fine detail and not far. A thick cut sees far and coarsely. Pick
 
 A block that reads how its vehicle is flying and hands the figure to a [Controller](Controller.md), so an autopilot is only cards.
 
-Place it on the vehicle. Its front is the way it faces; pitch and roll are measured about that. **Right-click** steps what it reads; a strip under the crosshair lists the readings with the current one lit:
+Place it on the vehicle. Its front is the way it faces; pitch and roll are measured about that. **Sneak-right-click** steps what it reads; a strip under the crosshair lists the readings with the current one lit:
 
 | Reading | What it is |
 | --- | --- |
@@ -359,9 +359,22 @@ Place it on the vehicle. Its front is the way it faces; pitch and roll are measu
 | **Vertical speed** | How fast the vehicle climbs, in blocks per second (negative when it sinks). |
 | **Air density** | The [air](Vehicles.md#air-density) around it as a share of surface density: less the higher it climbs. |
 
-**Sneak-right-click** shows the current reading.
+**Right-click** opens the [Contraption Diagram](#contraption-diagram).
 
 To use it, point a Data Connector at it and link an *Input* card on the [Programmer](Programming.md) to it. The card reads the sensor's current reading and carries its kind, so the program cannot compare altitude with speed. Link the card again after changing what the sensor reads. A card that points at it remembers it as an offset from the vehicle, so the program still works after the vehicle is lifted or put back.
+
+### Contraption Diagram
+
+A blueprint-style screen showing the vehicle the sensor is built into, drawn as its real blocks in ink line work. Arrow buttons turn the view to another angle. Off a vehicle the screen says the sensor must be on a vehicle.
+
+An arrow marks every force on the vehicle, starting where it acts and colored by cause: **gravity**, **drag**, **levitation**, **buoyancy**, **ballast**, **propulsion** and **wing lift**. Each force is the mean of what the physics applied over the last second. Hover an arrow for its figure in [Fu](Units.md#force-fu); the total mass shows in [Mu](Units.md#mass-mu). Figures are as fine as the sensor reads: forces to 0.5 Fu, mass to 10 Mu.
+
+- The legend toggles each cause on and off.
+- **Merge arrows** joins the forces of one cause into a single arrow; unmerged, each force has its own.
+- **Center of mass** marks the vehicle's center of mass.
+- **Whole assembly** draws every body joined to this one by hinges and joints, and adds their forces, instead of the body alone.
+
+The [Computer](Electric_Controller.md#built-in-apps)'s **Diagram** app shows the same page for a Flight Sensor an Input card of the running program is linked to.
 
 ## Fitting a circuit
 

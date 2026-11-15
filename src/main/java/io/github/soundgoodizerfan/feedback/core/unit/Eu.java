@@ -14,7 +14,7 @@ import net.minecraft.network.codec.StreamCodec;
 /**
  * Electricity's bookkeeping unit (philosophy 21): energy per tick, or the energy in one packet. A
  * {@link VoltageBand} is a packet size in {@code Eu}, a current is a whole count of packets per tick
- * (amps, like {@link Fu}), and {@code Eu/t = packet x amps}, so any two supplies compare by converting
+ * (amps, like {@link Wu}), and {@code Eu/t = packet x amps}, so any two supplies compare by converting
  * both to {@code Eu/t} ({@code ElectricRules.euPerTick}). This record is a supply or a load as the
  * pair a player meets it as, band and amps; the field is named {@code voltage} for the band only.
  * DC only, no frequency, resistance not modelled; if AC arrives, frequency is a third component.

@@ -110,7 +110,7 @@ public final class Readout {
     }
 
     /**
-     * A reading, signed by the instrument that took it: {@code Calipers: 9 / 14 Fu}.
+     * A reading, signed by the instrument that took it: {@code Calipers: 9 / 14 Wu}.
      */
     public static Component reading(Quantity quantity, String key, Object... args) {
         Instrument instrument = Instruments.reading(Minecraft.getInstance().player, quantity);
@@ -192,7 +192,7 @@ public final class Readout {
         if (!instrumented(Quantity.TEMPERATURE))
             return temperature(tu);
         // Unwrapped at the instrument seam, which is quantity-agnostic by design: quantise
-        // answers for Fu as readily as Tu, so it cannot take a temperature.
+        // answers for Wu as readily as Tu, so it cannot take a temperature.
         return reading(Quantity.TEMPERATURE, "feedback.readout.tu", figure(Quantity.TEMPERATURE, tu.value()));
     }
 

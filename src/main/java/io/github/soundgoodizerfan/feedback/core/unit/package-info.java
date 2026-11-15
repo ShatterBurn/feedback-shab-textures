@@ -57,7 +57,7 @@
  *   <tr><td>{@link Conductance}</td><td>Work/t/Tu</td><td>how readily heat crosses a boundary</td></tr>
  *   <tr><td>{@link Su}</td><td>Su</td><td>rotational load and supply</td></tr>
  *   <tr><td>{@link Rpm}</td><td>RPM</td><td>rotational speed, signed for direction</td></tr>
- *   <tr><td>{@link Fu}</td><td>Fu</td><td>cumulative work in a workpiece -- an integer</td></tr>
+ *   <tr><td>{@link Wu}</td><td>Wu</td><td>cumulative work in a workpiece -- an integer</td></tr>
  *   <tr><td>{@link St}</td><td>St</td><td>the force behind one blow</td></tr>
  *   <tr><td>{@link Drag}</td><td>Su/RPM</td><td>bearing friction: a steady-state cost</td></tr>
  *   <tr><td>{@link Inertia}</td><td>Su&#183;t/RPM</td><td>resistance to changing speed: a transient one</td></tr>
@@ -101,8 +101,8 @@
  *       for no case where a tick count is confusable with anything here.</li>
  *   <li><b>Ratios and other bare multipliers</b> -- genuinely dimensionless. Hardness is <em>not</em>
  *       one of them: it is typed {@link St}, because it is the floor a blow's force must clear, so
- *       {@code Fu per blow = St / hardness} is St over St -- a dimensionless count of Fu, which is
- *       exactly what a whole-number {@link Fu} is.</li>
+ *       {@code Wu per blow = St / hardness} is St over St -- a dimensionless count of Wu, which is
+ *       exactly what a whole-number {@link Wu} is.</li>
  *   <li><b>{@code Qu}</b> -- named in philosophy 21
  *       and not yet in any code. They arrive with the systems that need them; the standing rule is
  *       to create a thing when there is something to put in it, and {@link Units} exists so that

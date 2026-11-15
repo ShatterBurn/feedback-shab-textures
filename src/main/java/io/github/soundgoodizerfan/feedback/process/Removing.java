@@ -15,7 +15,7 @@ import net.minecraft.world.level.Level;
 /**
  * Cutting on one workpiece -- {@link Deforming}'s own shape, for the removal family.
  *
- * <h2>Progress is the accumulated-Fu component, not {@code ItemHeat}</h2>
+ * <h2>Progress is the accumulated-Wu component, not {@code ItemHeat}</h2>
  * Deliberately the same {@link FDataComponents#WORK}/{@link FDataComponents#WORK_REQUIRED} pair
  * {@link Deforming} already writes -- removal only changes when work is actually applied, exactly
  * like a hammer's blow, and nothing about it is a function of elapsed time the way a workpiece's
@@ -46,9 +46,9 @@ public final class Removing {
 
     /**
      * @param result    the workpiece after the cut, or the untouched input when nothing landed
-     * @param delivered Fu this call put into the material, fraction included -- what a caller
+     * @param delivered Wu this call put into the material, fraction included -- what a caller
      *                  scales grit loss or interface heat by
-     * @param carried   the fraction of a Fu not yet credited to the workpiece; hand it back in
+     * @param carried   the fraction of a Wu not yet credited to the workpiece; hand it back in
      *                  on the next call
      * @param swarf     what the cut-away metal is as scrap, per the entry that was cut
      */
@@ -70,30 +70,30 @@ public final class Removing {
      * {@code workpiece}, for the given {@code operation}. The input stack is never mutated.
      *
      * <h3>Why a fraction is carried, and where</h3>
-     * One pass of a light cut on steel is about half a Fu. The workpiece's own {@code WORK} is a
+     * One pass of a light cut on steel is about half a Wu. The workpiece's own {@code WORK} is a
      * whole number -- it is what calipers read -- so the fraction rides on the machine between
-     * calls ({@code carriedFu}) and is lost if the workpiece is taken out, which costs under one
-     * Fu and is the honest price of interrupting a cut.
+     * calls ({@code carriedWu}) and is lost if the workpiece is taken out, which costs under one
+     * Wu and is the honest price of interrupting a cut.
      *
      * @param level only for carrying the workpiece's heat across a finished stage, as
      *              {@link Deforming} does
      */
     public static Cut apply(ItemStack workpiece, St driveForce, St toolHardness, Operation operation,
-                            float passes, float carriedFu, Level level) {
+                            float passes, float carriedWu, Level level) {
         if (workpiece.isEmpty())
             return Cut.failed(workpiece, Outcome.NO_PROCESS, 0f);
 
         Optional<Removal> maybe = RemovalTable.get().find(workpiece, operation);
         if (maybe.isEmpty()) // not a form step: perhaps a cut into a part's shape (spec 12)
             return Machining.get().cut(workpiece, driveForce, toolHardness, operation, passes)
-                    .orElseGet(() -> Cut.failed(workpiece, Outcome.NO_PROCESS, carriedFu));
+                    .orElseGet(() -> Cut.failed(workpiece, Outcome.NO_PROCESS, carriedWu));
 
         Removal removal = maybe.get();
         if (!removal.canBeCutBy(toolHardness))
-            return Cut.failed(workpiece, Outcome.WRONG_TOOL, carriedFu);
+            return Cut.failed(workpiece, Outcome.WRONG_TOOL, carriedWu);
 
         float fu = removal.cutFrom(driveForce) * passes;
-        float total = carriedFu + fu;
+        float total = carriedWu + fu;
         int delivered = (int) total;
         float carried = total - delivered;
         if (delivered == 0)

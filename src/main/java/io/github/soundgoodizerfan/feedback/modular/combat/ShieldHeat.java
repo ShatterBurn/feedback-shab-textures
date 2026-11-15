@@ -42,7 +42,7 @@ import net.neoforged.neoforge.event.entity.living.LivingShieldBlockEvent;
  * is its own ({@link #coolingRate}): a heavy face sheds slowly.
  *
  * <h2>Heat in</h2>
- * Blocked damage is the blow's Fu; {@code ModularTuning.SHIELD_WORK_PER_DAMAGE} turns a point of it into
+ * Blocked damage is the blow's Wu; {@code ModularTuning.SHIELD_WORK_PER_DAMAGE} turns a point of it into
  * Work and {@code SHIELD_HEAT_FRACTION} is the share that stays in the face. Over the thermal mass
  * (baked mass x {@code SHIELD_THERMAL_MASS_PER_MU}; no material file has a specific heat, and
  * adding one was declined) that is the rise, added to the present figure, so

@@ -51,7 +51,7 @@ public final class FTuning {
     /**
      * SLICE: a hand hammer's ordinary swing is about 3 St ({@code HandSwing.BLOW}, the default).
      *
-     * <p>Against copper's hardness of 1 that is 3 Fu a swing, so a 14 Fu plate is five swings and
+     * <p>Against copper's hardness of 1 that is 3 Wu a swing, so a 14 Wu plate is five swings and
      * the sixth starts making foil. It is deliberately the same figure as the Mechanical Hammer's
      * long throw: the gentle machine is doing exactly what the player's arm was doing, only without
      * ever getting bored, which is the whole of what beat 1 has to say.

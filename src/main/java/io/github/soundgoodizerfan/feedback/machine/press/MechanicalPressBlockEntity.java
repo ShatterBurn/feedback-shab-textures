@@ -19,7 +19,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 
 /**
- * One large stamping stroke rather than many light blows -- same {@code Fu}/hardness gate as the
+ * One large stamping stroke rather than many light blows -- same {@code Wu}/hardness gate as the
  * Hammer, through the same {@link Operation#BLOW} (a press is not a new physical action on the
  * material, only a different way of applying one, so it shares the Hammer's own deformation
  * chains rather than needing its own). One stroke per {@link #strokesDue}, so it presses as often

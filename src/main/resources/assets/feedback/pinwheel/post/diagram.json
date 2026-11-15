@@ -1,0 +1,11 @@
+{
+  "stages": [
+    {
+      "type": "veil:blit",
+      "shader": "feedback:diagram_outline",
+      "in": "feedback:diagram",
+      "out": "feedback:diagram_final",
+      "clear": true
+    }
+  ]
+}

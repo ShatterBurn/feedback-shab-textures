@@ -22,8 +22,8 @@ import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
  *
  * <h2>The two halves are not the same kind of fact</h2>
  * Philosophy 10, <em>what you need is free, what you have is a cost</em>, cuts straight through the
- * middle of this tooltip. {@code Needs 14 Fu} is published data -- a handbook figure, true before
- * the player owns anything, and stating it gates nothing. {@code Has 9 Fu} is the state of the
+ * middle of this tooltip. {@code Needs 14 Wu} is published data -- a handbook figure, true before
+ * the player owns anything, and stating it gates nothing. {@code Has 9 Wu} is the state of the
  * object in your hand, and that is what calipers are for.
  * <p>
  * So the requirement prints as a figure and the progress prints as a word, on adjacent lines. That

@@ -34,7 +34,7 @@ import net.minecraft.world.level.block.state.BlockState;
  * Hits whatever is in front of it, forever.
  *
  * <h2>The whole mod, in one block</h2>
- * The hammer has no recipe list and no notion of completion. It delivers {@code Fu} at whatever
+ * The hammer has no recipe list and no notion of completion. It delivers {@code Wu} at whatever
  * {@code St} its linkage provides, and it keeps doing that for as long as it is driven. When the
  * workpiece has taken enough work it becomes the next thing along the same physical axis -- and
  * then the hammer carries straight on working <em>that</em>.

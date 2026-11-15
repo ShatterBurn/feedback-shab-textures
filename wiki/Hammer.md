@@ -24,7 +24,7 @@ Shape a **Hammer Head** (ingots, blocks, gems, planks or cobblestone) at a bench
 
 Put the hammer and **one** workpiece anywhere in a crafting grid. The output slot shows what that piece will be **after one more blow**. Take it, and that's one swing: the hammer loses a little durability and the piece takes one blow's worth of work.
 
-Keep swinging and watch the result change. An ordinary swing lands **7 St**, which is 2 Fu on copper: a copper ingot becomes a **Copper Plate** on the tenth swing, **Copper Foil** on the sixteenth, then **Copper Scrap**.
+Keep swinging and watch the result change. An ordinary swing lands **7 St**, which is 2 Wu on copper: a copper ingot becomes a **Copper Plate** on the tenth swing, **Copper Foil** on the sixteenth, then **Copper Scrap**.
 
 ## At the benches
 
@@ -49,7 +49,7 @@ Hold the hammer, **sneak and scroll** to pick a swing. The hammer's tooltip says
 | **Heavy blow** | 11 St | Brass, bronze and iron |
 | **Mighty blow** | 15 St | Hot steel. Only while you have the **Strength** effect; it drops back to a heavy blow when that wears off |
 
-Harder isn't better. A heavy blow on lead is 22 Fu at a time, so it's easy to swing straight past the plate.
+Harder isn't better. A heavy blow on lead is 22 Wu at a time, so it's easy to swing straight past the plate.
 
 Every swing makes you a little hungrier, and harder swings more so: seven heavy blows cost about one hunger point.
 
@@ -61,7 +61,7 @@ A swing only moves metal at least as soft as it is strong. A tap (2 St) shapes *
 
 Steel answers only to a mighty blow, and only inside its working window of 900 to 1100 Tu ([Metalworking](Metalworking.md#hot-metal)). Cast iron (20) and anything harder are out of reach by hand; they need a [Mechanical Hammer](Mechanical_Hammer.md) with the right gearing.
 
-Very soft metals move a lot with each blow: 7 St on lead (0.5) is 14 Fu a swing. Tap lead: 4 Fu.
+Very soft metals move a lot with each blow: 7 St on lead (0.5) is 14 Wu a swing. Tap lead: 4 Wu.
 
 ## Wear
 

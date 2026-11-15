@@ -50,7 +50,7 @@ A bottom panel holds the **Menu** launcher, one task button per open window, and
 
 ### Apps
 
-**Drive**, **Editor**, **Files**, **Settings**, **Monitor**, **Links** and **Console** are built in. Every other app comes on an **app disk**, a Floppy Disk that carries the app. An app runs while its disk sits in one of the four drive bays. Pull the disk and the app disappears from the Menu and its window closes; the disk can go into another Computer and the app is there. An app disk is not a program medium: the Computer will not edit, run or copy onto it, and a [Programmer](Programming.md) will not take it. In a Drive window an app disk shows that it runs while in a drive, and in the Library it shows its app name. The creative tab lists each app disk.
+**Drive**, **Editor**, **Files**, **Settings**, **Monitor**, **Links**, **Diagram** and **Console** are built in. Every other app comes on an **app disk**, a Floppy Disk that carries the app. An app runs while its disk sits in one of the four drive bays. Pull the disk and the app disappears from the Menu and its window closes; the disk can go into another Computer and the app is there. An app disk is not a program medium: the Computer will not edit, run or copy onto it, and a [Programmer](Programming.md) will not take it. In a Drive window an app disk shows that it runs while in a drive, and in the Library it shows its app name. The creative tab lists each app disk.
 
 Each app disk is shapeless: one blank Floppy Disk plus one item.
 
@@ -70,6 +70,7 @@ Each app disk is shapeless: one blank Floppy Disk plus one item.
 
 - **Monitor**: the running program's variables and the last reading of each of its sensor cards.
 - **Links**: the blocks the running program's cards are linked to, with their positions.
+- **Diagram**: the [Contraption Diagram](Instruments.md#contraption-diagram) of the vehicle a Flight Sensor is on, for a sensor an Input card of the running program is linked to. **Next sensor** steps between linked sensors; the angle, merge and assembly controls are the same as on the sensor's own screen.
 - **Console**: a log of what the Computer did, newest at the bottom: programs started and stopped, things its program switched on and off, power lost and back, media ejected, edited or copied, and media it refused.
 - **Files**: in the Menu. Lists drives A to D and RUN with what each holds. Click a row to pick it, double-click to open its Drive window. The buttons are **Open**, **Edit**, **Run** (**Stop** for the running medium) and **Eject**. With the Library app disk in a bay, drag a written program onto another drive row to copy it onto a blank Floppy Disk or USB Drive (the same rule as the Library's Copy), or onto the **Trash** box to erase it: it asks first, and the medium is left blank and reusable. Erase needs no Library disk. Without the Library disk, dragging and Copy are unavailable.
 - **Settings**: see below.

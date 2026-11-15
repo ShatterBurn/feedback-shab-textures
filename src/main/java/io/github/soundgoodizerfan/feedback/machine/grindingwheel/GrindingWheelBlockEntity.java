@@ -31,7 +31,7 @@ import net.minecraft.world.level.block.state.BlockState;
  *
  * <h2>The thermal tie-in is the differentiator landing a third time</h2>
  * Grinding produces real interface heat. {@link #tickServer} bumps the workpiece's own {@code
- * ItemHeat} proportionally to Fu removed -- and keeps heating whatever it rubs and cannot cut, so
+ * ItemHeat} proportionally to Wu removed -- and keeps heating whatever it rubs and cannot cut, so
  * overrun grinding heats too -- no new mechanic, since a workpiece is hot wherever it
  * is regardless of what heated it (philosophy 9). Overrun grinding a part that was deliberately
  * hardened can walk its temperature back into a tempering-relevant range and soften it, which
@@ -68,20 +68,20 @@ public class GrindingWheelBlockEntity extends ShopMachineBlockEntity {
         boolean coarse = isCoarseGrit();
         St driveForce = coarse ? MachineTuning.GRINDING_WHEEL_ST_COARSE : MachineTuning.GRINDING_WHEEL_ST_FINE;
         Removing.Cut cut = Removing.apply(workpiece, driveForce, toolHardness(), Operation.GRIND,
-                passes, carriedFu, level);
-        carriedFu = cut.carried();
+                passes, carriedWu, level);
+        carriedWu = cut.carried();
 
-        // A wheel rubbing something it cannot cut still heats it -- as if every pass were Fu.
-        float fu = cut.landed() ? cut.delivered() : driveForce.value() * passes;
+        // A wheel rubbing something it cannot cut still heats it -- as if every pass were Wu.
+        float wu = cut.landed() ? cut.delivered() : driveForce.value() * passes;
         if (cut.landed()) {
             workpiece = cut.result();
-            float wearPerFu = coarse ? MachineTuning.GRINDING_WHEEL_WEAR_PER_FU_COARSE : MachineTuning.GRINDING_WHEEL_WEAR_PER_FU_FINE;
-            condition = Math.max(MachineTuning.GRINDING_WHEEL_CONDITION_FLOOR, condition - fu * wearPerFu);
+            float wearPerWu = coarse ? MachineTuning.GRINDING_WHEEL_WEAR_PER_WU_COARSE : MachineTuning.GRINDING_WHEEL_WEAR_PER_WU_FINE;
+            condition = Math.max(MachineTuning.GRINDING_WHEEL_CONDITION_FLOOR, condition - wu * wearPerWu);
             maybeDropSwarf(cut);
         }
 
         Tu heated = ItemHeat.get(workpiece, level);
-        ItemHeat.set(workpiece, new Tu(heated.value() + fu * MachineTuning.GRINDING_HEAT_PER_FU), level);
+        ItemHeat.set(workpiece, new Tu(heated.value() + wu * MachineTuning.GRINDING_HEAT_PER_WU), level);
         sync();
     }
 }
