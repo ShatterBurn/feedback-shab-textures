@@ -289,6 +289,11 @@ public class FeedbackJeiPlugin implements IModPlugin {
         registration.addIngredientInfo(FItems.BLOOMERY_SLAG.get(), Component.translatable("feedback.jei.info.bloomery_slag"));
         registration.addIngredientInfo(FItems.CHARGING_GANTRY.get(), Component.translatable("feedback.jei.info.charging_gantry"));
         registration.addIngredientInfo(FItems.CHARGER.get(), Component.translatable("feedback.jei.info.charger"));
+        registration.addIngredientInfo(FItems.ROBOT_DOCK.get(), Component.translatable("feedback.jei.info.robot_dock"));
+        registration.addIngredientInfo(FItems.ROBOT_BEACON.get(), Component.translatable("feedback.jei.info.robot_beacon"));
+        registration.addIngredientInfo(FItems.ROBOT_ARM.get(), Component.translatable("feedback.jei.info.robot_arm"));
+        registration.addIngredientInfo(FItems.ROBOT_REEL.get(), Component.translatable("feedback.jei.info.robot_reel"));
+        registration.addIngredientInfo(FItems.ROBOT_TETHER.get(), Component.translatable("feedback.jei.info.robot_tether"));
         registration.addIngredientInfo(io.github.soundgoodizerfan.feedback.registry.FModular.CHESTPLATE.get(), Component.translatable("feedback.jei.info.exosuit"));
         registration.addIngredientInfo(io.github.soundgoodizerfan.feedback.registry.FModular.TREATISE_BINDER.get(), Component.translatable("feedback.jei.info.treatise_binder"));
         registration.addIngredientInfo(io.github.soundgoodizerfan.feedback.registry.FModular.TREATISE_SHELF_ITEM.get(), Component.translatable("feedback.jei.info.treatise_shelf"));
@@ -297,6 +302,7 @@ public class FeedbackJeiPlugin implements IModPlugin {
         registration.addIngredientInfo(io.github.soundgoodizerfan.feedback.registry.FModular.RITE.get(), Component.translatable("feedback.jei.info.rite"));
         registration.addIngredientInfo(io.github.soundgoodizerfan.feedback.registry.FModular.BLUEPRINT_BOOK.get(), Component.translatable("feedback.jei.info.blueprint_book"));
         registration.addIngredientInfo(io.github.soundgoodizerfan.feedback.registry.FModular.SUIT_MODULE.get(), Component.translatable("feedback.jei.info.suit_module"));
+        registration.addIngredientInfo(io.github.soundgoodizerfan.feedback.registry.FModular.ROBOT.get(), Component.translatable("feedback.jei.info.robot"));
         registration.addIngredientInfo(io.github.soundgoodizerfan.feedback.registry.FModular.SPRING_GUN.get(), Component.translatable("feedback.jei.info.spring_gun"));
         registration.addIngredientInfo(io.github.soundgoodizerfan.feedback.registry.FModular.ELECTRIC_GUN.get(), Component.translatable("feedback.jei.info.electric_gun"));
         registration.addIngredientInfo(FItems.GRAPPLE.get(), Component.translatable("feedback.jei.info.grapple"));

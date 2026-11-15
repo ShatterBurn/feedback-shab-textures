@@ -45,6 +45,12 @@ public final class FEntities {
                     io.github.soundgoodizerfan.feedback.weapon.SteamCloud::new, MobCategory.MISC).sized(1.6f, 1.2f)
                     .clientTrackingRange(8).updateInterval(5).build("steam_cloud"));
 
+    /** A robot; see {@code robot/RobotEntity}. Its movement runs server side every tick, so it updates every tick. */
+    public static final DeferredHolder<EntityType<?>, EntityType<io.github.soundgoodizerfan.feedback.robot.RobotEntity>> ROBOT =
+            ENTITIES.register("robot", () -> EntityType.Builder.<io.github.soundgoodizerfan.feedback.robot.RobotEntity>of(
+                    io.github.soundgoodizerfan.feedback.robot.RobotEntity::new, MobCategory.MISC).sized(0.9f, 0.7f)
+                    .clientTrackingRange(8).updateInterval(1).build("robot"));
+
     private FEntities() {
     }
 

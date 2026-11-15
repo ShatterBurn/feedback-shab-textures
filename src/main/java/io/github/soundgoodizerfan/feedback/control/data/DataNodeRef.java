@@ -27,14 +27,29 @@ import org.jetbrains.annotations.Nullable;
  * sided and a holder can carry several at once (up to six sensor fittings on one crucible); see
  * {@code TODO.md} for what else was and wasn't taken from that read.
  */
-public record DataNodeRef(BlockPos pos, @Nullable Direction side, int voxel) implements Comparable<DataNodeRef> {
+public record DataNodeRef(BlockPos pos, @Nullable Direction side, int voxel, int local) implements Comparable<DataNodeRef> {
 
     private static final String POS = "Pos";
     private static final String SIDE = "Side";
     private static final String VOXEL = "Voxel";
+    private static final String LOCAL = "Local";
 
     public DataNodeRef(BlockPos pos, @Nullable Direction side) {
-        this(pos, side, -1);
+        this(pos, side, -1, -1);
+    }
+
+    public DataNodeRef(BlockPos pos, @Nullable Direction side, int voxel) {
+        this(pos, side, voxel, -1);
+    }
+
+    /** Channel {@code channel} of whichever robot runs the program: a robot's own senses and actions, not a block in the world. */
+    public static DataNodeRef local(int channel) {
+        return new DataNodeRef(BlockPos.ZERO, null, -1, channel);
+    }
+
+    /** Whether this names a channel of the robot running the program (see {@code robot/RobotChannel}). */
+    public boolean isLocal() {
+        return local >= 0;
     }
 
     /**
@@ -50,14 +65,16 @@ public record DataNodeRef(BlockPos pos, @Nullable Direction side, int voxel) imp
     public static final Codec<DataNodeRef> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             BlockPos.CODEC.fieldOf("pos").forGetter(DataNodeRef::pos),
             Direction.CODEC.optionalFieldOf("side").forGetter(ref -> Optional.ofNullable(ref.side())),
-            Codec.INT.optionalFieldOf("voxel", -1).forGetter(DataNodeRef::voxel)
-    ).apply(instance, (pos, side, voxel) -> new DataNodeRef(pos, side.orElse(null), voxel)));
+            Codec.INT.optionalFieldOf("voxel", -1).forGetter(DataNodeRef::voxel),
+            Codec.INT.optionalFieldOf("local", -1).forGetter(DataNodeRef::local)
+    ).apply(instance, (pos, side, voxel, local) -> new DataNodeRef(pos, side.orElse(null), voxel, local)));
 
     public static final StreamCodec<io.netty.buffer.ByteBuf, DataNodeRef> STREAM_CODEC = StreamCodec.composite(
             BlockPos.STREAM_CODEC, DataNodeRef::pos,
             ByteBufCodecs.optional(Direction.STREAM_CODEC), ref -> Optional.ofNullable(ref.side()),
             ByteBufCodecs.VAR_INT, ref -> ref.voxel() + 1,
-            (pos, side, voxel) -> new DataNodeRef(pos, side.orElse(null), voxel - 1));
+            ByteBufCodecs.VAR_INT, ref -> ref.local() + 1,
+            (pos, side, voxel, local) -> new DataNodeRef(pos, side.orElse(null), voxel - 1, local - 1));
 
     /**
      * An arbitrary but consistent order -- not meaning, just enough that a link between A and B
@@ -65,6 +82,8 @@ public record DataNodeRef(BlockPos pos, @Nullable Direction side, int voxel) imp
      */
     @Override
     public int compareTo(DataNodeRef other) {
+        if (local != other.local)
+            return Integer.compare(local, other.local);
         int byPos = Long.compare(pos.asLong(), other.pos.asLong());
         if (byPos != 0)
             return byPos;
@@ -81,12 +100,14 @@ public record DataNodeRef(BlockPos pos, @Nullable Direction side, int voxel) imp
         tag.putInt(SIDE, side == null ? -1 : side.get3DDataValue());
         if (voxel >= 0)
             tag.putInt(VOXEL, voxel);
+        if (local >= 0)
+            tag.putInt(LOCAL, local);
         return tag;
     }
 
     public static DataNodeRef fromTag(CompoundTag tag) {
         int side = tag.getInt(SIDE);
         return new DataNodeRef(BlockPos.of(tag.getLong(POS)), side < 0 ? null : Direction.from3DDataValue(side),
-                tag.contains(VOXEL) ? tag.getInt(VOXEL) : -1);
+                tag.contains(VOXEL) ? tag.getInt(VOXEL) : -1, tag.contains(LOCAL) ? tag.getInt(LOCAL) : -1);
     }
 }

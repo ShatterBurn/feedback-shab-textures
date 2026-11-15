@@ -224,6 +224,8 @@ public record ModularType(Family family, Slot slot, List<Mine> mines, float stri
         ELECTRIC_GUN,
         /** A pressure vessel ({@code pressure_vessel}): a shell whose wall, shape and metal set the pressure it holds and the room inside; its bake is the {@link ModularBake#tank} spec the placed block runs on. */
         PRESSURE,
+        /** A robot ({@code robot}): chassis, drive and tool head, placed from the hand as a {@code robot/RobotEntity}; its figures are read from the design by {@code robot/RobotSpec}. Carries a program medium and a swappable battery on the entity, not in the design. */
+        ROBOT,
         /** A fixed block made from parts (heat exchanger, gas tank, water wheel): its bake is {@link BlockFigures}, the named figures the placed block's {@link FigureStore} hands back. */
         BLOCK,
         MACHINE;

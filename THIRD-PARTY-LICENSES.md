@@ -522,6 +522,15 @@ controller is a switch, never a dial); the drone/`Goal`/AI domain entirely, sinc
 moves; and PNC's puzzle pieces being individually-crafted physical items per placement, rather
 than drawn from a palette. See `docs/specs/feedback_controller_spec.md` §7 for the full account.
 
+**Read a third time, for robots (`docs/specs/feedback_mobile_programs_spec.md`, `robot/RobotEntity`) (`1.21` branch, `824ad514e`).**
+**Taken (design only, no code or assets):** a program step every N ticks with movement at full rate
+(`DroneAIManager.TICK_RATE`); the real break pipeline with a cancellable pre-break event
+(`DroneAIDig`); death packing program, parts and charge into the dropped item (`DroneEntity.die`);
+an opt-in costed chunk-loading upgrade (planned, not yet built). **Rejected:** id-based item and
+block filter widgets, loot-drop-match block validity, jump/label control flow, teleporting when
+stuck, owner-UUID gating, pressure as the only power, exact-coordinate navigation without drift,
+and a fake player per drone (one shared per level here).
+
 **Read a second time, for `PressureVesselBlockEntity` (`TODO.md` §5e as of `50b93c6`) — user-directed rather than
 surveyed, since `Pu` had no prior implementation to weigh options against.** `IAirHandler`'s
 `pressure = air / volume` (an amount over a fixed volume, computed on read rather than stored) and

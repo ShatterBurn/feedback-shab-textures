@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "W": {
+      "item": "feedback:copper_wire"
+    },
+    "P": {
+      "item": "feedback:copper_plate"
+    },
+    "S": {
+      "item": "minecraft:string"
+    }
+  },
+  "pattern": [
+    "PSP",
+    "WPW"
+  ],
+  "result": {
+    "count": 1,
+    "id": "feedback:robot_reel"
+  }
+}

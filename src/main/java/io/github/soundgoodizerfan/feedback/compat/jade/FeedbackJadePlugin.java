@@ -50,6 +50,7 @@ public class FeedbackJadePlugin implements IWailaPlugin {
         registration.registerBlockDataProvider(AirServerData.INSTANCE, io.github.soundgoodizerfan.feedback.vehicle.air.BallastTankBlockEntity.class);
         registration.registerBlockDataProvider(AirServerData.INSTANCE, io.github.soundgoodizerfan.feedback.vehicle.air.PropBlockEntity.class);
         registration.registerEntityDataProvider(VillagerServerData.INSTANCE, net.minecraft.world.entity.npc.Villager.class);
+        registration.registerEntityDataProvider(RobotServerData.INSTANCE, io.github.soundgoodizerfan.feedback.robot.RobotEntity.class);
         registration.registerBlockDataProvider(EnderPortServerData.INSTANCE, io.github.soundgoodizerfan.feedback.machine.ender.EnderPortBlockEntity.class);
         registration.registerBlockDataProvider(CounterServerData.INSTANCE, io.github.soundgoodizerfan.feedback.village.CounterBlockEntity.class);
         registration.registerBlockDataProvider(LevitationServerData.INSTANCE, net.minecraft.world.level.block.entity.BlockEntity.class);
@@ -70,6 +71,7 @@ public class FeedbackJadePlugin implements IWailaPlugin {
         registration.registerBlockComponent(FoodComponent.INSTANCE, Block.class);
         registration.registerBlockComponent(WearingComponent.INSTANCE, Block.class);
         registration.registerEntityComponent(VillagerComponent.INSTANCE, net.minecraft.world.entity.npc.Villager.class);
+        registration.registerEntityComponent(RobotComponent.INSTANCE, io.github.soundgoodizerfan.feedback.robot.RobotEntity.class);
         registration.registerBlockComponent(CounterComponent.INSTANCE, io.github.soundgoodizerfan.feedback.village.CounterBlock.class);
         registration.registerBlockComponent(LevitationComponent.INSTANCE, Block.class);
         registration.registerBlockComponent(HydrideComponent.INSTANCE, Block.class);

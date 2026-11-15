@@ -1,0 +1,157 @@
+{
+  "family": "robot",
+  "required": [
+    "C",
+    "D",
+    "T"
+  ],
+  "slot": "mainhand",
+  "wear_litres": 0.05,
+  "wear_role": "C",
+  "primary": "C",
+  "roles": {
+    "C": {
+      "name": "robot_chassis",
+      "class": "housing",
+      "forms": [
+        "robot_chassis"
+      ],
+      "litres": 0.2,
+      "layer": 0,
+      "part": {
+        "item": "feedback:robot_chassis",
+        "cells": 4,
+        "stock": [
+          "plate"
+        ]
+      }
+    },
+    "D": {
+      "name": "robot_drive",
+      "class": "housing",
+      "forms": [
+        "robot_drive"
+      ],
+      "litres": 0.1,
+      "layer": 1,
+      "part": {
+        "item": "feedback:robot_drive",
+        "cells": 2,
+        "stock": [
+          "plate"
+        ],
+        "variants": [
+          {
+            "name": "wheels",
+            "cells": 2,
+            "adjective": true
+          },
+          {
+            "name": "legs",
+            "cells": 3,
+            "adjective": true
+          },
+          {
+            "name": "rotor",
+            "cells": 2,
+            "adjective": true
+          }
+        ]
+      }
+    },
+    "T": {
+      "name": "robot_head",
+      "class": "working_face",
+      "forms": [
+        "robot_head"
+      ],
+      "litres": 0.08,
+      "layer": 2,
+      "strike": 1.0,
+      "part": {
+        "item": "feedback:robot_head",
+        "cells": 2,
+        "stock": [
+          "plate"
+        ]
+      }
+    },
+    "S": {
+      "name": "robot_sensor",
+      "class": "housing",
+      "forms": [
+        "robot_sensor"
+      ],
+      "litres": 0.02,
+      "layer": 3,
+      "part": {
+        "item": "feedback:robot_sensor",
+        "cells": 2,
+        "stock": [
+          "plate"
+        ],
+        "variants": [
+          {
+            "name": "probe",
+            "cells": 2,
+            "adjective": true
+          },
+          {
+            "name": "rangefinder",
+            "cells": 2,
+            "adjective": true
+          },
+          {
+            "name": "inertial",
+            "cells": 2,
+            "adjective": true
+          }
+        ]
+      }
+    },
+    "L": {
+      "name": "robot_loader",
+      "class": "housing",
+      "forms": [
+        "robot_loader"
+      ],
+      "litres": 0.03,
+      "layer": 4,
+      "part": {
+        "item": "feedback:robot_loader",
+        "cells": 2,
+        "stock": [
+          "plate"
+        ]
+      }
+    }
+  },
+  "patterns": [
+    [
+      "C",
+      "D",
+      "T"
+    ],
+    [
+      "C",
+      "D",
+      "T",
+      "S"
+    ],
+    [
+      "C",
+      "D",
+      "T",
+      "L"
+    ],
+    [
+      "C",
+      "D",
+      "T",
+      "S",
+      "L"
+    ]
+  ],
+  "defaults": {},
+  "blueprint": true
+}

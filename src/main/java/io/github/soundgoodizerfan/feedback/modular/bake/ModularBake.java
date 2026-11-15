@@ -1175,6 +1175,12 @@ public final class ModularBake {
                     total += mass(type.roles().get(p.role()), p, by.get(p.role()));
                 f.put(Fig.MASS, total);
             }
+            case ROBOT -> {
+                float total = 0;
+                for (Part p : design.parts())
+                    total += mass(type.roles().get(p.role()), p, by.get(p.role()));
+                f.put(Fig.MASS, total);
+            }
             case CELL -> {
                 if (cell(design, type, materials).isEmpty())
                     return Optional.empty();

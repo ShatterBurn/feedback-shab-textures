@@ -61,7 +61,10 @@ final class LinksWindow extends DesktopWindow {
             }
             String where = "unlinked";
             var level = Minecraft.getInstance().level;
-            if (ref != null && level != null) {
+            if (ref != null && ref.isLocal()) {
+                var channel = io.github.soundgoodizerfan.feedback.robot.RobotChannel.of(ref.local());
+                where = channel == null ? "robot" : net.minecraft.network.chat.Component.translatable(channel.langKey()).getString();
+            } else if (ref != null && level != null) {
                 var pos = ref.pos();
                 where = level.getBlockState(pos).getBlock().getName().getString() + " " + pos.getX() + "," + pos.getY() + "," + pos.getZ();
             }

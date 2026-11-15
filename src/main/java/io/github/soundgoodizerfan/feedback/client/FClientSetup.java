@@ -101,6 +101,8 @@ public class FClientSetup {
                 net.minecraft.client.renderer.entity.ThrownItemRenderer::new);
 
         event.registerEntityRenderer(io.github.soundgoodizerfan.feedback.registry.FEntities.STEAM_CLOUD.get(), SteamCloudRenderer::new);
+        event.registerEntityRenderer(io.github.soundgoodizerfan.feedback.registry.FEntities.ROBOT.get(),
+                io.github.soundgoodizerfan.feedback.client.robot.RobotRenderer::new);
 
         event.registerBlockEntityRenderer(FBlockEntities.SHAFT.get(), RotatingRenderer::new);
         event.registerBlockEntityRenderer(FBlockEntities.COG.get(), RotatingRenderer::new);
