@@ -154,7 +154,10 @@ public final class Researching {
             ResearchPlan plan = plan(0, index);
             return plan != null && plan.specimens.contains(design.type().getPath());
         }
-        return (school.id() + ":" + (v[1] - 1)).equals(type.school());
+        // a cleaver, maul or spear is a face of the hafted tool: the school is the face's, not the type's
+        String gate = type.family() == io.github.soundgoodizerfan.feedback.modular.type.ModularType.Family.HAFTED
+                ? io.github.soundgoodizerfan.feedback.modular.type.ModularFaces.school(design, type) : type.school();
+        return (school.id() + ":" + (v[1] - 1)).equals(gate);
     }
 
     /** Whether the earlier volume a volume builds on is in hand (a first volume and an attunement need none). */
