@@ -39,4 +39,11 @@ public final class SpaceTuning {
     public static final int CABIN_RESCAN_TICKS = 20;
     /** mB an Air Valve holds. */
     public static final int AIR_VALVE_TANK_MB = 2000;
+
+    /** Half the side, in chunks, of the square of map the Shelf shows below the craft (one pixel a chunk). */
+    public static final int MAP_RADIUS_CHUNKS = 48;
+    /** Ticks between a player's map requests. */
+    public static final int MAP_REQUEST_INTERVAL_TICKS = 40;
+    /** How far (blocks) below the craft the map plane is drawn. */
+    public static final float MAP_DEPTH_BLOCKS = 220f;
 }
