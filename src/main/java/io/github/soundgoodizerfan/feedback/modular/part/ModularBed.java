@@ -46,6 +46,23 @@ public class ModularBed extends ModularItem {
         return stack.getItem() instanceof ModularBed && design != null && design.part(FRAME) == null;
     }
 
+    /**
+     * The player made {@code stack} (an Engineering Table result or a crafted item): the first bedroll or framed bed, and a bed with a flower
+     * in its padding. Server only; nothing for any other item.
+     */
+    public static void made(Player player, ItemStack stack) {
+        var design = ModularStacks.design(stack);
+        if (!(player instanceof net.minecraft.server.level.ServerPlayer) || !(stack.getItem() instanceof ModularBed) || design == null)
+            return;
+        io.github.soundgoodizerfan.feedback.core.Awards.give(player, design.part(FRAME) == null ? "progress/survival/bedroll" : "progress/survival/bed");
+        var mattress = design.part(MATTRESS);
+        if (mattress != null && mattress.measures().slot("padding")
+                .map(s -> io.github.soundgoodizerfan.feedback.process.MaterialTable.get().materials().get(s.material()))
+                .flatMap(m -> m == null ? java.util.Optional.<io.github.soundgoodizerfan.feedback.process.Material.Kind>empty() : m.kind())
+                .filter(k -> k == io.github.soundgoodizerfan.feedback.process.Material.Kind.FLOWER).isPresent())
+            io.github.soundgoodizerfan.feedback.core.Awards.give(player, "progress/survival/bed_of_roses");
+    }
+
     public ModularBed(Properties properties) {
         super(properties);
     }

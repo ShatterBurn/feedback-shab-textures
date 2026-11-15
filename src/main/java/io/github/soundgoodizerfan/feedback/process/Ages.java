@@ -81,8 +81,9 @@ public class Ages extends SimpleJsonResourceReloadListener {
         return ages.stream().filter(a -> a.volumes().contains(key)).findFirst();
     }
 
-    /** The player made {@code stack}: enter the age of each material it is made of. Server only. */
+    /** The player made {@code stack}: enter the age of each material it is made of, and award a bed built. Server only. */
     public static void made(Player player, ItemStack stack) {
+        io.github.soundgoodizerfan.feedback.modular.part.ModularBed.made(player, stack);
         if (!(player instanceof ServerPlayer) || stack.isEmpty() || INSTANCE.ages.isEmpty())
             return;
         Map<ResourceLocation, Material> table = MaterialTable.get().materials();

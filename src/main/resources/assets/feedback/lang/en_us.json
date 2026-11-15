@@ -8541,5 +8541,11 @@
   "need.feedback.weight.light": "light",
   "need.feedback.weight.medium": "medium",
   "need.feedback.weight.heavy": "heavy",
-  "need.feedback.weight.very_heavy": "very heavy"
+  "need.feedback.weight.very_heavy": "very heavy",
+  "advancement.feedback.progress.survival.bedroll.title": "Roughing It",
+  "advancement.feedback.progress.survival.bedroll.description": "Build a bedroll: a mattress with no frame, light enough to lash to a pack.",
+  "advancement.feedback.progress.survival.bed.title": "Off the Floor",
+  "advancement.feedback.progress.survival.bed.description": "Build a bed: a mattress on a frame, set down as a place you can respawn.",
+  "advancement.feedback.progress.survival.bed_of_roses.title": "Bed of Roses",
+  "advancement.feedback.progress.survival.bed_of_roses.description": "Some might say that that phrase isn't to be taken literally. Some might say that."
 }

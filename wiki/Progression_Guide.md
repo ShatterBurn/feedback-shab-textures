@@ -8,6 +8,8 @@ Side entries along the Technology branches mark things you find or survive on th
 
 The Combat tab covers sizing up a creature, exploiting a read, striking a soft spot, reading a draw, hitting armor with the wrong or the right tool, fighting with a hot edge, landing a spear hit while the use key is held, taking a blow in armor you built (and in a full set), and casting a technique from each skill tree. A gun entry covers building one at the Engineering Table.
 
+The Survival tab has two bed entries: **Roughing It** for building a bedroll, and **Off the Floor** for building a [bed](Bed.md) with a frame. Each is earned when you take the built bed from the Engineering Table or the crafting grid.
+
 Hidden entries branch off for odd things you can do along the way: burst a boiler, wear a machine out, let an overspeed trip earn its keep, fire a flintlock, a gun with the longest barrel or a round the chamber was never built for, get thrown by your own recoil, burn yourself, carry a creeper charge into a fire, leave a batch in the heat far too long, or put a phosphor screen on a controller.
 
 ## 1. First fire, clay and copper
