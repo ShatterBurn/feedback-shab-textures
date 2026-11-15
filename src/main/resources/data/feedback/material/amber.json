@@ -37,5 +37,10 @@
   "enchantability": 4,
   "traits": [
     "transparent"
+  ],
+  "exclude": [
+    "foam",
+    "mat",
+    "fibre"
   ]
 }

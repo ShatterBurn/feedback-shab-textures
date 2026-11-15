@@ -366,6 +366,11 @@ Pour a melt into an **Ingot Mold** from a [crucible or ladle](Casting.md) and it
 | Insulation | drawing an ingot at the [Wire Drawer](Wire_Drawer.md) |
 | String | a tool binding or bowstring of that polymer ([Tools and Weapons](Tools_and_Weapons.md)) |
 | Pipe | drilling an ingot at the [Drill Press](Drill_Press.md) |
+| Foam | blowing an ingot into a loose cellular fill |
+| Mat | rolling the polymer's string into a felted flat mat |
+| Fiber | drawing an ingot into a fine strand |
+
+Bakelite, amber, soul resin and bitumen have no Foam, Mat or Fiber. Aramid has Mat and Fiber but no Foam. A part slot takes Foam as loose fill, a Mat as a mat and a Fiber as cord ([What a Part Slot Takes](What_a_Part_Slot_Takes.md#shapes)). Rubbers are soft, light and heat insulating, so a rubber foam pad cushions a [bed](Bed.md), an armor lining, a backpack liner or the lagging of a thermal store; a rubber mat serves as a bed cover, a glove body or a backpack panel; rubber fiber serves as a strap, a binding or, where the polymer is tough enough, a bowstring.
 
 Drilling gives a [Pipe](Pipe.md) of that polymer; a metal ingot drills into one the same way.
 

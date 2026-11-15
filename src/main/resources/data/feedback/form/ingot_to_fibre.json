@@ -1,0 +1,10 @@
+{
+  "from": "ingot",
+  "to": "fibre",
+  "operation": "draw",
+  "base": 5,
+  "slope": 0.5,
+  "kinds": [
+    "polymer"
+  ]
+}

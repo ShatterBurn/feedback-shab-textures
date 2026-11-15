@@ -8547,5 +8547,7 @@
   "advancement.feedback.progress.survival.bed.title": "Off the Floor",
   "advancement.feedback.progress.survival.bed.description": "Build a bed: a mattress on a frame, set down as a place you can respawn.",
   "advancement.feedback.progress.survival.bed_of_roses.title": "Bed of Roses",
-  "advancement.feedback.progress.survival.bed_of_roses.description": "Some might say that that phrase isn't to be taken literally. Some might say that."
+  "advancement.feedback.progress.survival.bed_of_roses.description": "Some might say that that phrase isn't to be taken literally. Some might say that.",
+  "form.feedback.foam": "%s Foam",
+  "form.feedback.mat": "%s Mat"
 }

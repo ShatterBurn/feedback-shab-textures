@@ -34,5 +34,8 @@
     "density": 1.3,
     "shear_thickening": 0
   },
-  "enchantability": 6
+  "enchantability": 6,
+  "exclude": [
+    "foam"
+  ]
 }

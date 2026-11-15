@@ -753,6 +753,7 @@ Copied or derived from Minecraft 1.21.1's textures (Mojang AB assets, reused by 
 - `item/copper_bucket.png`: the vanilla bucket, recoloured.
 - `item/form/lump.png`, `item/form/raw.png`: the vanilla raw iron sprite, recoloured (greyscale form sprites tinted at runtime).
 - `item/form/dust.png`: `items/material_dust_generic.png` from malcolmriley/unused-textures (CC BY 4.0, Malcolm Riley), reduced to luminance (greyscale form sprite tinted at runtime).
+- `item/form/foam.png`, `item/form/mat.png`: `items/material_fleece_white_2.png` and `items/material_fleece_white.png` from malcolmriley/unused-textures (CC BY 4.0, Malcolm Riley), reduced to luminance and stretched to the light range of the other `item/form/*` sprites (greyscale form sprites tinted at runtime).
 - `item/levitation_sleeve.png`: `items/part_diamond_bearing.png` from malcolmriley/unused-textures (CC BY 4.0, Malcolm Riley), reduced to luminance (greyscale sprite tinted at runtime by the sleeve material).
 
 ### Exception: Feedback's own art (All Rights Reserved)

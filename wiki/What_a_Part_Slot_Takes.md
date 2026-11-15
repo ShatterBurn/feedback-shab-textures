@@ -11,12 +11,12 @@ A stock item belongs to one shape class. A slot names the shapes it takes.
 | long piece | stick, rod, bone, bamboo stalk |
 | sheet | plate, pane, foil, paper |
 | hide | leather, hide |
-| mat | carpets |
+| mat | carpets, polymer mats |
 | gem | gem, shard |
-| cord | string, wire, chain, fibre, bundle |
+| cord | string, wire, chain, fiber, polymer fiber, bundle |
 | lump | ingot, nugget, block, cobble, brick, slug |
 | board | any planks, bamboo and nether wood included |
-| loose fill | dust, raw plant matter, feathers, flint |
+| loose fill | dust, raw plant matter, feathers, flint, polymer foam |
 
 ## Properties
 
@@ -51,6 +51,7 @@ Soft metals such as tin and lead are not cushioning: they are heavy and conduct 
 
 ## Examples
 
+- A rubber foam pad cushions a [bed](Bed.md) and lines armor, a backpack or the lagging of a thermal store; a rubber mat covers a bed or forms a glove body or backpack panel; rubber fiber makes a strap, a binding or a bowstring.
 - Handles need to be tough and at least fair in strength.
 - Bamboo and nether wood planks fit every board slot.
 - A [heat exchanger](Heat_Exchanger.md) fin, a regen jacket, an intercooler and a [dynamotor](Dynamotor.md) cooling plate need good heat conduction.
