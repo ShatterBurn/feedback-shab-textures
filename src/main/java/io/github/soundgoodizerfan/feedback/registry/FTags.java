@@ -36,6 +36,9 @@ public final class FTags {
     /** Landmarks that wipe a robot's dead-reckoning error, and the pads and reels that charge one. */
     public static final TagKey<Block> ROBOT_BEACONS = TagKey.create(Registries.BLOCK, Feedback.id("robot_beacons"));
     public static final TagKey<Block> ROBOT_DOCKS = TagKey.create(Registries.BLOCK, Feedback.id("robot_docks"));
+    /** What throws sparks and drowns a radio link, and what shields a mast from it. */
+    public static final TagKey<Block> RADIO_NOISE = TagKey.create(Registries.BLOCK, Feedback.id("radio_noise"));
+    public static final TagKey<Block> RADIO_SHIELDS = TagKey.create(Registries.BLOCK, Feedback.id("radio_shields"));
     public static final TagKey<Block> NO_HEAT_PUSH = TagKey.create(Registries.BLOCK, Feedback.id("no_heat_push"));
     /** Blocks that hurt whatever stands in or against them (a cactus's spines). Fire and lava are found by their own tags. */
     public static final TagKey<Block> HURTS_ON_CONTACT = TagKey.create(Registries.BLOCK, Feedback.id("hurts_on_contact"));

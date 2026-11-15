@@ -22,9 +22,51 @@ import net.minecraft.world.item.ItemStack;
  * them and which media they take; the card slot, the upgrades and the evaluation are one {@link ControllerCore}. Every {@link Container}
  * and {@link Fittable} call goes through to it, so code that holds a host (the block, the upgrade items, the crowbar) does not care which.
  */
-public interface ControllerHost extends Container, Fittable {
+public interface ControllerHost extends Container, Fittable, io.github.soundgoodizerfan.feedback.control.ChannelSource,
+        io.github.soundgoodizerfan.feedback.control.Steppable, io.github.soundgoodizerfan.feedback.control.RemoteChannels {
 
     ControllerCore core();
+
+    // --- remote variables: another controller reads and sets this one's declared variables through its ordinary Sensor and Actuator cards ---
+
+    /** Channel {@code n} reads the {@code n}th declared variable. */
+    @Override
+    default float read(int channel) {
+        return core().variableValue(channel);
+    }
+
+    @Override
+    default String[] senseKeys() {
+        var all = core().declared();
+        String[] names = new String[all.size()];
+        for (int i = 0; i < names.length; i++)
+            names[i] = all.get(i).name();
+        return names;
+    }
+
+    /** Channel 0 is no variable (the plain switch moves nothing here); channel {@code n} is the {@code n-1}th declared variable. */
+    @Override
+    default String[] channelKeys() {
+        String[] names = senseKeys();
+        String[] keys = new String[names.length + 1];
+        keys[0] = "feedback.control.remote.none";
+        System.arraycopy(names, 0, keys, 1, names.length);
+        return keys;
+    }
+
+    @Override
+    default void pulse(int channel, boolean on) {
+        core().writeVariable(channel - 1, on);
+    }
+
+    @Override
+    default void setEngaged(boolean engaged) {
+    }
+
+    @Override
+    default boolean isEngaged() {
+        return false;
+    }
 
     default ControllerLimits limits() {
         return core().limits();

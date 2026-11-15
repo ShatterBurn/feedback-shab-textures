@@ -59,7 +59,9 @@ public enum RobotChannel {
     /** Sink while on. */
     DESCEND(true, true),
     /** Blocks above the block it was set down on. */
-    ALTITUDE(false, false);
+    ALTITUDE(false, false),
+    /** Use the first stack it carries on the block ahead as a hand would (nothing carried: an empty hand); how true the hand lands is its dexterity. */
+    USE(true, true);
 
     private final boolean actuator;
     private final boolean bool;

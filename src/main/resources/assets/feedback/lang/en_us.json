@@ -8782,5 +8782,16 @@
   "jade.feedback.robot.charge.3": "Battery full",
   "jade.feedback.robot.no_battery": "No battery",
   "jade.feedback.robot.tethered": "Tied to a reel",
-  "config.jade.plugin_feedback.robot": "Robot"
+  "config.jade.plugin_feedback.robot": "Robot",
+  "item.feedback.robot_radio": "Robot Radio",
+  "form.feedback.robot_radio": "%s Robot Radio",
+  "modular.feedback.desc.part.robot_radio": "The robot end of a radio link. Paired with a Radio Mast it lets a Controller read the robot's senses and drive its actions from a distance, as far as the mast's power reaches.",
+  "modular.feedback.role.robot_radio": "radio",
+  "modular.feedback.role.robot_radio.tip": "Lets a Radio Mast reach the robot.",
+  "robot.feedback.channel.use": "Use held item ahead",
+  "block.feedback.robot_mast": "Radio Mast",
+  "feedback.jei.info.robot_mast": "The base end of a robot radio link, a sink on an electrical line. Select the mast with the Data Connector, then use the Connector on a robot that carries a radio part to pair them. A Controller's ordinary Sensor cards then read the robot's senses through the mast and its Actuator cards hold the robot's actions on or off. The link reaches as far as the power behind it, more on a higher band; out of range or in noise it hears nothing and every action is let go. Sparks drown it: an arc head within a few blocks of the robot or the mast. A mast boxed in by lead-lined chests does not hear it at its own end.",
+  "robot.feedback.mast_linked": "Mast paired with the robot",
+  "robot.feedback.mast_no_radio": "This robot has no radio",
+  "feedback.control.remote.none": "no variable"
 }

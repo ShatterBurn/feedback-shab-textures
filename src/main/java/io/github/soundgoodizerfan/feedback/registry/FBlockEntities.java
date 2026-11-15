@@ -311,6 +311,11 @@ public class FBlockEntities {
                     .of(io.github.soundgoodizerfan.feedback.robot.RobotDockBlockEntity::new, FBlocks.ROBOT_DOCK.get(), FBlocks.ROBOT_REEL.get())
                     .build(null));
 
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<io.github.soundgoodizerfan.feedback.robot.RobotMastBlockEntity>> ROBOT_MAST =
+            BLOCK_ENTITIES.register("robot_mast", () -> BlockEntityType.Builder
+                    .of(io.github.soundgoodizerfan.feedback.robot.RobotMastBlockEntity::new, FBlocks.ROBOT_MAST.get())
+                    .build(null));
+
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<io.github.soundgoodizerfan.feedback.robot.RobotArmBlockEntity>> ROBOT_ARM =
             BLOCK_ENTITIES.register("robot_arm", () -> BlockEntityType.Builder
                     .of(io.github.soundgoodizerfan.feedback.robot.RobotArmBlockEntity::new, FBlocks.ROBOT_ARM.get())

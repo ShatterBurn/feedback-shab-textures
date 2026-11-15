@@ -54,7 +54,7 @@ public class RobotEntity extends Entity implements ControllerCore.Locals, RobotW
     private static final long NO_CHUNK = Long.MIN_VALUE;
     /** The actions a robot starts first to last when the program holds several on. */
     private static final RobotChannel[] ORDER = { RobotChannel.MINE, RobotChannel.PLACE, RobotChannel.PICK_UP, RobotChannel.DROP,
-            RobotChannel.TURN_LEFT, RobotChannel.TURN_RIGHT, RobotChannel.GIVE, RobotChannel.TAKE };
+            RobotChannel.TURN_LEFT, RobotChannel.TURN_RIGHT, RobotChannel.GIVE, RobotChannel.TAKE, RobotChannel.USE };
 
     private ItemStack battery = ItemStack.EMPTY;
     private final SimpleContainer cargo = new SimpleContainer(RobotTuning.CARGO);
@@ -432,6 +432,14 @@ public class RobotEntity extends Entity implements ControllerCore.Locals, RobotW
         if (level().isClientSide)
             return InteractionResult.SUCCESS;
         if (held.getItem() instanceof DataConnectorItem) {
+            // a mast selected first: pair it with this robot; otherwise step through this robot's channels
+            var pending = io.github.soundgoodizerfan.feedback.control.data.DataLinkManager.get().peekPending(player);
+            if (pending.isPresent() && !pending.get().isLocal()
+                    && level().getBlockEntity(pending.get().pos()) instanceof RobotMastBlockEntity mast) {
+                io.github.soundgoodizerfan.feedback.control.data.DataLinkManager.get().takePending(player);
+                player.displayClientMessage(Component.translatable(mast.link(this) ? "robot.feedback.mast_linked" : "robot.feedback.mast_no_radio"), true);
+                return InteractionResult.CONSUME;
+            }
             RobotWorker.selectNext(player);
             return InteractionResult.CONSUME;
         }

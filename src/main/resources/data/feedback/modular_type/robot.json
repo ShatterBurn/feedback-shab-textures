@@ -124,6 +124,30 @@
           "plate"
         ]
       }
+    },
+    "K": {
+      "name": "controller",
+      "forms": [
+        "circuit"
+      ],
+      "litres": 0.01,
+      "layer": 20
+    },
+    "R": {
+      "name": "robot_radio",
+      "class": "housing",
+      "forms": [
+        "robot_radio"
+      ],
+      "litres": 0.02,
+      "layer": 5,
+      "part": {
+        "item": "feedback:robot_radio",
+        "cells": 2,
+        "stock": [
+          "plate"
+        ]
+      }
     }
   },
   "patterns": [
@@ -148,8 +172,36 @@
       "C",
       "D",
       "T",
+      "R"
+    ],
+    [
+      "C",
+      "D",
+      "T",
       "S",
       "L"
+    ],
+    [
+      "C",
+      "D",
+      "T",
+      "S",
+      "R"
+    ],
+    [
+      "C",
+      "D",
+      "T",
+      "L",
+      "R"
+    ],
+    [
+      "C",
+      "D",
+      "T",
+      "S",
+      "L",
+      "R"
     ]
   ],
   "defaults": {},

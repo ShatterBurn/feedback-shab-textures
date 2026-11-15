@@ -32,6 +32,9 @@ public final class RobotTuning {
     public static final float TETHER_LENGTH = 12f;
     /** The fixed tool head strength of an arm, and the amps it asks of its line while it has a program. */
     public static final float ARM_HEAD_ST = 300f, ARM_AMPS = 0.5f;
+    /** The amps a radio mast asks of its line, the blocks it reaches per amp delivered, the most it reaches per band step, and how far from either end noise is heard. */
+    public static final float MAST_AMPS = 1f, RADIO_BLOCKS_PER_AMP = 20f, RADIO_BAND_CEILING = 48f;
+    public static final int RADIO_NOISE_RANGE = 4;
     /** Slots of cargo a robot carries. */
     public static final int CARGO = 9;
 }
