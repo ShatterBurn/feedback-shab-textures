@@ -23,7 +23,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 /**
  * Air on every moving body: Sable's one pre-physics-tick event, so each body is dragged exactly once a
  * step however many thrusters or frames it carries. Force is a constant times the dimension's air
- * density ({@link AirDensityTable}) times speed squared, against the velocity, capped at the body's own
+ * density ({@link AirDensityTable}) times the body's cross-section times speed squared, against the velocity, capped at the body's own
  * momentum so it never reverses it inside a step. A Drivetrain frame (and the wheel bodies of its
  * groups) is left out: it drags itself by its silhouette in {@code Drivetrain.physicsTick}.
  */
@@ -49,14 +49,22 @@ public final class AirDrag {
             double density = AirDensityTable.at(level, body.logicalPose().position().y());
             Vector3d back = body.logicalPose().transformNormalInverse(new Vector3d(vel).div(speed), new Vector3d()).negate();
             ForceTotal force = new ForceTotal();
-            // A body of micro cells drags by its size: the constant below is tuned for a heavy thruster
-            // body and would hold a small light one to a crawl. Its cross-section is a cube's of its voxels.
+            // Drag follows the body's cross-section facing its motion, whatever it carries. A body of micro
+            // cells counts its voxels (a cube's face of them); any other body counts the face of its plot
+            // box, so size and not a flat constant decides how fast it falls.
             int voxels = 0;
             for (BlockEntitySubLevelActor a : body.getPlot().getBlockEntityActors())
                 if (a instanceof MicroCellBlockEntity cell)
                     voxels += cell.voxelCount();
-            double drag = voxels == 0 ? VehicleTuning.AIR_DRAG
-                    : VehicleTuning.MICRO_AIR_DRAG * Math.pow(voxels, 2.0 / 3) / (MicroCellBlockEntity.N * MicroCellBlockEntity.N);
+            double area;
+            if (voxels > 0) {
+                area = Math.pow(voxels, 2.0 / 3) / (MicroCellBlockEntity.N * MicroCellBlockEntity.N);
+            } else {
+                var box = body.getPlot().getBoundingBox();
+                double dx = box.maxX() - box.minX() + 1, dy = box.maxY() - box.minY() + 1, dz = box.maxZ() - box.minZ() + 1;
+                area = Math.abs(back.x) * dy * dz + Math.abs(back.y) * dx * dz + Math.abs(back.z) * dx * dy;
+            }
+            double drag = VehicleTuning.AIR_DRAG * area;
             if (density > 0)
                 force.applyLinearImpulse(new Vector3d(back).mul(
                         Math.min(drag * density * speed * speed * dt, mass * speed)));
