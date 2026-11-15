@@ -146,6 +146,12 @@ public final class Rites {
         Map<ResourceLocation, Float> rites = new HashMap<>();
         for (BlockPos offset : EnchantingTableBlock.BOOKSHELF_OFFSETS) {
             BlockPos at = table.offset(offset);
+            if (level.getBlockState(at).is(io.github.soundgoodizerfan.feedback.registry.FBlocks.DEBUG_SHELF.get())) {
+                // The debug shelf is a perfect room by itself: full power, every effect exact.
+                Map<ResourceLocation, Float> all = new HashMap<>();
+                Attunements.known().keySet().forEach(id -> all.put(id, 1f));
+                return new Library(ModularTuning.RITE_POWER_FULL, all);
+            }
             if (!level.getBlockState(table.offset(offset.getX() / 2, offset.getY(), offset.getZ() / 2)).is(BlockTags.ENCHANTMENT_POWER_TRANSMITTER))
                 continue;
             power += Math.round(level.getBlockState(at).getEnchantPowerBonus(level, at));

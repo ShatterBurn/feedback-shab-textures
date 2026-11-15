@@ -1096,6 +1096,13 @@ public class FBlocks {
                     .sound(SoundType.METAL)
                     .noOcclusion()));
 
+    /** A development cheat: a shelf that stands in for a perfect library round an Enchanting Table (see {@code Rites.scan}). */
+    public static final DeferredBlock<Block> DEBUG_SHELF = BLOCKS.register("debug_shelf",
+            () -> new Block(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.WOOD)
+                    .strength(1.0f)
+                    .sound(SoundType.CHISELED_BOOKSHELF)));
+
     /** Creative sources, one per energy type -- operator tab only. See {@code CreativeSource}. */
     public static final DeferredBlock<CreativeSourceBlock> CREATIVE_HEAT = BLOCKS.register("creative_heat",
             () -> new io.github.soundgoodizerfan.feedback.machine.creative.CreativeHeatBlock(BlockBehaviour.Properties.of()

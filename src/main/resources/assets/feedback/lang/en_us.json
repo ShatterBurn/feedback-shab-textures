@@ -995,6 +995,7 @@
   "item.feedback.escapement": "Escapement",
   "item.feedback.data_connector": "Data Connector",
   "block.feedback.creative_controller": "Creative Controller",
+  "block.feedback.debug_shelf": "Debug Shelf",
   "block.feedback.creative_heat": "Creative Heat Source",
   "block.feedback.heat_probe": "Heat Probe",
   "feedback.debug.heat_probe.total": "Heat reaching this block: %1$s Tu (ambient %2$s Tu)",

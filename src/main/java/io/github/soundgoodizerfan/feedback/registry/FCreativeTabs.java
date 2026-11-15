@@ -518,6 +518,7 @@ public class FCreativeTabs {
             event.accept(FItems.DEBUG_HELMET.get());
             event.accept(FModular.CREATIVE_TREATISE.get());
             event.accept(FItems.CREATIVE_CONTROLLER.get());
+            event.accept(FItems.DEBUG_SHELF.get());
             event.accept(FItems.CREATIVE_FLUID.get());
             event.accept(FItems.CREATIVE_AIR.get());
             event.accept(FItems.CREATIVE_HEAT.get());

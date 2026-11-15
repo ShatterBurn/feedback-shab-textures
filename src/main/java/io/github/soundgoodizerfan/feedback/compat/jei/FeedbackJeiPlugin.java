@@ -619,6 +619,9 @@ public class FeedbackJeiPlugin implements IModPlugin {
                     if (item.value().builtInRegistryHolder().key().location().getNamespace().equals("minecraft"))
                         hidden.add(new net.minecraft.world.item.ItemStack(item.value()));
                 });
+        // Vanilla enchanted books, every enchantment and level JEI adds: rites replace them.
+        jeiRuntime.getIngredientManager().getAllIngredients(mezz.jei.api.constants.VanillaTypes.ITEM_STACK).stream()
+                .filter(s -> s.is(net.minecraft.world.item.Items.ENCHANTED_BOOK)).forEach(hidden::add);
         jeiRuntime.getIngredientManager().removeIngredientsAtRuntime(
                 mezz.jei.api.constants.VanillaTypes.ITEM_STACK, hidden);
         ClientDeformations.onChanged(FeedbackJeiPlugin::publish);

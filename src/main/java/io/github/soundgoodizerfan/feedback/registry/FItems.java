@@ -795,6 +795,7 @@ public class FItems {
     public static final DeferredItem<BlockItem> CREATIVE_ROTATION = ITEMS.registerSimpleBlockItem(FBlocks.CREATIVE_ROTATION);
     public static final DeferredItem<BlockItem> CREATIVE_XP = ITEMS.registerSimpleBlockItem(FBlocks.CREATIVE_XP);
     public static final DeferredItem<BlockItem> CREATIVE_ELECTRIC = ITEMS.registerSimpleBlockItem(FBlocks.CREATIVE_ELECTRIC);
+    public static final DeferredItem<BlockItem> DEBUG_SHELF = ITEMS.registerSimpleBlockItem(FBlocks.DEBUG_SHELF);
     public static final DeferredItem<BlockItem> CREATIVE_CONTROLLER = ITEMS.registerSimpleBlockItem(FBlocks.CREATIVE_CONTROLLER);
 
     /** A development cheat, like {@link DebugHelmetItem}: prints an item's material file. */

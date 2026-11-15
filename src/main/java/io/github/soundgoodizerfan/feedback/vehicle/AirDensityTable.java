@@ -10,6 +10,7 @@ import java.util.Map;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
+import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -25,9 +26,9 @@ import net.minecraft.world.level.Level;
 /**
  * Air density by dimension, relative to the overworld's (1.0). Loaded from
  * {@code data/<namespace>/air_density/<path>.json}, {@code <namespace>:<path>} being the dimension's
- * own id, holding {@code {"density": <number>, "oxygen": <bool>}} or, for a curve, {@code {"points":
- * [{"y": <height>, "density": <number>}, ...], "oxygen": <bool>}} (linear between points, flat beyond the
- * first and last). Density sets drag and lift; zero is vacuum. Oxygen (default true) is whether an air-breathing thruster has anything to burn with, so a
+ * own id, holding {@code {"density": <number>, "oxygen": <share 0..1 or bool>}} or, for a curve, {@code {"points":
+ * [{"y": <height>, "density": <number>}, ...], "oxygen": <share 0..1 or bool>}} (linear between points, flat beyond the
+ * first and last). Density sets drag and lift; zero is vacuum. Oxygen (default 1) is the share of the air that is oxygen: above 0 an air-breathing thruster has something to burn with, and a person breathes density times share, so a
  * thin atmosphere with no oxygen (the End) still drags and lifts a little. An unlisted dimension is an
  * ordinary atmosphere (1.0, oxygen), so a modded dimension is a line of JSON. Server only: the physics step and the thruster are the readers.
  */
@@ -42,8 +43,8 @@ public class AirDensityTable extends SimpleJsonResourceReloadListener {
     }
 
     /** A flat density is one point; a curve is two or more sorted by height. Read on the physics thread. */
-    private record Entry(float[] ys, float[] densities, boolean oxygen) {
-        static Entry flat(float density, boolean oxygen) {
+    private record Entry(float[] ys, float[] densities, float oxygen) {
+        static Entry flat(float density, float oxygen) {
             return new Entry(new float[] {0f}, new float[] {density}, oxygen);
         }
 
@@ -61,14 +62,16 @@ public class AirDensityTable extends SimpleJsonResourceReloadListener {
         }
     }
 
-    private record Raw(java.util.Optional<Float> density, List<Point> points, boolean oxygen) {
+    private record Raw(java.util.Optional<Float> density, List<Point> points, float oxygen) {
     }
 
     private static final Codec<Raw> RAW = RecordCodecBuilder.create(i -> i.group(
             Codec.floatRange(0f, 100f).optionalFieldOf("density").forGetter(Raw::density),
             Point.CODEC.listOf().optionalFieldOf("points", List.of()).forGetter(Raw::points),
-            Codec.BOOL.optionalFieldOf("oxygen", true).forGetter(Raw::oxygen)).apply(i, Raw::new));
-    private static final Entry ORDINARY = Entry.flat(1f, true);
+            // A share 0..1 of the air that is oxygen; true and false still read as 1 and 0.
+            Codec.either(Codec.BOOL, Codec.floatRange(0f, 1f)).xmap(
+                    e -> e.map(b -> b ? 1f : 0f, f -> f), Either::right).optionalFieldOf("oxygen", 1f).forGetter(Raw::oxygen)).apply(i, Raw::new));
+    private static final Entry ORDINARY = Entry.flat(1f, 1f);
     private static final AirDensityTable INSTANCE = new AirDensityTable();
 
     // Read on the physics thread, replaced on reload.
@@ -94,7 +97,13 @@ public class AirDensityTable extends SimpleJsonResourceReloadListener {
 
     /** Whether the air here carries oxygen to burn. */
     public static boolean oxygen(Level level) {
-        return INSTANCE.byDimension.getOrDefault(level.dimension().location(), ORDINARY).oxygen();
+        return INSTANCE.byDimension.getOrDefault(level.dimension().location(), ORDINARY).oxygen() > 0f;
+    }
+
+    /** The oxygen a lung finds at a height: the density there times the share of the air that is oxygen. 1 is the Overworld at sea level. */
+    public static float breathable(Level level, double y) {
+        var e = INSTANCE.byDimension.getOrDefault(level.dimension().location(), ORDINARY);
+        return e.at(y) * e.oxygen();
     }
 
     @Override
