@@ -63,10 +63,11 @@ public final class SpaceTrigger {
         for (ServerSubLevel body : movers) {
             HELD.remove(body.getUniqueId());
             if (!body.isRemoved()) // a chain moves with its first body
-                if (shelf)
-                    SpaceTravel.back(level, body);
-                else
-                    SpaceTravel.send(level, body);
+{
+                    int n = shelf ? SpaceTravel.back(level, body) : SpaceTravel.send(level, body);
+                    Feedback.LOGGER.info("Space crossing of body {} at y {}: {} body(ies) moved to {}", body.getUniqueId(),
+                            Math.round(body.logicalPose().position().y()), n, shelf ? "the Overworld" : "the Shelf");
+                }
         }
     }
 
