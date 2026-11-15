@@ -235,7 +235,8 @@ public class FeedbackJeiPlugin implements IModPlugin {
                 new OreVeinCategory(registration.getJeiHelpers().getGuiHelper()),
                 new GunBlueprintPoolCategory(registration.getJeiHelpers().getGuiHelper()),
                 new GoodsCategory(registration.getJeiHelpers().getGuiHelper()),
-                new BuysCategory(registration.getJeiHelpers().getGuiHelper()));
+                new BuysCategory(registration.getJeiHelpers().getGuiHelper()),
+                new ResearchCategory(registration.getJeiHelpers().getGuiHelper()));
     }
 
     /**
@@ -542,6 +543,7 @@ public class FeedbackJeiPlugin implements IModPlugin {
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
         registration.addRecipeCatalysts(GunOptionCategory.TYPE, io.github.soundgoodizerfan.feedback.registry.FModular.ENGINEERING_TABLE_ITEM.get());
+        registration.addRecipeCatalysts(ResearchCategory.TYPE, FModular.RESEARCH_TABLE_ITEM.get());
         registration.addRecipeCatalysts(DeformationCategory.TYPE,
                 FItems.MECHANICAL_HAMMER.get(), FItems.WIRE_DRAWER.get(),
                 FItems.ROLLING_MILL.get(), FItems.MECHANICAL_PRESS.get(), FModular.HAFTED_TOOL.get());
@@ -630,6 +632,7 @@ public class FeedbackJeiPlugin implements IModPlugin {
             publishModular();
         });
         io.github.soundgoodizerfan.feedback.modular.type.ModularTypes.onChanged(() -> {
+            publishResearch();
             showTemplateTools(io.github.soundgoodizerfan.feedback.process.ClientMaterials.get());
             publishExamples();
             publishModular();
@@ -639,8 +642,15 @@ public class FeedbackJeiPlugin implements IModPlugin {
         ClientTable.GUN_OPTIONS.onChanged(() -> show(GunOptionCategory.TYPE, ClientTable.GUN_OPTIONS.get()));
         ClientTable.GUN_BLUEPRINTS.onChanged(() -> show(GunBlueprintPoolCategory.TYPE, ClientTable.GUN_BLUEPRINTS.get()));
         ClientTable.BUYS.onChanged(() -> show(BuysCategory.TYPE, ClientTable.BUYS.get()));
+        ClientTable.RESEARCH.onChanged(FeedbackJeiPlugin::publishResearch);
         ClientTable.ORE_VEINS.onChanged(() -> show(OreVeinCategory.TYPE, ClientTable.ORE_VEINS.get()));
         ClientTable.BASINS.onChanged(() -> show(BasinCategory.TYPE, ClientTable.BASINS.get()));
+    }
+
+    /** The research cards: the first volumes' specimens arrive with their own table, the later ones and the attunements are read off the types and effects the client holds. */
+    private static void publishResearch() {
+        show(ResearchCategory.TYPE, ResearchCategory.cards(ClientTable.RESEARCH.get(), io.github.soundgoodizerfan.feedback.modular.type.ModularTypes.known(),
+                io.github.soundgoodizerfan.feedback.modular.attunement.Attunements.get().effects()));
     }
 
     private static boolean partsListed;

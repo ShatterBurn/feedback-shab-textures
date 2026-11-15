@@ -195,6 +195,9 @@ public class Feedback {
                 .playToClient(io.github.soundgoodizerfan.feedback.net.BuysSyncPayload.TYPE,
                         io.github.soundgoodizerfan.feedback.net.BuysSyncPayload.STREAM_CODEC,
                         io.github.soundgoodizerfan.feedback.net.BuysSyncPayload::handle)
+                .playToClient(io.github.soundgoodizerfan.feedback.net.ResearchSyncPayload.TYPE,
+                        io.github.soundgoodizerfan.feedback.net.ResearchSyncPayload.STREAM_CODEC,
+                        io.github.soundgoodizerfan.feedback.net.ResearchSyncPayload::handle)
                 .playToClient(io.github.soundgoodizerfan.feedback.net.VillagerStatePayload.TYPE,
                         io.github.soundgoodizerfan.feedback.net.VillagerStatePayload.STREAM_CODEC,
                         io.github.soundgoodizerfan.feedback.net.VillagerStatePayload::handle)
@@ -464,6 +467,7 @@ public class Feedback {
         send(event, new io.github.soundgoodizerfan.feedback.net.GunBlueprintPoolSyncPayload(io.github.soundgoodizerfan.feedback.weapon.GunBlueprintPool.get().listings()));
         send(event, new io.github.soundgoodizerfan.feedback.net.AgeSyncPayload(io.github.soundgoodizerfan.feedback.process.Ages.get().all()));
         send(event, new io.github.soundgoodizerfan.feedback.net.BuysSyncPayload(io.github.soundgoodizerfan.feedback.village.BuysTable.get().entries()));
+        send(event, new io.github.soundgoodizerfan.feedback.net.ResearchSyncPayload(io.github.soundgoodizerfan.feedback.modular.research.ResearchPlans.get().specimens()));
         send(event, new io.github.soundgoodizerfan.feedback.net.WorldgenSyncPayload(
                 io.github.soundgoodizerfan.feedback.worldgen.OreVeinTable.get().entries(),
                 io.github.soundgoodizerfan.feedback.geology.BasinTable.get().entries()));
