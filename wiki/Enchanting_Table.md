@@ -314,7 +314,7 @@ You start knowing five effects: **Edge, Ward, Mend, Yield and Hold**. Every othe
 
 - **Attempt it blind.** You may attempt an effect you do not know, at full price. The pad shows no guide: you must find the word's shape yourself. A clean result teaches you the effect; a flawed or failed one teaches nothing and the experience is spent.
 - **Study a part.** Seat a part that already holds the effect and press **Study** (it replaces Begin for an effect the part holds and you do not know). You learn it for nothing.
-- **Research it.** At the [Research Table](Research_Table.md), put any built item on the bench as the specimen and work the research board; the attunement is learned.
+- **Research it.** At the [Research Table](Research_Table.md), pick the attunement on the Attunements tab, give it an offering of a material that ranks high enough in the attunement's property and a brewed potion as the reagent, and work the research board; the attunement is learned. A potion carrying the effect an attunement names can stand in for the offering.
 
 Knowledge is yours alone and is kept when you die.
 
