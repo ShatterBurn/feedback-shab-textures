@@ -125,6 +125,16 @@ public class ControllerCore implements Container, Fittable {
         this.takes = takes;
     }
 
+    /** A core in a block entity that also answers the robot channels (the robot arm): wires read as for any block host, local cards go to {@code locals}. */
+    public ControllerCore(BlockEntity host, Locals locals, BooleanSupplier powered, java.util.function.Predicate<ItemStack> takes) {
+        this.host = host;
+        this.levelOf = host::getLevel;
+        this.changed = host::setChanged;
+        this.locals = locals;
+        this.powered = powered;
+        this.takes = takes;
+    }
+
     /** A core carried by a robot: it has no block entity; {@code locals} answers the robot's own channels. */
     public ControllerCore(java.util.function.Supplier<Level> level, Runnable changed, Locals locals, BooleanSupplier powered,
             java.util.function.Predicate<ItemStack> takes) {

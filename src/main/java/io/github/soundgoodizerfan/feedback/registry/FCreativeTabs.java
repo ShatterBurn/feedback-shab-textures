@@ -175,7 +175,7 @@ public class FCreativeTabs {
     private static final List<DeferredItem<?>> POWER = of(FModular.HAND_CRANK, FModular.WATER_WHEEL,
             FItems.STEAM_ENGINE, FItems.STEAM_TURBINE, FItems.GAS_TURBINE, FModular.DYNAMOTOR,
             FModular.GALVANIC_CELL, FItems.GALVANIC_CELL_PACK, FItems.ELECTROSTATIC_GENERATOR, FModular.LEYDEN_JAR,
-            FModular.BATTERY, FItems.CHARGER, FItems.ROBOT_DOCK, FItems.ROBOT_BEACON, FItems.ROBOT_REEL, FItems.ROBOT_TETHER, FItems.CHARGING_GANTRY, FItems.RECTIFIER, FItems.CONVERTER,
+            FModular.BATTERY, FItems.CHARGER, FItems.ROBOT_DOCK, FItems.ROBOT_ARM, FItems.ROBOT_BEACON, FItems.ROBOT_REEL, FItems.ROBOT_TETHER, FItems.CHARGING_GANTRY, FItems.RECTIFIER, FItems.CONVERTER,
             FItems.CONVERTER_TAP, FModular.ELECTROMAGNET, FModular.LAMP, FItems.ELECTROLYTIC_CELL, FItems.ELECTROLYSER);
 
     /** Fluids and gases: move, hold, control, treat, then the oil field. */

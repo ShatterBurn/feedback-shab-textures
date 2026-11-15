@@ -894,6 +894,11 @@ public class FBlocks {
                             .sound(SoundType.METAL)
                             .noOcclusion()));
 
+    /** A robot arm on a mount, run off a line; see {@code robot/RobotArmBlockEntity}. */
+    public static final DeferredBlock<io.github.soundgoodizerfan.feedback.robot.RobotArmBlock> ROBOT_ARM =
+            BLOCKS.register("robot_arm", () -> new io.github.soundgoodizerfan.feedback.robot.RobotArmBlock(
+                    BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_ORANGE).strength(1.5f).sound(SoundType.COPPER).noOcclusion()));
+
     /** A landmark that wipes a robot's dead-reckoning error; see {@code robot/RobotEntity}. */
     public static final DeferredBlock<net.minecraft.world.level.block.Block> ROBOT_BEACON =
             BLOCKS.register("robot_beacon", () -> new net.minecraft.world.level.block.Block(

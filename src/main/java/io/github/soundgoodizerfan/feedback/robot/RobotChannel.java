@@ -53,7 +53,13 @@ public enum RobotChannel {
     /** Where dead reckoning puts it east of where it was set down, in blocks; drifts until a beacon corrects it. */
     POS_X(false, false),
     /** Where dead reckoning puts it south of where it was set down. */
-    POS_Z(false, false);
+    POS_Z(false, false),
+    /** Rise while on; only a rotor robot light enough to fly answers. */
+    ASCEND(true, true),
+    /** Sink while on. */
+    DESCEND(true, true),
+    /** Blocks above the block it was set down on. */
+    ALTITUDE(false, false);
 
     private final boolean actuator;
     private final boolean bool;

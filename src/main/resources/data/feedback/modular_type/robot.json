@@ -39,6 +39,23 @@
         "cells": 2,
         "stock": [
           "plate"
+        ],
+        "variants": [
+          {
+            "name": "wheels",
+            "cells": 2,
+            "adjective": true
+          },
+          {
+            "name": "legs",
+            "cells": 3,
+            "adjective": true
+          },
+          {
+            "name": "rotor",
+            "cells": 2,
+            "adjective": true
+          }
         ]
       }
     },
@@ -91,6 +108,22 @@
           }
         ]
       }
+    },
+    "L": {
+      "name": "robot_loader",
+      "class": "housing",
+      "forms": [
+        "robot_loader"
+      ],
+      "litres": 0.03,
+      "layer": 4,
+      "part": {
+        "item": "feedback:robot_loader",
+        "cells": 2,
+        "stock": [
+          "plate"
+        ]
+      }
     }
   },
   "patterns": [
@@ -104,6 +137,19 @@
       "D",
       "T",
       "S"
+    ],
+    [
+      "C",
+      "D",
+      "T",
+      "L"
+    ],
+    [
+      "C",
+      "D",
+      "T",
+      "S",
+      "L"
     ]
   ],
   "defaults": {},

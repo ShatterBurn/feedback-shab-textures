@@ -311,6 +311,11 @@ public class FBlockEntities {
                     .of(io.github.soundgoodizerfan.feedback.robot.RobotDockBlockEntity::new, FBlocks.ROBOT_DOCK.get(), FBlocks.ROBOT_REEL.get())
                     .build(null));
 
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<io.github.soundgoodizerfan.feedback.robot.RobotArmBlockEntity>> ROBOT_ARM =
+            BLOCK_ENTITIES.register("robot_arm", () -> BlockEntityType.Builder
+                    .of(io.github.soundgoodizerfan.feedback.robot.RobotArmBlockEntity::new, FBlocks.ROBOT_ARM.get())
+                    .build(null));
+
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<io.github.soundgoodizerfan.feedback.machine.charger.ChargerBlockEntity>> CHARGER =
             BLOCK_ENTITIES.register("charger", () -> BlockEntityType.Builder
                     .of(io.github.soundgoodizerfan.feedback.machine.charger.ChargerBlockEntity::new, FBlocks.CHARGER.get())

@@ -24,6 +24,12 @@ public class RobotItem extends ModularItem {
         if (level.isClientSide)
             return InteractionResult.SUCCESS;
         BlockPos at = context.getClickedPos().relative(context.getClickedFace());
+        String capped = RobotCaps.refusal(level, at);
+        if (capped != null) {
+            if (context.getPlayer() != null)
+                context.getPlayer().displayClientMessage(net.minecraft.network.chat.Component.translatable(capped), true);
+            return InteractionResult.FAIL;
+        }
         RobotEntity robot = FEntities.ROBOT.get().create(level);
         if (robot == null)
             return InteractionResult.FAIL;

@@ -26,8 +26,12 @@ public final class RobotTuning {
     public static final float DRIFT_PER_BLOCK = 0.06f, INERTIAL_DRIFT_SHARE = 0.25f;
     /** Blocks within which a beacon corrects a robot's position; how far a rangefinder reaches. */
     public static final int BEACON_RANGE = 3, RANGE_MAX = 8;
+    /** Speed of a legged and of a rotor robot against a wheeled one; the mass (Mu) above which a rotor cannot lift; Eu a tick to hover and to hold a chunk loaded. */
+    public static final float LEGS_SPEED = 0.8f, ROTOR_SPEED = 0.7f, ROTOR_LIFT_MU = 60f, EU_HOVER_PER_TICK = 0.3f, EU_LOADER_PER_TICK = 1f;
     /** Blocks a tethered robot may roam from its reel. */
     public static final float TETHER_LENGTH = 12f;
+    /** The fixed tool head strength of an arm, and the amps it asks of its line while it has a program. */
+    public static final float ARM_HEAD_ST = 300f, ARM_AMPS = 0.5f;
     /** Slots of cargo a robot carries. */
     public static final int CARGO = 9;
 }
