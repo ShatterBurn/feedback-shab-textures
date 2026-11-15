@@ -14,8 +14,8 @@ import io.github.soundgoodizerfan.feedback.process.Material;
 import io.github.soundgoodizerfan.feedback.registry.FModular;
 import io.github.soundgoodizerfan.feedback.registry.FDataComponents;
 import io.github.soundgoodizerfan.feedback.registry.FMenus;
-import io.github.soundgoodizerfan.feedback.modular.attunement.AttunementKnowledge;
 import io.github.soundgoodizerfan.feedback.modular.attunement.Attunements;
+import io.github.soundgoodizerfan.feedback.modular.attunement.Rites;
 import io.github.soundgoodizerfan.feedback.modular.bake.ModularTuning;
 import io.github.soundgoodizerfan.feedback.modular.bench.ForgeRhythm;
 import io.github.soundgoodizerfan.feedback.modular.part.ModularPartItem;
@@ -38,7 +38,9 @@ import net.minecraft.world.item.ItemStack;
 /**
  * The Enchanting Table's menu ({@code docs/specs/feedback_enchanting_spec.md} 4): one slot for a hot shaped part, the
  * player's inventory, and the attuning game ({@link EnchantGame}) the screen plays against it. Like the vanilla table
- * the slot is the table's block entity container, so the part stays on the table when the screen closes.
+ * the slot is the table's block entity container, so the part stays on the table when the screen closes. The room around the table
+ * ({@link Rites.Library}) is read when the screen opens and again on Begin and Finish: the rites on its shelves say which effects can be
+ * attempted and to what level, its power takes experience off and widens the band.
  *
  * <p>shortcut: one slot and no reagent. The spec's reagent slot waits on its [OPEN] questions; the cost is
  * {@link ModularTuning#ENCHANT_XP_COST} of experience, drawn from a Creative XP source beside the table (nothing else
@@ -52,14 +54,17 @@ public class EnchantMenu extends AbstractContainerMenu {
     private final Container part;
     private final ContainerLevelAccess access;
     private final Player player;
+    /** The room as it was when the screen opened: shelf power and the rites on the shelves. The server reads it again when it matters. */
+    private final Rites.Library library;
 
-    /** Client-side open. */
-    public EnchantMenu(int id, Inventory inventory) {
-        this(id, inventory, ContainerLevelAccess.NULL, new SimpleContainer(1));
+    /** Client-side open: the room the server sent. */
+    public EnchantMenu(int id, Inventory inventory, Rites.Library library) {
+        this(id, inventory, ContainerLevelAccess.NULL, new SimpleContainer(1), library);
     }
 
-    public EnchantMenu(int id, Inventory inventory, ContainerLevelAccess access, Container part) {
+    public EnchantMenu(int id, Inventory inventory, ContainerLevelAccess access, Container part, Rites.Library library) {
         super(FMenus.ENCHANT.get(), id);
+        this.library = library;
         this.part = part;
         this.access = access;
         this.player = inventory.player;
@@ -83,6 +88,16 @@ public class EnchantMenu extends AbstractContainerMenu {
 
     public ItemStack part() {
         return part.getItem(0);
+    }
+
+    /** The room as the screen opened it: what it may attempt and how fitted it is. */
+    public Rites.Library library() {
+        return library;
+    }
+
+    /** The room now, as the server reads it (a shelf may have been emptied since the screen opened); the opening copy on a client. */
+    private Rites.Library room() {
+        return access.evaluate((level, pos) -> Rites.scan(level, pos)).orElse(library);
     }
 
     /**
@@ -207,28 +222,17 @@ public class EnchantMenu extends AbstractContainerMenu {
         if (m == null || !Attunements.get().effects().containsKey(effect))
             return;
         float temperature = EnchantGame.start(m.attuning(), ItemHeat.get(part(), server.level()).value());
-        int owed = price(server, Attunements.get().effects().get(effect), EnchantGame.cost(m.attuning(), temperature));
-        if (attuned(effect)) {
+        Rites.Library room = room();
+        Attunements.Effect named = Attunements.get().effects().get(effect);
+        int owed = Math.max(1, Math.round(price(server, named, EnchantGame.cost(m.attuning(), temperature)) * room.costFactor()));
+        if (room.top(named) <= 0) {
+            say(server, "no_rite");
+        } else if (attuned(effect)) {
             say(server, "attuned");
-        } else if (!server.isCreative() && tap(owed) == null && run(owed) == null && server.totalExperience < owed) {
+        } else if (!server.isCreative() && tap(owed) == null && run(owed) == null && io.github.soundgoodizerfan.feedback.modular.research.Researching.points(server) < owed) {
             say(server, "xp");
         } else
             EnchantGame.begin(server.getUUID(), new EnchantGame.Session(effect, server.level().getGameTime(), temperature));
-    }
-
-    /** The player studied an attuned part: an effect it already holds, which they did not know, is learned for nothing. */
-    public void study(ServerPlayer server, ResourceLocation effect) {
-        Attunements.Effect e = Attunements.get().effects().get(effect);
-        MadeOf made = part().get(FDataComponents.MADE_OF.get());
-        if (e == null || made == null || !made.measures().attuned().containsKey(e.key())) {
-            say(server, "nothing_to_study");
-            return;
-        }
-        if (AttunementKnowledge.learn(server, e))
-            server.displayClientMessage(Component.translatable("message.feedback.book.learned",
-                    Component.translatable("attunement.feedback." + e.id().getPath())), false);
-        else
-            say(server, "known");
     }
 
     /** The pen the player held, tick by tick: replay it, judge it, and mark the part. Never trusts a client result. */
@@ -250,8 +254,14 @@ public class EnchantMenu extends AbstractContainerMenu {
                 <= ThermalTuning.ITEM_COOLING_TU_PER_TICK.tuPerTick() * ModularTuning.ENCHANT_TICK_SLACK ? start : session.temperature();
         List<Integer> played = EnchantGame.bounded(samples);
         Sigil.Result result = Sigil.run(m.attuning(), temperature, Sigil.word(e), played);
-        EnchantGame.Verdict verdict = EnchantGame.judge(e, EnchantGame.level(m), result.accuracy(), result.negative(), result.reached());
-        int cost = price(server, e, EnchantGame.cost(m.attuning(), session.temperature()));
+        Rites.Library room = room();
+        int top = room.top(e);
+        if (top <= 0) {
+            say(server, "no_rite");
+            return;
+        }
+        EnchantGame.Verdict verdict = EnchantGame.judge(e, top, room.bandFactor(), result.accuracy(), result.negative(), result.reached());
+        int cost = Math.max(1, Math.round(price(server, e, EnchantGame.cost(m.attuning(), session.temperature())) * room.costFactor()));
         // The potion reagent is burned with the session, whatever the outcome; the empty bottle comes back.
         int reagent = reagentSlot(server, e);
         if (reagent >= 0) {
@@ -277,10 +287,6 @@ public class EnchantMenu extends AbstractContainerMenu {
                 Math.min(ForgeRhythm.MAX_FLAW, made.flaw() + verdict.flaw()), made.measures().withAttuned(e.key(), verdict.level())));
         broadcastChanges();
         say(server, verdict.flaw() > 0 ? "flawed" : "clean");
-        // A clean attempt at an effect you did not know teaches it: discovery ends in knowing.
-        if (verdict.flaw() == 0 && AttunementKnowledge.learn(server, e))
-            server.displayClientMessage(Component.translatable("message.feedback.book.learned",
-                    Component.translatable("attunement.feedback." + e.id().getPath())), false);
     }
 
     @Override

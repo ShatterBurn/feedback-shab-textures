@@ -68,6 +68,9 @@ public final class ModularConvert {
     public static boolean convertible(ItemStack stack) {
         if (stack.isEmpty() || stack.getItem() instanceof Modular || ModularStacks.design(stack) != null)
             return false;
+        // A vanilla enchanted book is a rite, when an attunement names something it holds.
+        if (io.github.soundgoodizerfan.feedback.modular.attunement.Rites.convertibleBook(stack))
+            return io.github.soundgoodizerfan.feedback.modular.attunement.Rites.fromBook(stack).isPresent();
         Optional<Material.Located> found = locate(stack.getItem());
         return found.isPresent() && (typeFor(found.get()) != null || partItem(stack.getItem(), found.get()) != null);
     }
@@ -118,6 +121,8 @@ public final class ModularConvert {
     public static ItemStack convert(ItemStack vanilla, long salt, boolean roll) {
         if (!convertible(vanilla))
             return vanilla;
+        if (io.github.soundgoodizerfan.feedback.modular.attunement.Rites.convertibleBook(vanilla))
+            return io.github.soundgoodizerfan.feedback.modular.attunement.Rites.fromBook(vanilla).orElse(vanilla);
         Material.Located located = locate(vanilla.getItem()).get();
         Item partItem = partItem(vanilla.getItem(), located);
         if (partItem != null) {
@@ -193,8 +198,14 @@ public final class ModularConvert {
             }
             parts = mapped;
         }
+        // What vanilla enchanted it with becomes attunements on the parts that do most with them; the vanilla enchantments go, so nothing counts twice.
+        net.minecraft.world.item.enchantment.ItemEnchantments enchants = vanilla.getOrDefault(net.minecraft.core.component.DataComponents.ENCHANTMENTS,
+                net.minecraft.world.item.enchantment.ItemEnchantments.EMPTY);
+        if (!enchants.isEmpty() && types.get(target) != null)
+            parts = io.github.soundgoodizerfan.feedback.modular.attunement.Rites.attuneConverted(parts, types.get(target), enchants, materials);
         ItemStack out = new ItemStack(BuiltInRegistries.ITEM.get(target), vanilla.getCount());
         out.applyComponents(vanilla.getComponentsPatch());
+        out.remove(net.minecraft.core.component.DataComponents.ENCHANTMENTS);
         out.remove(net.minecraft.core.component.DataComponents.MAX_DAMAGE);
         float worn = vanilla.isDamageableItem() ? vanilla.getDamageValue() / (float) vanilla.getMaxDamage() : 0f;
         out.remove(net.minecraft.core.component.DataComponents.DAMAGE);

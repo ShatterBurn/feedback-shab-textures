@@ -7,7 +7,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.OptionalDouble;
 
-import io.github.soundgoodizerfan.feedback.modular.attunement.AttunementKnowledge;
 import io.github.soundgoodizerfan.feedback.modular.attunement.Attunements;
 import io.github.soundgoodizerfan.feedback.modular.bake.ModularTuning;
 import io.github.soundgoodizerfan.feedback.modular.item.ModularStacks;
@@ -48,19 +47,16 @@ public final class Researching {
         return all.get(Math.floorMod(index, all.size()));
     }
 
-    /** The attunements {@code player} has not learned and that are not starters, by id. */
-    public static List<Attunements.Effect> unknown(Player player) {
-        List<Attunements.Effect> out = new ArrayList<>();
-        for (Attunements.Effect e : Attunements.get().effects().values())
-            if (!AttunementKnowledge.knows(player, e))
-                out.add(e);
+    /** Every attunement, by id: any of them can be researched into a rite, again and again, for a better one. */
+    public static List<Attunements.Effect> effects() {
+        List<Attunements.Effect> out = new ArrayList<>(Attunements.known().values());
         out.sort(Comparator.comparing(e -> e.id().toString()));
         return out;
     }
 
     /** How many things there are to pick between in {@code mode} (0 volumes, 1 attunements). */
-    public static int count(Player player, int mode) {
-        return mode == 0 ? volumes().size() : unknown(player).size();
+    public static int count(int mode) {
+        return mode == 0 ? volumes().size() : effects().size();
     }
 
     /** The plan for the {@code index}-th thing of {@code mode}, or null when there is none loaded. */

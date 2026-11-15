@@ -4,7 +4,7 @@ package io.github.soundgoodizerfan.feedback.modular.research;
 
 import java.util.List;
 
-import io.github.soundgoodizerfan.feedback.modular.attunement.AttunementKnowledge;
+import io.github.soundgoodizerfan.feedback.modular.attunement.Rites;
 import io.github.soundgoodizerfan.feedback.modular.bake.ModularTuning;
 import io.github.soundgoodizerfan.feedback.modular.engineering.EngineeringAssembly;
 import io.github.soundgoodizerfan.feedback.modular.engineering.TreatiseGame;
@@ -46,7 +46,7 @@ public class ResearchTableMenu extends AbstractContainerMenu {
     public static final int NOTE_NONE = 0, NOTE_NO_BLANK = 1, NOTE_NO_SPECIMEN = 2, NOTE_NO_XP = 3, NOTE_NOTHING = 4, NOTE_WRITTEN = 5, NOTE_LEARNED = 6,
             NOTE_NO_EARLIER = 7, NOTE_NO_PLAN = 8, NOTE_NO_OFFERING = 9;
 
-    public static final int W = 304, H = 298, PAGE_X = 156, BLANK_X = 160, SPECIMEN_X = 214, SLOT_Y = 170, INV_X = 71, INV_Y = 212;
+    public static final int W = 304, H = 298, PAGE_X = 156, BLANK_X = 160, SPECIMEN_X = 214, RITE_X = 268, SLOT_Y = 170, INV_X = 71, INV_Y = 212;
 
     private final Container table;
     private final DataSlot mode = DataSlot.standalone(), index = DataSlot.standalone(), note = DataSlot.standalone();
@@ -129,6 +129,22 @@ public class ResearchTableMenu extends AbstractContainerMenu {
                 return 1;
             }
         });
+        addSlot(new Slot(table, ResearchTableBlockEntity.BLANK_RITE, RITE_X, SLOT_Y) {
+            @Override
+            public boolean isActive() {
+                return mode.get() == 1;
+            }
+
+            @Override
+            public boolean mayPlace(ItemStack s) {
+                return s.is(FModular.BLANK_RITE.get());
+            }
+
+            @Override
+            public int getMaxStackSize() {
+                return 1;
+            }
+        });
         for (int row = 0; row < 3; row++)
             for (int column = 0; column < 9; column++)
                 addSlot(new Slot(inventory, column + row * 9 + 9, INV_X + column * 18, INV_Y + row * 18));
@@ -157,15 +173,17 @@ public class ResearchTableMenu extends AbstractContainerMenu {
 
     /** The attunement picked in attunement mode (the table has checked there is one). */
     private io.github.soundgoodizerfan.feedback.modular.attunement.Attunements.Effect effect(ServerPlayer server) {
-        var list = Researching.unknown(server);
+        var list = Researching.effects();
         return list.get(Math.floorMod(index.get(), list.size()));
     }
 
     /** 0 when a run can start, else the note. */
     private int ready(ServerPlayer server) {
-        if (Researching.count(server, mode.get()) == 0)
+        if (Researching.count(mode.get()) == 0)
             return NOTE_NOTHING;
         if (mode.get() == 0 && !table.getItem(ResearchTableBlockEntity.BLANK).is(FModular.BLANK_TREATISE.get()))
+            return NOTE_NO_BLANK;
+        if (mode.get() == 1 && !table.getItem(ResearchTableBlockEntity.BLANK_RITE).is(FModular.BLANK_RITE.get()))
             return NOTE_NO_BLANK;
         if (Researching.plan(mode.get(), index.get()) == null)
             return NOTE_NO_PLAN;
@@ -192,7 +210,7 @@ public class ResearchTableMenu extends AbstractContainerMenu {
             return true;
         }
         if (id >= BTN_PICK) {
-            int count = Researching.count(server, mode.get());
+            int count = Researching.count(mode.get());
             if (id - BTN_PICK < count) {
                 index.set(id - BTN_PICK);
                 note.set(0);
@@ -266,12 +284,11 @@ public class ResearchTableMenu extends AbstractContainerMenu {
             HudReadoutPayload.send(server, Component.translatable("message.feedback.treatise.written", Component.translatable(school.itemKey(v[1]))), 60);
             note.set(NOTE_WRITTEN);
         } else {
-            List<io.github.soundgoodizerfan.feedback.modular.attunement.Attunements.Effect> list = Researching.unknown(server);
+            List<io.github.soundgoodizerfan.feedback.modular.attunement.Attunements.Effect> list = Researching.effects();
             var effect = list.get(Math.floorMod(sentIndex, list.size()));
-            AttunementKnowledge.learn(server, effect);
+            table.setItem(ResearchTableBlockEntity.BLANK_RITE, Rites.of(effect.id(), quality));
             HudReadoutPayload.send(server, Component.translatable("message.feedback.research.learned", Component.translatable("attunement.feedback." + effect.id().getPath())), 60);
             note.set(NOTE_LEARNED);
-            index.set(0);
         }
         table.setChanged();
         broadcastChanges();

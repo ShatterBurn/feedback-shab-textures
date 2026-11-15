@@ -188,7 +188,7 @@ public final class FCommands {
                         .executes(c -> run.run(c, net.minecraft.commands.arguments.EntityArgument.getPlayers(c, "players"))));
     }
 
-    /** Testing: {@code learn} / {@code unlearn} an attunement or a potion effect node by name, or {@code all} of either. */
+    /** Testing: {@code learn} gives a perfect rite of an attunement or teaches a potion effect node by name, or {@code all} of either; {@code unlearn} forgets potion nodes. */
     private static com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> knowledge(String name, boolean learn) {
         var attunement = Commands.literal("attunement")
                 .then(targets(Commands.literal("all"), (c, ps) -> attunements(c, ps, null, learn)))
@@ -201,7 +201,7 @@ public final class FCommands {
                 .then(targets(Commands.argument("name", StringArgumentType.word())
                         .suggests((c, b) -> SharedSuggestionProvider.suggest(potionNodes().stream().map(ResourceLocation::getPath), b)),
                         (c, ps) -> potions(c, ps, StringArgumentType.getString(c, "name"), learn)));
-        return Commands.literal(name).then(attunement).then(potion);
+        return learn ? Commands.literal(name).then(attunement).then(potion) : Commands.literal(name).then(potion);
     }
 
     private static List<ResourceLocation> potionNodes() {
@@ -217,13 +217,10 @@ public final class FCommands {
         var picked = all.stream().filter(e -> named == null || e.id().getPath().equals(named)).toList();
         if (picked.isEmpty())
             throw new SimpleCommandExceptionType(Component.translatable("commands.feedback.no_such", named)).create();
+        // Testing: "learn" hands over a perfect rite of the effect; there is nothing learned on a player to forget.
         for (ServerPlayer p : players)
-            for (var e : picked) {
-                if (learn)
-                    io.github.soundgoodizerfan.feedback.modular.attunement.AttunementKnowledge.learn(p, e);
-                else
-                    io.github.soundgoodizerfan.feedback.modular.attunement.AttunementKnowledge.forget(p, e);
-            }
+            for (var e : picked)
+                p.getInventory().placeItemBackInInventory(io.github.soundgoodizerfan.feedback.modular.attunement.Rites.of(e.id(), 1f));
         return done(c, players, "attunement " + (named == null ? "all" : named), learn);
     }
 

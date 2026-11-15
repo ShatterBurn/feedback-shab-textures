@@ -374,6 +374,11 @@ public final class FModular {
 
     /** Paper that becomes a school's treatise when a specimen of that school is taken apart onto it. */
     public static final DeferredItem<Item> BLANK_TREATISE = ITEMS.registerSimpleItem("blank_treatise", new Item.Properties().stacksTo(1));
+    /** Paper that becomes a rite when an attunement is researched onto it at the Research Table. */
+    public static final DeferredItem<Item> BLANK_RITE = ITEMS.registerSimpleItem("blank_rite", new Item.Properties().stacksTo(16));
+    /** A rite: one attunement and the quality of its notes. Shelved in a chiseled bookshelf by an Enchanting Table; kept, never used up. */
+    public static final DeferredItem<io.github.soundgoodizerfan.feedback.modular.attunement.RiteItem> RITE = ITEMS.register("rite",
+            () -> new io.github.soundgoodizerfan.feedback.modular.attunement.RiteItem(new Item.Properties().stacksTo(1)));
     /** Every volume of every treatise at once, later ones included: operator tab only. */
     public static final DeferredItem<io.github.soundgoodizerfan.feedback.modular.treatise.CreativeTreatiseItem> CREATIVE_TREATISE = ITEMS.register("creative_treatise",
             () -> new io.github.soundgoodizerfan.feedback.modular.treatise.CreativeTreatiseItem(new Item.Properties().stacksTo(1)));

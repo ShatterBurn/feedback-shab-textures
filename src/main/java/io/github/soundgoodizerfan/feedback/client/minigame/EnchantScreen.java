@@ -72,7 +72,7 @@ public class EnchantScreen extends SkinnedScreen<EnchantMenu> {
 
     private final List<Attunements.Effect> effects = new ArrayList<>(Attunements.known().values());
     private int chosen = -1, scroll;
-    private Button begin, commit, study;
+    private Button begin, commit;
 
     private boolean playing;
     private float startTemperature;
@@ -126,12 +126,6 @@ public class EnchantScreen extends SkinnedScreen<EnchantMenu> {
         commit = addRenderableWidget(GuiStyle.button(skin, Component.translatable("gui.feedback.enchant.commit"), b -> finish(),
                 leftPos + BTN_X, topPos + BTN_Y, BTN_W, 14));
         commit.visible = false;
-        study = addRenderableWidget(GuiStyle.primary(skin, Component.translatable("gui.feedback.enchant.study"), b -> {
-            Attunements.Effect e = effect();
-            if (e != null)
-                PacketDistributor.sendToServer(new io.github.soundgoodizerfan.feedback.net.EnchantStudyPayload(menu.containerId, e.id()));
-        }, leftPos + BTN_X, topPos + BTN_Y, BTN_W, 14, FSounds.UI_STAMP::get));
-        study.visible = false;
         flipBox = addRenderableWidget(GuiStyle.checkbox(skin, Component.translatable("gui.feedback.enchant.flip"), () -> flip,
                 b -> flip = !flip, leftPos + SCOPE_X + 3, topPos + SCOPE_Y + SCOPE_H - 14, 40));
         flipBox.visible = false;
@@ -141,17 +135,17 @@ public class EnchantScreen extends SkinnedScreen<EnchantMenu> {
         return chosen < 0 || chosen >= effects.size() ? null : effects.get(chosen);
     }
 
-    /** Whether the player may attempt this effect with its guide: a starter, or one learned. */
+    /** Whether this effect can be attempted here: a starter, or one with a rite on a shelf by the table. */
     private boolean known(Attunements.Effect e) {
-        return minecraft != null && minecraft.player != null && io.github.soundgoodizerfan.feedback.modular.attunement.AttunementKnowledge.knows(minecraft.player, e);
+        return menu.library().top(e) > 0;
     }
 
-    /** What the list and the pad call an effect: its name, or a blank until the player knows it. */
+    /** What the list and the pad call an effect: its name, or a blank while no rite of it is shelved. */
     private Component shown(Attunements.Effect e) {
         return known(e) ? labelOf(e) : Component.translatable("gui.feedback.enchant.unknown");
     }
 
-    /** The chosen effect is one the player has not learned: no guide on the pad, no description. */
+    /** The chosen effect has no rite here: no guide on the pad, no description. */
     private boolean blind() {
         Attunements.Effect e = effect();
         return e != null && !known(e);
@@ -257,7 +251,8 @@ public class EnchantScreen extends SkinnedScreen<EnchantMenu> {
     /** What a session would cost now: from the part's heat when it is seated, else the full price. */
     private int cost() {
         Material.Attuning p = attuning();
-        return p == null ? ModularTuning.ENCHANT_XP_COST.value() : EnchantGame.cost(p, playing ? startTemperature : heat());
+        int base = p == null ? ModularTuning.ENCHANT_XP_COST.value() : EnchantGame.cost(p, playing ? startTemperature : heat());
+        return Math.max(1, Math.round(base * menu.library().costFactor()));
     }
 
     private String why() {
@@ -269,6 +264,8 @@ public class EnchantScreen extends SkinnedScreen<EnchantMenu> {
         Attunements.Effect e = effect();
         if (e == null)
             return "pick";
+        if (!known(e))
+            return "no_rite";
         if (menu.attuned(e.id()))
             return "attuned";
         return "ready";
@@ -287,11 +284,11 @@ public class EnchantScreen extends SkinnedScreen<EnchantMenu> {
         Material.Attuning p = attuning();
         Attunements.Effect e = effect();
         boolean paid = minecraft.player != null && (minecraft.player.isCreative()
-                || minecraft.player.totalExperience >= cost());
+                || io.github.soundgoodizerfan.feedback.modular.research.Researching.points(minecraft.player) >= cost());
         return new int[] {
                 p != null ? 1 : 0,
                 p == null ? 0 : EnchantGame.held(p, playing ? startTemperature : heat()) ? 0 : 1,
-                e == null ? 0 : menu.attuned(e.id()) ? 2 : 1,
+                e == null ? 0 : !known(e) || menu.attuned(e.id()) ? 2 : 1,
                 paid ? 1 : 0};
     }
 
@@ -340,7 +337,7 @@ public class EnchantScreen extends SkinnedScreen<EnchantMenu> {
         Sigil.Result r = pen.result();
         for (int i = 0; i < word.length(); i++)
             accuracy[i] = Math.max(pen.letterAccuracy(i, false), pen.letterAccuracy(i, true));
-        EnchantGame.Verdict v = EnchantGame.judge(e, EnchantGame.level(m), r.accuracy(), r.negative(), r.reached());
+        EnchantGame.Verdict v = EnchantGame.judge(e, Math.max(1, menu.library().top(e)), menu.library().bandFactor(), r.accuracy(), r.negative(), r.reached());
         result = v.none() ? "screen.feedback.enchant.result.none" : v.flaw() > 0 ? "screen.feedback.enchant.result.flawed"
                 : "screen.feedback.enchant.result.clean";
         resultLevel = v.level();
@@ -414,8 +411,7 @@ public class EnchantScreen extends SkinnedScreen<EnchantMenu> {
                     (r.nextFloat() - 0.5f) * 0.3f, -0.35f - r.nextFloat() * 0.3f, ready ? GOLD_HI : VIOLET, 40, 1);
         }
         Attunements.Effect picked = effect();
-        study.visible = !playing && picked != null && owned(picked) && !known(picked);
-        begin.visible = !playing && !study.visible;
+        begin.visible = !playing;
         begin.active = !playing && why().equals("ready");
         commit.visible = playing;
         flipBox.visible = effect() != null && effect().hasMirror();
@@ -809,6 +805,15 @@ public class EnchantScreen extends SkinnedScreen<EnchantMenu> {
             g.renderTooltip(font, Component.translatable("gui.feedback.enchant.tip.heat"), mouseX, mouseY);
     }
 
+    /** The room in a line: its fitting (what it takes off the price) and the highest level the chosen effect's rite allows. */
+    private Component room(Attunements.Effect e) {
+        var lib = menu.library();
+        int off = Math.round((1f - lib.costFactor()) * 100f);
+        if (e == null || !known(e))
+            return Component.translatable("gui.feedback.enchant.room", off);
+        return Component.translatable("gui.feedback.enchant.room.rite", off, lib.top(e));
+    }
+
     @Override
     protected void renderLabels(GuiGraphics g, int mouseX, int mouseY) {
         super.renderLabels(g, mouseX, mouseY);
@@ -820,6 +825,7 @@ public class EnchantScreen extends SkinnedScreen<EnchantMenu> {
         Attunements.Effect e = effect();
         g.drawString(font, e == null ? Component.translatable("gui.feedback.enchant.no_effect").getString() : font.plainSubstrByWidth(shown(e).getString(), SCOPE_W - 4),
                 SCOPE_X + 2, SCOPE_Y - 11, e == null ? skin.dim() : skin.accent(), false);
+        g.drawString(font, room(e), PIP_X, PIP_Y + 8, skin.dim(), false);
         g.drawString(font, Component.translatable("gui.feedback.enchant.heat"), HEAT_X + HEAT_W / 2 - font.width(Component.translatable("gui.feedback.enchant.heat")) / 2,
                 SCOPE_Y - 11, skin.dim(), false);
     }

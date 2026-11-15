@@ -39,7 +39,7 @@ public class ResearchTableScreen extends SkinnedScreen<ResearchTableMenu> {
 
     private int tabMode = -1, scroll, descIndex = -1, descMode = -1;
     private List<FormattedCharSequence> nameLines = List.of(), blurbLines = List.of(), hintLines = List.of();
-    private Component labelA = Component.empty(), labelB = Component.empty();
+    private Component labelA = Component.empty(), labelB = Component.empty(), labelC = Component.empty();
     private final int[] rowIndex = new int[16];
     private int rowsShown;
     private ItemStack[] icons;
@@ -106,7 +106,7 @@ public class ResearchTableScreen extends SkinnedScreen<ResearchTableMenu> {
             for (int[] v : Researching.volumes())
                 out.add(Component.translatable(School.values()[v[0]].itemKey(v[1])));
         } else
-            for (var e : Researching.unknown(minecraft.player))
+            for (var e : Researching.effects())
                 out.add(Component.translatable("attunement.feedback." + e.id().getPath()));
         return out;
     }
@@ -139,6 +139,7 @@ public class ResearchTableScreen extends SkinnedScreen<ResearchTableMenu> {
         hintLines = f.split(hint(), PAGE_W);
         labelA = Component.translatable(menu.mode() == 0 ? "gui.feedback.research_table.blank" : "gui.feedback.research_table.offering");
         labelB = Component.translatable(menu.mode() == 0 ? "gui.feedback.research_table.specimen" : "gui.feedback.research_table.reagent");
+        labelC = Component.translatable("gui.feedback.research_table.blank");
     }
 
     @Override
@@ -179,6 +180,8 @@ public class ResearchTableScreen extends SkinnedScreen<ResearchTableMenu> {
             ls.scrollbar(g, leftPos + LIST_X + LIST_W - 8, topPos + LIST_Y + 2, LIST_H - 4, names.size(), visible, scroll);
         skin.slot(g, leftPos + ResearchTableMenu.BLANK_X, topPos + ResearchTableMenu.SLOT_Y);
         skin.slot(g, leftPos + ResearchTableMenu.SPECIMEN_X, topPos + ResearchTableMenu.SLOT_Y);
+        if (menu.mode() == 1)
+            skin.slot(g, leftPos + ResearchTableMenu.RITE_X, topPos + ResearchTableMenu.SLOT_Y);
         inventory(g, ResearchTableMenu.INV_X, ResearchTableMenu.INV_Y);
     }
 
@@ -202,6 +205,8 @@ public class ResearchTableScreen extends SkinnedScreen<ResearchTableMenu> {
         }
         g.drawString(font, labelA, ResearchTableMenu.BLANK_X, ResearchTableMenu.SLOT_Y - 10, skin.dim(), false);
         g.drawString(font, labelB, ResearchTableMenu.SPECIMEN_X, ResearchTableMenu.SLOT_Y - 10, skin.dim(), false);
+        if (menu.mode() == 1)
+            g.drawString(font, labelC, ResearchTableMenu.RITE_X, ResearchTableMenu.SLOT_Y - 10, skin.dim(), false);
         int n = menu.note();
         if (n > 0) {
             boolean good = n == ResearchTableMenu.NOTE_WRITTEN || n == ResearchTableMenu.NOTE_LEARNED;
@@ -216,7 +221,7 @@ public class ResearchTableScreen extends SkinnedScreen<ResearchTableMenu> {
     /** Flavour: what the book is said to hold, then a silly line of what it has been used for. */
     private Component blurb() {
         if (menu.mode() == 1) {
-            var list = Researching.unknown(minecraft.player);
+            var list = Researching.effects();
             if (list.isEmpty())
                 return Component.translatable("gui.feedback.research_table.nothing");
             return Component.translatable("gui.feedback.research_table.blurb.attuned." + list.get(Math.floorMod(menu.index(), list.size())).id().getPath());
@@ -228,7 +233,7 @@ public class ResearchTableScreen extends SkinnedScreen<ResearchTableMenu> {
     /** What the research asks for. */
     private Component hint() {
         if (menu.mode() == 1) {
-            var list = Researching.unknown(minecraft.player);
+            var list = Researching.effects();
             if (list.isEmpty())
                 return Component.empty();
             Attunements.Effect e = list.get(Math.floorMod(menu.index(), list.size()));

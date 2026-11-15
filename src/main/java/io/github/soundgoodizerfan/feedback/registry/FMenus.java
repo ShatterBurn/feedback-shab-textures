@@ -80,10 +80,10 @@ public class FMenus {
             MENUS.register("blueprint_table",
                     () -> new MenuType<>(io.github.soundgoodizerfan.feedback.modular.blueprint.BlueprintTableMenu::new, FeatureFlags.VANILLA_SET));
 
-    /** Plain: the pad slot is synced as a slot, so the client needs nothing to open it. */
+    /** The pad slot is synced as a slot; the room (shelf power and the rites on them) is read when it opens and sent with it. */
     public static final DeferredHolder<MenuType<?>, MenuType<io.github.soundgoodizerfan.feedback.modular.enchant.EnchantMenu>> ENCHANT =
-            MENUS.register("enchanting",
-                    () -> new MenuType<>(io.github.soundgoodizerfan.feedback.modular.enchant.EnchantMenu::new, FeatureFlags.VANILLA_SET));
+            MENUS.register("enchanting", () -> IMenuTypeExtension.create((id, inv, buf) -> new io.github.soundgoodizerfan.feedback.modular.enchant.EnchantMenu(id, inv,
+                    io.github.soundgoodizerfan.feedback.modular.attunement.Rites.Library.STREAM_CODEC.decode(buf))));
 
     /** Plain: the basin's slots and pool are synced as slots and data. */
     public static final DeferredHolder<MenuType<?>, MenuType<io.github.soundgoodizerfan.feedback.machine.basin.CastingBasinMenu>> CASTING_BASIN =

@@ -192,23 +192,22 @@ public final class VillageEconomy {
         return Math.max(1, Math.round(g.price() * (1f - shift)));
     }
 
-    /** The stack a good puts in hand; an enchanted book carries the one enchantment the villager picked for the day. */
+    /** The stack a good puts in hand; an enchanted-book good is a rite of the one effect the villager picked for the day, at the quality a found rite has. */
     private static ItemStack stackFor(AbstractVillager m, Good g, int idx, long day) {
         if (g.blueprint().isPresent())
             return blueprint(g.blueprint().get());
         if (!g.enchantedBook())
             return g.stack();
         RandomSource rnd = RandomSource.create(m.getUUID().getLeastSignificantBits() ^ (day * 31L + idx));
-        Optional<HolderSet.Named<Enchantment>> tag = m.level().registryAccess().registryOrThrow(Registries.ENCHANTMENT).getTag(EnchantmentTags.TRADEABLE);
-        // The book is sold for what it teaches, so the pick is among the enchantments some attunement names; any tradeable one if none is.
-        List<Holder<Enchantment>> teaching = tag.map(t -> t.stream().filter(h -> h.unwrapKey().map(k -> io.github.soundgoodizerfan.feedback.modular.attunement.Attunements.get()
-                .effects().values().stream().anyMatch(e -> e.books().contains(k.location()))).orElse(false)).toList()).orElse(List.of());
-        Optional<Holder<Enchantment>> pick = !teaching.isEmpty() ? Optional.of(teaching.get(rnd.nextInt(teaching.size())))
-                : tag.flatMap(t -> t.getRandomElement(rnd));
-        if (pick.isEmpty())
+        // The starters need no rite to reach level 1, so what is sold is the rest; any effect if there is no other.
+        List<io.github.soundgoodizerfan.feedback.modular.attunement.Attunements.Effect> sold = io.github.soundgoodizerfan.feedback.modular.attunement.Attunements.get().effects().values().stream()
+                .filter(e -> !e.starter()).toList();
+        if (sold.isEmpty())
+            sold = List.copyOf(io.github.soundgoodizerfan.feedback.modular.attunement.Attunements.get().effects().values());
+        if (sold.isEmpty())
             return new ItemStack(Items.BOOK);
-        Holder<Enchantment> e = pick.get();
-        return EnchantedBookItem.createForEnchantment(new EnchantmentInstance(e, 1 + rnd.nextInt(e.value().getMaxLevel())));
+        return io.github.soundgoodizerfan.feedback.modular.attunement.Rites.of(sold.get(rnd.nextInt(sold.size())).id(),
+                io.github.soundgoodizerfan.feedback.modular.bake.ModularTuning.RITE_FOUND_QUALITY);
     }
 
     // --- a hint ---

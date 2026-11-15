@@ -441,6 +441,12 @@ public class FDataComponents {
                     .networkSynchronized(io.github.soundgoodizerfan.feedback.process.FoodState.STREAM_CODEC)
                     .build());
 
+    /** A rite: the attunement it names and the quality of its notes -- see {@code modular/attunement/Rites}. */
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<io.github.soundgoodizerfan.feedback.modular.attunement.Rites.Rite>> RITE =
+            COMPONENTS.register("rite", () -> DataComponentType.<io.github.soundgoodizerfan.feedback.modular.attunement.Rites.Rite>builder()
+                    .persistent(io.github.soundgoodizerfan.feedback.modular.attunement.Rites.Rite.CODEC)
+                    .networkSynchronized(io.github.soundgoodizerfan.feedback.modular.attunement.Rites.Rite.STREAM_CODEC)
+                    .build());
     /** A bottle of potion's state -- see {@code potion/PotionState}. Absent is a dud draught. */
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<io.github.soundgoodizerfan.feedback.potion.PotionState>> POTION_STATE =
             COMPONENTS.register("potion_state", () -> DataComponentType.<io.github.soundgoodizerfan.feedback.potion.PotionState>builder()

@@ -98,7 +98,7 @@ public class FCreativeTabs {
             FModular.BOOTS, FItems.RESPIRATOR, FModular.SUIT_MODULE, FModular.BACKPACK, FModular.BED);
 
     /** Knowledge: blank, then written, then what holds it. */
-    private static final List<DeferredItem<?>> KNOWLEDGE = of(FModular.BLANK_TREATISE, FModular.BLUEPRINT,
+    private static final List<DeferredItem<?>> KNOWLEDGE = of(FModular.BLANK_TREATISE, FModular.BLANK_RITE, FModular.BLUEPRINT,
             FModular.BLUEPRINT_BOOK, FModular.TREATISE_BINDER, FItems.UNLEARNING_TOKEN);
 
     // ---- Weapons & Combat ----
@@ -333,6 +333,9 @@ public class FCreativeTabs {
         }
         all(out, WORN);
         all(out, KNOWLEDGE);
+        // One exact rite per attunement, so every effect can be tried at its top level.
+        io.github.soundgoodizerfan.feedback.modular.attunement.Attunements.known().values().stream().sorted(java.util.Comparator.comparing(e -> e.id().toString()))
+                .forEach(e -> out.accept(io.github.soundgoodizerfan.feedback.modular.attunement.Rites.of(e.id(), 1f)));
         unclaimedModular().forEach(out::accept);
     }
 

@@ -1,6 +1,6 @@
 # Research Table
 
-The Research Table is where what is not yet known is found out. It writes a [Blank Treatise](Treatise.md#blank-treatise) into a treatise volume, or teaches you an attunement you have not learned, by working out, on a board of linked concepts, how something you already have leads to the new idea.
+The Research Table is where what is not yet known is found out. It writes a [Blank Treatise](Treatise.md#blank-treatise) into a treatise volume, or writes a [Rite](Enchanting_Table.md#rites) for an attunement, by working out, on a board of linked concepts, how something you already have leads to the new idea.
 
 ## Crafting
 
@@ -16,7 +16,7 @@ P is paper, W is any plank, L is a lectern.
 
 The screen is an open book. The left page is a list with two tabs, **Treatises** and **Attunements**; each entry has a spinning icon. Click an entry to pick it. The right page shows the picked entry's two-line blurb, what it asks for, its slots and the **Research** button, which opens the research board and costs 40 experience points.
 
-A volume has a slot for one Blank Treatise and a slot for one **specimen**. An attunement has a slot for an **offering** and a slot for a **reagent**. The text on the right page says what is missing.
+A volume has a slot for one Blank Treatise and a slot for one **specimen**. An attunement has a slot for an **offering**, a slot for a **reagent** and a slot for a **Blank Rite**. The text on the right page says what is missing.
 
 ### Specimens
 
@@ -44,9 +44,13 @@ A volume after the first takes an item built from the volume before it, and that
 
 ### Attunements
 
-Each attunement is about one material property: hardness, toughness, strength, weight, heat resistance, conduction or heat capacity. Its power sets a bar. The **offering** is any stock of a material, and it must rank at least that far up the property among all materials; the screen calls the bar modest, good, fine or exceptional. The further the offering is over the bar, the more ink it gives, up to 4 extra. **Mend** is about toughness and asks for an offering in the top tenth of materials by toughness; a vanilla mending book teaches it too (see [Knowing an effect](Enchanting_Table.md#knowing-an-effect)).
+The tab lists every attunement, and any of them can be researched again and again. Each attunement is about one material property: hardness, toughness, strength, weight, heat resistance, conduction or heat capacity. Its power sets a bar. The **offering** is any stock of a material, and it must rank at least that far up the property among all materials; the screen calls the bar modest, good, fine or exceptional. The further the offering is over the bar, the more ink it gives, up to 4 extra. **Mend** is about toughness and asks for an offering in the top tenth of materials by toughness.
 
-The **reagent** is a brewed potion.
+The **reagent** is an optional brewed potion.
+
+### Blank Rite
+
+A Blank Rite is shapeless: 2 paper + lapis lazuli + ink sac. It is used up when the research writes the rite.
 
 Some attunements, Heat and Ward among them, name a potion. A brewed potion carrying the named effect, still potent, qualifies by itself and gives 3 ink, which makes the board easier. If the offering is not enough, the screen says it needs an offering that is good enough, or the potion it names.
 
@@ -80,10 +84,10 @@ On a volume, a few fizzles wear the specimen: it comes back worn and can be repa
 
 ## What comes out
 
-A treatise carries the quality as its notes. An attunement is simply learned. The experience is spent either way, and a scrawl still turns the Blank Treatise into the volume. Pressing Esc before closing the notebook spends nothing.
+A treatise carries the quality as its notes. An attunement gives a [Rite](Enchanting_Table.md#rites) whose quality is the research board's quality. The experience is spent either way, and a scrawl still turns the Blank Treatise into the volume. Pressing Esc before closing the notebook spends nothing.
 
 ## See also
 
 - [Treatise](Treatise.md): the volumes and the other ways to get one.
-- [Enchanting Table](Enchanting_Table.md#knowing-an-effect): knowing an attunement.
+- [Enchanting Table](Enchanting_Table.md#rites): shelving a rite to write its attunement.
 - [Engineering Table](Engineering_Table.md#treatise-tab): taking a specimen apart for a volume.

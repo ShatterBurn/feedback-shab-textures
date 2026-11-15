@@ -109,7 +109,7 @@ Each profession sells a short list for emeralds. Every line has a daily stock th
 
 Standing sets the price: good standing lowers prices by up to 30%, bad standing raises them by up to 50%.
 
-The cleric sells one enchanted book per day at a high price, and needs standing first.
+The cleric sells one [Rite](Enchanting_Table.md#rites) per day at a high price, and needs standing first.
 
 ### Blueprints
 

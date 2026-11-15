@@ -68,8 +68,11 @@ public class EnchantingTableBlock extends BaseEntityBlock {
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
         if (!level.isClientSide && level.getBlockEntity(pos) instanceof EnchantingTableBlockEntity table)
-            player.openMenu(new SimpleMenuProvider((id, inventory, p) -> new EnchantMenu(id, inventory, ContainerLevelAccess.create(level, pos), table),
-                    Component.translatable("block.feedback.enchanting_table")));
+        {
+            var library = io.github.soundgoodizerfan.feedback.modular.attunement.Rites.scan(level, pos);
+            player.openMenu(new SimpleMenuProvider((id, inventory, p) -> new EnchantMenu(id, inventory, ContainerLevelAccess.create(level, pos), table, library),
+                    Component.translatable("block.feedback.enchanting_table")), buf -> io.github.soundgoodizerfan.feedback.modular.attunement.Rites.Library.STREAM_CODEC.encode(buf, library));
+        }
         return InteractionResult.sidedSuccess(level.isClientSide);
     }
 }

@@ -58,8 +58,8 @@ public final class Attunements extends SimpleJsonResourceReloadListener {
      * @param roles  by the role's {@code name} in the type file (head, blade, handle, plate...).
      * @param mirror what the effect does on each role when P lands in the band at {@code -target} instead: the same
      *               coupling reversed. Empty means no mirror, and a landing below zero is a miss.
-     * @param starter every player knows this effect from the start ({@link AttunementKnowledge}).
-     * @param books   the vanilla enchantments whose enchanted book teaches this effect when read.
+     * @param starter needs no rite: it can be attuned to level 1 at any table ({@link Rites}).
+     * @param books   the vanilla enchantments this effect stands for: an enchanted book of one is a rite of it, and a vanilla tool carrying one is converted to it.
      * @param offering the material property research of this effect is about (hardness, toughness, yield, density, melting_point, conductivity or
      *                 specific_heat): an offering must rank at least {@code target} of the way up that property among materials ({@code Researching}).
      * @param reagent optional potion effect id: a bottle of that potion in the player's inventory is burned for the session and lowers its experience cost
@@ -149,8 +149,12 @@ public final class Attunements extends SimpleJsonResourceReloadListener {
         for (Map.Entry<String, Float> e : part.measures().attuned().entrySet()) {
             Effect effect = byKey(e.getKey());
             Behaviour b = effect == null ? null : effect.on(roleName, cls, e.getValue() < 0f);
-            if (b != null)
-                shift += b.flaw() * Math.abs(Math.round(e.getValue()));
+            if (b != null) {
+                // The flaw follows the level as the material gives it, the same level the effect acts at ({@link Rites#strength}).
+                var m = io.github.soundgoodizerfan.feedback.process.MaterialIngredient.materialsNow().get(part.material());
+                int level = Math.abs(Math.round(e.getValue()));
+                shift += b.flaw() * (m == null ? level : Math.max(1, Math.round(level * Rites.strength(m))));
+            }
         }
         return shift;
     }

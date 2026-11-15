@@ -75,7 +75,6 @@ public class Feedback {
         FCreativeTabs.register(modBus);
         FDataComponents.register(modBus);
         io.github.soundgoodizerfan.feedback.potion.PotionAttachments.register(modBus);
-        io.github.soundgoodizerfan.feedback.modular.attunement.AttunementKnowledge.register(modBus);
         io.github.soundgoodizerfan.feedback.modular.attunement.ReservoirKinds.registerAttachments(modBus);
         io.github.soundgoodizerfan.feedback.modular.attunement.GrudgeKinds.registerAttachments(modBus);
         FCapabilities.register(modBus);
@@ -241,9 +240,6 @@ public class Feedback {
                 .playToServer(io.github.soundgoodizerfan.feedback.control.programmer.ProgrammerActionPayload.TYPE,
                         io.github.soundgoodizerfan.feedback.control.programmer.ProgrammerActionPayload.STREAM_CODEC,
                         io.github.soundgoodizerfan.feedback.control.programmer.ProgrammerActionPayload::handle)
-                .playToServer(io.github.soundgoodizerfan.feedback.net.EnchantStudyPayload.TYPE,
-                        io.github.soundgoodizerfan.feedback.net.EnchantStudyPayload.STREAM_CODEC,
-                        io.github.soundgoodizerfan.feedback.net.EnchantStudyPayload::handle)
                 .playToServer(io.github.soundgoodizerfan.feedback.control.computer.ComputerActionPayload.TYPE,
                         io.github.soundgoodizerfan.feedback.control.computer.ComputerActionPayload.STREAM_CODEC,
                         io.github.soundgoodizerfan.feedback.control.computer.ComputerActionPayload::handle)

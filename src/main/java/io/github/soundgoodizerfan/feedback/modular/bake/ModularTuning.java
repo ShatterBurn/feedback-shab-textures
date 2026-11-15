@@ -765,8 +765,12 @@ public final class ModularTuning {
     public static final float ENCHANT_REAGENT_DISCOUNT = 0.5f;
     /** A part takes one attunement per this much enchantability, rounded up, at least one. */
     public static final int ENCHANT_PER_SLOT = 10;
-    /** A part's top level is 1 + enchantability / this, capped. */
-    public static final int ENCHANT_PER_LEVEL = 8, ENCHANT_MAX_LEVEL = 3;
+    /** Rites: the power count that is a fully fitted room (vanilla's best is 15), the share of the XP cost it takes off, how much wider it makes the word's band, and the quality a found or bought rite carries. */
+    public static final int RITE_POWER_FULL = 15;
+    public static final float RITE_POWER_COST_CUT = 0.4f, RITE_POWER_BAND_GAIN = 0.5f, RITE_FOUND_QUALITY = 0.5f, RITE_BOOK_QUALITY_SPREAD = 0.3f, RITE_BOOK_QUALITY_CAP = 0.8f;
+    /** The most a rite's quality lifts a level to (five bands, as treatise notes read), the enchantability a level of full strength needs, and the strength of a material with none of it. */
+    public static final int RITE_MAX_LEVEL = 5, RITE_STRENGTH_ENCHANTABILITY = 22;
+    public static final float RITE_STRENGTH_FLOOR = 0.5f;
     /** Flame a handle burns the wielder at when its material has no flame temperature of its own, Tu. */
     public static final float ENCHANT_BURN_FALLBACK_TU = 500f;
     /** Placeholder [OPEN]. The spread of an as-built axis around its aim, as a share of the axis's range: a clean forging, a hand-laid part, and a forging far off its work. */

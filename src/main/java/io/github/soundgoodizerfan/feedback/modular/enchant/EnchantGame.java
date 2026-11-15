@@ -52,12 +52,6 @@ public final class EnchantGame {
         return SESSIONS.remove(player);
     }
 
-    /** The most a part of {@code material} takes: 1 plus its enchantability over a step, capped. */
-    public static int level(Material material) {
-        return Math.min(ModularTuning.ENCHANT_MAX_LEVEL,
-                1 + material.enchantability().orElse(ModularTuning.ENCHANTABILITY_FALLBACK) / ModularTuning.ENCHANT_PER_LEVEL);
-    }
-
     /** How many attunements a part of {@code material} takes: one per step of enchantability, rounded up, at least one. */
     public static int capacity(Material material) {
         int e = material.enchantability().orElse(ModularTuning.ENCHANTABILITY_FALLBACK);
@@ -129,16 +123,17 @@ public final class EnchantGame {
      * philosophy 8). A word written reversed signs the level negative, the effect's mirror; an effect with no mirror
      * takes nothing there.
      */
-    public static Verdict judge(Attunements.Effect effect, int top, float accuracy, boolean negative, boolean reached) {
+    public static Verdict judge(Attunements.Effect effect, int top, float bandScale, float accuracy, boolean negative, boolean reached) {
+        float band = effect.band() * bandScale;
         float d = (1f - accuracy) * ModularTuning.ENCHANT_GRADE_SCALE;
-        if (!reached || accuracy <= 0f || (negative && !effect.hasMirror()) || d > 2f * effect.band())
+        if (!reached || accuracy <= 0f || (negative && !effect.hasMirror()) || d > 2f * band)
             return new Verdict(0, 0);
         int sign = negative ? -1 : 1;
-        if (d <= effect.band() / 2f)
+        if (d <= band / 2f)
             return new Verdict(sign * top, 0);
-        if (d <= effect.band())
+        if (d <= band)
             return new Verdict(sign * Math.max(1, top - 1), 0);
-        return new Verdict(sign * Math.max(1, top - 2), d <= 1.5f * effect.band() ? 1 : 2);
+        return new Verdict(sign * Math.max(1, top - 2), d <= 1.5f * band ? 1 : 2);
     }
 
     /** The samples of a finish payload as the server will replay them: bounded. */

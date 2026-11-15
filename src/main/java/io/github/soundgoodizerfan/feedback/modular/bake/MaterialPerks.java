@@ -75,6 +75,11 @@ public final class MaterialPerks {
         return out;
     }
 
+    /** A written level as the part's material gives it: the level times its strength ({@code Rites.strength}), at least 1; lead's level 3 is less than gold's. */
+    private static int strength(float level, Material m) {
+        return Math.max(1, Math.round(Math.abs(level) * io.github.soundgoodizerfan.feedback.modular.attunement.Rites.strength(m)));
+    }
+
     /** An attuned effect resolved for the role its part sits in: what it does there, how strong, and the part's material. */
     public record Attunement(String kind, int level, Material material) {}
 
@@ -95,7 +100,7 @@ public final class MaterialPerks {
                     Attunements.Behaviour b = effect == null ? null
                             : effect.on(io.github.soundgoodizerfan.feedback.machine.cutter.CutterHeadItem.ROLE, "working_face", e.getValue() < 0f);
                     if (b != null && !b.kind().isEmpty())
-                        out.add(new Attunement(b.kind(), Math.abs(Math.round(e.getValue())), m));
+                        out.add(new Attunement(b.kind(), strength(e.getValue(), m), m));
                 }
             return out;
         }
@@ -125,7 +130,7 @@ public final class MaterialPerks {
                 Attunements.Effect effect = Attunements.byKey(e.getKey());
                 Attunements.Behaviour b = effect == null ? null : effect.on(role.name(), role.cls(), e.getValue() < 0f);
                 if (b != null && !b.kind().isEmpty())
-                    out.add(new Attunement(b.kind(), Math.abs(Math.round(e.getValue())), m));
+                    out.add(new Attunement(b.kind(), strength(e.getValue(), m), m));
             }
         }
         return out;
