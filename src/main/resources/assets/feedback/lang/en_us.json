@@ -2785,6 +2785,7 @@
   "gui.feedback.blueprint_table.pin.tip": "Pin this draft. Each pinned draft puts a colored mark on every bar to compare against; up to three.",
   "gui.feedback.blueprint_table.unpin": "Click to open a pinned draft, Shift-click to drop it.",
   "gui.feedback.blueprint_table.moves": "Moves:",
+  "gui.feedback.blueprint_table.swap": "To %s",
   "gui.feedback.blueprint_table.page.shape": "Shape",
   "gui.feedback.blueprint_table.page.material": "Material",
   "gui.feedback.blueprint_table.rows.hint": "Hold Shift for the figure. Click to sort the materials by it: most, least, off.",
@@ -8824,5 +8825,8 @@
   "modular.feedback.fig.breath_drag.tip": "Share of sprint speed a filter takes off while the mask is worn. A deeper bed resists more.",
   "block.feedback.radiator_panel": "Radiator Panel",
   "item.feedback.radiator_panel": "Radiator Panel",
-  "feedback.jei.info.radiator_panel": "A plate that sheds heat from a vessel it touches where the air is thin or gone. In a vacuum a vessel keeps all its heat, so a panel is the only way it cools."
+  "feedback.jei.info.radiator_panel": "A plate that sheds heat from a vessel it touches where the air is thin or gone. In a vacuum a vessel keeps all its heat, so a panel is the only way it cools.",
+  "block.feedback.air_valve": "Air Valve",
+  "item.feedback.air_valve": "Air Valve",
+  "feedback.jei.info.air_valve": "A wall valve. Air from a pipe (or a compressed-air bucket) goes through it into the sealed cabin it opens on, topping up the air people breathe. A cabin with a hole loses air through it faster than a valve can supply."
 }

@@ -77,6 +77,7 @@ public class FCapabilities {
         // see FTuning's "--- the boiler ---" section.
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, FBlockEntities.FIREBOX.get(), (box, side) -> box.oxygenHandler());
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, FBlockEntities.GAS_CENTRIFUGE.get(), (c, side) -> c.handler());
+        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, FBlockEntities.AIR_VALVE.get(), (valve, side) -> valve.handler());
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, FBlockEntities.COOLANT_PORT.get(), (port, side) -> port.handler());
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, FBlockEntities.SPENT_FUEL_POOL.get(), (pool, side) -> pool.handler());
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, FBlockEntities.BOILER.get(),

@@ -26,4 +26,17 @@ public final class SpaceTuning {
     public static final float UNAIDED_BREATHABLE = 0.5f;
     /** Ticks between the warning cues (laboured breath, swimming head) while the air is too thin and nothing supplies it. */
     public static final int WARNING_INTERVAL = 40;
+
+    /** Cells a cabin's flood fill visits before it gives up and calls the volume open to space. */
+    public static final int CABIN_CELL_CAP = 4096;
+    /** mB of air a sealed cell of cabin holds. */
+    public static final float CABIN_AIR_MB_PER_CELL = 1000f;
+    /** mB of cabin air a person breathes each tick. */
+    public static final float CABIN_USE_MB_PER_TICK = 5f;
+    /** mB of cabin air each open face of the hull loses each tick, against a vacuum. */
+    public static final float CABIN_LEAK_MB_PER_HOLE_TICK = 10f;
+    /** Ticks between a person's cabin being scanned again for changes in its walls. */
+    public static final int CABIN_RESCAN_TICKS = 20;
+    /** mB an Air Valve holds. */
+    public static final int AIR_VALVE_TANK_MB = 2000;
 }

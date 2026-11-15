@@ -109,6 +109,9 @@ public final class HazardTuning {
 
     // --- radiation: every figure below is a placeholder ----------------------------
 
+    /** Placeholder. How far (blocks) each of the six rays of an ambient dose looks for a wall. */
+    public static final int AMBIENT_RAY_BLOCKS = 6;
+
     /** Placeholder. How far a block or a dropped item still counts toward a body's dose rate; a source gives 1 / (1 + d^2) of its figure. */
     public static final int RAD_REACH_BLOCKS = 5;
 

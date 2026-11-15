@@ -105,6 +105,19 @@ public final class Radiation {
         return sources(materials).getOrDefault(block.asItem(), 0f);
     }
 
+    /**
+     * The share of radiation from open sky that reaches the cell {@code centre}, 0 to 1: six rays along the axes, each through
+     * the blocks on it as {@link #through} weighs them, averaged. A cell walled in dense plate on all sides reads near 0; one open
+     * to the sky reads 1. {@code centre} is a cell of {@code level}'s own coordinates (a body's plot, for a person aboard).
+     */
+    public static float openShare(Level level, BlockPos centre, Map<ResourceLocation, Material> materials) {
+        Map<Item, Float> density = densities(materials);
+        float sum = 0f;
+        for (net.minecraft.core.Direction d : net.minecraft.core.Direction.values())
+            sum += through(level, centre, centre.relative(d, HazardTuning.AMBIENT_RAY_BLOCKS), density);
+        return sum / 6f;
+    }
+
     /** What a container lined with {@code lining} lets out, 0 to 1. */
     public static float containerShield(Material lining) {
         return 1f / (1f + HazardTuning.RAD_CONTAINER_GAIN * lining.density().muPerMb() / 10f);

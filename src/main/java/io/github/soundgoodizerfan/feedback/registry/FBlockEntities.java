@@ -557,6 +557,9 @@ public class FBlockEntities {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<io.github.soundgoodizerfan.feedback.machine.derrick.DerrickCasingBlockEntity>> DERRICK_CASING =
             BLOCK_ENTITIES.register("derrick_casing", () -> BlockEntityType.Builder
                     .of(io.github.soundgoodizerfan.feedback.machine.derrick.DerrickCasingBlockEntity::new, FBlocks.DERRICK_CASING.get()).build(null));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<io.github.soundgoodizerfan.feedback.space.AirValveBlockEntity>> AIR_VALVE =
+            BLOCK_ENTITIES.register("air_valve", () -> BlockEntityType.Builder
+                    .of(io.github.soundgoodizerfan.feedback.space.AirValveBlockEntity::new, FBlocks.AIR_VALVE.get()).build(null));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<io.github.soundgoodizerfan.feedback.machine.reactor.CoolantPortBlockEntity>> COOLANT_PORT =
             BLOCK_ENTITIES.register("coolant_port", () -> BlockEntityType.Builder
                     .of(io.github.soundgoodizerfan.feedback.machine.reactor.CoolantPortBlockEntity::new, FBlocks.COOLANT_PORT.get()).build(null));

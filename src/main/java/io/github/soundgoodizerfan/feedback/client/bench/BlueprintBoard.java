@@ -418,6 +418,8 @@ public final class BlueprintBoard {
 
     /** {@link #rows} and {@link #choice(String)} worked out once: every node, hover and panel asks each frame. Dropped by {@link #dirty} on any edit. */
     private List<String> rowsCache;
+    /** The options that could stand in for the selected part, worked out in {@link #build}. */
+    private List<String> swapKeys = List.of();
     private final Map<String, Optional<Material.Located>> choiceCache = new HashMap<>();
 
     private void dirty() {
@@ -563,6 +565,41 @@ public final class BlueprintBoard {
         Set<String> s = now();
         s.remove(key);
         return feasible(s);
+    }
+
+    /** The options that could stand in for {@code role} as it is now: each makes a sheet some form has (a gun's slide for a bolt). Empty for a part every build has. */
+    private List<String> swaps(String role) {
+        String key = role == null ? null : keyOf(role);
+        if (key == null || !hasMaterials(role))
+            return List.of();
+        Set<String> base = now();
+        base.remove(key);
+        return allKeys().stream().filter(k -> !roleOf(k).equals(role) && !base.contains(k)).filter(k -> {
+            Set<String> s = new LinkedHashSet<>(base);
+            s.add(k);
+            return feasible(s);
+        }).toList();
+    }
+
+    private Component swapLabel(String key) {
+        return Component.translatable("gui.feedback.blueprint_table.swap", roleName(roleOf(key)));
+    }
+
+    /** Takes {@code role} off and puts option {@code to} on in its place, the material carried over where the new part takes it. */
+    private void swap(String role, String to) {
+        GuiSkin.play(skin.click(), 1f);
+        change(() -> {
+            ResourceLocation mat = matId.get(role);
+            Set<String> on = now();
+            on.remove(keyOf(role));
+            on.add(to);
+            set(on);
+            String next = roleOf(to);
+            if (mat != null && materials(next).stream().anyMatch(l -> l.id().equals(mat)))
+                matId.put(next, mat);
+            selected = next;
+            fanFor = null;
+        });
     }
 
     /** The option a drawn role is, or null for a part every build of the type has. */
@@ -1688,6 +1725,7 @@ public final class BlueprintBoard {
             picker = widgetAdd(new ColourPicker(skin, font, ox + canvas.x() + canvas.w() - 82, oy + canvas.y() + 4, 78,
                     Component.translatable("gui.feedback.blueprint_table.beam_colour"), () -> colour, v -> colour = v));
         String role = t == null ? null : sel();
+        swapKeys = swaps(role);
         host.sampleWanted(role != null);
         if (role == null)
             return;
@@ -1701,6 +1739,14 @@ public final class BlueprintBoard {
                         swatchScroll.snap(0);
                         build();
                     }));
+        // Swap buttons sit left of the page tabs, right to left.
+        int bx = ox + call.x() + call.w() - 4 - TABS_W - 4;
+        for (String k : swapKeys) {
+            int w = font.width(swapLabel(k)) + 8;
+            bx -= w;
+            widgetAdd(GuiStyle.button(skin, swapLabel(k), b -> swap(role, k), bx, oy + panelY + 1, w, 13));
+            bx -= 2;
+        }
         boolean mat = matPage(role);
         int y = oy + panelY + 15;
         int x = ox + call.x() + 4;
@@ -2648,6 +2694,8 @@ public final class BlueprintBoard {
         } else {
             // The material's name sits between the part's name and the page tabs.
             int nx = x + 5 + font.width(roleName(role)) + 8, room = x + call.w() - 4 - TABS_W - 4 - nx;
+            for (String k : swapKeys)
+                room -= font.width(swapLabel(k)) + 10;
             if (room >= 24)
                 fit(g, name, nx, y + 4, room, skin.dim());
         }

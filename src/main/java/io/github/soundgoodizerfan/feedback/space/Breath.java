@@ -20,7 +20,7 @@ import top.theillusivec4.curios.api.CuriosApi;
  * Thin air hurts a person. Where what a lung finds ({@code AirDensityTable.breathable}) falls under
  * {@link SpaceTuning#UNAIDED_BREATHABLE} and no worn {@link BreathingGear} supplies air, the vanilla air bar drains and
  * then hurts as drowning does; before it does, a laboured breath and a swimming head say what is coming. Nothing is
- * instant, and putting the gear on late recovers. Reads the air table at the eyes, never the dimension. Players only.
+ * instant, and putting the gear on late recovers. A person in a sealed cabin with air ({@link Cabin}) breathes it first. Reads the air table at the eyes, never the dimension. Players only.
  */
 @EventBusSubscriber(modid = Feedback.MOD_ID)
 public final class Breath {
@@ -33,6 +33,8 @@ public final class Breath {
             return;
         float lung = AirDensityTable.breathable(p.level(), p.getEyeY());
         if (lung >= SpaceTuning.UNAIDED_BREATHABLE)
+            return;
+        if (Cabin.breathes(p, lung))
             return;
         var gear = CuriosApi.getCuriosInventory(p)
                 .flatMap(inv -> inv.findFirstCurio(s -> s.getItem() instanceof BreathingGear));

@@ -1279,6 +1279,9 @@ public class FBlocks {
     public static final DeferredBlock<io.github.soundgoodizerfan.feedback.weapon.ShockCapsuleBlock> SHOCK_CAPSULE = BLOCKS.register("shock_capsule",
             () -> new io.github.soundgoodizerfan.feedback.weapon.ShockCapsuleBlock(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(1.0f, 1.0f).sound(SoundType.METAL)));
     /** A plate that sheds a touching vessel's heat whatever the air: the way out in a vacuum ({@code core/thermal/AirCoupling}). */
+    /** A wall valve that lets air from a pipe into the cabin it opens on ({@code space/Cabin}). */
+    public static final DeferredBlock<io.github.soundgoodizerfan.feedback.space.AirValveBlock> AIR_VALVE = BLOCKS.register("air_valve",
+            () -> new io.github.soundgoodizerfan.feedback.space.AirValveBlock(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(3.0f, 5.0f).sound(SoundType.METAL)));
     public static final DeferredBlock<net.minecraft.world.level.block.Block> RADIATOR_PANEL = BLOCKS.register("radiator_panel",
             () -> new net.minecraft.world.level.block.Block(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(2.0f, 4.0f).sound(SoundType.METAL)));
     public static final DeferredBlock<io.github.soundgoodizerfan.feedback.machine.reactor.CoreSlagBlock> CORE_SLAG = BLOCKS.register("core_slag",
