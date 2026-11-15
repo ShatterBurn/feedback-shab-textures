@@ -46,7 +46,7 @@ public class RobotMastBlockEntity extends ElectricNode implements ChannelSource,
     private UUID robotId;
     @Nullable
     private RobotEntity robot;
-    private boolean jammed;
+    private boolean jammed, heard;
     private final BlockPos.MutableBlockPos scan = new BlockPos.MutableBlockPos();
 
     public RobotMastBlockEntity(BlockPos pos, BlockState state) {
@@ -79,7 +79,11 @@ public class RobotMastBlockEntity extends ElectricNode implements ChannelSource,
     }
 
     public void tickServer() {
-        if (level == null || robotId == null || level.getGameTime() % SCAN_TICKS != 0)
+        if (level == null || robotId == null)
+            return;
+        if (level.getGameTime() % 4 == 0)
+            watchLink();
+        if ((level.getGameTime() + worldPosition.hashCode()) % SCAN_TICKS != 0)
             return;
         if ((robot == null || robot.isRemoved()) && level instanceof ServerLevel server)
             robot = server.getEntity(robotId) instanceof RobotEntity r ? r : null;
@@ -89,6 +93,15 @@ public class RobotMastBlockEntity extends ElectricNode implements ChannelSource,
         }
         boolean shielded = shielded();
         jammed = (!shielded && noisy(worldPosition)) || noisy(robot.blockPosition());
+    }
+
+    /** Runs each tick: the moment the link is lost the robot lets go of every action, whether or not a Controller writes again. */
+    private void watchLink() {
+        boolean now = reach() != null;
+        if (heard && !now && robot != null && !robot.isRemoved())
+            for (RobotChannel c : ACTIONS)
+                robot.write(c.ordinal(), false);
+        heard = now;
     }
 
     private boolean shielded() {

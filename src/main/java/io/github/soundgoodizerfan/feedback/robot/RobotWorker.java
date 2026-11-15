@@ -199,9 +199,27 @@ public final class RobotWorker {
         if (!result.consumesAction())
             server.getBlockState(pos).useWithoutItem(server, fake, hit);
         ItemStack after = fake.getItemInHand(InteractionHand.MAIN_HAND);
+        fake.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
         if (slot >= 0)
             cargo.setItem(slot, after);
-        fake.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
+        else if (!after.isEmpty())
+            drain(b, after);
+        // whatever a use put in the fake's pockets (a bottle that came back filled) is the robot's, never the next robot's
+        var pockets = fake.getInventory();
+        for (int i = 0; i < pockets.getContainerSize(); i++) {
+            ItemStack got = pockets.getItem(i);
+            if (got.isEmpty())
+                continue;
+            pockets.setItem(i, ItemStack.EMPTY);
+            drain(b, got);
+        }
+    }
+
+    /** Puts a stack into the cargo; what does not fit lies on the ground ahead of the body. */
+    private static void drain(Body b, ItemStack stack) {
+        ItemStack left = b.cargo().addItem(stack);
+        if (!left.isEmpty())
+            b.level().addFreshEntity(new ItemEntity(b.level(), b.centre().x, b.centre().y + 0.3, b.centre().z, left));
     }
 
     private static net.neoforged.neoforge.common.util.FakePlayer actor(Body b, ServerLevel server) {
