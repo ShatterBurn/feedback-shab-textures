@@ -5,6 +5,8 @@
       "prop.diameter",
       "prop.blades",
       "prop.pitch",
+      "prop.rpm",
+      "prop.servo",
       "mass"
     ]
   },

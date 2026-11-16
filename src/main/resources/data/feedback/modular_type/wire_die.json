@@ -4,6 +4,7 @@
     "show": [
       "strike_st",
       "hardness",
+      "head.wear",
       "edge_toughness",
       "durability",
       "mass",

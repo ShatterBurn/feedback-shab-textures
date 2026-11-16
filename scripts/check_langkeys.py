@@ -13,7 +13,9 @@ def traits(v):
 J = pathlib.Path("src/main/java/io/github/soundgoodizerfan/feedback/modular")
 figs = set(re.findall(r"^\s+([A-Z][A-Z0-9_]*)[,;]", (J / "bake/ModularFigures.java").read_text().split("enum Fig {")[1].split("public static final int ATTACHMENTS")[0], re.M))
 figs |= {f"SUIT_{k}_{i}" for k in ("ATT", "POW", "ARG", "SUP") for i in range(1, 5)}  # declared several to a line
-uses = set(re.findall(r'"([a-z]+\.[a-z]+)"', (J / "type/ModularMeasures.java").read_text().split("USES = Set.of(")[1].split(");")[0]))
+_mm = (J / "type/ModularMeasures.java").read_text()
+uses = set(re.findall(r'"([a-z]+\.[a-z]+)"', _mm.split("USES = Set.of(")[1].split(");")[0]))
+uses |= set(re.findall(r'"([a-z]+\.[a-z]+)"', _mm.split("MACHINE_USES = Set.of(")[1].split(");")[0]))
 def measure(n, mid, where):
     """A measures id names a figure, a family number, a block figure or an axis, and each has its label."""
     if mid.startswith("block."):

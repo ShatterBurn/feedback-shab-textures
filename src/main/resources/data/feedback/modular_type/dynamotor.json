@@ -6,13 +6,11 @@
       "machine.amps",
       "machine.band",
       "machine.rpm",
+      "machine.loss",
+      "machine.heat",
+      "machine.shed",
       "mass"
-    ],
-    "addons": {
-      "K": [
-        "machine.heat"
-      ]
-    }
+    ]
   },
   "required": [
     "F",

@@ -2,7 +2,8 @@
   "family": "block",
   "measures": {
     "show": [
-      "block.Work",
+      "block.CoilPower",
+      "block.Rise",
       "block.Amps",
       "block.ServiceTu",
       "block.Mass"

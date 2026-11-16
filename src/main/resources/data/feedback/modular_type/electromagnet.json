@@ -4,7 +4,8 @@
     "show": [
       "block.Pull",
       "block.Range",
-      "block.Amps"
+      "block.Amps",
+      "block.Eaten"
     ]
   },
   "required": [

@@ -4,7 +4,7 @@
     "show": [
       "gearbox.low",
       "gearbox.top",
-      "gearbox.gears",
+      "gearbox.ratios",
       "gearbox.wear",
       "mass"
     ]

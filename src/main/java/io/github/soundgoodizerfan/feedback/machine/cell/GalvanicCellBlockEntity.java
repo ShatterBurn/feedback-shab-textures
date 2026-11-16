@@ -105,7 +105,7 @@ public class GalvanicCellBlockEntity extends ElectricNode {
 
     @Override
     public float sourceAmps() {
-        return figures.get("Amps", ElectricMachineTuning.GALVANIC_CELL_AMPS);
+        return figures.get("Supply", ElectricMachineTuning.GALVANIC_CELL_AMPS);
     }
 
     @Override

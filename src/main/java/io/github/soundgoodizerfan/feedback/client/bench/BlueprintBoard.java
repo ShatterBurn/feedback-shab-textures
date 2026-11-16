@@ -299,7 +299,7 @@ public final class BlueprintBoard {
     /** As {@link #sortFig}, but for one of the numbers under the figure bars (a pulse gun's hold, a tank's room, a band): the line's translation key; null for none. Only one of the two sorts at a time. */
     private String sortUse;
     /** Most uses lines under the figure bars. */
-    private static final int MAX_USES = 6;
+    private static final int MAX_USES = 8;
     private int hoverUse = -1;
     /** The would-be uses lines of a part in a material and shape, worked out once per edit. */
     private final Map<String, List<BenchUses.Use>> ghostUses = new HashMap<>();

@@ -43,6 +43,11 @@ public final class ModularMeasures {
             "prop.blades", "prop.diameter", "prop.pitch",
             "belt.grip", "belt.heat");
 
+    /** The numbers {@code client/bench/MachineUses} works out from a machine part's figures (derived: nothing is baked for them). */
+    public static final Set<String> MACHINE_USES = Set.of(
+            "tank.air", "tank.relief", "engine.fuels", "engine.fuel", "engine.plug", "gearbox.ratios",
+            "prop.rpm", "prop.servo", "belt.slope", "machine.loss", "machine.shed", "cell.amps", "cell.efficiency", "cell.cold", "head.wear");
+
     /** The prefixes of ids that name a figure outside the two lists above: a placed block's, and a part's axis. */
     public static final String BLOCK = "block.", AXIS = "axis.";
 
@@ -70,7 +75,7 @@ public final class ModularMeasures {
 
     /** Whether {@code id} names something the table can read: a figure, a family number, a block figure or an axis. */
     public static boolean known(String id) {
-        return fig(id).isPresent() || USES.contains(id) || id.startsWith(BLOCK) && id.length() > BLOCK.length() || id.startsWith(AXIS) && id.length() > AXIS.length();
+        return fig(id).isPresent() || USES.contains(id) || MACHINE_USES.contains(id) || id.startsWith(BLOCK) && id.length() > BLOCK.length() || id.startsWith(AXIS) && id.length() > AXIS.length();
     }
 
     /** Whether the type states what matters. A type that does not shows everything it bakes. */

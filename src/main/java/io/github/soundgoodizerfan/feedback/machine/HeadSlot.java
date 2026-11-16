@@ -113,8 +113,10 @@ public final class HeadSlot {
         if (head.isEmpty() || stAbsorbed <= 0)
             return false;
         int before = FTuning.conditionBand(condition());
-        // A soaking head turns some of the wear away, as it does on a tool.
-        head.set(FDataComponents.TOOL_CONDITION.get(), Math.max(floor, condition() - stAbsorbed * perSt * MachineKinds.wearShare(head)));
+        // A soaking head turns some of the wear away, as it does on a tool; a machine head's own edge toughness, durability, mass and
+        // corrosion resistance scale what each unit of misuse costs it (HeadWear).
+        head.set(FDataComponents.TOOL_CONDITION.get(), Math.max(floor,
+                condition() - stAbsorbed * perSt * MachineKinds.wearShare(head) * io.github.soundgoodizerfan.feedback.modular.bake.HeadWear.factor(head)));
         return FTuning.conditionBand(condition()) != before;
     }
 

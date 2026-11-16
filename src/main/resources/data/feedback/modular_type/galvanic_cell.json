@@ -2,8 +2,10 @@
   "family": "block",
   "measures": {
     "show": [
-      "block.AnodeEu",
-      "block.Amps"
+      "block.Supplies",
+      "block.Supply",
+      "block.Runs",
+      "block.AnodeEu"
     ]
   },
   "required": [

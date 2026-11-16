@@ -3,7 +3,9 @@
   "measures": {
     "show": [
       "block.Mass",
-      "block.Leak"
+      "block.Leak",
+      "block.Hold",
+      "block.Eaten"
     ]
   },
   "required": [

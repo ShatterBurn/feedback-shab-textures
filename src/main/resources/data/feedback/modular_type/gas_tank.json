@@ -4,8 +4,8 @@
     "show": [
       "block.Capacity",
       "block.Danger",
-      "block.Critical",
-      "block.MbPerPu"
+      "block.SafeFill",
+      "block.Eaten"
     ],
     "addons": {
       "V": [

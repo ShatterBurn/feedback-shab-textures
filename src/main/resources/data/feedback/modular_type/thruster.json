@@ -2,13 +2,11 @@
   "family": "block",
   "measures": {
     "show": [
-      "block.Force"
-    ],
-    "addons": {
-      "J": [
-        "block.Burn"
-      ]
-    }
+      "block.Force",
+      "block.Burn",
+      "block.Economy",
+      "block.Eaten"
+    ]
   },
   "required": [
     "S"

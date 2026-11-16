@@ -6,7 +6,7 @@ A zinc–copper battery. It's the steady [electricity](Electricity.md) source: *
 
 Draw it at the [Blueprint Table](Blueprint_Table.md) (pick *Galvanic Cell* in the type row); the size is set there, along with the anode shape and addon. It needs no treatise. Shape a **Cell Anode** from an ingot at the [Smithing Table](Smithing_Table.md), then assemble it at the [Engineering Table](Engineering_Table.md) with two [fasteners](Fasteners.md); the Galvanic Cell Blueprint in the blueprint slot judges the fit against your drawing. The cell comes out with the design of the anode, and the blueprint is kept.
 
-The anode has one measure, its **size**, from 20 to 100 percent (50 by default). A bigger anode gives more current and lasts longer. Its **shape** trades current against life:
+The anode has one measure, its **size**, from 20 to 100 percent (50 by default). A bigger anode gives more current and lasts longer; the Blueprint Table shows its life in minutes at full draw. Its **shape** trades current against life:
 
 | Anode | Current | Life |
 | --- | --- | --- |

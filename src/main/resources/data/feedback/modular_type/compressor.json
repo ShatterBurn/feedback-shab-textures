@@ -4,7 +4,8 @@
     "show": [
       "block.MbPerRpm",
       "block.Load",
-      "block.Heat"
+      "block.Heat",
+      "block.Eaten"
     ]
   },
   "required": [

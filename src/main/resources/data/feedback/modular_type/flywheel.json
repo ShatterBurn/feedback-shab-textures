@@ -2,16 +2,11 @@
   "family": "block",
   "measures": {
     "show": [
-      "block.Inertia"
-    ],
-    "addons": {
-      "B": [
-        "block.RimRpm"
-      ],
-      "G": [
-        "block.Drag"
-      ]
-    }
+      "block.Inertia",
+      "block.RimRpm",
+      "block.Drag",
+      "block.Eaten"
+    ]
   },
   "required": [
     "S"

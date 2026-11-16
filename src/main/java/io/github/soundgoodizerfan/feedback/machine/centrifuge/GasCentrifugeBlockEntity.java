@@ -144,7 +144,7 @@ public class GasCentrifugeBlockEntity extends RotationNode {
 
     public void tickServer() {
         float rpm = Math.abs(getRpm().value());
-        float minRpm = figures.get("MinRpm", MachineTuning.CENTRIFUGE_MIN_RPM), rim = figures.get("RimRpm", 0f);
+        float minRpm = figures.get("MinRpm", MachineTuning.CENTRIFUGE_MIN_RPM), rim = figures.get("TearRpm", 0f);
         // A rotor spun past what its rim holds tears itself apart: a mistake of the shaft's speed against the rotor's metal.
         if (rim > 0f && rpm > rim && level != null) {
             level.destroyBlock(worldPosition, true);
