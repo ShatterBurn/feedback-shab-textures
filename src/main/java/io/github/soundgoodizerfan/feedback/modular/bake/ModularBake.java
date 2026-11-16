@@ -264,6 +264,8 @@ public final class ModularBake {
                 yield name.equals(LauncherSpec.RECEIVER) || (engineMetal(material)
                         && (!name.equals(LauncherSpec.SPRING) || material.mechanical().yieldStrength().isPresent()));
             }
+            // a caster's tank holds pressure by its yield strength: a metal that states none cannot be rated
+            case CASTER -> !type.roles().get(roleKey).name().equals(CasterSpec.TANK) || material.mechanical().yieldStrength().isPresent();
             case CHARGE -> wear || !io.github.soundgoodizerfan.feedback.weapon.Blast.isFiller(type, roleKey) || material.propellant().isPresent();
             default -> true;
         };
@@ -955,6 +957,26 @@ public final class ModularBake {
                 float refKg = air.pelletLitres() * ModularTuning.AIR_REF_DENSITY;
                 f.putAll(air.figures(refKg, air.energy() * (air.seat() == LauncherSpec.Seat.RESERVOIR ? ModularTuning.SEAT_RES_SPEND : 1f), total, 1f).figs());
                 f.put(Fig.MASS, total);
+            }
+            case CASTER -> {
+                Optional<CasterSpec> spec = CasterSpec.of(design, type, materials);
+                if (spec.isEmpty())
+                    return Optional.empty();
+                CasterSpec caster = spec.get();
+                f.put(Fig.MASS, caster.massKg());
+                f.put(Fig.CASTER_CAPACITY, caster.capacityMb() * worn);
+                f.put(Fig.CASTER_RATING, caster.danger() * worn);
+                // At the pressure the walls hold (or a pump's steady head), of water: the stream the design can make at best.
+                float head = caster.pump() ? caster.pumpPu() : caster.danger();
+                float v = caster.speed(head, 1f);
+                f.put(Fig.CASTER_REACH, caster.reach(v));
+                f.put(Fig.CASTER_FLOW, caster.flow(v));
+                // The shared gun figures the pipeline reads (cycle, sound, the stance spread): a stream has no shot, only a tick's flow.
+                f.putAll(new io.github.soundgoodizerfan.feedback.weapon.GunFigures(new io.github.soundgoodizerfan.feedback.core.unit.Pu(0f),
+                        new io.github.soundgoodizerfan.feedback.core.unit.Pu(caster.danger()), v, 0f,
+                        new io.github.soundgoodizerfan.feedback.core.unit.Mu(0.001f), new io.github.soundgoodizerfan.feedback.core.unit.Mu(caster.massKg()),
+                        0f, 50, caster.spreadDeg(), 0f, 0.1f, 0f, 1f).figs());
+                f.put(Fig.MASS, caster.massKg());
             }
             case ELECTRIC_GUN -> {
                 Optional<ElectricGunSpec> spec = ElectricGunSpec.of(design, type, materials);

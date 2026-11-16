@@ -1,0 +1,228 @@
+{
+  "family": "caster",
+  "measures": {
+    "show": [
+      "caster_capacity",
+      "caster_rating",
+      "caster_reach",
+      "caster_flow",
+      "mass",
+      "axis.bore"
+    ],
+    "sort": [
+      "caster_reach",
+      "caster_flow",
+      "caster_capacity",
+      "caster_rating",
+      "mass"
+    ],
+    "roles": {
+      "T": [
+        "caster_capacity",
+        "caster_rating",
+        "mass"
+      ],
+      "N": [
+        "caster_reach",
+        "caster_flow",
+        "mass"
+      ],
+      "S": [
+        "mass"
+      ],
+      "V": [
+        "mass"
+      ],
+      "D": [
+        "caster_reach",
+        "mass"
+      ]
+    }
+  },
+  "required": [
+    "T",
+    "N",
+    "S",
+    "V"
+  ],
+  "blueprint": true,
+  "wear_litres": 0.4,
+  "wear_role": "T",
+  "primary": "S",
+  "roles": {
+    "T": {
+      "name": "tank",
+      "class": "housing",
+      "forms": [
+        "caster_tank"
+      ],
+      "litres": 0.3,
+      "layer": 0,
+      "axes": {
+        "wall": {
+          "min": 1,
+          "max": 8,
+          "unit": "mm",
+          "default": 3,
+          "step": 1
+        },
+        "length": {
+          "min": 10,
+          "max": 40,
+          "unit": "cm",
+          "default": 20,
+          "step": 5
+        }
+      },
+      "part": {
+        "item": "feedback:caster_tank",
+        "cells": 4,
+        "stock": [
+          "plate"
+        ],
+        "traits": []
+      }
+    },
+    "N": {
+      "name": "nozzle",
+      "class": "working_face",
+      "forms": [
+        "caster_nozzle"
+      ],
+      "litres": 0.05,
+      "layer": 1,
+      "axes": {
+        "bore": {
+          "min": 2,
+          "max": 12,
+          "unit": "mm",
+          "default": 4,
+          "step": 1
+        }
+      },
+      "part": {
+        "item": "feedback:caster_nozzle",
+        "cells": 1,
+        "stock": [
+          "rod",
+          "turned_rod",
+          "ingot"
+        ],
+        "base": "jet",
+        "variants": [
+          {
+            "name": "jet",
+            "params": {
+              "spread": 1,
+              "atomise": 0
+            }
+          },
+          {
+            "name": "fan",
+            "cells": 1,
+            "params": {
+              "spread": 9,
+              "atomise": 0
+            }
+          },
+          {
+            "name": "mist",
+            "cells": 1,
+            "params": {
+              "spread": 20,
+              "atomise": 0
+            }
+          },
+          {
+            "name": "atomiser",
+            "cells": 2,
+            "params": {
+              "spread": 14,
+              "atomise": 1
+            }
+          }
+        ]
+      }
+    },
+    "S": {
+      "name": "receiver",
+      "class": "housing",
+      "forms": [
+        "caster_receiver"
+      ],
+      "litres": 0.1,
+      "layer": 2,
+      "part": {
+        "item": "feedback:caster_receiver",
+        "cells": 2,
+        "stock": [
+          "@lump",
+          "@sheet",
+          "@board"
+        ],
+        "traits": []
+      }
+    },
+    "V": {
+      "name": "valve",
+      "class": "working_face",
+      "forms": [
+        "caster_valve"
+      ],
+      "litres": 0.03,
+      "layer": 3,
+      "part": {
+        "item": "feedback:caster_valve",
+        "cells": 1,
+        "stock": [
+          "rod",
+          "ingot"
+        ],
+        "traits": []
+      }
+    },
+    "D": {
+      "name": "drive",
+      "class": "working_face",
+      "forms": [
+        "caster_pump"
+      ],
+      "litres": 0.08,
+      "layer": 4,
+      "axes": {
+        "stroke": {
+          "min": 1,
+          "max": 6,
+          "unit": "cm",
+          "default": 3,
+          "step": 1
+        }
+      },
+      "part": {
+        "item": "feedback:caster_pump",
+        "cells": 2,
+        "stock": [
+          "rod",
+          "plate"
+        ],
+        "traits": []
+      }
+    }
+  },
+  "patterns": [
+    [
+      "STNV"
+    ],
+    [
+      "STNVD"
+    ]
+  ],
+  "defaults": {
+    "T": "feedback:steel",
+    "N": "feedback:brass",
+    "S": "feedback:oak",
+    "V": "feedback:brass",
+    "D": "feedback:wrought_iron"
+  },
+  "school": "weapons:2"
+}

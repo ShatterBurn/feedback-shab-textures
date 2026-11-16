@@ -47,6 +47,13 @@ public class FCapabilities {
                 }
             };
         }, FModular.RESPIRATOR.get());
+        // A fluid caster's tank: any fluid (the walls decide what it survives), as much as the baked tank holds; a fill leaves the gauge pressure as it was.
+        event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> {
+            var f = io.github.soundgoodizerfan.feedback.modular.item.ModularStacks.figures(stack);
+            int capacity = f == null ? 0 : (int) f.get(io.github.soundgoodizerfan.feedback.modular.bake.ModularFigures.Fig.CASTER_CAPACITY);
+            return new net.neoforged.neoforge.fluids.capability.templates.FluidHandlerItemStack(
+                    FDataComponents.CASTER_CONTENT, stack, capacity);
+        }, FModular.CASTER.get());
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, FBlockEntities.LEAD_CHEST.get(),
                 (chest, side) -> new net.neoforged.neoforge.items.wrapper.InvWrapper(chest));
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, FBlockEntities.POWER_CUTTER.get(),

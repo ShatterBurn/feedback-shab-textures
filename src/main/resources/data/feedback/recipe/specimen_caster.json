@@ -1,0 +1,25 @@
+{
+  "type": "feedback:bootstrap_specimen",
+  "category": "equipment",
+  "modular_type": "feedback:caster",
+  "material": "feedback:iron",
+  "pattern": [
+    "IIB",
+    "PBI",
+    "  S"
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "B": {
+      "item": "minecraft:bucket"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    },
+    "P": {
+      "tag": "minecraft:planks"
+    }
+  }
+}
