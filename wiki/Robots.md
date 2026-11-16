@@ -52,6 +52,12 @@ Use a [Tether Cable](Tether_Reel.md) on a robot to tie it to a reel. A robot set
 - **Legs**: step up a full block, and are slower than wheels.
 - **Rotor**: lifts the robot off the ground if it is light enough, and is slower than wheels. It draws power steadily to hover. A robot too heavy for its rotor stays on the ground.
 
+## Appearance
+
+A robot looks like the parts it is built from, whether it stands in the world, sits in a slot, lies dropped or is held in a hand. The chassis is the body. The drive sits under it: wheels, jointed legs, or a spinning rotor on skids. The tool head rides on top with its jaw at the front. Each part takes the color of its own material, so a robot with a steel chassis and a copper tool head shows both.
+
+A sensor shows by its kind: a probe is a thin rod reaching ahead of the head, a rangefinder is a pair of eyes, an inertial unit is a flat plate. A chunk loader is a hopper on the back. A radio is a mast topped with a ball.
+
 ## Sensors and the chunk loader
 
 A **Robot Sensor** comes in three kinds. Each gates the channels listed for it; without it those channels read zero.

@@ -10,25 +10,16 @@ import io.github.soundgoodizerfan.feedback.robot.RobotEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
-/**
- * A robot is drawn as its own item model, tinted by its design like the item, so a robot looks like what was built and an identical
- * design shares one baked model with its item (the cache is the item model cache; nothing is rebuilt per frame). It turns with the
- * robot's heading and sits on the ground; the item sprite is a flat stand-in until a form model lands.
- */
+/** A robot is drawn by {@link RobotModel} from its design: each part in its own material. It turns with the robot's heading and stands on the ground. */
 public class RobotRenderer extends EntityRenderer<RobotEntity> {
-
-    private final ItemRenderer items;
 
     public RobotRenderer(EntityRendererProvider.Context context) {
         super(context);
-        this.items = context.getItemRenderer();
         this.shadowRadius = 0.4f;
     }
 
@@ -38,10 +29,11 @@ public class RobotRenderer extends EntityRenderer<RobotEntity> {
         if (design.isEmpty())
             return;
         pose.pushPose();
-        pose.translate(0.0, 0.45, 0.0);
         pose.mulPose(Axis.YP.rotationDegrees(180f - entityYaw));
-        pose.scale(1.4f, 1.4f, 1.4f);
-        items.renderStatic(design, ItemDisplayContext.GROUND, light, OverlayTexture.NO_OVERLAY, pose, buffer, robot.level(), robot.getId());
+        // the model is up to 15 pixels tall at 16 to the block; 0.75 fits it in the entity's box
+        pose.scale(0.75f, 0.75f, 0.75f);
+        float spin = robot.spec().flies() ? (robot.tickCount + partial) * 60f : 0f;
+        RobotModel.draw(design, pose, buffer, light, OverlayTexture.NO_OVERLAY, spin);
         pose.popPose();
         super.render(robot, entityYaw, partial, pose, buffer, light);
     }

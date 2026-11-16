@@ -1,6 +1,17 @@
 {
-  "parent": "item/generated",
+  "parent": "builtin/entity",
+  "gui_light": "side",
   "textures": {
-    "layer0": "feedback:item/modular/grey/part_electronic_chip_2"
+    "particle": "feedback:block/form/block"
+  },
+  "display": {
+    "gui": {"rotation": [30, 225, 0], "translation": [0, 0, 0], "scale": [0.85, 0.85, 0.85]},
+    "ground": {"rotation": [0, 0, 0], "translation": [0, 2, 0], "scale": [0.6, 0.6, 0.6]},
+    "fixed": {"rotation": [0, 180, 0], "translation": [0, 0, 0], "scale": [0.8, 0.8, 0.8]},
+    "head": {"rotation": [0, 180, 0], "translation": [0, 0, 0], "scale": [0.8, 0.8, 0.8]},
+    "firstperson_righthand": {"rotation": [0, 180, 0], "translation": [0, 2, 0], "scale": [0.5, 0.5, 0.5]},
+    "firstperson_lefthand": {"rotation": [0, 180, 0], "translation": [0, 2, 0], "scale": [0.5, 0.5, 0.5]},
+    "thirdperson_righthand": {"rotation": [0, 180, 0], "translation": [0, 3, 0], "scale": [0.4, 0.4, 0.4]},
+    "thirdperson_lefthand": {"rotation": [0, 180, 0], "translation": [0, 3, 0], "scale": [0.4, 0.4, 0.4]}
   }
 }
