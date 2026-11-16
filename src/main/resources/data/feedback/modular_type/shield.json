@@ -1,5 +1,15 @@
 {
   "family": "shield",
+  "measures": {
+    "show": [
+      "capacity",
+      "durability",
+      "mass",
+      "hardness",
+      "edge_toughness",
+      "corrosion"
+    ]
+  },
   "required": [
     "F",
     "R"

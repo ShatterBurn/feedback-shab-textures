@@ -1,5 +1,12 @@
 {
   "family": "vessel",
+  "measures": {
+    "show": [
+      "vessel.points",
+      "vessel.level",
+      "mass"
+    ]
+  },
   "required": [
     "V"
   ],

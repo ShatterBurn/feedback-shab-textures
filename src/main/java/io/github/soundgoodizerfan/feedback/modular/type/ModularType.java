@@ -80,6 +80,7 @@ import net.minecraft.world.entity.EquipmentSlot;
  *                    hafted plan's item merges every live face's. Empty for none.
  * @param face        this type defines a face (a head kind: how its part is shaped, what it digs, its wear, its combat family) of the hafted
  *                    plan and is never an item, a blueprint or an assembly of its own ({@code "face": true}).
+ * @param measures    which figures matter for the type, in order, and what the material swatches sort by ({@link Measures}).
  * @param tools       ids of the item abilities ({@code feedback:hammer}) an assembly at the Engineering Table wears a point of; default none.
  * @param ranges      for a raw-stock role whose size is the player's to choose, the fewest and most items it takes
  *                    ({@code [min, max]}; a minimum of 0 makes the role optional): a pattern then names the role once
@@ -98,7 +99,33 @@ public record ModularType(Family family, Slot slot, List<Mine> mines, float stri
                           Naming names, String trait, Map<String, Float> traitParams, Map<String, List<Integer>> ranges,
                           List<Shaping> shapes, boolean bakes, Board board, String school,
                           io.github.soundgoodizerfan.feedback.modular.engineering.Fasteners.Need fasteners, List<String> tools,
-                          String minigame, List<String> fitOrder, List<String> actions, boolean face, List<String> required) {
+                          String minigame, List<String> fitOrder, List<String> actions, boolean face, List<String> required, Measures measures) {
+
+    /**
+     * Which figures matter for a type, in order: what the Blueprint Table's figure panel lists, what the material swatches can be
+     * sorted by, and what a blueprint's tooltip prints. An id is a figure ({@link ModularFigures.Fig}, lower case: {@code impact}),
+     * a number the type's bake gives beside the figures ({@code machine.frame}, {@code block.Capacity}: {@link ModularMeasures#USES})
+     * or a part's as-built axis ({@code axis.bore}). All optional: a type with none lists every figure it bakes and every number its
+     * family has, as before.
+     *
+     * @param show  the measures that matter, in the order they are listed.
+     * @param sort  the measures the swatches may be sorted by; empty means every one of {@code show}.
+     * @param roles per role letter, the measures that part moves, listed first while that part is the one picked and the only sort
+     *              keys offered for it; a part with no entry moves them all.
+     * @param addons   per role letter of an addon (an optional part), the measures it adds while it is fitted; they join the list and the sort keys.
+     * @param variants per variant name, the measures a part of that shape adds while the drawing holds one; they join the list and the sort keys.
+     */
+    public record Measures(List<String> show, List<String> sort, Map<String, List<String>> roles, Map<String, List<String>> addons,
+                           Map<String, List<String>> variants) {
+        public static final Measures NONE = new Measures(List.of(), List.of(), Map.of(), Map.of(), Map.of());
+        static final Codec<Measures> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+                Codec.STRING.listOf().optionalFieldOf("show", List.of()).forGetter(Measures::show),
+                Codec.STRING.listOf().optionalFieldOf("sort", List.of()).forGetter(Measures::sort),
+                Codec.unboundedMap(Codec.STRING, Codec.STRING.listOf()).optionalFieldOf("roles", Map.of()).forGetter(Measures::roles),
+                Codec.unboundedMap(Codec.STRING, Codec.STRING.listOf()).optionalFieldOf("addons", Map.of()).forGetter(Measures::addons),
+                Codec.unboundedMap(Codec.STRING, Codec.STRING.listOf()).optionalFieldOf("variants", Map.of()).forGetter(Measures::variants)
+        ).apply(instance, Measures::new));
+    }
 
     /**
      * How the Blueprint Table lays a type out beyond its patterns. All optional: a type with none is drawn from its patterns alone.
@@ -582,14 +609,14 @@ public record ModularType(Family family, Slot slot, List<Mine> mines, float stri
     public ModularType with(Family family, List<Mine> mines, float strike, float wearLitres, Map<String, Role> roles, String trait,
                             Map<String, Float> traitParams) {
         return new ModularType(family, slot, mines, strike, wearLitres, wearRole, primary, roles, patterns, defaults, vanilla, armourMax,
-                blueprint, names, trait, traitParams, ranges, shapes, bakes, board, school, fasteners, tools, minigame, fitOrder, actions, face, required);
+                blueprint, names, trait, traitParams, ranges, shapes, bakes, board, school, fasteners, tools, minigame, fitOrder, actions, face, required, measures);
     }
 
     /** This type with {@code school} as its gate and, if it has one, as a complex type: the plan as a build of gated faces sees it. */
     public ModularType withGate(String school) {
         return new ModularType(family, slot, mines, strike, wearLitres, wearRole, primary, roles, patterns, defaults, vanilla, armourMax,
                 blueprint || !school.isEmpty(), names, trait, traitParams, ranges, shapes, bakes, board, school, fasteners, tools, minigame,
-                fitOrder, actions, face, required);
+                fitOrder, actions, face, required, measures);
     }
 
     /** Whether the part of role {@code key} has a mount to sit on among the parts {@code held}: it needs none, or some held part offers its kind. */
@@ -639,18 +666,19 @@ public record ModularType(Family family, Slot slot, List<Mine> mines, float stri
                                     Codec.mapPair(Codec.STRING.optionalFieldOf("minigame", ""),
                                             Codec.mapPair(Codec.STRING.listOf().optionalFieldOf("fit_order", List.of()),
                                                     Codec.mapPair(Codec.STRING.listOf().optionalFieldOf("actions", List.of()),
-                                                            Codec.BOOL.optionalFieldOf("face", false)))))))
+                                                            Codec.mapPair(Codec.BOOL.optionalFieldOf("face", false), Measures.CODEC.optionalFieldOf("measures", Measures.NONE))))))))
                     .forGetter(t -> com.mojang.datafixers.util.Pair.of(t.traitParams(), com.mojang.datafixers.util.Pair.of(t.shapes(),
                             com.mojang.datafixers.util.Pair.of(t.board(), com.mojang.datafixers.util.Pair.of(t.minigame(),
-                                    com.mojang.datafixers.util.Pair.of(t.fitOrder(), com.mojang.datafixers.util.Pair.of(t.actions(), t.face())))))))
+                                    com.mojang.datafixers.util.Pair.of(t.fitOrder(), com.mojang.datafixers.util.Pair.of(t.actions(),
+                                            com.mojang.datafixers.util.Pair.of(t.face(), t.measures()))))))))
     ).apply(instance, (family, slot, mines, strike, wearLitres, wearRole, primary, roles, patterns, defaults, vanilla, armourMax,
                        gate, namesNeeds, traitBakes, tail) -> new ModularType(family, slot, mines, strike, wearLitres, wearRole, primary,
             roles, patterns, defaults, vanilla, armourMax, gate.getFirst(), namesNeeds.getFirst(), traitBakes.getFirst(), tail.getFirst(), gate.getSecond(), tail.getSecond().getFirst(), traitBakes.getSecond().getFirst(), tail.getSecond().getSecond().getFirst(), traitBakes.getSecond().getSecond().getFirst(),
             namesNeeds.getSecond().getFirst().orElse(gate.getFirst() ? io.github.soundgoodizerfan.feedback.modular.engineering.Fasteners.Need.DEFAULT
                     : new io.github.soundgoodizerfan.feedback.modular.engineering.Fasteners.Need(0, 1)), namesNeeds.getSecond().getSecond(),
             tail.getSecond().getSecond().getSecond().getFirst(), tail.getSecond().getSecond().getSecond().getSecond().getFirst(),
-            tail.getSecond().getSecond().getSecond().getSecond().getSecond().getFirst(), tail.getSecond().getSecond().getSecond().getSecond().getSecond().getSecond(),
-            traitBakes.getSecond().getSecond().getSecond())));
+            tail.getSecond().getSecond().getSecond().getSecond().getSecond().getFirst(), tail.getSecond().getSecond().getSecond().getSecond().getSecond().getSecond().getFirst(),
+            traitBakes.getSecond().getSecond().getSecond(), tail.getSecond().getSecond().getSecond().getSecond().getSecond().getSecond().getSecond())));
 
     public static final StreamCodec<net.minecraft.network.RegistryFriendlyByteBuf, ModularType> STREAM_CODEC =
             ByteBufCodecs.fromCodecWithRegistries(CODEC);

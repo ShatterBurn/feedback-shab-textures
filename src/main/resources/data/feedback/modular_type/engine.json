@@ -1,5 +1,15 @@
 {
   "family": "engine",
+  "measures": {
+    "show": [
+      "engine.torque",
+      "engine.displacement",
+      "engine.peak",
+      "engine.redline",
+      "engine.cylinders",
+      "mass"
+    ]
+  },
   "required": [
     "K",
     "P",

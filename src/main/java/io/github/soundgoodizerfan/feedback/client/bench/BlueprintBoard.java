@@ -21,6 +21,7 @@ import io.github.soundgoodizerfan.feedback.modular.type.MaterialColors;
 import io.github.soundgoodizerfan.feedback.modular.bake.ModularBake;
 import io.github.soundgoodizerfan.feedback.modular.blueprint.ModularBlueprintItem;
 import io.github.soundgoodizerfan.feedback.modular.type.ModularDesign;
+import io.github.soundgoodizerfan.feedback.modular.type.ModularMeasures;
 import io.github.soundgoodizerfan.feedback.modular.bake.ModularFigures;
 import io.github.soundgoodizerfan.feedback.modular.bake.ModularFigures.Fig;
 import io.github.soundgoodizerfan.feedback.modular.bake.ModularModifiers;
@@ -224,7 +225,13 @@ public final class BlueprintBoard {
     private List<Fig> shown = List.of();
     private List<ModularModifiers.Modifier> modifiers = List.of();
     private List<String> chipText = List.of();
-    private List<Component> uses = List.of();
+    /** The numbers beside the bars that the type lists for the picked part (its measures), and every one the build has. */
+    private List<BenchUses.Use> uses = List.of();
+    private List<BenchUses.Use> allUses = List.of();
+    /** The measures the swatches of the picked part may be sorted by; null for any listed. */
+    private Set<String> sortKeys;
+    /** The part the lists above were cut for. */
+    private String listedRole;
     private List<Fault> faults = List.of();
     private final Map<String, ItemStack> icons = new HashMap<>();
     private List<Node> nodes = List.of();
@@ -295,7 +302,7 @@ public final class BlueprintBoard {
     private static final int MAX_USES = 6;
     private int hoverUse = -1;
     /** The would-be uses lines of a part in a material and shape, worked out once per edit. */
-    private final Map<String, List<Component>> ghostUses = new HashMap<>();
+    private final Map<String, List<BenchUses.Use>> ghostUses = new HashMap<>();
     private final Map<String, Float> trace = new HashMap<>();
     private final Map<Fig, String> labels = new java.util.EnumMap<>(Fig.class);
 
@@ -772,7 +779,7 @@ public final class BlueprintBoard {
                 // the number the whole design would show on that line with each material in this part; a material with no such line goes last
                 Map<ResourceLocation, Float> would = new HashMap<>();
                 for (Material.Located l : out)
-                    would.put(l.id(), ghostUsesOf(role, l.id(), shape).stream().filter(u -> by.equals(useKey(u))).map(BlueprintBoard::useValue)
+                    would.put(l.id(), ghostUsesOf(role, l.id(), shape).stream().filter(u -> by.equals(u.id())).map(BenchUses.Use::value)
                             .filter(v -> !Float.isNaN(v)).findFirst().orElse(null));
                 java.util.Comparator<Float> order = sortLeast ? java.util.Comparator.naturalOrder() : java.util.Comparator.reverseOrder();
                 out.sort(java.util.Comparator.comparing((Material.Located l) -> would.get(l.id()), java.util.Comparator.nullsLast(order)));
@@ -949,6 +956,44 @@ public final class BlueprintBoard {
                 made.variant(), made.flaw(), io.github.soundgoodizerfan.feedback.process.Measures.ofAxes(Map.of(name, set))), name);
     }
 
+    /**
+     * Cut the figure bars and the numbers under them to what the type's measures say matters, the picked part's first, and the sort keys
+     * to what that part moves. Worked out on an edit and when the picked part changes.
+     */
+    private void relist() {
+        ModularType t = current();
+        String picked = sel();
+        String role = picked == null ? null : baseOf(picked);
+        listedRole = picked;
+        ModularDesign d = baked.orElse(null);
+        shown = figures.map(f -> ModularMeasures.figs(t, role, d, f)).orElse(List.of());
+        List<String> ids = ModularMeasures.show(t, role, d);
+        if (ids.isEmpty())
+            uses = allUses.stream().filter(u -> !u.id().startsWith(ModularMeasures.AXIS)).toList();
+        else {
+            List<BenchUses.Use> cut = new ArrayList<>();
+            for (String id : ids)
+                allUses.stream().filter(u -> u.id().equals(id)).findFirst().ifPresent(cut::add);
+            uses = cut;
+        }
+        if (shown.isEmpty() && uses.isEmpty()) {
+            shown = figures.map(ModularBlueprintItem::present).orElse(List.of());
+            uses = allUses.stream().filter(u -> !u.id().startsWith(ModularMeasures.AXIS)).toList();
+        }
+        sortKeys = ModularMeasures.sortKeys(t, role, d);
+        if (sortFig != null && (!shown.contains(sortFig) || !sorts(ModularMeasures.id(sortFig))))
+            sortFig = null;
+        if (sortUse != null && (uses.stream().noneMatch(u -> sortUse.equals(u.id())) || !sorts(sortUse)))
+            sortUse = null;
+        swatchLists.clear();
+        figScroll = 0;
+    }
+
+    /** Whether the picked part's swatches may be sorted by {@code id}. */
+    private boolean sorts(String id) {
+        return sortKeys == null || sortKeys.contains(id);
+    }
+
     // --- worked out on an edit, never per frame -----------------------------------------------------
 
     /** Lay the drawing out, bake it, and work out everything the frame draws from it. */
@@ -982,14 +1027,10 @@ public final class BlueprintBoard {
                 .orElse(Component.empty());
         measureLinks();
         figures = design.flatMap(d -> ToolDesigns.predict(d, ModularTypes.known(), ClientMaterials.get()));
-        uses = design.map(d -> usesOf(d)).orElse(List.of());
+        allUses = design.map(d -> BenchUses.of(d, t)).orElse(List.of());
         modifiers = design.isPresent() && figures.isPresent() ? ModularModifiers.of(design.get(), t, figures.get()) : List.of();
         chipText = modifiers.stream().map(m -> m.name().getString()).toList();
-        shown = figures.map(ModularBlueprintItem::present).orElse(List.of());
-        if (sortFig != null && !shown.contains(sortFig))
-            sortFig = null;
-        if (sortUse != null && uses.stream().noneMatch(u -> sortUse.equals(useKey(u))))
-            sortUse = null;
+        relist();
         if (design.isPresent())
             for (ModularDesign.Part p : design.get().parts()) {
                 List<ItemStack> made = ToolDesigns.items(p, t.roles().get(p.role()), ClientMaterials.get(), p.count());
@@ -1947,8 +1988,8 @@ public final class BlueprintBoard {
                     pickShape(role, pick);
                 return true;
             }
-            if (button == 0 && hoverUse >= 0 && hoverUse < uses.size()) {
-                String k = useKey(uses.get(hoverUse));
+            if (button == 0 && hoverUse >= 0 && hoverUse < uses.size() && sorts(uses.get(hoverUse).id())) {
+                String k = uses.get(hoverUse).id();
                 sortFig = null;
                 if (!k.equals(sortUse)) {
                     sortUse = k;
@@ -1962,7 +2003,7 @@ public final class BlueprintBoard {
                 GuiSkin.play(skin.click(), 1f);
                 return true;
             }
-            if (button == 0 && hoverFig >= 0) {
+            if (button == 0 && hoverFig >= 0 && sorts(ModularMeasures.id(shown.get(hoverFig)))) {
                 Fig f = shown.get(hoverFig);
                 sortUse = null;
                 if (f != sortFig) {
@@ -2308,6 +2349,8 @@ public final class BlueprintBoard {
 
     /** Which things the pointer is over; set once per frame, read by the drawing and the tooltips. */
     private void updateHover(int mx, int my) {
+        if (figures.isPresent() && !Objects.equals(sel(), listedRole))
+            relist();
         hoverNode = hoverSwatch = hoverShape = hoverKind = hoverFig = hoverUse = hoverChip = hoverDrawer = hoverFault = hoverLink = -1;
         hoverCorner = false;
         if (current() == null)
@@ -2408,31 +2451,8 @@ public final class BlueprintBoard {
         ghost = ghostOf(r, m, s);
     }
 
-    private List<Component> ghostUsesOf(String role, ResourceLocation mat, int shape) {
-        return ghostUses.computeIfAbsent(role + "|" + mat + "|" + shape, k -> design(role, mat, shape).map(this::usesOf).orElse(List.of()));
-    }
-
-    /** The translation key of a uses line: what it is, whatever the build's number. */
-    private static String useKey(Component line) {
-        return line.getContents() instanceof net.minecraft.network.chat.contents.TranslatableContents t ? t.getKey() : "";
-    }
-
-    /** The number a uses line shows, to sort by: its first argument, or a voltage band's rank; NaN if it has none. */
-    private static float useValue(Component line) {
-        if (!(line.getContents() instanceof net.minecraft.network.chat.contents.TranslatableContents t) || t.getArgs().length == 0)
-            return Float.NaN;
-        Object a = t.getArgs()[0];
-        if (a instanceof Number n)
-            return n.floatValue();
-        if (a instanceof Component c && c.getContents() instanceof net.minecraft.network.chat.contents.TranslatableContents tc)
-            for (VoltageBand b : VoltageBand.values())
-                if (b.key().equals(tc.getKey()))
-                    return b.ordinal();
-        try {
-            return Float.parseFloat(String.valueOf(a));
-        } catch (NumberFormatException e) {
-            return Float.NaN;
-        }
+    private List<BenchUses.Use> ghostUsesOf(String role, ResourceLocation mat, int shape) {
+        return ghostUses.computeIfAbsent(role + "|" + mat + "|" + shape, k -> design(role, mat, shape).map(d -> BenchUses.of(d, current())).orElse(List.of()));
     }
 
     /** The figures {@code role} in material {@code mat} and shape {@code shape} would give the drawing, worked out once per edit. */
@@ -2905,7 +2925,7 @@ public final class BlueprintBoard {
             Fig f = shown.get(figScroll + r);
             int ry = top + r * ROW_H;
             skin.row(g, x + 2, ry - 1, res.w() - 7, ROW_H, false, figScroll + r == hoverFig);
-            fit(g, label(f), x + 5, ry + 1, LABEL_W, f == sortFig ? skin.accent() : skin.dim());
+            fit(g, label(f), x + 5, ry + 1, LABEL_W, f == sortFig ? skin.accent() : sorts(ModularMeasures.id(f)) ? skin.ink() : skin.dim());
             float v = cur.get(f);
             if (shift) {
                 g.drawString(font, PartPresenter.num(v), bx, ry + 1, skin.ink(), false);
@@ -2938,7 +2958,7 @@ public final class BlueprintBoard {
         skin.scrollbar(g, x + res.w() - 4, top, rows * ROW_H, shown.size(), rows, figScroll);
         int uy = y + panelH - 4 - Math.min(uses.size(), MAX_USES) * 9;
         for (int i = 0; i < uses.size() && i < MAX_USES; i++)
-            g.drawString(font, uses.get(i).copy().withColor(useKey(uses.get(i)).equals(sortUse) ? skin.accent() : i == hoverUse ? skin.accent() & 0xFFFFFF | 0xFF000000 : skin.ink()),
+            g.drawString(font, uses.get(i).line().copy().withColor(uses.get(i).id().equals(sortUse) ? skin.accent() : i == hoverUse ? skin.accent() & 0xFFFFFF | 0xFF000000 : sorts(uses.get(i).id()) ? skin.ink() : skin.dim()),
                     x + 5, uy + i * 9, 0xFFFFFFFF, false);
         // the parts that changed a hovered figure, found once per figure
         Fig hf = hoverFig >= 0 ? shown.get(hoverFig) : null;
@@ -2976,86 +2996,6 @@ public final class BlueprintBoard {
         float m = max;
         trace.replaceAll((k, d) -> d / m);
     }
-
-    /** What the drawn item is for beyond the shared figures: a battery's cells and case, a vessel's experience ceiling. */
-    private List<Component> usesOf(ModularDesign d) {
-        ModularType t = current();
-        if (t == null)
-            return List.of();
-        return switch (t.family()) {
-            case CELL -> ModularBake.cell(d, t, ClientMaterials.get()).map(BlueprintBoard::cellLines).orElse(List.of());
-            case MACHINE -> ModularBake.machine(d, t, ClientMaterials.get()).map(BlueprintBoard::machineLines).orElse(List.of());
-            case BLOCK -> io.github.soundgoodizerfan.feedback.modular.bake.BlockFigures.of(d, t, ClientMaterials.get()).<List<Component>>map(tag -> tag.getAllKeys().stream()
-                    .<Component>map(k -> k.equals("Band")
-                            ? Component.translatable("figure.feedback.block.Band", Component.translatable(VoltageBand.values()[(int) tag.getFloat(k)].key()))
-                            : Component.translatable("figure.feedback.block." + k, String.format(java.util.Locale.ROOT, "%.3g", tag.getFloat(k))))
-                    .toList()).orElse(List.of());
-            case ELECTRIC_GUN -> io.github.soundgoodizerfan.feedback.modular.bake.ElectricGunSpec.of(d, t, ClientMaterials.get()).map(BlueprintBoard::egunLines).orElse(List.of());
-            case PRESSURE -> ModularBake.tank(d, t, ClientMaterials.get()).<List<Component>>map(v -> List.of(
-                    Component.translatable("gui.feedback.blueprint_table.tank.room", Math.round(v.volumeMb())),
-                    Component.translatable("gui.feedback.blueprint_table.tank.danger", String.format(java.util.Locale.ROOT, "%.1f", v.dangerPu())),
-                    Component.translatable("gui.feedback.blueprint_table.tank.critical", String.format(java.util.Locale.ROOT, "%.1f", v.criticalPu()))))
-                    .orElse(List.of());
-            case VESSEL -> ModularBake.xpStore(d, t, ClientMaterials.get(), null).<List<Component>>map(x -> List.of(
-                    Component.translatable("gui.feedback.blueprint_table.vessel.points", x.maxPoints()),
-                    Component.translatable("gui.feedback.blueprint_table.vessel.level", String.format(java.util.Locale.ROOT, "%.0f", x.maxPoints() / x.perLevel()))))
-                    .orElse(List.of());
-            case BACKPACK -> ModularBake.bake(d, t, ClientMaterials.get(), 0).<List<Component>>map(f -> List.of(
-                    Component.translatable("gui.feedback.blueprint_table.pack.slots", Math.round(f.get(ModularFigures.Fig.SLOTS))),
-                    Component.translatable("gui.feedback.blueprint_table.pack.carry", String.format(java.util.Locale.ROOT, "%.1f", f.get(ModularFigures.Fig.CARRY))),
-                    Component.translatable("gui.feedback.blueprint_table.pack.points", Math.round(f.get(ModularFigures.Fig.POINTS))),
-                    Component.translatable("gui.feedback.blueprint_table.pack.stores", Math.round(f.get(ModularFigures.Fig.STORES)))))
-                    .orElse(List.of());
-            case BED -> ModularBake.bake(d, t, ClientMaterials.get(), 0).<List<Component>>map(f -> List.of(
-                    Component.translatable("gui.feedback.blueprint_table.bed.comfort", Math.round(100 * f.get(ModularFigures.Fig.COMFORT))),
-                    Component.translatable("gui.feedback.blueprint_table.bed.warmth", Math.round(100 * f.get(ModularFigures.Fig.WARMTH)))))
-                    .orElse(List.of());
-            case HEAD -> ModularBake.bake(d, t, ClientMaterials.get(), 0).<List<Component>>map(f -> List.of(
-                    Component.translatable("gui.feedback.blueprint_table.head.ceiling", String.format(java.util.Locale.ROOT, "%.3g", f.get(ModularFigures.Fig.STRIKE_ST))),
-                    Component.translatable("gui.feedback.blueprint_table.head.hardness", String.format(java.util.Locale.ROOT, "%.3g", f.get(ModularFigures.Fig.HARDNESS)))))
-                    .orElse(List.of());
-            default -> List.of();
-        };
-    }
-
-    private static List<Component> machineLines(ModularBake.MachineSpec m) {
-        return List.of(Component.translatable("gui.feedback.blueprint_table.machine.frame", Math.round(m.frameSu())),
-                Component.translatable("gui.feedback.blueprint_table.machine.amps", Math.round(m.ratedAmps())),
-                Component.translatable("gui.feedback.blueprint_table.machine.band", Component.translatable(m.band().key())));
-    }
-
-    /** The numbers a pulse gun's fittings read off their metals, which the shared figures do not carry: only those the build has. */
-    private static List<Component> egunLines(io.github.soundgoodizerfan.feedback.modular.bake.ElectricGunSpec e) {
-        List<Component> out = new ArrayList<>();
-        java.util.function.BiConsumer<String, Float> pct = (k, v) -> out.add(Component.translatable("gui.feedback.blueprint_table.egun." + k, Math.round(v * 100)));
-        // what the receiver insulates to: the band the gun may run on
-        out.add(Component.translatable("gui.feedback.blueprint_table.egun.band", Component.translatable(e.band().key())));
-        if (e.holdCharge())
-            pct.accept("hold", e.holdGain());
-        if (e.pump())
-            pct.accept("pump", e.pumpGain());
-        if (e.zoom())
-            pct.accept("zoom", e.zoomGain());
-        if (e.gauge())
-            pct.accept("gauge", e.gaugeRes());
-        if (e.governor() != io.github.soundgoodizerfan.feedback.modular.bake.ElectricGunSpec.Governor.NONE)
-            pct.accept("sense", e.sense());
-        if (e.coherence())
-            pct.accept("lining", e.lining());
-        if (e.sinkK() > 0)
-            pct.accept("sink", e.sinkK());
-        if (e.lead())
-            pct.accept("lead", e.leadAmp());
-        pct.accept("loss", e.barrelLoss());
-        return out;
-    }
-
-    private static List<Component> cellLines(ModularBake.CellSpec c) {
-        return List.of(Component.translatable("gui.feedback.blueprint_table.cell.cells", c.cells()),
-                Component.translatable("gui.feedback.blueprint_table.cell.band", Component.translatable(c.caseBand().key())),
-                Component.translatable("gui.feedback.blueprint_table.cell.capacity", Math.round(c.cells() * c.capacity())));
-    }
-
 
     private void fit(GuiGraphics g, String s, int x, int y, int w, int colour) {
         g.drawString(font, font.width(s) <= w ? s : font.plainSubstrByWidth(s, w - font.width("...")) + "...", x, y, colour, false);

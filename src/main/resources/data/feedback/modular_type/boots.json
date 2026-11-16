@@ -1,5 +1,40 @@
 {
   "family": "armour",
+  "measures": {
+    "show": [
+      "armour",
+      "armour_toughness",
+      "pierce_resist",
+      "durability",
+      "slow",
+      "knockback_resistance",
+      "mass",
+      "corrosion",
+      "fire_conduct"
+    ],
+    "roles": {
+      "P": [
+        "armour",
+        "armour_toughness",
+        "pierce_resist",
+        "knockback_resistance",
+        "slow",
+        "mass",
+        "durability",
+        "corrosion",
+        "fire_conduct"
+      ]
+    },
+    "addons": {
+      "S": [
+        "suit_drive",
+        "suit_loss"
+      ],
+      "G": [
+        "suit_gauge"
+      ]
+    }
+  },
   "required": [
     "P"
   ],

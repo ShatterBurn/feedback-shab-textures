@@ -1,5 +1,14 @@
 {
   "family": "gearbox",
+  "measures": {
+    "show": [
+      "gearbox.low",
+      "gearbox.top",
+      "gearbox.gears",
+      "gearbox.wear",
+      "mass"
+    ]
+  },
   "required": [
     "G",
     "S",

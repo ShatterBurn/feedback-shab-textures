@@ -1,5 +1,13 @@
 {
   "family": "propeller",
+  "measures": {
+    "show": [
+      "prop.diameter",
+      "prop.blades",
+      "prop.pitch",
+      "mass"
+    ]
+  },
   "required": [
     "H",
     "B"

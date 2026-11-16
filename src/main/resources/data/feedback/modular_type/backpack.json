@@ -1,5 +1,15 @@
 {
   "family": "backpack",
+  "measures": {
+    "show": [
+      "pack.slots",
+      "pack.carry",
+      "pack.stores",
+      "pack.points",
+      "durability",
+      "mass"
+    ]
+  },
   "required": [
     "S",
     "T"

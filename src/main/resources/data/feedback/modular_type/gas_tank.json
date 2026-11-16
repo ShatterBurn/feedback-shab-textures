@@ -1,5 +1,18 @@
 {
   "family": "block",
+  "measures": {
+    "show": [
+      "block.Capacity",
+      "block.Danger",
+      "block.Critical",
+      "block.MbPerPu"
+    ],
+    "addons": {
+      "V": [
+        "block.Relief"
+      ]
+    }
+  },
   "required": [
     "S"
   ],

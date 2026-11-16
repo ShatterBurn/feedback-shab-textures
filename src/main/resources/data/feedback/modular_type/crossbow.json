@@ -1,5 +1,15 @@
 {
   "family": "crossbow",
+  "measures": {
+    "show": [
+      "velocity",
+      "draw",
+      "joint",
+      "mass",
+      "durability",
+      "corrosion"
+    ]
+  },
   "required": [
     "P",
     "W",

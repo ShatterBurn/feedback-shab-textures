@@ -1,5 +1,11 @@
 {
   "family": "block",
+  "measures": {
+    "show": [
+      "block.Push",
+      "block.Amps"
+    ]
+  },
   "required": [
     "S"
   ],

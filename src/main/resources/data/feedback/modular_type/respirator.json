@@ -1,5 +1,15 @@
 {
   "family": "respirator",
+  "measures": {
+    "show": [
+      "breath_floor",
+      "filter_life",
+      "breath_drag",
+      "air_capacity",
+      "durability",
+      "mass"
+    ]
+  },
   "required": [
     "B",
     "S"

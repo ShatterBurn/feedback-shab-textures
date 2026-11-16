@@ -1,5 +1,17 @@
 {
   "family": "shears",
+  "measures": {
+    "show": [
+      "clip",
+      "clip_fine",
+      "reach",
+      "durability",
+      "hardness",
+      "edge_toughness",
+      "mass",
+      "corrosion"
+    ]
+  },
   "required": [
     "B"
   ],

@@ -1,5 +1,56 @@
 {
   "family": "gun",
+  "measures": {
+    "show": [
+      "muzzle_energy",
+      "muzzle_speed",
+      "bullet_mass",
+      "cycle",
+      "spread",
+      "kick",
+      "report",
+      "overpressure",
+      "chamber_rating",
+      "peak_pressure",
+      "heat_factor",
+      "shed_factor",
+      "fitting_limit",
+      "fitting_wear",
+      "mass"
+    ],
+    "roles": {
+      "R": [
+        "chamber_rating",
+        "overpressure",
+        "spread",
+        "mass"
+      ],
+      "B": [
+        "muzzle_energy",
+        "muzzle_speed",
+        "spread",
+        "heat_factor",
+        "shed_factor",
+        "fitting_limit",
+        "fitting_wear",
+        "mass"
+      ]
+    },
+    "addons": {
+      "i": [
+        "brace_kick",
+        "brace_spread"
+      ],
+      "I": [
+        "brace_kick",
+        "brace_spread"
+      ],
+      "W": [
+        "brace_kick",
+        "brace_spread"
+      ]
+    }
+  },
   "required": [
     "R",
     "B",

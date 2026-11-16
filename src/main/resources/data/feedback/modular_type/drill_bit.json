@@ -1,5 +1,15 @@
 {
   "family": "head",
+  "measures": {
+    "show": [
+      "strike_st",
+      "hardness",
+      "edge_toughness",
+      "durability",
+      "mass",
+      "corrosion"
+    ]
+  },
   "required": [
     "H"
   ],

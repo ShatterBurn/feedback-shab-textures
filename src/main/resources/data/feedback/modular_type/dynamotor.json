@@ -1,5 +1,19 @@
 {
   "family": "machine",
+  "measures": {
+    "show": [
+      "machine.frame",
+      "machine.amps",
+      "machine.band",
+      "machine.rpm",
+      "mass"
+    ],
+    "addons": {
+      "K": [
+        "machine.heat"
+      ]
+    }
+  },
   "required": [
     "F",
     "W",

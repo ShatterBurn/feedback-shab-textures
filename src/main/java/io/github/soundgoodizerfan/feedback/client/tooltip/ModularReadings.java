@@ -132,7 +132,13 @@ public final class ModularReadings {
 
     /** Every baked figure, exact, one per line. */
     private static void truthFigures(ItemStack stack, ModularFigures f, List<Component> out) {
-        for (ModularFigures.Fig fig : ModularFigures.Fig.values()) {
+        // The truth tier prints every baked figure; the ones the type's measures name come first, in its order.
+        ModularDesign design = ModularStacks.design(stack);
+        ModularType type = design == null ? null : ModularTypes.known(design.type());
+        java.util.LinkedHashSet<ModularFigures.Fig> order = new java.util.LinkedHashSet<>(
+                io.github.soundgoodizerfan.feedback.modular.type.ModularMeasures.figs(type, null, design, f));
+        order.addAll(java.util.Arrays.asList(ModularFigures.Fig.values()));
+        for (ModularFigures.Fig fig : order) {
             float value = f.get(fig);
             if (value == 0)
                 continue;

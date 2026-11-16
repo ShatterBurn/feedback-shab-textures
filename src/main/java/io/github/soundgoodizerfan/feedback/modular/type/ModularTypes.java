@@ -98,6 +98,7 @@ public class ModularTypes extends SimpleJsonResourceReloadListener {
         generation++;
         // The Tool Table infers the type from the parts, so two types must never take the same parts.
         var materials = io.github.soundgoodizerfan.feedback.process.MaterialTable.get().materials();
+        ModularMeasures.problems(loaded).forEach(problem -> Feedback.LOGGER.error("Modular types: {}", problem));
         long auditStart = System.nanoTime();
         (materials.isEmpty() ? ModularAssembly.audit(loaded) : ModularAssembly.audit(loaded, materials)).forEach(problem -> Feedback.LOGGER.error("Modular types: {}", problem));
         Feedback.LOGGER.info("Modular type audit took {} ms", (System.nanoTime() - auditStart) / 1_000_000);

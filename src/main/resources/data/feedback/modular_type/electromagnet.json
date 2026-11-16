@@ -1,5 +1,12 @@
 {
   "family": "block",
+  "measures": {
+    "show": [
+      "block.Pull",
+      "block.Range",
+      "block.Amps"
+    ]
+  },
   "required": [
     "S"
   ],
