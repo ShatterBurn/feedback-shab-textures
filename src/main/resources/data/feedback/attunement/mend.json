@@ -299,7 +299,7 @@
     "hold_charge": {
       "kind": "mend"
     },
-    "mainspring": {
+    "launcher_seat": {
       "kind": "mend"
     },
     "piston": {
@@ -529,7 +529,7 @@
     "hold_charge": {
       "kind": "tithe"
     },
-    "mainspring": {
+    "launcher_seat": {
       "kind": "tithe"
     },
     "piston": {

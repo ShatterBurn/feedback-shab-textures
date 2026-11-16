@@ -151,16 +151,48 @@
       "layer": 2
     },
     "W": {
-      "name": "mainspring",
+      "name": "launcher_seat",
       "forms": [
-        "wire",
-        "rod"
+        "launcher_seat"
       ],
       "litres": 0.05,
       "layer": 3,
       "traits": [
         "strength>=fair"
-      ]
+      ],
+      "part": {
+        "item": "feedback:launcher_seat",
+        "cells": 2,
+        "stock": [
+          "wire",
+          "rod",
+          "ingot",
+          "plate"
+        ],
+        "base": "spring_seat",
+        "variants": [
+          {
+            "name": "spring_seat",
+            "cells": 2,
+            "params": {}
+          },
+          {
+            "name": "reservoir_seat",
+            "cells": 3,
+            "params": {}
+          },
+          {
+            "name": "solenoid_seat",
+            "cells": 2,
+            "params": {}
+          },
+          {
+            "name": "steam_seat",
+            "cells": 3,
+            "params": {}
+          }
+        ]
+      }
     }
   },
   "patterns": [

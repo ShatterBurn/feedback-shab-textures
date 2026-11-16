@@ -57,7 +57,7 @@
       "kind": "coil",
       "flaw": 1
     },
-    "mainspring": {
+    "launcher_seat": {
       "kind": "store"
     },
     "mattress": {
@@ -87,7 +87,7 @@
     "store_core": {
       "kind": "release"
     },
-    "mainspring": {
+    "launcher_seat": {
       "kind": "release"
     },
     "container": {

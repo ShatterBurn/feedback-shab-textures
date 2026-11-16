@@ -953,7 +953,7 @@ public final class ModularBake {
                 f.put(Fig.JOINT, air.load(0f));
                 // The shared gun figures at a reference shell: what the gun pipeline reads (cycle, kick, sound, the HUD).
                 float refKg = air.pelletLitres() * ModularTuning.AIR_REF_DENSITY;
-                f.putAll(air.figures(refKg, 0f, total, 1f).figs());
+                f.putAll(air.figures(refKg, air.energy() * (air.seat() == LauncherSpec.Seat.RESERVOIR ? ModularTuning.SEAT_RES_SPEND : 1f), total, 1f).figs());
                 f.put(Fig.MASS, total);
             }
             case ELECTRIC_GUN -> {

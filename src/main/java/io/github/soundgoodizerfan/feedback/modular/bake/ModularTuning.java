@@ -158,6 +158,10 @@ public final class ModularTuning {
     public static final float AIR_DAMAGE_EFFICIENCY = 5f, AIR_SPEED_MAX = 4.5f, AIR_BOW_ARROW_SPEED = 3f;
     /** Placeholder [OPEN]. The reference pellet metal's density (iron, kg per litre) the baked velocity figure reads. */
     public static final float AIR_REF_DENSITY = 7.87f;
+    /** Placeholder [OPEN]. Launcher seats other than the spring: work stored per litre-strength, the share of a reservoir's store one valve opening spends, a hand-pump stroke's share of full pressure, the pressure past which the walls weep and burst, a solenoid's efficiency from stored Eu to push, a steam seat's reference boiler Tu, the water share a shot boils off, and the Tu a shot cools the boiler by. */
+    public static final float SEAT_RES_J_PER_LS = 150f, SEAT_RES_SPEND = 0.35f, SEAT_RES_PUMP = 0.12f, SEAT_RES_WEEP = 1f, SEAT_RES_BURST = 1.25f,
+            SEAT_SOL_J_PER_LS = 120f, SEAT_SOL_EFF = 0.6f, SEAT_STEAM_J_PER_LS = 130f, SEAT_STEAM_REF_TU = 180f, SEAT_STEAM_WATER_PER_SHOT = 0.25f,
+            SEAT_STEAM_COOL_TU = 25f, SEAT_BURST_HURT = 6f;
     /** Placeholder [OPEN]. The shot's inaccuracy at a barrel as long as {@link #AIR_LENGTH_HALF}; a longer barrel shoots truer. */
     public static final float AIR_SPREAD = 1.5f;
     /** Placeholder [OPEN]. Ticks between a shot and the next click, and the loudness of the release against a bow's. */

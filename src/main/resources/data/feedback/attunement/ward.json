@@ -303,7 +303,7 @@
     "hold_charge": {
       "kind": "soak"
     },
-    "mainspring": {
+    "launcher_seat": {
       "kind": "soak"
     },
     "piston": {

@@ -20,6 +20,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
+import io.github.soundgoodizerfan.feedback.machine.battery.BatteryStack;
+import io.github.soundgoodizerfan.feedback.modular.item.ModularElectricGun;
 import io.github.soundgoodizerfan.feedback.modular.item.ModularLauncher;
 import io.github.soundgoodizerfan.feedback.modular.item.ModularStacks;
 import io.github.soundgoodizerfan.feedback.process.Material;
@@ -50,12 +52,15 @@ public final class LauncherMechanism implements GunMechanism {
     }
 
     /** The next shot: the round, its figures. Changes nothing. */
-    private record Prepared(LauncherSpec spec, Cartridge round, GunFigures figures) {
+    private record Prepared(LauncherSpec spec, Cartridge round, GunFigures figures, float available) {
     }
 
     private static Prepared prepare(LivingEntity shooter, ItemStack gun, long now) {
         LauncherSpec spec = ModularLauncher.spec(gun).orElse(null);
-        if (spec == null || ModularStacks.broken(gun) || !ModularLauncher.cocked(gun))
+        if (spec == null || ModularStacks.broken(gun))
+            return null;
+        float available = available(spec, gun, shooter.level());
+        if (available <= 0f)
             return null;
         Optional<Cartridge> next = GunAmmo.next(gun);
         if (next.isEmpty() || next.get().boreMm() != spec.boreInt())
@@ -67,13 +72,64 @@ public final class LauncherMechanism implements GunMechanism {
         float shellKg = spec.pelletLitres() * slug.get().density();
         ModularFigures baked = ModularStacks.figures(gun);
         float gunKg = baked == null || baked.get(ModularFigures.Fig.MASS) <= 0f ? spec.pistonMass() : baked.get(ModularFigures.Fig.MASS);
-        GunFigures figures = spec.figures(shellKg, SpringSet.set(gun), gunKg, GunCondition.condition(gun));
+        GunFigures figures = spec.figures(shellKg, available, gunKg, GunCondition.condition(gun));
         if (shooter instanceof Player player) {
             figures = io.github.soundgoodizerfan.feedback.modular.trait.ModularTraits.gunAimed(player, gun, figures);
             if (GunItem.dualWielding(player))
                 figures = figures.oneHanded();
         }
-        return new Prepared(spec, next.get(), figures);
+        return new Prepared(spec, next.get(), figures, available);
+    }
+
+    /** The work the seat can give this shot, 0 if it cannot fire: a spring only when cocked, a reservoir by its pressure, a solenoid by its cell, a boiler by its heat and water. */
+    private static float available(LauncherSpec spec, ItemStack gun, Level level) {
+        switch (spec.seat()) {
+            case RESERVOIR -> {
+                float p = ModularLauncher.pressure(gun);
+                return p < 0.05f ? 0f : spec.energy() * Math.min(1f, p) * ModularTuning.SEAT_RES_SPEND;
+            }
+            case SOLENOID -> {
+                ItemStack cell = ModularElectricGun.cell(gun);
+                if (cell.isEmpty() || !BatteryStack.is(cell))
+                    return 0f;
+                var state = BatteryStack.state(cell);
+                if (!BatteryStack.ready(state))
+                    return 0f;
+                return Math.min(spec.energy(), BatteryStack.charge(state) * ModularTuning.EGUN_WORK_PER_EU * ModularTuning.SEAT_SOL_EFF);
+            }
+            case STEAM -> {
+                float tu = io.github.soundgoodizerfan.feedback.core.thermal.ItemHeat.get(gun, level).value();
+                float boil = io.github.soundgoodizerfan.feedback.core.FTuning.POT_BOIL_TU.value();
+                if (ModularLauncher.water(gun) <= 0f || tu <= boil)
+                    return 0f;
+                return spec.energy() * Math.min(1f, (tu - boil) / (ModularTuning.SEAT_STEAM_REF_TU - boil));
+            }
+            default -> {
+                return ModularLauncher.cocked(gun) ? spec.energy() * (1f - SpringSet.set(gun)) : 0f;
+            }
+        }
+    }
+
+    /** The shot leaves the seat spent: the spring let go, a share of the gas out, the cell drawn, the boiler's water and heat used. */
+    private static void spend(LauncherSpec spec, ItemStack gun, Prepared p, Level level) {
+        switch (spec.seat()) {
+            case RESERVOIR -> ModularLauncher.setPressure(gun, ModularLauncher.pressure(gun) * (1f - ModularTuning.SEAT_RES_SPEND));
+            case SOLENOID -> {
+                ItemStack cell = ModularElectricGun.cell(gun);
+                var drawn = BatteryStack.state(cell).copy();
+                BatteryStack.draw(drawn, p.available() / (ModularTuning.EGUN_WORK_PER_EU * ModularTuning.SEAT_SOL_EFF));
+                ItemStack out = cell.copy();
+                out.set(io.github.soundgoodizerfan.feedback.registry.FDataComponents.BATTERY.get(), drawn);
+                ModularElectricGun.setCell(gun, out);
+            }
+            case STEAM -> {
+                ModularLauncher.setWater(gun, ModularLauncher.water(gun) - ModularTuning.SEAT_STEAM_WATER_PER_SHOT);
+                var now = io.github.soundgoodizerfan.feedback.core.thermal.ItemHeat.get(gun, level);
+                io.github.soundgoodizerfan.feedback.core.thermal.ItemHeat.set(gun,
+                        new io.github.soundgoodizerfan.feedback.core.unit.Tu(now.value() - ModularTuning.SEAT_STEAM_COOL_TU), level);
+            }
+            default -> ModularLauncher.setCocked(gun, false);
+        }
     }
 
     @Override
@@ -90,7 +146,7 @@ public final class LauncherMechanism implements GunMechanism {
             return false;
         Map<ResourceLocation, Material> materials = MaterialTable.get().materials();
         GunAmmo.spend(gun);
-        ModularLauncher.setCocked(gun, false);
+        spend(p.spec(), gun, p, level);
         GunFigures figures = p.figures().withSpread(GunStance.of(shooter, aimed) * p.round().shape().spread()
                 * io.github.soundgoodizerfan.feedback.modular.attunement.MomentumKinds.braceSpread(shooter, gun));
         GunShots.fire(level, shooter, figures, yaw, pitch, p.round().tracer(materials), p.round().incendiary(materials), 1,
@@ -150,7 +206,8 @@ public final class LauncherMechanism implements GunMechanism {
 
     @Override
     public boolean reloadKeyReady(ItemStack gun) {
-        return !ModularLauncher.cocked(gun) && ModularLauncher.cockAt(gun) == 0L;
+        return ModularLauncher.spec(gun).map(sp -> sp.seat() != LauncherSpec.Seat.SPRING
+                || !ModularLauncher.cocked(gun) && ModularLauncher.cockAt(gun) == 0L).orElse(false);
     }
 
     /** A cocking is strength-timed: the baked time over the wielder's pull, less what a set spring has lost. */
@@ -163,11 +220,29 @@ public final class LauncherMechanism implements GunMechanism {
     @Override
     public void reloadKey(ServerLevel level, Player player, ItemStack gun) {
         LauncherSpec spec = ModularLauncher.spec(gun).orElse(null);
-        if (spec == null || ModularStacks.broken(gun) || ModularLauncher.cocked(gun) || ModularLauncher.cockAt(gun) != 0L)
+        if (spec == null || ModularStacks.broken(gun))
             return;
         // An empty chamber takes a round of the bore from the pack first.
+        boolean loaded = false;
         if (GunAmmo.next(gun).isEmpty())
-            loadFromPack(player, gun, spec);
+            loaded = loadFromPack(player, gun, spec);
+        switch (spec.seat()) {
+            case RESERVOIR -> {
+                pump(level, player, gun, spec);
+                return;
+            }
+            case STEAM -> {
+                if (!loaded)
+                    fillWater(level, player, gun);
+                return;
+            }
+            case SOLENOID -> {
+                return;
+            }
+            default -> { }
+        }
+        if (ModularLauncher.cocked(gun) || ModularLauncher.cockAt(gun) != 0L)
+            return;
         long now = level.getGameTime();
         long done = now + cockTicks(spec, player, gun);
         ModularLauncher.setCockAt(gun, done);
@@ -195,7 +270,7 @@ public final class LauncherMechanism implements GunMechanism {
     }
 
     /** The first round in the pack of the bore, with no powder in it (the seat gives the push): chambered, one taken. */
-    private static void loadFromPack(Player player, ItemStack gun, LauncherSpec spec) {
+    private static boolean loadFromPack(Player player, ItemStack gun, LauncherSpec spec) {
         for (ItemStack s : player.getInventory().items) {
             Cartridge round = s.get(FWeapons.CARTRIDGE.get());
             if (s.isEmpty() || !s.is(FWeapons.CARTRIDGE_ITEM.get()) || round == null || round.boreMm() != spec.boreInt() || !round.charges().isEmpty())
@@ -203,7 +278,47 @@ public final class LauncherMechanism implements GunMechanism {
             gun.set(FWeapons.CHAMBER.get(), round);
             if (!player.getAbilities().instabuild)
                 s.shrink(1);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * A stroke of the hand pump: more gas in. The walls are rated for a pressure; pumping on past it weeps (the extra is lost and the
+     * seat wears), and far past it the walls let go and hurt the wielder. Misuse only: pumping to the rating never wears it.
+     */
+    private static void pump(ServerLevel level, Player player, ItemStack gun, LauncherSpec spec) {
+        float p = ModularLauncher.pressure(gun) + ModularTuning.SEAT_RES_PUMP;
+        level.playSound(null, player.blockPosition(), SoundEvents.PISTON_EXTEND, SoundSource.PLAYERS, ModularTuning.AIR_VOLUME, 1.6f);
+        if (p > ModularTuning.SEAT_RES_BURST) {
+            ModularLauncher.setPressure(gun, 0f);
+            GunCondition.misuse(gun, ModularTuning.GUN_WEAR_SPRING_SNAP);
+            player.hurt(level.damageSources().explosion(null, null), ModularTuning.SEAT_BURST_HURT);
+            level.sendParticles(ParticleTypes.EXPLOSION, player.getX(), player.getEyeY(), player.getZ(), 1, 0, 0, 0, 0);
+            level.playSound(null, player.blockPosition(), SoundEvents.GENERIC_EXPLODE.value(), SoundSource.PLAYERS, 0.8f, 1.4f);
             return;
         }
+        if (p > ModularTuning.SEAT_RES_WEEP) {
+            GunCondition.misuse(gun, ModularTuning.GUN_WEAR_SPRING_SET);
+            level.sendParticles(ParticleTypes.CLOUD, player.getX(), player.getEyeY() - 0.3, player.getZ(), 4, 0.1, 0.05, 0.1, 0.02);
+            level.playSound(null, player.blockPosition(), SoundEvents.FIRE_EXTINGUISH, SoundSource.PLAYERS, 0.4f, 1.8f);
+        }
+        ModularLauncher.setPressure(gun, p);
+    }
+
+    /** A water bucket in the pack fills the boiler; the empty bucket comes back. */
+    private static void fillWater(ServerLevel level, Player player, ItemStack gun) {
+        if (ModularLauncher.water(gun) >= 1f)
+            return;
+        for (ItemStack s : player.getInventory().items)
+            if (s.is(net.minecraft.world.item.Items.WATER_BUCKET)) {
+                if (!player.getAbilities().instabuild) {
+                    s.shrink(1);
+                    GunAmmo.give(player, new ItemStack(net.minecraft.world.item.Items.BUCKET));
+                }
+                ModularLauncher.setWater(gun, 1f);
+                level.playSound(null, player.blockPosition(), SoundEvents.BUCKET_EMPTY, SoundSource.PLAYERS, 0.6f, 1.2f);
+                return;
+            }
     }
 }

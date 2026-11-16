@@ -49,6 +49,17 @@ public class ModularLauncher extends GunItem {
         GunCondition.wearLine(stack).ifPresent(tooltip::add);
         if (cocked(stack))
             tooltip.add(Component.translatable("tooltip.feedback.launcher.cocked").withStyle(ChatFormatting.GRAY));
+        spec(stack).ifPresent(sp -> {
+            switch (sp.seat()) {
+                case RESERVOIR -> tooltip.add(Component.translatable("tooltip.feedback.launcher.pressure", Math.round(pressure(stack) * 100f)).withStyle(ChatFormatting.GRAY));
+                case STEAM -> tooltip.add(Component.translatable("tooltip.feedback.launcher.water", Math.round(water(stack) * 100f)).withStyle(ChatFormatting.GRAY));
+                case SOLENOID -> tooltip.add(ModularElectricGun.cell(stack).isEmpty()
+                        ? Component.translatable("tooltip.feedback.launcher.no_cell").withStyle(ChatFormatting.GRAY)
+                        : Component.translatable("tooltip.feedback.launcher.cell", Math.round(io.github.soundgoodizerfan.feedback.machine.battery.BatteryStack
+                                .stateOfCharge(io.github.soundgoodizerfan.feedback.machine.battery.BatteryStack.state(ModularElectricGun.cell(stack))) * 100f)).withStyle(ChatFormatting.GRAY));
+                default -> { }
+            }
+        });
         int rounds = GunAmmo.count(stack);
         if (rounds > 0)
             tooltip.add(Component.translatable("tooltip.feedback.launcher.chambered", rounds).withStyle(ChatFormatting.GRAY));
@@ -73,6 +84,52 @@ public class ModularLauncher extends GunItem {
 
     public static void setCockAt(ItemStack gun, long tick) {
         CustomData.update(DataComponents.CUSTOM_DATA, gun, tag -> tag.putLong(COCK_AT, tick));
+    }
+
+    private static final String PRESSURE = "LaunchPressure", WATER = "LaunchWater";
+
+    /** A reservoir seat's pressure as a share of the pressure it is rated for (0 flat, 1 the walls' limit, over it the walls weep). */
+    public static float pressure(ItemStack gun) {
+        CustomData data = gun.get(DataComponents.CUSTOM_DATA);
+        return data == null ? 0f : data.copyTag().getFloat(PRESSURE);
+    }
+
+    public static void setPressure(ItemStack gun, float share) {
+        CustomData.update(DataComponents.CUSTOM_DATA, gun, tag -> tag.putFloat(PRESSURE, Math.max(0f, share)));
+    }
+
+    /** A steam seat's water, as a share of a full boiler. */
+    public static float water(ItemStack gun) {
+        CustomData data = gun.get(DataComponents.CUSTOM_DATA);
+        return data == null ? 0f : data.copyTag().getFloat(WATER);
+    }
+
+    public static void setWater(ItemStack gun, float share) {
+        CustomData.update(DataComponents.CUSTOM_DATA, gun, tag -> tag.putFloat(WATER, Math.max(0f, Math.min(1f, share))));
+    }
+
+    /** A solenoid seat takes a battery or Leyden jar on the cursor, as an electric gun does; an empty cursor takes it out. */
+    @Override
+    public boolean overrideOtherStackedOnMe(ItemStack gun, ItemStack other, net.minecraft.world.inventory.Slot slot,
+                                            net.minecraft.world.inventory.ClickAction action, net.minecraft.world.entity.player.Player player,
+                                            net.minecraft.world.entity.SlotAccess access) {
+        if (action != net.minecraft.world.inventory.ClickAction.SECONDARY || !slot.allowModification(player)
+                || spec(gun).map(sp -> sp.seat() != LauncherSpec.Seat.SOLENOID).orElse(true))
+            return false;
+        if (other.isEmpty()) {
+            ItemStack held = ModularElectricGun.cell(gun);
+            if (held.isEmpty())
+                return false;
+            ModularElectricGun.setCell(gun, ItemStack.EMPTY);
+            access.set(held);
+            return true;
+        }
+        if (!io.github.soundgoodizerfan.feedback.machine.battery.BatteryStack.is(other))
+            return false;
+        ItemStack old = ModularElectricGun.cell(gun);
+        ModularElectricGun.setCell(gun, other);
+        access.set(old);
+        return true;
     }
 
     public static Optional<LauncherSpec> spec(ItemStack gun) {

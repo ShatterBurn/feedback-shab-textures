@@ -27,12 +27,26 @@ import io.github.soundgoodizerfan.feedback.modular.type.ModularType;
  * @param rating     work the receiver holds before the spring takes a set.
  * @param cock       multiple of the cocking time (a mainspring attuned to release lets go sooner).
  */
-public record LauncherSpec(float energy, float pistonMass, float boreMm, float lengthM, float rating, float cock) {
+public record LauncherSpec(float energy, float pistonMass, float boreMm, float lengthM, float rating, float cock, Seat seat) {
+
+    /** What stores the work: a spring cocked by hand, a gas reservoir pumped up, a solenoid fed by a cell, a boiler heated. */
+    public enum Seat {
+        SPRING, RESERVOIR, SOLENOID, STEAM;
+
+        public static Seat of(String variant) {
+            return switch (variant) {
+                case "reservoir_seat" -> RESERVOIR;
+                case "solenoid_seat" -> SOLENOID;
+                case "steam_seat" -> STEAM;
+                default -> SPRING;
+            };
+        }
+    }
 
     /** Share of the stored energy a level of store adds to the mainspring; share of the cocking time a level of release cuts, and the least left. [OPEN] until played */
     private static final float STORE_PER_LEVEL = 0.12f, RELEASE_PER_LEVEL = 0.12f, COCK_FLOOR = 0.4f;
 
-    public static final String SPRING = "mainspring", PISTON = "piston", BARREL = "barrel", RECEIVER = "receiver";
+    public static final String SPRING = "launcher_seat", PISTON = "piston", BARREL = "barrel", RECEIVER = "receiver";
 
     /**
      * What one shot is.
@@ -49,6 +63,7 @@ public record LauncherSpec(float energy, float pistonMass, float boreMm, float l
     public static Optional<LauncherSpec> of(ModularDesign design, ModularType type, Map<ResourceLocation, Material> materials) {
         float energy = 0, rating = 0, piston = 0, bore = 0, length = 0;
         boolean spring = false, pist = false, barrel = false, receiver = false;
+        Seat seat = Seat.SPRING;
         for (ModularDesign.Part p : design.parts()) {
             ModularType.Role role = type.roles().get(p.role());
             Material m = materials.get(p.material());
@@ -56,7 +71,14 @@ public record LauncherSpec(float energy, float pistonMass, float boreMm, float l
                 return Optional.empty();
             switch (role.name()) {
                 case SPRING -> {
-                    energy += ModularTuning.AIR_JOULES_PER_LS * role.volume(p) * ModularBake.strength(m);
+                    seat = Seat.of(role.variant(p).map(ModularType.Variant::name).orElse("spring_seat"));
+                    float perLs = switch (seat) {
+                        case RESERVOIR -> ModularTuning.SEAT_RES_J_PER_LS;
+                        case SOLENOID -> ModularTuning.SEAT_SOL_J_PER_LS;
+                        case STEAM -> ModularTuning.SEAT_STEAM_J_PER_LS;
+                        default -> ModularTuning.AIR_JOULES_PER_LS;
+                    };
+                    energy += perLs * role.volume(p) * ModularBake.strength(m);
                     spring = true;
                 }
                 case PISTON -> {
@@ -85,7 +107,7 @@ public record LauncherSpec(float energy, float pistonMass, float boreMm, float l
         energy *= 1f + STORE_PER_LEVEL * store;
         float cock = Math.max(COCK_FLOOR, 1f - RELEASE_PER_LEVEL * release);
         return spring && pist && barrel && receiver && bore > 0 && length > 0
-                ? Optional.of(new LauncherSpec(energy, piston, bore, length, rating, cock)) : Optional.empty();
+                ? Optional.of(new LauncherSpec(energy, piston, bore, length, rating, cock, seat)) : Optional.empty();
     }
 
     /** Share of the spring's energy that reaches the pellet and piston: a longer barrel keeps the push, a wider bore wastes it. */
@@ -128,15 +150,14 @@ public record LauncherSpec(float energy, float pistonMass, float boreMm, float l
     }
 
     /**
-     * The gun figures of a shot of a shell weighing {@code shellKg} (the round's own projectile mass), with {@code set} of the spring's
-     * energy lost, a wear {@code condition} and the gun's own mass {@code gunKg}. The shell's speed is the seat's work shared with the
+     * The gun figures of a shot of a shell weighing {@code shellKg} (the round's own projectile mass), with {@code available} work in the seat, a wear {@code condition} and the gun's own mass {@code gunKg}. The shell's speed is the seat's work shared with the
      * piston ({@link #shot}); the figures are what the shared gun code reads for kick, spread, sound and the swept flight.
      */
-    public io.github.soundgoodizerfan.feedback.weapon.GunFigures figures(float shellKg, float set, float gunKg, float condition) {
+    public io.github.soundgoodizerfan.feedback.weapon.GunFigures figures(float shellKg, float available, float gunKg, float condition) {
         float moving = shellKg + ModularTuning.AIR_PISTON_SHARE * pistonMass;
         float wear = 1f - io.github.soundgoodizerfan.feedback.weapon.GunTuning.GUN_WEAR_ENERGY_LOSS * (1f - condition)
                 / (1f - io.github.soundgoodizerfan.feedback.weapon.GunTuning.GUN_CONDITION_FLOOR);
-        float speed = (float) Math.sqrt(2f * energy * (1f - set) * efficiency() * wear / Math.max(1e-6f, moving)) / FTuning.TICKS_PER_SECOND;
+        float speed = (float) Math.sqrt(2f * available * efficiency() * wear / Math.max(1e-6f, moving)) / FTuning.TICKS_PER_SECOND;
         speed = Math.min(speed, ModularTuning.AIR_SPEED_MAX);
         float mps = speed * FTuning.TICKS_PER_SECOND;
         float work = 0.5f * shellKg * mps * mps;
