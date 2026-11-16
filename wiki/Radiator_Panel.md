@@ -13,4 +13,4 @@ Steel Plate is a steel plate.
 
 ## How it works
 
-A vessel loses heat to the room through the air around it, in proportion to how dense the air is. In the thin air high up it loses less, and in a vacuum such as the [Shelf](The_Shelf.md) it keeps all of its heat. Set a panel against a vessel and it radiates that heat away into the cold, and the thinner the air, the more of the vessel's cooling it carries. See [Heat](Heat.md) for how vessels hold and lose heat.
+A vessel loses heat to the room through the air around it, in proportion to how dense the air is. In the thin air high up it loses less, and in a vacuum such as the [Gap](The_Gap.md) it keeps all of its heat. Set a panel against a vessel and it radiates that heat away into the cold, and the thinner the air, the more of the vessel's cooling it carries. See [Heat](Heat.md) for how vessels hold and lose heat.

@@ -12,14 +12,14 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 /**
- * A person in the Shelf has no weight and no air to slow them: gravity is cancelled, and the vanilla air drag on a
+ * A person in the Gap has no weight and no air to slow them: gravity is cancelled, and the vanilla air drag on a
  * body in the air (0.91 across, 0.98 along) is undone each tick, so a person keeps the speed they have and drifts
  * until something stops them. A jump from a hull plate is the push-off. Runs on both sides: a player's movement is
  * decided on their own client, and the server follows.
  */
 @EventBusSubscriber(modid = Feedback.MOD_ID)
 public final class ZeroG {
-    private static final net.minecraft.resources.ResourceLocation MODIFIER = Feedback.id("shelf_zero_g");
+    private static final net.minecraft.resources.ResourceLocation MODIFIER = Feedback.id("gap_zero_g");
 
     private ZeroG() {
     }
@@ -30,13 +30,13 @@ public final class ZeroG {
         var gravity = p.getAttribute(Attributes.GRAVITY);
         if (gravity == null)
             return;
-        boolean shelf = p.level().dimension().equals(SpaceTravel.SHELF);
+        boolean gap = p.level().dimension().equals(SpaceTravel.GAP);
         boolean has = gravity.hasModifier(MODIFIER);
-        if (shelf && !has)
+        if (gap && !has)
             gravity.addTransientModifier(new AttributeModifier(MODIFIER, -1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
-        else if (!shelf && has)
+        else if (!gap && has)
             gravity.removeModifier(MODIFIER);
-        if (shelf && !p.onGround() && !p.isInWater() && !p.getAbilities().flying && !p.isFallFlying() && !p.isPassenger()) {
+        if (gap && !p.onGround() && !p.isInWater() && !p.getAbilities().flying && !p.isFallFlying() && !p.isPassenger()) {
             var v = p.getDeltaMovement();
             p.setDeltaMovement(v.x / 0.91, v.y / 0.98, v.z / 0.91);
         }

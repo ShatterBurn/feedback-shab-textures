@@ -1,5 +1,5 @@
 {
-  "dimension": "feedback:shelf",
+  "dimension": "feedback:gap",
   "priority": 0,
   "base_gravity": [0.0, 0.0, 0.0],
   "universal_drag": 0.0,

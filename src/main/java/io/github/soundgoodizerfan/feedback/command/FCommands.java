@@ -168,7 +168,7 @@ public final class FCommands {
                 : io.github.soundgoodizerfan.feedback.space.SpaceTravel.back(level, body);
         if (n == -1) throw new SimpleCommandExceptionType(Component.translatable(
                 what == 0 ? "commands.feedback.space.already_there" : "commands.feedback.space.not_there")).create();
-        if (n == -2) throw new SimpleCommandExceptionType(Component.translatable("commands.feedback.space.no_shelf")).create();
+        if (n == -2) throw new SimpleCommandExceptionType(Component.translatable("commands.feedback.space.no_gap")).create();
         c.getSource().sendSuccess(() -> Component.translatable("commands.feedback.space.moved", n), true);
         return n;
     }

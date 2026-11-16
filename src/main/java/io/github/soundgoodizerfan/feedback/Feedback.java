@@ -241,12 +241,12 @@ public class Feedback {
                 .playToClient(io.github.soundgoodizerfan.feedback.net.BeltRunPayload.TYPE,
                         io.github.soundgoodizerfan.feedback.net.BeltRunPayload.STREAM_CODEC,
                         io.github.soundgoodizerfan.feedback.net.BeltRunPayload::handle)
-                .playToServer(io.github.soundgoodizerfan.feedback.net.ShelfMapPayloads.Request.TYPE,
-                        io.github.soundgoodizerfan.feedback.net.ShelfMapPayloads.Request.STREAM_CODEC,
-                        io.github.soundgoodizerfan.feedback.net.ShelfMapPayloads.Request::handle)
-                .playToClient(io.github.soundgoodizerfan.feedback.net.ShelfMapPayloads.Tile.TYPE,
-                        io.github.soundgoodizerfan.feedback.net.ShelfMapPayloads.Tile.STREAM_CODEC,
-                        io.github.soundgoodizerfan.feedback.net.ShelfMapPayloads.Tile::handle)
+                .playToServer(io.github.soundgoodizerfan.feedback.net.GapMapPayloads.Request.TYPE,
+                        io.github.soundgoodizerfan.feedback.net.GapMapPayloads.Request.STREAM_CODEC,
+                        io.github.soundgoodizerfan.feedback.net.GapMapPayloads.Request::handle)
+                .playToClient(io.github.soundgoodizerfan.feedback.net.GapMapPayloads.Tile.TYPE,
+                        io.github.soundgoodizerfan.feedback.net.GapMapPayloads.Tile.STREAM_CODEC,
+                        io.github.soundgoodizerfan.feedback.net.GapMapPayloads.Tile::handle)
                 .playToClient(io.github.soundgoodizerfan.feedback.net.SpaceFadePayload.TYPE,
                         io.github.soundgoodizerfan.feedback.net.SpaceFadePayload.STREAM_CODEC,
                         io.github.soundgoodizerfan.feedback.net.SpaceFadePayload::handle)

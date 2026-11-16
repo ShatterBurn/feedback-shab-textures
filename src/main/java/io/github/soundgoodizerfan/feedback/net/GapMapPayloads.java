@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import io.github.soundgoodizerfan.feedback.Feedback;
-import io.github.soundgoodizerfan.feedback.client.space.ShelfMapView;
+import io.github.soundgoodizerfan.feedback.client.space.GapMapView;
 import io.github.soundgoodizerfan.feedback.space.MapData;
 import io.github.soundgoodizerfan.feedback.space.SpaceTravel;
 import io.github.soundgoodizerfan.feedback.space.SpaceTuning;
@@ -20,16 +20,16 @@ import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
-/** The Shelf's map below the craft: the client asks for a square of chunks around it, the server answers with the packed colours. */
-public final class ShelfMapPayloads {
+/** The Gap's map below the craft: the client asks for a square of chunks around it, the server answers with the packed colours. */
+public final class GapMapPayloads {
     private static final Map<UUID, Long> LAST = new HashMap<>();
 
-    private ShelfMapPayloads() {
+    private GapMapPayloads() {
     }
 
     /** Client to server: the centre chunk of the square wanted. */
     public record Request(int cx, int cz) implements CustomPacketPayload {
-        public static final Type<Request> TYPE = new Type<>(Feedback.id("shelf_map_request"));
+        public static final Type<Request> TYPE = new Type<>(Feedback.id("gap_map_request"));
         public static final StreamCodec<RegistryFriendlyByteBuf, Request> STREAM_CODEC = StreamCodec.composite(
                 ByteBufCodecs.VAR_INT, Request::cx, ByteBufCodecs.VAR_INT, Request::cz, Request::new);
 
@@ -40,7 +40,7 @@ public final class ShelfMapPayloads {
 
         public static void handle(Request r, IPayloadContext ctx) {
             ctx.enqueueWork(() -> {
-                if (!(ctx.player() instanceof ServerPlayer p) || !p.level().dimension().equals(SpaceTravel.SHELF))
+                if (!(ctx.player() instanceof ServerPlayer p) || !p.level().dimension().equals(SpaceTravel.GAP))
                     return;
                 long now = p.level().getGameTime();
                 if (now - LAST.getOrDefault(p.getUUID(), -1000L) < SpaceTuning.MAP_REQUEST_INTERVAL_TICKS)
@@ -55,7 +55,7 @@ public final class ShelfMapPayloads {
 
     /** Server to client: {@code size} by {@code size} packed colours from chunk ({@code x0}, {@code z0}). */
     public record Tile(int x0, int z0, int size, byte[] colours) implements CustomPacketPayload {
-        public static final Type<Tile> TYPE = new Type<>(Feedback.id("shelf_map_tile"));
+        public static final Type<Tile> TYPE = new Type<>(Feedback.id("gap_map_tile"));
         public static final StreamCodec<RegistryFriendlyByteBuf, Tile> STREAM_CODEC = StreamCodec.composite(
                 ByteBufCodecs.VAR_INT, Tile::x0, ByteBufCodecs.VAR_INT, Tile::z0, ByteBufCodecs.VAR_INT, Tile::size,
                 ByteBufCodecs.BYTE_ARRAY, Tile::colours, Tile::new);
@@ -66,7 +66,7 @@ public final class ShelfMapPayloads {
         }
 
         public static void handle(Tile t, IPayloadContext ctx) {
-            ctx.enqueueWork(() -> ShelfMapView.accept(t.x0(), t.z0(), t.size(), t.colours()));
+            ctx.enqueueWork(() -> GapMapView.accept(t.x0(), t.z0(), t.size(), t.colours()));
         }
     }
 }

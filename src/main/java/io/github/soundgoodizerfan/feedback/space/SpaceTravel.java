@@ -21,15 +21,15 @@ import org.joml.Vector3d;
 import javax.annotation.Nullable;
 
 /**
- * The Shelf prototype (docs/specs/feedback_space_spec.md): an operator moves a Sable body and
- * everything joined to it between the Overworld and {@code feedback:shelf}, and scales one.
+ * The Gap prototype (docs/specs/feedback_space_spec.md): an operator moves a Sable body and
+ * everything joined to it between the Overworld and {@code feedback:gap}, and scales one.
  * The move is Dimensional Sable's (MIT; serialises the body and loads it in the other level, keeping velocity),
  * the scale is Sable Scaling's (MIT; resamples the colliders and scales mass). Both are required mods and
  * called through their public API; nothing of theirs is copied.
  */
 public final class SpaceTravel {
-    public static final ResourceKey<Level> SHELF = ResourceKey.create(Registries.DIMENSION,
-            ResourceLocation.fromNamespaceAndPath(Feedback.MOD_ID, "shelf"));
+    public static final ResourceKey<Level> GAP = ResourceKey.create(Registries.DIMENSION,
+            ResourceLocation.fromNamespaceAndPath(Feedback.MOD_ID, "gap"));
     private static final double LOOK_REACH = 16;
 
     private SpaceTravel() {
@@ -46,18 +46,42 @@ public final class SpaceTravel {
         return SableCompanion.INSTANCE.getContaining(player.level(), hit.getBlockPos()) instanceof ServerSubLevel s ? s : null;
     }
 
-    /** Bodies moved (the chain), or -1 when {@code body} is already in the Shelf. */
+    /** Bodies moved (the chain), or -1 when {@code body} is already in the Gap. */
     public static int send(ServerLevel from, ServerSubLevel body) {
-        if (from.dimension().equals(SHELF)) return -1;
-        ServerLevel shelf = from.getServer().getLevel(SHELF);
-        if (shelf == null) return -2;
-        return cross(from, shelf, body, SpaceTuning.ENTRY_Y, true);
+        if (from.dimension().equals(GAP)) return -1;
+        ServerLevel gap = from.getServer().getLevel(GAP);
+        if (gap == null) return -2;
+        return cross(from, gap, body, SpaceTuning.ENTRY_Y, true);
     }
 
-    /** Bodies moved, or -1 when {@code body} is not in the Shelf. Arrives where the Overworld's air is thin but not zero. */
+    /** Bodies moved, or -1 when {@code body} is not in the Gap. Arrives where the Overworld's air is thin but not zero. */
     public static int back(ServerLevel from, ServerSubLevel body) {
-        if (!from.dimension().equals(SHELF)) return -1;
+        if (!from.dimension().equals(GAP)) return -1;
         return cross(from, from.getServer().overworld(), body, SpaceTuning.RETURN_Y, false);
+    }
+
+    /**
+     * People in the Gap below its floor who are on no Sable body fall out of it: they arrive in the Overworld at the same x and z, at
+     * {@link SpaceTuning#RETURN_Y}, keeping speed and fall distance, and burn from the way in. A person on a body goes with the body.
+     */
+    public static void dropStrays(ServerLevel gap) {
+        ServerLevel overworld = gap.getServer().overworld();
+        for (ServerPlayer p : new java.util.ArrayList<>(gap.players())) {
+            if (p.isSpectator() || p.getY() >= SpaceTuning.FLOOR_Y)
+                continue;
+            if (SableCompanion.INSTANCE.getTrackingOrVehicleSubLevel(p) != null
+                    || SableCompanion.INSTANCE.getContaining(gap, p.blockPosition()) != null)
+                continue;
+            Vec3 v = p.getDeltaMovement();
+            float fall = p.fallDistance;
+            p.stopRiding();
+            p.teleportTo(overworld, p.getX(), SpaceTuning.RETURN_Y, p.getZ(), java.util.Set.of(), p.getYRot(), p.getXRot());
+            p.setDeltaMovement(v);
+            p.fallDistance = fall;
+            p.hurtMarked = true;
+            p.setRemainingFireTicks(SpaceTuning.REENTRY_FIRE_TICKS);
+            fade(java.util.List.of(p), false);
+        }
     }
 
     /** Where a player last stood on a body (their feet, in the body's frame) and when. */

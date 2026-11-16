@@ -12,19 +12,19 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RegisterDimensionSpecialEffectsEvent;
 
 /**
- * The Shelf's sky: the Overworld's night with no cloud layer (a cloud level that is not a number draws none, as the End's does),
- * and no fog. The dimension type names it as {@code feedback:shelf} in {@code effects}.
+ * The Gap's sky: the Overworld's night with no cloud layer (a cloud level that is not a number draws none, as the End's does),
+ * and no fog. The dimension type names it as {@code feedback:gap} in {@code effects}.
  */
 @EventBusSubscriber(modid = Feedback.MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
-public final class ShelfEffects extends DimensionSpecialEffects {
+public final class GapEffects extends DimensionSpecialEffects {
 
-    private ShelfEffects() {
+    private GapEffects() {
         super(Float.NaN, false, SkyType.NORMAL, false, false);
     }
 
     @SubscribeEvent
     public static void register(RegisterDimensionSpecialEffectsEvent event) {
-        event.register(Feedback.id("shelf"), new ShelfEffects());
+        event.register(Feedback.id("gap"), new GapEffects());
     }
 
     @Override

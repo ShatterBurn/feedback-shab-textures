@@ -26,4 +26,4 @@ Wear it in the Face slot. It acts by itself whenever you would otherwise suffer 
 
 ### Air cylinder
 
-The cylinder holds air and draws on it while the air outside is too thin to breathe. A thicker wall of a stronger metal holds more. The [Gas Compressor](Gas_Compressor.md) fills it; the air it holds shows on its tooltip like a fluid in any container. It works at any height and in the [Shelf](The_Shelf.md). An empty cylinder gives nothing.
+The cylinder holds air and draws on it while the air outside is too thin to breathe. A thicker wall of a stronger metal holds more. The [Gas Compressor](Gas_Compressor.md) fills it; the air it holds shows on its tooltip like a fluid in any container. It works at any height and in the [Gap](The_Gap.md). An empty cylinder gives nothing.

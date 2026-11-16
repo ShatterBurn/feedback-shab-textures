@@ -44,7 +44,7 @@ versionRange = "[2.0.3,)"
 ordering = "AFTER"
 side = "BOTH"
 
-# The Shelf prototype (space/SpaceTravel) moves a Sable body between dimensions through Dimensional Sable and
+# The Gap prototype (space/SpaceTravel) moves a Sable body between dimensions through Dimensional Sable and
 # scales one through Sable Scaling (both MIT; players install them, we never ship them). Scaling extends Sable's
 # pose network format, so both sides need it.
 [[dependencies.${mod_id}]]

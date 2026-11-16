@@ -11,7 +11,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
-/** A person aboard a body crossing between the Overworld and the Shelf: the screen clears from black going up, from a hot white coming down. */
+/** A person aboard a body crossing between the Overworld and the Gap: the screen clears from black going up, from a hot white coming down. */
 public record SpaceFadePayload(boolean up) implements CustomPacketPayload {
 
     public static final Type<SpaceFadePayload> TYPE = new Type<>(Feedback.id("space_fade"));

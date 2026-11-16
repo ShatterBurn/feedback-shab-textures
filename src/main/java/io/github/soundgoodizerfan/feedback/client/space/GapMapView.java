@@ -25,18 +25,18 @@ import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 /**
- * The Shelf's view below the craft: a flat plane of the Overworld as explored, one pixel a chunk, drawn after the sky so the stars
- * stay. The client asks the server for the square around the craft every {@code MAP_REQUEST_INTERVAL_TICKS} while in the Shelf, and
+ * The Gap's view below the craft: a flat plane of the Overworld as explored, one pixel a chunk, drawn after the sky so the stars
+ * stay. The client asks the server for the square around the craft every {@code MAP_REQUEST_INTERVAL_TICKS} while in the Gap, and
  * draws the last answer where its chunks really are, so the plane holds still as the craft moves over it.
  */
 @EventBusSubscriber(modid = Feedback.MOD_ID, value = Dist.CLIENT)
-public final class ShelfMapView {
-    private static final ResourceLocation TEXTURE = Feedback.id("shelf_map");
+public final class GapMapView {
+    private static final ResourceLocation TEXTURE = Feedback.id("gap_map");
     private static DynamicTexture texture;
     private static int x0, z0, size;
     private static long lastAsk;
 
-    private ShelfMapView() {
+    private GapMapView() {
     }
 
     /** A tile from the server. */
@@ -67,12 +67,12 @@ public final class ShelfMapView {
         if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_SKY)
             return;
         Minecraft mc = Minecraft.getInstance();
-        if (mc.level == null || mc.player == null || !mc.level.dimension().equals(SpaceTravel.SHELF))
+        if (mc.level == null || mc.player == null || !mc.level.dimension().equals(SpaceTravel.GAP))
             return;
         long now = mc.level.getGameTime();
         if (now - lastAsk >= SpaceTuning.MAP_REQUEST_INTERVAL_TICKS) {
             lastAsk = now;
-            PacketDistributor.sendToServer(new io.github.soundgoodizerfan.feedback.net.ShelfMapPayloads.Request(
+            PacketDistributor.sendToServer(new io.github.soundgoodizerfan.feedback.net.GapMapPayloads.Request(
                     mc.player.blockPosition().getX() >> 4, mc.player.blockPosition().getZ() >> 4));
         }
         if (texture == null || size <= 0)

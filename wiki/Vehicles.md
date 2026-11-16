@@ -107,7 +107,7 @@ Every moving body is slowed by the air, in proportion to its speed **squared** a
 
 ### Air density
 
-Air thins with height in the Overworld, and wings, [propellers](Propeller.md) and the lift of [gas cells](Gas_Cell.md) all weaken with it, and fade to nothing by y 312, where a vehicle leaves for the [Shelf](The_Shelf.md). Oxygen is a share of the air: a person breathes the density times that share.
+Air thins with height in the Overworld, and wings, [propellers](Propeller.md) and the lift of [gas cells](Gas_Cell.md) all weaken with it, and fade to nothing by y 312, where a vehicle leaves for the [Gap](The_Gap.md). Oxygen is a share of the air: a person breathes the density times that share.
 
 
 | Height | Density |

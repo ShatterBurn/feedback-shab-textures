@@ -9,7 +9,7 @@ import org.joml.Vector3d;
 
 /**
  * The gravity Sable puts on a body in {@code level}: its per-dimension physics data ({@code dimension_physics}), 11 blocks/s^2
- * down in the Overworld and none in the Shelf. Anything that weighs a body (a ballast tank, a joint's arm, a gas cell's lift, the
+ * down in the Overworld and none in the Gap. Anything that weighs a body (a ballast tank, a joint's arm, a gas cell's lift, the
  * diagram's weight arrow) reads this and not a constant, so it follows the dimension.
  */
 public final class Gravity {

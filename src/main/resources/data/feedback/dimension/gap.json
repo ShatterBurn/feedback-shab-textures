@@ -1,5 +1,5 @@
 {
-  "type": "feedback:shelf",
+  "type": "feedback:gap",
   "generator": {
     "type": "minecraft:flat",
     "settings": {

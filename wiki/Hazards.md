@@ -124,7 +124,7 @@ Staying inside builds up exposure, and leaving lets it drain, twice as fast. Fir
 
 ## Thin air
 
-Where the air carries less than half of the breathable air at sea level (about y 192 in the Overworld, and everywhere in the [Shelf](The_Shelf.md)), your air bar drains. A breath sound, nausea and darkness come first, then the bar empties and you take damage. A [Respirator](Respirator.md) or the air of a sealed cabin (see [Air Valve](Air_Valve.md)) gives breath back.
+Where the air carries less than half of the breathable air at sea level (about y 192 in the Overworld, and everywhere in the [Gap](The_Gap.md)), your air bar drains. A breath sound, nausea and darkness come first, then the bar empties and you take damage. A [Respirator](Respirator.md) or the air of a sealed cabin (see [Air Valve](Air_Valve.md)) gives breath back.
 
 ## Creeper charge
 

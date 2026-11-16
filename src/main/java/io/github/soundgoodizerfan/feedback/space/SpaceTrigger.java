@@ -20,9 +20,9 @@ import net.neoforged.neoforge.event.tick.LevelTickEvent;
 
 /**
  * The crossing, with no command: a Sable body that sits in air of density zero for {@link SpaceTuning#HOLD_TICKS}
- * leaves the Overworld for the Shelf, and a body that falls below the Shelf's floor comes back. The up condition reads
+ * leaves the Overworld for the Gap, and a body that falls below the Gap's floor comes back, and so does a person on no body (see {@link SpaceTravel#dropStrays}). The up condition reads
  * the air table (a place with no air), never a height; the two heights are far enough apart that a body does not
- * bounce between them. Every {@link SpaceTuning#CHECK_INTERVAL} ticks, bodies only. In the Shelf a drifting body is
+ * bounce between them. Every {@link SpaceTuning#CHECK_INTERVAL} ticks, bodies only. In the Gap a drifting body is
  * woken each physics step, since Sable puts a body slower than 0.15 b/s to sleep and it would stop in free fall.
  */
 @EventBusSubscriber(modid = Feedback.MOD_ID)
@@ -45,10 +45,14 @@ public final class SpaceTrigger {
 
     @SubscribeEvent
     public static void onLevelTick(LevelTickEvent.Post event) {
-        if (!(event.getLevel() instanceof ServerLevel level) || level.getGameTime() % SpaceTuning.CHECK_INTERVAL != 0)
+        if (!(event.getLevel() instanceof ServerLevel level))
             return;
-        boolean shelf = level.dimension().equals(SpaceTravel.SHELF);
-        if (!shelf && !level.dimension().equals(Level.OVERWORLD))
+        boolean gap = level.dimension().equals(SpaceTravel.GAP);
+        if (gap)
+            SpaceTravel.dropStrays(level); // every tick: a person in free fall covers the floor in a few checks
+        if (level.getGameTime() % SpaceTuning.CHECK_INTERVAL != 0)
+            return;
+        if (!gap && !level.dimension().equals(Level.OVERWORLD))
             return;
         SpaceTravel.noteStanding(level);
         var container = ServerSubLevelContainer.getContainer(level);
@@ -60,7 +64,7 @@ public final class SpaceTrigger {
             if (body.isRemoved())
                 continue;
             double y = body.logicalPose().position().y();
-            if (shelf) {
+            if (gap) {
                 if (y < SpaceTuning.FLOOR_Y)
                     movers.add(body);
             } else if (AirDensityTable.at(level, y) <= 0f) {
@@ -71,15 +75,15 @@ public final class SpaceTrigger {
                 HELD.remove(body.getUniqueId());
             }
         }
-        if (!shelf) // the Shelf's pass has no thin bodies and must not forget the Overworld's
+        if (!gap) // the Gap's pass has no thin bodies and must not forget the Overworld's
             HELD.keySet().retainAll(thin); // a body that was removed or left the thin air is forgotten
         for (ServerSubLevel body : movers) {
             HELD.remove(body.getUniqueId());
             if (!body.isRemoved()) // a chain moves with its first body
 {
-                    int n = shelf ? SpaceTravel.back(level, body) : SpaceTravel.send(level, body);
+                    int n = gap ? SpaceTravel.back(level, body) : SpaceTravel.send(level, body);
                     Feedback.LOGGER.info("Space crossing of body {} at y {}: {} body(ies) moved to {}", body.getUniqueId(),
-                            Math.round(body.logicalPose().position().y()), n, shelf ? "the Overworld" : "the Shelf");
+                            Math.round(body.logicalPose().position().y()), n, gap ? "the Overworld" : "the Gap");
                 }
         }
     }
@@ -87,7 +91,7 @@ public final class SpaceTrigger {
     @SubscribeEvent
     public static void onPhysicsTick(ForgeSablePrePhysicsTickEvent event) {
         ServerLevel level = event.getPhysicsSystem().getLevel();
-        if (!level.dimension().equals(SpaceTravel.SHELF))
+        if (!level.dimension().equals(SpaceTravel.GAP))
             return;
         var container = ServerSubLevelContainer.getContainer(level);
         if (container == null)

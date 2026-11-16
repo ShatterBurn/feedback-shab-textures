@@ -23,13 +23,13 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.level.ChunkEvent;
 
 /**
- * What the Overworld looks like from above, one map colour a chunk, for the Shelf's view below the craft. A chunk is sampled once,
+ * What the Overworld looks like from above, one map colour a chunk, for the Gap's view below the craft. A chunk is sampled once,
  * the first time it loads (sixteen columns on a 4 by 4 grid, the commonest map colour wins), so ground nobody has been near stays
  * unknown and explored land shows. A byte a chunk: the colour id times 4, plus the shade; 0 is unknown. Saved with the Overworld.
  */
 @EventBusSubscriber(modid = Feedback.MOD_ID)
 public final class MapData extends SavedData {
-    private static final String NAME = "feedback_shelf_map";
+    private static final String NAME = "feedback_gap_map";
 
     private final Long2ByteOpenHashMap colours = new Long2ByteOpenHashMap();
 
