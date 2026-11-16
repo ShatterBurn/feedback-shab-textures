@@ -63,6 +63,9 @@ import java.util.List;
  * cell's entity when the face is drawn. Baking a cell's quads once instead of every frame is the upgrade
  * a chunk mesh would bring.
  *
+ * <p>A voxel's texture is a 4 by 4 texel patch, not the whole sprite shrunk ({@link MicroTexels}), so a texel
+ * is 1/16 of a block here as everywhere.
+ *
  * <p>A rotation voxel whose full-size block is drawn turning (render shape
  * {@code ENTITYBLOCK_ANIMATED}: shaft, cog; not the gearbox, whose box stands still) is turned about
  * its own centre and axis by its rotor's angle, {@link RotatingRenderer}'s transform at quarter scale.
@@ -132,7 +135,7 @@ public class MicroCellRenderer implements BlockEntityRenderer<MicroCellBlockEnti
                     MicroRotor rotor = cell.rotor(MicroCellBlockEntity.index(x, y, z));
                     if (rotor != null && state.getBlock() instanceof io.github.soundgoodizerfan.feedback.machine.gearbox.GearboxBlock) {
                         // A gearbox's box stands; its stubs turn, as full size.
-                        SpinningParts.gearbox(poseStack, buffers, light, overlay, rotor.angle(level.getGameTime(), partialTick));
+                        SpinningParts.gearbox(poseStack, buffers, light, overlay, rotor.angle(level.getGameTime(), partialTick), new int[]{x, y, z});
                         poseStack.popPose();
                         continue;
                     }
@@ -155,11 +158,11 @@ public class MicroCellRenderer implements BlockEntityRenderer<MicroCellBlockEnti
                             if (!hidden(cell, state, x, y, z, side)) {
                                 random.setSeed(42L);
                                 draw(out, poseStack.last(), colors, level, cell.getBlockPos(), skin != null ? skin : state,
-                                        reskinned(model.getQuads(state, side, random, ModelData.EMPTY, type), look), light, overlay);
+                                        reskinned(MicroTexels.fit(model.getQuads(state, side, random, ModelData.EMPTY, type), x, y, z, N), look), light, overlay);
                             }
                         random.setSeed(42L);
                         draw(out, poseStack.last(), colors, level, cell.getBlockPos(), skin != null ? skin : state,
-                                reskinned(model.getQuads(state, null, random, ModelData.EMPTY, type), look), light, overlay);
+                                reskinned(MicroTexels.fit(model.getQuads(state, null, random, ModelData.EMPTY, type), x, y, z, N), look), light, overlay);
                     }
                     poseStack.popPose();
                 }

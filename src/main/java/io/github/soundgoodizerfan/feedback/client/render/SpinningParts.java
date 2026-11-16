@@ -31,7 +31,9 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
+import io.github.soundgoodizerfan.feedback.vehicle.micro.MicroCellBlockEntity;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -72,8 +74,19 @@ public final class SpinningParts {
             event.register(m);
     }
 
-    private static void draw(PoseStack pose, MultiBufferSource buffers, ModelResourceLocation id, int light, int overlay) {
+    private static void draw(PoseStack pose, MultiBufferSource buffers, ModelResourceLocation id, int light, int overlay, int[] voxel) {
         BakedModel model = Minecraft.getInstance().getModelManager().getModel(id);
+        if (voxel != null) {
+            // In a micro cell: the quads take their voxel's 4 by 4 texel patch, as every other voxel does.
+            var out = buffers.getBuffer(RenderTypeHelper.getEntityRenderType(RenderType.solid(), false));
+            var random = RandomSource.create();
+            for (Direction side : new Direction[]{Direction.DOWN, Direction.UP, Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST, null}) {
+                random.setSeed(42L);
+                for (var quad : MicroTexels.fit(model.getQuads(null, side, random, ModelData.EMPTY, RenderType.solid()), voxel[0], voxel[1], voxel[2], MicroCellBlockEntity.N))
+                    out.putBulkData(pose.last(), quad, 1f, 1f, 1f, 1f, light, overlay);
+            }
+            return;
+        }
         Minecraft.getInstance().getBlockRenderer().getModelRenderer().renderModel(pose.last(),
                 buffers.getBuffer(RenderTypeHelper.getEntityRenderType(RenderType.solid(), false)),
                 null, model, 1f, 1f, 1f, light, overlay, ModelData.EMPTY, RenderType.solid());
@@ -88,14 +101,19 @@ public final class SpinningParts {
 
     /** A gearbox in a unit cube at the pose, its node at {@code angle} degrees. */
     public static void gearbox(PoseStack pose, MultiBufferSource buffers, int light, int overlay, float angle) {
-        draw(pose, buffers, GEARBOX_HOUSING, light, overlay);
+        gearbox(pose, buffers, light, overlay, angle, null);
+    }
+
+    /** As {@link #gearbox(PoseStack, MultiBufferSource, int, int, float)}; {@code voxel} (x, y, z) is its place in a micro cell, null at full size. */
+    public static void gearbox(PoseStack pose, MultiBufferSource buffers, int light, int overlay, float angle, int[] voxel) {
+        draw(pose, buffers, GEARBOX_HOUSING, light, overlay, voxel);
         for (Direction face : Direction.values()) {
             pose.pushPose();
             point(pose, face);
             pose.translate(0.5f, 0.5f, 0.5f);
             pose.mulPose(Axis.YP.rotationDegrees(angle));
             pose.translate(-0.5f, -0.5f, -0.5f);
-            draw(pose, buffers, GEARBOX_STUB, light, overlay);
+            draw(pose, buffers, GEARBOX_STUB, light, overlay, voxel);
             pose.popPose();
         }
     }
@@ -104,7 +122,7 @@ public final class SpinningParts {
     public static void adapter(PoseStack pose, MultiBufferSource buffers, int light, int overlay, Direction facing, float angle) {
         pose.pushPose();
         point(pose, facing);
-        draw(pose, buffers, ADAPTER_HOUSING, light, overlay);
+        draw(pose, buffers, ADAPTER_HOUSING, light, overlay, null);
         // The model's +Y is the facing, so a turn about the positive axis is negated for a negative facing.
         float spin = facing.getAxisDirection() == Direction.AxisDirection.POSITIVE ? angle : -angle;
         stub(pose, buffers, ADAPTER_BIG, 8, 8, spin, light, overlay);
@@ -121,7 +139,7 @@ public final class SpinningParts {
         pose.translate(cx / 16f, 0, cz / 16f);
         pose.mulPose(Axis.YP.rotationDegrees(spin));
         pose.translate(-0.5f, 0, -0.5f);
-        draw(pose, buffers, id, light, overlay);
+        draw(pose, buffers, id, light, overlay, null);
         pose.popPose();
     }
 

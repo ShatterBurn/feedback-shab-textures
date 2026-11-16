@@ -18,58 +18,22 @@
       ],
       "faces": {
         "north": {
-          "texture": "#shaft",
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ]
+          "texture": "#shaft"
         },
         "south": {
-          "texture": "#shaft",
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ]
+          "texture": "#shaft"
         },
         "west": {
-          "texture": "#shaft",
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ]
+          "texture": "#shaft"
         },
         "east": {
-          "texture": "#shaft",
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ]
+          "texture": "#shaft"
         },
         "up": {
-          "texture": "#shaft",
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ]
+          "texture": "#shaft"
         },
         "down": {
-          "texture": "#shaft",
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ]
+          "texture": "#shaft"
         }
       }
     }
