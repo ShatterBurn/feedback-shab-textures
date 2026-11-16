@@ -29,7 +29,7 @@ import net.neoforged.neoforge.event.tick.ServerTickEvent;
  */
 public final class VanillaVesselSwap {
 
-    private static final Map<Block, Block> SWAP = Map.ofEntries(
+    private static final Map<Block, Block> SWAP = swapTable(Map.ofEntries(
             Map.entry(Blocks.FURNACE, FBlocks.FURNACE.get()),
             Map.entry(Blocks.SMOKER, FBlocks.SMOKER.get()),
             Map.entry(Blocks.BLAST_FURNACE, FBlocks.BLAST_FURNACE.get()),
@@ -48,7 +48,16 @@ public final class VanillaVesselSwap {
             Map.entry(Blocks.NOTE_BLOCK, FBlocks.NOTE_BLOCK.get()),
             Map.entry(Blocks.DISPENSER, FBlocks.DISPENSER.get()),
             Map.entry(Blocks.OBSERVER, io.github.soundgoodizerfan.feedback.registry.FAutomation.SENSORS.get(
-                    io.github.soundgoodizerfan.feedback.machine.sensor.SensorKind.OBSERVER).get()));
+                    io.github.soundgoodizerfan.feedback.machine.sensor.SensorKind.OBSERVER).get())));
+
+    /** The table plus every vanilla bed: each of the sixteen colours becomes the one placed bed, dyed by the colour it was. */
+    private static Map<Block, Block> swapTable(Map<Block, Block> base) {
+        var all = new java.util.HashMap<>(base);
+        for (var bed : net.minecraft.core.registries.BuiltInRegistries.BLOCK)
+            if (bed instanceof net.minecraft.world.level.block.BedBlock && !(bed instanceof io.github.soundgoodizerfan.feedback.modular.part.ModularBedBlock))
+                all.put(bed, FModular.PLACED_BED.get());
+        return Map.copyOf(all);
+    }
 
     /** A vanilla job site's block states live in its point-of-interest type; ours join it, so a villager still claims the swapped block (toolsmith, mason, armorer, butcher, cleric). */
     public static void onExtendPoi(net.neoforged.neoforge.common.world.poi.ExtendPoiTypesEvent event) {
@@ -57,6 +66,10 @@ public final class VanillaVesselSwap {
         event.addBlockToPoi(net.minecraft.world.entity.ai.village.poi.PoiTypes.ARMORER, FBlocks.BLAST_FURNACE.get());
         event.addBlockToPoi(net.minecraft.world.entity.ai.village.poi.PoiTypes.BUTCHER, FBlocks.SMOKER.get());
         event.addBlockToPoi(net.minecraft.world.entity.ai.village.poi.PoiTypes.CLERIC, FBlocks.BREWING_STAND.get());
+        // A villager's home is the head of a bed, as for vanilla's; the foot is not claimed.
+        event.addStatesToPoi(net.minecraft.world.entity.ai.village.poi.PoiTypes.HOME, FModular.PLACED_BED.get().getStateDefinition().getPossibleStates().stream()
+                .filter(st -> st.getValue(net.minecraft.world.level.block.BedBlock.PART) == net.minecraft.world.level.block.state.properties.BedPart.HEAD)
+                .collect(java.util.stream.Collectors.toSet()));
     }
 
     /** Our dropper and dispenser keep vanilla's block entities. */
@@ -109,6 +122,10 @@ public final class VanillaVesselSwap {
             Block ours = SWAP.get(state.getBlock());
             if (ours == null)
                 continue;
+            if (ours instanceof io.github.soundgoodizerfan.feedback.modular.part.ModularBedBlock && state.getBlock() instanceof net.minecraft.world.level.block.BedBlock vanilla) {
+                swapBed(p.level(), p.pos(), state, vanilla, ours);
+                continue;
+            }
             var swapped = ours.defaultBlockState();
             if (swapped.hasProperty(ThermalVesselBlock.FACING) && state.hasProperty(BlockStateProperties.HORIZONTAL_FACING))
                 swapped = swapped.setValue(ThermalVesselBlock.FACING, state.getValue(BlockStateProperties.HORIZONTAL_FACING));
@@ -116,6 +133,33 @@ public final class VanillaVesselSwap {
             for (var prop : state.getProperties())
                 swapped = copy(swapped, state, prop);
             p.level().setBlock(p.pos(), swapped, Block.UPDATE_ALL);
+        }
+    }
+
+    /**
+     * Swaps both halves of a vanilla bed at once into the placed modular bed, so neither half sees a foreign neighbour and breaks. The
+     * bed's frame and mattress are drawn from {@link io.github.soundgoodizerfan.feedback.modular.part.BedPool} by the head's position (both halves
+     * and a reload agree), its cover dyed the colour the vanilla bed was; facing, part and occupancy carry over.
+     */
+    private static void swapBed(ServerLevel level, BlockPos pos, net.minecraft.world.level.block.state.BlockState state,
+                                net.minecraft.world.level.block.BedBlock vanilla, Block ours) {
+        var facing = state.getValue(net.minecraft.world.level.block.BedBlock.FACING);
+        boolean head = state.getValue(net.minecraft.world.level.block.BedBlock.PART) == net.minecraft.world.level.block.state.properties.BedPart.HEAD;
+        BlockPos headPos = head ? pos : pos.relative(facing);
+        var bed = io.github.soundgoodizerfan.feedback.modular.part.BedPool.draw(headPos.asLong() * 31L + level.dimension().location().hashCode(), vanilla.getColor());
+        if (bed.isEmpty())
+            return;
+        for (BlockPos half : new BlockPos[] {headPos, headPos.relative(facing.getOpposite())}) {
+            var old = level.getBlockState(half);
+            if (!(old.getBlock() instanceof net.minecraft.world.level.block.BedBlock) || old.getValue(net.minecraft.world.level.block.BedBlock.FACING) != facing)
+                continue;
+            var swapped = ours.defaultBlockState();
+            for (var prop : old.getProperties())
+                swapped = copy(swapped, old, prop);
+            // No neighbour or shape update: the other half is still vanilla for one more line.
+            level.setBlock(half, swapped, Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE);
+            if (level.getBlockEntity(half) instanceof io.github.soundgoodizerfan.feedback.modular.part.ModularBedBlockEntity be)
+                be.setBed(bed);
         }
     }
 }
