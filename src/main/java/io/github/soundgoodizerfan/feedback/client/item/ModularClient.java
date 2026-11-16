@@ -50,6 +50,7 @@ public final class ModularClient {
         event.registerItem(new SpearClient.Extension(), FModular.HAFTED_TOOL.get());
         event.registerItem(new ShieldRenderer.Extension(), FModular.SHIELD.get());
         event.registerItem(new GearModels.Extension(), FModular.HELMET.get(), FModular.CHESTPLATE.get(), FModular.LEGGINGS.get(), FModular.BOOTS.get());
+        event.registerItem(new io.github.soundgoodizerfan.feedback.client.robot.RobotItemRenderer.Extension(), FModular.ROBOT.get());
         event.registerItem(new io.github.soundgoodizerfan.feedback.client.gun.GunRenderer.Extension(),
                 io.github.soundgoodizerfan.feedback.registry.FWeapons.GUN.get(), io.github.soundgoodizerfan.feedback.registry.FWeapons.FLINTLOCK.get(),
                 io.github.soundgoodizerfan.feedback.registry.FModular.ELECTRIC_GUN.get());
