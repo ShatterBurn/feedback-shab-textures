@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """List lang keys the datapack needs but en_us.json lacks. Exit 1 when any are missing.
-Covers modular_type (role name+tip, role dims, variant name+desc, trait desc, type name) and gun_option (item name by form).
+Covers research plans (blurb and treatise name), modular_type (role name+tip, role dims, variant name+desc, trait desc, type name) and gun_option (item name by form).
 Add a rule below when a new data folder gets player-facing text."""
 import json, pathlib, sys
 R = pathlib.Path("src/main/resources")
@@ -39,9 +39,16 @@ for f in sorted((R / "data/feedback/gun_option").glob("*.json")):
     for t in traits(d):
         want(f"modular.feedback.desc.trait.{t}", f"gun_option {f.stem}")
 for f in sorted((R / "data/feedback/material").glob("*.json")):
+    if f.stem.startswith("_"):
+        continue  # a kind template, never an item
     want(f"material.feedback.{f.stem}", "material")
 for f in sorted((R / "data/feedback/gun_option").glob("*.json")):
     want(f"gun.feedback.fitting.{f.stem}", "gun_option")
+for f in sorted((R / "data/feedback/research").glob("*.json")):
+    if f.stem == "attunement":
+        continue
+    want(f"gui.feedback.research_table.blurb.{f.stem}", "research plan")
+    want(f"item.feedback.treatise_{f.stem}", "research plan")
 missing = {k: w for k, w in need.items() if k not in lang}
 for k, w in sorted(missing.items()):
     print(f"{k}  ({w})")

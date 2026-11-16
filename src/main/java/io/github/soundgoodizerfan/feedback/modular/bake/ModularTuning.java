@@ -402,10 +402,21 @@ public final class ModularTuning {
     // --- armour -------------------------------------------------------------------------------
 
     /**
-     * Plate stops a share {@code s / (s + this)} of what plate at its best stops, s being its competence.
-     * 1.4 puts leather near vanilla (7 a set), iron 17, diamond 19.4; 2.87 left leather at 4 and lost to vanilla mobs.
+     * A lining stops a share {@code s / (s + this)} of its best, s being its competence.
+     * Lining shares only; plate points use {@link #armourShare}.
      */
     public static final float ARMOUR_HALF_COMPETENCE = 1.4f;
+    /**
+     * A plate's share of its piece's top points: no ceiling, a logarithm of competence, so a harder plate always
+     * stops more and a doubling of competence is worth the same everywhere. Leather (competence 1) stands at
+     * {@link #ARMOUR_SHARE_BASE}, iron near 0.72, hardened steel 0.93, diamond a little over 1.
+     */
+    public static final float ARMOUR_SHARE_BASE = 0.5f, ARMOUR_SHARE_PER_E_FOLD = 0.1f;
+
+    public static float armourShare(float competence) {
+        return Math.max(0.05f, ARMOUR_SHARE_BASE + ARMOUR_SHARE_PER_E_FOLD * (float) Math.log(Math.max(competence, 1e-3f)));
+    }
+
     /** Armour's durability reads the plate's competence plus this, so that leather is soft but not paper. */
     public static final float ARMOUR_DURABILITY_FLOOR = 1.5f;
     /** Share of a piece's points a lining adds, by how good the lining is. */

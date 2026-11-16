@@ -68,6 +68,12 @@ public class RobotArmBlock extends Block implements EntityBlock {
                 stack.shrink(1);
             if (!old.isEmpty())
                 player.getInventory().placeItemBackInInventory(old);
+        } else if (stack.is(FTags.PUNCH_CARDS) && player.isShiftKeyDown()) {
+            ItemStack out = arm.core().getItem(0);
+            if (!out.isEmpty()) {
+                arm.core().setItem(0, ItemStack.EMPTY);
+                player.getInventory().placeItemBackInInventory(out);
+            }
         } else if (stack.is(FTags.PUNCH_CARDS)) {
             var refusal = arm.core().refusalFor(stack);
             if (refusal.isPresent()) {

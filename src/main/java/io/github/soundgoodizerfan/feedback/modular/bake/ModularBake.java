@@ -954,7 +954,7 @@ public final class ModularBake {
             }
             case ARMOUR -> {
                 Part plate = wearPart;
-                float share = comp / (comp + ModularTuning.ARMOUR_HALF_COMPETENCE);
+                float share = ModularTuning.armourShare(comp);
                 ModularType.Role plateRole = type.roles().get(type.wearRole());
                 float canonical = type.canonicalCounts().getOrDefault(type.wearRole(), plate.count());
                 float cover = clamp(plateRole.cells(plate) * plateRole.volumeScale(plate) / Math.max(1f, canonical), 0f, ModularTuning.ARMOUR_COVER_MAX);

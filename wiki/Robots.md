@@ -38,7 +38,8 @@ A robot may also carry an electronic circuit as its **brain** (see [The brain](#
 - **Right-click a block** with the Robot item to set it down as a robot standing there.
 - **Sneak and right-click with an empty hand** to pick it up. It keeps its battery, program and cargo.
 - **Right-click with a [Battery](Battery.md) item** to fit one. Without a battery the robot has no power and does nothing.
-- **Right-click with a Punch Card** to load a program. It is an ordinary [Controller](Controller.md) program written at the [Programmer](Programming.md).
+- **Right-click with a Punch Card** to load a program. It is an ordinary [Controller](Controller.md) program written at the [Programmer](Programming.md). A card already loaded comes back to you.
+- **Sneak and right-click with a Punch Card** to take the loaded program back out into your inventory. The robot keeps nothing loaded.
 - **Right-click with an empty hand** to read its charge and whether a program is loaded.
 
 The robot holds nine slots of cargo.

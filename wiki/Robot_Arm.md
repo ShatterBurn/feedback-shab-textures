@@ -17,6 +17,7 @@ W is [Copper Wire](Wire_Drawer.md) and P is a [Copper Plate](Mechanical_Hammer.m
 It faces the way you looked when you placed it.
 
 - **Right-click with a Punch Card** to load a program.
+- **Sneak and right-click with a Punch Card** to take the loaded program back out into your inventory.
 - **Right-click with a [Data Connector](Data_Connector.md)** to step through its channels, as on a robot, then link a card in the [Programmer](Programming.md).
 - **Right-click with a circuit** to seat it as the arm's brain. It gives the arm dexterity as on a [robot](Robots.md#the-brain); an arm with no circuit is clumsy. A circuit already seated comes back to you.
 - **Right-click with any other item** to put it in its cargo.

@@ -467,6 +467,14 @@ public class RobotEntity extends Entity implements ControllerCore.Locals, RobotW
                 held.shrink(1);
             return InteractionResult.CONSUME;
         }
+        if (held.is(FTags.PUNCH_CARDS) && player.isShiftKeyDown()) {
+            ItemStack out = core.getItem(0);
+            if (!out.isEmpty()) {
+                core.setItem(0, ItemStack.EMPTY);
+                player.getInventory().placeItemBackInInventory(out);
+            }
+            return InteractionResult.CONSUME;
+        }
         if (held.is(FTags.PUNCH_CARDS)) {
             var refusal = core.refusalFor(held);
             if (refusal.isPresent()) {
