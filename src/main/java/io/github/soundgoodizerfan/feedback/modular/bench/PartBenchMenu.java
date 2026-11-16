@@ -857,6 +857,7 @@ public class PartBenchMenu extends AbstractContainerMenu {
         if (station == Station.STONECUTTING)
             points *= sawWear();
         hammer().hurtAndBreak(points, player, EquipmentSlot.MAINHAND);
+        ModularStacks.wetUse(hammer(), player);
         table.setChanged();
     }
 

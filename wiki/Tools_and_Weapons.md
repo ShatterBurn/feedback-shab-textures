@@ -80,6 +80,7 @@ A tool wears with use, like any hand tool, but misuse costs extra and tells you 
 
 - **An edge on something much harder than it can take chips.** A diamond pickaxe on obsidian wears quickly, because diamond is hard but brittle. A **keen** edge chips sooner; a **blunt** one is tougher.
 - **A head too heavy for its handle works the joint loose.** Netherite or gold on a wooden handle gets *loose-jointed* and loses a bit more each swing. A stronger handle (bone, a rod) or a binding fixes it.
+- **Wet use rusts.** In rain or in water, loosing a bow or crossbow, landing a blow with a hafted weapon or a punch in a glove, blocking with a shield, stirring or skimming a pot, flipping with a spatula and a stroke at the part bench each give up a point of durability every so often. How often depends on how little the metal and its coat resist water (the **Corrosion** figure). It is a slow loss, never sudden, and repair mends it.
 - **A bow's string is the limit.** Stiff limbs on a weak string shoot faster and draw slower, until the string is the weak point. Use wire for a string.
 
 ## Edge
@@ -178,7 +179,7 @@ Every shaped part comes in several shapes, laid in a different layout or forged 
 
 A shield is drawn as a vanilla-style shield sized by its face: a buckler is small, a kite shield tall, a tower shield large. The face and grip are tinted by their materials, and a frame in the rim's material runs round the face, thicker for a wider rim (the rim's **rim width** axis, 1 to 3). Raising it shows the vanilla guard pose.
 
-**Shields get hot.** Every blow a shield stops leaves heat in its face, more for a light face than a heavy one, and the heat stacks until the shield has rested (it cools by itself, even in a chest). Fire and lava warm the face towards their own temperature and no further. A hot face is felt: a shield too hot to hold hurts the hand, unless its grip or its face is wood, leather or another thing that does not carry heat, or you wear gloves. Near the temperature its material softens at, the shield holds less of each blow, and past it every blow wears it twice as hard. It never breaks all at once. A metal face takes heat slowly and softens late; a wooden one warms fast but burns its holder less. Shift on the shield's tooltip says where the line is.
+**Shields get hot.** Every blow a shield stops leaves heat in its face, more for a light face than a heavy one, and the heat stacks until the shield has rested (it cools by itself, even in a chest). Fire and lava warm the face towards their own temperature and no further. A hot face is felt: a shield too hot to hold hurts the hand, unless its grip or its face is wood, leather or another thing that does not carry heat, or you wear gloves. Near the temperature its material softens at, the shield holds less of each blow, and past it every blow wears it twice as hard. It never breaks all at once. A metal face takes heat slowly and softens late; a wooden one warms fast but burns its holder less. Shift on the shield's tooltip says where the line is. A harder face takes less wear from each blocked blow and holds full strength closer to its softening heat. A brittle face (low edge toughness) chips under a heavy blow, losing extra points of durability; the Blueprint Table shows the blocked damage a face takes without chipping.
 
 ## Fittings
 

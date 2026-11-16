@@ -11,6 +11,8 @@
       "mass",
       "corrosion",
       "fire_conduct",
+      "armour.slash",
+      "armour.blunt",
       "axis.face_opening",
       "axis.crown"
     ],

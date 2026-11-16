@@ -16,10 +16,20 @@ import net.minecraft.world.entity.projectile.AbstractArrow;
 public final class Recurve implements ModularTrait {
 
     @Override
+    public float shotDamage(Params params, boolean fullDraw) {
+        return fullDraw ? 1 + params.get("bonus", 0.25f) : 1f;
+    }
+
+    @Override
+    public int shotPierce(Params params, boolean fullDraw) {
+        return fullDraw ? (int) params.get("pierce", 1f) : 0;
+    }
+
+    @Override
     public void onArrow(AbstractArrow arrow, ItemStack weapon, Params params) {
         if (!arrow.isCritArrow())
             return;
-        arrow.setBaseDamage(arrow.getBaseDamage() * (1 + params.get("bonus", 0.25f)));
-        RangedDispatch.pierce(arrow, params.get("pierce", 1f));
+        arrow.setBaseDamage(arrow.getBaseDamage() * shotDamage(params, true));
+        RangedDispatch.pierce(arrow, shotPierce(params, true));
     }
 }

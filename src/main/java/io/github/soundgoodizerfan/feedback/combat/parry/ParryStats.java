@@ -42,6 +42,21 @@ public record ParryStats(int window, int recovery, float coneHalfDeg, float mass
                 .map(st -> io.github.soundgoodizerfan.feedback.combat.skill.Skills.tune(who, st));
     }
 
+    /** The family a weapon of {@code design} parries as: a hafted build's front face's, and an axe face (dig-family) parries as a blade. */
+    public static ModularType.Family family(io.github.soundgoodizerfan.feedback.modular.type.ModularDesign design, ModularType type) {
+        ModularType.Family family = type.family() == ModularType.Family.HAFTED
+                ? io.github.soundgoodizerfan.feedback.modular.type.ModularFaces.combat(design, type) : type.family();
+        if (family == ModularType.Family.DIG && io.github.soundgoodizerfan.feedback.modular.type.ModularFaces.actions(design, type).contains("strip"))
+            family = ModularType.Family.BLADE;
+        return family;
+    }
+
+    /** Whether a build of {@code design} parries with a blow (a blade, mace or spear): the families that read {@link ParryTuning#profile}. */
+    public static boolean melee(io.github.soundgoodizerfan.feedback.modular.type.ModularDesign design, ModularType type) {
+        ModularType.Family family = family(design, type);
+        return family == ModularType.Family.BLADE || family == ModularType.Family.MACE || family == ModularType.Family.SPEAR;
+    }
+
     /** A bare hand in a plated glove turns a melee blow aside and nothing else: no projectile, no bullet. */
     public boolean bare() {
         return stack.getItem() instanceof io.github.soundgoodizerfan.feedback.modular.item.ModularGlove;
@@ -88,11 +103,7 @@ public record ParryStats(int window, int recovery, float coneHalfDeg, float mass
         ModularType type = ModularTypes.known(design.type());
         if (type == null)
             return Optional.empty();
-        // An axe face is dig-family but parries as a blade.
-        ModularType.Family family = type.family() == ModularType.Family.HAFTED
-                ? io.github.soundgoodizerfan.feedback.modular.type.ModularFaces.combat(stack) : type.family();
-        if (family == ModularType.Family.DIG && io.github.soundgoodizerfan.feedback.modular.type.ModularFaces.actions(stack).contains("strip"))
-            family = ModularType.Family.BLADE;
+        ModularType.Family family = family(design, type);
         if (family != ModularType.Family.BLADE && family != ModularType.Family.MACE
                 && family != ModularType.Family.SPEAR && family != ModularType.Family.SHIELD)
             return Optional.empty();
@@ -101,10 +112,9 @@ public record ParryStats(int window, int recovery, float coneHalfDeg, float mass
         if (family == ModularType.Family.SHIELD && !parries && !deflects)
             return Optional.empty();
         float mass = figures.get(Fig.MASS);
-        float heaviness = ParryTuning.heaviness(mass, figures.get(Fig.REACH));
-        float cone = family == ModularType.Family.SHIELD ? ParryTuning.CONE_SHIELD_DEG
-                : ParryTuning.coneHalfDegrees(figures.get(Fig.BALANCE));
-        int window = ParryTuning.window(heaviness);
+        ParryTuning.Profile profile = ParryTuning.profile(mass, figures.get(Fig.REACH), figures.get(Fig.BALANCE));
+        float cone = family == ModularType.Family.SHIELD ? ParryTuning.CONE_SHIELD_DEG : profile.coneHalfDeg();
+        int window = profile.window();
         float redirect = ParryTuning.REDIRECT_SPEED, knock = 0;
         if (parries) {
             window = Math.round(trait.params().get("parry_ticks", window));
@@ -112,6 +122,6 @@ public record ParryStats(int window, int recovery, float coneHalfDeg, float mass
             knock = trait.params().get("knock", 0f);
         } else if (deflects)
             redirect = trait.params().get("return_speed", 0.8f);
-        return Optional.of(new ParryStats(window, ParryTuning.recovery(heaviness), cone, mass, hand, stack, deflects, redirect, knock));
+        return Optional.of(new ParryStats(window, profile.recovery(), cone, mass, hand, stack, deflects, redirect, knock));
     }
 }

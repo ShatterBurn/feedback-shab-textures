@@ -25,7 +25,12 @@ public final class Repeater implements ModularTrait {
     }
 
     @Override
+    public float shotDamage(Params params, boolean fullDraw) {
+        return params.get("damage_mult", 1f);
+    }
+
+    @Override
     public void onArrow(net.minecraft.world.entity.projectile.AbstractArrow arrow, ItemStack weapon, Params params) {
-        arrow.setBaseDamage(arrow.getBaseDamage() * params.get("damage_mult", 1f));
+        arrow.setBaseDamage(arrow.getBaseDamage() * shotDamage(params, arrow.isCritArrow()));
     }
 }

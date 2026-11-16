@@ -99,6 +99,7 @@ public final class FistStances {
             event.setAmount(event.getAmount() + fist * (0.2f + charge * charge * 0.8f));
         }
         var glove = CombatGear.platedGlove(p);
+        io.github.soundgoodizerfan.feedback.modular.item.ModularStacks.wetUse(glove, p);
         var plate = ModularGlove.plateParams(glove);
         if (plate.containsKey("bleed_damage")) {
             float seconds = plate.getOrDefault("bleed_seconds", 5f), bleed = plate.get("bleed_damage");

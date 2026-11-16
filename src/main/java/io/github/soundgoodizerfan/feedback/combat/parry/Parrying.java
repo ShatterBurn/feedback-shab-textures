@@ -329,7 +329,7 @@ public final class Parrying {
             RIPOSTE_UNTIL.put(p.getUUID(), p.level().getGameTime() + ParryTuning.RIPOSTE_TICKS);
         // Roll With It: on the last tick the blow lands on the flat, and the excess goes into the attacker, not the weapon.
         boolean flat = late && Skills.unlocked(defender, "roll_with_it") && Rearms.ready(defender, "roll_with_it");
-        float rating = stats.mass() * ParryTuning.RATING_PER_MU;
+        float rating = ParryTuning.rating(stats.mass());
         if (attacker instanceof LivingEntity living) {
             ModularFigures held = ModularStacks.figures(living.getMainHandItem());
             if (direct == attacker && held != null && held.get(ModularFigures.Fig.IMPACT) > 0)

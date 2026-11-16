@@ -182,8 +182,11 @@ public final class ModularTraits {
     public static List<Active> addons(ItemStack stack) {
         ModularDesign design = ModularStacks.design(stack);
         ModularType type = design == null ? null : ModularTypes.known(design.type());
-        if (type == null)
-            return List.of();
+        return type == null ? List.of() : addons(design, type);
+    }
+
+    /** As {@link #addons(ItemStack)} for a design and its type (the Blueprint Table reads a drawing through this). */
+    public static List<Active> addons(ModularDesign design, ModularType type) {
         List<Active> out = new ArrayList<>(2);
         for (String key : type.order()) {
             ModularType.Role role = type.roles().get(key);
@@ -224,13 +227,17 @@ public final class ModularTraits {
 
     /** The traits that fire on {@code stack}'s hooks: the one its variants or type give, then its addons (each id once). */
     public static List<Active> actives(ItemStack stack) {
-        List<Active> out = new ArrayList<>(2);
-        of(stack).ifPresent(out::add);
-        List<Active> more = new ArrayList<>(addons(stack));
         ModularDesign design = ModularStacks.design(stack);
         ModularType type = design == null ? null : ModularTypes.known(design.type());
-        if (type != null)
-            more.addAll(bands(design, type));
+        return type == null ? List.of() : actives(design, type);
+    }
+
+    /** As {@link #actives(ItemStack)} for a design and its type: what the runtime asks of a stack, a drawing answers the same way. */
+    public static List<Active> actives(ModularDesign design, ModularType type) {
+        List<Active> out = new ArrayList<>(2);
+        of(design, type).ifPresent(out::add);
+        List<Active> more = new ArrayList<>(addons(design, type));
+        more.addAll(bands(design, type));
         for (Active a : more)
             if (out.stream().noneMatch(o -> o.id().equals(a.id())))
                 out.add(a);
@@ -252,11 +259,12 @@ public final class ModularTraits {
     /** The trait {@code stack} has, if it is a modular item and its variant or type names a known one. */
     public static Optional<Active> of(ItemStack stack) {
         ModularDesign design = ModularStacks.design(stack);
-        if (design == null)
-            return Optional.empty();
-        ModularType type = ModularTypes.known(design.type());
-        if (type == null)
-            return Optional.empty();
+        ModularType type = design == null ? null : ModularTypes.known(design.type());
+        return type == null ? Optional.empty() : of(design, type);
+    }
+
+    /** As {@link #of(ItemStack)} for a design and its type. */
+    public static Optional<Active> of(ModularDesign design, ModularType type) {
         type = ModularFaces.view(type, design);
         Optional<ModularType.Variant> variant = traitVariant(design, type);
         if (variant.isPresent()) {

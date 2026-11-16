@@ -24,12 +24,27 @@ public final class Handling implements ModularTrait {
     @Override
     public void onUseTick(Level level, LivingEntity user, ItemStack weapon, int remaining, Params params) {
         if (!level.isClientSide)
-            Burden.apply(user, params.get("slow", 0f));
+            Burden.apply(user, slow(params));
+    }
+
+    @Override
+    public float shotDamage(Params params, boolean fullDraw) {
+        return params.get("damage_mult", 1f);
+    }
+
+    @Override
+    public int shotPierce(Params params, boolean fullDraw) {
+        return (int) params.get("pierce", 0f);
+    }
+
+    /** The share of walking speed the wielder loses while the weapon is drawn: what {@link #onUseTick} puts on. */
+    public static float slow(Params params) {
+        return params.get("slow", 0f);
     }
 
     @Override
     public void onArrow(AbstractArrow arrow, ItemStack weapon, Params params) {
-        arrow.setBaseDamage(arrow.getBaseDamage() * params.get("damage_mult", 1f));
+        arrow.setBaseDamage(arrow.getBaseDamage() * shotDamage(params, arrow.isCritArrow()));
         RangedDispatch.pierce(arrow, params.get("pierce", 0f));
     }
 }

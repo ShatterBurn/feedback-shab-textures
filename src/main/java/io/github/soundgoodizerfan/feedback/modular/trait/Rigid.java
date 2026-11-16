@@ -18,6 +18,11 @@ public final class Rigid implements ModularTrait {
     @Override
     public void onWornHurt(LivingIncomingDamageEvent event, LivingEntity wearer, ItemStack piece, Params params) {
         if (event.getSource().is(DamageTypeTags.IS_FALL) || event.getSource().is(DamageTypeTags.IS_EXPLOSION))
-            event.setAmount(event.getAmount() * params.get("absorb_mult", 0.7f));
+            event.setAmount(event.getAmount() * absorbMult(params));
+    }
+
+    /** The share of a fall's or blast's damage the wearer takes. */
+    public static float absorbMult(Params params) {
+        return params.get("absorb_mult", 0.7f);
     }
 }

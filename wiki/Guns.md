@@ -228,7 +228,7 @@ A gun cools down wherever it is: in your hand, in your hotbar, in a chest. A [Ba
 
 ## Wear
 
-The bore wears a little with every shot, faster when the barrel is hot. The tooltip shows it as **Bore wear**. A worn gun hits less hard and spreads wider, down to a floor: at its worst it delivers **30% less** energy, but it never stops working from wear alone. Fittings wear the gun too: a muzzle brake's ports are cut by the gas, and a relief vent's seat wears each time it opens, more in a soft metal. A **box feed** or **belt feed** can **jam** by chance (*"The feed jams."*): tough feed lips jam less, and a harder-kicking gun jams more. An [Arc Welder](Arc_Welder.md) repairs a worn gun, at the cost of a lower best condition each time.
+The bore wears a little with every shot, faster when the barrel is hot and slower the harder the barrel's metal is. The tooltip shows it as **Bore wear**. A worn gun hits less hard and spreads wider, down to a floor: at its worst it delivers **30% less** energy, but it never stops working from wear alone. Fittings wear the gun too: a muzzle brake's ports are cut by the gas, and a relief vent's seat wears each time it opens, more in a soft metal. A **box feed** or **belt feed** can **jam** by chance (*"The feed jams."*): tough feed lips jam less, and a harder-kicking gun jams more. An [Arc Welder](Arc_Welder.md) repairs a worn gun, at the cost of a lower best condition each time.
 
 ## Overpressure
 

@@ -8,6 +8,7 @@
       "joint",
       "mass",
       "corrosion",
+      "knife.cut",
       "axis.length",
       "axis.width"
     ],

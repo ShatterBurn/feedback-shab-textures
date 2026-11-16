@@ -25,7 +25,8 @@ final class BenchRows {
     }
 
     /** The uses that are words, ranks or yes/no and not quantities: printed as text in the list, never as a bar. They still sort (by rank) and hover like any row. */
-    private static final Set<String> TEXT = Set.of("cell.band", "machine.band", "egun.band", ModularMeasures.BLOCK + "Band", ModularMeasures.BLOCK + "Divergent");
+    private static final Set<String> TEXT = Set.of("cell.band", "machine.band", "egun.band", ModularMeasures.BLOCK + "Band", ModularMeasures.BLOCK + "Divergent",
+            "file.cut", "file.finish", "driver.fit", "driver.ratchet", "knife.cut");
 
     /** Whether {@code id} is read as a word rather than a quantity. */
     static boolean text(String id) {
@@ -60,7 +61,8 @@ final class BenchRows {
     static String word(BenchUses.Use u) {
         if (u.id().equals(ModularMeasures.BLOCK + "Divergent"))
             return I18n.get(u.value() > 0 ? "gui.feedback.blueprint_table.word.yes" : "gui.feedback.blueprint_table.word.no");
-        if (text(u.id())) {
+        // The words that are a line's own (a file's cut, a knife's slide) print as the line says them; a band prints as its name.
+        if (text(u.id()) && (u.id().endsWith("band") || u.id().endsWith("Band"))) {
             VoltageBand[] bands = VoltageBand.values();
             return I18n.get(bands[Math.max(0, Math.min(bands.length - 1, Math.round(u.value())))].key());
         }

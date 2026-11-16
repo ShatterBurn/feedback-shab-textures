@@ -32,8 +32,18 @@ public final class Mail implements ModularTrait {
         if (family == ModularType.Family.SPEAR)
             Billhook.open(wearer, params.get("pierce_bleed_seconds", 4f), params.get("pierce_bleed_damage", 1f));
         if (family == ModularType.Family.MACE || (family == null && weapon.is(ItemTags.MACE_ENCHANTABLE)))
-            event.setAmount(event.getAmount() * params.get("blunt_mult", 1.3f));
+            event.setAmount(event.getAmount() * bluntMult(params));
         else if (family == ModularType.Family.BLADE || (family == null && (weapon.is(ItemTags.SWORDS) || weapon.is(ItemTags.AXES))))
-            event.setAmount(event.getAmount() * params.get("slash_mult", 0.75f));
+            event.setAmount(event.getAmount() * slashMult(params));
+    }
+
+    /** The share of a blunt blow's damage the wearer takes ({@link #onWornHurt}; over 1 for rings against a crushing blow). */
+    public static float bluntMult(Params params) {
+        return params.get("blunt_mult", 1.3f);
+    }
+
+    /** The share of a slash's damage the wearer takes. */
+    public static float slashMult(Params params) {
+        return params.get("slash_mult", 0.75f);
     }
 }

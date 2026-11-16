@@ -112,6 +112,7 @@ public final class MeleeSweep {
                 landed = true;
                 target.knockback(ModularTuning.SWEEP_KNOCKBACK * charge, Mth.sin(yaw), -Mth.cos(yaw));
                 weapon.hurtAndBreak(ModularStacks.cap(weapon, 1), player, EquipmentSlot.MAINHAND);
+                ModularStacks.wetUse(weapon, player);
             }
         }
         // hurt() already plays each target's own hurt sound. What was missing is Player.attack's

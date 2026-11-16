@@ -575,6 +575,15 @@ public final class ModularStacks {
     }
 
     /**
+     * The hardest block, in block-hardness terms, that an edge of {@code toughness} cuts without chipping: a block's strain on the edge is
+     * its hardness times {@code CHIP_STRAIN_PER_HARDNESS} times the edge's chip, and the edge takes {@code toughness * CHIP_SLACK} of it.
+     * {@link #misuse} chips past it and the Blueprint Table prints it, so the figure the player reads is the rule that acts.
+     */
+    public static float cleanHardness(float toughness, io.github.soundgoodizerfan.feedback.modular.bench.Edge edge) {
+        return Math.max(0.01f, toughness) * ModularTuning.CHIP_SLACK / (ModularTuning.CHIP_STRAIN_PER_HARDNESS * edge.chip());
+    }
+
+    /**
      * What breaking a block costs beyond the point vanilla charges, and why: an edge on something
      * harder than it can take chips, and a head heavier than its joint carries works loose. Force
      * that cannot go into the work goes into the tool (philosophy, wear rule), and each reason is
@@ -587,7 +596,7 @@ public final class ModularStacks {
             return 0;
         ModularType type = ModularTypes.known(d.type());
         int extra = 0;
-        float strain = state.getDestroySpeed(level, pos) * ModularTuning.CHIP_STRAIN_PER_HARDNESS * d.edge().chip();
+        float hardness = state.getDestroySpeed(level, pos);
         List<ModularHeads> heads = type == null ? List.of() : heads(d, type);
         int index = 0;
         for (int i = 0; i < heads.size(); i++)
@@ -595,9 +604,9 @@ public final class ModularStacks {
                 index = i;
                 break;
             }
-        float toughness = Math.max(0.01f, headFigure(f, index, Fig.EDGE_TOUGHNESS));
-        if (strain > toughness * ModularTuning.CHIP_SLACK)
-            extra += Math.min(ModularTuning.CHIP_MAX, (int) (strain / (toughness * ModularTuning.CHIP_SLACK)));
+        float clean = cleanHardness(headFigure(f, index, Fig.EDGE_TOUGHNESS), d.edge());
+        if (hardness > clean)
+            extra += Math.min(ModularTuning.CHIP_MAX, (int) (hardness / clean));
         if (f.get(Fig.JOINT) > 1 && level.random.nextFloat() < f.get(Fig.JOINT) - 1)
             extra++;
         return extra;
@@ -611,6 +620,16 @@ public final class ModularStacks {
         ModularFigures f = figures(stack);
         return f != null && miner.isInWaterOrRain()
                 && miner.getRandom().nextFloat() < ModularTuning.CORRODE_CHANCE * (1f - f.get(Fig.CORROSION)) ? 1 : 0;
+    }
+
+    /**
+     * An item used wet (a bow loosed, a blow stopped on a shield, a pot stirred, a punch, a cut at the bench) in rain or water gives up
+     * a point to rust now and then, by how little its metal and coat resist water: the same {@link #rust} chance a mined block rolls,
+     * so every use of a thing reads the one rule and {@code corrosion} acts wherever the thing is used. Server side only.
+     */
+    public static void wetUse(ItemStack stack, LivingEntity user) {
+        if (user.level() instanceof net.minecraft.server.level.ServerLevel server && !stack.isEmpty() && rust(stack, user) > 0)
+            stack.hurtAndBreak(1, server, user, item -> { });
     }
 
     /** The extra wear to charge for a block mined. */
@@ -656,6 +675,7 @@ public final class ModularStacks {
         ModularFigures f = figures(weapon);
         if (f != null && f.get(Fig.JOINT) > 1 && shooter.getRandom().nextFloat() < f.get(Fig.JOINT) - 1)
             weapon.hurtAndBreak(1, shooter, net.minecraft.world.entity.LivingEntity.getSlotForHand(hand));
+        wetUse(weapon, shooter);
     }
 
     /** Ticks to draw: the figure, or vanilla's twenty for an item with none. */

@@ -113,8 +113,10 @@ public class SkilletBlock extends BaseEntityBlock {
                 boolean turned = pan.flip(at, drain);
                 if (bladeParam(held, "flips", 1f) > 1f)
                     turned |= pan.flip(at ^ 1, drain);
-                if (turned)
+                if (turned) {
                     held.hurtAndBreak(1, player, net.minecraft.world.entity.EquipmentSlot.MAINHAND);
+                    ModularStacks.wetUse(held, player);
+                }
             }
             return ItemInteractionResult.CONSUME;
         }

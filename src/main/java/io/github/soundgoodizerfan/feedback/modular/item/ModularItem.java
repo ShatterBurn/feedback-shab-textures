@@ -72,6 +72,7 @@ public class ModularItem extends Item implements Modular {
     @Override
     public void postHurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         stack.hurtAndBreak(1, attacker, net.minecraft.world.entity.EquipmentSlot.MAINHAND);
+        ModularStacks.wetUse(stack, attacker);
     }
 
     @Override

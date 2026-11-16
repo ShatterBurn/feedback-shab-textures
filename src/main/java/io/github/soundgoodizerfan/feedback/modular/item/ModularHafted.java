@@ -254,6 +254,7 @@ public class ModularHafted extends MaceItem implements Modular, HandTool {
                             Math.round(f.get(ModularFigures.Fig.IMPACT) * STAGGER_TICKS_PER_WORK), 1), attacker);
             }
             stack.hurtAndBreak(combat == ModularType.Family.DIG || combat == ModularType.Family.MACE ? 2 : 1, attacker, EquipmentSlot.MAINHAND);
+            ModularStacks.wetUse(stack, attacker);
         } finally {
             ModularFaces.done();
         }

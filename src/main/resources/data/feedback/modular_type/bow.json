@@ -2,8 +2,12 @@
   "family": "bow",
   "measures": {
     "show": [
-      "velocity",
-      "draw",
+      "bow.speed",
+      "bow.draw",
+      "bow.damage",
+      "bow.spread",
+      "bow.pierce",
+      "bow.slow",
       "joint",
       "mass",
       "durability",
@@ -12,24 +16,28 @@
     ],
     "roles": {
       "L": [
-        "velocity",
-        "draw",
+        "bow.speed",
+        "bow.draw",
+        "bow.damage",
+        "bow.pierce",
         "joint",
         "mass",
         "durability"
       ],
       "W": [
         "joint",
-        "velocity"
+        "bow.speed"
       ],
       "B": [
         "joint"
       ],
       "E": [
+        "bow.spread",
         "mass"
       ],
       "X": [
-        "draw",
+        "bow.spread",
+        "bow.draw",
         "mass"
       ]
     }

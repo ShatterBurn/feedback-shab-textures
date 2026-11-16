@@ -8,6 +8,8 @@
       "joint",
       "mass",
       "corrosion",
+      "driver.fit",
+      "driver.ratchet",
       "axis.shank"
     ],
     "roles": {

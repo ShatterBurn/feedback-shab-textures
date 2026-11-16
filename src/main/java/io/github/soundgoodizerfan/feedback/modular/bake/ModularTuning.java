@@ -1237,6 +1237,16 @@ public final class ModularTuning {
      */
     public static final float SHIELD_SOFTEN_ONSET = 0.5f, SHIELD_SOFTEN_FLOOR = 0.25f, SHIELD_HOT_WEAR_MULT = 2f;
 
+    /**
+     * Invented. What a face's hardness does for it ({@code ShieldHeat.resist}): the square root of its hardness over iron's
+     * ({@code SHIELD_REF_HARDNESS}), kept within {@code SHIELD_RESIST_MIN..MAX}. A blow wears the shield by the inverse of it
+     * (the work is the blow's, the hardness decides how much of it the face takes as wear), and the softening onset moves by it, up to
+     * {@code SHIELD_SOFTEN_ONSET_MAX} of the way to the softening point. A blow of more than {@code SHIELD_CHIP_SLACK} Work per point of
+     * the face's edge toughness also chips it, a point per multiple, to {@code CHIP_MAX}.
+     */
+    public static final float SHIELD_REF_HARDNESS = 8f, SHIELD_RESIST_MIN = 0.5f, SHIELD_RESIST_MAX = 2f, SHIELD_SOFTEN_ONSET_MAX = 0.9f,
+            SHIELD_CHIP_SLACK = 20f;
+
     /** Invented. Ticks a fire's contact draws a face towards its temperature per blow or fire tick (fire damage lands about every 10). */
     public static final int SHIELD_FIRE_TICKS = 10;
 
