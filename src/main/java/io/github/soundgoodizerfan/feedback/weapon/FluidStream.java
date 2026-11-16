@@ -209,7 +209,7 @@ public final class FluidStream {
         if (water) {
             target.clearFire();
             if (target.isSensitiveToWater())
-                target.hurt(level.damageSources().generic(), Math.min(2f, share * 0.1f));
+                target.hurt(level.damageSources().drown(), Math.max(CasterTuning.WATER_HURT_MIN, Math.min(CasterTuning.WATER_HURT_MAX, share * CasterTuning.WATER_HURT_PER_MB)));
         }
         if (tu > CasterTuning.SCALD_TU)
             target.hurt(Hazards.source(level, Hazards.SCALD, shooter), Math.min(CasterTuning.SCALD_MAX, (tu - CasterTuning.SCALD_TU) * share * CasterTuning.SCALD_PER_TU_MB));

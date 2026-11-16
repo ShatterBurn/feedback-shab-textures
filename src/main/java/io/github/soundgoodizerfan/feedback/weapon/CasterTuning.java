@@ -44,6 +44,8 @@ public final class CasterTuning {
     public static final float SCALD_PER_TU_MB = 0.0015f, SCALD_MAX = 4f;
     /** Ticks of frost a chilling hit adds per mB of flow. */
     public static final int FREEZE_TICKS_PER_MB = 6;
+    /** Damage a tick to a creature that water hurts: per mB of its share of the flow, at least what rain does it (1) and at most {@code WATER_HURT_MAX}. The hit's own invulnerability frames space it out as they do rain's. */
+    public static final float WATER_HURT_PER_MB = 0.25f, WATER_HURT_MIN = 1f, WATER_HURT_MAX = 4f;
     /** Seconds a burning stream sets what it hits alight. */
     public static final float IGNITE_SECONDS = 5f;
     /** Push on a body, blocks per tick, per unit of the stream's momentum (mass flow times exit speed), and its cap. */
