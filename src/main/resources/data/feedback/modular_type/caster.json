@@ -36,6 +36,9 @@
       "D": [
         "caster_reach",
         "mass"
+      ],
+      "F": [
+        "mass"
       ]
     }
   },
@@ -207,6 +210,48 @@
         ],
         "traits": []
       }
+    },
+    "F": {
+      "name": "pilot",
+      "class": "working_face",
+      "forms": [
+        "caster_pilot"
+      ],
+      "litres": 0.02,
+      "layer": 5,
+      "axes": {
+        "orifice": {
+          "min": 1,
+          "max": 4,
+          "unit": "mm",
+          "default": 2,
+          "step": 1
+        }
+      },
+      "part": {
+        "item": "feedback:caster_pilot",
+        "cells": 1,
+        "stock": [
+          "rod",
+          "turned_rod"
+        ],
+        "base": "pilot",
+        "variants": [
+          {
+            "name": "pilot",
+            "params": {
+              "reach": 0.4
+            }
+          },
+          {
+            "name": "torch",
+            "cells": 2,
+            "params": {
+              "reach": 1.2
+            }
+          }
+        ]
+      }
     }
   },
   "patterns": [
@@ -215,6 +260,12 @@
     ],
     [
       "STNVD"
+    ],
+    [
+      "STNVF"
+    ],
+    [
+      "STNVDF"
     ]
   ],
   "defaults": {
@@ -222,7 +273,8 @@
     "N": "feedback:brass",
     "S": "feedback:oak",
     "V": "feedback:brass",
-    "D": "feedback:wrought_iron"
+    "D": "feedback:wrought_iron",
+    "F": "feedback:copper"
   },
   "school": "weapons:2"
 }

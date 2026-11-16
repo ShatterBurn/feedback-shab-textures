@@ -18,9 +18,10 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
  *
  * @param kind  {@link #LIQUID}, {@link #BURNING} or {@link #MIST}.
  * @param flowMb mB that left this tick: how thick the stream is drawn.
+ * @param flame blocks from the start the nozzle's pilot flame stands out, or 0 if it is not lit.
  */
 public record CasterStreamPayload(double x, double y, double z, float dx, float dy, float dz, float length, float spread, int rgb, byte kind,
-                                  int flowMb) implements CustomPacketPayload {
+                                  int flowMb, float flame) implements CustomPacketPayload {
 
     public static final byte LIQUID = 0, BURNING = 1, MIST = 2;
 
@@ -39,18 +40,19 @@ public record CasterStreamPayload(double x, double y, double z, float dx, float 
                 buf.writeInt(p.rgb);
                 buf.writeByte(p.kind);
                 buf.writeVarInt(p.flowMb);
+                buf.writeFloat(p.flame);
             },
             buf -> new CasterStreamPayload(buf.readDouble(), buf.readDouble(), buf.readDouble(), buf.readFloat(), buf.readFloat(),
-                    buf.readFloat(), buf.readFloat(), buf.readFloat(), buf.readInt(), buf.readByte(), buf.readVarInt()));
+                    buf.readFloat(), buf.readFloat(), buf.readFloat(), buf.readInt(), buf.readByte(), buf.readVarInt(), buf.readFloat()));
 
     @Override
     public Type<? extends CustomPacketPayload> type() {
         return TYPE;
     }
 
-    public static void send(ServerLevel level, Vec3 from, Vec3 dir, float length, float spread, int rgb, byte kind, int flowMb) {
+    public static void send(ServerLevel level, Vec3 from, Vec3 dir, float length, float spread, int rgb, byte kind, int flowMb, float flame) {
         PacketDistributor.sendToPlayersNear(level, null, from.x, from.y, from.z, 96,
-                new CasterStreamPayload(from.x, from.y, from.z, (float) dir.x, (float) dir.y, (float) dir.z, length, spread, rgb, kind, flowMb));
+                new CasterStreamPayload(from.x, from.y, from.z, (float) dir.x, (float) dir.y, (float) dir.z, length, spread, rgb, kind, flowMb, flame));
     }
 
     public static void handle(CasterStreamPayload payload, IPayloadContext context) {

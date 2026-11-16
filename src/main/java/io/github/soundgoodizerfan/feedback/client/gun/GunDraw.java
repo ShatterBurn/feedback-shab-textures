@@ -184,6 +184,14 @@ final class GunDraw {
             }
             default -> m.rod(0, py, outR + 0.125f, zn, zTip, Tile.METAL); // a plain bore
         }
+        if (v.has("F")) {
+            m.part(v, "F");
+            boolean torch = v.variant("F").equals("torch");
+            float r = torch ? 0.375f : 0.25f;
+            // A pilot tube on the pipe's side, its orifice just short of the nozzle's tip; a torch is longer and stouter.
+            m.rod(0.875f, py, r, zn + 0.5f, zTip - (torch ? 0.75f : 0.25f), Tile.METAL);
+            m.rod(0.875f, py, r + 0.125f, zTip + 0.25f, zTip - (torch ? 0.75f : 0.25f), Tile.RIBBED);
+        }
         if (v.has("D")) {
             m.part(v, "D");
             float zs = Math.min(zTip + 5f, -1f);

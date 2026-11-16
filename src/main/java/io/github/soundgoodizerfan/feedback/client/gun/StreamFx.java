@@ -37,6 +37,12 @@ public final class StreamFx {
             if (p.kind() == CasterStreamPayload.BURNING && random.nextInt(3) == 0)
                 mc.level.addParticle(ParticleTypes.FLAME, at.x, at.y, at.z, dir.x * 0.05, dir.y * 0.05 + 0.01, dir.z * 0.05);
         }
+        // The pilot's flame at the nozzle's end.
+        if (p.flame() > 0f)
+            for (int i = 0; i < 2; i++) {
+                Vec3 tip = start.add(dir.scale(p.flame() * random.nextDouble()));
+                mc.level.addParticle(ParticleTypes.FLAME, tip.x, tip.y, tip.z, dir.x * 0.02, dir.y * 0.02 + 0.01, dir.z * 0.02);
+            }
         // Where it lands.
         Vec3 end = start.add(dir.scale(p.length()));
         mc.level.addParticle(p.kind() == CasterStreamPayload.MIST ? ParticleTypes.CLOUD : ParticleTypes.SPLASH, end.x, end.y, end.z, 0, 0.05, 0);

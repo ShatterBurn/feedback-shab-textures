@@ -60,9 +60,10 @@ public final class FluidStream {
      * What the stream did that the caster must answer for.
      *
      * @param ignited     the stream burned (a flame was in its path).
+     * @param pilotLit    the nozzle's pilot burned this tick: it takes its bleed from the tank.
      * @param igniteBlocks distance from the muzzle of the first flame in the path, or a large number for none.
      */
-    public record Result(boolean ignited, float igniteBlocks, float length) {
+    public record Result(boolean ignited, boolean pilotLit, float igniteBlocks, float length) {
     }
 
     /** The material of {@code fluid}, or null if it has none. */
@@ -88,9 +89,10 @@ public final class FluidStream {
      * @param reach    blocks it flies.
      * @param spreadDeg the cone's half-angle.
      * @param atomiser the nozzle makes a mist.
+     * @param flameReach blocks from the muzzle the nozzle's pilot flame stands out, 0 for none: it burns on a fluid that burns, unless the muzzle is under water.
      */
     public static Result cast(ServerLevel level, LivingEntity shooter, float yaw, float pitch, FluidStack fluid, int flowMb, float speed,
-                              float reach, float spreadDeg, boolean atomiser) {
+                              float reach, float spreadDeg, boolean atomiser, float flameReach) {
         Vec3 dir = Vec3.directionFromRotation(pitch, yaw);
         Vec3 start = shooter.getEyePosition().add(dir.scale(0.4));
         Vec3 far = start.add(dir.scale(reach));
@@ -108,9 +110,16 @@ public final class FluidStream {
 
         // An open flame in the path (or the wielder alight) lights a fluid that burns; the nearest sets how far from the muzzle it is.
         float ignitionAt = Float.MAX_VALUE;
+        // The pilot burns the tank's own fluid at the nozzle: out when the muzzle is under water, nothing to burn when the fluid does not.
+        boolean pilot = burnable && flameReach > 0f && !level.getFluidState(BlockPos.containing(start)).is(FluidTags.WATER);
+        if (pilot) {
+            ignitionAt = Math.min(flameReach, length);
+            if (level.getGameTime() % CasterTuning.PILOT_LIGHT_INTERVAL_TICKS == 0)
+                lightTip(level, shooter, dir.scale(ignitionAt).add(start));
+        }
         if (burnable) {
             if (shooter.isOnFire())
-                ignitionAt = 0.4f;
+                ignitionAt = Math.min(ignitionAt, 0.4f);
             for (int d = 1; d <= (int) length + 1 && ignitionAt > d; d++) {
                 BlockPos at = BlockPos.containing(start.add(dir.scale(Math.min(d, length))));
                 if (HotIgnition.isSource(level.getBlockState(at)) || level.getFluidState(at).is(FluidTags.LAVA)) {
@@ -152,8 +161,36 @@ public final class FluidStream {
 
         int rgb = m != null && m.color().isPresent() ? m.color().get() : water ? 0x3F76E4 : 0xC8D8FF;
         CasterStreamPayload.send(level, start, dir, length, spreadDeg, rgb, burnable && lit ? CasterStreamPayload.BURNING
-                : atomiser ? CasterStreamPayload.MIST : CasterStreamPayload.LIQUID, flowMb);
-        return new Result(burnable && lit, ignitionAt, length);
+                : atomiser ? CasterStreamPayload.MIST : CasterStreamPayload.LIQUID, flowMb, pilot ? flameReach : 0f);
+        return new Result(burnable && lit, pilot, ignitionAt, length);
+    }
+
+    /**
+     * The pilot's flame lights what it touches: a campfire or candle (an unlit block with the lit property, not waterlogged), a fire where
+     * a flammable block is beside the tip, and a flammable block the tip is in (it catches, as tnt does). By tag and property, never by block.
+     */
+    private static void lightTip(ServerLevel level, LivingEntity shooter, Vec3 tip) {
+        BlockPos at = BlockPos.containing(tip);
+        BlockState state = level.getBlockState(at);
+        if (state.hasProperty(BlockStateProperties.LIT) && !state.getValue(BlockStateProperties.LIT)
+                && (state.is(BlockTags.CAMPFIRES) || state.is(BlockTags.CANDLES) || state.is(BlockTags.CANDLE_CAKES))
+                && !(state.hasProperty(BlockStateProperties.WATERLOGGED) && state.getValue(BlockStateProperties.WATERLOGGED))) {
+            level.setBlockAndUpdate(at, state.setValue(BlockStateProperties.LIT, true));
+            return;
+        }
+        if (!level.getGameRules().getBoolean(GameRules.RULE_DOFIRETICK))
+            return;
+        if (state.isAir()) {
+            for (Direction d : Direction.values()) {
+                BlockPos next = at.relative(d);
+                if (level.getBlockState(next).isFlammable(level, next, d.getOpposite()) && BaseFireBlock.canBePlacedAt(level, at, Direction.UP)) {
+                    level.setBlockAndUpdate(at, BaseFireBlock.getState(level, at));
+                    return;
+                }
+            }
+        } else if (state.isFlammable(level, at, Direction.UP)) {
+            state.onCaughtFire(level, at, Direction.UP, shooter);
+        }
     }
 
     /** Whether {@code e} is inside the stream's cone: along the ray, and no farther from its line than the cone and its own width allow. */

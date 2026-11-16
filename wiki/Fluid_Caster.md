@@ -13,6 +13,7 @@ Shaped at the bench that suits the stock ([Smithing Table](Smithing_Table.md) fo
 | **Caster Receiver** | any lump, sheet or board | The body the tank, valve and nozzle are fixed to, and the hand holds. |
 | **Caster Valve** | a metal rod or ingot | The valve the trigger opens. |
 | **Caster Pump** (optional) | a metal rod or plate | A hand pump drive. Its **stroke** (1 to 6 cm) sets how long one stroke keeps the stream going. |
+| **Caster Pilot** (optional) | a metal rod or turned rod | A small flame fitted at the nozzle that lights a stream of a fluid that burns. Its **orifice** (1 to 4 mm) sets how much fluid it burns. Its variant sets how far out the flame stands. |
 
 The nozzle comes in four variants:
 
@@ -22,6 +23,13 @@ The nozzle comes in four variants:
 | **Fan** | A narrow cone. |
 | **Mist** | A wide cone. |
 | **Atomiser** | A cone of fine mist that hangs where it lands as a vapor cloud. |
+
+The pilot comes in two variants:
+
+| Pilot | Flame stands | Notes |
+| --- | --- | --- |
+| **Pilot Flame** | 0.4 blocks out from the muzzle | A small part. |
+| **Torch** | 1.2 blocks out from the muzzle | More metal, and more fluid burned. |
 
 The blueprint and the tooltips show the tank's capacity, its wall rating, and the reach and flow of a stream of water at the pressure the walls hold (or at the pump's head).
 
@@ -63,11 +71,18 @@ Nothing places a fluid block in the world.
 ## Misuse and hazards
 
 The caster is safe when the fluid and the pressure suit its parts. See [Hazards](Hazards.md).
+### Pilot
+
+The pilot is lit only while the valve is open, the tank's fluid burns and the muzzle is not under water; closing the valve puts it out. While lit it draws a trickle from the tank, more through a wider orifice, and shows as fire particles at the nozzle. It counts as an open flame in the stream's path, so a burning stream, a body set alight, fires and a vapor cloud going off all follow as above.
+
+Its tip also lights a campfire or a candle, starts a fire beside a flammable block where the game's fire spread allows it, and sets off a flammable block the tip is inside, about four times a second.
+
 
 - **Overpressure.** Pressure over the wall rating makes the walls **weep**: a hiss, lost pressure and fluid, and wear. Well over it the tank **bursts**: the fluid is gone, the gun is badly worn and you are hurt (scalded as well if the fluid was hot). Pumping the air stroke past the rating is the usual way.
 - **Corrosive fluid** eats the tank, valve and nozzle, the weakest of them first, both in the tank and as it flows.
 - **Hot fluid.** A fluid hotter than the tank's metal can take wears the walls; one at the metal's melting point lets the tank go.
 - **Dry pump.** A pump stroked with an empty tank heats and wears.
-- **Flashback.** A burning stream of a fluid that gives off vapor, through a bore of **6 mm** or more, with the flame near the muzzle, runs back into the tank: the tank loses half its fluid and its pressure, the gun wears, and you take fire damage and are set alight. A narrower bore stays safe.
+- **Flashback.** A burning stream of a fluid that gives off vapor, through a bore of **6 mm** or more, with the flame near the muzzle (a lit pilot is such a flame, and runs back about once in 25 ticks of flow), runs back into the tank: the tank loses half its fluid and its pressure, the gun wears, and you take fire damage and are set alight. A narrower bore stays safe.
+- **Hot fluid and the pilot.** A fluid hotter than the pilot's metal can take slowly wears the gun.
 
 A worn caster loses some of its push.

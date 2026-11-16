@@ -57,6 +57,16 @@ public final class CasterTuning {
     /** Blocks from the muzzle within which an ignition lets a burning volatile stream flash back, and the bore (mm) from which it can. */
     public static final float FLASHBACK_REACH = 2.5f, FLASHBACK_BORE_MM = 6f;
 
+    // --- the pilot ---------------------------------------------------------------------------------
+    /** mB a tick the pilot's orifice bleeds off the tank per square mm of orifice (a fraction: it takes a whole mB with that chance). */
+    public static final float PILOT_BLEED_PER_MM2 = 0.022f;
+    /** Ticks between the flame tip trying to light the block it points at. */
+    public static final int PILOT_LIGHT_INTERVAL_TICKS = 5;
+    /** Chance a tick a lit pilot's flame runs back up a wide volatile stream (a standing flame, so a chance, not every tick). */
+    public static final float PILOT_FLASHBACK_CHANCE = 0.04f;
+    /** Wear (fraction of condition) a tick a pilot books while a fluid hotter than its metal's service temperature washes it. */
+    public static final float WEAR_PILOT_HOT = 0.0005f;
+
     // --- misuse -----------------------------------------------------------------------------------
     /** Wear (fraction of condition) a dry pump stroke, a weeping tank, a flashback and a burst each book. */
     public static final float WEAR_DRY_PUMP = 0.01f, WEAR_WEEP = 0.02f, WEAR_FLASHBACK = 0.15f, WEAR_BURST = 0.3f;

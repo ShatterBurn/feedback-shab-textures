@@ -105,7 +105,19 @@ public final class CasterMechanism implements GunMechanism {
         }
         FluidStack streamed = before.copyWithAmount(p.flowMb());
         FluidStream.Result r = FluidStream.cast(level, shooter, yaw, pitch, streamed, p.flowMb(), p.speed(), p.spec().reach(p.speed()),
-                p.spec().spreadDeg(), p.spec().atomiser());
+                p.spec().spreadDeg(), p.spec().atomiser(), p.spec().pilotReach());
+        // The pilot burns a little of the tank's fluid while lit, and a fluid hotter than its metal takes wears it.
+        if (r.pilotLit()) {
+            if (level.random.nextFloat() < p.spec().pilotBleed()) {
+                FluidStack held = ModularCaster.content(gun);
+                if (!held.isEmpty()) {
+                    held.shrink(1);
+                    ModularCaster.setContent(gun, held);
+                }
+            }
+            if (FluidHeat.of(before).value() > p.spec().pilotServiceTu())
+                GunCondition.misuse(gun, CasterTuning.WEAR_PILOT_HOT);
+        }
         // Thrust: mass flow times exit speed, a steady push on the wielder against the stream.
         Material m = FluidStream.materialOf(before).orElse(null);
         float density = m == null ? 1f : (float) m.density().muPerMb();
@@ -115,7 +127,7 @@ public final class CasterMechanism implements GunMechanism {
         shooter.hurtMarked = true;
         // A burning volatile stream through a wide bore burns back along itself into the tank.
         if (r.ignited() && r.igniteBlocks() <= CasterTuning.FLASHBACK_REACH && p.spec().boreMm() >= CasterTuning.FLASHBACK_BORE_MM
-                && volatileFluid(before))
+                && volatileFluid(before) && (!r.pilotLit() || level.random.nextFloat() < CasterTuning.PILOT_FLASHBACK_CHANCE))
             flashback(level, shooter, gun, p.spec());
         // A fluid the parts cannot take bites them as it passes.
         if (Corrosion.corrosive(before))

@@ -1,0 +1,14 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "feedback:item/modular/grey/part_tube_copper"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "feedback:variant": 2
+      },
+      "model": "feedback:item/caster_pilot_torch"
+    }
+  ]
+}

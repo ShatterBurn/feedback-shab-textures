@@ -107,7 +107,7 @@ public final class FModular {
             "pickaxe_head", "axe_head", "shovel_head", "hoe_head", "sickle_head", "maul_head",
             "cleaver_head", "spear_head", "sword_blade",
             "respirator_face", "filter_cartridge", "air_cylinder",
-            "caster_tank", "caster_nozzle", "caster_receiver", "caster_valve", "caster_pump",
+            "caster_tank", "caster_nozzle", "caster_receiver", "caster_valve", "caster_pump", "caster_pilot",
             "helmet_plate", "chestplate_plate", "leggings_plate", "boots_plate",
             "tool_tip", "tool_binding", "sword_guard", "shield_rim", "crossbow_prod", "bow_limbs", "shield_face",
             "gun_barrel", "gun_grip", "receiver", "slide", "bolt", "trigger_group", "cylinder", "magazine_tube",

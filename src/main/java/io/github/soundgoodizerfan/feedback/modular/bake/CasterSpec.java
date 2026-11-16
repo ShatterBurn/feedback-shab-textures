@@ -28,17 +28,20 @@ import io.github.soundgoodizerfan.feedback.weapon.CasterTuning;
  * @param pumpPu      the pump's head, Pu (0 without a pump).
  * @param strokeTicks ticks of flow one stroke of the pump primes.
  * @param tankResist  corrosion resistance of the tank's metal; valve and nozzle likewise.
+ * @param pilotReach  blocks from the muzzle the pilot's flame stands out (0 without a pilot).
+ * @param pilotBleed  mB a tick its orifice bleeds off the tank while lit.
+ * @param pilotServiceTu the hottest fluid (Tu) the pilot's metal takes washing over it.
  * @param tankServiceTu the hottest fluid (Tu) the tank walls hold before they soften, and {@code tankMeltTu} where they run.
  */
 public record CasterSpec(float capacityMb, float danger, float critical, float boreMm, float spreadDeg, boolean atomiser, boolean pump,
-                         float pumpPu, float strokeTicks, float tankResist, float valveResist, float nozzleResist, float tankServiceTu, float tankMeltTu, float massKg) {
+                         float pumpPu, float strokeTicks, float tankResist, float valveResist, float nozzleResist, float pilotReach, float pilotBleed, float pilotServiceTu, float tankServiceTu, float tankMeltTu, float massKg) {
 
-    public static final String TANK = "tank", NOZZLE = "nozzle", RECEIVER = "receiver", VALVE = "valve", DRIVE = "drive";
+    public static final String TANK = "tank", NOZZLE = "nozzle", RECEIVER = "receiver", VALVE = "valve", DRIVE = "drive", PILOT = "pilot";
 
     /** The spec of {@code design}, or empty if it lacks a tank, a nozzle, a receiver or a valve, or a metal is unknown or states no yield. */
     public static Optional<CasterSpec> of(ModularDesign design, ModularType type, Map<ResourceLocation, Material> materials) {
         float capacity = 0, danger = 0, bore = 0, spread = 0, pumpPu = 0, stroke = 0, mass = 0;
-        float tankR = 1f, valveR = 1f, nozzleR = 1f, service = Float.MAX_VALUE, melt = Float.MAX_VALUE;
+        float pilotReach = 0, pilotBleed = 0, pilotService = Float.MAX_VALUE, tankR = 1f, valveR = 1f, nozzleR = 1f, service = Float.MAX_VALUE, melt = Float.MAX_VALUE;
         boolean tank = false, nozzle = false, receiver = false, valve = false, atomise = false, pump = false;
         for (ModularDesign.Part p : design.parts()) {
             ModularType.Role role = type.roles().get(p.role());
@@ -75,6 +78,12 @@ public record CasterSpec(float capacityMb, float danger, float critical, float b
                     pumpPu = CasterTuning.PUMP_PU_PER_STRENGTH * ModularBake.strength(m);
                     pump = true;
                 }
+                case PILOT -> {
+                    float orifice = role.axis(p, "orifice");
+                    pilotReach = role.paramOf(p, "reach", 0.4f);
+                    pilotBleed = CasterTuning.PILOT_BLEED_PER_MM2 * orifice * orifice;
+                    pilotService = m.thermal().serviceTemperature().map(t -> t.value()).orElse(Float.MAX_VALUE);
+                }
                 default -> { }
             }
         }
@@ -83,7 +92,7 @@ public record CasterSpec(float capacityMb, float danger, float critical, float b
         // A pump never drives harder than the walls hold.
         pumpPu = Math.min(pumpPu, danger * CasterTuning.PUMP_DANGER_SHARE);
         return Optional.of(new CasterSpec(capacity, danger, danger * ModularTuning.TANK_CRITICAL_OVER_DANGER, bore, spread, atomise, pump,
-                pumpPu, stroke, tankR, valveR, nozzleR, service, melt, mass));
+                pumpPu, stroke, tankR, valveR, nozzleR, pilotReach, pilotBleed, pilotService, service, melt, mass));
     }
 
     /** Exit speed in blocks a tick of a fluid of {@code density} (Mu per mB) at gauge pressure {@code pu}. */
@@ -101,6 +110,11 @@ public record CasterSpec(float capacityMb, float danger, float critical, float b
     /** mB a tick leaving at exit speed {@code speed}: a wide bore passes more. */
     public float flow(float speed) {
         return CasterTuning.FLOW_PER_MM2 * boreMm * boreMm * speed;
+    }
+
+    /** A pilot is fitted: its flame lights a stream that burns. */
+    public boolean piloted() {
+        return pilotReach > 0f;
     }
 
     /** The worst corrosion resistance among the parts a fluid wets: what a corrosive stream eats first. */
