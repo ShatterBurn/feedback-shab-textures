@@ -45,6 +45,8 @@ public class ModularCaster extends GunItem {
 
     /** Game tick up to which a hand pump's stroke keeps the stream primed. */
     private static final String PRIME_UNTIL = "CasterPrimeUntil";
+    /** Game tick an electric pump's motor last started from rest, and the last tick the trigger pulled. */
+    private static final String SPIN_FROM = "CasterSpinFrom", SPIN_LAST = "CasterSpinLast";
 
     public ModularCaster(Properties properties) {
         super(properties);
@@ -71,6 +73,12 @@ public class ModularCaster extends GunItem {
         tooltip.add(held.isEmpty() ? Component.translatable("tooltip.feedback.caster.empty")
                 : Component.translatable("tooltip.feedback.caster.holds", held.getHoverName(), held.getAmount()).withStyle(ChatFormatting.GRAY));
         // Words are free; the figure is a gauge's to give (philosophy 10).
+        if (spec(stack).map(CasterSpec::electric).orElse(false)) {
+            ItemStack cell = io.github.soundgoodizerfan.feedback.modular.item.ModularElectricGun.cell(stack);
+            tooltip.add(cell.isEmpty() ? Component.translatable("tooltip.feedback.caster.no_cell").withStyle(ChatFormatting.GRAY)
+                    : Component.translatable("tooltip.feedback.caster.cell", Math.round(io.github.soundgoodizerfan.feedback.machine.battery.BatteryStack
+                    .stateOfCharge(io.github.soundgoodizerfan.feedback.machine.battery.BatteryStack.state(cell)) * 100f)).withStyle(ChatFormatting.GRAY));
+        }
         if (pressure(stack) >= CasterTuning.MIN_PRESSURE)
             tooltip.add(Component.translatable("tooltip.feedback.caster.pressurised").withStyle(ChatFormatting.GRAY));
     }
@@ -117,6 +125,28 @@ public class ModularCaster extends GunItem {
         CustomData.update(DataComponents.CUSTOM_DATA, gun, tag -> tag.putLong(PRIME_UNTIL, tick));
     }
 
+    /** A motor's run-up, 0 to 1: how far up to its head it is, from the tick it last started from rest. */
+    public static float spin(ItemStack gun, long now) {
+        CustomData data = gun.get(DataComponents.CUSTOM_DATA);
+        net.minecraft.nbt.CompoundTag tag = data == null ? new net.minecraft.nbt.CompoundTag() : data.copyTag();
+        if (now - tag.getLong(SPIN_LAST) > CasterTuning.MOTOR_STOP_TICKS)
+            return 0f; // not pulled for a few ticks: the motor has stopped
+        long from = tag.getLong(SPIN_FROM);
+        return Math.max(0f, Math.min(1f, (now - from + 1) / (float) CasterTuning.MOTOR_SPINUP_TICKS));
+    }
+
+    /** The trigger pulled this tick: a motor that was stopped (no pull for a few ticks) starts again from rest. */
+    public static void touchSpin(ItemStack gun, long now) {
+        CustomData data = gun.get(DataComponents.CUSTOM_DATA);
+        long last = data == null ? 0L : data.copyTag().getLong(SPIN_LAST);
+        boolean stopped = now - last > CasterTuning.MOTOR_STOP_TICKS;
+        CustomData.update(DataComponents.CUSTOM_DATA, gun, tag -> {
+            if (stopped)
+                tag.putLong(SPIN_FROM, now);
+            tag.putLong(SPIN_LAST, now);
+        });
+    }
+
     public static Optional<CasterSpec> spec(ItemStack gun) {
         ModularDesign design = ModularStacks.design(gun);
         ModularType type = design == null ? null : ModularTypes.known(design.type());
@@ -124,6 +154,85 @@ public class ModularCaster extends GunItem {
     }
 
     // --- filling: a source in the world, a bucket, a hose from a placed tank ---------------------------
+
+    /**
+     * Whether the player looks at something the caster can fill from or pour into: a fluid source or a block with a fluid handler.
+     * The client lets the use key through to the item only then, since a held gun otherwise owns it (aim).
+     */
+    public static boolean fluidTarget(Level level, net.minecraft.world.entity.player.Player player) {
+        var hit = player.pick(player.blockInteractionRange(), 1f, true);
+        if (!(hit instanceof net.minecraft.world.phys.BlockHitResult block))
+            return false;
+        return level.getFluidState(block.getBlockPos()).isSource()
+                || level.getCapability(net.neoforged.neoforge.capabilities.Capabilities.FluidHandler.BLOCK, block.getBlockPos(), block.getDirection()) != null;
+    }
+
+    /**
+     * A fluid item dropped onto the caster in an inventory, as an item goes into a bundle: a full one fills the tank, an empty one takes
+     * from it. Returns what the dropped item becomes (an emptied bucket), or null when nothing moved.
+     */
+    private static ItemStack trade(ItemStack caster, ItemStack other) {
+        if (other.isEmpty() || other.getCount() != 1)
+            return null;
+        var tank = FluidUtil.getFluidHandler(caster);
+        var vessel = FluidUtil.getFluidHandler(other);
+        if (tank.isEmpty() || vessel.isEmpty())
+            return null;
+        int cap = capacity(caster);
+        FluidStack moved = FluidUtil.tryFluidTransfer(tank.get(), vessel.get(), cap, true);
+        if (moved.isEmpty())
+            moved = FluidUtil.tryFluidTransfer(vessel.get(), tank.get(), cap, true);
+        if (moved.isEmpty())
+            return null;
+        if (content(caster).isEmpty())
+            setPressure(caster, 0f);
+        return vessel.get().getContainer();
+    }
+
+    /** Right-click the caster in a slot with a fluid item on the cursor. */
+    @Override
+    public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack other, net.minecraft.world.inventory.Slot slot,
+                                            net.minecraft.world.inventory.ClickAction action, net.minecraft.world.entity.player.Player player,
+                                            net.minecraft.world.entity.SlotAccess access) {
+        if (action != net.minecraft.world.inventory.ClickAction.SECONDARY || !slot.allowModification(player))
+            return false;
+        // An electric pump takes a battery or Leyden jar on the cursor (an empty cursor takes it out), as a launcher's solenoid seat does.
+        if (spec(stack).map(CasterSpec::electric).orElse(false)) {
+            if (other.isEmpty()) {
+                ItemStack held = ModularElectricGun.cell(stack);
+                if (!held.isEmpty()) {
+                    ModularElectricGun.setCell(stack, ItemStack.EMPTY);
+                    access.set(held);
+                    return true;
+                }
+            } else if (other.getCount() == 1 && io.github.soundgoodizerfan.feedback.machine.battery.BatteryStack.is(other)) {
+                ItemStack old = ModularElectricGun.cell(stack);
+                ModularElectricGun.setCell(stack, other);
+                access.set(old);
+                return true;
+            }
+        }
+        ItemStack left = trade(stack, other);
+        if (left == null)
+            return false;
+        access.set(left);
+        player.playSound(net.minecraft.sounds.SoundEvents.BUCKET_FILL, 0.8f, 1f);
+        return true;
+    }
+
+    /** Right-click a fluid item in a slot with the caster on the cursor. */
+    @Override
+    public boolean overrideStackedOnOther(ItemStack stack, net.minecraft.world.inventory.Slot slot,
+                                          net.minecraft.world.inventory.ClickAction action, net.minecraft.world.entity.player.Player player) {
+        if (action != net.minecraft.world.inventory.ClickAction.SECONDARY || !slot.allowModification(player))
+            return false;
+        ItemStack left = trade(stack, slot.getItem());
+        if (left == null)
+            return false;
+        slot.set(left);
+        player.playSound(net.minecraft.sounds.SoundEvents.BUCKET_FILL, 0.8f, 1f);
+        return true;
+    }
 
     /** Used on a fluid source block in the world it draws the fluid in, as a bucket does (the tank is a fluid handler). */
     @Override

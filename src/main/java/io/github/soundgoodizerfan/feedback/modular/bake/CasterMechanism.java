@@ -26,7 +26,9 @@ import io.github.soundgoodizerfan.feedback.core.hazard.Hazards;
 import io.github.soundgoodizerfan.feedback.core.hazard.PressureBurst;
 import io.github.soundgoodizerfan.feedback.core.thermal.FluidHeat;
 import io.github.soundgoodizerfan.feedback.core.unit.Pu;
+import io.github.soundgoodizerfan.feedback.machine.battery.BatteryStack;
 import io.github.soundgoodizerfan.feedback.modular.item.ModularCaster;
+import io.github.soundgoodizerfan.feedback.modular.item.ModularElectricGun;
 import io.github.soundgoodizerfan.feedback.modular.item.ModularStacks;
 import io.github.soundgoodizerfan.feedback.net.AimPayloads;
 import io.github.soundgoodizerfan.feedback.process.Material;
@@ -58,7 +60,7 @@ public final class CasterMechanism implements GunMechanism {
     }
 
     /** The next tick of flow, worked out and not yet spent. */
-    private record Prepared(CasterSpec spec, FluidStack fluid, float pressure, float speed, int flowMb, GunFigures figures) {
+    private record Prepared(CasterSpec spec, FluidStack fluid, float pressure, float speed, int flowMb, GunFigures figures, float eu) {
     }
 
     private static Prepared prepare(ItemStack gun, long now) {
@@ -68,7 +70,8 @@ public final class CasterMechanism implements GunMechanism {
         FluidStack fluid = ModularCaster.content(gun);
         if (fluid.isEmpty())
             return null;
-        float pressure = spec.pump() ? (now < ModularCaster.primeUntil(gun) ? spec.pumpPu() : 0f) : ModularCaster.pressure(gun);
+        float pressure = spec.electric() ? motorHead(spec, gun, now)
+                : spec.pump() ? (now < ModularCaster.primeUntil(gun) ? spec.pumpPu() : 0f) : ModularCaster.pressure(gun);
         Material m = FluidStream.materialOf(fluid).orElse(null);
         float speed = spec.speed(pressure, m == null ? 1f : (float) m.density().muPerMb());
         if (speed <= 0f)
@@ -79,7 +82,19 @@ public final class CasterMechanism implements GunMechanism {
         // A worn tank leaks a little of its push; the condition is the share the walls keep.
         speed *= GunCondition.condition(gun);
         int flow = Math.min(fluid.getAmount(), Math.max(1, Math.round(spec.flow(speed))));
-        return new Prepared(spec, fluid, pressure, speed, flow, figures);
+        // A motor pays for the work it does: the mB it moves against the head it holds. A cell that cannot pay this tick gives the dry click.
+        float eu = spec.electric() ? flow * pressure * CasterTuning.EU_PER_MB_PU : 0f;
+        if (eu > 0f && BatteryStack.charge(BatteryStack.state(ModularElectricGun.cell(gun))) < eu) // read only when the motor is running
+            return null;
+        return new Prepared(spec, fluid, pressure, speed, flow, figures, eu);
+    }
+
+    /** An electric pump's head now: its full head scaled by how far the motor has run up, nothing without a charged cell. */
+    private static float motorHead(CasterSpec spec, ItemStack gun, long now) {
+        ItemStack cell = ModularElectricGun.cell(gun);
+        if (cell.isEmpty() || !BatteryStack.is(cell) || !BatteryStack.ready(BatteryStack.state(cell)) || BatteryStack.charge(BatteryStack.state(cell)) <= 0f)
+            return 0f;
+        return spec.pumpPu() * ModularCaster.spin(gun, now);
     }
 
     @Override
@@ -89,12 +104,27 @@ public final class CasterMechanism implements GunMechanism {
 
     @Override
     public boolean trigger(ServerLevel level, Player shooter, ItemStack gun, float yaw, float pitch, long nowMs, boolean aimed, InteractionHand hand) {
+        CasterSpec drive = ModularCaster.spec(gun).orElse(null);
+        if (drive != null && drive.electric()) {
+            // The motor runs up from the first pull; one with nothing to move wears (and costs no charge).
+            ModularCaster.touchSpin(gun, level.getGameTime());
+            if (ModularCaster.content(gun).isEmpty() && motorHead(drive, gun, level.getGameTime()) > 0f)
+                GunCondition.misuse(gun, CasterTuning.WEAR_DRY_MOTOR);
+        }
         Prepared p = prepare(gun, level.getGameTime());
         if (p == null)
             return false;
         if (!GunShots.accept(shooter, p.figures(), nowMs, hand))
             return false;
         FluidStack before = p.fluid();
+        if (p.eu() > 0f) {
+            ItemStack cell = ModularElectricGun.cell(gun);
+            var drawn = BatteryStack.state(cell).copy();
+            BatteryStack.draw(drawn, p.eu());
+            ItemStack out = cell.copy();
+            out.set(io.github.soundgoodizerfan.feedback.registry.FDataComponents.BATTERY.get(), drawn);
+            ModularElectricGun.setCell(gun, out);
+        }
         // The tank gives up the tick's flow; a pressurised tank's gas has more room, so its pressure falls (isothermal).
         FluidStack left = before.copy();
         left.shrink(p.flowMb());
@@ -203,14 +233,14 @@ public final class CasterMechanism implements GunMechanism {
 
     @Override
     public boolean reloadKeyWorks(ItemStack gun) {
-        return true;
+        return !ModularCaster.spec(gun).map(CasterSpec::electric).orElse(false);
     }
 
     /** A hand pump's stroke primes the stream; with no pump fitted it is the tank's own air pump, which raises the gauge. */
     @Override
     public void reloadKey(ServerLevel level, Player player, ItemStack gun) {
         CasterSpec spec = ModularCaster.spec(gun).orElse(null);
-        if (spec == null || ModularStacks.broken(gun))
+        if (spec == null || ModularStacks.broken(gun) || spec.electric())
             return;
         long now = level.getGameTime();
         FluidStack held = ModularCaster.content(gun);

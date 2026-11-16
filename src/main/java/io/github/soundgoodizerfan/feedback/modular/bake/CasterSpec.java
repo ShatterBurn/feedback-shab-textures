@@ -33,10 +33,11 @@ import io.github.soundgoodizerfan.feedback.weapon.CasterTuning;
  * @param pilotServiceTu the hottest fluid (Tu) the pilot's metal takes washing over it.
  * @param reachMult   the frame's multiple of the stream's reach (a long frame keeps the pipe true).
  * @param lineLoss    the share of pressure that reaches the nozzle (a hose from a pack loses some).
+ * @param electric    the drive is a motor: it draws charge from a seated cell, and the reload key does nothing.
  * @param tankServiceTu the hottest fluid (Tu) the tank walls hold before they soften, and {@code tankMeltTu} where they run.
  */
 public record CasterSpec(float capacityMb, float danger, float critical, float boreMm, float spreadDeg, boolean atomiser, boolean pump,
-                         float pumpPu, float strokeTicks, float tankResist, float valveResist, float nozzleResist, float pilotReach, float pilotBleed, float pilotServiceTu, float tankServiceTu, float tankMeltTu, float massKg, float reachMult, float lineLoss) {
+                         float pumpPu, float strokeTicks, float tankResist, float valveResist, float nozzleResist, float pilotReach, float pilotBleed, float pilotServiceTu, float tankServiceTu, float tankMeltTu, float massKg, float reachMult, float lineLoss, boolean electric) {
 
     public static final String TANK = "tank", NOZZLE = "nozzle", RECEIVER = "receiver", VALVE = "valve", DRIVE = "drive", PILOT = "pilot";
 
@@ -45,6 +46,7 @@ public record CasterSpec(float capacityMb, float danger, float critical, float b
         float capacity = 0, danger = 0, bore = 0, spread = 0, pumpPu = 0, stroke = 0, mass = 0;
         float pilotReach = 0, pilotBleed = 0, pilotService = Float.MAX_VALUE, tankR = 1f, valveR = 1f, nozzleR = 1f, service = Float.MAX_VALUE, melt = Float.MAX_VALUE;
         float reachMult = 1f, spreadMult = 1f, capacityMult = 1f, line = 1f;
+        boolean electric = false;
         boolean tank = false, nozzle = false, receiver = false, valve = false, atomise = false, pump = false;
         for (ModularDesign.Part p : design.parts()) {
             ModularType.Role role = type.roles().get(p.role());
@@ -84,8 +86,13 @@ public record CasterSpec(float capacityMb, float danger, float critical, float b
                     valve = true;
                 }
                 case DRIVE -> {
-                    stroke = CasterTuning.PRIME_TICKS_PER_CM * role.axis(p, "stroke");
-                    pumpPu = CasterTuning.PUMP_PU_PER_STRENGTH * ModularBake.strength(m);
+                    electric = role.paramOf(p, "electric", 0f) > 0.5f;
+                    if (electric) // a motor's head is its size times its metal's strength; it needs no stroke
+                        pumpPu = CasterTuning.MOTOR_PU_PER_SIZE_STRENGTH * role.axis(p, "motor") * ModularBake.strength(m);
+                    else {
+                        stroke = CasterTuning.PRIME_TICKS_PER_CM * role.axis(p, "stroke");
+                        pumpPu = CasterTuning.PUMP_PU_PER_STRENGTH * ModularBake.strength(m);
+                    }
                     pump = true;
                 }
                 case PILOT -> {
@@ -102,7 +109,7 @@ public record CasterSpec(float capacityMb, float danger, float critical, float b
         // A pump never drives harder than the walls hold.
         pumpPu = Math.min(pumpPu, danger * CasterTuning.PUMP_DANGER_SHARE);
         return Optional.of(new CasterSpec(capacity * capacityMult, danger, danger * ModularTuning.TANK_CRITICAL_OVER_DANGER, bore, spread * spreadMult, atomise, pump,
-                pumpPu, stroke, tankR, valveR, nozzleR, pilotReach, pilotBleed, pilotService, service, melt, mass, reachMult, line));
+                pumpPu, stroke, tankR, valveR, nozzleR, pilotReach, pilotBleed, pilotService, service, melt, mass, reachMult, line, electric));
     }
 
     /** Exit speed in blocks a tick of a fluid of {@code density} (Mu per mB) at gauge pressure {@code pu}. */

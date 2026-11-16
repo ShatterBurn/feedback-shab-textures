@@ -231,7 +231,20 @@
           "max": 6,
           "unit": "cm",
           "default": 3,
-          "step": 1
+          "step": 1,
+          "variants": [
+            "hand_pump"
+          ]
+        },
+        "motor": {
+          "min": 1,
+          "max": 8,
+          "unit": "",
+          "default": 3,
+          "step": 1,
+          "variants": [
+            "electric_pump"
+          ]
         }
       },
       "part": {
@@ -241,7 +254,24 @@
           "rod",
           "plate"
         ],
-        "traits": []
+        "traits": [],
+        "base": "hand_pump",
+        "variants": [
+          {
+            "name": "hand_pump",
+            "cells": 2,
+            "params": {
+              "electric": 0
+            }
+          },
+          {
+            "name": "electric_pump",
+            "cells": 3,
+            "params": {
+              "electric": 1
+            }
+          }
+        ]
       }
     },
     "F": {

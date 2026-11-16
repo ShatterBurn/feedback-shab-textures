@@ -37,6 +37,13 @@ public final class CasterTuning {
     /** Pu one stroke of the tank's own air pump adds, over the headspace share (a fuller tank pressurises faster). */
     public static final float AIR_STROKE_PU = 6f;
 
+    /** An electric pump's head per unit of motor size per unit of its metal's strength (Pu), and the Eu it takes to move a mB against a Pu. */
+    public static final float MOTOR_PU_PER_SIZE_STRENGTH = 0.1f, EU_PER_MB_PU = 0.5f;
+    /** Ticks a motor takes to come up to its head after the trigger goes down, and the gap (ticks) in pulls after which it has stopped. */
+    public static final int MOTOR_SPINUP_TICKS = 10, MOTOR_STOP_TICKS = 4;
+    /** Wear (fraction of condition) a tick a motor runs with nothing to move. */
+    public static final float WEAR_DRY_MOTOR = 0.0005f;
+
     // --- effects ----------------------------------------------------------------------------------
     /** A stream hotter than this scalds what it hits; one at or under {@link #FREEZE_TU} chills it. */
     public static final float SCALD_TU = 55f, FREEZE_TU = 0f;

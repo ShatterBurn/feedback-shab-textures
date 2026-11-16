@@ -235,16 +235,36 @@ final class GunDraw {
         }
         if (v.has("D")) {
             m.part(v, "D");
+            boolean motor = v.variant("D").equals("electric_pump");
             if (frame.equals("lance_frame")) {
-                m.box(-0.75f, -2.75f, zTankFront + 1f, 0.75f, -1.75f, zBase - 1f, Tile.RIBBED); // the pump's slide under the tank
+                if (motor)
+                    motorCan(m, -0.75f, -2.25f, zTankFront + 1f, zBase - 1f); // the motor under the tank
+                else
+                    m.box(-0.75f, -2.75f, zTankFront + 1f, 0.75f, -1.75f, zBase - 1f, Tile.RIBBED); // the pump's slide under the tank
             } else if (frame.equals("backpack_frame")) {
-                m.box(-0.75f, -1.25f, 8f, 0.75f, -0.5f, 9f, Tile.RIBBED); // a pump bulb on the hose
+                if (motor)
+                    motorCan(m, 0f, -1.25f, 8f, 9.5f); // the motor on the hose
+                else
+                    m.box(-0.75f, -1.25f, 8f, 0.75f, -0.5f, 9f, Tile.RIBBED); // a pump bulb on the hose
             } else {
                 float zs = Math.min(zTip + 5f, -1f);
-                m.box(-0.75f, -1.75f, zs, 0.75f, -0.5f, 3f, Tile.RIBBED); // the pump's slide, forend-shaped
-                m.rod(0, -1.1f, 0.25f, 3f, 4f, Tile.KNURL);
+                if (motor) {
+                    motorCan(m, 0f, -2.25f, zs, 3f);
+                } else {
+                    m.box(-0.75f, -1.75f, zs, 0.75f, -0.5f, 3f, Tile.RIBBED); // the pump's slide, forend-shaped
+                    m.rod(0, -1.1f, 0.25f, 3f, 4f, Tile.KNURL);
+                }
             }
         }
+    }
+
+    /** An electric pump's motor: a can with a winding in the middle and a lamp where its cell shows, on the axis (x, y) from z0 to z1. */
+    private static void motorCan(GunMesh m, float x, float y, float z0, float z1) {
+        float zm = (z0 + z1) / 2f;
+        m.rod(x, y, 0.75f, z0, z1, Tile.BRUSHED);
+        m.rod(x, y, 0.875f, zm - 1f, zm + 1f, Tile.COIL);
+        m.rod(x, y, 0.5f, z1, z1 + 0.5f, Tile.KNURL);
+        m.box(x - 0.25f, y - 0.875f, z0 + 0.5f, x + 0.25f, y - 0.75f, z0 + 1.25f, Tile.LAMP);
     }
 
     /** Where a break action hinges: under the barrels at the front of the frame (a revolver's front strap, a shotgun's breech face). */
