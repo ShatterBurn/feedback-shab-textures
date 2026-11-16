@@ -48,8 +48,12 @@ public final class HeatPellets {
         int life;
         boolean returned;
         final int id = NEXT_ID--, rgb;
+        /** The cell's band when a malefic lens is fitted (the pellet blows where it lands), else null. */
+        final io.github.soundgoodizerfan.feedback.core.unit.VoltageBand malefic;
 
-        Pellet(ServerLevel level, LivingEntity owner, Vec3 pos, Vec3 vel, float damage, int life, int rgb) {
+        Pellet(ServerLevel level, LivingEntity owner, Vec3 pos, Vec3 vel, float damage, int life, int rgb,
+               io.github.soundgoodizerfan.feedback.core.unit.VoltageBand malefic) {
+            this.malefic = malefic;
             this.rgb = rgb;
             this.level = level;
             this.owner = owner;
@@ -71,7 +75,8 @@ public final class HeatPellets {
      * Throws {@code beams} pellets from {@code shooter}'s eye within a cone of {@code coneDeg}, sharing {@code work}
      * between them (a splitter's share), each flying {@code range} blocks at most.
      */
-    public static void launch(ServerLevel level, LivingEntity shooter, float work, float range, int beams, float coneDeg, float yaw, float pitch, int rgb) {
+    public static void launch(ServerLevel level, LivingEntity shooter, float work, float range, int beams, float coneDeg, float yaw, float pitch, int rgb,
+                              io.github.soundgoodizerfan.feedback.core.unit.VoltageBand malefic) {
         int n = Math.max(1, beams);
         float each = n > 1 ? work * ModularTuning.EGUN_SPLIT_TOTAL / n : work;
         int life = Math.max(1, Math.round(range / ModularTuning.EGUN_CORE_SPEED));
@@ -80,7 +85,7 @@ public final class HeatPellets {
             float r = coneDeg * Mth.sqrt(level.random.nextFloat()), theta = level.random.nextFloat() * Mth.TWO_PI;
             Vec3 dir = Vec3.directionFromRotation(Mth.clamp(pitch + r * Mth.sin(theta), -90f, 90f), yaw + r * Mth.cos(theta));
             Pellet s = new Pellet(level, shooter, eye.add(dir.scale(0.4)), dir.scale(ModularTuning.EGUN_CORE_SPEED),
-                    each * ModularTuning.EGUN_DAMAGE_PER_WORK, life, rgb);
+                    each * ModularTuning.EGUN_DAMAGE_PER_WORK, life, rgb, malefic);
             PELLETS.add(s);
             fly(s, false);
         }
@@ -175,6 +180,10 @@ public final class HeatPellets {
                     && Parrying.catchBullet(level, s.owner, catcher, ModularTuning.EGUN_CORE_PELLET_MU, (float) s.vel.length(), s.damage))
                 return true;
             s.pos = end;
+            if (s.malefic != null) {
+                PulseShot.blast(level, s.owner, s.malefic, end, s.damage / ModularTuning.EGUN_DAMAGE_PER_WORK);
+                return true;
+            }
             best.invulnerableTime = 0;
             Entity target = best;
             GunShots.asBullet(() -> target.hurt(GunShots.attack(level, s.owner), s.damage));
@@ -185,6 +194,8 @@ public final class HeatPellets {
         if (block.getType() != HitResult.Type.MISS) {
             s.pos = end;
             GunImpacts.energyBlock(level, block.getBlockPos(), block.getDirection(), end, 1f, s.rgb, EnergyStyle.PLASMA);
+            if (s.malefic != null)
+                PulseShot.blast(level, s.owner, s.malefic, end, s.damage / ModularTuning.EGUN_DAMAGE_PER_WORK);
             return true;
         }
         s.pos = to;

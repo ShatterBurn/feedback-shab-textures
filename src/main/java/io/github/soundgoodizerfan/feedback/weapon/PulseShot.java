@@ -150,7 +150,7 @@ public final class PulseShot {
                 if (plan.malefic()) {
                     // The whole pulse into a spot: the first body it meets flash-boils and blows.
                     line(level, plan, pos, h.at());
-                    blast(level, shooter, plan, h.at(), work);
+                    blast(level, shooter, plan.band(), h.at(), work);
                     return;
                 }
                 strike(level, shooter, gun, plan, h.entity(), h.at(), work);
@@ -170,7 +170,7 @@ public final class PulseShot {
             if (plan.malefic() || !passes(state)) {
                 GunImpacts.energyBlock(level, block.getBlockPos(), block.getDirection(), stop, 0.5f, plan.colour(), plan.style());
                 if (plan.malefic()) {
-                    blast(level, shooter, plan, stop, work);
+                    blast(level, shooter, plan.band(), stop, work);
                     return;
                 }
                 // A coherence lens keeps the pulse coherent enough to bounce: what it keeps is the struck surface's reflectivity.
@@ -204,7 +204,7 @@ public final class PulseShot {
      * The malefic lens's blast at {@code at}: radius and hit from the pulse's energy, a wet or metal-armoured body taking the shock bonus as from
      * any pulse, blocks broken by the world's rules. The wielder inside the radius takes it too, capped as the pump charge's blast is.
      */
-    private static void blast(ServerLevel level, LivingEntity shooter, Plan plan, Vec3 at, float work) {
+    static void blast(ServerLevel level, LivingEntity shooter, io.github.soundgoodizerfan.feedback.core.unit.VoltageBand band, Vec3 at, float work) {
         float r = Mth.clamp(ModularTuning.EGUN_MALEFIC_RADIUS_PER_SQRT_WORK * Mth.sqrt(work), ModularTuning.EGUN_MALEFIC_RADIUS_MIN, ModularTuning.EGUN_MALEFIC_RADIUS_MAX);
         float damage = work * ModularTuning.EGUN_DAMAGE_PER_WORK * ModularTuning.EGUN_MALEFIC_DAMAGE_MULT;
         for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, new AABB(at, at).inflate(r),
@@ -213,7 +213,7 @@ public final class PulseShot {
             if (e == shooter)
                 e.hurt(level.damageSources().explosion(shooter, shooter), Math.min(damage * share, shooter.getMaxHealth() * ModularTuning.EGUN_MALEFIC_SELF_CAP));
             else
-                hurt(level, shooter, e, damage * share, work, plan.band());
+                hurt(level, shooter, e, damage * share, work, band);
         }
         // The blast breaks blocks by the game's rules and hurts nobody a second time.
         level.explode(shooter, null, new net.minecraft.world.level.ExplosionDamageCalculator() {

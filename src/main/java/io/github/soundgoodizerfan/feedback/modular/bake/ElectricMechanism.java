@@ -244,7 +244,7 @@ public final class ElectricMechanism implements GunMechanism {
             float widen = 1f + ModularTuning.EGUN_PUMP_SPREAD * pumps;
             int beams = spec.beams() > 0 ? spec.beams() + Math.round(spec.beams() * ModularTuning.EGUN_PUMP_BEAMS * pumps) : 1;
             float cone = beams > 1 ? ModularTuning.EGUN_SPLIT_DEG_PER_BEAM * beams * widen : figures.spreadDeg() * widen;
-            HeatPellets.launch(level, shooter, spec.delivered(p.work()), spec.cutoff(p.zoomShare()) * ModularTuning.EGUN_CORE_RANGE, beams, cone, yaw, pitch, ModularElectricGun.colourOf(gun));
+            HeatPellets.launch(level, shooter, spec.delivered(p.work()), spec.cutoff(p.zoomShare()) * ModularTuning.EGUN_CORE_RANGE, beams, cone, yaw, pitch, ModularElectricGun.colourOf(gun), spec.malefic() ? band : null);
         } else {
             // Each pump widens the spread; a splitter also throws more beams, the way buckshot throws more pellets.
             float widen = 1f + ModularTuning.EGUN_PUMP_SPREAD * pumps;
