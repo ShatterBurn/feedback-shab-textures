@@ -51,23 +51,47 @@ public final class SpaceTravel {
         if (from.dimension().equals(SHELF)) return -1;
         ServerLevel shelf = from.getServer().getLevel(SHELF);
         if (shelf == null) return -2;
-        Vector3d at = new Vector3d(body.logicalPose().position());
-        var aboard = aboard(from, body);
-        int n = SubLevelWarper.warpConnectedSubLevels(body, shelf, at.set(at.x, SpaceTuning.ENTRY_Y, at.z));
-        if (n > 0)
-            fade(aboard, true);
-        return n;
+        return cross(from, shelf, body, SpaceTuning.ENTRY_Y, true);
     }
 
     /** Bodies moved, or -1 when {@code body} is not in the Shelf. Arrives where the Overworld's air is thin but not zero. */
     public static int back(ServerLevel from, ServerSubLevel body) {
         if (!from.dimension().equals(SHELF)) return -1;
-        ServerLevel overworld = from.getServer().overworld();
+        return cross(from, from.getServer().overworld(), body, SpaceTuning.RETURN_Y, false);
+    }
+
+    /** A player Sable has tracked on the chain: where they stood on their body, so they can follow it across. */
+    private record Rider(ServerPlayer player, java.util.UUID body, Vec3 local) {
+    }
+
+    /**
+     * Moves {@code body} and its chain to {@code target} at height {@code y}. Dimensional Sable carries what stands inside each
+     * body's box; a craft moving several blocks a tick leaves a rider trailing outside it, so everyone Sable has tracked on the chain
+     * is also brought across to the same place on the body afterwards, if the move left them behind.
+     */
+    private static int cross(ServerLevel from, ServerLevel target, ServerSubLevel body, double y, boolean up) {
+        var chain = SubLevelWarper.getSubLevelGroup(body);
+        var ids = new java.util.HashSet<java.util.UUID>();
+        for (ServerSubLevel b : chain)
+            ids.add(b.getUniqueId());
+        var riders = new java.util.ArrayList<Rider>();
+        for (ServerPlayer p : from.players())
+            if (SableCompanion.INSTANCE.getTrackingOrVehicleSubLevel(p) instanceof ServerSubLevel s && ids.contains(s.getUniqueId()))
+                riders.add(new Rider(p, s.getUniqueId(), s.logicalPose().transformPositionInverse(p.position())));
+        var seeing = new java.util.LinkedHashSet<>(aboard(from, body));
+        for (Rider r : riders)
+            seeing.add(r.player());
         Vector3d at = new Vector3d(body.logicalPose().position());
-        var aboard = aboard(from, body);
-        int n = SubLevelWarper.warpConnectedSubLevels(body, overworld, at.set(at.x, SpaceTuning.RETURN_Y, at.z));
-        if (n > 0)
-            fade(aboard, false);
+        int n = SubLevelWarper.warpConnectedSubLevels(body, target, at.set(at.x, y, at.z));
+        if (n <= 0)
+            return n;
+        var container = dev.ryanhcode.sable.api.sublevel.ServerSubLevelContainer.getContainer(target);
+        for (Rider r : riders)
+            if (r.player().level() != target && container.getSubLevel(r.body()) instanceof ServerSubLevel moved) {
+                Vec3 w = moved.logicalPose().transformPosition(r.local());
+                r.player().teleportTo(target, w.x, w.y, w.z, java.util.Set.of(), r.player().getYRot(), r.player().getXRot());
+            }
+        fade(seeing, up);
         return n;
     }
 
@@ -78,7 +102,7 @@ public final class SpaceTravel {
                 new net.minecraft.world.phys.AABB(b.minX(), b.minY(), b.minZ(), b.maxX(), b.maxY(), b.maxZ()).inflate(2));
     }
 
-    private static void fade(java.util.List<ServerPlayer> players, boolean up) {
+    private static void fade(java.util.Collection<ServerPlayer> players, boolean up) {
         for (ServerPlayer p : players)
             net.neoforged.neoforge.network.PacketDistributor.sendToPlayer(p, new io.github.soundgoodizerfan.feedback.net.SpaceFadePayload(up));
     }
