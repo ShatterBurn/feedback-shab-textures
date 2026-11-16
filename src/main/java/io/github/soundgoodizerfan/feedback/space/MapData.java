@@ -86,7 +86,9 @@ public final class MapData extends SavedData {
         int v = packed & 0xFF;
         if (v == 0)
             return 0xFF1A1A1E;
-        return 0xFF000000 | MapColor.byId(v >> 2).calculateRGBColor(MapColor.Brightness.byId(v & 3));
+        // Vanilla gives map colours as ABGR (the order a map's texture wants); this is ARGB.
+        int abgr = MapColor.byId(v >> 2).calculateRGBColor(MapColor.Brightness.byId(v & 3));
+        return 0xFF000000 | ((abgr & 0xFF) << 16) | (abgr & 0xFF00) | ((abgr >> 16) & 0xFF);
     }
 
     // --- saving ---
