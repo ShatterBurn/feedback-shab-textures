@@ -52,7 +52,8 @@ public final class RobotModel {
         int driveColour = colour(design, "D");
 
         // chassis: the body, a lip round its top and a belly plate
-        b.box(chassis, -5, 4, -5, 5, 10, 5);
+        // (the body stops where the lip starts: two tops in one plane would fight)
+        b.box(chassis, -5, 4, -5, 5, 9, 5);
         b.box(chassis, -5.5f, 9, -5.5f, 5.5f, 10, 5.5f);
         b.box(chassis, -3, 3, -3, 3, 4, 3);
 
@@ -63,8 +64,9 @@ public final class RobotModel {
                     for (int sz = -1; sz <= 1; sz += 2) {
                         float x = sx * 5.5f, z = sz * 3.5f;
                         float k = x + sx * 1.5f;
-                        b.box(driveColour, Math.min(x, k) - 0.5f, 5, z - 1, Math.max(x, k) + 0.5f, 7, z + 1);
-                        b.box(driveColour, k - 1, 1, z - 1, k + 1, 7, z + 1);
+                        // thigh slimmer and shin shorter than it, so no faces share a plane
+                        b.box(driveColour, Math.min(x, k) - 0.5f, 5, z - 0.75f, Math.max(x, k) + 0.5f, 7, z + 0.75f);
+                        b.box(driveColour, k - 1, 1, z - 1, k + 1, 6.5f, z + 1);
                         b.box(driveColour, k - 1.5f, 0, z - 1.5f, k + 1.5f, 1, z + 1.5f);
                     }
             }
@@ -109,7 +111,7 @@ public final class RobotModel {
                 case RobotSpec.RANGEFINDER -> {
                     b.box(c, -2.5f, 12.5f, -3.75f, -0.5f, 14.5f, -3f);
                     b.box(c, 0.5f, 12.5f, -3.75f, 2.5f, 14.5f, -3f);
-                    b.box(c, -3, 14.5f, -3.5f, 3, 15.25f, -2);
+                    b.box(c, -3.25f, 14.5f, -3.5f, 3.25f, 15.25f, -2);
                 }
                 case RobotSpec.INERTIAL -> {
                     b.box(c, -2, 15, -2, 2, 16, 2);
