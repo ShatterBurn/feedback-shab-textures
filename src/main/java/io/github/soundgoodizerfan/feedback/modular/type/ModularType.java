@@ -16,6 +16,7 @@ import io.github.soundgoodizerfan.feedback.process.FormShape;
 import io.github.soundgoodizerfan.feedback.process.Material;
 import io.github.soundgoodizerfan.feedback.process.MaterialNeeds;
 import io.github.soundgoodizerfan.feedback.modular.bake.BlockFigures;
+import io.github.soundgoodizerfan.feedback.modular.bake.CasterSpec;
 import io.github.soundgoodizerfan.feedback.modular.bake.ElectricGunSpec;
 import io.github.soundgoodizerfan.feedback.modular.bake.FigureStore;
 import io.github.soundgoodizerfan.feedback.modular.bake.ModularBake;
@@ -251,6 +252,8 @@ public record ModularType(Family family, Slot slot, List<Mine> mines, float stri
         AIR_GUN,
         /** A pulse gun ({@code electric_gun}): a pulse barrel and a battery seat fed from a swappable battery in the item (or worn, with a tether lead). Not a {@link #GUN}: nothing in it ignites powder. Its bake is {@link ElectricGunSpec}. */
         ELECTRIC_GUN,
+        /** A fluid caster ({@code caster}): a tank, a nozzle and a valve in a receiver, optionally a pump drive; it throws a stream of whatever fluid is in the tank. Its bake is {@link CasterSpec}. */
+        CASTER,
         /** A pressure vessel ({@code pressure_vessel}): a shell whose wall, shape and metal set the pressure it holds and the room inside; its bake is the {@link ModularBake#tank} spec the placed block runs on. */
         PRESSURE,
         /** A robot ({@code robot}): chassis, drive and tool head, placed from the hand as a {@code robot/RobotEntity}; its figures are read from the design by {@code robot/RobotSpec}. Carries a program medium and a swappable battery on the entity, not in the design. */

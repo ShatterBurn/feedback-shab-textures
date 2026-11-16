@@ -3,6 +3,7 @@
     "feedback:bow",
     "feedback:crossbow",
     "feedback:launcher",
-    "feedback:electric_gun"
+    "feedback:electric_gun",
+    "feedback:caster"
   ]
 }

@@ -223,6 +223,15 @@ public record ModularFigures(List<Float> values, int step) {
         // --- an electric gun's (family ELECTRIC_GUN) ---
         /** Work a shot takes from the battery at full draw. */
         SHOT_ENERGY,
+        // --- a fluid caster's (family CASTER) ---
+        /** mB the tank holds. */
+        CASTER_CAPACITY,
+        /** {@code Pu}: what the tank's walls hold before they weep. */
+        CASTER_RATING,
+        /** Blocks a stream reaches at the pressure the walls hold (a pump's head). */
+        CASTER_REACH,
+        /** mB a tick the nozzle passes at that pressure. */
+        CASTER_FLOW,
         // --- shears (family SHEARS) ---
         /** The speed multiple of coarse clipping (wool, leaves): the blade pair's snap and the bite of its length. */
         CLIP,

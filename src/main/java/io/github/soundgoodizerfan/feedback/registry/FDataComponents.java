@@ -315,6 +315,16 @@ public class FDataComponents {
                     .networkSynchronized(SimpleFluidContent.STREAM_CODEC)
                     .build());
 
+    /** What a fluid caster's tank holds (species, mB, and the Tu stamp on the stack), its capacity the tank's baked {@code CASTER_CAPACITY}. */
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<SimpleFluidContent>> CASTER_CONTENT =
+            COMPONENTS.register("caster_content", () -> DataComponentType.<SimpleFluidContent>builder()
+                    .persistent(SimpleFluidContent.CODEC)
+                    .networkSynchronized(SimpleFluidContent.STREAM_CODEC)
+                    .build());
+
+    /** The gauge pressure of a fluid caster's tank, Pu: state on the stack, never a stat. */
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Float>> CASTER_PRESSURE = bedLoss("caster_pressure");
+
     /** What a copper bucket holds -- see {@code CopperBucketItem}. */
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<SimpleFluidContent>> BUCKET_CONTENT =
             COMPONENTS.register("bucket_content", () -> DataComponentType.<SimpleFluidContent>builder()
