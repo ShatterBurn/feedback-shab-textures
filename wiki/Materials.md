@@ -80,8 +80,8 @@ Amounts of metal and other stuff are counted in **Qu**. See [Units](Units.md#amo
 What the columns mean in play:
 
 - **Hardness** (real Vickers hardness, 1 St per 0.1 GPa: copper 4, iron 8, steel 15, netherite 130) decides what can shape a metal. A blow weaker than the hardness, or a cutting tool not harder than the metal, does nothing at all. Above that, each blow does **strength of the blow ÷ hardness** in work. See [Metalworking](Metalworking.md). It also decides what a bullet goes through: see [Guns](Guns.md#hardness-glass-glancing-armor).
-- **Density** (kg per liter, water is 1) decides how heavy things are: bullets, guns, engines and vehicle plates. Dense bullets keep their energy.
-- **Yield strength** (1 St is 20 MPa: steel 12 is 240 MPa) decides how much pressure a gun chamber or a cartridge case holds, and how fast an engine can rev. A 9 mm chamber with a 3 mm wall holds 0.67 × yield strength in Pu. See [Gun Parts](Gun_Parts.md#the-chamber).
+- **Density** (Mu per mB, water is 1) decides how heavy things are: bullets, guns, engines and vehicle plates. Dense bullets keep their energy.
+- **Yield strength** (in St: steel is 12) decides how much pressure a gun chamber or a cartridge case holds, and how fast an engine can rev. A 9 mm chamber with a 3 mm wall holds 0.67 × yield strength in Pu. See [Gun Parts](Gun_Parts.md#the-chamber).
 - **Melting point** is where a crucible melts it, and where a [Fuse](Fuse.md) wire or a pair of [tongs](Hazards.md#tongs) gives out. Stuff that melts above lava's 1200 Tu is fire resistant ([Lava](Lava.md)).
 - **Magnetic** metals are pulled by the [Electromagnet](Electromagnet.md).
 - **Diamagnetism** (0 to 1) is how strongly a material is pushed away by a magnet's field. It sets how hard an Electromagnet shoves a dropped item away, and how well a [Levitation Plate](Levitation_Plate.md) or [Levitation Sleeve](Levitation_Sleeve.md) made of it works.

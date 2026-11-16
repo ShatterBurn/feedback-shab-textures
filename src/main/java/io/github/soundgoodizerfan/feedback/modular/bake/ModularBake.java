@@ -925,7 +925,7 @@ public final class ModularBake {
                     total += mass(type.roles().get(p.role()), p, by.get(p.role()));
                 ElectricGunSpec egun = spec.get();
                 f.put(Fig.MASS, total);
-                f.put(Fig.SHOT_ENERGY, egun.pulseJ() * egun.seatMult() * worn);
+                f.put(Fig.SHOT_ENERGY, egun.pulseWork() * egun.seatMult() * worn);
                 var hand = io.github.soundgoodizerfan.feedback.weapon.GunSpec.hand(design, type, materials);
                 if (hand.core() != null || hand.bipod() != null) {
                     var brace = hand.braced();
@@ -933,7 +933,7 @@ public final class ModularBake {
                     f.put(Fig.BRACE_SPREAD, brace.spread());
                 }
                 // The shared gun figures at an ordinary pulse: what the gun pipeline reads (cycle, kick, sound, the HUD).
-                f.putAll(egun.figures(egun.pulseJ() * egun.seatMult(), total, egun.cycleTicks(false), 0f, 1f).figs());
+                f.putAll(egun.figures(egun.pulseWork() * egun.seatMult(), total, egun.cycleTicks(false), 0f, 1f).figs());
                 f.put(Fig.MASS, total);
                 // What the fittings can take: the weakest one's service temperature and the wear a shot gives through the brake.
                 float limit = Float.MAX_VALUE, wear = 0f;

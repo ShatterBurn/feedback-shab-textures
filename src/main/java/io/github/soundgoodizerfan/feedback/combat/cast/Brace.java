@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.combat.cast;
 
+import io.github.soundgoodizerfan.feedback.core.unit.Work;
+
 import io.github.soundgoodizerfan.feedback.Feedback;
 import io.github.soundgoodizerfan.feedback.combat.feel.CombatCues;
 import io.github.soundgoodizerfan.feedback.combat.feel.FeelTuning;
@@ -42,7 +44,7 @@ final class Brace {
         if (io.github.soundgoodizerfan.feedback.combat.skill.Skills.unlocked(p, "plate_up"))
             mine += (float) p.getAttributeValue(net.minecraft.world.entity.ai.attributes.Attributes.ARMOR_TOUGHNESS) * PLATE_UP_MU_PER_TOUGHNESS;
         float held = event.getAmount() * Mth.clamp(mine / (mine + theirs), 0.3f, 0.8f);        event.setAmount(event.getAmount() - held);
-        stagger(p, foe, held * ParryTuning.JOULES_PER_DAMAGE);
+        stagger(p, foe, new Work(held * ParryTuning.WORK_PER_DAMAGE));
         ItemStack weapon = p.getMainHandItem();
         if (weapon.isDamageableItem())
             weapon.hurtAndBreak(Math.max(1, (int) (held / 4)), p, net.minecraft.world.entity.EquipmentSlot.MAINHAND);

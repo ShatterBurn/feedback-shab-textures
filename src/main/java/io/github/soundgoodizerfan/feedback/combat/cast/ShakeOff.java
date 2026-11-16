@@ -3,6 +3,8 @@
 
 package io.github.soundgoodizerfan.feedback.combat.cast;
 
+import io.github.soundgoodizerfan.feedback.core.unit.Work;
+
 import io.github.soundgoodizerfan.feedback.combat.grab.Grabbing;
 import io.github.soundgoodizerfan.feedback.combat.skill.Skills;
 import io.github.soundgoodizerfan.feedback.combat.state.CombatPhase;
@@ -25,13 +27,13 @@ import net.minecraft.world.phys.Vec3;
  * Shake off (Proficiency): a hard full-body shake that throws off what a body can shake: fire (a {@link Cauterize}, a
  * hot-contact sear, a flame), dirt in the eyes (blindness), anything sticking to the limbs (slowness), a daze (nausea) and
  * a stun (stagger). Never a systemic effect: poison, wither, hunger and the like stay. With Break Free it first throws off
- * anything holding you (a grab, a hook), staggering whoever held the rope by {@link #BREAK_JOULES} against their mass.
+ * anything holding you (a grab, a hook), staggering whoever held the rope by {@link #BREAK_WORK} against their mass.
  * Refused with nothing to shake. Rearms on a stagger: you earn the next one by pushing back.
  */
 final class ShakeOff {
 
     /** STAND-IN: the shake's impact on a holder; a kick-sized jolt. */
-    static final float BREAK_JOULES = 300f;
+    static final float BREAK_WORK = 300f;
 
     private ShakeOff() {
     }
@@ -82,7 +84,7 @@ final class ShakeOff {
             if (t.anchor() instanceof Tether.Anchor.OnEntity on && p.level().getEntity(on.entityId()) instanceof LivingEntity holder) {
                 if (holder instanceof ServerPlayer grabber && Grabbing.held(grabber) == p)
                     Grabbing.drop(grabber);
-                Casts.stagger(by, holder, BREAK_JOULES);
+                Casts.stagger(by, holder, new Work(BREAK_WORK));
             }
             Tethers.remove(p, t.sourceId());
         }

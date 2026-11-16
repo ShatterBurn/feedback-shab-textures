@@ -108,7 +108,7 @@ A tool or armor piece whose main part is metal can be plated three ways: hung in
 
 ## Measuring
 
-The tooltip gives words for free. To see a design's numbers *before* you make it, draw it at the [Blueprint Table](Blueprint_Table.md). For numbers on a finished piece, carry a [Balance Scale](Instruments.md#balance-scale) (mass) or a [Scratch File Set](Instruments.md#scratch-file-set) (hardness). The [Impact Pendulum](Instruments.md#impact-pendulum) reports edge toughness and the [Strike Post](Instruments.md#strike-post) reports the joules and damage of a blow.
+The tooltip gives words for free. To see a design's numbers *before* you make it, draw it at the [Blueprint Table](Blueprint_Table.md). For numbers on a finished piece, carry a [Balance Scale](Instruments.md#balance-scale) (mass) or a [Scratch File Set](Instruments.md#scratch-file-set) (hardness). The [Impact Pendulum](Instruments.md#impact-pendulum) reports edge toughness and the [Strike Post](Instruments.md#strike-post) reports the Work and damage of a blow.
 
 ### Forging variants by rhythm
 
@@ -153,7 +153,7 @@ Messages like the Flurry count, a forged part's quality and a Blueprint Table's 
 
 Every gun, bow, crossbow, melee weapon (a [hafted tool](Hafted_Tool.md) included, judged by its front face) and plated glove carries an aqua line on its tooltip, "Suits:", listing what it is good at: *heavy-hitting*, *quick*, *precise*, *quiet*. A word appears when the weapon scores 60% or more on that axis. All weapon kinds share one scale, so a slug gun and a maul can both be heavy-hitting.
 
-- **Heavy-hitting**: the joules a hit carries, on a scale from 20 to 1500 J.
+- **Heavy-hitting**: the Work a hit carries, on a scale from 20 to 1500 Work.
 - **Quick**: hits a second, from half a hit to four.
 - **Precise**: a gun's tight cone, a bow's flat flight, or a light, long, hard-edged blade. Bare hands score low, claws higher.
 - **Quiet**: a gun's low report and light weight, a light blade with a dull edge, or a light plate.

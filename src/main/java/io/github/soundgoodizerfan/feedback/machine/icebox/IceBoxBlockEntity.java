@@ -79,7 +79,7 @@ public class IceBoxBlockEntity extends BaseContainerBlockEntity implements Refri
         }
     }
 
-    public float boxTemperature() {
+    public float boxTu() {
         return boxTu;
     }
 

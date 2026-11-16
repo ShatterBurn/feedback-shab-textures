@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.combat.cast;
 
+import io.github.soundgoodizerfan.feedback.core.unit.Work;
+
 import io.github.soundgoodizerfan.feedback.combat.feel.CombatCues;
 import io.github.soundgoodizerfan.feedback.combat.feel.FeelTuning;
 import io.github.soundgoodizerfan.feedback.combat.parry.ParryTuning;
@@ -32,7 +34,7 @@ final class Reprisal {
             float damage = (float) p.getAttributeValue(Attributes.ATTACK_DAMAGE);
             foe.invulnerableTime = 0;
             foe.hurt(p.damageSources().playerAttack(p), damage);
-            stagger(p, foe, damage * ParryTuning.JOULES_PER_DAMAGE);
+            stagger(p, foe, new Work(damage * ParryTuning.WORK_PER_DAMAGE));
             p.swing(InteractionHand.MAIN_HAND, true);
             // the answer: a streak from you to the one who struck, and a cut where it lands
             ServerLevel lv = p.serverLevel();

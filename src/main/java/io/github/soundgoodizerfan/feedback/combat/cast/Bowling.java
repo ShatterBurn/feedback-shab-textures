@@ -2,6 +2,10 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.combat.cast;
 
+import io.github.soundgoodizerfan.feedback.core.unit.Work;
+
+import io.github.soundgoodizerfan.feedback.core.FTuning;
+
 import io.github.soundgoodizerfan.feedback.Feedback;
 import io.github.soundgoodizerfan.feedback.combat.tether.BodyMass;
 import java.util.HashMap;
@@ -58,7 +62,7 @@ public final class Bowling {
             e.invulnerableTime = 0;
             e.hurt(p.damageSources().playerAttack(p), 4f);
             body.hurt(p.damageSources().playerAttack(p), 2f);
-            stagger(p, e, mass * 9.8f * 1.5f);
+            stagger(p, e, new Work(mass * FTuning.GRAVITY_BLOCKS_PER_S2 * 1.5f));
             Vec3 c = e.getBoundingBox().getCenter();
             lv.sendParticles(ParticleTypes.CRIT, c.x, c.y, c.z, 14, 0.3, 0.3, 0.3, 0.4);
             CastFx.sound(lv, c, SoundEvents.PLAYER_ATTACK_KNOCKBACK, 1f, 0.7f);

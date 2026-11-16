@@ -2,6 +2,10 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.combat.cast;
 
+import io.github.soundgoodizerfan.feedback.core.unit.Work;
+
+import io.github.soundgoodizerfan.feedback.core.FTuning;
+
 import io.github.soundgoodizerfan.feedback.weapon.GunItem;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -54,7 +58,7 @@ final class Sunder {
         }
         Disorder.selfWear(p, h);
         Disorder.note(p, t, Disorder.Kind.STRIPPED);
-        stagger(p, t, io.github.soundgoodizerfan.feedback.combat.tether.BodyMass.of(p) * 9.8f);
+        stagger(p, t, new Work(io.github.soundgoodizerfan.feedback.combat.tether.BodyMass.of(p) * FTuning.GRAVITY_BLOCKS_PER_S2));
         p.swing(InteractionHand.MAIN_HAND, true);
         ServerLevel lv = p.serverLevel();
         Vec3 at = t.position().add(0, t.getBbHeight() * 0.7, 0);

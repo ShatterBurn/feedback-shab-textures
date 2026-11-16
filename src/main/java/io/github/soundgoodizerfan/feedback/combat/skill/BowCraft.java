@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.combat.skill;
 
+import io.github.soundgoodizerfan.feedback.core.unit.Work;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -61,9 +63,9 @@ public final class BowCraft {
     private static final double CLOSE = 4.0;
     /** Barbed shaft: ticks a pin holds and the slowness level it puts on (STAND-INS). */
     private static final int PIN_TICKS = 100, PIN_SLOW = 2;
-    private static final float BREATH_PER_JOULE = 0.2f, BREATH_MAX = 30f;
-    /** Quarry mark: bleed seconds per joule (most {@code WOUND_MAX_SECONDS}), damage a second, ticks a drop stays, drops kept per trail, blocks apart (STAND-INS). */
-    private static final float WOUND_SECONDS_PER_JOULE = 0.1f, WOUND_MAX_SECONDS = 10f, WOUND_DAMAGE = 1f;
+    private static final float BREATH_PER_WORK = 0.2f, BREATH_MAX = 30f;
+    /** Quarry mark: bleed seconds per work (most {@code WOUND_MAX_SECONDS}), damage a second, ticks a drop stays, drops kept per trail, blocks apart (STAND-INS). */
+    private static final float WOUND_SECONDS_PER_WORK = 0.1f, WOUND_MAX_SECONDS = 10f, WOUND_DAMAGE = 1f;
     private static final int DROP_TICKS = 600, DROPS_MAX = 24;
     private static final double DROP_APART = 1.0;
 
@@ -85,7 +87,7 @@ public final class BowCraft {
     private BowCraft() {
     }
 
-    /** Joules the arrow carries now: half m v squared. */
+    /** Work the arrow carries now: half m v squared. */
     private static float energy(AbstractArrow arrow) {
         float v = (float) arrow.getDeltaMovement().length() * MPS;
         return 0.5f * ARROW_MASS * v * v;
@@ -187,17 +189,17 @@ public final class BowCraft {
             return;
         LivingEntity target = event.getEntity();
         double dist = p.distanceTo(target);
-        float joules = energy(arrow);
+        float work = energy(arrow);
         // Observation pays for any projectile weapon's hit at range, the same as a gun's.
         if (dist >= SkillTuning.OBSERVE_RANGE)
             SkillEarning.award(p, SkillEarning.OBSERVATION, target.getStringUUID(), SkillTuning.GUN_HIT);
         if (dist >= SkillTuning.OBSERVE_RANGE && Skills.unlocked(p, "quarry_mark") && !target.isDeadOrDying()) {
-            Billhook.open(target, Math.min(WOUND_MAX_SECONDS, joules * WOUND_SECONDS_PER_JOULE), WOUND_DAMAGE);
+            Billhook.open(target, Math.min(WOUND_MAX_SECONDS, work * WOUND_SECONDS_PER_WORK), WOUND_DAMAGE);
             TRAILS.putIfAbsent(target.getUUID(), new Trail(p.getUUID(), new java.util.ArrayDeque<>(), new java.util.ArrayDeque<>()));
         }
         if (dist <= CLOSE && !target.isDeadOrDying()) {
             if (Skills.unlocked(p, "point_blank_draw"))
-                CombatTicker.stagger(target, ParryTuning.staggerTicks(joules, ParryTuning.standInMass(target)),
+                CombatTicker.stagger(target, ParryTuning.staggerTicks(new Work(work), ParryTuning.standInMass(target)),
                         ParryTuning.STAGGER_SLOW);
             if (Skills.unlocked(p, "barbed_shaft")) {
                 long now = p.level().getGameTime();
@@ -207,7 +209,7 @@ public final class BowCraft {
             }
         }
         if (dist >= SkillTuning.OBSERVE_RANGE && target.isDeadOrDying() && Skills.unlocked(p, "quarry_breath"))
-            Stamina.gain(p, Math.min(BREATH_MAX, joules * BREATH_PER_JOULE));
+            Stamina.gain(p, Math.min(BREATH_MAX, work * BREATH_PER_WORK));
     }
 
     /** Barbed shaft: the shooter's own blow on a pinned target pulls the shaft out, and the slowness with it. */

@@ -39,7 +39,7 @@ public record ModularFigures(List<Float> values, int step) {
         BALANCE,
         /** Swings per second a wielder can manage. */
         SWING,
-        /** Joules a blow carries. */
+        /** Work a blow carries. */
         IMPACT,
         /** How readily the edge cuts: hardness and strength, as the edge is ground. */
         BITE,
@@ -216,12 +216,12 @@ public record ModularFigures(List<Float> values, int step) {
         /** The plate material's thermal conductivity times the plate's volume: how readily it carries fire's heat to the wearer. 0 for cloth and leather. */
         FIRE_CONDUCT,
         // --- a spring gun's (family AIR_GUN) ---
-        /** Joules the cocked spring stores, before any set. */
+        /** Work the cocked spring stores, before any set. */
         SPRING_ENERGY,
         /** 0 to 1: the share of the spring's energy that reaches the pellet, from the barrel's length and bore. */
         AIR_EFFICIENCY,
         // --- an electric gun's (family ELECTRIC_GUN) ---
-        /** Joules a shot takes from the battery at full draw. */
+        /** Work a shot takes from the battery at full draw. */
         SHOT_ENERGY,
         // --- shears (family SHEARS) ---
         /** The speed multiple of coarse clipping (wool, leaves): the blade pair's snap and the bite of its length. */

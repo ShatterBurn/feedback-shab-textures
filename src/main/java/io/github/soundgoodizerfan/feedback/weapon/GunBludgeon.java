@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.weapon;
 
+import io.github.soundgoodizerfan.feedback.core.unit.Work;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -63,10 +65,10 @@ public final class GunBludgeon {
     private static void freeShot(ServerPlayer player, InteractionHand hand, ItemStack gun, LivingEntity target, float damage) {
         if (!Skills.unlocked(player, "gun_fu_chamber"))
             return;
-        float raw = ParryTuning.rawStaggerTicks(damage * ParryTuning.JOULES_PER_DAMAGE, ParryTuning.standInMass(target));
+        float raw = ParryTuning.rawStaggerTicks(damage * ParryTuning.WORK_PER_DAMAGE, ParryTuning.standInMass(target));
         if (raw < GunTuning.GUN_BLUDGEON_STAGGER_MIN_TICKS || CombatState.of(target).phase() == CombatPhase.STAGGER)
             return;
-        CombatTicker.stagger(target, ParryTuning.staggerTicks(damage * ParryTuning.JOULES_PER_DAMAGE, ParryTuning.standInMass(target)),
+        CombatTicker.stagger(target, ParryTuning.staggerTicks(new Work(damage * ParryTuning.WORK_PER_DAMAGE), ParryTuning.standInMass(target)),
                 ParryTuning.STAGGER_SLOW);
         if (CombatState.of(target).phase() != CombatPhase.STAGGER)
             return; // a rolling target slipped it

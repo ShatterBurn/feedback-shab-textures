@@ -15,7 +15,7 @@ P is a Steel Plate, B is a [Bearing](Bearing.md) and S is a [Shaft](Shaft.md). C
 
 Place it **touching a [Boiler](Boiler.md)** or a boiler at a high [scale](Boiler.md#scale), or feed it steam from a [Pipe](Pipe.md). It pulls steam in by itself. A shaft connects at either end of its axle.
 
-When it has steam it runs at a flat **240 RPM** with up to **64 Su** to give, about 15 kW, drawing **100 mB of steam a tick**. That is ten boilers' output, or one boiler at scale 10. Its store is 1000 mB.
+When it has steam it runs at a flat **240 RPM** with up to **64 Su** to give, drawing **100 mB of steam a tick**. That is ten boilers' output, or one boiler at scale 10. Its store is 1000 mB.
 
 ### Steam heat sets the output
 

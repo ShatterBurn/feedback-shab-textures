@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.combat.hit;
 
+import io.github.soundgoodizerfan.feedback.core.unit.Work;
+
 import io.github.soundgoodizerfan.feedback.combat.cast.Disorder;
 import io.github.soundgoodizerfan.feedback.combat.skill.Weakness;
 import io.github.soundgoodizerfan.feedback.modular.bake.ModularTuning;
@@ -133,10 +135,10 @@ public final class FistStances {
         LAST.put(p.getUUID(), new Last(move, now));
         float amount = event.getAmount() * (combo ? 1 + FistTuning.COMBO_BONUS : 1f);
         event.setAmount(amount);
-        float impact = amount * ParryTuning.JOULES_PER_DAMAGE;
+        float impact = amount * ParryTuning.WORK_PER_DAMAGE;
         switch (move) {
             case "lunge" -> {
-                CombatTicker.stagger(target, Math.round(ParryTuning.staggerTicks(impact, ParryTuning.standInMass(target)) * FistTuning.LUNGE_STAGGER),
+                CombatTicker.stagger(target, Math.round(ParryTuning.staggerTicks(new Work(impact), ParryTuning.standInMass(target)) * FistTuning.LUNGE_STAGGER),
                         ParryTuning.STAGGER_SLOW);
                 CombatState s = CombatState.of(p);
                 CombatState.set(p, new CombatState(s.phase(), s.ticksLeft(), s.then(), Math.max(s.iFrames(), FistTuning.LUNGE_GUARD)));
@@ -161,7 +163,7 @@ public final class FistStances {
             case "chop" -> {
                 target.setDeltaMovement(target.getDeltaMovement().x, -FistTuning.DRIVE, target.getDeltaMovement().z);
                 target.hurtMarked = true;
-                CombatTicker.stagger(target, ParryTuning.staggerTicks(impact, ParryTuning.standInMass(target)), ParryTuning.STAGGER_SLOW);
+                CombatTicker.stagger(target, ParryTuning.staggerTicks(new Work(impact), ParryTuning.standInMass(target)), ParryTuning.STAGGER_SLOW);
             }
             default -> {
             }

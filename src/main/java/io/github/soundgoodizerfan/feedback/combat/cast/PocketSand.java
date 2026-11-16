@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.combat.cast;
 
+import io.github.soundgoodizerfan.feedback.core.unit.Work;
+
 import io.github.soundgoodizerfan.feedback.combat.skill.Skills;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -44,7 +46,7 @@ final class PocketSand {
             e.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 40, 1));
             if (e instanceof Mob m)
                 m.setTarget(null);
-            stagger(p, e, 40f);
+            stagger(p, e, new Work(40f));
         }
         Vec3 hand = eye.add(look.scale(0.6)).add(0, -0.4, 0);
         for (int i = 0; i < 40; i++) {

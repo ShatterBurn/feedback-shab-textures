@@ -2,6 +2,10 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.combat.cast;
 
+import io.github.soundgoodizerfan.feedback.core.unit.Work;
+
+import io.github.soundgoodizerfan.feedback.core.FTuning;
+
 import io.github.soundgoodizerfan.feedback.Feedback;
 import io.github.soundgoodizerfan.feedback.combat.feel.CombatCues;
 import io.github.soundgoodizerfan.feedback.combat.feel.FeelTuning;
@@ -61,7 +65,7 @@ final class Slide {
         p.setDeltaMovement(d.x * 0.75, p.getDeltaMovement().y, d.z * 0.75);
         p.hurtMarked = true;
         ServerLevel lv = p.serverLevel();
-        float joules = (BodyMass.of(p) + BodyMass.armour(p)) * 9.8f * 1.0f;
+        float work = (BodyMass.of(p) + BodyMass.armour(p)) * FTuning.GRAVITY_BLOCKS_PER_S2 * 1.0f;
         for (LivingEntity e : near(p, p.position().add(d.scale(0.8)), 1.0)) {
             if (!s.swept().add(e.getId()))
                 continue;
@@ -69,7 +73,7 @@ final class Slide {
             e.hurt(p.damageSources().playerAttack(p), 2f);
             e.push(0, 0.25, 0);
             e.hurtMarked = true;
-            if (stagger(p, e, joules * io.github.soundgoodizerfan.feedback.modular.trait.Poleyn.staggerMult(e)))
+            if (stagger(p, e, new Work(work * io.github.soundgoodizerfan.feedback.modular.trait.Poleyn.staggerMult(e))))
                 Disorder.note(p, e, Disorder.Kind.TRIPPED);
             lv.sendParticles(ParticleTypes.CRIT, e.getX(), e.getY() + 0.3, e.getZ(), 8, 0.2, 0.1, 0.2, 0.2);
             CastFx.sound(lv, e.position(), SoundEvents.PLAYER_ATTACK_KNOCKBACK, 0.9f, 0.9f);

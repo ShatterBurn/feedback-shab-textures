@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.weapon;
 
+import io.github.soundgoodizerfan.feedback.core.FTuning;
+
 import io.github.soundgoodizerfan.feedback.registry.FWeapons;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -81,7 +83,7 @@ public final class GunTooltip {
                         String.format("%.1f", f.peakPressure().value()),
                         String.format("%.1f", f.chamberRating().value()))
                         .withStyle(f.overpressure() > 1 ? ChatFormatting.RED : ChatFormatting.GRAY),
-                Component.translatable("gun.feedback.muzzle", Math.round(f.muzzleSpeed() * 20), Math.round(f.muzzleEnergy()))
+                Component.translatable("gun.feedback.muzzle", Math.round(f.muzzleSpeed() * FTuning.TICKS_PER_SECOND), Math.round(f.muzzleEnergy()))
                         .withStyle(ChatFormatting.GRAY),
                 Component.translatable("gun.feedback.cycle", f.cycleMs(), String.format("%.1f", f.spreadDeg()))
                         .withStyle(ChatFormatting.GRAY),

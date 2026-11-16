@@ -2,6 +2,10 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.combat.cast;
 
+import io.github.soundgoodizerfan.feedback.core.unit.Work;
+
+import io.github.soundgoodizerfan.feedback.core.FTuning;
+
 import io.github.soundgoodizerfan.feedback.combat.feel.CombatCues;
 import io.github.soundgoodizerfan.feedback.combat.feel.FeelTuning;
 import io.github.soundgoodizerfan.feedback.combat.tether.BodyMass;
@@ -35,7 +39,7 @@ final class Vault {
         p.setDeltaMovement(over.x * reach / 8.5, 0.62, over.z * reach / 8.5); // ~16 ticks aloft, air drag 0.91 a tick
         p.hurtMarked = true;
         p.fallDistance = 0f;
-        stagger(p, t, (BodyMass.of(p) + BodyMass.armour(p)) * 9.8f * 1.2f);
+        stagger(p, t, new Work((BodyMass.of(p) + BodyMass.armour(p)) * FTuning.GRAVITY_BLOCKS_PER_S2 * 1.2f));
         ServerLevel lv = p.serverLevel();
         Vec3 shoulders = t.position().add(0, t.getBbHeight(), 0);
         lv.sendParticles(ParticleTypes.CRIT, shoulders.x, shoulders.y, shoulders.z, 10, 0.3, 0.1, 0.3, 0.2);

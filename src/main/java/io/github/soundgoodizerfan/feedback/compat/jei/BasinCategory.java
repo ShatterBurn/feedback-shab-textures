@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.compat.jei;
 
+import io.github.soundgoodizerfan.feedback.core.FTuning;
+
 import java.util.Locale;
 
 import io.github.soundgoodizerfan.feedback.client.tooltip.Readout;
@@ -69,7 +71,7 @@ public class BasinCategory implements IRecipeCategory<Basin> {
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, Basin basin, IFocusGroup focuses) {
         builder.addSlot(RecipeIngredientRole.OUTPUT, 1, 14).setOutputSlotBackground()
-                .addFluidStack(BuiltInRegistries.FLUID.get(basin.fluid()), 1000).setFluidRenderer(1000, false, 16, 16);
+                .addFluidStack(BuiltInRegistries.FLUID.get(basin.fluid()), FTuning.BUCKET_MB).setFluidRenderer(FTuning.BUCKET_MB, false, 16, 16);
         basin.indicator().ifPresent(id -> builder.addOutputSlot(WIDTH - 19, 14).setOutputSlotBackground()
                 .addItemStack(new ItemStack(BuiltInRegistries.ITEM.get(id))));
     }
@@ -89,7 +91,7 @@ public class BasinCategory implements IRecipeCategory<Basin> {
         y += 10;
         row(graphics, font, y, "feedback.jei.basin.drive", Readout.number(basin.drivePu()) + " Pu");
         y += 10;
-        row(graphics, font, y, "feedback.jei.basin.density", Readout.number(basin.crude().density()) + " kg/L");
+        row(graphics, font, y, "feedback.jei.basin.density", Readout.number(basin.crude().density()) + " Mu/mB");
         y += 10;
         row(graphics, font, y, "feedback.jei.basin.sulfur", Readout.number(basin.crude().sulfur() * 100f) + "%");
         y += 10;

@@ -10,7 +10,7 @@ Nothing is locked behind an instrument; they are how you do on purpose what you 
 | [Balance Scale](#balance-scale) | Mass of a tool, weapon or armor piece | 0.1 Mu |
 | [Scratch File Set](#scratch-file-set) | Hardness of an edge or plate | One of eight rungs, not a number |
 | [Impact Pendulum](#impact-pendulum) | Toughness of a made tool's edge, or of a made armor piece | Nearest 5 |
-| [Strike Post](#strike-post) | Joules a blow carries and the damage it deals | Nearest 0.5 |
+| [Strike Post](#strike-post) | Work a blow carries and the damage it deals | Nearest 0.5 |
 | [Test Strip](#test-strip) | Toxin in a food | Steps of 0.025 Qu/mB |
 | [Thermometer](#thermometer) | Temperature of items and blocks | 25 Tu steps |
 | [Pyrometer](Optics.md#pyrometer) | Temperature of a vessel up to 24 blocks away | 10 Tu steps |
@@ -123,7 +123,7 @@ L
 
 P is an Iron Plate and L is any log.
 
-**Swing at it** (left-click, or a [Better Combat](Combat.md#better-combat-required) swing) with a weapon or tool made at a bench. The card shows the joules the blow carries and the damage it deals, both to the nearest half. A tool that is not made at a bench says *"Nothing here to test."* The post does not mark or wear the tool.
+**Swing at it** (left-click, or a [Better Combat](Combat.md#better-combat-required) swing) with a weapon or tool made at a bench. The card shows the Work the blow carries and the damage it deals, both to the nearest half. A tool that is not made at a bench says *"Nothing here to test."* The post does not mark or wear the tool.
 
 ## Test Strip
 

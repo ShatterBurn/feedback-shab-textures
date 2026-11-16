@@ -672,7 +672,7 @@ public record GunSpec(ResourceLocation material, BarrelGeometry barrel, Sight si
         float report = (1 - GunTuning.GUN_CRACK_SHARE) * blast + GunTuning.GUN_CRACK_SHARE * crack;
         float heatFactor = fx.heat() * (1 + drained * GunTuning.GUN_EDDY_HEAT);
         float leakFactor = fx.shed();
-        return Optional.of(ModularTraits.gunBaked(new GunFigures(new Pu(peak), new Pu(rating), speedMs / 20f, (float) work,
+        return Optional.of(ModularTraits.gunBaked(new GunFigures(new Pu(peak), new Pu(rating), speedMs / FTuning.TICKS_PER_SECOND, (float) work,
                 new Mu(bulletMu), new Mu(gunMu), impulse, cycleMs, spread, kick, report, heatFactor, leakFactor), this));
     }
 }

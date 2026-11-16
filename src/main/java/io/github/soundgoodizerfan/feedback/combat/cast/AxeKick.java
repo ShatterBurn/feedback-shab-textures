@@ -2,6 +2,10 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.combat.cast;
 
+import io.github.soundgoodizerfan.feedback.core.unit.Work;
+
+import io.github.soundgoodizerfan.feedback.core.FTuning;
+
 import io.github.soundgoodizerfan.feedback.combat.skill.Skills;
 import io.github.soundgoodizerfan.feedback.combat.tether.BodyMass;
 import net.minecraft.core.particles.ParticleTypes;
@@ -37,7 +41,7 @@ final class AxeKick {
                 pl.disableShield();
             else
                 t.stopUsingItem();
-            stagger(p, t, mass * 9.8f * 1.5f);
+            stagger(p, t, new Work(mass * FTuning.GRAVITY_BLOCKS_PER_S2 * 1.5f));
         }
         if (Skills.unlocked(p, "rending_heel") && Disorder.wearArmour(t, Disorder.IRON_HEEL) > 0f)
             Disorder.note(p, t, Disorder.Kind.WORN);

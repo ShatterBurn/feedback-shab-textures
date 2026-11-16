@@ -358,4 +358,10 @@ public final class FTuning {
 
     /** Placeholder. Gravity in blocks per second squared, Sable's default (11, DimensionPhysics.DEFAULT_GRAVITY), for weighing thrust against mass. */
     public static final float GRAVITY_BLOCKS_PER_S2 = 11f;
+
+    /** One bucket, in mB: the amount JEI draws a fluid at, and the litre a per-unit figure is shown for. */
+    public static final int BUCKET_MB = 1000;
+
+    /** Game ticks in one second: every figure per second or in seconds converts through this. */
+    public static final float TICKS_PER_SECOND = 20f;
 }

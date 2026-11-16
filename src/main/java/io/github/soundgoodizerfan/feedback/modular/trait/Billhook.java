@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.modular.trait;
 
+import io.github.soundgoodizerfan.feedback.core.FTuning;
+
 import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
@@ -37,7 +39,7 @@ public final class Billhook implements ModularTrait {
 
     /** Opens a bleed on {@code victim}, unless one is already running (claws on a glove use it too). */
     public static void open(LivingEntity victim, float seconds, float damage) {
-        BLEEDS.putIfAbsent(victim.getUUID(), new Bleed(victim, victim.level().getGameTime() + (long) (seconds * 20), damage, 1));
+        BLEEDS.putIfAbsent(victim.getUUID(), new Bleed(victim, victim.level().getGameTime() + (long) (seconds * FTuning.TICKS_PER_SECOND), damage, 1));
     }
 
     /** Whether {@code victim} has a bleed running. */
@@ -50,7 +52,7 @@ public final class Billhook implements ModularTrait {
         Bleed b = BLEEDS.get(victim.getUUID());
         if (b == null)
             return false;
-        BLEEDS.put(victim.getUUID(), new Bleed(victim, Math.max(b.end, victim.level().getGameTime() + (long) (seconds * 20)),
+        BLEEDS.put(victim.getUUID(), new Bleed(victim, Math.max(b.end, victim.level().getGameTime() + (long) (seconds * FTuning.TICKS_PER_SECOND)),
                 b.damage, Math.min(max, b.stacks + 1)));
         return true;
     }

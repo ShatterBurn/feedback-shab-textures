@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.combat.cast;
 
+import io.github.soundgoodizerfan.feedback.core.unit.Work;
+
 import io.github.soundgoodizerfan.feedback.combat.gear.CombatGear;
 import io.github.soundgoodizerfan.feedback.combat.hit.BareMode;
 import io.github.soundgoodizerfan.feedback.combat.parry.ParryTuning;
@@ -53,7 +55,7 @@ final class Haymaker {
             t.hurt(p.damageSources().playerAttack(p), dmg);
             t.push(look.x * shove, 0.3, look.z * shove);
             t.hurtMarked = true;
-            stagger(p, t, dmg * ParryTuning.JOULES_PER_DAMAGE);
+            stagger(p, t, new Work(dmg * ParryTuning.WORK_PER_DAMAGE));
             Vec3 c = t.getBoundingBox().getCenter();
             lv.sendParticles(ParticleTypes.EXPLOSION, c.x, c.y, c.z, 1, 0, 0, 0, 0);
             lv.sendParticles(ParticleTypes.CRIT, c.x, c.y, c.z, 24, 0.3, 0.3, 0.3, 0.6);

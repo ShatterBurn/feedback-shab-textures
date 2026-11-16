@@ -96,7 +96,7 @@ public final class Punching {
             return;
         }
         LivingEntity target = picked.get();
-        float impact = ParryTuning.standInMass(player) * PunchTuning.JOULES_PER_PUNCHER_MU + PunchTuning.DAMAGE * ParryTuning.JOULES_PER_DAMAGE;
+        float impact = ParryTuning.standInMass(player) * PunchTuning.WORK_PER_PUNCHER_MU + PunchTuning.DAMAGE * ParryTuning.WORK_PER_DAMAGE;
         float mass = ParryTuning.standInMass(target);
         target.hurt(player.damageSources().playerAttack(player), PunchTuning.DAMAGE);
         float knock = Mth.clamp(impact / mass * PunchTuning.KNOCK_PER_SPECIFIC_IMPACT, PunchTuning.KNOCK_MIN, PunchTuning.KNOCK_MAX);
@@ -162,7 +162,7 @@ public final class Punching {
         Vec3 look = player.getLookAngle();
         Vec3 centre = player.getEyePosition().add(look.scale(PunchTuning.SHOCK_AHEAD));
         AABB box = new AABB(centre, centre).inflate(PunchTuning.SHOCK_RADIUS);
-        float impact = ParryTuning.standInMass(player) * PunchTuning.JOULES_PER_PUNCHER_MU;
+        float impact = ParryTuning.standInMass(player) * PunchTuning.WORK_PER_PUNCHER_MU;
         for (Entity e : level.getEntities(player, box, x -> x.isAlive() && !x.isSpectator() && x.position().distanceToSqr(centre) <= PunchTuning.SHOCK_RADIUS * PunchTuning.SHOCK_RADIUS)) {
             if (e instanceof Projectile projectile) {
                 if (projectile.getOwner() != player)

@@ -2,6 +2,10 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.combat.cast;
 
+import io.github.soundgoodizerfan.feedback.core.unit.Work;
+
+import io.github.soundgoodizerfan.feedback.core.FTuning;
+
 import io.github.soundgoodizerfan.feedback.combat.skill.Skills;
 import io.github.soundgoodizerfan.feedback.combat.state.CombatPhase;
 import io.github.soundgoodizerfan.feedback.combat.state.CombatState;
@@ -37,7 +41,7 @@ final class Stomp {
         float damage = (3f + mass / 10f) * (Skills.unlocked(p, "crush") ? 1.5f : 1f);
         t.invulnerableTime = 0;
         t.hurt(p.damageSources().playerAttack(p), damage);
-        stagger(p, t, mass * 9.8f * 1.5f);
+        stagger(p, t, new Work(mass * FTuning.GRAVITY_BLOCKS_PER_S2 * 1.5f));
         p.swing(net.minecraft.world.InteractionHand.MAIN_HAND, true);
         ServerLevel lv = p.serverLevel();
         Vec3 at = t.position().add(0, 0.2, 0);

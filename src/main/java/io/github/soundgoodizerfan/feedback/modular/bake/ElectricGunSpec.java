@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.modular.bake;
 
+import io.github.soundgoodizerfan.feedback.core.FTuning;
+
 import io.github.soundgoodizerfan.feedback.combat.gear.GearTuning;
 import io.github.soundgoodizerfan.feedback.weapon.GunTuning;
 import java.util.Map;
@@ -400,9 +402,9 @@ public record ElectricGunSpec(Seat seat, int tier, float boreMm, float lengthM, 
 
     // --- the pulse ---------------------------------------------------------------------------
 
-    /** The hard ceiling on the joules one pulse holds: the seat's conductor. */
-    public float ceilJ() {
-        return ModularTuning.EGUN_SEAT_CEIL_J * Mth.clamp(seatAmp, 0.1f, 3f) * (1f + ModularTuning.EGUN_BANK_PER_LEVEL * bank);
+    /** The hard ceiling on the work one pulse holds: the seat's conductor. */
+    public float ceilWork() {
+        return ModularTuning.EGUN_SEAT_CEIL_WORK * Mth.clamp(seatAmp, 0.1f, 3f) * (1f + ModularTuning.EGUN_BANK_PER_LEVEL * bank);
     }
 
     /** The share of the ceiling this tier takes. */
@@ -410,9 +412,9 @@ public record ElectricGunSpec(Seat seat, int tier, float boreMm, float lengthM, 
         return ModularTuning.EGUN_TIER_FRACTION[tier - 1];
     }
 
-    /** Joules one ordinary pulse holds, before the barrel. */
-    public float pulseJ() {
-        return ceilJ() * tierFraction() * lensPass;
+    /** Work one ordinary pulse holds, before the barrel. */
+    public float pulseWork() {
+        return ceilWork() * tierFraction() * lensPass;
     }
 
     /** How the seat shapes its pulse against an ordinary one: a bank holds a lot, a flywheel by its density. */
@@ -446,14 +448,14 @@ public record ElectricGunSpec(Seat seat, int tier, float boreMm, float lengthM, 
         return 1f - ModularTuning.EGUN_BORE_SPAN / 2f + ModularTuning.EGUN_BORE_SPAN * boreShare();
     }
 
-    /** Joules of {@code drawn} that leave the barrel: the barrel's conductor takes its share out as heat. */
+    /** Work of {@code drawn} that leave the barrel: the barrel's conductor takes its share out as heat. */
     public float delivered(float drawn) {
         return drawn * (1f - barrelLoss) * boreFactor();
     }
 
-    /** The hit of a pulse that left the barrel with {@code joules}. */
-    public float damage(float joules) {
-        return joules * ModularTuning.EGUN_DAMAGE_PER_J;
+    /** The hit of a pulse that left the barrel with {@code work}. */
+    public float damage(float work) {
+        return work * ModularTuning.EGUN_DAMAGE_PER_WORK;
     }
 
     /** Blocks a pulse holds its full damage out to, at zoom charge {@code zoomShare} (0 to 1): then nothing. */
@@ -489,7 +491,7 @@ public record ElectricGunSpec(Seat seat, int tier, float boreMm, float lengthM, 
 
     /** Ticks a capacitor bank or a burst bank takes to recharge: the tier's base, longer for a bigger battery. */
     public int bankRechargeTicks(int cells) {
-        return Math.round(ModularTuning.EGUN_BANK_RECHARGE_S[tier - 1] * 20f * Math.max(1, cells) / 2f);
+        return Math.round(ModularTuning.EGUN_BANK_RECHARGE_S[tier - 1] * FTuning.TICKS_PER_SECOND * Math.max(1, cells) / 2f);
     }
 
     /** Chambers a cylinder holds (its seat measure); the reference six for any other seat. */
@@ -514,33 +516,33 @@ public record ElectricGunSpec(Seat seat, int tier, float boreMm, float lengthM, 
         };
     }
 
-    /** The recoil figure of a pulse of {@code joules}: what kick and hand strain read. */
-    public static float impulse(float joules) {
-        return impulse(joules, Math.max(0f, joules) * ModularTuning.EGUN_DAMAGE_PER_J);
+    /** The recoil figure of a pulse of {@code work}: what kick and hand strain read. */
+    public static float impulse(float work) {
+        return impulse(work, Math.max(0f, work) * ModularTuning.EGUN_DAMAGE_PER_WORK);
     }
 
     /**
-     * As above, for a pulse that drew {@code joules} and hits for {@code hit}: the larger of the figure the draw gives and half of what a
+     * As above, for a pulse that drew {@code work} and hits for {@code hit}: the larger of the figure the draw gives and half of what a
      * powder round of that hit kicks with (a round's impulse runs about {@code 0.29 hit^1.5}), so a hard-hitting pulse is never a feather.
      */
-    public static float impulse(float joules, float hit) {
-        float drawn = 0.15f * (float) Math.sqrt(Math.max(0f, joules));
+    public static float impulse(float work, float hit) {
+        float drawn = 0.15f * (float) Math.sqrt(Math.max(0f, work));
         return Math.max(drawn, ModularTuning.EGUN_RECOIL_PER_HIT * (float) Math.pow(Math.max(0f, hit), 1.5));
     }
 
     /**
      * The shot as the gun pipeline reads it ({@link GunFigures}): the muzzle energy is the work that gives the hit of a pulse, so what a
-     * shot hurts stays in {@code EGUN_DAMAGE_PER_J}. A pulse has no projectile, so its speed only says it is instant.
+     * shot hurts stays in {@code EGUN_DAMAGE_PER_WORK}. A pulse has no projectile, so its speed only says it is instant.
      *
-     * @param joules    drawn from the battery for the shot.
+     * @param work    drawn from the battery for the shot.
      * @param gunKg     the gun's mass.
      * @param cycleTicks ticks to the next shot.
      * @param spreadMult what a stance, a lit reticle and the like do to the cone.
      */
-    public GunFigures figures(float joules, float gunKg, int cycleTicks, float zoomShare, float spreadMult) {
-        float hit = damage(delivered(joules));
+    public GunFigures figures(float work, float gunKg, int cycleTicks, float zoomShare, float spreadMult) {
+        float hit = damage(delivered(work));
         float energy = hit / GunTuning.GUN_DAMAGE_PER_WORK;
-        float impulse = impulse(joules, hit);
+        float impulse = impulse(work, hit);
         float spread = coneDeg(zoomShare) * spreadMult;
         float kick = GunTuning.GUN_KICK_DEG_PER_IMPULSE * impulse * (GunTuning.GUN_KICK_REFERENCE_MU / Math.max(0.05f, gunKg))
                 * (GunTuning.GUN_KICK_REFERENCE_FRICTION / Math.max(0.05f, gripFriction));

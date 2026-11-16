@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.client;
 
+import io.github.soundgoodizerfan.feedback.core.FTuning;
+
 import io.github.soundgoodizerfan.feedback.item.ItemTuning;
 import io.github.soundgoodizerfan.feedback.Feedback;
 import io.github.soundgoodizerfan.feedback.core.hazard.Radiation;
@@ -62,7 +64,7 @@ public final class GeigerClient {
         lastTick = now;
         if (now % REFRESH_TICKS == 0)
             trueRate = Radiation.rate(player, ClientMaterials.get());
-        float expected = (ItemTuning.GEIGER_BACKGROUND_CPS + ItemTuning.GEIGER_CPS_PER_RU * trueRate) / 20f;
+        float expected = (ItemTuning.GEIGER_BACKGROUND_CPS + ItemTuning.GEIGER_CPS_PER_RU * trueRate) / FTuning.TICKS_PER_SECOND;
         int clicks = poisson(Math.min(expected, 20f), mc.level.random);
         head = (head + 1) % WINDOW_TICKS;
         HEARD[head] = (byte) Math.min(clicks, 100);
@@ -87,7 +89,7 @@ public final class GeigerClient {
         int total = 0;
         for (byte b : HEARD)
             total += b;
-        float perSecond = total / (WINDOW_TICKS / 20f);
+        float perSecond = total / (WINDOW_TICKS / FTuning.TICKS_PER_SECOND);
         return Math.max(0f, (perSecond - ItemTuning.GEIGER_BACKGROUND_CPS) / ItemTuning.GEIGER_CPS_PER_RU);
     }
 }

@@ -68,19 +68,19 @@ public final class HeatPellets {
     }
 
     /**
-     * Throws {@code beams} pellets from {@code shooter}'s eye within a cone of {@code coneDeg}, sharing {@code joules}
+     * Throws {@code beams} pellets from {@code shooter}'s eye within a cone of {@code coneDeg}, sharing {@code work}
      * between them (a splitter's share), each flying {@code range} blocks at most.
      */
-    public static void launch(ServerLevel level, LivingEntity shooter, float joules, float range, int beams, float coneDeg, float yaw, float pitch, int rgb) {
+    public static void launch(ServerLevel level, LivingEntity shooter, float work, float range, int beams, float coneDeg, float yaw, float pitch, int rgb) {
         int n = Math.max(1, beams);
-        float each = n > 1 ? joules * ModularTuning.EGUN_SPLIT_TOTAL / n : joules;
+        float each = n > 1 ? work * ModularTuning.EGUN_SPLIT_TOTAL / n : work;
         int life = Math.max(1, Math.round(range / ModularTuning.EGUN_CORE_SPEED));
         Vec3 eye = shooter.getEyePosition();
         for (int i = 0; i < n; i++) {
             float r = coneDeg * Mth.sqrt(level.random.nextFloat()), theta = level.random.nextFloat() * Mth.TWO_PI;
             Vec3 dir = Vec3.directionFromRotation(Mth.clamp(pitch + r * Mth.sin(theta), -90f, 90f), yaw + r * Mth.cos(theta));
             Pellet s = new Pellet(level, shooter, eye.add(dir.scale(0.4)), dir.scale(ModularTuning.EGUN_CORE_SPEED),
-                    each * ModularTuning.EGUN_DAMAGE_PER_J, life, rgb);
+                    each * ModularTuning.EGUN_DAMAGE_PER_WORK, life, rgb);
             PELLETS.add(s);
             fly(s, false);
         }

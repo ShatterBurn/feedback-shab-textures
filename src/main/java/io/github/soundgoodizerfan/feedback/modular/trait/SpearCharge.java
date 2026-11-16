@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.modular.trait;
 
+import io.github.soundgoodizerfan.feedback.core.FTuning;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -289,7 +291,7 @@ public final class SpearCharge implements ModularTrait {
             if (distance < minRange || distance > reach || point.subtract(eye).normalize().dot(look) < cone(tines(weapon)))
                 continue;
             // blocks a second the two close along the look line; per-tick deltas are x20
-            double speed = wielderVelocity.subtract(target.position().subtract(before)).dot(look) * 20;
+            double speed = wielderVelocity.subtract(target.position().subtract(before)).dot(look) * FTuning.TICKS_PER_SECOND;
             if (speed < params.get("min_speed", 4.6f))
                 continue;
             charge.struck.add(target.getUUID());

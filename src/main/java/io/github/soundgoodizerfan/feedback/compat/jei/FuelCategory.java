@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.compat.jei;
 
+import io.github.soundgoodizerfan.feedback.core.FTuning;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -100,7 +102,7 @@ public class FuelCategory implements IRecipeCategory<FuelCategory.Card> {
             slot.addItemStacks(items.stream().map(ItemStack::new).toList());
         var fluid = liquid(card.id());
         if (fluid != null)
-            slot.addFluidStack(fluid, 1000);
+            slot.addFluidStack(fluid, FTuning.BUCKET_MB);
     }
 
     private static void row(GuiGraphics graphics, Font font, int y, String labelKey, String value) {
@@ -120,7 +122,7 @@ public class FuelCategory implements IRecipeCategory<FuelCategory.Card> {
         row(graphics, font, y, "feedback.jei.fuel.flame", Readout.number(c.flameTemperature().get().value()) + " Tu");
         y += ROW;
         if (c.burnTicks().isPresent()) {
-            row(graphics, font, y, "feedback.jei.fuel.burn", c.burnTicks().get() + " t (" + Readout.number(c.burnTicks().get() / 20f) + " s)");
+            row(graphics, font, y, "feedback.jei.fuel.burn", c.burnTicks().get() + " t (" + Readout.number(c.burnTicks().get() / FTuning.TICKS_PER_SECOND) + " s)");
             y += ROW;
         }
         row(graphics, font, y, "feedback.jei.fuel.spread", Readout.number(c.spread()));

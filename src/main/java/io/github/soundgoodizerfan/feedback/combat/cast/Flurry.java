@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.combat.cast;
 
+import io.github.soundgoodizerfan.feedback.core.unit.Work;
+
 import io.github.soundgoodizerfan.feedback.combat.grab.Grabbing;
 import io.github.soundgoodizerfan.feedback.combat.hit.BareMode;
 import io.github.soundgoodizerfan.feedback.combat.skill.Skills;
@@ -72,7 +74,7 @@ final class Flurry {
                 if (last) {
                     if (best == pinned && pinAir)
                         launch(p, best, look);
-                    stagger(p, best, 6f * ParryTuning.JOULES_PER_DAMAGE);
+                    stagger(p, best, new Work(6f * ParryTuning.WORK_PER_DAMAGE));
                     lv.sendParticles(ParticleTypes.EXPLOSION, hit.x, hit.y, hit.z, 1, 0, 0, 0, 0);
                     lv.sendParticles(ParticleTypes.FLASH, hit.x, hit.y, hit.z, 1, 0, 0, 0, 0);
                     CastFx.shockwave(p, best.position().add(0, 0.1, 0), 2.5, 4, CastFx.dust(CastFx.GOLD, 1.3f), 0);

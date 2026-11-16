@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.modular.bake;
 
+import io.github.soundgoodizerfan.feedback.core.FTuning;
+
 import java.util.Map;
 import java.util.Optional;
 
@@ -18,11 +20,11 @@ import io.github.soundgoodizerfan.feedback.modular.type.ModularType;
  * metal: its mass is its volume times that metal's density, never a named item. The receiver is the mount the spring is rated
  * against ({@link SpringSet}).
  *
- * @param energy     joules the spring stores, before any set.
+ * @param energy     work the spring stores, before any set.
  * @param pistonMass kilograms the piston moves.
  * @param boreMm     the bore, millimetres.
  * @param lengthM    the barrel's length, metres.
- * @param rating     joules the receiver holds before the spring takes a set.
+ * @param rating     work the receiver holds before the spring takes a set.
  * @param cock       multiple of the cocking time (a mainspring attuned to release lets go sooner).
  */
 public record SpringGunSpec(float energy, float pistonMass, float boreMm, float lengthM, float rating, float cock) {
@@ -36,11 +38,11 @@ public record SpringGunSpec(float energy, float pistonMass, float boreMm, float 
      * What one shot is.
      *
      * @param speed  blocks per tick at the muzzle.
-     * @param joules the pellet's kinetic energy.
+     * @param work the pellet's kinetic energy.
      * @param damage the hit it deals at the muzzle.
      * @param mass   the pellet's kilograms.
      */
-    public record Shot(float speed, float joules, float damage, float mass) {
+    public record Shot(float speed, float work, float damage, float mass) {
     }
 
     /** The spec of {@code design}, or empty if it lacks a spring, a piston, a barrel or a receiver, or a material is unknown. */
@@ -108,10 +110,10 @@ public record SpringGunSpec(float energy, float pistonMass, float boreMm, float 
     public Shot shot(float density, float set) {
         float mass = pelletLitres() * density;
         float moving = mass + ModularTuning.AIR_PISTON_SHARE * pistonMass;
-        float speed = (float) Math.sqrt(2f * energy * (1f - set) * efficiency() / Math.max(1e-6f, moving)) / 20f;
+        float speed = (float) Math.sqrt(2f * energy * (1f - set) * efficiency() / Math.max(1e-6f, moving)) / FTuning.TICKS_PER_SECOND;
         speed = Math.min(speed, ModularTuning.AIR_SPEED_MAX);
-        float joules = 0.5f * mass * (speed * 20f) * (speed * 20f);
-        return new Shot(speed, joules, joules * ModularTuning.AIR_DAMAGE_PER_J, mass);
+        float work = 0.5f * mass * (speed * FTuning.TICKS_PER_SECOND) * (speed * FTuning.TICKS_PER_SECOND);
+        return new Shot(speed, work, work * ModularTuning.AIR_DAMAGE_EFFICIENCY / io.github.soundgoodizerfan.feedback.combat.parry.ParryTuning.WORK_PER_DAMAGE, mass);
     }
 
     /** Ticks a wielder of strength 1 takes to cock the spring. */

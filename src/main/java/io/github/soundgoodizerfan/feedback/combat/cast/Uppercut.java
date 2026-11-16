@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.combat.cast;
 
+import io.github.soundgoodizerfan.feedback.core.unit.Work;
+
 import io.github.soundgoodizerfan.feedback.combat.gear.CombatGear;
 import io.github.soundgoodizerfan.feedback.combat.hit.BareMode;
 import io.github.soundgoodizerfan.feedback.combat.hit.FistTuning;
@@ -54,7 +56,7 @@ final class Uppercut {
                 p.setDeltaMovement(p.getDeltaMovement().x, FistTuning.LAUNCH, p.getDeltaMovement().z);
                 p.hurtMarked = true;
             }
-            stagger(p, t, dmg * ParryTuning.JOULES_PER_DAMAGE);
+            stagger(p, t, new Work(dmg * ParryTuning.WORK_PER_DAMAGE));
             Vec3 c = t.getBoundingBox().getCenter();
             lv.sendParticles(ParticleTypes.CRIT, c.x, c.y, c.z, 20, 0.2, 0.4, 0.2, 0.5);
             CastFx.sound(lv, c, SoundEvents.PLAYER_ATTACK_KNOCKBACK, 1f, 0.8f);

@@ -15,9 +15,9 @@ public class ShockPlateBlockEntity extends ElectricNode implements KillMethod {
     /** Invented. Amps it asks for. */
     private static final float AMPS = 4f;
     /** Invented. Eu per tick for each point of harm. */
-    private static final float WATTS_PER_DAMAGE = 530f;
+    private static final float EU_PER_TICK_PER_DAMAGE = 530f;
 
-    private float watts;
+    private float euPerTick;
 
     public ShockPlateBlockEntity(BlockPos pos, BlockState state) {
         super(FAutomation.SHOCK_PLATE_ENTITY.get(), pos, state);
@@ -41,7 +41,7 @@ public class ShockPlateBlockEntity extends ElectricNode implements KillMethod {
     @Override
     public void onResolved(VoltageBand band, float eu, float amps, float wanted, boolean blocked) {
         super.onResolved(band, eu, amps, wanted, blocked);
-        watts = eu * amps;
+        euPerTick = eu * amps;
     }
 
     @Override
@@ -51,11 +51,11 @@ public class ShockPlateBlockEntity extends ElectricNode implements KillMethod {
 
     @Override
     public boolean ready() {
-        return watts > 0f;
+        return euPerTick > 0f;
     }
 
     @Override
     public float damage(MobFacts facts) {
-        return facts.electricImmune() ? 0f : watts / WATTS_PER_DAMAGE;
+        return facts.electricImmune() ? 0f : euPerTick / EU_PER_TICK_PER_DAMAGE;
     }
 }

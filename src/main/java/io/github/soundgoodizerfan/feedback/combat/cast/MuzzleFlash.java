@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.combat.cast;
 
+import io.github.soundgoodizerfan.feedback.core.unit.Work;
+
 import io.github.soundgoodizerfan.feedback.weapon.GunAmmo;
 import io.github.soundgoodizerfan.feedback.weapon.GunItem;
 import io.github.soundgoodizerfan.feedback.weapon.GunShots;
@@ -29,14 +31,14 @@ final class MuzzleFlash {
         if (!(gun.getItem() instanceof GunItem) || GunAmmo.count(gun) < 1
                 || !GunShots.triggerHeard(p.serverLevel(), p, gun, p.getYRot(), p.getXRot(), System.currentTimeMillis(), false, InteractionHand.MAIN_HAND))
             return false;
-        float joules = io.github.soundgoodizerfan.feedback.weapon.GunFu.lastImpulse(p)
+        float work = io.github.soundgoodizerfan.feedback.weapon.GunFu.lastImpulse(p)
                 * io.github.soundgoodizerfan.feedback.weapon.GunFuTuning.MUZZLE_JOULES_PER_IMPULSE
                 * (io.github.soundgoodizerfan.feedback.combat.skill.Skills.unlocked(p, "concussive") ? 1.5f : 1f);
         Vec3 eye = p.getEyePosition(), look = p.getLookAngle();
         for (LivingEntity e : near(p, eye.add(look.scale(3)), 4)) {
             if (e.getBoundingBox().getCenter().subtract(eye).normalize().dot(look) < 0.6)
                 continue;
-            stagger(p, e, joules);
+            stagger(p, e, new Work(work));
             Disorder.note(p, e, Disorder.Kind.BLINDED);
             e.addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.BLINDNESS,
                     io.github.soundgoodizerfan.feedback.combat.skill.Skills.unlocked(p, "dazzle") ? 120 : 50));

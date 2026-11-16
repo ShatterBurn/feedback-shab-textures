@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.machine.rack;
 
+import io.github.soundgoodizerfan.feedback.core.FTuning;
+
 import io.github.soundgoodizerfan.feedback.core.thermal.ThermalTuning;
 import io.github.soundgoodizerfan.feedback.machine.MachineTuning;
 import io.github.soundgoodizerfan.feedback.core.thermal.AmbientTable;
@@ -74,7 +76,7 @@ public class DryingRackBlockEntity extends BlockEntity {
         float room = AmbientTable.at(level).value();
         float air = Math.max(room, Math.min(HeatSource.at(level, worldPosition).value(), MachineTuning.RACK_MAX_AIR_TU.value()));
         boolean rain = level.isRainingAt(worldPosition.above());
-        float dry = rain ? 0f : MachineTuning.RACK_DRY_PER_TICK * 20f * Mth.clamp(air / ThermalTuning.AMBIENT_TU.value(), 0f, 4f);
+        float dry = rain ? 0f : MachineTuning.RACK_DRY_PER_TICK * FTuning.TICKS_PER_SECOND * Mth.clamp(air / ThermalTuning.AMBIENT_TU.value(), 0f, 4f);
         for (ItemStack stack : items) {
             if (stack.isEmpty())
                 continue;

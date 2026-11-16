@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.combat.cast;
 
+import io.github.soundgoodizerfan.feedback.core.unit.Work;
+
 import io.github.soundgoodizerfan.feedback.Feedback;
 import io.github.soundgoodizerfan.feedback.combat.feel.CombatCues;
 import io.github.soundgoodizerfan.feedback.combat.feel.FeelTuning;
@@ -83,8 +85,8 @@ final class ShieldWall {
             if (to.lengthSqr() < 1e-6 || to.normalize().dot(look) < 0.4 || !w.turned().add(e.getId()))
                 continue;
             double speed = e.getDeltaMovement().multiply(1, 0, 1).length();
-            // STAND-IN: joules from mass and a speed term; to be felt in play.
-            stagger(p, e, (BodyMass.of(e) + BodyMass.armour(e)) * (5f + 40f * (float) speed));
+            // STAND-IN: work from mass and a speed term; to be felt in play.
+            stagger(p, e, new Work((BodyMass.of(e) + BodyMass.armour(e)) * (5f + 40f * (float) speed)));
             e.push(look.x * 0.9, 0.2, look.z * 0.9);
             e.hurtMarked = true;
             Vec3 hit = e.getBoundingBox().getCenter();

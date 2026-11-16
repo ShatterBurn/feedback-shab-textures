@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.machine.pyro;
 
+import io.github.soundgoodizerfan.feedback.core.FTuning;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -71,7 +73,7 @@ public class PyroPlateBlockEntity extends BlockEntity implements SensorFitting {
         if (level == null || ++sinceSample < PyroTuning.SAMPLE_INTERVAL_TICKS)
             return;
         sinceSample = 0;
-        float seconds = PyroTuning.SAMPLE_INTERVAL_TICKS / 20f;
+        float seconds = PyroTuning.SAMPLE_INTERVAL_TICKS / FTuning.TICKS_PER_SECOND;
         float fastest = 0f;
         for (Direction d : Direction.values()) {
             int i = d.get3DDataValue();

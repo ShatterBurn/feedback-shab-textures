@@ -384,31 +384,31 @@ public final class ModularModifiers {
         if (id.isEmpty())
             return Optional.empty();
         Object[] args = derived != null ? derived : switch (id) {
-            case "flurry" -> new Object[]{n(p(v, "window", 25) / 20), n(p(v, "bonus", 0.12f) * 100), n(p(v, "max_stacks", 5))};
+            case "flurry" -> new Object[]{n(p(v, "window", 25) / FTuning.TICKS_PER_SECOND), n(p(v, "bonus", 0.12f) * 100), n(p(v, "max_stacks", 5))};
             case "dash" -> new Object[]{n(p(v, "distance", 6)), n(p(v, "dash_mult", 1.2f)), n(p(v, "width", 1)),
-                    n(p(v, "cooldown_ticks", 80) / 20)};
+                    n(p(v, "cooldown_ticks", 80) / FTuning.TICKS_PER_SECOND)};
             case "hack" -> new Object[]{n(p(v, "unarmoured_mult", 1.4f)), n(p(v, "armoured_mult", 0.8f)), n(p(v, "sweep", 2)),
                     n(p(v, "wear_per_block", 1f / 3f))};
             case "overhead" -> new Object[]{n(p(v, "radius", 2.5f)), n(p(v, "sweep_mult", 0.6f) * 100), n(p(v, "wear", 2)),
                     n(p(v, "weak_mult", 0.6f) * 100)};
             case "backstab" -> new Object[]{n(p(v, "back_mult", 2)), n(p(v, "back_angle", 120)), n(p(v, "sneak_mult", 1.3f)),
                     n(p(v, "face_mult", 0.9f))};
-            case "flourish" -> new Object[]{n(p(v, "boost_ticks", 40) / 20), n(p(v, "crowd_mult", 1.2f)), n(p(v, "crowd", 2))};
+            case "flourish" -> new Object[]{n(p(v, "boost_ticks", 40) / FTuning.TICKS_PER_SECOND), n(p(v, "crowd_mult", 1.2f)), n(p(v, "crowd", 2))};
             case "timber" -> new Object[]{n(p(v, "cap", 24)), n(p(v, "max_radius", 12)), n(p(v, "wear_per_log", 1))};
-            case "throw" -> new Object[]{n(p(v, "min_charge_ticks", 10) / 20), n(p(v, "damage_per_block", 0.35f) * 100),
+            case "throw" -> new Object[]{n(p(v, "min_charge_ticks", 10) / FTuning.TICKS_PER_SECOND), n(p(v, "damage_per_block", 0.35f) * 100),
                     n(p(v, "max_mult", 2.5f)), n(p(v, "wear", 2))};
-            case "hook" -> new Object[]{n(p(v, "disable_ticks", 160) / 20), n(p(v, "pull", 0.4f)), n(p(v, "no_shield_mult", 0.9f))};
-            case "sounding" -> new Object[]{n(p(v, "range", 12)), n(p(v, "seconds", 6)), n(p(v, "cooldown_ticks", 200) / 20),
+            case "hook" -> new Object[]{n(p(v, "disable_ticks", 160) / FTuning.TICKS_PER_SECOND), n(p(v, "pull", 0.4f)), n(p(v, "no_shield_mult", 0.9f))};
+            case "sounding" -> new Object[]{n(p(v, "range", 12)), n(p(v, "seconds", 6)), n(p(v, "cooldown_ticks", 200) / FTuning.TICKS_PER_SECOND),
                     n(p(v, "wear", 4)), n(p(v, "max_found", 64))};
             case "vein" -> new Object[]{n(p(v, "cap", 8)), n(p(v, "wear_per_block", 1))};
             case "spear_charge" -> new Object[]{n(p(v, "min_range", 2)), n(p(v, "charge_reach", 4.5f)), n(p(v, "min_speed", 4.6f)),
                     n(p(v, "knockback_speed", 5.1f)),
-                    n((p(v, "engaged", 40) + p(v, "tired", 30) + p(v, "disengaged", 30)) / 20), n(p(v, "wear_speed", 6))};
+                    n((p(v, "engaged", 40) + p(v, "tired", 30) + p(v, "disengaged", 30)) / FTuning.TICKS_PER_SECOND), n(p(v, "wear_speed", 6))};
             case "slam" -> new Object[]{n(p(v, "radius", 3.5f)), n(p(v, "shove", 1f) * 100), n(p(v, "wear", 3))};
             case "pierce" -> new Object[]{n(p(v, "share", 0.5f) * 100), n(p(v, "dent_seconds", 4))};
             case "butcher" -> new Object[]{n(p(v, "animal_mult", 1.5f)), n(p(v, "extra_chance", 0.5f) * 100), n(p(v, "monster_mult", 0.85f))};
             case "line_cut" -> new Object[]{n(p(v, "length", 3)), n(p(v, "line_mult", 0.7f) * 100), n(p(v, "main_mult", 0.9f) * 100), n(p(v, "wear", 1))};
-            case "spring" -> new Object[]{n(p(v, "reset", 30f) / 20), n(p(v, "rating", 12f)), n(p(v, "throw_rating", 6f))};
+            case "spring" -> new Object[]{n(p(v, "reset", 30f) / FTuning.TICKS_PER_SECOND), n(p(v, "rating", 12f)), n(p(v, "throw_rating", 6f))};
             case "limb_handling" -> new Object[]{n(p(v, "draw_mult", 1f) * 100), n(p(v, "velocity_mult", 1f) * 100), n(p(v, "damage_mult", 1f) * 100),
                     n(p(v, "pierce", 0)), n(p(v, "slow", 0f) * 100)};
             case "recurve" -> new Object[]{n(p(v, "bonus", 0.25f) * 100), n(p(v, "pierce", 1)), n(p(v, "draw_mult", 1.15f) * 100)};
@@ -416,14 +416,14 @@ public final class ModularModifiers {
             case "repeater" -> new Object[]{n(p(v, "bolts", 3)), n(p(v, "draw_mult", 1.3f) * 100), n(p(v, "damage_mult", 0.85f) * 100),
                     n(p(v, "spread_mult", 5))};
             case "blocking" -> new Object[]{n(p(v, "block_mult", 0.5f) * 100), n(p(v, "wear", 1))};
-            case "parry" -> new Object[]{n(p(v, "parry_ticks", 6) / 20), n(p(v, "cone", 110)), n(p(v, "capacity_mult", 0.65f) * 100)};
+            case "parry" -> new Object[]{n(p(v, "parry_ticks", 6) / FTuning.TICKS_PER_SECOND), n(p(v, "cone", 110)), n(p(v, "capacity_mult", 0.65f) * 100)};
             case "deflect" -> new Object[]{n(p(v, "return_speed", 0.8f) * 100), n(p(v, "melee_mult", 0.75f) * 100)};
             case "bulwark" -> new Object[]{n(p(v, "capacity_mult", 1.5f) * 100), n(p(v, "slow", 0.25f) * 100), n(p(v, "wear_mult", 1.5f) * 100),
-                    n(p(v, "range", 2.5f)), n(p(v, "bash_damage", 2)), n(p(v, "bash_cooldown", 80) / 20)};
+                    n(p(v, "range", 2.5f)), n(p(v, "bash_damage", 2)), n(p(v, "bash_cooldown", 80) / FTuning.TICKS_PER_SECOND)};
             case "scoop" -> new Object[]{n(p(v, "side", 1) * 2 + 1), n(p(v, "wear_per_block", 1))};
             case "trench" -> new Object[]{n(p(v, "depth", 1)), n(p(v, "wear_per_block", 2))};
             case "quarry" -> new Object[]{n(p(v, "radius", 1) * 2 + 1), n(p(v, "wear_per_block", 1))};
-            case "kama" -> new Object[]{n(p(v, "length", 2)), n(p(v, "cooldown_ticks", 20) / 20)};
+            case "kama" -> new Object[]{n(p(v, "length", 2)), n(p(v, "cooldown_ticks", 20) / FTuning.TICKS_PER_SECOND)};
             case "rake" -> new Object[]{n(p(v, "radius", 4)), n(p(v, "wear_per_stack", 1))};
             case "scythe" -> new Object[]{n(p(v, "per_wear", 3)), n(p(v, "mob_mult", 0.7f) * 100)};
             case "billhook" -> new Object[]{n(p(v, "bleed_damage", 1)), n(p(v, "bleed_seconds", 5)), n(p(v, "hit_mult", 0.8f) * 100)};
@@ -439,7 +439,7 @@ public final class ModularModifiers {
             case "rigid" -> new Object[]{n(p(v, "absorb_mult", 0.7f))};
             case "mail" -> new Object[]{n(p(v, "slash_mult", 0.75f)), n(p(v, "blunt_mult", 1.3f))};
             case "push_through" -> new Object[]{n(p(v, "max", 0.8f) * 100), n(p(v, "exhaustion", 0.3f)), n(p(v, "wear", 1)),
-                    n(p(v, "cooldown_ticks", 30) / 20), n(p(v, "ref_mu", 200))};
+                    n(p(v, "cooldown_ticks", 30) / FTuning.TICKS_PER_SECOND), n(p(v, "ref_mu", 200))};
             case "braced" -> new Object[]{n(p(v, "knock_mult", 0.6f)), n(p(v, "swim_slow", 0.15f) * 100)};
             case "blowback" -> new Object[]{n(p(v, "pressure_limit", 1.2f) * GunTuning.GUN_PROPELLANT_PEAK_PU), n(p(v, "wear_mult", 2f))};
             case "lockup" -> new Object[]{n(p(v, "rating_mult", 1f) * 100), n((1 - p(v, "spread_mult", 1f)) * 100)};
@@ -455,7 +455,7 @@ public final class ModularModifiers {
             case "poleyn" -> new Object[]{n((1 - p(v, "fall_mult", 0.75f)) * 100), n((1 - p(v, "stagger_mult", 0.5f)) * 100)};
             case "vambrace" -> new Object[]{n(p(v, "light_damage", 4)), n((1 - p(v, "parry_mult", 0.6f)) * 100), n((1 - p(v, "stagger_mult", 0.5f)) * 100)};
             case "hobnails" -> new Object[]{n(p(v, "grip_mult", 0.3f) * 100), n((p(v, "visibility_mult", 1.15f) - 1) * 100)};
-            case "spurs" -> new Object[]{n(p(v, "boost_ticks", 60) / 20), n(p(v, "level", 1)), n(p(v, "cooldown_ticks", 200) / 20)};
+            case "spurs" -> new Object[]{n(p(v, "boost_ticks", 60) / FTuning.TICKS_PER_SECOND), n(p(v, "level", 1)), n(p(v, "cooldown_ticks", 200) / FTuning.TICKS_PER_SECOND)};
             default -> new Object[0];
         };
         return Optional.of(new Modifier(Kind.TRAIT, id, name(Kind.TRAIT, id),

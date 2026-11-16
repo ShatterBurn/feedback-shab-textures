@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.combat.parry;
 
+import io.github.soundgoodizerfan.feedback.core.unit.Work;
+
 import io.github.soundgoodizerfan.feedback.Feedback;
 
 import net.minecraft.util.Mth;
@@ -49,15 +51,15 @@ public final class ParryTuning {
     public static final float UNDEAD_DENSITY_SHARE = 0.5f;
     /** A player's mass in Mu, rounded up from what the box gives (a person is heavier than a box of the same size). */
     public static final float PLAYER_MASS = 85f;
-    /** Joules an unarmed or unfigured blow carries per point of damage, for an attacker with no baked IMPACT. */
-    public static final float JOULES_PER_DAMAGE = 10f;
-    /** Stagger ticks per joule of impact over the attacker's mass (J/Mu), within the bounds below. */
+    /** Work an unarmed or unfigured blow carries per point of damage, for an attacker with no baked IMPACT. */
+    public static final float WORK_PER_DAMAGE = 10f;
+    /** Stagger ticks per work of impact over the attacker's mass (J/Mu), within the bounds below. */
     public static final float STAGGER_PER_SPECIFIC_IMPACT = 16f;
     public static final int STAGGER_MIN = 4, STAGGER_MAX = 40;
     /** Fraction of walking speed lost while staggered. */
     public static final double STAGGER_SLOW = 0.6;
 
-    /** Joules of blow the parrying weapon takes per Mu of its own mass before it is over its build. */
+    /** Work of blow the parrying weapon takes per Mu of its own mass before it is over its build. */
     public static final float RATING_PER_MU = 60f;
     /** Wear points a clean parry costs, and extra per whole multiple of its rating a heavier blow is over by. */
     public static final int WEAR_CLEAN = 1, WEAR_PER_OVER = 4;
@@ -98,14 +100,14 @@ public final class ParryTuning {
     public static final float LAST_STAND_HEALTH = 6f;
     public static final int LAST_STAND_TICKS = 100;
 
-    /** Unclamped stagger ticks of a blow of {@code impact} joules on a body of {@code mass} Mu. */
+    /** Unclamped stagger ticks of a blow of {@code impact} work on a body of {@code mass} Mu. */
     public static float rawStaggerTicks(float impact, float mass) {
         return impact / mass * STAGGER_PER_SPECIFIC_IMPACT;
     }
 
     /** Stagger ticks the parry delivers: the raw figure within the bounds. */
-    public static int staggerTicks(float impact, float mass) {
-        return Mth.clamp(Math.round(rawStaggerTicks(impact, mass)), STAGGER_MIN, STAGGER_MAX);
+    public static int staggerTicks(Work impact, float mass) {
+        return Mth.clamp(Math.round(rawStaggerTicks(impact.value(), mass)), STAGGER_MIN, STAGGER_MAX);
     }
 
     /** Where in the light-to-heavy range a weapon's heft sits, 0 to 1. */

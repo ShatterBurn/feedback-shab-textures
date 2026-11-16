@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.machine.derrick;
 
+import io.github.soundgoodizerfan.feedback.core.unit.Tu;
 import io.github.soundgoodizerfan.feedback.machine.column.PetrochemTuning;
 import java.util.List;
 
@@ -34,11 +35,11 @@ public class DerrickBitItem extends Item {
     }
 
     /** The hottest the bit may run before it wears: its material's service temperature, or a default. */
-    public static float serviceTemperature(ItemStack bit) {
+    public static Tu serviceTemperature(ItemStack bit) {
         MadeOf made = bit.get(FDataComponents.MADE_OF.get());
         Material m = made == null ? null : MaterialTable.get().materials().get(made.material());
-        return m == null ? PetrochemTuning.MAGMA_BIT_SERVICE_DEFAULT_TU
-                : m.thermal().serviceTemperature().map(t -> t.value()).orElse(PetrochemTuning.MAGMA_BIT_SERVICE_DEFAULT_TU);
+        return new Tu(m == null ? PetrochemTuning.MAGMA_BIT_SERVICE_DEFAULT_TU
+                : m.thermal().serviceTemperature().map(t -> t.value()).orElse(PetrochemTuning.MAGMA_BIT_SERVICE_DEFAULT_TU));
     }
 
     public static float condition(ItemStack bit) {

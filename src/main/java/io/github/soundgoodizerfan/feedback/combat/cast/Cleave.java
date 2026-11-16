@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.combat.cast;
 
+import io.github.soundgoodizerfan.feedback.core.unit.Work;
+
 import io.github.soundgoodizerfan.feedback.combat.parry.ParryTuning;
 import io.github.soundgoodizerfan.feedback.weapon.GunItem;
 import net.minecraft.core.particles.ParticleTypes;
@@ -51,7 +53,7 @@ final class Cleave {
                 double along = off.dot(d), side = off.subtract(d.scale(along)).multiply(1, 0, 1).length();
                 if (along < 0 || along > 7 || side > 1.4 || e == t)
                     continue;
-                stagger(p, e, damage * ParryTuning.JOULES_PER_DAMAGE * (float) (1 - along / 9));
+                stagger(p, e, new Work(damage * ParryTuning.WORK_PER_DAMAGE * (float) (1 - along / 9)));
             }
             CastFx.line(lv, CastFx.dust(CastFx.EMBER, 1.2f), start.add(0, 0.1, 0), start.add(d.scale(7)).add(0, 0.1, 0), 0.25);
             for (int i = 1; i <= 7; i++)

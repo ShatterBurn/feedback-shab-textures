@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.combat.hit;
 
+import io.github.soundgoodizerfan.feedback.core.unit.Work;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -61,12 +63,12 @@ public final class MeleeMoves {
         }
         // Any blow that carries the energy, not a mace in particular: a maul, a greatsword, a gauntlet, a gun's butt.
         if (event.getNewDamage() >= MeleeTuning.QUAKE_MIN_DAMAGE && Skills.unlocked(player, "mace_quake")) {
-            float impact = event.getNewDamage() * ParryTuning.JOULES_PER_DAMAGE;
+            float impact = event.getNewDamage() * ParryTuning.WORK_PER_DAMAGE;
             for (LivingEntity near : target.level().getEntitiesOfClass(LivingEntity.class,
                     target.getBoundingBox().inflate(MeleeTuning.QUAKE_RADIUS),
                     e -> e != player && e != target && e.isAlive() && !e.isSpectator() && !player.isAlliedTo(e))) {
                 near.knockback(MeleeTuning.QUAKE_KNOCK, target.getX() - near.getX(), target.getZ() - near.getZ());
-                CombatTicker.stagger(near, ParryTuning.staggerTicks(impact, ParryTuning.standInMass(near)), ParryTuning.STAGGER_SLOW);
+                CombatTicker.stagger(near, ParryTuning.staggerTicks(new Work(impact), ParryTuning.standInMass(near)), ParryTuning.STAGGER_SLOW);
                 io.github.soundgoodizerfan.feedback.combat.skill.Rearms.on(player, io.github.soundgoodizerfan.feedback.combat.skill.SkillTree.Rearm.STAGGER);
             }
         }

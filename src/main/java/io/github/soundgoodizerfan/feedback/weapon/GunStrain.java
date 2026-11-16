@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.weapon;
 
+import io.github.soundgoodizerfan.feedback.core.FTuning;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -28,7 +30,7 @@ public final class GunStrain {
 
     /** Strain after one more shot of {@code kickDeg} at {@code tick}: what is left of the last, drained, plus this. */
     private static float add(float strain, long ticks, float kickDeg) {
-        return Math.max(0f, strain - GunTuning.GUN_STRAIN_DRAIN_DEG_PER_S * ticks / 20f) + kickDeg;
+        return Math.max(0f, strain - GunTuning.GUN_STRAIN_DRAIN_DEG_PER_S * ticks / FTuning.TICKS_PER_SECOND) + kickDeg;
     }
 
     /** The shots of a steady burst it takes to throw the gun: 1 for one hard shot, 0 if the hand holds it however long it fires. */

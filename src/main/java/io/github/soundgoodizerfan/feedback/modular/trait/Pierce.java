@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.modular.trait;
 
+import io.github.soundgoodizerfan.feedback.core.FTuning;
+
 
 import net.minecraft.world.damagesource.CombatRules;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -31,6 +33,6 @@ public final class Pierce implements ModularTrait {
         float without = CombatRules.getDamageAfterAbsorb(target, amount, event.getSource(), armor * keep, toughness * keep);
         if (with > 0)
             event.setAmount(amount * without / with);
-        target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, Math.round(params.get("dent_seconds", 4f) * 20), 0), attacker);
+        target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, Math.round(params.get("dent_seconds", 4f) * FTuning.TICKS_PER_SECOND), 0), attacker);
     }
 }

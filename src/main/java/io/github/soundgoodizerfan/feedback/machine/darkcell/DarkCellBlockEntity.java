@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.machine.darkcell;
 
+import io.github.soundgoodizerfan.feedback.core.FTuning;
+
 import io.github.soundgoodizerfan.feedback.machine.ElectricMachineTuning;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -220,7 +222,7 @@ public class DarkCellBlockEntity extends BlockEntity {
             float attack = 0f;
             for (var e : population.entrySet())
                 attack += e.getValue() * MobFacts.of(sl, e.getKey()).attack();
-            shield -= attack * ElectricMachineTuning.DARKCELL_ATTACK_K * (pressure - 0.5f) * 2f * (dt / 20f);
+            shield -= attack * ElectricMachineTuning.DARKCELL_ATTACK_K * (pressure - 0.5f) * 2f * (dt / FTuning.TICKS_PER_SECOND);
             if (shield <= 0.0) {
                 shield = 0;
                 breach(sl);

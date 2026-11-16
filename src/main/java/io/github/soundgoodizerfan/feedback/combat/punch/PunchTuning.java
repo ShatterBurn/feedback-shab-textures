@@ -6,7 +6,7 @@ import io.github.soundgoodizerfan.feedback.Feedback;
 
 /**
  * The Knuckleblaster's figures. Every number is a placeholder to be felt in play. Ticks are server ticks (20 a second);
- * impact is joules, the unit the parry's and the kick's stagger already read.
+ * impact is work, the unit the parry's and the kick's stagger already read.
  */
 public final class PunchTuning {
 
@@ -21,8 +21,8 @@ public final class PunchTuning {
     public static final float STAMINA = 12f, SHOCK_STAMINA = 18f;
     /** Damage of the fist. A kick is 2: this is the weapon that hits. */
     public static final float DAMAGE = 6f;
-    /** Joules a punch carries per Mu of the puncher's stand-in mass, and its knockback bounds (see {@code KickTuning}, which reads the same way). */
-    public static final float JOULES_PER_PUNCHER_MU = 2f;
+    /** Work a punch carries per Mu of the puncher's stand-in mass, and its knockback bounds (see {@code KickTuning}, which reads the same way). */
+    public static final float WORK_PER_PUNCHER_MU = 2f;
     public static final float KNOCK_PER_SPECIFIC_IMPACT = 0.9f, KNOCK_MIN = 0.3f, KNOCK_MAX = 2.4f;
     /** Wear points a landed punch and a shockwave cost the arm (tools wear with use). */
     public static final int WEAR_PUNCH = 2, WEAR_SHOCK = 6;

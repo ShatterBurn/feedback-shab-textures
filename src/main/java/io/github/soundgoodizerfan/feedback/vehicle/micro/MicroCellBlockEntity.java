@@ -624,7 +624,7 @@ public class MicroCellBlockEntity extends BlockEntity implements BlockEntitySubL
         var iron = io.github.soundgoodizerfan.feedback.process.MaterialTable.get().materials().get(io.github.soundgoodizerfan.feedback.Feedback.id("cast_iron"));
         if (iron == null)
             return;
-        float rim = io.github.soundgoodizerfan.feedback.machine.shaft.ShaftBlockEntity.rimLimitRpm(iron) * N;
+        float rim = io.github.soundgoodizerfan.feedback.machine.shaft.ShaftBlockEntity.rimLimitRpm(iron).value() * N;
         for (long m = flywheels; m != 0; m &= m - 1) {
             MicroRotor rotor = rotors[Long.numberOfTrailingZeros(m)];
             if (rotor == null)

@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.combat.cast;
 
+import io.github.soundgoodizerfan.feedback.core.unit.Work;
+
 import io.github.soundgoodizerfan.feedback.combat.grab.Grabbing;
 import io.github.soundgoodizerfan.feedback.combat.parry.ParryTuning;
 import io.github.soundgoodizerfan.feedback.combat.state.CombatPhase;
@@ -30,7 +32,7 @@ final class PointBlank {
     private PointBlank() {
     }
 
-    /** Point blank: fire into a body you hold or one already staggered within reach; the whole of the round's impulse is stagger and, over ten joules to the point, damage. */
+    /** Point blank: fire into a body you hold or one already staggered within reach; the whole of the round's impulse is stagger and, over ten work to the point, damage. */
     static boolean act(ServerPlayer p) {
         ItemStack gun = p.getMainHandItem();
         if (!(gun.getItem() instanceof GunItem) || GunAmmo.count(gun) < 1)
@@ -53,10 +55,10 @@ final class PointBlank {
         ServerLevel lv = p.serverLevel();
         if (!GunShots.trigger(lv, p, gun, yaw, pitch, System.currentTimeMillis(), false, InteractionHand.MAIN_HAND))
             return false;
-        float joules = GunFu.lastImpulse(p) * GunFuTuning.MUZZLE_JOULES_PER_IMPULSE;
+        float work = GunFu.lastImpulse(p) * GunFuTuning.MUZZLE_JOULES_PER_IMPULSE;
         t.invulnerableTime = 0;
-        t.hurt(p.damageSources().playerAttack(p), Math.min(20f, joules / ParryTuning.JOULES_PER_DAMAGE));
-        stagger(p, t, joules);
+        t.hurt(p.damageSources().playerAttack(p), Math.min(20f, work / ParryTuning.WORK_PER_DAMAGE));
+        stagger(p, t, new Work(work));
         lv.sendParticles(ParticleTypes.FLASH, c.x, c.y, c.z, 1, 0, 0, 0, 0);
         lv.sendParticles(ParticleTypes.SMOKE, c.x, c.y, c.z, 14, 0.25, 0.25, 0.25, 0.05);
         CastFx.spray(lv, CastFx.dust(CastFx.CRIMSON, 1.1f), c, 18, 0.35);

@@ -2,6 +2,10 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.combat.cast;
 
+import io.github.soundgoodizerfan.feedback.core.unit.Work;
+
+import io.github.soundgoodizerfan.feedback.core.FTuning;
+
 import io.github.soundgoodizerfan.feedback.Feedback;
 import io.github.soundgoodizerfan.feedback.combat.feel.CombatCues;
 import io.github.soundgoodizerfan.feedback.combat.feel.FeelTuning;
@@ -78,11 +82,11 @@ final class Dropkick {
             if (p.onGround()) {
                 DIVING.remove(p.getUUID());
                 BOUNCED.remove(p.getUUID());
-                float joules = (BodyMass.of(p) + BodyMass.armour(p)) * 9.8f * 3f;
+                float work = (BodyMass.of(p) + BodyMass.armour(p)) * FTuning.GRAVITY_BLOCKS_PER_S2 * 3f;
                 for (LivingEntity e : near(p, p.position(), 2.5)) {
                     e.invulnerableTime = 0;
                     e.hurt(p.damageSources().playerAttack(p), 4f);
-                    stagger(p, e, joules);
+                    stagger(p, e, new Work(work));
                 }
                 Carrying.end(p);
                 Vec3 land = p.position().add(0, 0.2, 0);

@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.weapon;
 
+import io.github.soundgoodizerfan.feedback.core.unit.Work;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -109,7 +111,7 @@ public final class GunFu {
         var whip = GunBludgeon.whip(p);
         if (whip != null && whip.target().equals(living.getUUID()) && p.distanceTo(living) <= GunFuTuning.MUZZLE_RANGE
                 && Skills.unlocked(p, "gun_fu_muzzle_stagger") && Rearms.ready(p, "gun_fu_muzzle_stagger")) {
-            CombatTicker.stagger(living, ParryTuning.staggerTicks(impulse * GunFuTuning.MUZZLE_JOULES_PER_IMPULSE,
+            CombatTicker.stagger(living, ParryTuning.staggerTicks(new Work(impulse * GunFuTuning.MUZZLE_JOULES_PER_IMPULSE),
                     ParryTuning.standInMass(living)), ParryTuning.STAGGER_SLOW);
             Rearms.spend(p, "gun_fu_muzzle_stagger");
         }

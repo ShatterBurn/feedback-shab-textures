@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.modular.trait;
 
+import io.github.soundgoodizerfan.feedback.core.FTuning;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -44,7 +46,7 @@ public final class Sounding implements ModularTrait {
         if (found.size() > (int) params.get("max_found", 64))
             found = found.subList(0, (int) params.get("max_found", 64));
 
-        PacketDistributor.sendToPlayer(sp, new SoundingPayload(found, (int) (params.get("seconds", 6) * 20)));
+        PacketDistributor.sendToPlayer(sp, new SoundingPayload(found, (int) (params.get("seconds", 6) * FTuning.TICKS_PER_SECOND)));
         level.playSound(null, player.blockPosition(), SoundEvents.NOTE_BLOCK_CHIME.value(), SoundSource.PLAYERS, 0.6f, 0.6f);
         player.getCooldowns().addCooldown(weapon.getItem(), (int) params.get("cooldown_ticks", 200));
         weapon.hurtAndBreak(ModularStacks.cap(weapon, (int) params.get("wear", 4)), sp, EquipmentSlot.MAINHAND);

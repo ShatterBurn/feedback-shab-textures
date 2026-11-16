@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.modular.item;
 
+import io.github.soundgoodizerfan.feedback.core.FTuning;
+
 import io.github.soundgoodizerfan.feedback.core.thermal.ItemHeat;
 import io.github.soundgoodizerfan.feedback.core.thermal.AmbientTable;
 import io.github.soundgoodizerfan.feedback.core.unit.Tu;
@@ -266,7 +268,7 @@ public class ModularElectricGun extends GunItem {
     public static float chambers(ItemStack gun, long now, ElectricGunSpec spec, io.github.soundgoodizerfan.feedback.core.unit.VoltageBand band, int cells) {
         CompoundTag tag = tag(gun);
         float held = tag.contains(CHAMBERS) ? tag.getFloat(CHAMBERS) : spec.chambers();
-        float seconds = Math.max(0L, now - tag.getLong(CHAMBERS_AT)) / 20f;
+        float seconds = Math.max(0L, now - tag.getLong(CHAMBERS_AT)) / FTuning.TICKS_PER_SECOND;
         return Math.min(spec.chambers(), held + seconds * spec.refillPerSecond(band, cells));
     }
 

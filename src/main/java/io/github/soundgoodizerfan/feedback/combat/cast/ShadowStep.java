@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.combat.cast;
 
+import io.github.soundgoodizerfan.feedback.core.unit.Work;
+
 import io.github.soundgoodizerfan.feedback.Feedback;
 import io.github.soundgoodizerfan.feedback.combat.feel.CombatCues;
 import io.github.soundgoodizerfan.feedback.combat.feel.FeelTuning;
@@ -108,6 +110,6 @@ final class ShadowStep {
         Long until = AMBUSH.remove(p.getUUID());
         if (until == null || p.level().getGameTime() > until)
             return;
-        stagger(p, event.getEntity(), event.getNewDamage() * ParryTuning.JOULES_PER_DAMAGE * 3f);
+        stagger(p, event.getEntity(), new Work(event.getNewDamage() * ParryTuning.WORK_PER_DAMAGE * 3f));
     }
 }

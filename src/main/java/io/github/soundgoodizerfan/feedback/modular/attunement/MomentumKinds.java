@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.modular.attunement;
 
+import io.github.soundgoodizerfan.feedback.core.FTuning;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -182,7 +184,7 @@ public final class MomentumKinds {
             return;
         int n = BaitKinds.worn(p, "worn_stance");
         if (n > 0)
-            event.setAmount(event.getAmount() * (1f - Math.min(STANCE_CAP, t.still / 20f * STANCE_PER_SECOND * n)));
+            event.setAmount(event.getAmount() * (1f - Math.min(STANCE_CAP, t.still / FTuning.TICKS_PER_SECOND * STANCE_PER_SECOND * n)));
     }
 
     @SubscribeEvent

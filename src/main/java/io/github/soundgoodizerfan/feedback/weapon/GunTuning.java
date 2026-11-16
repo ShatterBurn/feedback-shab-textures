@@ -23,7 +23,7 @@ public final class GunTuning {
     /** Peak chamber pressure of the propellant in a full case, in Pu. Black powder; the figure a propellant material takes over (spec 3.6). */
     public static final float GUN_PROPELLANT_PEAK_PU = 3f;
 
-    /** Work done on a projectile per Pu over one cubic metre. Anchors Pu to joules: 3 Pu is about 100 MPa. */
+    /** Work done on a projectile per Pu over one cubic metre. Anchors Pu to work: 3 Pu is about 100 MPa. */
     public static final float GUN_WORK_PER_PU_M3 = 3.3e7f;
 
     /** Most work a nominal charge of the reference propellant can give a round, however wide or long the barrel (a soft ceiling; scales with the charge's pressure). */
@@ -408,8 +408,9 @@ public final class GunTuning {
     public static final float GUN_TRIGGER_FLEX_SPREAD = 0.2f, GUN_FRAME_FLEX_SPREAD = 0.2f, GUN_ACTION_CYCLE_PER_MASS = 0.25f,
             GUN_FEED_CYCLE_PER_FRICTION = 0.25f, GUN_ACTION_CYCLE_MIN = 0.75f, GUN_ACTION_CYCLE_MAX = 1.5f, GUN_ACTION_REF_DENSITY = 7.8f;
 
-    /** Damage per Work delivered. */
-    public static final float GUN_DAMAGE_PER_WORK = 0.03f;
+    /** The share of a round's work that becomes damage; a point of damage is {@code ParryTuning.WORK_PER_DAMAGE}, one rate everywhere. */
+    public static final float GUN_DAMAGE_EFFICIENCY = 0.3f;
+    public static final float GUN_DAMAGE_PER_WORK = GUN_DAMAGE_EFFICIENCY / io.github.soundgoodizerfan.feedback.combat.parry.ParryTuning.WORK_PER_DAMAGE;
 
     /** Air drag fraction of speed lost per tick, and in a fluid; gravity in blocks per tick squared (9.8 m/s² over 400). */
     public static final float GUN_DRAG_PER_TICK = 0.005f, GUN_FLUID_DRAG_PER_TICK = 0.35f, GUN_GRAVITY_PER_TICK = 0.0245f;
@@ -471,7 +472,7 @@ public final class GunTuning {
     public static final float GUN_BLUDGEON_KNOCKBACK_BASE = 0.3f, GUN_BLUDGEON_KNOCKBACK_PER_MU = 0.08f, GUN_BLUDGEON_HEAVY_MU = 4f;
 
     /**
-     * A bludgeon hit staggers when its impact ({@code damage x ParryTuning.JOULES_PER_DAMAGE}) over the target's
+     * A bludgeon hit staggers when its impact ({@code damage x ParryTuning.WORK_PER_DAMAGE}) over the target's
      * stand-in mass gives at least this many raw stagger ticks (the parry's formula, unclamped); the target is
      * staggered for that many ticks, bounded as the parry's, and the gun then fires one free shot at it.
      * A 3 Mu gun (4 damage, 40 J) on a zombie (about 84 Mu) gives 8 ticks, so it staggers; a 1 Mu gun

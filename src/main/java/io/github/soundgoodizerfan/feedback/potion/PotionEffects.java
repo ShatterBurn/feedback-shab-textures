@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.potion;
 
+import io.github.soundgoodizerfan.feedback.core.FTuning;
+
 import io.github.soundgoodizerfan.feedback.Feedback;
 
 import io.github.soundgoodizerfan.feedback.core.hazard.Hazards;
@@ -38,7 +40,7 @@ public final class PotionEffects {
     /** Applies the effect to {@code target} for {@code ticks} at level {@code amplifier} (0 is I). */
     public static void apply(ResourceLocation id, LivingEntity target, int amplifier, int ticks) {
         if (IGNITE.equals(id))
-            target.igniteForSeconds(ticks / 20f);
+            target.igniteForSeconds(ticks / FTuning.TICKS_PER_SECOND);
         else
             BuiltInRegistries.MOB_EFFECT.getHolder(id).ifPresent(e -> target.addEffect(new MobEffectInstance(e, ticks, amplifier)));
     }
@@ -115,7 +117,7 @@ public final class PotionEffects {
                 // No source entity: a blast leaves its own source unhurt, and the drinker is meant to take it.
                 explode(server, null, target.position(), amplifier);
         } else if (IGNITE.equals(id))
-            target.igniteForSeconds(ticks / 20f * (1 + amplifier));
+            target.igniteForSeconds(ticks / FTuning.TICKS_PER_SECOND * (1 + amplifier));
         else
             apply(id, target, amplifier, ticks);
     }

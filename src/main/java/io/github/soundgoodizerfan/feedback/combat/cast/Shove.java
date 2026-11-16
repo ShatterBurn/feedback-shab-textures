@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.combat.cast;
 
+import io.github.soundgoodizerfan.feedback.core.FTuning;
+
 import dev.ryanhcode.sable.companion.SableCompanion;
 import dev.ryanhcode.sable.sublevel.ServerSubLevel;
 import io.github.soundgoodizerfan.feedback.Feedback;
@@ -127,7 +129,7 @@ final class Shove {
         if (!Stamina.spend(p, (float) Math.min(work * ShoveTuning.STAMINA_PER_WORK, ShoveTuning.MAX_STAMINA_PER_TICK)))
             return false;
         BodyPush.impulseAt(body, at, new Vector3d(dir).mul(impulse));
-        double back = impulse / mine / 20; // m/s of the reaction, as blocks per tick
+        double back = impulse / mine / FTuning.TICKS_PER_SECOND; // m/s of the reaction, as blocks per tick
         p.setDeltaMovement(p.getDeltaMovement().add(-dir.x * back, 0, -dir.z * back));
         p.hurtMarked = true;
         double sum = WORK.merge(p.getUUID(), work, Double::sum);

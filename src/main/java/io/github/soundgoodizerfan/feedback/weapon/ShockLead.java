@@ -54,7 +54,7 @@ import net.neoforged.neoforge.event.tick.ServerTickEvent;
 @EventBusSubscriber(modid = Feedback.MOD_ID)
 public final class ShockLead {
 
-    private record Lead(UUID target, int ticks, float joules) {
+    private record Lead(UUID target, int ticks, float work) {
     }
 
     private static final Map<UUID, Lead> LEADS = new HashMap<>();
@@ -72,7 +72,7 @@ public final class ShockLead {
         Lead lead = LEADS.get(player.getUUID());
         if (lead != null) {
             if (level.getEntity(lead.target()) instanceof LivingEntity target)
-                discharge(level, player, gun, target, lead.joules());
+                discharge(level, player, gun, target, lead.work());
             end(level.getServer(), player.getUUID(), level.getEntity(lead.target()));
             return;
         }
@@ -157,17 +157,17 @@ public final class ShockLead {
                 source.write().accept(out);
             }
             boolean wet = target.isInWaterOrRain() || PulseShot.conductive(target);
-            float joules = lead.joules() + took * ModularTuning.EGUN_J_PER_EU * ModularTuning.EGUN_LEAD_EFFICIENCY
+            float work = lead.work() + took * ModularTuning.EGUN_WORK_PER_EU * ModularTuning.EGUN_LEAD_EFFICIENCY
                     * (wet ? 1f + ModularTuning.EGUN_SHOCK_BONUS : 1f);
-            float cap = ModularTuning.EGUN_LEAD_CAP_J * Mth.clamp(spec.leadAmp(), 0.1f, 3f);
+            float cap = ModularTuning.EGUN_LEAD_CAP_WORK * Mth.clamp(spec.leadAmp(), 0.1f, 3f);
             int ticks = lead.ticks() + 1;
-            if (took <= 0f || joules >= cap || ticks >= ModularTuning.EGUN_LEAD_MAX_TICKS) {
-                discharge(level, player, gun, target, Math.min(joules, cap));
+            if (took <= 0f || work >= cap || ticks >= ModularTuning.EGUN_LEAD_MAX_TICKS) {
+                discharge(level, player, gun, target, Math.min(work, cap));
                 it.remove();
                 Tethers.remove(target, lineId(entry.getKey()));
                 continue;
             }
-            entry.setValue(new Lead(lead.target(), ticks, joules));
+            entry.setValue(new Lead(lead.target(), ticks, work));
             if (ticks % 4 == 0) {
                 Vec3 muzzle = player.getEyePosition().add(player.getLookAngle().scale(0.4));
                 Vec3 at = target.getBoundingBox().getCenter();
@@ -175,23 +175,23 @@ public final class ShockLead {
                 level.sendParticles(ParticleTypes.ELECTRIC_SPARK, at.x, at.y, at.z, 2, 0.2, 0.3, 0.2, 0.05);
             }
             if (ticks % 12 == 0)
-                level.playSound(null, target.blockPosition(), FSounds.GUN_EGUN_FORK.get(), SoundSource.PLAYERS, 0.35f, 1.2f + 0.8f * joules / cap);
+                level.playSound(null, target.blockPosition(), FSounds.GUN_EGUN_FORK.get(), SoundSource.PLAYERS, 0.35f, 1.2f + 0.8f * work / cap);
         }
     }
 
     /** What the line built goes into the body, and arcs on from it to the nearest wet or conductive one as an arc fork's does. */
-    private static void discharge(ServerLevel level, Player player, ItemStack gun, LivingEntity target, float joules) {
-        if (joules <= 0f)
+    private static void discharge(ServerLevel level, Player player, ItemStack gun, LivingEntity target, float work) {
+        if (work <= 0f)
             return;
         ElectricGunSpec spec = ModularElectricGun.specOf(gun);
         var cell = spec == null ? ItemStack.EMPTY : ModularElectricGun.source(player, gun, spec).battery();
         var band = cell.isEmpty() ? ModularTuning.EGUN_REF_BAND : BatteryStack.caseBand(BatteryStack.state(cell));
         int colour = ModularElectricGun.colourOf(gun);
-        PulseShot.hurt(level, player, target, joules * ModularTuning.EGUN_DAMAGE_PER_J, joules, band);
+        PulseShot.hurt(level, player, target, work * ModularTuning.EGUN_DAMAGE_PER_WORK, work, band);
         Vec3 at = target.getBoundingBox().getCenter();
         GunImpacts.energyBody(level, at, new Vec3(0, 1, 0), 0.9f, colour, EnergyStyle.ARC);
         level.playSound(null, target.blockPosition(), FSounds.GUN_EGUN_SHOCK.get(), SoundSource.PLAYERS, 1f, 0.9f);
-        PulseShot.arc(level, player, colour, band, target, joules);
+        PulseShot.arc(level, player, colour, band, target, work);
     }
 
     /** A wielder who left drops the line. */

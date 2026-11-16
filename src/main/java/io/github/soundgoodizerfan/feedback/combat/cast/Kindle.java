@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.combat.cast;
 
+import io.github.soundgoodizerfan.feedback.core.FTuning;
+
 import io.github.soundgoodizerfan.feedback.combat.skill.Skills;
 import io.github.soundgoodizerfan.feedback.core.hazard.HotContact;
 import io.github.soundgoodizerfan.feedback.core.thermal.AmbientTable;
@@ -92,7 +94,7 @@ final class Kindle {
         }
         // Burning ground: the fire is laid on any floor, not only on what burns, and kept up for as long as the heat lasts.
         if (Skills.unlocked(p, "burning_ground")) {
-            long until = lv.getGameTime() + (long) (seconds * 20);
+            long until = lv.getGameTime() + (long) (seconds * FTuning.TICKS_PER_SECOND);
             for (BlockPos pos : BlockPos.betweenClosed(c.offset(-2, -1, -2), c.offset(2, 1, 2))) {
                 if (pos.distToCenterSqr(spot) > RADIUS * RADIUS || !lv.mayInteract(p, pos))
                     continue;

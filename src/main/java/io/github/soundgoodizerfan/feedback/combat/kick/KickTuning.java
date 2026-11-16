@@ -4,7 +4,7 @@ package io.github.soundgoodizerfan.feedback.combat.kick;
 
 /**
  * The kick's figures. Every number is a placeholder to be felt in play. Ticks are server ticks (20 a
- * second); impact is joules, the unit the parry's stagger already reads ({@code ParryTuning}).
+ * second); impact is work, the unit the parry's stagger already reads ({@code ParryTuning}).
  */
 public final class KickTuning {
 
@@ -21,8 +21,8 @@ public final class KickTuning {
 
     /** Damage of the foot itself. Low on purpose: the kick is for position, not killing. */
     public static final float DAMAGE = 2f;
-    /** Joules the kick carries per Mu of the kicker's own stand-in mass (gear included, so a heavier kicker kicks harder). */
-    public static final float JOULES_PER_KICKER_MU = 1f;
+    /** Work the kick carries per Mu of the kicker's own stand-in mass (gear included, so a heavier kicker kicks harder). */
+    public static final float WORK_PER_KICKER_MU = 1f;
 
     /** Knockback strength per J/Mu of impact over the target's mass, within the bounds below. A 100 J kick on an 84 Mu zombie is about 0.6. */
     public static final float KNOCK_PER_SPECIFIC_IMPACT = 0.5f;
@@ -38,7 +38,7 @@ public final class KickTuning {
 
     /** Wall Smash: blocks past the target's own width the wall may stand and still count as hit. */
     public static final double WALL_REACH = 1.2;
-    /** Wall Smash: joules each Mu of the target's worn armour adds when it meets the wall (the armour is carried into it). */
+    /** Wall Smash: work each Mu of the target's worn armour adds when it meets the wall (the armour is carried into it). */
     public static final float WALL_JOULES_PER_ARMOUR_MU = 3f;
     /** Breach Kick: ticks a knocked-down target stays down, the upward pop it takes, and its speed lost while down (all of it). */
     public static final int DOWN_TICKS = 50;

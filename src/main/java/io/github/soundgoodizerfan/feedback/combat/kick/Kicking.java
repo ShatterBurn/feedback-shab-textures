@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.combat.kick;
 
+import io.github.soundgoodizerfan.feedback.core.unit.Work;
+
 import io.github.soundgoodizerfan.feedback.combat.cast.Stamina;
 import io.github.soundgoodizerfan.feedback.combat.feel.CombatCues;
 import io.github.soundgoodizerfan.feedback.combat.feel.FeelTuning;
@@ -83,7 +85,7 @@ public final class Kicking {
             return;
         }
         LivingEntity target = picked.get();
-        float impact = ParryTuning.standInMass(player) * KickTuning.JOULES_PER_KICKER_MU + KickTuning.DAMAGE * ParryTuning.JOULES_PER_DAMAGE;
+        float impact = ParryTuning.standInMass(player) * KickTuning.WORK_PER_KICKER_MU + KickTuning.DAMAGE * ParryTuning.WORK_PER_DAMAGE;
         float mass = ParryTuning.standInMass(target);
         boolean guard = target.isBlocking();
         // Read before the blow lands: a staggered target is already broken, a steady one is not.
@@ -95,16 +97,16 @@ public final class Kicking {
         target.knockback(knock, -dir.x, -dir.z);
         target.hurtMarked = true;
         if (guard)
-            stagger(target, Math.max(KickTuning.GUARD_STAGGER_MIN, ParryTuning.staggerTicks(impact, mass)), ParryTuning.STAGGER_SLOW);
+            stagger(target, Math.max(KickTuning.GUARD_STAGGER_MIN, ParryTuning.staggerTicks(new Work(impact), mass)), ParryTuning.STAGGER_SLOW);
         else if (ParryTuning.rawStaggerTicks(impact, mass) >= KickTuning.STAGGER_MIN_RAW)
-            stagger(target, ParryTuning.staggerTicks(impact, mass), ParryTuning.STAGGER_SLOW);
+            stagger(target, ParryTuning.staggerTicks(new Work(impact), mass), ParryTuning.STAGGER_SLOW);
         Rearms.on(player, Rearm.STAGGER);
         boolean smash = Skills.unlocked(player, "wall_smash") && intoWall(target, dir);
         if (smash) {
             // The wall is the second hit; the armour the target carries goes into it with the body.
             float slam = impact + BodyMass.armour(target) * KickTuning.WALL_JOULES_PER_ARMOUR_MU;
             float bonus = Math.max(0f, 1 + Skills.modifier(player, Figure.KICK_WALL_BONUS));
-            stagger(target, Math.round(ParryTuning.staggerTicks(slam, mass) * bonus), ParryTuning.STAGGER_SLOW);
+            stagger(target, Math.round(ParryTuning.staggerTicks(new Work(slam), mass) * bonus), ParryTuning.STAGGER_SLOW);
             CombatCues.everyone(player, FSounds.FEEL_HEAVY.get(), FeelTuning.HEAVY_VOLUME, 0.8f);
         }
         // Breach Kick: kick what is already broken. A target mid-stagger is put down; a steady one only shoves.

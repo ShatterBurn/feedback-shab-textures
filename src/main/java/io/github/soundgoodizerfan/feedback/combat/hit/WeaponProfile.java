@@ -22,7 +22,7 @@ import net.minecraft.world.item.ItemStack;
 /**
  * What a weapon is good at, derived from the figures it was baked with and stored nowhere. Four shares, 0 to 1,
  * on one scale for every class so a slug gun and a maul compare directly (the way {@link ParryTuning#heaviness}
- * does for mass): <b>burst</b> (joules a hit carries), <b>tempo</b> (hits a second), <b>precision</b> (how exactly
+ * does for mass): <b>burst</b> (work a hit carries), <b>tempo</b> (hits a second), <b>precision</b> (how exactly
  * a hit lands) and <b>stealth</b> (noise and size). The skill trees read these, not a weapon's class or name:
  * a node that empowers big hits serves a maul, a slug gun and a gauntlet alike.
  *
@@ -84,7 +84,7 @@ public record WeaponProfile(float burst, float tempo, float precision, float ste
     }
 
     private static WeaponProfile gun(GunFigures g) {
-        float burst = logShare(g.muzzleEnergy(), ProfileTuning.BURST_LOW_J, ProfileTuning.BURST_HIGH_J);
+        float burst = logShare(g.muzzleEnergy(), ProfileTuning.BURST_LOW_WORK, ProfileTuning.BURST_HIGH_WORK);
         float tempo = share(g.cycleMs() <= 0 ? 0 : 1000f / g.cycleMs(), ProfileTuning.TEMPO_SLOW, ProfileTuning.TEMPO_FAST);
         float precision = 1 - logShare(g.spreadDeg(), ProfileTuning.SPREAD_TIGHT_DEG, ProfileTuning.SPREAD_LOOSE_DEG);
         float quiet = 1 - Mth.clamp(g.report(), 0f, 1f);
@@ -95,7 +95,7 @@ public record WeaponProfile(float burst, float tempo, float precision, float ste
     private static WeaponProfile bow(ModularFigures f) {
         float v = Math.max(1f, f.get(Fig.VELOCITY));
         float draw = f.get(Fig.DRAW) <= 0 ? 20f : f.get(Fig.DRAW);
-        return new WeaponProfile(logShare(ProfileTuning.BOW_BASE_J * v * v, ProfileTuning.BURST_LOW_J, ProfileTuning.BURST_HIGH_J),
+        return new WeaponProfile(logShare(ProfileTuning.BOW_BASE_WORK * v * v, ProfileTuning.BURST_LOW_WORK, ProfileTuning.BURST_HIGH_WORK),
                 share(20f / draw, ProfileTuning.TEMPO_SLOW, ProfileTuning.TEMPO_FAST),
                 Mth.clamp(v - 1f, 0f, 1f), ProfileTuning.BOW_STEALTH);
     }
@@ -107,7 +107,7 @@ public record WeaponProfile(float burst, float tempo, float precision, float ste
                 + ProfileTuning.PRECISION_REACH_W * Mth.clamp(f.get(Fig.REACH) / ProfileTuning.REACH_LONG, 0f, 1f)
                 + ProfileTuning.PRECISION_EDGE_W * edge;
         float stealth = ProfileTuning.STEALTH_MELEE_LIGHT_W * light + (1 - ProfileTuning.STEALTH_MELEE_LIGHT_W) * (1 - edge);
-        return new WeaponProfile(logShare(f.get(Fig.IMPACT), ProfileTuning.BURST_LOW_J, ProfileTuning.BURST_HIGH_J),
+        return new WeaponProfile(logShare(f.get(Fig.IMPACT), ProfileTuning.BURST_LOW_WORK, ProfileTuning.BURST_HIGH_WORK),
                 share(f.get(Fig.SWING), ProfileTuning.TEMPO_SLOW, ProfileTuning.TEMPO_FAST), precision, stealth);
     }
 
@@ -124,8 +124,8 @@ public record WeaponProfile(float burst, float tempo, float precision, float ste
             }
             claws = ModularGlove.plateParams(glove).containsKey("bleed_damage");
         }
-        float joules = ProfileTuning.BARE_JOULES + fist * ParryTuning.JOULES_PER_DAMAGE;
-        return new WeaponProfile(logShare(joules, ProfileTuning.BURST_LOW_J, ProfileTuning.BURST_HIGH_J),
+        float work = ProfileTuning.BARE_WORK + fist * ParryTuning.WORK_PER_DAMAGE;
+        return new WeaponProfile(logShare(work, ProfileTuning.BURST_LOW_WORK, ProfileTuning.BURST_HIGH_WORK),
                 share(ProfileTuning.BARE_SWINGS * (1 - drag), ProfileTuning.TEMPO_SLOW, ProfileTuning.TEMPO_FAST),
                 Mth.clamp(ProfileTuning.BARE_PRECISION + (claws ? ProfileTuning.CLAW_PRECISION : 0f), 0f, 1f),
                 1 - ProfileTuning.PLATE_LOUD_MAX * Mth.clamp(plate / ProfileTuning.PLATE_LOUD_MU, 0f, 1f));

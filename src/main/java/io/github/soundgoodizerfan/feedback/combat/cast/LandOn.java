@@ -2,6 +2,10 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.combat.cast;
 
+import io.github.soundgoodizerfan.feedback.core.unit.Work;
+
+import io.github.soundgoodizerfan.feedback.core.FTuning;
+
 import io.github.soundgoodizerfan.feedback.Feedback;
 import io.github.soundgoodizerfan.feedback.combat.parry.ParryTuning;
 import io.github.soundgoodizerfan.feedback.combat.state.CombatTicker;
@@ -54,7 +58,7 @@ public final class LandOn {
             float theirs = BodyMass.of(under) + BodyMass.armour(under);
             under.invulnerableTime = 0;
             under.hurt(lander.damageSources().fall(), (distance - 1f) * mine / (mine + theirs));
-            int ticks = ParryTuning.staggerTicks(mine * 9.8f * distance, theirs);
+            int ticks = ParryTuning.staggerTicks(new Work(mine * FTuning.GRAVITY_BLOCKS_PER_S2 * distance), theirs);
             if (ticks > 0)
                 CombatTicker.stagger(under, ticks, ParryTuning.STAGGER_SLOW);
             any = true;

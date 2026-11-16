@@ -2,6 +2,10 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.combat.cast;
 
+import io.github.soundgoodizerfan.feedback.core.unit.Work;
+
+import io.github.soundgoodizerfan.feedback.core.FTuning;
+
 import io.github.soundgoodizerfan.feedback.combat.tether.BodyMass;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -32,22 +36,22 @@ final class Barge {
         if (t == null)
             return false;
         float mine = BodyMass.of(p) + BodyMass.armour(p), theirs = BodyMass.of(t) + BodyMass.armour(t);
-        if (!stagger(p, t, mine * 9.8f))
+        if (!stagger(p, t, new Work(mine * FTuning.GRAVITY_BLOCKS_PER_S2)))
             return false;
         float v = Mth.clamp(mine / Math.max(1f, theirs) * SPEED_PER_RATIO, 2f, MAX_SPEED);
         Vec3 d = t.position().subtract(p.position()).multiply(1, 0, 1).normalize();
-        t.setDeltaMovement(d.x * v / 20, 0.25, d.z * v / 20);
+        t.setDeltaMovement(d.x * v / FTuning.TICKS_PER_SECOND, 0.25, d.z * v / FTuning.TICKS_PER_SECOND);
         t.hurtMarked = true;
         ServerLevel lv = p.serverLevel();
         CastFx.debris(lv, p.position(), 8, 0.4);
         lv.sendParticles(ParticleTypes.POOF, t.getX(), t.getY() + 0.5, t.getZ(), 8, 0.2, 0.3, 0.2, 0.05);
         CastFx.sound(lv, t.position(), SoundEvents.PLAYER_ATTACK_KNOCKBACK, 1f, 0.7f);
-        float joules = 0.5f * theirs * v * v;
+        float work = 0.5f * theirs * v * v;
         Casts.later(p, BEAT, () -> {
             for (LivingEntity o : near(p, t.position().add(0, 0.5, 0), REACH)) {
                 if (o == t)
                     continue;
-                stagger(p, o, joules);
+                stagger(p, o, new Work(work));
                 Disorder.note(p, o, Disorder.Kind.COLLIDED);
                 o.hurt(p.damageSources().playerAttack(p), 1f + v / 4f);
                 lv.sendParticles(ParticleTypes.CRIT, o.getX(), o.getY() + 0.6, o.getZ(), 10, 0.25, 0.3, 0.25, 0.3);

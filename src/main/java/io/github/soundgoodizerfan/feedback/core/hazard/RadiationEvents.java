@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.core.hazard;
 
+import io.github.soundgoodizerfan.feedback.core.FTuning;
+
 import io.github.soundgoodizerfan.feedback.Feedback;
 import io.github.soundgoodizerfan.feedback.process.MaterialTable;
 import io.github.soundgoodizerfan.feedback.registry.FCombat;
@@ -31,7 +33,7 @@ public final class RadiationEvents {
                 || player.isSpectator() || player.isCreative())
             return;
         var materials = MaterialTable.get().materials();
-        float seconds = HazardTuning.RAD_INTERVAL_TICKS / 20f;
+        float seconds = HazardTuning.RAD_INTERVAL_TICKS / FTuning.TICKS_PER_SECOND;
         float dose = player.getData(FCombat.RADIATION_DOSE);
         float passes = Radiation.shield(player, materials)
                 * io.github.soundgoodizerfan.feedback.potion.Ward.passes(player, io.github.soundgoodizerfan.feedback.potion.Ward.Hazard.RADIATION);

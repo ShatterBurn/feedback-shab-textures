@@ -108,8 +108,8 @@ public class PhosphorScreenBlockEntity extends BlockEntity implements ThermalBod
     public Pu getPressure() {
         if (!sealed)
             return new Pu(0f);
-        float off = ElectricMachineTuning.ENVELOPE_ABSOLUTE_OFFSET;
-        return new Pu(((temperature + off) / (sealTu + off) - 1f) * ElectricMachineTuning.ENVELOPE_PU_PER_ATMOSPHERE);
+        float off = ElectricMachineTuning.ENVELOPE_ABSOLUTE_ZERO_TU;
+        return new Pu(((temperature + off) / (sealTu + off) - 1f) * ElectricMachineTuning.ENVELOPE_AMBIENT_PU);
     }
 
     /** An oscilloscope drives the screen at this level (0 to 3) for the next few ticks. */

@@ -32,6 +32,11 @@ public final class SpaceTrigger {
     private SpaceTrigger() {
     }
 
+    /** Ticks {@code body} has sat in thin air (0 when it is not waiting to cross). For the probe command. */
+    public static int held(UUID body) {
+        return HELD.getOrDefault(body, 0);
+    }
+
     @SubscribeEvent
     public static void onLevelTick(LevelTickEvent.Post event) {
         if (!(event.getLevel() instanceof ServerLevel level) || level.getGameTime() % SpaceTuning.CHECK_INTERVAL != 0)

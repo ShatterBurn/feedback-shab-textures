@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.machine.shaft;
 
+import io.github.soundgoodizerfan.feedback.core.unit.Rpm;
 import io.github.soundgoodizerfan.feedback.core.FTuning;
 import io.github.soundgoodizerfan.feedback.core.rotation.RotationTuning;
 import io.github.soundgoodizerfan.feedback.machine.MachineTuning;
@@ -103,9 +104,9 @@ public class ShaftBlockEntity extends RotationNode implements Wearing, io.github
     }
 
     /** The rim speed, RPM, a flywheel of cast iron holds without strain. */
-    public static float rimLimitRpm(Material metal) {
+    public static Rpm rimLimitRpm(Material metal) {
         float yield = metal.mechanical().yieldStrength().map(St::value).orElse(1f);
-        return FTuning.FLYWHEEL_RIM_RPM_PER_ROOT * (float) Math.sqrt(yield / metal.density().muPerMb());
+        return new Rpm(FTuning.FLYWHEEL_RIM_RPM_PER_ROOT * (float) Math.sqrt(yield / metal.density().muPerMb()));
     }
 
     @Override
@@ -118,7 +119,7 @@ public class ShaftBlockEntity extends RotationNode implements Wearing, io.github
         float rim = figures.get("RimRpm", 0f);
         if (rim <= 0f) {
             Material metal = MaterialTable.get().materials().get(Feedback.id("cast_iron"));
-            return metal == null ? Reach.UNSTATED : rimLimitRpm(metal);
+            return metal == null ? Reach.UNSTATED : rimLimitRpm(metal).value();
         }
         return rim;
     }

@@ -73,8 +73,8 @@ import net.neoforged.neoforge.common.ItemAbility;
  */
 public class ModularHafted extends MaceItem implements Modular, HandTool {
 
-    /** Ticks of slow per joule of impact on a blow that does not smash (a maul head of another shape). */
-    private static final float STAGGER_TICKS_PER_JOULE = 2f;
+    /** Ticks of slow per work of impact on a blow that does not smash (a maul head of another shape). */
+    private static final float STAGGER_TICKS_PER_WORK = 2f;
 
     /** Vanilla's own use code for what a face does to a block, in three registered but hidden items that nobody holds ({@code FModular.items} leaves them out). */
     public static Item axe() {
@@ -251,7 +251,7 @@ public class ModularHafted extends MaceItem implements Modular, HandTool {
                 ModularFigures f = ModularStacks.figures(stack);
                 if (f != null && !ModularStacks.broken(stack))
                     target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN,
-                            Math.round(f.get(ModularFigures.Fig.IMPACT) * STAGGER_TICKS_PER_JOULE), 1), attacker);
+                            Math.round(f.get(ModularFigures.Fig.IMPACT) * STAGGER_TICKS_PER_WORK), 1), attacker);
             }
             stack.hurtAndBreak(combat == ModularType.Family.DIG || combat == ModularType.Family.MACE ? 2 : 1, attacker, EquipmentSlot.MAINHAND);
         } finally {

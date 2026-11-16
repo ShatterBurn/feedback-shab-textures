@@ -2,6 +2,10 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.combat.cast;
 
+import io.github.soundgoodizerfan.feedback.core.unit.Work;
+
+import io.github.soundgoodizerfan.feedback.core.FTuning;
+
 import io.github.soundgoodizerfan.feedback.Feedback;
 import io.github.soundgoodizerfan.feedback.combat.feel.CombatCues;
 import io.github.soundgoodizerfan.feedback.combat.feel.FeelTuning;
@@ -64,7 +68,7 @@ final class Advance {
             e.push(d.x * shove, 0.05, d.z * shove);
             e.hurtMarked = true;
             if (now % 10 == 0 && mine > theirs * 0.6)
-                stagger(p, e, mine * 9.8f * 0.5f);
+                stagger(p, e, new Work(mine * FTuning.GRAVITY_BLOCKS_PER_S2 * 0.5f));
         }
         if (now % 3 == 0) {
             Vec3 front = p.position().add(d.scale(0.9)).add(0, 0.8, 0);

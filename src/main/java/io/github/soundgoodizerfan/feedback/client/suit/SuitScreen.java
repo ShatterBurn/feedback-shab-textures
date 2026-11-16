@@ -216,7 +216,7 @@ final class SuitScreen extends Screen {
             return;
         float dur = stack.isDamageableItem() ? 1f - stack.getDamageValue() / (float) stack.getMaxDamage() : 1f;
         line(g, tx, ty, "screen.feedback.suit.fig.condition", Component.literal(Math.round(shown(dur, s) * 100) + "%"));
-        line(g, tx, ty + 11, "screen.feedback.suit.fig.mass", figure(f.get(Fig.MASS), "kg", 8f, 20f));
+        line(g, tx, ty + 11, "screen.feedback.suit.fig.mass", figure(f.get(Fig.MASS), "Mu", 8f, 20f));
         float drive = f.get(Fig.SUIT_DRIVE);
         line(g, tx, ty + 22, "screen.feedback.suit.fig.drive", drive > 0f ? figure(drive, "A", 11f, 33f) : Component.translatable("screen.feedback.suit.fig.none"));
         if (drive > 0f)

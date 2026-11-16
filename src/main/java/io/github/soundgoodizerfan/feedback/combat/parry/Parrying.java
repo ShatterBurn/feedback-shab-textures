@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.combat.parry;
 
+import io.github.soundgoodizerfan.feedback.core.unit.Work;
+
 import java.util.Optional;
 
 import io.github.soundgoodizerfan.feedback.Feedback;
@@ -282,8 +284,8 @@ public final class Parrying {
         if (source.getEntity() instanceof LivingEntity living && source.getDirectEntity() == living) {
             ModularFigures held = ModularStacks.figures(living.getMainHandItem());
             float impact = held != null && held.get(ModularFigures.Fig.IMPACT) > 0 ? held.get(ModularFigures.Fig.IMPACT)
-                    : amount * ParryTuning.JOULES_PER_DAMAGE;
-            CombatTicker.stagger(living, ParryTuning.staggerTicks(impact, ParryTuning.standInMass(living)), ParryTuning.STAGGER_SLOW);
+                    : amount * ParryTuning.WORK_PER_DAMAGE;
+            CombatTicker.stagger(living, ParryTuning.staggerTicks(new Work(impact), ParryTuning.standInMass(living)), ParryTuning.STAGGER_SLOW);
             Rearms.on(defender, Rearm.STAGGER);
         }
         if (defender instanceof ServerPlayer p)
@@ -322,7 +324,7 @@ public final class Parrying {
             Rearms.spend(defender, "slip");
             return;
         }
-        float impact = amount * ParryTuning.JOULES_PER_DAMAGE;
+        float impact = amount * ParryTuning.WORK_PER_DAMAGE;
         if (defender instanceof ServerPlayer p && io.github.soundgoodizerfan.feedback.combat.skill.Skills.unlocked(p, "riposte"))
             RIPOSTE_UNTIL.put(p.getUUID(), p.level().getGameTime() + ParryTuning.RIPOSTE_TICKS);
         // Roll With It: on the last tick the blow lands on the flat, and the excess goes into the attacker, not the weapon.
@@ -334,7 +336,7 @@ public final class Parrying {
                 impact = held.get(ModularFigures.Fig.IMPACT);
             if (direct == attacker) {
                 // STAND-IN mass: bounding-box volume times a density, for want of a mass on mobs (plan 5.18).
-                int ticks = Math.round(ParryTuning.staggerTicks(impact, ParryTuning.standInMass(living))
+                int ticks = Math.round(ParryTuning.staggerTicks(new Work(impact), ParryTuning.standInMass(living))
                         * Math.max(0f, 1 + io.github.soundgoodizerfan.feedback.combat.skill.Skills.modifier(defender,
                                 io.github.soundgoodizerfan.feedback.combat.skill.SkillTree.Figure.STAGGER_POWER)));
                 if (flat) {

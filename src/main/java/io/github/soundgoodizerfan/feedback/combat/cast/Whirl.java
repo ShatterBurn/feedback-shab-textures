@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.combat.cast;
 
+import io.github.soundgoodizerfan.feedback.core.unit.Work;
+
 import io.github.soundgoodizerfan.feedback.combat.feel.CombatCues;
 import io.github.soundgoodizerfan.feedback.combat.feel.FeelTuning;
 import io.github.soundgoodizerfan.feedback.combat.parry.ParryTuning;
@@ -39,7 +41,7 @@ final class Whirl {
             e.hurt(p.damageSources().playerAttack(p), damage * 0.8f);
             e.push(away.x * 0.5, 0.2, away.z * 0.5);
             e.hurtMarked = true;
-            stagger(p, e, damage * ParryTuning.JOULES_PER_DAMAGE);
+            stagger(p, e, new Work(damage * ParryTuning.WORK_PER_DAMAGE));
         }
         // the blade comes round in eight beats: a spoke from the body to the reach, a bright tip, and a wake behind it
         Vec3 c = p.position().add(0, 1, 0);

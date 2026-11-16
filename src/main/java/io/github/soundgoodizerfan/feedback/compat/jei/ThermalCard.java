@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.compat.jei;
 
+import io.github.soundgoodizerfan.feedback.core.FTuning;
+
 import io.github.soundgoodizerfan.feedback.machine.MachineTuning;
 import java.util.ArrayList;
 import java.util.List;
@@ -105,10 +107,10 @@ final class ThermalCard {
             var e = p.electrolysis().get();
             var feeds = e.feed().getStacks();
             if (feeds.length > 0)
-                in.fluid(feeds[0].getFluid(), 1000);
+                in.fluid(feeds[0].getFluid(), FTuning.BUCKET_MB);
             e.item().ifPresent(in::item);
             // The input is drawn as 1000 mB of feed, so a no-solute row's per-unit figures are shown for that litre.
-            int scale = e.item().isPresent() ? 1 : 1000;
+            int scale = e.item().isPresent() ? 1 : FTuning.BUCKET_MB;
             e.residue().ifPresent(r -> out.fluid(r.fluid(), Math.max(1, r.mb() * scale / r.per())));
             e.products().forEach(pr -> out.fluid(pr.fluid(), pr.mb() * scale));
             e.deposit().ifPresent(d -> out.item(d.stack()));
@@ -126,13 +128,13 @@ final class ThermalCard {
             var phase = p.phase().get();
             var liquids = phase.liquid().getStacks();
             if (liquids.length > 0)
-                in.fluid(liquids[0].getFluid(), 1000);
+                in.fluid(liquids[0].getFluid(), FTuning.BUCKET_MB);
             // The gas is an input too, so a lookup of its uses finds the condensing; the condensate is always an output.
             var gases = phase.gas().getStacks();
             if (gases.length > 0)
-                in.fluid(gases[0].getFluid(), 1000);
-            out.fluid(phase.gasFluid(), 1000);
-            out.fluid(phase.liquidFluid(), 1000);
+                in.fluid(gases[0].getFluid(), FTuning.BUCKET_MB);
+            out.fluid(phase.gasFluid(), FTuning.BUCKET_MB);
+            out.fluid(phase.liquidFluid(), FTuning.BUCKET_MB);
             return;
         }
         for (Ingredient input : p.inputs())
@@ -284,7 +286,7 @@ final class ThermalCard {
         // A form-agnostic row reads the form on display: the slot cycles through them and the hold follows.
         if (p.hasHold()) {
             int ticks = Math.round(shown == null ? p.requiredTpu() : p.requiredAt(shown.grain()));
-            rows.add(new Row(t("feedback.jei.hold"), ticks + " t (" + Readout.number(ticks / 20f) + " s)"
+            rows.add(new Row(t("feedback.jei.hold"), ticks + " t (" + Readout.number(ticks / FTuning.TICKS_PER_SECOND) + " s)"
                     + (shown == null ? "" : " " + shown.form().replace('_', ' ')), VALUE_COLOUR));
         }
         if (p.maxRateTuPerTick().tuPerTick() < Float.MAX_VALUE)

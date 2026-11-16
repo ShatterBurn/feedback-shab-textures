@@ -25,9 +25,9 @@ final class ShoveTuning {
     static final double TICK_SECONDS = 0.05;
     /** Safety clamp on one tick's impulse, N s, so a stalled solver can never be handed a huge one. */
     static final double MAX_IMPULSE = 2000;
-    /** Stamina per joule of work the push delivers (force times the distance the hand moves), capped per tick. */
+    /** Stamina per work of work the push delivers (force times the distance the hand moves), capped per tick. */
     static final double STAMINA_PER_WORK = 0.01, MAX_STAMINA_PER_TICK = 1.5;
-    /** Joules of work that pay Brute one point (decaying per body, see SkillTuning). */
+    /** Work of work that pay Brute one point (decaying per body, see SkillTuning). */
     static final double WORK_PER_POINT = 600;
 
     private ShoveTuning() {

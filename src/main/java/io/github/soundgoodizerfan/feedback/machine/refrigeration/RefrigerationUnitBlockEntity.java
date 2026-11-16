@@ -160,7 +160,7 @@ public class RefrigerationUnitBlockEntity extends ElectricNode implements Therma
         return scan == null ? java.util.List.of() : scan.openingAt();
     }
 
-    public float roomTemperature() {
+    public float roomTu() {
         return roomTu;
     }
 

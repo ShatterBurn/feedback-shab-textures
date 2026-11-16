@@ -65,7 +65,7 @@ public final class ModularTuning {
      * materials with nothing set for them. It was 1.4, fitted to nothing: an iron sword was 4.3.
      */
     public static final float DAMAGE_K = 1.8f;
-    /** Invented. What each test rig can distinguish: the Impact Pendulum's step in toughness, the Strike Post's in joules and in damage. */
+    /** Invented. What each test rig can distinguish: the Impact Pendulum's step in toughness, the Strike Post's in work and in damage. */
     public static final float PENDULUM_STEP = 5f, POST_JOULE_STEP = 0.5f, POST_DAMAGE_STEP = 0.5f;
     /** Dig speed per unit of blow, fitted to an iron pickaxe that digs near 6. */
     public static final float DIG_K = 2f;
@@ -137,11 +137,11 @@ public final class ModularTuning {
     public static final float MAGAZINE_LITRES_PER_BOLT = 0.04f;
     // --- the spring gun ({@link SpringGunSpec}) ---------------------------------------------------
 
-    /** Placeholder [OPEN]. Joules a spring stores per litre of spring times its stock's yield strength (wrought iron 8: two 0.05 L wires store 120 J). */
+    /** Placeholder [OPEN]. Work a spring stores per litre of spring times its stock's yield strength (wrought iron 8: two 0.05 L wires store 120 J). */
     public static final float AIR_JOULES_PER_LS = 150f;
-    /** Placeholder [OPEN]. Joules per litre of receiver times its yield strength that the mount holds before the spring takes a set. */
+    /** Placeholder [OPEN]. Work per litre of receiver times its yield strength that the mount holds before the spring takes a set. */
     public static final float AIR_RATING_PER_LS = 150f;
-    /** Placeholder [OPEN]. Joules of spring a wielder of strength 1 cocks per tick: the cocking time is the stored energy over this. */
+    /** Placeholder [OPEN]. Work of spring a wielder of strength 1 cocks per tick: the cocking time is the stored energy over this. */
     public static final float AIR_COCK_J_PER_TICK = 5f;
     public static final float AIR_COCK_MIN_TICKS = 12f, AIR_COCK_MAX_TICKS = 200f;
     /** Placeholder [OPEN]. The share of its energy that the push can give the piston and pellet at best, before the barrel and bore take theirs. */
@@ -154,8 +154,8 @@ public final class ModularTuning {
     public static final float AIR_PELLET_LENGTHS = 1.5f;
     /** Litres of metal in one nugget (1 Qu, 16 mB): how many pellets of a bore it is worth. */
     public static final float AIR_NUGGET_LITRES = 0.016f;
-    /** Placeholder [OPEN]. Hit damage per joule the pellet carries, and the fastest one leaves, in blocks per tick (a vanilla bow's arrow: 3). */
-    public static final float AIR_DAMAGE_PER_J = 0.5f, AIR_SPEED_MAX = 4.5f, AIR_BOW_ARROW_SPEED = 3f;
+    /** Placeholder [OPEN]. The share of a pellet's work that becomes damage (above 1: a pellet's own work is far too small to hurt at the shared rate, so its spring work wants raising and this lowering), and the fastest one leaves, in blocks per tick (a vanilla bow's arrow: 3). */
+    public static final float AIR_DAMAGE_EFFICIENCY = 5f, AIR_SPEED_MAX = 4.5f, AIR_BOW_ARROW_SPEED = 3f;
     /** Placeholder [OPEN]. The reference pellet metal's density (iron, kg per litre) the baked velocity figure reads. */
     public static final float AIR_REF_DENSITY = 7.87f;
     /** Placeholder [OPEN]. The shot's inaccuracy at a barrel as long as {@link #AIR_LENGTH_HALF}; a longer barrel shoots truer. */
@@ -166,8 +166,8 @@ public final class ModularTuning {
 
     // --- the pulse gun (ElectricGunSpec); every figure a placeholder [OPEN] -------------------------------
 
-    /** Joules a seat of ampacity 1 (copper) can expel in one pulse at most: the ceiling the three power tiers are fractions of. */
-    public static final float EGUN_SEAT_CEIL_J = 400f;
+    /** Work a seat of ampacity 1 (copper) can expel in one pulse at most: the ceiling the three power tiers are fractions of. */
+    public static final float EGUN_SEAT_CEIL_WORK = 400f;
     /** The share of that ceiling Light, Standard and Heavy take. */
     public static final float[] EGUN_TIER_FRACTION = {0.4f, 0.7f, 1.0f};
     /** Share of a pulse a barrel of ampacity 1 takes out of it (and turns to heat), and the most any barrel takes. */
@@ -176,10 +176,12 @@ public final class ModularTuning {
     public static final float EGUN_BARREL_HEAT_PER_LOSS = 2f;
     /** How far the bore's width moves a pulse's damage (and its cone) across the bore axis's range: narrow is below 1, wide above. */
     public static final float EGUN_BORE_SPAN = 0.4f;
-    /** Damage a joule of pulse does, and the joules one Eu of a cell's charge is worth. */
+    /** Damage a work of pulse does, and the work one Eu of a cell's charge is worth. */
     /** A pulse's recoil impulse per hit damage to the 1.5: half of a powder round's (0.29). */
     public static final float EGUN_RECOIL_PER_HIT = 0.145f;
-    public static final float EGUN_DAMAGE_PER_J = 0.03f, EGUN_J_PER_EU = 0.5f;
+    /** The share of a pulse's work that becomes damage (a point is {@code ParryTuning.WORK_PER_DAMAGE}); and the work one Eu of a cell's charge is worth. */
+    public static final float EGUN_DAMAGE_EFFICIENCY = 0.3f, EGUN_WORK_PER_EU = 0.5f;
+    public static final float EGUN_DAMAGE_PER_WORK = EGUN_DAMAGE_EFFICIENCY / io.github.soundgoodizerfan.feedback.combat.parry.ParryTuning.WORK_PER_DAMAGE;
     /** The cell voltage a seat's refill rate is measured against, and the one the Blueprint Table assumes. */
     public static final io.github.soundgoodizerfan.feedback.core.unit.VoltageBand EGUN_REF_BAND = io.github.soundgoodizerfan.feedback.core.unit.VoltageBand.MV;
     /** Cutoff range in blocks: a base, and per metre of barrel; each power tier above Light adds this share. */
@@ -246,8 +248,8 @@ public final class ModularTuning {
     public static final float EGUN_FORK_RANGE = 6f, EGUN_FORK_SHARE = 0.6f;
     /** A wet wielder's arc fork reaches this far for everything wet, with this share of the pulse. */
     public static final float EGUN_WET_FORK_RANGE = 8f, EGUN_WET_FORK_SHARE = 0.5f;
-    /** Shock: the extra share of the hit a wet or metal-armoured target takes, and the ticks of stagger per joule. */
-    public static final float EGUN_SHOCK_BONUS = 0.5f, EGUN_STAGGER_TICKS_PER_J = 0.05f;
+    /** Shock: the extra share of the hit a wet or metal-armoured target takes, and the ticks of stagger per work. */
+    public static final float EGUN_SHOCK_BONUS = 0.5f, EGUN_STAGGER_TICKS_PER_WORK = 0.05f;
     /** Scope zoom charge: ticks of aiming to full, the extra cutoff range and the share the cone closes at full. */
     public static final int EGUN_ZOOM_TICKS = 40;
     public static final float EGUN_ZOOM_RANGE = 0.5f, EGUN_ZOOM_TIGHT = 0.5f;
@@ -274,14 +276,14 @@ public final class ModularTuning {
     /** Mixed blocks: the reflectivity of dark stone, dirt, wood, wool, ice, tinted glass and anything else. */
     public static final float BLOCK_REFLECT_STONE = 0.12f, BLOCK_REFLECT_DIRT = 0.03f, BLOCK_REFLECT_WOOD = 0.08f, BLOCK_REFLECT_WOOL = 0.02f,
             BLOCK_REFLECT_ICE = 0.3f, BLOCK_REFLECT_TINTED = 0.45f, BLOCK_REFLECT_OTHER = 0.1f;
-    /** Malefic lens: blast radius per square root of a pulse's joules and its bounds, the hit against a plain pulse's, the explosion power per block of radius, and the cap on what the wielder takes. */
-    public static final float EGUN_MALEFIC_RADIUS_PER_SQRT_J = 0.35f, EGUN_MALEFIC_RADIUS_MIN = 1.5f, EGUN_MALEFIC_RADIUS_MAX = 6f,
+    /** Malefic lens: blast radius per square root of a pulse's work and its bounds, the hit against a plain pulse's, the explosion power per block of radius, and the cap on what the wielder takes. */
+    public static final float EGUN_MALEFIC_RADIUS_PER_SQRT_WORK = 0.35f, EGUN_MALEFIC_RADIUS_MIN = 1.5f, EGUN_MALEFIC_RADIUS_MAX = 6f,
             EGUN_MALEFIC_DAMAGE_MULT = 1.6f, EGUN_MALEFIC_POWER_PER_RADIUS = 0.45f, EGUN_MALEFIC_SELF_CAP = 0.75f;
     /**
-     * Shock lead: blocks of line a metre of reel holds, the joules a line of ampacity 1 can carry, Eu a tick drawn while the plug is in, the
+     * Shock lead: blocks of line a metre of reel holds, the work a line of ampacity 1 can carry, Eu a tick drawn while the plug is in, the
      * share of the draw that reaches the body, the hurt of a line shorted through the wielder's own water, and the most ticks a charge builds.
      */
-    public static final float EGUN_LEAD_PER_M = 1f, EGUN_LEAD_CAP_J = 90f, EGUN_LEAD_EU_PER_TICK = 6f, EGUN_LEAD_EFFICIENCY = 0.7f, EGUN_LEAD_SHORT_DAMAGE = 3f;
+    public static final float EGUN_LEAD_PER_M = 1f, EGUN_LEAD_CAP_WORK = 90f, EGUN_LEAD_EU_PER_TICK = 6f, EGUN_LEAD_EFFICIENCY = 0.7f, EGUN_LEAD_SHORT_DAMAGE = 3f;
     public static final int EGUN_LEAD_MAX_TICKS = 100;
     /** Extra share of a shot's energy a tether lead of copper (conductivity x ampacity 1) costs; the loss is this over conductivity x ampacity, kept between the floor and the ceiling. */
     public static final float EGUN_TETHER_LOSS = 0.1f, EGUN_TETHER_LOSS_MIN = 0.03f, EGUN_TETHER_LOSS_MAX = 0.75f;
@@ -1198,8 +1200,8 @@ public final class ModularTuning {
      * cools slowly. Tuned so a six-point blow warms a steel-faced shield a couple of Tu and a thin
      * wooden one ten times that.
      */
-    public static final float SHIELD_WORK_PER_DAMAGE = 40f, SHIELD_HEAT_FRACTION = 0.5f,
-            SHIELD_THERMAL_MASS_PER_MU = 12f, SHIELD_COOLING_WORK_PER_TICK = 9f;
+    public static final float SHIELD_WORK_PER_DAMAGE = io.github.soundgoodizerfan.feedback.combat.parry.ParryTuning.WORK_PER_DAMAGE, SHIELD_HEAT_FRACTION = 0.5f,
+            SHIELD_THERMAL_MASS_PER_MU = 3f, SHIELD_COOLING_WORK_PER_TICK = 2.25f;
 
     /**
      * Invented. Capacity holds in full up to this share of the way from the room to the face's

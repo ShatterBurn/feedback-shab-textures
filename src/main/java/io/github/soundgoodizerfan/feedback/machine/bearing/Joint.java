@@ -595,7 +595,7 @@ public final class Joint {
             impulse = roadImpulse;
             roadImpulse = 0;
         }
-        return (float) (facingSign * (impulse / Math.max(ticks / 20.0, 1e-6) + gravityTorque) * io.github.soundgoodizerfan.feedback.core.unit.Units.SU_PER_KPG_TORQUE);
+        return (float) (facingSign * (impulse / Math.max(ticks / FTuning.TICKS_PER_SECOND, 1e-6) + gravityTorque) * io.github.soundgoodizerfan.feedback.core.unit.Units.SU_PER_KPG_TORQUE);
     }
 
     /** The body's spin about the facing relative to its parent's, rad/s (positive about the positive axis). */

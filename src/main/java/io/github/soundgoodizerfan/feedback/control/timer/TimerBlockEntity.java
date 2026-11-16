@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.control.timer;
 
+import io.github.soundgoodizerfan.feedback.core.FTuning;
+
 import io.github.soundgoodizerfan.feedback.control.ControlTuning;
 import io.github.soundgoodizerfan.feedback.control.Switchable;
 import io.github.soundgoodizerfan.feedback.registry.FBlockEntities;
@@ -52,9 +54,9 @@ public class TimerBlockEntity extends BlockEntity {
         int ticks = ControlTuning.TIMER_SETTINGS.get(setting);
         java.util.List<Component> options = new java.util.ArrayList<>();
         for (int t : ControlTuning.TIMER_SETTINGS)
-            options.add(Component.literal(String.format("%.0f s", t / 20f)));
+            options.add(Component.literal(String.format("%.0f s", t / FTuning.TICKS_PER_SECOND)));
         io.github.soundgoodizerfan.feedback.net.AimPayloads.modes(player, getBlockState().getBlock().getName(), options, setting,
-                Component.translatable("feedback.timer.setting", String.format("%.0f", ticks / 20f)));
+                Component.translatable("feedback.timer.setting", String.format("%.0f", ticks / FTuning.TICKS_PER_SECOND)));
     }
 
     private void start() {

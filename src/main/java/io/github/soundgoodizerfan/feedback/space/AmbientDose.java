@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.space;
 
+import io.github.soundgoodizerfan.feedback.core.FTuning;
+
 import dev.ryanhcode.sable.companion.SableCompanion;
 import dev.ryanhcode.sable.sublevel.ServerSubLevel;
 import io.github.soundgoodizerfan.feedback.Feedback;
@@ -43,7 +45,7 @@ public final class AmbientDose {
         float open = Radiation.openShare(p.level(), centre, materials);
         float passes = Radiation.shield(p, materials)
                 * io.github.soundgoodizerfan.feedback.potion.Ward.passes(p, io.github.soundgoodizerfan.feedback.potion.Ward.Hazard.RADIATION);
-        float seconds = HazardTuning.RAD_INTERVAL_TICKS / 20f;
+        float seconds = HazardTuning.RAD_INTERVAL_TICKS / FTuning.TICKS_PER_SECOND;
         p.setData(FCombat.RADIATION_DOSE, p.getData(FCombat.RADIATION_DOSE) + sky * open * passes * seconds);
     }
 }

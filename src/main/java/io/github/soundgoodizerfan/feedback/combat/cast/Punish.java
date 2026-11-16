@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.combat.cast;
 
+import io.github.soundgoodizerfan.feedback.core.unit.Work;
+
 import io.github.soundgoodizerfan.feedback.combat.state.CombatPhase;
 import io.github.soundgoodizerfan.feedback.combat.state.CombatState;
 import io.github.soundgoodizerfan.feedback.weapon.GunItem;
@@ -42,7 +44,7 @@ final class Punish {
         float damage = (float) p.getAttributeValue(Attributes.ATTACK_DAMAGE);
         t.invulnerableTime = 0;
         t.hurt(p.damageSources().playerAttack(p), damage * 2.2f);
-        stagger(p, t, damage * 2f * 10f);
+        stagger(p, t, new Work(damage * 2f * 10f));
         p.swing(InteractionHand.MAIN_HAND, true);
         CastFx.clip(p, "one_handed_stab", CastFx.MAIN, 12, 3);
         ServerLevel lv = p.serverLevel();

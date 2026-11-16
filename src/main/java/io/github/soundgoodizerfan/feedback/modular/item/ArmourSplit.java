@@ -95,6 +95,6 @@ public final class ArmourSplit {
         }
         if (conduct > 0f)
             wearer.hurt(Hazards.source(level, Hazards.HOT_CONTACT),
-                    conduct * ModularTuning.FIRE_SOAK_PER_CONDUCT * ModularTuning.FIRE_SOAK_INTERVAL / 20f);
+                    conduct * ModularTuning.FIRE_SOAK_PER_CONDUCT * ModularTuning.FIRE_SOAK_INTERVAL / FTuning.TICKS_PER_SECOND);
     }
 }

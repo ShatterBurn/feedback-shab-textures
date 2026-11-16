@@ -2,6 +2,10 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.combat.cast;
 
+import io.github.soundgoodizerfan.feedback.core.unit.Work;
+
+import io.github.soundgoodizerfan.feedback.core.FTuning;
+
 import io.github.soundgoodizerfan.feedback.Feedback;
 import io.github.soundgoodizerfan.feedback.combat.feel.CombatCues;
 import io.github.soundgoodizerfan.feedback.combat.feel.FeelTuning;
@@ -71,14 +75,14 @@ final class QuakeLeap {
             return;
         LEAPING.remove(p.getUUID());
         double fall = Math.max(0.5, air[0] - p.getY() + 1.5);
-        float joules = (float) ((BodyMass.of(p) + BodyMass.armour(p)) * 9.8 * fall);
+        float work = (float) ((BodyMass.of(p) + BodyMass.armour(p)) * FTuning.GRAVITY_BLOCKS_PER_S2 * fall);
         ServerLevel level = p.serverLevel();
         for (LivingEntity e : near(p, p.position(), 4.5)) {
             Vec3 away = e.position().subtract(p.position()).multiply(1, 0, 1);
             away = away.lengthSqr() < 1e-6 ? Vec3.ZERO : away.normalize();
             e.push(away.x * 0.6, 0.35, away.z * 0.6);
             e.hurtMarked = true;
-            stagger(p, e, joules);
+            stagger(p, e, new Work(work));
         }
         Vec3 land = p.position().add(0, 0.1, 0);
         CastFx.smash(level, land, 750, fall > 5);

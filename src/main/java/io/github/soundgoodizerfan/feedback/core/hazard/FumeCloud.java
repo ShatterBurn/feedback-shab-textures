@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.core.hazard;
 
+import io.github.soundgoodizerfan.feedback.core.FTuning;
+
 import io.github.soundgoodizerfan.feedback.Feedback;
 import io.github.soundgoodizerfan.feedback.combat.skill.Skills;
 import io.github.soundgoodizerfan.feedback.process.Material;
@@ -109,7 +111,7 @@ public final class FumeCloud {
 
     private static void dose(ServerLevel level, LivingEntity victim, int cloudLevel, long now) {
         CompoundTag data = victim.getPersistentData();
-        float seconds = (now - data.getLong(AT)) / 20f;
+        float seconds = (now - data.getLong(AT)) / FTuning.TICKS_PER_SECOND;
         float before = Math.max(0f, data.getFloat(EXPOSURE) - seconds * HazardTuning.FUME_CLOUD_DECAY_PER_SECOND);
         float after = before + cloudLevel * HazardTuning.FUME_CLOUD_DOSE_PER_LEVEL * Skills.fumeShare(victim);
         data.putFloat(EXPOSURE, after);

@@ -31,7 +31,7 @@ public class FoodServerData implements IServerDataProvider<BlockAccessor> {
             data.putFloat(SEALING, vessel.leastSterile());
         }
         if (accessor.getBlockEntity() instanceof IceBoxBlockEntity box) {
-            data.putFloat(BOX, box.boxTemperature());
+            data.putFloat(BOX, box.boxTu());
             // 2 pumped, 1 melting ice, 0 neither: it is drifting to the room.
             data.putInt(HOLD, box.pumped() ? 2 : box.hasCold() ? 1 : 0);
         }
@@ -74,7 +74,7 @@ public class FoodServerData implements IServerDataProvider<BlockAccessor> {
             if (unit.roomVolume() > 0)
             {
                 var room = new net.minecraft.nbt.ListTag();
-                for (float f : new float[] {unit.roomVolume(), unit.roomOpenings(), unit.roomTemperature(), unit.roomLeak(), unit.staged() ? 1f : 0f})
+                for (float f : new float[] {unit.roomVolume(), unit.roomOpenings(), unit.roomTu(), unit.roomLeak(), unit.staged() ? 1f : 0f})
                     room.add(net.minecraft.nbt.FloatTag.valueOf(f));
                 data.put(ROOM, room);
             }

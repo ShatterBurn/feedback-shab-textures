@@ -124,7 +124,7 @@ public final class SkillEarning {
             award(player, home, key, SkillTuning.HIT);
             paid.add(home);
         }
-        if (damage * io.github.soundgoodizerfan.feedback.combat.parry.ParryTuning.JOULES_PER_DAMAGE >= SkillTuning.BRUTE_HIT_J && paid.add(BRUTE))
+        if (damage * io.github.soundgoodizerfan.feedback.combat.parry.ParryTuning.WORK_PER_DAMAGE >= SkillTuning.BRUTE_HIT_WORK && paid.add(BRUTE))
             award(player, BRUTE, key, SkillTuning.NATURE_HIT);
         if (last != null && now - last <= SkillTuning.CHAIN_TICKS && paid.add(ONSLAUGHT))
             award(player, ONSLAUGHT, key, SkillTuning.NATURE_HIT);

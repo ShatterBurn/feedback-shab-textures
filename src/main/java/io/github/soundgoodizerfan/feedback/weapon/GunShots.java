@@ -116,7 +116,7 @@ public final class GunShots {
 
         /** Momentum now, kg m/s: velocity is blocks a tick, so twenty metres a second per unit. */
         float momentum() {
-            return massMu * (float) velocity.length() * 20f;
+            return massMu * (float) velocity.length() * FTuning.TICKS_PER_SECOND;
         }
 
         /** Give up {@code work}: the speed falls to what the energy left says. @return whether enough is left to fly on. */

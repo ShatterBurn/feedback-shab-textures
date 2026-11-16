@@ -505,9 +505,9 @@ public final class ElectricMachineTuning {
 
     public static final float RELAY_CONDITION_FLOOR = 0.2f;
 
-    public static final float ENVELOPE_ABSOLUTE_OFFSET = 273f;
+    public static final float ENVELOPE_ABSOLUTE_ZERO_TU = 273f;
 
-    public static final float ENVELOPE_PU_PER_ATMOSPHERE = 1f;
+    public static final float ENVELOPE_AMBIENT_PU = 1f;
 
     public static final ThermalMass ENVELOPE_MASS = new ThermalMass(20f);
 

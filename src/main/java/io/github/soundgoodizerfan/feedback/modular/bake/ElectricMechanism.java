@@ -57,7 +57,7 @@ public final class ElectricMechanism implements GunMechanism {
     }
 
     /** The next shot, worked out and not yet spent. */
-    private record Prepared(ElectricGunSpec spec, ModularElectricGun.Source source, CompoundTag drawn, io.github.soundgoodizerfan.feedback.core.unit.VoltageBand band, float joules,
+    private record Prepared(ElectricGunSpec spec, ModularElectricGun.Source source, CompoundTag drawn, io.github.soundgoodizerfan.feedback.core.unit.VoltageBand band, float work,
                             float holdShare, float zoomShare, float power, float heatAfter, GunFigures figures) {
     }
 
@@ -142,12 +142,12 @@ public final class ElectricMechanism implements GunMechanism {
             default -> {
             }
         }
-        float joules = spec.pulseJ() * spec.seatMult() * power * spin;
+        float work = spec.pulseWork() * spec.seatMult() * power * spin;
         // The draw: the pulse's energy in Eu; a weak cell gives the share it has.
-        float needed = joules / ModularTuning.EGUN_J_PER_EU * (1f + spec.tetherLoss());
+        float needed = work / ModularTuning.EGUN_WORK_PER_EU * (1f + spec.tetherLoss());
         float took = BatteryStack.draw(drawn, needed);
         float fraction = needed <= 0f ? 0f : took / needed;
-        joules *= fraction;
+        work *= fraction;
         ModularFigures baked = ModularStacks.figures(gun);
         float gunKg = baked == null || baked.get(ModularFigures.Fig.MASS) <= 0f ? spec.barrelMass() : baked.get(ModularFigures.Fig.MASS);
         float rate = spec.governor() == Governor.THROTTLE ? 1f - Mth.clamp(heat * spec.sense(), 0f, 1f) * (1f - ModularTuning.EGUN_THROTTLE_FLOOR) : 1f;
@@ -156,14 +156,14 @@ public final class ElectricMechanism implements GunMechanism {
         float spreadMult = spec.darkAt() > 0f && shooter.level().getMaxLocalRawBrightness(shooter.blockPosition()) <= spec.darkAt()
                 ? 1f - spec.darkCut() : 1f;
         // A worn receiver delivers less and sprays wider, as a worn bore does.
-        GunFigures figures = spec.figures(joules, gunKg, ticks, zoomShare, spreadMult).aged(GunCondition.condition(gun), 0f);
+        GunFigures figures = spec.figures(work, gunKg, ticks, zoomShare, spreadMult).aged(GunCondition.condition(gun), 0f);
         if (shooter instanceof Player player) {
             figures = ModularTraits.gunAimed(player, gun, figures);
             if (GunItem.dualWielding(player))
                 figures = figures.oneHanded();
         }
         figures = figures.withCycle(1f / Haste.rate(shooter));
-        return new Prepared(spec, source, drawn, band, joules, holdShare, zoomShare, power, Math.min(1.5f, heat + gain), figures);
+        return new Prepared(spec, source, drawn, band, work, holdShare, zoomShare, power, Math.min(1.5f, heat + gain), figures);
     }
 
     @Override
@@ -205,13 +205,13 @@ public final class ElectricMechanism implements GunMechanism {
             case CYLINDER -> ModularElectricGun.setChambers(gun, ModularElectricGun.chambers(gun, now, spec, band, cells) - 1f, now);
             case CAPACITOR_BANK -> ModularElectricGun.spendPip(gun, now, 1, spec.bankRechargeTicks(cells));
             case BURST_BANK -> ModularElectricGun.spendPip(gun, now, ModularTuning.GUN_BURST_ROUNDS, spec.bankRechargeTicks(cells));
-            case RECOIL_DYNAMO -> BatteryStack.store(p.drawn(), p.joules() * ModularTuning.EGUN_DYNAMO_RETURN / ModularTuning.EGUN_J_PER_EU);
+            case RECOIL_DYNAMO -> BatteryStack.store(p.drawn(), p.work() * ModularTuning.EGUN_DYNAMO_RETURN / ModularTuning.EGUN_WORK_PER_EU);
             case THERMOPILE -> {
                 // The sink soaks the barrel's heat and the pile turns the difference back into charge, until the sink is full.
                 float soak = ModularElectricGun.soak(gun, now);
                 float share = spec.pileShare(ModularElectricGun.heat(gun, level), soak);
                 if (share > 0f) {
-                    BatteryStack.store(p.drawn(), p.joules() * share / ModularTuning.EGUN_J_PER_EU);
+                    BatteryStack.store(p.drawn(), p.work() * share / ModularTuning.EGUN_WORK_PER_EU);
                     ModularElectricGun.setSoak(gun, soak + spec.soakPerShot(), now);
                 }
             }
@@ -238,18 +238,18 @@ public final class ElectricMechanism implements GunMechanism {
         if (blasted && spec.pumpLever() < 1f)
             GunCondition.misuse(gun, ModularTuning.EGUN_PUMP_LEVER_WEAR * (1f - spec.pumpLever()));
         if (blasted)
-            pumpBlast(level, shooter, ModularTuning.EGUN_PUMP_BLAST_MULT * spec.damage(spec.delivered(p.joules())));
+            pumpBlast(level, shooter, ModularTuning.EGUN_PUMP_BLAST_MULT * spec.damage(spec.delivered(p.work())));
         else if (spec.seat() == Seat.CORE_BREECH) {
             // The one seat whose shot is a slow gout of heat, not a beam: pellets with a splitter, else one big one.
             float widen = 1f + ModularTuning.EGUN_PUMP_SPREAD * pumps;
             int beams = spec.beams() > 0 ? spec.beams() + Math.round(spec.beams() * ModularTuning.EGUN_PUMP_BEAMS * pumps) : 1;
             float cone = beams > 1 ? ModularTuning.EGUN_SPLIT_DEG_PER_BEAM * beams * widen : figures.spreadDeg() * widen;
-            HeatPellets.launch(level, shooter, spec.delivered(p.joules()), spec.cutoff(p.zoomShare()) * ModularTuning.EGUN_CORE_RANGE, beams, cone, yaw, pitch, ModularElectricGun.colourOf(gun));
+            HeatPellets.launch(level, shooter, spec.delivered(p.work()), spec.cutoff(p.zoomShare()) * ModularTuning.EGUN_CORE_RANGE, beams, cone, yaw, pitch, ModularElectricGun.colourOf(gun));
         } else {
             // Each pump widens the spread; a splitter also throws more beams, the way buckshot throws more pellets.
             float widen = 1f + ModularTuning.EGUN_PUMP_SPREAD * pumps;
             int beams = spec.beams() > 0 ? spec.beams() + Math.round(spec.beams() * ModularTuning.EGUN_PUMP_BEAMS * pumps) : 0;
-            PulseShot.fire(level, shooter, gun, new PulseShot.Plan(spec.delivered(p.joules()), spec.cutoff(p.zoomShare()), spec.pierce(p.holdShare()),
+            PulseShot.fire(level, shooter, gun, new PulseShot.Plan(spec.delivered(p.work()), spec.cutoff(p.zoomShare()), spec.pierce(p.holdShare()),
                     ModularElectricGun.colourOf(gun), beams, spec.fork(), spec.seat() == Seat.CYLINDER, band, figures.spreadDeg() * widen, widen, spec.style(),
                     spec.bounces(p.holdShare()), spec.coherence(), spec.malefic()), yaw, pitch);
         }
@@ -321,9 +321,9 @@ public final class ElectricMechanism implements GunMechanism {
         ElectricGunSpec spec = ModularElectricGun.specOf(gun);
         if (spec == null)
             return false;
-        float joules = spec.pulseJ() * spec.seatMult();
-        GunFigures figures = spec.figures(joules, spec.barrelMass(), spec.cycleTicks(false), 0f, 1f);
-        PulseShot.fire(level, mob, gun, new PulseShot.Plan(spec.delivered(joules), spec.cutoff(0f), spec.pierce(0f), ModularElectricGun.colourOf(gun),
+        float work = spec.pulseWork() * spec.seatMult();
+        GunFigures figures = spec.figures(work, spec.barrelMass(), spec.cycleTicks(false), 0f, 1f);
+        PulseShot.fire(level, mob, gun, new PulseShot.Plan(spec.delivered(work), spec.cutoff(0f), spec.pierce(0f), ModularElectricGun.colourOf(gun),
                 spec.beams(), spec.fork(), spec.seat() == Seat.CYLINDER, ModularTuning.EGUN_REF_BAND, figures.spreadDeg(), 1f, spec.style(),
                 spec.bounces(0f), spec.coherence(), spec.malefic()), yaw, pitch);
         GunShots.report(level, mob, figures, gun, mob.getEyePosition().add(Vec3.directionFromRotation(pitch, yaw).scale(0.4)));

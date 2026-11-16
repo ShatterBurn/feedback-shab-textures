@@ -15,7 +15,7 @@ public final class GunFuTuning {
     /** Factor Heavy Butt puts on a pistol-whip's knockback; [OPEN] stand-in until played. */
     public static final float HEAVY_BUTT_KNOCK = 1.5f;
     public static final double MUZZLE_RANGE = 3.0;
-    /** STAND-IN: joules of stagger-impact a kg m/s of the round's impulse carries (the kick's own impact over mass then reads it). */
+    /** STAND-IN: work of stagger-impact a kg m/s of the round's impulse carries (the kick's own impact over mass then reads it). */
     public static final float MUZZLE_JOULES_PER_IMPULSE = 40f;
 
     /** Bayonet Drill: damage per point of the bayonet material's hardness, within the bounds, and ticks per ms of the gun's own cycle. */

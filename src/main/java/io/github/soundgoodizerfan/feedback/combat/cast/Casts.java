@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.combat.cast;
 
+import io.github.soundgoodizerfan.feedback.core.unit.Work;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -238,9 +240,9 @@ public final class Casts {
                 e -> e != p && e.isAlive() && !e.isSpectator() && !p.isAlliedTo(e));
     }
 
-    /** A stagger from {@code joules} of impact on {@code target}, by the same ratio a kick uses; true if it landed. */
-    static boolean stagger(ServerPlayer p, LivingEntity target, float joules) {
-        int ticks = ParryTuning.staggerTicks(joules, BodyMass.of(target) + BodyMass.armour(target));
+    /** A stagger from {@code work} of impact on {@code target}, by the same ratio a kick uses; true if it landed. */
+    static boolean stagger(ServerPlayer p, LivingEntity target, Work work) {
+        int ticks = ParryTuning.staggerTicks(work, BodyMass.of(target) + BodyMass.armour(target));
         if (ticks <= 0)
             return false;
         CombatTicker.stagger(target, ticks, ParryTuning.STAGGER_SLOW);

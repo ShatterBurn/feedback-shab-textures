@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.modular.trait;
 
+import io.github.soundgoodizerfan.feedback.core.FTuning;
+
 import io.github.soundgoodizerfan.feedback.core.thermal.AmbientTable;
 import io.github.soundgoodizerfan.feedback.weapon.GunCondition;
 import io.github.soundgoodizerfan.feedback.weapon.GunFigures;
@@ -35,7 +37,7 @@ public class GunResonance implements ModularTrait {
 
     @Override
     public GunFigures gunAimed(Player shooter, ItemStack gun, GunFigures f, Params p) {
-        float speed = f.muzzleSpeed() * 20f, tuned = tunedMs(gun);
+        float speed = f.muzzleSpeed() * FTuning.TICKS_PER_SECOND, tuned = tunedMs(gun);
         if (speed <= 0f || tuned <= 0f)
             return f;
         float off = Math.abs((float) Math.log(speed / tuned)) * HandlingPhysics.resonanceDetune(GunFitting.of(gun, "resonance_weight"));

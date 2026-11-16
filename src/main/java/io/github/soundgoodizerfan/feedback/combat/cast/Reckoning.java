@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.combat.cast;
 
+import io.github.soundgoodizerfan.feedback.core.unit.Work;
+
 import io.github.soundgoodizerfan.feedback.combat.feel.CombatCues;
 import io.github.soundgoodizerfan.feedback.combat.feel.FeelTuning;
 import io.github.soundgoodizerfan.feedback.combat.parry.ParryTuning;
@@ -58,7 +60,7 @@ final class Reckoning {
         bank[0] = 0;
         t.invulnerableTime = 0;
         t.hurt(p.damageSources().playerAttack(p), damage);
-        stagger(p, t, damage * ParryTuning.JOULES_PER_DAMAGE * 2f);
+        stagger(p, t, new Work(damage * ParryTuning.WORK_PER_DAMAGE * 2f));
         p.swing(InteractionHand.MAIN_HAND, true);
         CastFx.clip(p, "two_handed_slash_vertical_left", CastFx.TWO, 16, 4);
         ServerLevel lv = p.serverLevel();

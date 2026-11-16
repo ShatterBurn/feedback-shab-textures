@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.combat.skill;
 
+import io.github.soundgoodizerfan.feedback.core.unit.Work;
+
 import io.github.soundgoodizerfan.feedback.core.thermal.ThermalTuning;
 import io.github.soundgoodizerfan.feedback.Feedback;
 import io.github.soundgoodizerfan.feedback.combat.parry.ParryTuning;
@@ -83,7 +85,7 @@ public final class Weakness {
     /** Right tool: the share a blow of a class the creature is weak to adds ([OPEN]). */
     static final float RIGHT_TOOL = 0.3f;
     static final float WEAPON_DEFAULT = 4.5f, WEAPON_BARE = 1f, PIECE_PER_DEFENCE = 0.75f;
-    /** Joules a point of blow damage carries into a pressure point's stagger. */
+    /** Work a point of blow damage carries into a pressure point's stagger. */
     static final float PRESSURE_JOULES_PER_DAMAGE = 20f;
 
     /** The words {@link #openings} and {@link #gunWords} use, in bit order for {@code SizeUpPayload}. */
@@ -498,7 +500,7 @@ public final class Weakness {
             }
             if (Skills.unlocked(p, "pressure_point") && (words.contains("staggered") || words.contains("just swung"))) {
                 float mass = BodyMass.of(t) + BodyMass.armour(t);
-                int ticks = ParryTuning.staggerTicks(event.getAmount() * mult * PRESSURE_JOULES_PER_DAMAGE, mass);
+                int ticks = ParryTuning.staggerTicks(new Work(event.getAmount() * mult * PRESSURE_JOULES_PER_DAMAGE), mass);
                 if (ticks > 0) {
                     CombatTicker.stagger(t, ticks, ParryTuning.STAGGER_SLOW);
                     Rearms.on(p, SkillTree.Rearm.STAGGER);

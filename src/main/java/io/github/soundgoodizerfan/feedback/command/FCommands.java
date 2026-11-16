@@ -80,6 +80,7 @@ public final class FCommands {
         dispatcher.register(Commands.literal("feedback").requires(s -> s.hasPermission(2))
                 .then(Commands.literal("blueprint").executes(FCommands::blueprintOf))
                 .then(Commands.literal("space")
+                        .then(Commands.literal("probe").executes(FCommands::spaceProbe))
                         .then(Commands.literal("send").executes(c -> space(c, 0, 0)))
                         .then(Commands.literal("back").executes(c -> space(c, 1, 0)))
                         .then(Commands.literal("scale")
@@ -127,6 +128,22 @@ public final class FCommands {
 
     private static final SimpleCommandExceptionType NO_BODY =
             new SimpleCommandExceptionType(Component.translatable("commands.feedback.space.no_body"));
+
+    /** What the crossing trigger sees for the body you stand on or look at. */
+    private static int spaceProbe(CommandContext<CommandSourceStack> c) throws CommandSyntaxException {
+        var player = c.getSource().getPlayerOrException();
+        var body = io.github.soundgoodizerfan.feedback.space.SpaceTravel.bodyOf(player);
+        if (body == null)
+            throw NO_BODY.create();
+        var level = player.serverLevel();
+        double y = body.logicalPose().position().y();
+        String line = String.format("body y %.1f, density there %.3f, held %d ticks, level %s, Shelf loaded %s, body removed %s",
+                y, io.github.soundgoodizerfan.feedback.vehicle.AirDensityTable.at(level, y),
+                io.github.soundgoodizerfan.feedback.space.SpaceTrigger.held(body.getUniqueId()), level.dimension().location(),
+                level.getServer().getLevel(io.github.soundgoodizerfan.feedback.space.SpaceTravel.SHELF) != null, body.isRemoved());
+        c.getSource().sendSuccess(() -> Component.literal(line), false);
+        return 1;
+    }
 
     /** {@code what}: 0 send, 1 back, 2 scale to {@code k}. Acts on the body the player stands on or looks at. */
     private static int space(CommandContext<CommandSourceStack> c, int what, double k) throws CommandSyntaxException {

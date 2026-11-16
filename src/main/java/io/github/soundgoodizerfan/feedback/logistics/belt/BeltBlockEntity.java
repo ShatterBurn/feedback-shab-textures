@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.logistics.belt;
 
+import io.github.soundgoodizerfan.feedback.core.FTuning;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -133,7 +135,7 @@ public class BeltBlockEntity extends ElectricNode implements Wearing, io.github.
     public void pass(long time) {
         passed++;
         float since = Math.max(1, time - rateAt);
-        rate = rate * Math.max(0f, 1f - since / LogisticsTuning.COUNTER_WINDOW_TICKS) + 1f * 20f / LogisticsTuning.COUNTER_WINDOW_TICKS;
+        rate = rate * Math.max(0f, 1f - since / LogisticsTuning.COUNTER_WINDOW_TICKS) + 1f * FTuning.TICKS_PER_SECOND / LogisticsTuning.COUNTER_WINDOW_TICKS;
         rateAt = time;
     }
 
