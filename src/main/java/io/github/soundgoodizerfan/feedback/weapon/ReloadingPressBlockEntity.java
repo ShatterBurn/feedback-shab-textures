@@ -26,7 +26,7 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * The Reloading Press: four slots (case, charge, projectile, and the round that comes out) and
+ * The Reloading Press: slots for the case, two charges, a bullet, a core, a payload, a fuse, and the round that comes out and
  * a die set, which is the bore it seats for. Pulling the lever {@link #seat} <em>seats whatever
  * is in it</em> -- the press never names a cartridge (machines define operations, not recipes),
  * and never knows when a charge is enough: it seats the count that is in the slot, up to what a

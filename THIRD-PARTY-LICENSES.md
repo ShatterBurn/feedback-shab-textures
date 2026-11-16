@@ -566,6 +566,14 @@ choice and not a number. **Rejected:** dice-roll failure chances (Feedback fails
 per-shell explosion power (power is derived from the filler's blend, `Cartridge.Blend`), fuse sliders and
 config toggles, the per-block armour table (the blast uses vanilla blast resistance).
 
+Read again 2026-11-16 (commit `46a5d2a`) for lobbed shells, fuze kinds and cluster bursts. **Taken (design
+only, no code):** a fuse as a part that carries its own kind and delay and answers the flight's events
+(`Cartridge.Fuse`, `GunShots.step`: a timer, a stop, a hit a body is passed through by, a sensing sweep ahead of
+the shell); inertia (fires on penetration) and proximity (arm time, then a look ahead) as fuse kinds; a cluster
+shell bursting into its pellets (`GunShots.scatter`, as swept shots, not an entity of sub-projectiles). **Rejected:**
+every per-id property sheet, flat per-shell power and damage, slider-set fuzes and config chances, dice-roll misfire
+and squib, whole-gun destruction, charge count as speed. CBC has no rockets, motors or non-powder seats: those took nothing.
+
 ## Silent Gear, Tinkers' Construct and Tetra (modular items, 2026-10-15/16)
 
 Read for the modular items design (the `modular/` package), after the author named the
