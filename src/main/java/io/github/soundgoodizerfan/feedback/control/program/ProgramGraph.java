@@ -148,7 +148,7 @@ public record ProgramGraph(List<ProgramNode> nodes, List<ProgramVariable> variab
      * spec's port types. A Number comes from a reading {@link SensorNode}, a {@link MathNode}, or a
      * Number-typed {@link DelayNode}/{@link ReadNode}; a Boolean from a {@link ComparatorNode}, a
      * {@link LogicNode}, a switch's own state read back, or a Boolean-typed delay/read. Comparator
-     * and math ports take Numbers, logic ports and a write's trigger Booleans, a delay its own type, a
+     * and math ports take Numbers, logic ports and a write's trigger Booleans, a delay its own type on its data port and a Number on its tick-count port, a
      * write's value port its variable's type, and an actuator either -- a number only moves an
      * analog vehicle part, at run time. Two {@link SensorNode}s feeding the same comparator must
      * also share a {@link io.github.soundgoodizerfan.feedback.instrument.Quantity} once both are linked
@@ -171,7 +171,7 @@ public record ProgramGraph(List<ProgramNode> nodes, List<ProgramVariable> variab
         if (target instanceof ActuatorNode)
             return number || bool ? Optional.empty() : Optional.of("type_mismatch");
         if (target instanceof DelayNode delay)
-            return (delay.type() == ValueType.NUMBER ? number : bool) ? Optional.empty() : Optional.of("type_mismatch");
+            return (slot == 1 || delay.type() == ValueType.NUMBER ? number : bool) ? Optional.empty() : Optional.of("type_mismatch");
         if (target instanceof WriteNode write) {
             if (slot == 1)
                 return bool ? Optional.empty() : Optional.of("type_mismatch");

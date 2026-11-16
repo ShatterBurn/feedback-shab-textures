@@ -699,6 +699,8 @@ public final class ProgramEditor {
 
     /** Wires {@code fromId}'s output into {@code toId}'s port {@code slot}, refusing anything {@link ProgramGraph#findError} would refuse at print. */
     private void connect(int toId, int slot, int fromId) {
+        if (literalBox != null && literalNodeId == toId)
+            closeLiteralBox();
         ProgramNode to = graph.find(toId).orElse(null);
         ProgramNode from = graph.find(fromId).orElse(null);
         if (to == null || from == null || toId == fromId)
@@ -969,8 +971,8 @@ public final class ProgramEditor {
                     : row == 1 && lx > 6 && n.rightInput() == ProgramNode.UNWIRED ? () -> openLiteralBox(n) : null;
             case LogicNode n -> row == 0 && Math.abs(lx - NODE_W / 2.0) <= 12 ? () -> cycleOp(n) : null;
             case DelayNode n -> row == 0 && Math.abs(lx - NODE_W / 2.0) <= 18 ? () -> toggleType(n)
-                    : row == 1 && lx > 6 ? () -> cycleLength(n)
-                    : row == 2 && lx > 6 ? () -> openLiteralBox(n) : null;
+                    : row == 1 && lx > 6 && !n.countWired() ? () -> cycleLength(n)
+                    : row == 2 && lx > 6 && !n.countWired() ? () -> openLiteralBox(n) : null;
             case ReadNode n -> row == 0 && lx > 6 ? () -> cycleVariable(n) : null;
             case WriteNode n -> row == 0 && lx > 6 ? () -> cycleVariable(n) : null;
             case MathNode n -> row == 0 && Math.abs(lx - NODE_W / 2.0) <= 9 ? () -> cycleOp(n)
@@ -1030,7 +1032,7 @@ public final class ProgramEditor {
     /** A Delay's type decides which wires it accepts, so wires the new type refuses are cut. */
     private void toggleType(DelayNode n) {
         pushUndo();
-        replaceNode(new DelayNode(n.id(), n.input(), n.type().next(), n.ticks()));
+        replaceNode(new DelayNode(n.id(), n.input(), n.type().next(), n.ticks(), n.ticksInput()));
         pruneBadWires();
     }
 
@@ -1041,7 +1043,7 @@ public final class ProgramEditor {
             if (named[i] == n.ticks())
                 next = (i + 1) % named.length;
         pushUndo();
-        replaceNode(new DelayNode(n.id(), n.input(), n.type(), named[next]));
+        replaceNode(new DelayNode(n.id(), n.input(), n.type(), named[next], n.ticksInput()));
     }
 
     /** Click steps a Read or Write card through the declared variables; its pin types follow, so refused wires are cut. */
@@ -1209,7 +1211,7 @@ public final class ProgramEditor {
                     setError("bad_delay");
                 else if (ticks != d.ticks()) {
                     pushUndo();
-                    replaceNode(new DelayNode(d.id(), d.input(), d.type(), ticks));
+                    replaceNode(new DelayNode(d.id(), d.input(), d.type(), ticks, d.ticksInput()));
                 }
                 closeLiteralBox();
                 return;
@@ -1716,9 +1718,12 @@ public final class ProgramEditor {
                 int cx = NODE_W / 2;
                 graphics.fill(cx - 18, HEADER_H + 2, cx + 18, HEADER_H + ROW_H, COLOR_NODE_BORDER);
                 graphics.drawCenteredString(font, typeLabel(n.type()), cx, rowTextY(0), typeColor(n.type()));
-                graphics.drawString(font, Component.translatable("feedback.programmer.delay_length", n.ticks(), seconds(n.ticks())),
-                        8, rowTextY(1), COLOR_TEXT, false);
-                if (!(literalBox != null && literalNodeId == n.id())) {
+                if (n.countWired())
+                    graphics.drawString(font, Component.translatable("feedback.programmer.delay_count"), 8, rowTextY(1), COLOR_MUTED, false);
+                else
+                    graphics.drawString(font, Component.translatable("feedback.programmer.delay_length", n.ticks(), seconds(n.ticks())),
+                            8, rowTextY(1), COLOR_TEXT, false);
+                if (!n.countWired() && !(literalBox != null && literalNodeId == n.id())) {
                     Component typed = Component.translatable("feedback.programmer.delay_typed");
                     graphics.drawString(font, typed, 8, rowTextY(2), COLOR_MUTED, false);
                     graphics.fill(8, rowTextY(2) + 9, 8 + font.width(typed), rowTextY(2) + 10, COLOR_MUTED);
@@ -1807,7 +1812,7 @@ public final class ProgramEditor {
         return switch (node) {
             case ComparatorNode n -> quantityColor(inputQuantity(g, n));
             case MathNode ignored -> COLOR_NUMBER_UNKNOWN;
-            case DelayNode d -> typeColor(d.type());
+            case DelayNode d -> slot == 1 ? COLOR_NUMBER_UNKNOWN : typeColor(d.type());
             case WriteNode w -> slot == 0 ? typeColor(g.variableType(w.variable()).orElse(null)) : COLOR_BOOLEAN;
             default -> COLOR_BOOLEAN;
         };
