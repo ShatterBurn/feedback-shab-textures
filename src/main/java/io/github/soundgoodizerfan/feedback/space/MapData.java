@@ -59,7 +59,8 @@ public final class MapData extends SavedData {
         for (int x = 2; x < 16; x += 4)
             for (int z = 2; z < 16; z += 4) {
                 int y = chunk.getHeight(Heightmap.Types.WORLD_SURFACE, x, z);
-                at.set(pos.getMinBlockX() + x, Math.max(level.getMinBuildHeight(), y - 1), pos.getMinBlockZ() + z);
+                // getHeight is already the top block's y.
+                at.set(pos.getMinBlockX() + x, Math.max(level.getMinBuildHeight(), y), pos.getMinBlockZ() + z);
                 count[chunk.getBlockState(at).getMapColor(level, at).id]++;
             }
         int best = 0;
