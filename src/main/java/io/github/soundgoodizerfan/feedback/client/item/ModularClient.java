@@ -71,7 +71,32 @@ public final class ModularClient {
             // The hafted tool is drawn as its front face's tool: 1 plus the place of the face's head kind in ModularFaces.KINDS.
             net.minecraft.client.renderer.item.ItemProperties.register(FModular.HAFTED_TOOL.get(), Feedback.id("face"),
                     (stack, level, entity, seed) -> face(stack));
+            registerDraw();
         });
+    }
+
+    /** The vanilla bow and crossbow model predicates, read off the modular bow's and crossbow's own draw time. */
+    private static void registerDraw() {
+        var bow = FModular.BOW.get();
+        net.minecraft.client.renderer.item.ItemProperties.register(bow, net.minecraft.resources.ResourceLocation.withDefaultNamespace("pull"), (stack, level, entity, seed) ->
+                entity == null || entity.getUseItem() != stack ? 0f
+                        : (stack.getUseDuration(entity) - entity.getUseItemRemainingTicks())
+                                / (ModularStacks.drawTicks(stack) * io.github.soundgoodizerfan.feedback.modular.combat.RangedDispatch.drawScale(stack)));
+        net.minecraft.client.renderer.item.ItemProperties.register(bow, net.minecraft.resources.ResourceLocation.withDefaultNamespace("pulling"), (stack, level, entity, seed) ->
+                entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1f : 0f);
+        var crossbow = FModular.CROSSBOW.get();
+        net.minecraft.client.renderer.item.ItemProperties.register(crossbow, net.minecraft.resources.ResourceLocation.withDefaultNamespace("pull"), (stack, level, entity, seed) ->
+                entity == null || entity.getUseItem() != stack || net.minecraft.world.item.CrossbowItem.isCharged(stack) ? 0f
+                        : (stack.getUseDuration(entity) - entity.getUseItemRemainingTicks())
+                                / (net.minecraft.world.item.CrossbowItem.getChargeDuration(stack, entity)
+                                        * io.github.soundgoodizerfan.feedback.modular.combat.RangedDispatch.drawScale(stack)));
+        net.minecraft.client.renderer.item.ItemProperties.register(crossbow, net.minecraft.resources.ResourceLocation.withDefaultNamespace("pulling"), (stack, level, entity, seed) ->
+                entity != null && entity.isUsingItem() && entity.getUseItem() == stack && !net.minecraft.world.item.CrossbowItem.isCharged(stack) ? 1f : 0f);
+        net.minecraft.client.renderer.item.ItemProperties.register(crossbow, net.minecraft.resources.ResourceLocation.withDefaultNamespace("charged"), (stack, level, entity, seed) ->
+                net.minecraft.world.item.CrossbowItem.isCharged(stack) ? 1f : 0f);
+        net.minecraft.client.renderer.item.ItemProperties.register(crossbow, net.minecraft.resources.ResourceLocation.withDefaultNamespace("firework"), (stack, level, entity, seed) ->
+                stack.getOrDefault(net.minecraft.core.component.DataComponents.CHARGED_PROJECTILES, net.minecraft.world.item.component.ChargedProjectiles.EMPTY)
+                        .contains(net.minecraft.world.item.Items.FIREWORK_ROCKET) ? 1f : 0f);
     }
 
     private static float face(ItemStack stack) {
@@ -131,7 +156,9 @@ public final class ModularClient {
         if (type == null)
             return 0xFFFFFFFF;
         List<String> order = type.order();
-        ModularDesign.Part part = layer < order.size() ? design.part(order.get(layer)) : null;
+        // A role with no sprite layer (layer 9) is not drawn, so a layer past the drawn roles (a nocked arrow) stays untinted.
+        ModularDesign.Part part = layer < order.size() && type.roles().get(order.get(layer)).layer() < 9
+                ? design.part(order.get(layer)) : null;
         return part == null ? 0xFFFFFFFF : 0xFF000000 | MaterialColors.of(part.material());
     }
 }
