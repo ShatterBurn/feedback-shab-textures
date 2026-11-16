@@ -1,0 +1,10 @@
+{
+  "parent": "minecraft:item/crossbow",
+  "textures": {
+    "layer0": "feedback:item/modular/crossbow_p2_0",
+    "layer1": "feedback:item/modular/crossbow_p2_1",
+    "layer2": "feedback:item/modular/crossbow_p2_2",
+    "layer3": "feedback:item/modular/crossbow_p2_3",
+    "layer4": "feedback:item/modular/crossbow_arrow"
+  }
+}

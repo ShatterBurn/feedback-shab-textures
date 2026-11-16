@@ -1,7 +1,29 @@
 {
-  "parent": "item/handheld",
+  "parent": "minecraft:item/bow",
   "textures": {
     "layer0": "feedback:item/modular/bow_0",
     "layer1": "feedback:item/modular/bow_1"
-  }
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "pulling": 1
+      },
+      "model": "feedback:item/bow_pulling_0"
+    },
+    {
+      "predicate": {
+        "pulling": 1,
+        "pull": 0.65
+      },
+      "model": "feedback:item/bow_pulling_1"
+    },
+    {
+      "predicate": {
+        "pulling": 1,
+        "pull": 0.9
+      },
+      "model": "feedback:item/bow_pulling_2"
+    }
+  ]
 }
