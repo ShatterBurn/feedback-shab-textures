@@ -137,10 +137,18 @@ public final class FCommands {
             throw NO_BODY.create();
         var level = player.serverLevel();
         double y = body.logicalPose().position().y();
-        String line = String.format("body y %.1f, density there %.3f, held %d ticks, level %s, Shelf loaded %s, body removed %s",
-                y, io.github.soundgoodizerfan.feedback.vehicle.AirDensityTable.at(level, y),
-                io.github.soundgoodizerfan.feedback.space.SpaceTrigger.held(body.getUniqueId()), level.dimension().location(),
-                level.getServer().getLevel(io.github.soundgoodizerfan.feedback.space.SpaceTravel.SHELF) != null, body.isRemoved());
+        var vel = dev.ryanhcode.sable.api.sublevel.ServerSubLevelContainer.getContainer(level).physicsSystem()
+                .getPhysicsHandle(body).getLinearVelocity(new org.joml.Vector3d());
+        double speed = vel.length(), mass = body.getMassTracker().getMass();
+        double density = io.github.soundgoodizerfan.feedback.vehicle.AirDensityTable.at(level, y);
+        org.joml.Vector3d along = speed < 1e-3 ? new org.joml.Vector3d(0, 1, 0)
+                : body.logicalPose().transformNormalInverse(new org.joml.Vector3d(vel).div(speed), new org.joml.Vector3d());
+        double area = io.github.soundgoodizerfan.feedback.vehicle.AirDrag.area(body, along);
+        double k = io.github.soundgoodizerfan.feedback.vehicle.VehicleTuning.AIR_DRAG;
+        String line = String.format("y %.1f, density %.3f, held %d, speed %.1f b/s, mass %.0f, area %.2f blocks2, drag %.0f N, weight %.0f N, terminal %.0f b/s",
+                y, density, io.github.soundgoodizerfan.feedback.space.SpaceTrigger.held(body.getUniqueId()), speed, mass, area,
+                k * density * area * speed * speed, mass * io.github.soundgoodizerfan.feedback.core.FTuning.GRAVITY_BLOCKS_PER_S2,
+                Math.sqrt(mass * io.github.soundgoodizerfan.feedback.core.FTuning.GRAVITY_BLOCKS_PER_S2 / Math.max(1e-6, k * density * area)));
         c.getSource().sendSuccess(() -> Component.literal(line), false);
         return 1;
     }

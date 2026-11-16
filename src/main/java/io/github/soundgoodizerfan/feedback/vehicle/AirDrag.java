@@ -49,22 +49,7 @@ public final class AirDrag {
             double density = AirDensityTable.at(level, body.logicalPose().position().y());
             Vector3d back = body.logicalPose().transformNormalInverse(new Vector3d(vel).div(speed), new Vector3d()).negate();
             ForceTotal force = new ForceTotal();
-            // Drag follows the body's cross-section facing its motion, whatever it carries. A body of micro
-            // cells counts its voxels (a cube's face of them); any other body counts the face of its plot
-            // box, so size and not a flat constant decides how fast it falls.
-            int voxels = 0;
-            for (BlockEntitySubLevelActor a : body.getPlot().getBlockEntityActors())
-                if (a instanceof MicroCellBlockEntity cell)
-                    voxels += cell.voxelCount();
-            double area;
-            if (voxels > 0) {
-                area = Math.pow(voxels, 2.0 / 3) / (MicroCellBlockEntity.N * MicroCellBlockEntity.N);
-            } else {
-                var box = body.getPlot().getBoundingBox();
-                double dx = box.maxX() - box.minX() + 1, dy = box.maxY() - box.minY() + 1, dz = box.maxZ() - box.minZ() + 1;
-                area = Math.abs(back.x) * dy * dz + Math.abs(back.y) * dx * dz + Math.abs(back.z) * dx * dy;
-            }
-            double drag = VehicleTuning.AIR_DRAG * area;
+            double drag = VehicleTuning.AIR_DRAG * area(body, back);
             if (density > 0) {
                 Vector3d pushed = new Vector3d(back).mul(Math.min(drag * density * speed * speed * dt, mass * speed));
                 force.applyLinearImpulse(pushed);
@@ -80,6 +65,22 @@ public final class AirDrag {
                 force.applyLinearImpulse(new Vector3d(back).mul((speed - ceiling) * mass));
             handle.applyForcesAndReset(force);
         }
+    }
+
+    /**
+     * The cross-section (blocks^2) {@code body} presents along {@code along}, a direction in the body's own frame: a body of micro cells
+     * counts its voxels (a cube's face of them), any other body the face of its plot box.
+     */
+    public static double area(ServerSubLevel body, Vector3d along) {
+        int voxels = 0;
+        for (BlockEntitySubLevelActor a : body.getPlot().getBlockEntityActors())
+            if (a instanceof MicroCellBlockEntity cell)
+                voxels += cell.voxelCount();
+        if (voxels > 0)
+            return Math.pow(voxels, 2.0 / 3) / (MicroCellBlockEntity.N * MicroCellBlockEntity.N);
+        var box = body.getPlot().getBoundingBox();
+        double dx = box.maxX() - box.minX() + 1, dy = box.maxY() - box.minY() + 1, dz = box.maxZ() - box.minZ() + 1;
+        return Math.abs(along.x) * dy * dz + Math.abs(along.y) * dx * dz + Math.abs(along.z) * dx * dy;
     }
 
     private static boolean hasThruster(ServerSubLevel body) {
