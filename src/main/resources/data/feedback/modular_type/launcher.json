@@ -70,11 +70,11 @@
           "scales": true
         },
         "bore": {
-          "min": 3.125,
-          "max": 15.625,
+          "min": 5,
+          "max": 15,
           "unit": "mm",
-          "default": 9.375,
-          "step": 3.125
+          "default": 9,
+          "step": 1
         }
       },
       "part": {

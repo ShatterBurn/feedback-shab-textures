@@ -19,7 +19,7 @@ import io.github.soundgoodizerfan.feedback.modular.bake.ModularBake;
 import io.github.soundgoodizerfan.feedback.modular.bake.ModularFigures;
 import io.github.soundgoodizerfan.feedback.modular.bake.ModularFigures.Fig;
 import io.github.soundgoodizerfan.feedback.modular.bake.ModularTuning;
-import io.github.soundgoodizerfan.feedback.modular.bake.SpringGunSpec;
+import io.github.soundgoodizerfan.feedback.modular.bake.LauncherSpec;
 import io.github.soundgoodizerfan.feedback.modular.combat.RangedDispatch;
 import io.github.soundgoodizerfan.feedback.modular.combat.ShieldHeat;
 import io.github.soundgoodizerfan.feedback.modular.combat.Throwing;
@@ -318,7 +318,7 @@ final class WeaponUses {
     // --- spring gun: pellet -------------------------------------------------------------------------------------
 
     private static List<Use> spring(ModularDesign d, ModularType t, Map<ResourceLocation, Material> mats) {
-        return SpringGunSpec.of(d, t, mats)
+        return LauncherSpec.of(d, t, mats)
                 .<List<Use>>map(s -> List.of(fixed("spring.damage", s.shot(ModularTuning.AIR_REF_DENSITY, 0f).damage(), "%.2f")))
                 .orElse(List.of());
     }

@@ -20,7 +20,7 @@ import io.github.soundgoodizerfan.feedback.modular.bake.ElectricGunSpec;
 import io.github.soundgoodizerfan.feedback.modular.bake.FigureStore;
 import io.github.soundgoodizerfan.feedback.modular.bake.ModularBake;
 import io.github.soundgoodizerfan.feedback.modular.bake.ModularTuning;
-import io.github.soundgoodizerfan.feedback.modular.bake.SpringGunSpec;
+import io.github.soundgoodizerfan.feedback.modular.bake.LauncherSpec;
 import io.github.soundgoodizerfan.feedback.modular.bench.PartBenchShaping;
 import io.github.soundgoodizerfan.feedback.modular.part.ModularBed;
 import io.github.soundgoodizerfan.feedback.modular.trait.ModularTraits;
@@ -247,7 +247,7 @@ public record ModularType(Family family, Slot slot, List<Mine> mines, float stri
         PROPELLER,
         /** A suit upgrade module ({@code suit_module}): casing, wiring and a core cut in the shape that names what it does. Made at the Tool Table, then held whole in an armour piece's upgrade role ({@link ModularNest}); its bake is {@link ModularBake#suitModule}. No wear bar of its own. */
         SUIT_MODULE,
-        /** A spring-piston air gun ({@code spring_gun}): cocked by hand, it throws a metal pellet with a spring's stored energy. Not a {@link #GUN}: nothing in it ignites powder. Its bake is {@link SpringGunSpec}. */
+        /** A spring-piston air gun ({@code spring_gun}): cocked by hand, it throws a metal pellet with a spring's stored energy. Not a {@link #GUN}: nothing in it ignites powder. Its bake is {@link LauncherSpec}. */
         AIR_GUN,
         /** A pulse gun ({@code electric_gun}): a pulse barrel and a battery seat fed from a swappable battery in the item (or worn, with a tether lead). Not a {@link #GUN}: nothing in it ignites powder. Its bake is {@link ElectricGunSpec}. */
         ELECTRIC_GUN,

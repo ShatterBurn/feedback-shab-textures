@@ -104,7 +104,7 @@ public class FCreativeTabs {
     // ---- Weapons & Combat ----
 
     /** Ranged, simple to advanced: bows, spring, powder, electric. */
-    private static final List<DeferredItem<?>> RANGED = of(FModular.BOW, FModular.CROSSBOW, FModular.SPRING_GUN,
+    private static final List<DeferredItem<?>> RANGED = of(FModular.BOW, FModular.CROSSBOW, FModular.LAUNCHER,
             FWeapons.GUN, FModular.ELECTRIC_GUN);
 
     private static final List<DeferredItem<?>> MELEE_AND_DEFENCE = of(FModular.SHIELD, FItems.WHIPLASH,

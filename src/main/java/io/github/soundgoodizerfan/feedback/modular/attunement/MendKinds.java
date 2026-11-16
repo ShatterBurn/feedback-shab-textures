@@ -95,7 +95,7 @@ public final class MendKinds {
         if (weapon.isDamageableItem())
             weapon.setDamageValue(Math.min(weapon.getMaxDamage() - 1, weapon.getDamageValue() + level * TITHE_WEAR_PER_LEVEL));
         else if (weapon.has(FWeapons.GUN_WEAR.get()) || weapon.getItem() instanceof io.github.soundgoodizerfan.feedback.weapon.GunItem
-                || weapon.getItem() instanceof io.github.soundgoodizerfan.feedback.modular.item.ModularSpringGun)
+                || weapon.getItem() instanceof io.github.soundgoodizerfan.feedback.modular.item.ModularLauncher)
             weapon.set(FWeapons.GUN_WEAR.get(), GunCondition.wear(weapon) + level * TITHE_GUN_WEAR_PER_LEVEL);
     }
 }

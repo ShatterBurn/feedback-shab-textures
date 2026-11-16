@@ -66,7 +66,7 @@ for f in sorted((R / "data/feedback/modular_type").glob("*.json")):
         for v in part.get("variants", []):
             want(f"modular.feedback.variant.{v['name']}", f"{n} variant")
             want(f"modular.feedback.desc.variant.{v['name']}", f"{n} variant")
-            if rid == d.get("wear_role") and d.get("names", {}).get("designations") and d.get("family") not in ("gun", "flintlock", "spring_gun"):  # named in an automatic build name
+            if rid == d.get("wear_role") and d.get("names", {}).get("designations") and d.get("family") not in ("gun", "flintlock", "launcher"):  # named in an automatic build name
                 want(f"modular.feedback.archetype.{v['name']}", f"{n} variant")
             for t in traits(v):
                 want(f"modular.feedback.desc.trait.{t}", f"{n} variant {v['name']}")

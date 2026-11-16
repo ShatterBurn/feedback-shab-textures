@@ -261,8 +261,8 @@ public final class ModularBake {
             case ELECTRIC_GUN -> !type.roles().get(roleKey).name().equals(ElectricGunSpec.SEAT) || material.ampacity().isPresent();
             case AIR_GUN -> {
                 String name = type.roles().get(roleKey).name();
-                yield name.equals(SpringGunSpec.RECEIVER) || (engineMetal(material)
-                        && (!name.equals(SpringGunSpec.SPRING) || material.mechanical().yieldStrength().isPresent()));
+                yield name.equals(LauncherSpec.RECEIVER) || (engineMetal(material)
+                        && (!name.equals(LauncherSpec.SPRING) || material.mechanical().yieldStrength().isPresent()));
             }
             case CHARGE -> wear || !io.github.soundgoodizerfan.feedback.weapon.Blast.isFiller(type, roleKey) || material.propellant().isPresent();
             default -> true;
@@ -938,19 +938,23 @@ public final class ModularBake {
                 f.put(Fig.JOINT, string > 0 ? drive / (ModularTuning.STRING_SHARE * string) * (1f - ModularTuning.BINDING_JOINT_RELIEF * bind) : 0f);
             }
             case AIR_GUN -> {
-                Optional<SpringGunSpec> spec = SpringGunSpec.of(design, type, materials);
+                Optional<LauncherSpec> spec = LauncherSpec.of(design, type, materials);
                 if (spec.isEmpty())
                     return Optional.empty();
                 float total = 0;
                 for (Part p : design.parts())
                     total += mass(type.roles().get(p.role()), p, by.get(p.role()));
-                SpringGunSpec air = spec.get();
+                LauncherSpec air = spec.get();
                 f.put(Fig.MASS, total);
                 f.put(Fig.SPRING_ENERGY, air.energy() * worn);
                 f.put(Fig.AIR_EFFICIENCY, air.efficiency());
                 f.put(Fig.VELOCITY, air.shot(ModularTuning.AIR_REF_DENSITY, 1f - worn).speed() / ModularTuning.AIR_BOW_ARROW_SPEED);
                 f.put(Fig.DRAW, air.cockTicks());
                 f.put(Fig.JOINT, air.load(0f));
+                // The shared gun figures at a reference shell: what the gun pipeline reads (cycle, kick, sound, the HUD).
+                float refKg = air.pelletLitres() * ModularTuning.AIR_REF_DENSITY;
+                f.putAll(air.figures(refKg, 0f, total, 1f).figs());
+                f.put(Fig.MASS, total);
             }
             case ELECTRIC_GUN -> {
                 Optional<ElectricGunSpec> spec = ElectricGunSpec.of(design, type, materials);

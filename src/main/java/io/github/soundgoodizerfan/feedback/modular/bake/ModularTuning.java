@@ -135,7 +135,7 @@ public final class ModularTuning {
     public static final float COOLING_SHED_PER_LS = 120f;
     /** Placeholder [OPEN]. Litres of magazine that hold one bolt (a repeater's load is the magazine's volume over this). */
     public static final float MAGAZINE_LITRES_PER_BOLT = 0.04f;
-    // --- the spring gun ({@link SpringGunSpec}) ---------------------------------------------------
+    // --- the spring gun ({@link LauncherSpec}) ---------------------------------------------------
 
     /** Placeholder [OPEN]. Work a spring stores per litre of spring times its stock's yield strength (wrought iron 8: two 0.05 L wires store 120 J). */
     public static final float AIR_JOULES_PER_LS = 150f;

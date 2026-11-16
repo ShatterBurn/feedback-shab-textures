@@ -53,7 +53,7 @@ public final class ModularClient {
         event.registerItem(new io.github.soundgoodizerfan.feedback.client.robot.RobotItemRenderer.Extension(), FModular.ROBOT.get());
         event.registerItem(new io.github.soundgoodizerfan.feedback.client.gun.GunRenderer.Extension(),
                 io.github.soundgoodizerfan.feedback.registry.FWeapons.GUN.get(), io.github.soundgoodizerfan.feedback.registry.FWeapons.FLINTLOCK.get(),
-                io.github.soundgoodizerfan.feedback.registry.FModular.ELECTRIC_GUN.get());
+                io.github.soundgoodizerfan.feedback.registry.FModular.ELECTRIC_GUN.get(), io.github.soundgoodizerfan.feedback.registry.FModular.LAUNCHER.get());
     }
 
     /**

@@ -1,7 +1,7 @@
 {
   "type": "feedback:bootstrap_specimen",
   "category": "equipment",
-  "modular_type": "feedback:spring_gun",
+  "modular_type": "feedback:launcher",
   "material": "feedback:iron",
   "pattern": [
     "IIS",

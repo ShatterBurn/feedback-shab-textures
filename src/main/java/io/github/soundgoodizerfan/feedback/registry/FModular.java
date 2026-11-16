@@ -127,8 +127,8 @@ public final class FModular {
     /** A spring-piston air gun: a gas gun, not yet a {@code GunItem}. Cocked by hand, throws a metal pellet. */
     public static final DeferredItem<io.github.soundgoodizerfan.feedback.modular.item.ModularElectricGun> ELECTRIC_GUN = ITEMS.register("electric_gun",
             () -> new io.github.soundgoodizerfan.feedback.modular.item.ModularElectricGun(ModularStacks.properties()));
-    public static final DeferredItem<io.github.soundgoodizerfan.feedback.modular.item.ModularSpringGun> SPRING_GUN = ITEMS.register("spring_gun",
-            () -> new io.github.soundgoodizerfan.feedback.modular.item.ModularSpringGun(ModularStacks.properties()));
+    public static final DeferredItem<io.github.soundgoodizerfan.feedback.modular.item.ModularLauncher> LAUNCHER = ITEMS.register("launcher",
+            () -> new io.github.soundgoodizerfan.feedback.modular.item.ModularLauncher(ModularStacks.properties()));
     /** A placed explosive made of a casing and its filler (guns spec 13.4a). Not a tool: no durability. */
     public static final DeferredItem<io.github.soundgoodizerfan.feedback.weapon.ModularCharge> CHARGE = ITEMS.register("charge",
             () -> new io.github.soundgoodizerfan.feedback.weapon.ModularCharge(new Item.Properties().stacksTo(16)));

@@ -27,7 +27,7 @@ import io.github.soundgoodizerfan.feedback.modular.type.ModularType;
  * @param rating     work the receiver holds before the spring takes a set.
  * @param cock       multiple of the cocking time (a mainspring attuned to release lets go sooner).
  */
-public record SpringGunSpec(float energy, float pistonMass, float boreMm, float lengthM, float rating, float cock) {
+public record LauncherSpec(float energy, float pistonMass, float boreMm, float lengthM, float rating, float cock) {
 
     /** Share of the stored energy a level of store adds to the mainspring; share of the cocking time a level of release cuts, and the least left. [OPEN] until played */
     private static final float STORE_PER_LEVEL = 0.12f, RELEASE_PER_LEVEL = 0.12f, COCK_FLOOR = 0.4f;
@@ -46,7 +46,7 @@ public record SpringGunSpec(float energy, float pistonMass, float boreMm, float 
     }
 
     /** The spec of {@code design}, or empty if it lacks a spring, a piston, a barrel or a receiver, or a material is unknown. */
-    public static Optional<SpringGunSpec> of(ModularDesign design, ModularType type, Map<ResourceLocation, Material> materials) {
+    public static Optional<LauncherSpec> of(ModularDesign design, ModularType type, Map<ResourceLocation, Material> materials) {
         float energy = 0, rating = 0, piston = 0, bore = 0, length = 0;
         boolean spring = false, pist = false, barrel = false, receiver = false;
         for (ModularDesign.Part p : design.parts()) {
@@ -85,7 +85,7 @@ public record SpringGunSpec(float energy, float pistonMass, float boreMm, float 
         energy *= 1f + STORE_PER_LEVEL * store;
         float cock = Math.max(COCK_FLOOR, 1f - RELEASE_PER_LEVEL * release);
         return spring && pist && barrel && receiver && bore > 0 && length > 0
-                ? Optional.of(new SpringGunSpec(energy, piston, bore, length, rating, cock)) : Optional.empty();
+                ? Optional.of(new LauncherSpec(energy, piston, bore, length, rating, cock)) : Optional.empty();
     }
 
     /** Share of the spring's energy that reaches the pellet and piston: a longer barrel keeps the push, a wider bore wastes it. */
@@ -120,6 +120,35 @@ public record SpringGunSpec(float energy, float pistonMass, float boreMm, float 
     public float cockTicks() {
         return cock * Math.min(ModularTuning.AIR_COCK_MAX_TICKS, Math.max(ModularTuning.AIR_COCK_MIN_TICKS,
                 energy / ModularTuning.AIR_COCK_J_PER_TICK));
+    }
+
+    /** The bore as the whole millimetre a round's die is set to. */
+    public int boreInt() {
+        return Math.round(boreMm);
+    }
+
+    /**
+     * The gun figures of a shot of a shell weighing {@code shellKg} (the round's own projectile mass), with {@code set} of the spring's
+     * energy lost, a wear {@code condition} and the gun's own mass {@code gunKg}. The shell's speed is the seat's work shared with the
+     * piston ({@link #shot}); the figures are what the shared gun code reads for kick, spread, sound and the swept flight.
+     */
+    public io.github.soundgoodizerfan.feedback.weapon.GunFigures figures(float shellKg, float set, float gunKg, float condition) {
+        float moving = shellKg + ModularTuning.AIR_PISTON_SHARE * pistonMass;
+        float wear = 1f - io.github.soundgoodizerfan.feedback.weapon.GunTuning.GUN_WEAR_ENERGY_LOSS * (1f - condition)
+                / (1f - io.github.soundgoodizerfan.feedback.weapon.GunTuning.GUN_CONDITION_FLOOR);
+        float speed = (float) Math.sqrt(2f * energy * (1f - set) * efficiency() * wear / Math.max(1e-6f, moving)) / FTuning.TICKS_PER_SECOND;
+        speed = Math.min(speed, ModularTuning.AIR_SPEED_MAX);
+        float mps = speed * FTuning.TICKS_PER_SECOND;
+        float work = 0.5f * shellKg * mps * mps;
+        float impulse = shellKg * mps;
+        float spread = ModularTuning.AIR_SPREAD * ModularTuning.AIR_LENGTH_HALF / Math.max(0.05f, lengthM) / Math.max(0.1f, condition);
+        float kick = io.github.soundgoodizerfan.feedback.weapon.GunTuning.GUN_KICK_DEG_PER_IMPULSE * impulse
+                * (io.github.soundgoodizerfan.feedback.weapon.GunTuning.GUN_KICK_REFERENCE_MU / Math.max(0.05f, gunKg));
+        return new io.github.soundgoodizerfan.feedback.weapon.GunFigures(new io.github.soundgoodizerfan.feedback.core.unit.Pu(0f),
+                new io.github.soundgoodizerfan.feedback.core.unit.Pu(0f), speed, work,
+                new io.github.soundgoodizerfan.feedback.core.unit.Mu(shellKg), new io.github.soundgoodizerfan.feedback.core.unit.Mu(gunKg),
+                impulse, ModularTuning.AIR_SHOT_COOLDOWN * 50, Math.max(io.github.soundgoodizerfan.feedback.weapon.GunTuning.GUN_SPREAD_FLOOR_DEG, spread),
+                kick, ModularTuning.AIR_VOLUME, 0f, 1f);
     }
 
     /** The spring's load over what the receiver holds: above 1 each cocking sets it, far above it snaps ({@link SpringSet}). */

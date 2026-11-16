@@ -100,13 +100,13 @@ public final class ModularCause {
                 case DISH_COOK, DISH_MOISTURE, DISH_SALT, DISH_SMOKE, DISH_FRESH, DISH_WARMTH, SHARE_MEAT, SHARE_SEAFOOD, SHARE_PLANT, SHARE_STARCH,
                         CUISINE_ITALIAN, CUISINE_EAST_ASIAN, CUISINE_MEXICAN, CUISINE_EASTERN_EUROPEAN -> false;
                 // a spring gun's: the spring stores it, the barrel and bore hand it on, the receiver is what the spring is rated against
-                case SPRING_ENERGY -> role.name().equals(SpringGunSpec.SPRING);
-                case AIR_EFFICIENCY -> role.name().equals(SpringGunSpec.BARREL);
+                case SPRING_ENERGY -> role.name().equals(LauncherSpec.SPRING);
+                case AIR_EFFICIENCY -> role.name().equals(LauncherSpec.BARREL);
                 case SHOT_ENERGY -> role.name().equals(ElectricGunSpec.SEAT);
                 case JOINT, DRAW, VELOCITY -> air
-                        ? (fig == Fig.JOINT ? role.name().equals(SpringGunSpec.RECEIVER) || role.name().equals(SpringGunSpec.SPRING)
-                        : fig == Fig.DRAW ? role.name().equals(SpringGunSpec.SPRING)
-                        : !role.name().equals(SpringGunSpec.RECEIVER))
+                        ? (fig == Fig.JOINT ? role.name().equals(LauncherSpec.RECEIVER) || role.name().equals(LauncherSpec.SPRING)
+                        : fig == Fig.DRAW ? role.name().equals(LauncherSpec.SPRING)
+                        : !role.name().equals(LauncherSpec.RECEIVER))
                         : bow
                         ? role.name().equals("string") || role.name().equals("limbs") || role.name().equals("prod")
                         : role.name().equals("binding") || p.equals(weakest(design, type, materials));
