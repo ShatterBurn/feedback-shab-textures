@@ -31,10 +31,12 @@ import io.github.soundgoodizerfan.feedback.weapon.CasterTuning;
  * @param pilotReach  blocks from the muzzle the pilot's flame stands out (0 without a pilot).
  * @param pilotBleed  mB a tick its orifice bleeds off the tank while lit.
  * @param pilotServiceTu the hottest fluid (Tu) the pilot's metal takes washing over it.
+ * @param reachMult   the frame's multiple of the stream's reach (a long frame keeps the pipe true).
+ * @param lineLoss    the share of pressure that reaches the nozzle (a hose from a pack loses some).
  * @param tankServiceTu the hottest fluid (Tu) the tank walls hold before they soften, and {@code tankMeltTu} where they run.
  */
 public record CasterSpec(float capacityMb, float danger, float critical, float boreMm, float spreadDeg, boolean atomiser, boolean pump,
-                         float pumpPu, float strokeTicks, float tankResist, float valveResist, float nozzleResist, float pilotReach, float pilotBleed, float pilotServiceTu, float tankServiceTu, float tankMeltTu, float massKg) {
+                         float pumpPu, float strokeTicks, float tankResist, float valveResist, float nozzleResist, float pilotReach, float pilotBleed, float pilotServiceTu, float tankServiceTu, float tankMeltTu, float massKg, float reachMult, float lineLoss) {
 
     public static final String TANK = "tank", NOZZLE = "nozzle", RECEIVER = "receiver", VALVE = "valve", DRIVE = "drive", PILOT = "pilot";
 
@@ -42,6 +44,7 @@ public record CasterSpec(float capacityMb, float danger, float critical, float b
     public static Optional<CasterSpec> of(ModularDesign design, ModularType type, Map<ResourceLocation, Material> materials) {
         float capacity = 0, danger = 0, bore = 0, spread = 0, pumpPu = 0, stroke = 0, mass = 0;
         float pilotReach = 0, pilotBleed = 0, pilotService = Float.MAX_VALUE, tankR = 1f, valveR = 1f, nozzleR = 1f, service = Float.MAX_VALUE, melt = Float.MAX_VALUE;
+        float reachMult = 1f, spreadMult = 1f, capacityMult = 1f, line = 1f;
         boolean tank = false, nozzle = false, receiver = false, valve = false, atomise = false, pump = false;
         for (ModularDesign.Part p : design.parts()) {
             ModularType.Role role = type.roles().get(p.role());
@@ -68,7 +71,14 @@ public record CasterSpec(float capacityMb, float danger, float critical, float b
                     nozzleR = m.corrosionResistance().orElse(0.5f);
                     nozzle = true;
                 }
-                case RECEIVER -> receiver = true;
+                case RECEIVER -> {
+                    // The frame: how it carries the tank and holds the pipe (variant params).
+                    reachMult = role.paramOf(p, "reach", 1f);
+                    spreadMult = role.paramOf(p, "spread", 1f);
+                    capacityMult = role.paramOf(p, "capacity", 1f);
+                    line = role.paramOf(p, "line", 1f);
+                    receiver = true;
+                }
                 case VALVE -> {
                     valveR = m.corrosionResistance().orElse(0.5f);
                     valve = true;
@@ -91,20 +101,20 @@ public record CasterSpec(float capacityMb, float danger, float critical, float b
             return Optional.empty();
         // A pump never drives harder than the walls hold.
         pumpPu = Math.min(pumpPu, danger * CasterTuning.PUMP_DANGER_SHARE);
-        return Optional.of(new CasterSpec(capacity, danger, danger * ModularTuning.TANK_CRITICAL_OVER_DANGER, bore, spread, atomise, pump,
-                pumpPu, stroke, tankR, valveR, nozzleR, pilotReach, pilotBleed, pilotService, service, melt, mass));
+        return Optional.of(new CasterSpec(capacity * capacityMult, danger, danger * ModularTuning.TANK_CRITICAL_OVER_DANGER, bore, spread * spreadMult, atomise, pump,
+                pumpPu, stroke, tankR, valveR, nozzleR, pilotReach, pilotBleed, pilotService, service, melt, mass, reachMult, line));
     }
 
     /** Exit speed in blocks a tick of a fluid of {@code density} (Mu per mB) at gauge pressure {@code pu}. */
     public float speed(float pu, float density) {
         if (pu < CasterTuning.MIN_PRESSURE)
             return 0f;
-        return Math.min(CasterTuning.SPEED_MAX, CasterTuning.SPEED_PER_SQRT * (float) Math.sqrt(pu / Math.max(0.05f, density)));
+        return Math.min(CasterTuning.SPEED_MAX, CasterTuning.SPEED_PER_SQRT * (float) Math.sqrt(pu * lineLoss / Math.max(0.05f, density)));
     }
 
     /** Blocks the stream reaches at exit speed {@code speed}: a narrow bore holds together farther. */
     public float reach(float speed) {
-        return Math.min(CasterTuning.REACH_MAX, speed * CasterTuning.FLIGHT_TICKS * (float) Math.sqrt(CasterTuning.REF_BORE_MM / boreMm));
+        return Math.min(CasterTuning.REACH_MAX, reachMult * speed * CasterTuning.FLIGHT_TICKS * (float) Math.sqrt(CasterTuning.REF_BORE_MM / boreMm));
     }
 
     /** mB a tick leaving at exit speed {@code speed}: a wide bore passes more. */

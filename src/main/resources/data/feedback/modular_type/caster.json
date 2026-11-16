@@ -163,7 +163,40 @@
           "@sheet",
           "@board"
         ],
-        "traits": []
+        "traits": [],
+        "base": "squirt_frame",
+        "variants": [
+          {
+            "name": "squirt_frame",
+            "cells": 2,
+            "params": {
+              "reach": 1.0,
+              "spread": 1.0,
+              "capacity": 1.0,
+              "line": 1.0
+            }
+          },
+          {
+            "name": "lance_frame",
+            "cells": 4,
+            "params": {
+              "reach": 1.35,
+              "spread": 0.7,
+              "capacity": 1.25,
+              "line": 1.0
+            }
+          },
+          {
+            "name": "backpack_frame",
+            "cells": 6,
+            "params": {
+              "reach": 0.9,
+              "spread": 1.0,
+              "capacity": 2.0,
+              "line": 0.85
+            }
+          }
+        ]
       }
     },
     "V": {

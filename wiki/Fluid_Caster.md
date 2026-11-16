@@ -10,7 +10,7 @@ Shaped at the bench that suits the stock ([Smithing Table](Smithing_Table.md) fo
 | --- | --- | --- |
 | **Caster Tank** | a metal plate | Holds the fluid and the pressure. Its **wall** (1 to 8 mm) and its metal's strength set the pressure it holds before it weeps; its **length** (10 to 40 cm) sets how much it holds. |
 | **Caster Nozzle** | a metal rod, turned rod or ingot | Its **bore** (2 to 12 mm) trades reach against flow: a narrow bore throws a thin stream far, a wide one passes more fluid and spreads it. Its variant sets the fan. |
-| **Caster Receiver** | any lump, sheet or board | The body the tank, valve and nozzle are fixed to, and the hand holds. |
+| **Caster Receiver** | any lump, sheet or board | The body the tank, valve and nozzle are fixed to, and the hand holds. Its variant is the frame. |
 | **Caster Valve** | a metal rod or ingot | The valve the trigger opens. |
 | **Caster Pump** (optional) | a metal rod or plate | A hand pump drive. Its **stroke** (1 to 6 cm) sets how long one stroke keeps the stream going. |
 | **Caster Pilot** (optional) | a metal rod or turned rod | A small flame fitted at the nozzle that lights a stream of a fluid that burns. Its **orifice** (1 to 4 mm) sets how much fluid it burns. Its variant sets how far out the flame stands. |
@@ -23,6 +23,14 @@ The nozzle comes in four variants:
 | **Fan** | A narrow cone. |
 | **Mist** | A wide cone. |
 | **Atomiser** | A cone of fine mist that hangs where it lands as a vapor cloud. |
+
+The receiver comes in three frames:
+
+| Frame | Build | Effect |
+| --- | --- | --- |
+| **Squirt Frame** | A short body with the tank on top and a grip under it. The lightest. | The baseline for reach, cone and capacity. |
+| **Lance Frame** | A long gun frame with a stock and the tank slung under a long, heat-shrouded pipe. Heavier. | A longer reach, a narrower cone and a bigger tank. |
+| **Backpack Frame** | A short wand on a hose from a tank on a back plate. The heaviest. | Twice the capacity, but the hose loses some of the pressure on the way to the nozzle and the short wand reaches less. |
 
 The pilot comes in two variants:
 

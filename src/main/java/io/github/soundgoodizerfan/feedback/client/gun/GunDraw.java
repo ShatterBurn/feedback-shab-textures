@@ -144,30 +144,71 @@ final class GunDraw {
     }
 
     /**
-     * A fluid caster, a sprayer: a short body with a grip, the tank on top of it (as long as its design, as stout as its walls), a pipe out the
-     * front with a valve on it ending in the nozzle's variant, a pump's slide under the pipe like a shotgun's forend.
+     * A fluid caster, by its frame (the receiver's variant). A squirt frame: a short body with a grip, the tank on top. A lance frame: a long gun
+     * frame with a stock, the tank slung under a long heat-shrouded pipe, a flamethrower's shape. A backpack frame: a short wand on a hose from
+     * a tank behind it on a back plate. Each ends in the nozzle's variant at the pipe's tip.
      */
     private static void caster(GunMesh m, GunView v) {
         float tankLen = v.len2(), tankR = v.r2(), outR = v.r();
-        float zTankFront = 7f - tankLen, axis = 1.75f + tankR, py = 0.25f;
-        float zTip = v.len() > 0 ? -v.len() : -4f; // the pipe's end, past the tank's front
-        m.part(v, "S");
-        m.box(-0.875f, -1.25f, -1f, 0.875f, 1.75f, 8f, Tile.PANEL);
-        toolGrip(m, v, -1.25f);
-        m.box(-0.75f, 0.25f, 8f, 0.75f, 1.75f, 8.75f, Tile.KNURL); // the rear plate
-        m.part(v, "T");
-        m.rod(0, axis, tankR, zTankFront, 7f, Tile.BRUSHED);
-        m.rod(0, axis, tankR - 0.25f, zTankFront - 0.25f, zTankFront, Tile.METAL); // the domed ends
-        m.rod(0, axis, tankR - 0.25f, 7f, 7.25f, Tile.METAL);
-        m.rings(0, axis, tankR + 0.125f, zTankFront + 0.75f, 6.5f, 2, 0.5f, Tile.RIBBED); // the straps
-        m.rod(0, axis + tankR, 0.375f, 5.5f, 6.5f, Tile.KNURL); // the filler cap
+        float zTip = -v.len();
+        String frame = v.variant("S");
+        float py, zBase, zTankFront;
+        if (frame.equals("lance_frame")) {
+            py = 1.5f;
+            zBase = 0.5f;
+            zTankFront = zBase - tankLen;
+            m.part(v, "S");
+            m.box(-0.875f, -0.75f, 0.5f, 0.875f, 2.5f, 8f, Tile.PANEL); // the frame
+            toolGrip(m, v, -0.75f);
+            m.box(-0.5f, -0.5f, 8f, 0.5f, 2.25f, 13.5f, Tile.PANEL); // the stock
+            m.box(-0.625f, -1.25f, 13.5f, 0.625f, 2.75f, 14.25f, Tile.KNURL);
+            m.rod(0, py, 1.0f, zBase - 0.5f, zBase - 5.5f, Tile.VENT); // the heat shroud round the pipe's root
+            m.part(v, "T");
+            float ty = py - 0.5f - tankR - 0.0625f;
+            m.rod(0, ty, tankR, zTankFront, zBase, Tile.BRUSHED);
+            m.rod(0, ty, tankR - 0.25f, zTankFront - 0.25f, zTankFront, Tile.METAL);
+            m.rings(0, ty, tankR + 0.125f, zTankFront + 0.5f, zBase - 0.5f, 2, 0.5f, Tile.RIBBED);
+            m.box(-0.375f, ty - tankR - 0.25f, zBase - 2f, 0.375f, ty - tankR, zBase - 1f, Tile.KNURL); // the filler under
+        } else if (frame.equals("backpack_frame")) {
+            py = 0.25f;
+            zBase = -1f;
+            zTankFront = 9.5f;
+            m.part(v, "S");
+            m.box(-0.875f, -1.25f, -1f, 0.875f, 1.75f, 8f, Tile.PANEL);
+            toolGrip(m, v, -1.25f);
+            m.box(-1.75f, -1.25f, 9f, 1.75f, 3.25f, 9.5f, Tile.PANEL); // the back plate
+            m.box(-1.75f, 2.5f, 9.5f, -1.5f, 3.25f, 9.5f + tankLen, Tile.KNURL); // its straps
+            m.box(1.5f, 2.5f, 9.5f, 1.75f, 3.25f, 9.5f + tankLen, Tile.KNURL);
+            m.part(v, "T");
+            float ty = 1f;
+            m.rod(0, ty, tankR + 0.25f, 9.5f, 9.5f + tankLen, Tile.BRUSHED);
+            m.rod(0, ty, tankR, 9.5f + tankLen, 9.75f + tankLen, Tile.METAL);
+            m.rings(0, ty, tankR + 0.375f, 10f, 9f + tankLen, 2, 0.5f, Tile.RIBBED);
+            m.part(v, "V");
+            m.rod(0, py, 0.375f, 8f, 9.5f, Tile.KNURL); // the hose
+        } else {
+            py = 0.25f;
+            zBase = -1f;
+            float axis = 1.75f + tankR;
+            zTankFront = 7f - tankLen;
+            m.part(v, "S");
+            m.box(-0.875f, -1.25f, -1f, 0.875f, 1.75f, 8f, Tile.PANEL);
+            toolGrip(m, v, -1.25f);
+            m.box(-0.75f, 0.25f, 8f, 0.75f, 1.75f, 8.75f, Tile.KNURL); // the rear plate
+            m.part(v, "T");
+            m.rod(0, axis, tankR, zTankFront, 7f, Tile.BRUSHED);
+            m.rod(0, axis, tankR - 0.25f, zTankFront - 0.25f, zTankFront, Tile.METAL); // the domed ends
+            m.rod(0, axis, tankR - 0.25f, 7f, 7.25f, Tile.METAL);
+            m.rings(0, axis, tankR + 0.125f, zTankFront + 0.75f, 6.5f, 2, 0.5f, Tile.RIBBED); // the straps
+            m.rod(0, axis + tankR, 0.375f, 5.5f, 6.5f, Tile.KNURL); // the filler cap
+        }
         m.part(v, "V");
         float zv = zTip + 3.5f; // the valve sits on the pipe behind the nozzle
         m.box(-0.375f, py, zv, 0.375f, py + 1.25f, zv + 1f, Tile.METAL);
         m.box(-1f, py + 1.25f, zv - 0.125f, 1f, py + 1.75f, zv + 1.125f, Tile.KNURL); // the handwheel
         m.part(v, "N");
         float zn = zTip + 3f; // the nozzle's base
-        m.rod(0, py, 0.5f, zn, -1f, Tile.METAL); // the pipe
+        m.rod(0, py, 0.5f, zn, zBase, Tile.METAL); // the pipe
         switch (v.variant("N")) {
             case "fan" -> {
                 m.rod(0, py, 0.75f, zn, zn - 0.75f, Tile.METAL);
@@ -194,9 +235,15 @@ final class GunDraw {
         }
         if (v.has("D")) {
             m.part(v, "D");
-            float zs = Math.min(zTip + 5f, -1f);
-            m.box(-0.75f, -1.75f, zs, 0.75f, -0.5f, 3f, Tile.RIBBED); // the pump's slide, forend-shaped
-            m.rod(0, -1.1f, 0.25f, 3f, 4f, Tile.KNURL);
+            if (frame.equals("lance_frame")) {
+                m.box(-0.75f, -2.75f, zTankFront + 1f, 0.75f, -1.75f, zBase - 1f, Tile.RIBBED); // the pump's slide under the tank
+            } else if (frame.equals("backpack_frame")) {
+                m.box(-0.75f, -1.25f, 8f, 0.75f, -0.5f, 9f, Tile.RIBBED); // a pump bulb on the hose
+            } else {
+                float zs = Math.min(zTip + 5f, -1f);
+                m.box(-0.75f, -1.75f, zs, 0.75f, -0.5f, 3f, Tile.RIBBED); // the pump's slide, forend-shaped
+                m.rod(0, -1.1f, 0.25f, 3f, 4f, Tile.KNURL);
+            }
         }
     }
 
