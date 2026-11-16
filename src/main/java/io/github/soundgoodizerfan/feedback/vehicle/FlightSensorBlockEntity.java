@@ -154,14 +154,14 @@ public class FlightSensorBlockEntity extends BlockEntity implements SensorFittin
     }
 
     /**
-     * Every figure this sensor can read, one line each, as it reads them: each quantised to the sensor's own resolution and
-     * signed as {@link #readValue} is. The Contraption Diagram shows them while it is open.
+     * Every figure this sensor can read, one line each, as it reads them: each quantised to the sensor's own resolution, without the
+     * sensor's name in front (the Contraption Diagram heads the list with it).
      */
     public java.util.List<Component> readings() {
         java.util.List<Component> out = new java.util.ArrayList<>();
         for (Mode m : Mode.values())
-            out.add(Instruments.signed(this, Component.translatable("feedback.flight_sensor.reading." + m.getSerializedName(),
-                    Instruments.format(truth(m), resolution(m.quantity())))));
+            out.add(Component.translatable("feedback.flight_sensor.reading." + m.getSerializedName(),
+                    Instruments.format(truth(m), resolution(m.quantity()))));
         return out;
     }
 

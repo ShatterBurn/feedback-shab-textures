@@ -103,10 +103,11 @@ public class DiagramScreen extends Screen {
             if (data != null && data.onBody() && !data.flight().isEmpty()) {
                 int fy = y + 24 + Cause.values().length * 16 + 6 + 3 * 18 + 8;
                 g.drawString(font, Component.translatable("screen.feedback.diagram.flight"), x + PAD, fy, SKIN.dim(), false);
-                for (Component line : data.flight()) {
-                    fy += 11;
-                    g.drawString(font, font.split(line, LEGEND + 4).get(0), x + PAD, fy, SKIN.ink(), false);
-                }
+                for (Component line : data.flight())
+                    for (var part : font.split(line, LEGEND + 4)) {
+                        fy += 10;
+                        g.drawString(font, part, x + PAD, fy, SKIN.ink(), false);
+                    }
             }
             tip[0] = page.draw(g, SKIN, font, x + PAD * 2 + LEGEND, y + 24, side(), mx, my, partial);
             g.drawString(font, page.massText(), x + PAD * 2 + LEGEND + 88, y + 24 + side() + 9, SKIN.ink(), false);
