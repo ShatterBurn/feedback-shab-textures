@@ -7,8 +7,39 @@
       "air_efficiency",
       "draw",
       "joint",
-      "mass"
-    ]
+      "mass",
+      "spring.damage",
+      "axis.barrel_length",
+      "axis.bore"
+    ],
+    "sort": [
+      "velocity",
+      "spring_energy",
+      "draw",
+      "joint",
+      "mass",
+      "spring.damage"
+    ],
+    "roles": {
+      "B": [
+        "velocity",
+        "spring.damage",
+        "mass"
+      ],
+      "S": [
+        "joint",
+        "mass"
+      ],
+      "W": [
+        "spring_energy",
+        "draw",
+        "joint"
+      ],
+      "P": [
+        "velocity",
+        "mass"
+      ]
+    }
   },
   "required": [
     "B",

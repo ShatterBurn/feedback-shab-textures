@@ -7,7 +7,16 @@
       "durability",
       "mass",
       "corrosion"
-    ]
+    ],
+    "roles": {
+      "B": [
+        "hardness",
+        "durability"
+      ],
+      "T": [
+        "hardness"
+      ]
+    }
   },
   "required": [
     "B"

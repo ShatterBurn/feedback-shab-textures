@@ -1,5 +1,37 @@
 {
   "face": true,
+  "measures": {
+    "show": [
+      "damage",
+      "impact",
+      "bite",
+      "attack_speed",
+      "reach",
+      "hardness",
+      "edge_toughness",
+      "durability",
+      "balance",
+      "joint",
+      "mass",
+      "corrosion",
+      "throw.speed",
+      "axis.head_size",
+      "axis.edge_length",
+      "axis.tines",
+      "axis.barb"
+    ],
+    "roles": {
+      "H": [
+        "damage",
+        "impact",
+        "bite",
+        "hardness",
+        "edge_toughness",
+        "durability",
+        "corrosion"
+      ]
+    }
+  },
   "actions": [],
   "school": "weapons:1",
   "family": "spear",

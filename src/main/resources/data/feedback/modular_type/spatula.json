@@ -3,10 +3,16 @@
   "measures": {
     "show": [
       "durability",
-      "hardness",
-      "mass",
       "corrosion"
-    ]
+    ],
+    "roles": {
+      "B": [
+        "durability"
+      ],
+      "S": [
+        "durability"
+      ]
+    }
   },
   "required": [
     "B",

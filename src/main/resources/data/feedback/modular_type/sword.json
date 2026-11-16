@@ -1,5 +1,34 @@
 {
   "face": true,
+  "measures": {
+    "show": [
+      "damage",
+      "impact",
+      "bite",
+      "attack_speed",
+      "reach",
+      "hardness",
+      "edge_toughness",
+      "durability",
+      "balance",
+      "joint",
+      "mass",
+      "corrosion",
+      "axis.length",
+      "axis.width"
+    ],
+    "roles": {
+      "H": [
+        "damage",
+        "impact",
+        "bite",
+        "hardness",
+        "edge_toughness",
+        "durability",
+        "corrosion"
+      ]
+    }
+  },
   "actions": [],
   "family": "blade",
   "minigame": "feedback:fitting",

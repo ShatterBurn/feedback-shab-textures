@@ -1,5 +1,26 @@
 {
   "face": true,
+  "measures": {
+    "show": [
+      "damage",
+      "impact",
+      "bite",
+      "attack_speed",
+      "reach",
+      "dig_speed",
+      "hardness",
+      "edge_toughness",
+      "durability",
+      "balance",
+      "joint",
+      "mass",
+      "corrosion",
+      "dig.class",
+      "throw.speed",
+      "axis.head_size",
+      "axis.edge_length"
+    ]
+  },
   "actions": [
     "strip",
     "scrape",

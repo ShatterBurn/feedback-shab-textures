@@ -1,5 +1,24 @@
 {
   "face": true,
+  "measures": {
+    "show": [
+      "damage",
+      "impact",
+      "bite",
+      "attack_speed",
+      "reach",
+      "dig_speed",
+      "hardness",
+      "edge_toughness",
+      "durability",
+      "balance",
+      "joint",
+      "mass",
+      "corrosion",
+      "axis.edge_length",
+      "axis.head_size"
+    ]
+  },
   "actions": [],
   "family": "dig",
   "strike": 0.4,

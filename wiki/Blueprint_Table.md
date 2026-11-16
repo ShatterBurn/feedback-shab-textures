@@ -39,6 +39,18 @@ A gun's name (pistol, rifle, shotgun...), read from its parts, is shown beside t
 
 The sheet shows the design's figures as **one list of bars**, and only the figures that matter for the type drawn (a pickaxe does not list armor figures). The list scrolls, so no figure is cut off. The selected part's own figures come first. Machine numbers are bars like the rest, each with a short label (an engine's cylinders, displacement, torque and redline, a gearbox's gears, a propeller's disc, a dynamotor's rpm, a tank's room, a belt's grip). Fitted attachments and chosen variants add their own figures too: a stock or bipod adds brace figures, an armor servo adds drive and loss. Bars show, for a battery: cells, the band it is rated and its capacity in Eu; for a backpack: slots, carry rating, mounting points left and store slots; for a [bed](Bed.md): comfort and warmth; for a belt: its grip on cargo and the hottest cargo it carries. Figures that are words, ranks or yes/no (a pulse gun's voltage band rating, a divergent nozzle) stay text rows at the end of the list; they sort by rank like the bars. Qualities and adjectives the design earns sit along the bottom edge.
 
+- The figures follow the part: a sword lists no dig speed, and a file, knife or screwdriver head lists no damage, impact or bite. Each hafted head lists its own.
+- **Part sizes** (length, width, head size, limb length, face size, bore and the like) show as plain lines. They are set by the steppers, not by the material, so they cannot be sorted by.
+- Further lines name what a type does with its numbers:
+  - A hand hammer shows the share of a hand-forging blow it carries.
+  - A digging tool shows what it harvests: soft blocks only, or stone-, iron- or diamond-class blocks.
+  - A spear or throwing axe shows its thrown speed in blocks a tick.
+  - A gun shows the rounds it holds itself, the heat each shot adds to the barrel and the heat the barrel sheds a second (both in Tu), and how quickly its sight comes up (in ms).
+  - A demolition charge shows its fragment damage and its fuse (or "on impact").
+  - A shield shows how much it slows you while raised and the heat it holds full strength to (or "never softens").
+  - A spoon shows its stirring and skimming against the standard spoon, and the heat it can be held over a pot at.
+  - A spring gun shows what a pellet hits for.
+
 Every row behaves the same way:
 
 - A mark on each row shows where the **first drawing** stood. An arrow shows which way the row has moved since.

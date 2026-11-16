@@ -42,6 +42,10 @@ for f in sorted((R / "data/feedback/modular_type").glob("*.json")):
     for mid in ms.get("show", []) + ms.get("sort", []) + [i for v in ms.get("roles", {}).values() for i in v] \
             + [i for v in ms.get("addons", {}).values() for i in v] + [i for v in ms.get("variants", {}).values() for i in v]:
         measure(n, mid, f"{n} measures")
+        if mid.startswith("axis."):  # an axis id must be one some part of the type (a face: of any face) declares
+            pool = [d] if not (d.get("family") == "hafted" or d.get("face")) else [json.loads(g.read_text()) for g in (R / "data/feedback/modular_type").glob("*.json")]
+            if not any(mid[5:] in r.get("axes", {}) for p in pool for r in p.get("roles", {}).values()):
+                print(f"{mid}  ({n} measures: no part of the type has this axis)"); sys.exit(1)
     for des in d.get("names", {}).get("designations", []):
         prefix = "gun" if d.get("family") == "gun" else "armour"  # every non-gun type names its builds under armour.*
         want(f"{prefix}.feedback.designation.{des['name']}", f"{n} designation")

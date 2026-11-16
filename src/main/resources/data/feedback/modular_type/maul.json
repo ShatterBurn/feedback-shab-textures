@@ -1,5 +1,25 @@
 {
   "face": true,
+  "measures": {
+    "show": [
+      "damage",
+      "impact",
+      "bite",
+      "attack_speed",
+      "reach",
+      "dig_speed",
+      "hardness",
+      "edge_toughness",
+      "durability",
+      "balance",
+      "joint",
+      "mass",
+      "corrosion",
+      "dig.class",
+      "axis.head_size",
+      "axis.edge_length"
+    ]
+  },
   "actions": [],
   "school": "weapons:1",
   "family": "mace",

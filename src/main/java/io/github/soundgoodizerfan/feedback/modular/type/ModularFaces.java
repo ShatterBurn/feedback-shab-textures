@@ -114,9 +114,66 @@ public final class ModularFaces {
             if (front == null && !spent(p))
                 front = kind.get();
         }
+        ModularType.Measures measures = measuresOf(type, design);
         if (front == null)
-            return type.with(ModularType.Family.DIG, List.of(), type.strike(), type.wearLitres(), roles, type.trait(), type.traitParams());
-        return type.with(front.combat(), front.mines(), front.strike(), front.wearLitres(), roles, front.trait(), front.traitParams());
+            return type.with(ModularType.Family.DIG, List.of(), type.strike(), type.wearLitres(), roles, type.trait(), type.traitParams()).withMeasures(measures);
+        return type.with(front.combat(), front.mines(), front.strike(), front.wearLitres(), roles, front.trait(), front.traitParams()).withMeasures(measures);
+    }
+
+    /**
+     * What matters for {@code design} of the hafted plan: the plan's {@code measures} with each live face's own laid over them. A face
+     * definition's {@code show} (and {@code sort}) join in the order the faces sit, its {@code roles} replace the plan's list for that
+     * role letter (a letter two faces name gets both lists), its {@code variants} add to the plan's; so a sword lists no dig speed, a
+     * file no damage, and a head variant can name what it adds. A second or third face's addon figures ({@code dig_speed_off}...)
+     * are kept only while that face lists the figure ({@code dig_speed}) at all. A plan without live faces keeps its own list.
+     */
+    public static ModularType.Measures measuresOf(ModularType type, ModularDesign design) {
+        ModularType.Measures plan = type.measures();
+        if (type.family() != ModularType.Family.HAFTED || design == null)
+            return plan;
+        Set<String> show = new LinkedHashSet<>(), sort = new LinkedHashSet<>();
+        Map<String, Set<String>> roles = new LinkedHashMap<>(), variants = new LinkedHashMap<>();
+        Map<String, List<String>> addons = new LinkedHashMap<>(plan.addons());
+        Map<String, List<String>> planRoles = new LinkedHashMap<>(plan.roles());
+        boolean any = false;
+        for (String letter : LETTERS) {
+            Part p = design.part(letter);
+            ModularType.Role role = type.roles().get(letter);
+            if (p == null || role == null || spent(p))
+                continue;
+            ModularType.Measures own = ModularHeads.measuresOf(ModularHeads.kindOf(p, role));
+            if (own.show().isEmpty())
+                continue;
+            any = true;
+            show.addAll(own.show());
+            sort.addAll(own.sort());
+            own.roles().forEach((k, v) -> roles.computeIfAbsent(k, x -> new LinkedHashSet<>()).addAll(v));
+            own.variants().forEach((k, v) -> variants.computeIfAbsent(k, x -> new LinkedHashSet<>()).addAll(v));
+            // A second or third face's addon figures are the figures of its own kind: drop those it does not list.
+            if (!letter.equals("H")) {
+                addons.computeIfPresent(letter, (k, v) -> v.stream().filter(id -> own.show().contains(addonBase(id))).toList());
+                planRoles.computeIfPresent(letter, (k, v) -> v.stream().filter(id -> own.show().contains(addonBase(id))).toList());
+            }
+        }
+        if (!any)
+            return plan;
+        Map<String, List<String>> outRoles = new LinkedHashMap<>(planRoles);
+        roles.forEach((k, v) -> outRoles.put(k, List.copyOf(v)));
+        Map<String, List<String>> outVariants = new LinkedHashMap<>(plan.variants());
+        variants.forEach((k, v) -> outVariants.merge(k, List.copyOf(v), (a, b) -> {
+            Set<String> both = new LinkedHashSet<>(a);
+            both.addAll(b);
+            return List.copyOf(both);
+        }));
+        return new ModularType.Measures(List.copyOf(show), sort.isEmpty() ? plan.sort() : List.copyOf(sort), outRoles, addons, outVariants);
+    }
+
+    /** The figure a second or third face's addon figure is the twin of: {@code dig_speed_off} is {@code dig_speed}, {@code durability_b} is {@code durability}. */
+    private static String addonBase(String id) {
+        for (String suffix : List.of("_off", "_third", "_b", "_c"))
+            if (id.endsWith(suffix))
+                return id.substring(0, id.length() - suffix.length());
+        return id;
     }
 
     /** The family a swing of {@code stack} is judged as, from its front live face: the base for any item that is not hafted. */

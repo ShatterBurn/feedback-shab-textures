@@ -10,7 +10,9 @@
       "knockback_resistance",
       "mass",
       "corrosion",
-      "fire_conduct"
+      "fire_conduct",
+      "axis.shaft",
+      "axis.sole"
     ],
     "roles": {
       "P": [
@@ -23,6 +25,24 @@
         "durability",
         "corrosion",
         "fire_conduct"
+      ],
+      "L": [
+        "armour",
+        "mass"
+      ],
+      "U": [
+        "armour",
+        "mass"
+      ],
+      "T": [
+        "armour",
+        "durability"
+      ],
+      "E": [
+        "knockback_resistance"
+      ],
+      "H": [
+        "knockback_resistance"
       ]
     },
     "addons": {

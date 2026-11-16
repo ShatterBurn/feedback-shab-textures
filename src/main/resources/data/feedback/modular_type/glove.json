@@ -7,8 +7,7 @@
       "swing_drag",
       "durability",
       "mass",
-      "corrosion",
-      "hardness"
+      "corrosion"
     ],
     "roles": {
       "M": [
@@ -16,8 +15,19 @@
         "armour",
         "swing_drag",
         "mass",
-        "hardness",
         "corrosion"
+      ],
+      "B": [
+        "durability",
+        "mass"
+      ],
+      "L": [
+        "armour",
+        "mass"
+      ],
+      "V": [
+        "armour",
+        "mass"
       ]
     }
   },
