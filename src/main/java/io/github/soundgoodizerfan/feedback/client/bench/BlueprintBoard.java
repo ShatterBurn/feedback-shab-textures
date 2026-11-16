@@ -974,7 +974,7 @@ public final class BlueprintBoard {
         else {
             List<BenchUses.Use> cut = new ArrayList<>();
             for (String id : ids)
-                allUses.stream().filter(u -> u.id().equals(id)).findFirst().ifPresent(cut::add);
+                allUses.stream().filter(u -> u.id().equals(id)).forEach(cut::add);
             uses = cut;
         }
         if (shown.isEmpty() && uses.isEmpty()) {
@@ -3168,6 +3168,7 @@ public final class BlueprintBoard {
             if (row.use() != null) {
                 List<Component> out = new ArrayList<>();
                 out.add(row.use().line());
+                out.addAll(row.use().tip());
                 out.add(Component.translatable("gui.feedback.blueprint_table.rows.hint").withStyle(net.minecraft.ChatFormatting.DARK_GRAY));
                 return out;
             }

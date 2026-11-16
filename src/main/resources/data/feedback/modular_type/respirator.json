@@ -3,12 +3,29 @@
   "measures": {
     "show": [
       "breath_floor",
-      "filter_life",
+      "resp.filtertime",
       "breath_drag",
+      "resp.airtime",
       "air_capacity",
-      "durability",
       "mass"
-    ]
+    ],
+    "roles": {
+      "F": [
+        "breath_floor",
+        "resp.filtertime",
+        "breath_drag"
+      ],
+      "T": [
+        "air_capacity",
+        "resp.airtime"
+      ],
+      "B": [
+        "mass"
+      ],
+      "S": [
+        "mass"
+      ]
+    }
   },
   "required": [
     "B",

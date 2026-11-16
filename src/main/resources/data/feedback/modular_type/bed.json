@@ -2,10 +2,21 @@
   "family": "bed",
   "measures": {
     "show": [
-      "bed.comfort",
+      "bed.heal",
       "bed.warmth",
+      "bed.nights",
       "mass"
-    ]
+    ],
+    "roles": {
+      "C": [
+        "bed.comfort",
+        "bed.warmth"
+      ],
+      "F": [
+        "bed.comfort",
+        "bed.nights"
+      ]
+    }
   },
   "required": [
     "C"

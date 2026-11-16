@@ -9,8 +9,38 @@
       "charred",
       "toxin",
       "pathogen",
-      "litres"
-    ]
+      "litres",
+      "dish.buffs",
+      "dish.eat",
+      "dish.seal",
+      "dish.spill"
+    ],
+    "sort": [
+      "hunger",
+      "saturation",
+      "fat",
+      "fibre",
+      "charred",
+      "toxin",
+      "pathogen",
+      "litres",
+      "dish.eat",
+      "dish.seal",
+      "dish.spill"
+    ],
+    "roles": {
+      "C": [
+        "litres",
+        "dish.seal"
+      ],
+      "B": [
+        "hunger",
+        "saturation"
+      ],
+      "F": [
+        "dish.buffs"
+      ]
+    }
   },
   "slot": "mainhand",
   "wear_role": "C",

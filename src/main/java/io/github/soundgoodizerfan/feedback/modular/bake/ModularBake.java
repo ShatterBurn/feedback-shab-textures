@@ -557,7 +557,27 @@ public final class ModularBake {
         }
     }
 
+    private static float wiringAmps(ModularType type, Map<String, Material> by, Part wiring) {
+        return by.get("W").ampacity().orElse(0f) * stockCells(type.roles().get("W"), wiring);
+    }
+
+    private static int budget(float amps) {
+        return Math.min(Fig.ATTACHMENTS, Math.max(1, (int) (amps / ModularTuning.WIRING_AMPS_PER_ATTACHMENT)));
+    }
+
+    /** How many attachments the wiring of a suit module design can feed (1 to {@link Fig#ATTACHMENTS}); 0 for a design with no wiring. */
+    public static int suitFeeds(ModularDesign design, ModularType type, Map<ResourceLocation, Material> materials) {
+        Part wiring = design.part("W");
+        Material m = wiring == null ? null : materials.get(wiring.material());
+        return m == null || !type.roles().containsKey("W") ? 0 : budget(m.ampacity().orElse(0f) * stockCells(type.roles().get("W"), wiring));
+    }
+
     private static final ThreadLocal<Boolean> DRAWING = ThreadLocal.withInitial(() -> false);
+
+    /** Whether this thread is baking a drawing, which holds no components, no kneaded dough and no ladled serving: the bake reads a reference for each. */
+    public static boolean drawing() {
+        return DRAWING.get();
+    }
 
     /** Sets whether this thread is baking a drawing (a blueprint's prediction), which has no components fitted. */
     public static void drawing(boolean on) {
@@ -577,14 +597,15 @@ public final class ModularBake {
         Part wiring = design.part("W");
         if (wiring == null || by.get("W") == null)
             return Optional.empty();
-        float amps = by.get("W").ampacity().orElse(0f) * stockCells(type.roles().get("W"), wiring);
-        int budget = Math.min(Fig.ATTACHMENTS, Math.max(1, (int) (amps / ModularTuning.WIRING_AMPS_PER_ATTACHMENT)));
+        float amps = wiringAmps(type, by, wiring);
+        int budget = budget(amps);
         // the support parts the module carries, each as a grade 0 to 1 read off the held item; an upgrade that needs one the module lacks is refused
         Map<String, Float> supports = new java.util.HashMap<>();
         for (Part p : design.parts()) {
             String name = type.roles().get(p.role()).name();
             if (name.equals("controller") || name.equals("cell") || name.equals("motor"))
-                supports.put(name, supportGrade(name, p.sub()));
+                // a drawing holds no item: a fitted support reads at the drawn grade, the same as one the drawing leaves out
+                supports.put(name, DRAWING.get() && p.sub().isEmpty() ? ModularTuning.DRAWN_SUPPORT_GRADE : supportGrade(name, p.sub()));
         }
         Map<Fig, Float> out = new EnumMap<>(Fig.class);
         int n = 0;
@@ -1084,7 +1105,7 @@ public final class ModularBake {
                 for (Part p : design.parts())
                     total += mass(type.roles().get(p.role()), p, by.get(p.role()));
                 f.put(Fig.MASS, total);
-                f.put(Fig.BREATH_FLOOR, 1f);
+                // a cylinder needs no floor, so a mask without a filter bakes none (0: nothing to list); only the filter below sets one
                 f.put(Fig.DURABILITY, (float) ModularTuning.RESPIRATOR_BASE_DURABILITY);
                 // A filter: a deeper bed of porous media works down to thinner air and lasts longer, and resists the breath more.
                 Part filter = design.part(ModularRespirator.FILTER);

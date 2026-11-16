@@ -33,7 +33,10 @@ final class BenchUses {
     }
 
     /** One line: what it is ({@code id}), how it reads, and the number it sorts by. */
-    record Use(String id, Component line, float value) {
+    record Use(String id, Component line, float value, List<Component> tip) {
+        Use(String id, Component line, float value) {
+            this(id, line, value, List.of());
+        }
     }
 
     private static Use num(String id, float value, String text) {
@@ -60,6 +63,7 @@ final class BenchUses {
     static List<Use> of(ModularDesign d, ModularType t) {
         List<Use> out = new ArrayList<>(family(d, t));
         out.addAll(WeaponUses.of(d, t)); // weapons, tools and hand types: its own class
+        out.addAll(MiscUses.of(d, t));
         out.addAll(axes(d, t));
         return out;
     }

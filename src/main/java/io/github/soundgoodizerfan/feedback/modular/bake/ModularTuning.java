@@ -1041,6 +1041,8 @@ public final class ModularTuning {
 
     /** Invented. The water in a pot serving used as a soup's base (a ladle of broth or stew): wet, but not all water. */
     public static final float SERVING_MOISTURE = 0.9f;
+    /** The bowl of stew a drawing's soup serving is read as (a ladled serving carries its own state, a drawing has none): hunger points and saturation, those of a bowl of mushroom stew. */
+    public static final float SERVING_REF_HUNGER = 6f, SERVING_REF_SATURATION = 7.2f;
 
     /**
      * Invented. Moisture migration (dish spec 2.3): across each neighbouring pair of food parts this share of the gap in water

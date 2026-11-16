@@ -70,7 +70,25 @@ The **source slot** takes a blueprint. Put blank paper in the paper slot and pre
 
 A [Computer](Electric_Controller.md#apps) can run the same board as the **Blueprint App Disk**, in the desktop's colors. It cannot print onto paper and has no sample slot.
 
-The [Prep Table](Prep_Table.md#blueprint-tab) has a Blueprint tab with a board for dishes only; the Blueprint Table itself does not draw dishes.
+The [Prep Table](Prep_Table.md#recipe-tab) has a Recipe tab that reads a dish the same way; the Blueprint Table itself does not draw dishes.
+
+### Suit modules
+
+A module drawing lists:
+
+- **Wiring feeds N of 4**: how many attachments the wiring can carry current to. Heavier wiring (more turns, a better conductor) feeds more.
+- **One line per attachment**, with its strength in percent and its headline: lens reach (blocks), spring fall cut, actuator speed, tread ground grip, filter breath, heat plate fire cut, thruster push, plate blast cut, magnet pull radius, dispenser dose (mB). Hover it for the other end of that attachment's trade-off (a short lens against sight with a long one, a stiff spring's jump, a wide tread's water speed, the plate's shot cut and knockback resistance) and, where it draws charge, its cost in Eu.
+- **Draws up to N Eu/t, N Mu**: the charge the attachments draw while they work, added up, and the module's whole mass.
+- **Wheel**: the abilities the held circuit, motor and cell add to the suit's wheel (see [Abilities](Exosuit.md#abilities)).
+
+A drawing with a motor, controller or cell predicts power as if a middling one were fitted.
+
+### Robots, respirators, backpacks and beds
+
+- **Robot**: speed in blocks a second, the hardest block its tool head breaks, rotor lift left (in Mu, rotor robots) or the height of ledge it steps over (wheels and legs), and, with an inertial sensor, the share of its position drift it keeps.
+- **Respirator**: how long the filter lasts and how long the cylinder's air lasts, each as a time. A cylinder mask shows no thinnest-air figure.
+- **Backpack**: free carry in Mu (the carry rating less the pack's own mass) and, with a fire patch fitted, the chance fire reaches the shell.
+- **Bed**: the share of your health a night heals, and the share in snow country, and the nights it lasts. The heal is half the comfort.
 
 ## Schools
 

@@ -44,7 +44,11 @@ public final class ModularMeasures {
             "engine.cylinders", "engine.displacement", "engine.torque", "engine.peak", "engine.redline",
             "gearbox.gears", "gearbox.low", "gearbox.top", "gearbox.wear",
             "prop.blades", "prop.diameter", "prop.pitch",
-            "belt.grip", "belt.heat");
+            "belt.grip", "belt.heat",
+            "suit.feeds", "suit.optic", "suit.spring", "suit.actuator", "suit.tread", "suit.filter", "suit.thermal", "suit.thruster", "suit.plate", "suit.coil", "suit.dispenser", "suit.cost", "suit.abilities",
+            "robot.speed", "robot.dig", "robot.lift", "robot.step", "robot.drift",
+            "pack.free", "pack.fire", "resp.airtime", "resp.filtertime", "bed.heal", "bed.nights",
+            "dish.buffs", "dish.eat", "dish.seal", "dish.spill");
 
     /** The prefixes of ids that name a figure outside the two lists above: a placed block's, and a part's axis. */
     public static final String BLOCK = "block.", AXIS = "axis.";

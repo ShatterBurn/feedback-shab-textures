@@ -31,8 +31,12 @@ public record RobotSpec(float mass, float speed, float headSt, String sensor, St
     public static final RobotSpec NONE = new RobotSpec(0f, 0f, 0f, "", WHEELS, false, false, 0f);
 
     public static RobotSpec of(ItemStack stack) {
-        ModularDesign design = ModularStacks.design(stack);
-        var figures = ModularStacks.figures(stack);
+        return of(ModularStacks.design(stack), ModularStacks.figures(stack), MaterialTable.get().materials());
+    }
+
+    /** From a design and its baked figures: what the stack overload reads, and what the Blueprint Table predicts for a drawing. */
+    public static RobotSpec of(ModularDesign design, io.github.soundgoodizerfan.feedback.modular.bake.ModularFigures figures,
+                               java.util.Map<net.minecraft.resources.ResourceLocation, Material> materials) {
         if (design == null || figures == null)
             return NONE;
         float mass = figures.get(Fig.MASS);
@@ -43,7 +47,7 @@ public record RobotSpec(float mass, float speed, float headSt, String sensor, St
         float speed = drive.equals(ROTOR) && mass > RobotTuning.ROTOR_LIFT_MU ? 0f
                 : RobotTuning.SPEED_MAX * factor * RobotTuning.SPEED_HALF_MASS / (RobotTuning.SPEED_HALF_MASS + mass);
         ModularDesign.Part head = design.part("T");
-        Material m = head == null ? null : MaterialTable.get().materials().get(head.material());
+        Material m = head == null ? null : materials.get(head.material());
         float st = m == null ? 0f : m.mechanical().yieldStrength().map(s -> s.value()).orElse(0f);
         ModularDesign.Part sensor = design.part("S");
         ModularDesign.Part brain = design.part("K");
@@ -89,5 +93,15 @@ public record RobotSpec(float mass, float speed, float headSt, String sensor, St
     /** The height of ledge it steps over without a program: legs a block, wheels a slab, a rotor none. */
     public float stepUp() {
         return drive.equals(LEGS) ? 1.1f : drive.equals(WHEELS) ? 0.6f : 0f;
+    }
+
+    /** The hardest block (hardness) the head can break. */
+    public float hardest() {
+        return headSt / RobotTuning.HEAD_ST_PER_HARDNESS;
+    }
+
+    /** Mu of mass left before a rotor cannot lift (negative: it is grounded). */
+    public float liftMargin() {
+        return RobotTuning.ROTOR_LIFT_MU - mass;
     }
 }

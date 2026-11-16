@@ -9,7 +9,7 @@ Made at the [Woodworking Table](Woodworking_Table.md) (or the [Smithing Table](S
 - **Shell** (Backpack Shell): the body, shaped from leather, carpet or plate stock. Its **capacity** stepper (1 to 9 cells) fixes the slots: one cell holds 9, three cells (the standard) 18, nine cells 27, and the steps between fall between. The shell's material only decides how heavy it is.
 - **Strap**: leather, string or wire (any [cordage or hide](What_a_Part_Slot_Takes.md) tough enough). It sets the carry rating, and it is the part that wears.
 
-The [Blueprint Table](Blueprint_Table.md) shows the slots, the carry rating, the mounting points left and the store slots of a drawing before you make it.
+The [Blueprint Table](Blueprint_Table.md) shows the slots, the carry rating, the mounting points left and the store slots of a drawing before you make it, with its **free carry** (the carry rating less the pack's own mass: what the contents can weigh before the pack slows you) and, with a fire patch fitted, the chance fire reaches the shell.
 
 ## Using it
 

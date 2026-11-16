@@ -33,6 +33,8 @@ S is a Robot Sensor, L is a Robot Chunk Loader, R is a Robot Radio.
 
 A robot may also carry an electronic circuit as its **brain** (see [The brain](#the-brain)).
 
+The [Blueprint Table](Blueprint_Table.md#robots-respirators-backpacks-and-beds) shows a robot drawing's speed, the hardest block its tool head breaks, and, for a wheeled or legged robot, how high a ledge it steps over, or for a rotor robot, how much mass the rotor can still lift.
+
 ## Using it
 
 - **Right-click a block** with the Robot item to set it down as a robot standing there.

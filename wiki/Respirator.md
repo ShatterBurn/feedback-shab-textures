@@ -11,6 +11,8 @@ Made like any [modular tool](Tools_and_Weapons.md), from three parts laid out in
 - **Filter Cartridge** (supply): a cartridge of porous media such as charcoal. Its **bed** stepper (1 to 10 cm, 4 by default) is the depth of the packing.
 - **Air Cylinder** (supply): a cylinder shaped from plate. Its **wall** stepper (1 to 10 mm, 3 by default) is the wall thickness.
 
+The Blueprint Table shows how long the filter lasts and how long the cylinder's air lasts, each as a time, before you make it.
+
 ## Using it
 
 Wear it in the Face slot. It acts by itself whenever you would otherwise suffer from [thin air](Hazards.md#thin-air) or a fume dose; there is nothing to switch on.

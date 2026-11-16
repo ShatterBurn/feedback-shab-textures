@@ -2,8 +2,26 @@
   "family": "robot",
   "measures": {
     "show": [
+      "robot.speed",
+      "robot.dig",
+      "robot.lift",
+      "robot.step",
+      "robot.drift",
       "mass"
-    ]
+    ],
+    "roles": {
+      "D": [
+        "robot.speed",
+        "robot.lift",
+        "robot.step"
+      ],
+      "T": [
+        "robot.dig"
+      ],
+      "S": [
+        "robot.drift"
+      ]
+    }
   },
   "required": [
     "C",

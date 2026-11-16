@@ -79,7 +79,7 @@ public final class SuitModules {
     }
 
     /** Bits of the wheel segments module {@code id} gives when it holds the supports {@code sup} ({@code Fig.SUP_*}): what a part can do is what it gets a segment for. */
-    static int gives(int id, int sup) {
+    public static int gives(int id, int sup) {
         if (id == ACTUATOR)
             return Ability.STRIDE.bit() | Ability.SHOCK.bit();
         if (id == OPTIC)
@@ -169,16 +169,129 @@ public final class SuitModules {
         return m == null ? 0f : m[id];
     }
 
+    // --- what a class buys, as numbers: p is the part's power, a the tuned axis's share of its range. The module's own code and the Blueprint Table's readout both read these. ---
+
+    /** Blocks of reach a short-focus lens adds. */
+    public static float reach(float p, float a) {
+        return LENS_REACH_BLOCK * p * (1f - a);
+    }
+
+    /** Multiplier on thermal sight's range from a long-focus lens. */
+    public static float sight(float p, float a) {
+        return 1f + LENS_GAIN * p * a;
+    }
+
+    /** Share of fall damage a long-travel spring takes off. */
+    public static float fallCut(float p, float a) {
+        return FALL_CUT * p * a;
+    }
+
+    /** Jump strength a stiff short spring adds. */
+    public static float jump(float p, float a) {
+        return JUMP * p * (1f - a);
+    }
+
+    /** Stomp damage a spring's landing gives back, per block fallen (before the cap). */
+    public static float stomp(float p, float a) {
+        return STOMP_PER_BLOCK * p * a;
+    }
+
+    /** Share of walking speed a short-stroke actuator adds. */
+    public static float stride(float p, float a) {
+        return STRIDE * p * (1f - a);
+    }
+
+    /** Blocks of step height a long-stroke actuator adds. */
+    public static float step(float p, float a) {
+        return STEP * p * a;
+    }
+
+    /** Water movement a wide tread adds. */
+    public static float waterSpeed(float p, float a) {
+        return WATER * p * a;
+    }
+
+    /** Ground movement efficiency a narrow tread adds. */
+    public static float groundGrip(float p, float a) {
+        return EFFICIENCY * p * (1f - a);
+    }
+
+    /** Breath a thin filter bed adds (the oxygen bonus). */
+    public static float breath(float p, float a) {
+        return OXYGEN * p * (1f - a);
+    }
+
+    /** Whether a bed deep enough scrubs poison, nausea and hunger. */
+    public static boolean scrubs(float p, float a) {
+        return p * a >= FILTER_MIN;
+    }
+
+    /** Whether a lens that turns this much light back keeps blindness and darkness off. */
+    public static boolean keepsGlare(float p) {
+        return 1f - p >= GLARE_MIN;
+    }
+
+    /** Share of fire damage a thick heat plate takes off. */
+    public static float fireCut(float p, float a) {
+        return FIRE_CUT * p * a;
+    }
+
+    /** Multiplier on the rate the suit sheds heat from a thin plate. */
+    public static float cooling(float p, float a) {
+        return 1f + SINK_GAIN * p * (1f - a);
+    }
+
+    /** Whether a thick enough plate keeps frost off the skin. */
+    public static boolean lines(float p, float a) {
+        return p * a >= LINING_MIN;
+    }
+
+    /** Share of blast damage a thick plate takes off. */
+    public static float blastCut(float p, float a) {
+        return BLAST_CUT * p * a;
+    }
+
+    /** Share of a projectile's damage a thin plate turns. */
+    public static float shotCut(float p, float a) {
+        return SHOT_CUT * p * (1f - a);
+    }
+
+    /** Knockback resistance a thick plate gives. */
+    public static float knockResist(float p, float a) {
+        return Math.min(1f, KB_PLATING * p * a);
+    }
+
+    /** Blocks an electromagnet pulls from. */
+    public static float magnetRadius(float p, float a) {
+        return MAGNET_BASE + MAGNET_PER * p * a;
+    }
+
+    /** A nozzle's push and fuel burn against the mid-range throat, for a tuned share {@code a}. */
+    public static float throatOf(float a) {
+        float s = THROAT_MIN + (1f - THROAT_MIN) * a;
+        return s * s / (THROAT_MID * THROAT_MID);
+    }
+
+    /** Eu a tick an attachment of class {@code id} draws while it works (an actuator striding, a coil pulling); 0 for a passive one. */
+    public static float draw(int id, float p) {
+        return id == ACTUATOR ? STRIDE_AMPS * p : id == COIL ? MAGNET_AMPS * 2f : 0f;
+    }
+
+    /** Eu one use of a class costs: a clearing or lining the suit pays for each time it works; 0 for a class with none. */
+    public static float perUse(int id) {
+        return id == OPTIC || id == FILTER ? FILTER_COST : id == THERMAL ? LINING_COST : 0f;
+    }
+
     // --- physics of the plate and the bus (read whether or not the suit is powered) -----------------------
 
     /** Multiplier on the rate the suit sheds heat: a thin conductor spreads its heat to the air. */
     static float cooling(float[] m) {
-        return 1f + SINK_GAIN * p(m, THERMAL) * (1f - arg(m, THERMAL));
+        return cooling(p(m, THERMAL), arg(m, THERMAL));
     }
 
     /** Multiplier on thermal sight's reach. */
     static float lens(float[] m) {
-        return 1f + LENS_GAIN * p(m, OPTIC) * arg(m, OPTIC);
+        return sight(p(m, OPTIC), arg(m, OPTIC));
     }
 
     /** Added to the pack's carry factor. */
@@ -189,8 +302,7 @@ public final class SuitModules {
 
     /** A nozzle's push and the fuel it burns both go with its throat area, against the mid-range throat (as the thruster block's nozzle does). */
     static float throat(float[] m) {
-        float s = THROAT_MIN + (1f - THROAT_MIN) * arg(m, THRUSTER);
-        return s * s / (THROAT_MID * THROAT_MID);
+        return throatOf(arg(m, THRUSTER));
     }
 
     // --- attributes ------------------------------------------------------------------------------------------
@@ -198,24 +310,24 @@ public final class SuitModules {
     /** Sets (or, for null, takes off) every attribute modifier the modules give. Called when the fit or the power changes. */
     static void attributes(ServerPlayer pl, float[] m) {
         // A filter bed trades breath against scrubbing: a thin bed passes the air easily and the breath lasts, a deep one cleans it.
-        add(pl, Attributes.OXYGEN_BONUS, OXY, OXYGEN * p(m, FILTER) * (1f - arg(m, FILTER)), AttributeModifier.Operation.ADD_VALUE);
+        add(pl, Attributes.OXYGEN_BONUS, OXY, breath(p(m, FILTER), arg(m, FILTER)), AttributeModifier.Operation.ADD_VALUE);
         float near = p(m, OPTIC) * (1f - arg(m, OPTIC));
         add(pl, Attributes.BLOCK_INTERACTION_RANGE, BR, LENS_REACH_BLOCK * near, AttributeModifier.Operation.ADD_VALUE);
         add(pl, Attributes.ENTITY_INTERACTION_RANGE, ER, LENS_REACH_ENTITY * near, AttributeModifier.Operation.ADD_VALUE);
         // a thick plate has the mass to take a blow without moving
-        add(pl, Attributes.KNOCKBACK_RESISTANCE, KB, Math.min(1f, KB_PLATING * p(m, PLATE) * arg(m, PLATE)), AttributeModifier.Operation.ADD_VALUE);
+        add(pl, Attributes.KNOCKBACK_RESISTANCE, KB, knockResist(p(m, PLATE), arg(m, PLATE)), AttributeModifier.Operation.ADD_VALUE);
         // An actuator's stroke trades cadence against reach: a short one strides fast, a long one lifts the foot over a step.
         float act = p(m, ACTUATOR), reach = arg(m, ACTUATOR);
-        add(pl, Attributes.MOVEMENT_SPEED, MS, STRIDE * act * (1f - reach), AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
-        add(pl, Attributes.STEP_HEIGHT, SH, STEP * act * reach, AttributeModifier.Operation.ADD_VALUE);
+        add(pl, Attributes.MOVEMENT_SPEED, MS, stride(act, reach), AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
+        add(pl, Attributes.STEP_HEIGHT, SH, step(act, reach), AttributeModifier.Operation.ADD_VALUE);
         // A tread's span trades grip against paddle: a narrow pad bites the ground, a wide one pushes water.
         float tread = p(m, TREAD), span = arg(m, TREAD);
-        add(pl, Attributes.WATER_MOVEMENT_EFFICIENCY, WE, WATER * tread * span, AttributeModifier.Operation.ADD_VALUE);
-        add(pl, Attributes.MOVEMENT_EFFICIENCY, ME, EFFICIENCY * tread * (1f - span), AttributeModifier.Operation.ADD_VALUE);
+        add(pl, Attributes.WATER_MOVEMENT_EFFICIENCY, WE, waterSpeed(tread, span), AttributeModifier.Operation.ADD_VALUE);
+        add(pl, Attributes.MOVEMENT_EFFICIENCY, ME, groundGrip(tread, span), AttributeModifier.Operation.ADD_VALUE);
         // A spring's stroke trades kick against cushion: a stiff short one throws the jump, a soft long one takes the landing.
         float spring = p(m, SPRING), travel = arg(m, SPRING);
-        add(pl, Attributes.FALL_DAMAGE_MULTIPLIER, FM, -FALL_CUT * spring * travel, AttributeModifier.Operation.ADD_VALUE);
-        add(pl, Attributes.JUMP_STRENGTH, JS, JUMP * spring * (1f - travel), AttributeModifier.Operation.ADD_VALUE);
+        add(pl, Attributes.FALL_DAMAGE_MULTIPLIER, FM, -fallCut(spring, travel), AttributeModifier.Operation.ADD_VALUE);
+        add(pl, Attributes.JUMP_STRENGTH, JS, jump(spring, travel), AttributeModifier.Operation.ADD_VALUE);
         add(pl, Attributes.SAFE_FALL_DISTANCE, SF, SAFE_FALL * spring * travel, AttributeModifier.Operation.ADD_VALUE);
     }
 
@@ -238,13 +350,13 @@ public final class SuitModules {
                 draw += STRIDE_AMPS * stride;
         }
         if (t % 10 == 0) {
-            if (p(m, FILTER) * arg(m, FILTER) >= FILTER_MIN)
+            if (scrubs(p(m, FILTER), arg(m, FILTER)))
                 draw += clear(pl, MobEffects.POISON, MobEffects.CONFUSION, MobEffects.HUNGER);
             // a glass that turns light back keeps glare out: the less it passes, the more it rejects
-            if (p(m, OPTIC) > 0f && 1f - p(m, OPTIC) >= GLARE_MIN)
+            if (p(m, OPTIC) > 0f && keepsGlare(p(m, OPTIC)))
                 draw += clear(pl, MobEffects.BLINDNESS, MobEffects.DARKNESS);
             // a thick plate keeps the cold off the skin, while the suit warms it
-            if (p(m, THERMAL) * arg(m, THERMAL) >= LINING_MIN && pl.getTicksFrozen() > 0) {
+            if (lines(p(m, THERMAL), arg(m, THERMAL)) && pl.getTicksFrozen() > 0) {
                 pl.setTicksFrozen(0);
                 draw += LINING_COST;
             }
@@ -252,7 +364,7 @@ public final class SuitModules {
         float coil = p(m, COIL);
         if (coil > 0f && t % 2 == 0) {
             // an electromagnet: a long core reaches, a short one pulls hard; only what is magnetic is drawn
-            double r = MAGNET_BASE + MAGNET_PER * coil * arg(m, COIL);
+            double r = magnetRadius(coil, arg(m, COIL));
             double speed = MAGNET_SPEED * coil * (1.2f - arg(m, COIL));
             Vec3 to = pl.position().add(0, 0.5, 0);
             boolean any = false;
@@ -294,11 +406,11 @@ public final class SuitModules {
         float k = 1f;
         // plate reads its material's hardness and toughness: a thin one turns a shot, a thick one soaks a blast
         if (src.is(DamageTypeTags.IS_EXPLOSION))
-            k -= BLAST_CUT * m[PLATE] * arg(m, PLATE);
+            k -= blastCut(m[PLATE], arg(m, PLATE));
         if (src.is(DamageTypeTags.IS_FIRE))
-            k -= FIRE_CUT * m[THERMAL] * arg(m, THERMAL);
+            k -= fireCut(m[THERMAL], arg(m, THERMAL));
         if (src.is(DamageTypeTags.IS_PROJECTILE))
-            k -= SHOT_CUT * m[PLATE] * (1f - arg(m, PLATE));
+            k -= shotCut(m[PLATE], arg(m, PLATE));
         if (k < 1f)
             event.setAmount(event.getAmount() * Math.max(0.1f, k));
     }
