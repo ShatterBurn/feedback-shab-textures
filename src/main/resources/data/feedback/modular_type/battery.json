@@ -5,6 +5,9 @@
       "cell.capacity",
       "cell.band",
       "cell.cells",
+      "cell.amps",
+      "cell.efficiency",
+      "cell.cold",
       "mass"
     ]
   },

@@ -2,7 +2,8 @@
   "family": "block",
   "measures": {
     "show": [
-      "block.Conductance"
+      "block.Conductance",
+      "block.Eaten"
     ]
   },
   "required": [

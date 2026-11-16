@@ -3,8 +3,8 @@
   "measures": {
     "show": [
       "block.MbPerRpm",
-      "block.Load",
-      "block.Lift"
+      "block.Lift",
+      "block.Eaten"
     ]
   },
   "required": [

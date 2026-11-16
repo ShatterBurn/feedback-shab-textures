@@ -2,13 +2,9 @@
   "family": "block",
   "measures": {
     "show": [
-      "block.Burn"
-    ],
-    "addons": {
-      "F": [
-        "block.Flame"
-      ]
-    }
+      "block.Burn",
+      "block.Flame"
+    ]
   },
   "required": [
     "S"

@@ -3,13 +3,9 @@
   "measures": {
     "show": [
       "block.Power",
-      "block.RpmPerFlow"
-    ],
-    "addons": {
-      "R": [
-        "block.Inertia"
-      ]
-    }
+      "block.RpmPerFlow",
+      "block.Inertia"
+    ]
   },
   "required": [
     "S"

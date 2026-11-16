@@ -176,7 +176,7 @@ float mass = ModularBake.param(type, part, "mass", 1f) * ModularTuning.STORE_MAS
                 float r = role.axis(part, "radius") / ModularTuning.CENTRIFUGE_REF_CM;
                 out.putFloat("MinRpm", io.github.soundgoodizerfan.feedback.machine.MachineTuning.CENTRIFUGE_MIN_RPM / (float) Math.sqrt(r));
                 out.putFloat("Load", io.github.soundgoodizerfan.feedback.machine.MachineTuning.CENTRIFUGE_LOAD_SU.value() * r * r * (float) m.density().muPerMb() / 7.9f);
-                out.putFloat("RimRpm", ModularTuning.ROTOR_RIM_CONSTANT * (float) Math.sqrt(m.mechanical().yieldStrength().get().value() / m.density().muPerMb()) / (r * ModularTuning.CENTRIFUGE_REF_CM / 50f));
+                out.putFloat("TearRpm", ModularTuning.ROTOR_RIM_CONSTANT * (float) Math.sqrt(m.mechanical().yieldStrength().get().value() / m.density().muPerMb()) / (r * ModularTuning.CENTRIFUGE_REF_CM / 50f));
             }
             // A deck's three shapes are the old bubble-cap, sieve and packed trays; the hole and pitch drilled in it tune them: a finer hole holds back more
             // of the vapour and cokes faster, the open area (hole over pitch, squared) is how much it takes a tick.
@@ -224,7 +224,7 @@ float leak = ModularBake.param(type, part, "leak", 1f) * ModularTuning.JAR_LEAK 
                 if (sl != null)
                     leak *= net.minecraft.util.Mth.lerp((float) sl.electrical().insulation().map(Enum::ordinal).orElse(0) / (VoltageBand.values().length - 1),
                             ModularTuning.JAR_SLEEVE_LEAK_POOR, ModularTuning.JAR_SLEEVE_LEAK);
-                out.putFloat("Leak", leak);
+                out.putFloat("Seep", leak);
                 out.putFloat("BurstAmps", burst);
             }
             // Impeller: flow goes with the square of the diameter; the variant trades flow against lift (an axial wheel moves a lot and cannot lift).
@@ -267,7 +267,8 @@ float leak = ModularBake.param(type, part, "leak", 1f) * ModularTuning.JAR_LEAK 
                 float d = role.axis(part, "diameter") / 100f;
                 out.putFloat("Intake", (float) (Math.PI / 4 * d * d));
                 out.putFloat("Stages", ModularBake.param(type, part, "stages", 3f));
-                out.putFloat("Divergent", nozzle == null ? 0f : ModularBake.param(type, nozzle, "divergent", 0f));
+                if (nozzle != null && ModularBake.param(type, nozzle, "divergent", 0f) > 0f)
+                    out.putFloat("Divergent", 1f);
                 out.putFloat("LinerTu", lm == null ? 0f : lm.thermal().serviceTemperature().get().value());
                 out.putFloat("BladeTu", bm == null ? 0f : bm.thermal().serviceTemperature().get().value());
                 out.putFloat("ReheatTu", am == null ? 0f : am.thermal().serviceTemperature().get().value());
@@ -292,14 +293,18 @@ float leak = ModularBake.param(type, part, "leak", 1f) * ModularTuning.JAR_LEAK 
             case "electromagnet" -> {
                 float n = role.axis(part, "turns") / 100f;
                 out.putFloat("Amps", n);
-                out.putFloat("Pull", 0.08f * n * ModularBake.param(type, part, "pull", 1f) * yoke(design, materials));
+                // the core is what is magnetised: a core that is not magnetic pulls only NONMAGNETIC_CORE of what iron does, and one that loses
+                // much to eddies and hysteresis keeps less of it
+                float core = m.separation().magnetic() ? 1f - 0.5f * share(m.electrical().coreLoss().orElse(ModularTuning.YOKE_REF_CORE_LOSS / 2f), ModularTuning.YOKE_REF_CORE_LOSS)
+                        : ModularTuning.NONMAGNETIC_CORE;
+                out.putFloat("Pull", 0.08f * n * ModularBake.param(type, part, "pull", 1f) * yoke(design, materials) * core / 0.85f);
                 out.putFloat("Range", 4f * ModularBake.param(type, part, "range", 1f));
             }
             // Anode: a bigger anode feeds more current and lasts in proportion to its bulk; the shape trades current against life; a cathode metal further above the anode draws more.
             case "galvanic_cell" -> {
                 float a = role.axis(part, "anode") / 50f, amps = ModularBake.param(type, part, "amps", 1f) * a * cathode(design, role, materials, m);
-                out.putFloat("Amps", amps);
-                out.putFloat("AnodeEu", 768000f * a * ModularBake.param(type, part, "life", 1f) / Math.max(0.1f, ModularBake.param(type, part, "amps", 1f) * a));
+                out.putFloat("Supply", amps);
+                out.putFloat("AnodeEu", ElectricMachineTuning.GALVANIC_ANODE_EU * a * ModularBake.param(type, part, "life", 1f));
             }
             // Filament: a thicker one draws more and lasts; the shape trades draw against toughness; a ballast (an addon) lets it ride a little overvoltage.
             case "lamp" -> {
@@ -336,7 +341,32 @@ float leak = ModularBake.param(type, part, "leak", 1f) * ModularTuning.JAR_LEAK 
             default -> {
             }
         }
+        // A lining (the inside of a shell) or a surface (the skin over a core) is what a corrosive liquid meets: the figure is how well it resists.
+        for (String skin : new String[] {"lining", "surface"}) {
+            Material sm = ModularBake.slotMaterial(role, part, skin, materials);
+            if (sm != null && role.shapingOf(part).flatMap(sh -> sh.slot(skin)).isPresent()) {
+                float own = m.corrosionResistance().orElse(0f), cover = sm.corrosionResistance().orElse(0f);
+                out.putFloat("Resists", skin.equals("lining") ? cover : 1f - (1f - own) * (1f - cover));
+            }
+        }
         return Optional.of(out);
+    }
+
+    /**
+     * The band a single galvanic cell of {@code design} supplies: a close pair of electrodes is the lowest band, a pair whose potentials
+     * stand {@code GALVANIC_WIDE_GAP} apart the next one (series cells raise it further, but that is the placed block's). Empty when
+     * either electrode states no potential or the pair has no gap, which supplies nothing.
+     */
+    public static Optional<VoltageBand> galvanicBand(ModularDesign design, ModularType type, Map<ResourceLocation, Material> materials) {
+        Part part = design.part(ROLE);
+        Material anode = part == null ? null : materials.get(part.material());
+        Material cathode = part == null ? null : ModularBake.slotMaterial(type.roles().get(ROLE), part, "cathode", materials);
+        if (anode == null || cathode == null || anode.electrical().electrodePotential().isEmpty() || cathode.electrical().electrodePotential().isEmpty())
+            return Optional.empty();
+        float gap = Math.abs(cathode.electrical().electrodePotential().get() - anode.electrical().electrodePotential().get());
+        if (gap <= 0f)
+            return Optional.empty();
+        return Optional.of(VoltageBand.values()[VoltageBand.LV.ordinal() + (gap >= ElectricMachineTuning.GALVANIC_WIDE_GAP ? 1 : 0)]);
     }
 
     /** The material of addon part {@code role}, or null if the design has none (or it is unknown). */

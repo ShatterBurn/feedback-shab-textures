@@ -6,7 +6,7 @@ The first machine that runs on [electricity](Electricity.md). While it's powered
 
 Draw it at the [Blueprint Table](Blueprint_Table.md) (pick *Electromagnet* in the type row); the turns are set there, along with the core shape and addon. It needs Electrical Treatise I: Coils and Magnets ([Treatise](Treatise.md)). Shape a **Magnet Core** from a metal ingot at the [Smithing Table](Smithing_Table.md), then assemble it at the [Engineering Table](Engineering_Table.md) with two [fasteners](Fasteners.md); the Electromagnet Blueprint in the blueprint slot judges the fit against your drawing. The magnet comes out with the design of the core, and the blueprint is kept.
 
-The core has one measure, the **turns**, from 50 to 150 percent (100 by default). More turns pull harder and draw more current. Its **shape** trades pull against reach:
+The core has one measure, the **turns**, from 50 to 150 percent (100 by default). More turns pull harder and draw more current. The core's metal sets the pull too: a core of a magnetic metal pulls much harder than a non-magnetic one. Its **shape** trades pull against reach:
 
 | Core | Pull | Reach |
 | --- | --- | --- |

@@ -4,9 +4,11 @@
     "show": [
       "engine.torque",
       "engine.displacement",
-      "engine.peak",
       "engine.redline",
       "engine.cylinders",
+      "engine.fuels",
+      "engine.fuel",
+      "engine.plug",
       "mass"
     ]
   },

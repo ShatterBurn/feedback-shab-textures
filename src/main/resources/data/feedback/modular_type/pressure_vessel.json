@@ -4,9 +4,14 @@
     "show": [
       "tank.room",
       "tank.danger",
-      "tank.critical",
+      "tank.air",
       "mass"
-    ]
+    ],
+    "addons": {
+      "V": [
+        "tank.relief"
+      ]
+    }
   },
   "required": [
     "S"

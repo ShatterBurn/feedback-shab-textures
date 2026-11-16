@@ -47,14 +47,14 @@ public final class MachineKinds {
         shape("ignite_target", "Heat", 0.25f, "CoreLoss", 0.25f, "WindingDrop", 0.25f);
         shape("freeze", "Heat", -0.25f, "CoreLoss", -0.2f, "WindingDrop", -0.2f);
         // A lagging or housing that insulates sheds less of its heat; a sealed jar leaks less of its charge.
-        shape("insulate", "Leak", -0.25f);
-        shape("seal", "Leak", -0.2f);
+        shape("insulate", "Leak", -0.25f, "Seep", -0.25f);
+        shape("seal", "Leak", -0.2f, "Seep", -0.2f);
         // Throwing back what it strikes is thrust and push; drawing it in is suction.
         shape("shove", "Force", 0.2f, "Power", 0.2f);
         shape("pull", "Lift", 0.2f);
         shape("momentum", "Inertia", 0.25f);
-        shape("brace", "RimRpm", 0.1f);
-        shape("clamp", "RimRpm", 0.1f, "FrameSu", 0.1f);
+        shape("brace", "RimRpm", 0.1f, "TearRpm", 0.1f);
+        shape("clamp", "RimRpm", 0.1f, "TearRpm", 0.1f, "FrameSu", 0.1f);
         shape("slip", "FrameSu", -0.08f);
         shape("slick", "Drag", -0.2f);
         shape("stick", "Friction", 0.2f);
@@ -69,7 +69,7 @@ public final class MachineKinds {
         shape("draw", "Range", 0.2f);
         shape("fling", "Range", 0.2f);
         shape("store", "Mass", 0.25f);
-        shape("release", "Leak", 0.25f);
+        shape("release", "Leak", 0.25f, "Seep", 0.25f);
     }
 
     /** Share of misuse wear one level of slip turns into slipping instead; share of a burst one level of damp soaks up, and the most that can be. */

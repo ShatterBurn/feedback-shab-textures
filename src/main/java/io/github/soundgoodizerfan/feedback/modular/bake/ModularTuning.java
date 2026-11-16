@@ -962,6 +962,18 @@ public final class ModularTuning {
     public static final float HEAD_ST_PER_MU_COMPETENCE = 0.88f;
 
     /**
+     * Placeholder. How a machine head's wear per unit of misuse follows its figures against an iron head of the same shape
+     * ({@link HeadWear}): the wear is scaled by (iron's over the head's) edge toughness to {@code HEAD_WEAR_TOUGHNESS_EXP}, durability to
+     * {@code HEAD_WEAR_DURABILITY_EXP} and mass to {@code HEAD_WEAR_MASS_EXP} (a tougher, longer-lived, heavier head takes the same
+     * misuse with less loss), and by one plus {@code HEAD_WEAR_CORROSION} of what it lacks of corrosion resistance (a pitted edge
+     * gives way sooner), all held within {@code HEAD_WEAR_RANGE} (least, most) of iron's.
+     */
+    public static final float HEAD_WEAR_TOUGHNESS_EXP = 0.5f, HEAD_WEAR_DURABILITY_EXP = 0.5f, HEAD_WEAR_MASS_EXP = 0.25f, HEAD_WEAR_CORROSION = 0.5f;
+    public static final float[] HEAD_WEAR_RANGE = {0.2f, 5f};
+    /** The material a head is measured against for its wear. */
+    public static final String HEAD_WEAR_REFERENCE = "feedback:iron";
+
+    /**
      * Placeholder. The most St of an ordinary blow ({@code HandSwing.BLOW}) a hand tool's head can carry, per Mu of
      * tool times the head's competence. The arm sets the blow and the head only has to carry it
      * ({@code ModularHandTool}: the head's figure is a share of the ordinary blow, capped at 1), so a better head

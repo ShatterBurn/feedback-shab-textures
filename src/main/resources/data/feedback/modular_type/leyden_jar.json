@@ -3,14 +3,12 @@
   "measures": {
     "show": [
       "block.StoresEu",
-      "block.Band"
-    ],
-    "addons": {
-      "W": [
-        "block.BurstAmps",
-        "block.Leak"
-      ]
-    }
+      "block.Band",
+      "block.BurstAmps",
+      "block.Holds",
+      "block.Charge",
+      "block.Eaten"
+    ]
   },
   "required": [
     "S"

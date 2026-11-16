@@ -4,6 +4,7 @@
     "show": [
       "belt.grip",
       "belt.heat",
+      "belt.slope",
       "mass"
     ]
   },

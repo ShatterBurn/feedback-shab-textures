@@ -61,7 +61,7 @@ final class BenchUses {
 
     /** Every number {@code design} of {@code type} has, in the family's own order, then its parts' as-built axes. */
     static List<Use> of(ModularDesign d, ModularType t) {
-        List<Use> out = new ArrayList<>(family(d, t));
+        List<Use> out = new ArrayList<>(MachineUses.refine(d, t, ClientMaterials.get(), family(d, t)));
         out.addAll(WeaponUses.of(d, t)); // weapons, tools and hand types: its own class
         out.addAll(MiscUses.of(d, t));
         out.addAll(axes(d, t));

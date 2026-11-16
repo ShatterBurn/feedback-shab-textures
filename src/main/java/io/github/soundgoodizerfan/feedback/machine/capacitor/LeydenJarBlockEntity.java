@@ -164,7 +164,7 @@ public class LeydenJarBlockEntity extends ElectricNode {
         // Last tick's resolution: packets delivered in as a sink, drawn out as a source.
         float before = charge;
         charge += (supplying ? -getAmps() : getAmps()) * getPacketEu();
-        charge = Math.max(0, Math.min(charge, capacity()) * (1 - figures.get("Leak", ElectricMachineTuning.LEYDEN_JAR_LEAK_PER_TICK)));
+        charge = Math.max(0, Math.min(charge, capacity()) * (1 - figures.get("Seep", ElectricMachineTuning.LEYDEN_JAR_LEAK_PER_TICK)));
         if (charge != before)
             setChanged();
 

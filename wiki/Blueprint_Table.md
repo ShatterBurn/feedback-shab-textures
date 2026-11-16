@@ -39,6 +39,24 @@ A gun's name (pistol, rifle, shotgun...), read from its parts, is shown beside t
 
 The sheet shows the design's figures as **one list of bars**, and only the figures that matter for the type drawn (a pickaxe does not list armor figures). The list scrolls, so no figure is cut off. The selected part's own figures come first. Machine numbers are bars like the rest, each with a short label (an engine's cylinders, displacement, torque and redline, a gearbox's gears, a propeller's disc, a dynamotor's rpm, a tank's room, a belt's grip). Fitted attachments and chosen variants add their own figures too: a stock or bipod adds brace figures, an armor servo adds drive and loss. Bars show, for a battery: cells, the band it is rated and its capacity in Eu; for a backpack: slots, carry rating, mounting points left and store slots; for a [bed](Bed.md): comfort and warmth; for a belt: its grip on cargo and the hottest cargo it carries. Figures that are words, ranks or yes/no (a pulse gun's voltage band rating, a divergent nozzle) stay text rows at the end of the list; they sort by rank like the bars. Qualities and adjectives the design earns sit along the bottom edge.
 
+Machine parts give more figures:
+
+- **Boiler:** steam made a tick and water held.
+- **Gas tank:** the safe fill in mB, short of the danger line, and how much it vents a tick near that line. A **pressure vessel** gives its safe air and valve relief the same way.
+- **Heating coil:** its heating power and how many Tu a second it warms unloaded. A **thermal store** gives the time it takes to lose half its heat.
+- **Leyden jar:** how long it keeps half its charge, and how long it takes to fill.
+- **Gas centrifuge:** how many times its starting speed it can spin before it tears apart.
+- **Jet:** the hottest flame it runs, tip speed at full power and fuel burned a tick. A **thruster** gives its push per mB burned.
+- **Galvanic cell:** the band it supplies, the amps, and how many minutes the anode lasts at full draw.
+- **Engine:** the ignition window of the fuels it runs, fuel burned a tick, and how long the spark plug lasts and how fast it fouls.
+- **Transmission:** its list of ratios.
+- **Propeller:** the RPM it tears apart at, its pitch (fine, medium or coarse) and whether it has pitch control.
+- **Conveyor belt:** the least cargo friction at which it still climbs, dry and wet.
+- **Dynamotor:** the share of its power lost as heat at rated load and how much heat it sheds.
+- **Battery:** discharge amps, the share of a charge it keeps and the capacity it holds when freezing.
+- **Machine heads:** how much the head wears per 1000 St of overload (per Wu ground, for a wheel); see [Machine Heads](Machine_Heads.md#wear).
+- **Lined or surfaced blocks:** how long a corrosive liquid takes to eat through; the lining's corrosion resistance sets it.
+
 - The figures follow the part: a sword lists no dig speed, and a file, knife or screwdriver head lists no damage, impact or bite. Each hafted head lists its own.
 - **Part sizes** (length, width, head size, limb length, face size, bore and the like) show as plain lines. They are set by the steppers, not by the material, so they cannot be sorted by.
 - Further lines name what a type does with its numbers:

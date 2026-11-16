@@ -4,9 +4,10 @@
     "show": [
       "block.Intake",
       "block.Stages",
+      "block.Fuel",
       "block.TipLimit",
-      "block.LinerTu",
-      "block.BladeTu"
+      "block.TipFull",
+      "block.SafeFlame"
     ],
     "variants": {
       "nozzle_divergent": [

@@ -2,13 +2,9 @@
   "family": "block",
   "measures": {
     "show": [
-      "block.Amps"
-    ],
-    "addons": {
-      "B": [
-        "block.Burnout"
-      ]
-    }
+      "block.Amps",
+      "block.Burnout"
+    ]
   },
   "required": [
     "S"
