@@ -173,7 +173,15 @@ public final class FormTint {
             var design = io.github.soundgoodizerfan.feedback.modular.item.ModularStacks.design(bed.bed());
             var part = design == null ? null : design.part(tintIndex == 0
                     ? io.github.soundgoodizerfan.feedback.modular.part.ModularBed.MATTRESS : io.github.soundgoodizerfan.feedback.modular.part.ModularBed.FRAME);
-            return part == null ? 0xFFFFFFFF : 0xFF000000 | MaterialColors.of(part.material());
+            if (part == null)
+                return 0xFFFFFFFF;
+            int rgb = MaterialColors.of(part.material());
+            // The cover keeps the dye a converted vanilla bed was: the colour is multiplied over the cloth.
+            if (tintIndex == 0 && design.colour() != io.github.soundgoodizerfan.feedback.modular.type.ModularDesign.DEFAULT_COLOUR) {
+                int d = design.colour();
+                rgb = ((rgb >> 16 & 255) * (d >> 16 & 255) / 255 << 16) | ((rgb >> 8 & 255) * (d >> 8 & 255) / 255 << 8) | (rgb & 255) * (d & 255) / 255;
+            }
+            return 0xFF000000 | rgb;
         }, FModular.PLACED_BED.get());
         event.register((state, level, pos, tintIndex) -> level != null && pos != null
                 && level.getBlockEntity(pos) instanceof io.github.soundgoodizerfan.feedback.machine.xp.XpWireBlockEntity wire
