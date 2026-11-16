@@ -9164,5 +9164,20 @@
   "gui.feedback.blueprint_table.spoon.stir": "Stirs %s times the standard spoon",
   "gui.feedback.blueprint_table.spoon.skim": "Skims %s times the standard spoon",
   "gui.feedback.blueprint_table.spoon.hold": "Held over pots up to %s Tu",
-  "gui.feedback.blueprint_table.spring.damage": "A pellet hits for %s"
+  "gui.feedback.blueprint_table.spring.damage": "A pellet hits for %s",
+  "gui.feedback.blueprint_table.charge.frag.label": "Fragments",
+  "gui.feedback.blueprint_table.charge.fuse.label": "Fuse",
+  "gui.feedback.blueprint_table.dig.class.label": "Harvests",
+  "gui.feedback.blueprint_table.gun.aim.label": "Aim time",
+  "gui.feedback.blueprint_table.gun.cool.label": "Cooling",
+  "gui.feedback.blueprint_table.gun.heat.label": "Shot heat",
+  "gui.feedback.blueprint_table.gun.rounds.label": "Rounds",
+  "gui.feedback.blueprint_table.hammer.blow.label": "Blow carried",
+  "gui.feedback.blueprint_table.shield.hot.label": "Holds to",
+  "gui.feedback.blueprint_table.shield.slow.label": "Slows",
+  "gui.feedback.blueprint_table.spoon.hold.label": "Pot heat",
+  "gui.feedback.blueprint_table.spoon.skim.label": "Skim",
+  "gui.feedback.blueprint_table.spoon.stir.label": "Stir",
+  "gui.feedback.blueprint_table.spring.damage.label": "Pellet",
+  "gui.feedback.blueprint_table.throw.speed.label": "Throw"
 }
