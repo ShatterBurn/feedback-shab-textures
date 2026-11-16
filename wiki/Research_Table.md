@@ -28,6 +28,7 @@ A **first volume** takes a plain thing:
 | Mechanical I | hand crank or water wheel |
 | Aerospace I | water wheel |
 | Robotics I | dynamotor or electromagnet |
+| Electrical I | battery or galvanic cell |
 | Chemical I | crucible or thermal store |
 | Materials I | hand hammer or file |
 

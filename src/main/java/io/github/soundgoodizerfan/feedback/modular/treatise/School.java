@@ -24,7 +24,9 @@ public enum School {
     /** Pressure vessels, exchangers, boilers and the plant that holds and moves a process (chemical engineering). */
     CHEMICAL(3),
     /** Rolls, dies, bits and the parts a machine shop works metal with (materials engineering). */
-    MATERIALS(1);
+    MATERIALS(1),
+    /** Coils, magnets and motors: what makes, moves and holds charge (electrical engineering). */
+    ELECTRICAL(1);
 
     private final int volumes;
 

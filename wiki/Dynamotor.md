@@ -4,6 +4,8 @@ Turns [rotation](Rotation.md) into [electricity](Electricity.md) and back. One b
 
 ## Building it
 
+Drawing and assembling a Dynamotor take Mechanical Treatise I: Engines, Flywheels and Dynamotors ([Treatise](Treatise.md)).
+
 At the [Smithing Table](Smithing_Table.md), the Dynamotor takes four parts:
 
 | Part | What it is | What it sets |

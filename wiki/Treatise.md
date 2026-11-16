@@ -11,7 +11,7 @@ Each school has one item per volume. Every volume is a subject of its own: holdi
 | Weapons Treatise I: Blades and Heads | maul, spear, cleaver |
 | Weapons Treatise II: Firearms | gun, spring gun, crossbow |
 | Weapons Treatise III: Electric Guns | electric gun |
-| Mechanical Treatise I: Engines and Flywheels | engine, flywheel |
+| Mechanical Treatise I: Engines, Flywheels and Dynamotors | engine, flywheel, [dynamotor](Dynamotor.md) |
 | Mechanical Treatise II: Transmission | transmission |
 | Aerospace Treatise I: Propellers | propeller |
 | Aerospace Treatise II: Thrusters | thruster |
@@ -19,9 +19,10 @@ Each school has one item per volume. Every volume is a subject of its own: holdi
 | Chemical Treatise I: Pressure Vessels | pressure vessel, boiler, gas tank |
 | Chemical Treatise II: Heat and Compression | heat exchanger, gas compressor |
 | Chemical Treatise III: Explosives | demolition charge |
+| Electrical Treatise I: Coils and Magnets | [heating coil](Heating_Coil.md), [linear motor](Pneumatic_Tube.md#linear-motor-ring), [electromagnet](Electromagnet.md) |
 | Materials Treatise I: Machine-Shop Consumables | roll, wire die, lathe bit, drill bit, abrasive wheel ([Machine Heads](Machine_Heads.md)) |
 
-Types outside every volume (tools, armor, water wheel, thermal store, Leyden jar, pump, fluid burner, electromagnet, galvanic cell, lamp, dynamotor, battery, belt and the rest) need no treatise.
+Types outside every volume (tools, armor, water wheel, thermal store, Leyden jar, pump, fluid burner, galvanic cell, lamp, battery, belt and the rest) need no treatise.
 
 ## Obtaining
 
@@ -89,6 +90,22 @@ I H I
 I I I
 
 I iron ingot, P piston, H hopper
+
+Linear motor (copper)      Heating coil (copper)     Electromagnet (copper)
+C R C                      C R C                     C I C
+I R I                      C   C                     I R I
+C R C                      C R C                     C I C
+
+Linear motor: C copper ingot, R redstone, I iron ingot
+Heating coil: C copper ingot, R redstone
+Electromagnet: C copper ingot, I iron ingot, R redstone
+
+Dynamotor (copper)
+C R C
+I B I
+C R C
+
+C copper ingot, R redstone, I iron ingot, B Bearing
 ```
 
 ## Using it

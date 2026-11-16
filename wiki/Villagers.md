@@ -136,7 +136,7 @@ Six professions also sell **treatises**, one of each volume per day, at a high t
 | Weaponsmith | Weapons Treatise I: Blades and Heads | 32 | 4 | 10 |
 | Weaponsmith | Weapons Treatise II: Firearms | 40 | 5 | 10 |
 | Weaponsmith | Weapons Treatise III: Electric Guns | 48 | 5 | 10 |
-| Toolsmith | Mechanical Treatise I: Engines and Flywheels | 32 | 4 | 10 |
+| Toolsmith | Mechanical Treatise I: Engines, Flywheels and Dynamotors | 32 | 4 | 10 |
 | Toolsmith | Mechanical Treatise II: Transmission | 40 | 5 | 10 |
 | Cartographer | Aerospace Treatise I: Propellers | 40 | 5 | 10 |
 | Cartographer | Aerospace Treatise II: Thrusters | 40 | 5 | 10 |

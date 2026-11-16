@@ -4,7 +4,7 @@ Turns [electricity](Electricity.md) into [heat](Heat.md). Set it against a [Cruc
 
 ## Crafting
 
-A Heating Coil is a [modular](Tools_and_Weapons.md) block made from one part, a **Coil Element**. Cut the element at the [Blueprint Table](Blueprint_Table.md) or a Stonecutter from wire or fine wire of a metal ([Wire Drawer](Wire_Drawer.md)), then assemble it. The element's metal sets how the coil behaves, and two measures set its build:
+A Heating Coil is a [modular](Tools_and_Weapons.md) block made from one part, a **Coil Element**. Cut the element at the [Blueprint Table](Blueprint_Table.md) or a Stonecutter from wire or fine wire of a metal ([Wire Drawer](Wire_Drawer.md)), then assemble it. Drawing and assembling it take Electrical Treatise I: Coils and Magnets ([Treatise](Treatise.md)). The element's metal sets how the coil behaves, and two measures set its build:
 
 - **Gauge**, 20 to 100 percent (50 by default): the thickness of the wire. A thicker wire draws more current.
 - **Turns**, 1 to 4 (2 by default): more turns draw less current and weigh more.
