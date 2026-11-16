@@ -1,12 +1,43 @@
 # Feedback Wiki
 
-**Feedback** is a tech-themed total conversion of Minecraft. Its core idea is that **machines don't know when the job is done**: a hammer keeps hammering after your plate is finished, a crucible keeps heating after your steel is ready, and whatever is being worked on keeps changing. Measuring, timing and controlling your machines so they stop at the right moment is the game.
+**Feedback** is a science overhaul of Minecraft, close to a total conversion where physics demands it, and still Minecraft: a sandbox in which you are an **inventor** in a world whose physics is the same everywhere.
 
-Around that idea the mod rebuilds the rest of Minecraft out of physical properties: every tool, weapon, shield, bow, piece of armor and gun is **assembled from parts**, and what it does comes from the materials; vehicles are real physics bodies you build; fighting has parries, rolls, kicks, grabs and a skill tree; and hot metal, steam and bare wire can hurt you. Nothing is keyed on an item's name, and nothing is locked: the [ages](Ages.md) (Stone, Bronze, Iron, Steel, Machine, Alloy) name where you are, never what you may do.
+You build everything from parts you put together yourself. A sword, a furnace, an engine, a gun, a dish and a potion are all designed from parts and materials, and the properties of those materials decide what they do. Things are named after what you built, parts have measurements to set rather than styles to pick, you can add to anything, and behavior is never chosen by a click: it falls out of the build. The question behind every mechanic is whether it lets you make something that does not exist, or only pick from a short list.
 
-New here? Start with [Metalworking](Metalworking.md), then [Heat](Heat.md). Want to fight? See [Combat](Combat.md). Not sure what to build next? The [Progression Guide](Progression_Guide.md) walks the order of play.
+The strange parts of Minecraft are ordinary science here. Blazes, ender, [experience](Experience.md) and sculk obey rules that mean exactly what they say; there is no magic path and no exotic material. Vanilla blocks and systems are replaced only where they contradict the physics.
+
+## What Feedback is not
+
+- **Not a tech tree.** Progress is a growing ability to make, observe, control and reproduce physical things. A stage that only does the same job faster is not a step. The [ages](Ages.md) (Stone, Bronze, Iron, Steel, Machine, Alloy) name where your materials have come to, and no recipe requires one.
+- **Not a tech mod with other systems attached.** Machines are one part of the world. Combat, survival, food, potions, enchanting and villages follow the same physics and the same inventor rule.
+- **Nothing is locked behind precision.** Nothing is keyed on an item's name: machines apply a physical action such as heat or force, and sorting and processing read properties such as density, magnetism and particle size. If you can reach the temperature, strength or hardness, you can attempt it by hand, badly. Automation makes a job practical; it unlocks nothing.
+
+## How it plays
+
+- **Sandbox first.** Getting from spawn to owning machines and instruments is the opening stretch. After that you choose which sciences to chase, in any order.
+- **Machines don't know when the job is done.** A hammer keeps hammering after your plate is finished and a crucible keeps heating after your steel is ready, and whatever is worked on keeps changing. Measuring, timing and stopping your machines at the right moment is part of the craft.
+- **Energies are plural.** Mechanical, thermal, chemical, electrical and magic energy each work on their own and each fails and stops differently. [Electricity](Electricity.md) carries the middle and late game, but it is not what everything runs on.
+- **Gear is assembled.** Every tool, weapon, shield, bow, piece of armor and gun is built from parts at a bench for its stock, and the materials set every figure. There is no iron sword, only a blade of one metal on a grip of another.
+- **Fighting takes skill.** [Combat](Combat.md) has parries, rolls, kicks, grabs and a skill tree that unlocks technique, never capability.
+- **Hazards are real.** Hot metal burns bare hands, a shut boiler bursts and bare wire shocks. Protection is a material you wear. See [Hazards](Hazards.md).
+- **Vehicles are physics bodies** built from a frame, with engines, tires and drivetrains you design.
+
+New here? Start with [Metalworking](Metalworking.md), then [Heat](Heat.md). Want to fight? See [Combat](Combat.md). Cooking, brewing and attuning are under [Life, food and magic](#life-food-and-magic). Not sure what to build next? The [Progression Guide](Progression_Guide.md) walks the order of play.
+
+## Life, food and magic
+
+- [Food](Food.md) and [Crops](Crops.md): growing, cooking and keeping food
+- [Brewing Stand](Brewing_Stand.md), [Potion Salts](Potion_Salts.md) and [Thrown and Imbued Potions](Thrown_and_Imbued_Potions.md): potions are built from parts too
+- [Enchanting Table](Enchanting_Table.md): attunements laid onto single parts
+- [Experience](Experience.md) and [Sculk Culture](Sculk_Culture.md)
+- [Villagers](Villagers.md), [Village Guilds](Village_Guilds.md) and [Village Stalls](Village_Stalls.md)
+- [Bed](Bed.md), [Vanilla Beds](Vanilla_Beds.md), [Campfire](Campfire.md), [Backpack](Backpack.md) and [Elytra](Elytra.md): living off the land
+- [Creeper Pen](Creeper_Pen.md), [Shulker](Shulker.md), [End Stone](End_Stone.md) and [Ancient Debris](Ancient_Debris.md): the oddities, explained
+- [Combat](Combat.md), [Skills](Skills.md), [Material Perks](Material_Perks.md) and [Combat Gear](Combat_Gear.md)
+- [Hazards](Hazards.md): heat, steam and shock
 
 ## Systems
+
 
 - [Metalworking](Metalworking.md): work, hardness, overrun and wear
 - [Materials](Materials.md): every metal, gem, mineral, polymer, composite, glass and solder, and the forms they take
@@ -82,6 +113,6 @@ New here? Start with [Metalworking](Metalworking.md), then [Heat](Heat.md). Want
 
 - **Instruments work from your inventory.** Carry an [instrument](Instruments.md) such as calipers, a balance scale or a thermometer and Jade and tooltips show exact figures instead of words.
 - **What you need is always shown exactly; what you have costs an instrument.** JEI and tooltips give requirements as hard numbers. The state of your machine is words until you measure it.
-- **Machines only wear when misused.** A correctly built line never wears out. If something is worn, you did something specific to it. The exceptions are things that are consumed by nature: the [Hammer](Hammer.md), the [Abrasive Wheel](Machine_Heads.md#wear)'s grit and a [Fuse](Fuse.md) wire. And two things can be destroyed outright, only by a mistake left unfixed: overloaded [cable](Copper_Cable.md#overloading) and an over-pressured [boiler](Boiler.md#pressure).
+- **Machines only wear when misused.** A correctly built line never wears out. If a machine is worn, something specific went wrong with it. The rule covers machines; things consumed by nature are used up: the [Hammer](Hammer.md), the [Abrasive Wheel](Machine_Heads.md#wear)'s grit and a [Fuse](Fuse.md) wire. Two things can be destroyed outright, only by a mistake left unfixed: overloaded [cable](Copper_Cable.md#overloading) and an over-pressured [boiler](Boiler.md#pressure).
 - **Rockets do not boost an elytra.** A firework rocket used while gliding does nothing and stays in your hand. Crossbows and dispensers fire rockets as vanilla does.
-- **Nothing is locked.** [Ages](Ages.md) are named moments (your first tool or part of a new material); no recipe requires one. If you can reach the temperature, strength or hardness, you can do it, even if it's unreliable at first.
+- **Nothing is locked.** [Ages](Ages.md) are named moments (your first tool or part of a material); no recipe requires one. If you can reach the temperature, strength or hardness, you can do it, even if it is unreliable at first.
