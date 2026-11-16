@@ -299,7 +299,7 @@ public final class BlueprintBoard {
     /** As {@link #sortFig}, but for one of the numbers under the figure bars (a pulse gun's hold, a tank's room, a band): the line's translation key; null for none. Only one of the two sorts at a time. */
     private String sortUse;
     /** Most uses lines under the figure bars. */
-    private static final int MAX_USES = 6;
+    private static final int MAX_USES = 8;
     private int hoverUse = -1;
     /** The would-be uses lines of a part in a material and shape, worked out once per edit. */
     private final Map<String, List<BenchUses.Use>> ghostUses = new HashMap<>();
@@ -973,7 +973,7 @@ public final class BlueprintBoard {
         else {
             List<BenchUses.Use> cut = new ArrayList<>();
             for (String id : ids)
-                allUses.stream().filter(u -> u.id().equals(id)).findFirst().ifPresent(cut::add);
+                allUses.stream().filter(u -> u.id().equals(id)).forEach(cut::add);
             uses = cut;
         }
         if (shown.isEmpty() && uses.isEmpty()) {
@@ -3091,6 +3091,8 @@ public final class BlueprintBoard {
                 out.add(Component.translatable("gui.feedback.blueprint_table.rows.hint").withStyle(net.minecraft.ChatFormatting.DARK_GRAY));
             return out;
         }
+        if (hoverUse >= 0 && hoverUse < uses.size() && hoverUse < MAX_USES && !uses.get(hoverUse).tip().isEmpty())
+            return uses.get(hoverUse).tip();
         return null;
     }
 }

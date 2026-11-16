@@ -4,11 +4,51 @@
     "show": [
       "pack.slots",
       "pack.carry",
+      "pack.free",
       "pack.stores",
       "pack.points",
       "durability",
       "mass"
-    ]
+    ],
+    "roles": {
+      "S": [
+        "pack.slots",
+        "pack.points"
+      ],
+      "T": [
+        "pack.carry",
+        "durability"
+      ],
+      "F": [
+        "pack.carry"
+      ],
+      "W": [
+        "pack.carry"
+      ],
+      "P": [
+        "pack.carry"
+      ],
+      "C": [
+        "pack.carry"
+      ],
+      "Q": [
+        "pack.carry"
+      ]
+    },
+    "addons": {
+      "X": [
+        "pack.fire"
+      ],
+      "L": [
+        "durability"
+      ],
+      "V": [
+        "durability"
+      ],
+      "K": [
+        "durability"
+      ]
+    }
   },
   "required": [
     "S",

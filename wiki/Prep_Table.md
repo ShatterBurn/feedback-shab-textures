@@ -82,6 +82,8 @@ When you let go of the pour the result is already decided, but you are not told 
 
 The Recipe tab is where you write a **recipe**, a list of steps from top to bottom. The first step is the container; pick which kind of dish with the chips along the top. Each step after it is an ingredient (base, main or side) or a finish. Click the arrows on a step to change its material, and click its option chips to choose how it is prepared: **cut** (whole, chop, mince), **work** (plain, light, firm) and **cook** (raw, rare, medium, well, charred); right-click a chip to step it back. Add a step with the **+** buttons under the list, and remove one with its **x**. No treatise is needed.
 
+The sheet beside the steps reads the dish as a drawing: hunger and saturation of the parts, fat, fibre, charred, toxin, pathogen and liters, and under them one line per effect the meal gives, with how long it lasts and how long after eating it comes on (fat and fibre slow it and stretch it), the eating time, the seal (open, covered or sealed) and, for an overfull container, how many mB spill. Dough is read as well kneaded and a soup serving as a bowl of stew (hunger 6, saturation 7.2); what you make follows what you did at the table.
+
 A recipe is named from what is in it. Type in the name box to name it yourself instead. Put paper in the paper slot at the bench's lower right and press **Write** to get a **Recipe**; a written recipe put back in the paper slot reopens in the tab. Right-click a recipe to read it as a card. A recipe is never required to make a dish.
 
 ### Honey on a skewer

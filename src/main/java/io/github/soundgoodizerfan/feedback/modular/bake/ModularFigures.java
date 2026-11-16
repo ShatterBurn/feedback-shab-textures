@@ -144,7 +144,7 @@ public record ModularFigures(List<Float> values, int step) {
         /** Share of attack speed a metacarpal plate's weight takes off the wearer's swing, 0 to 1. */
         SWING_DRAG,
         // --- a respirator's (family RESPIRATOR) ---
-        /** The thinnest air (a lung's share of sea-level oxygen, 0 to 1) a filter still gives breathable air in; 1 for a mask with no filter or a tank (the tank needs no floor). */
+        /** The thinnest air (a lung's share of sea-level oxygen, 0 to 1) a filter still gives breathable air in; 0 for a mask with no filter (a cylinder needs no floor). */
         BREATH_FLOOR,
         /** mB of air the cylinder holds; 0 for a mask with no cylinder. */
         AIR_CAPACITY,

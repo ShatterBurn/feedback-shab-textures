@@ -88,6 +88,10 @@ Upgrades work whenever the suit is powered. Some upgrades draw charge as they ac
 | Module Coil | cell for EMP | An electromagnet tuned by core length. Electromagnet is a switch that pulls only magnetic loose items (iron, steel and the like) to you; an iron-like core carries the field best. A long core (over 8 cm) reaches farther, a short one pulls harder. With a power cell held, EMP is a pulse that slows, weakens and blinds nearby creatures. |
 | Module Dispenser | none | A dosing pump tuned by dose (50 to 500 mB). Dose is a pulse that drinks the first potion bottle in your pack for you and returns the empty bottle; a larger dose lasts longer. A metal that resists corrosion works better. It draws a little charge. |
 
+### Reading a drawing
+
+The [Blueprint Table](Blueprint_Table.md#suit-modules) shows what a module drawing gives before you make it.
+
 ### Learning a module
 
 A module is drawn at the [Blueprint Table](Blueprint_Table.md), and assembled at the Engineering Table, only while you hold Robotics Treatise I: Suit Modules ([Treatise](Treatise.md)). A blueprint is not required to assemble one; it judges the fit against the drawing, and a [Blueprint Book](Blueprint_Book.md) in the blueprint slot offers every sheet inside it.

@@ -120,6 +120,9 @@ public final class DishBake {
         if (!m.traits().contains(Material.Trait.KNEADABLE))
             return 1f;
         float grade = p.state(KNEAD, -1f);
+        // a drawing is dough as a baker would knead it (a good one), not the floor of dough nobody has touched yet
+        if (grade < 0f && io.github.soundgoodizerfan.feedback.modular.bake.ModularBake.drawing())
+            return new io.github.soundgoodizerfan.feedback.process.FoodKnead(io.github.soundgoodizerfan.feedback.process.FoodKnead.GOOD).scale();
         return grade < 0f ? FTuning.KNEAD_UNKNEADED_SCALE : new io.github.soundgoodizerfan.feedback.process.FoodKnead(Math.round(grade)).scale();
     }
 
@@ -192,12 +195,16 @@ public final class DishBake {
             // A pot serving is a food already baked: its nutrition counts once, and the pot's water is in it.
             if (m.traits().contains(Material.Trait.BROTH)) {
                 float v = FTuning.DISH_PART_MB;
-                hunger += p.state(HUNGER, 0f);
-                saturation += p.state(SATURATION, 0f);
+                // a drawing has no ladle to fill: its serving is read as a bowl of stew
+                boolean ladled = !io.github.soundgoodizerfan.feedback.modular.bake.ModularBake.drawing() || p.measures().state().containsKey(HUNGER);
+                float servedHunger = ladled ? p.state(HUNGER, 0f) : ModularTuning.SERVING_REF_HUNGER;
+                float servedSaturation = ladled ? p.state(SATURATION, 0f) : ModularTuning.SERVING_REF_SATURATION;
+                hunger += servedHunger;
+                saturation += servedSaturation;
                 if (ModularTuning.SERVING_MOISTURE > wetMoisture) {
                     wetMoisture = ModularTuning.SERVING_MOISTURE;
-                    wetHunger = p.state(HUNGER, 0f);
-                    wetSaturation = p.state(SATURATION, 0f);
+                    wetHunger = servedHunger;
+                    wetSaturation = servedSaturation;
                 }
                 fill += v;
                 pathogen = Math.max(pathogen, p.state(PATHOGEN, 0f));

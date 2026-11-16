@@ -2,9 +2,70 @@
   "family": "suit_module",
   "measures": {
     "show": [
+      "suit.feeds",
+      "suit.optic",
+      "suit.filter",
+      "suit.thermal",
+      "suit.plate",
+      "suit.actuator",
+      "suit.thruster",
+      "suit.coil",
+      "suit.spring",
+      "suit.tread",
+      "suit.dispenser",
+      "suit.cost",
+      "suit.abilities",
       "suit_wiring",
       "mass"
-    ]
+    ],
+    "roles": {
+      "O": [
+        "suit.optic"
+      ],
+      "F": [
+        "suit.filter"
+      ],
+      "T": [
+        "suit.thermal"
+      ],
+      "P": [
+        "suit.plate"
+      ],
+      "A": [
+        "suit.actuator"
+      ],
+      "R": [
+        "suit.thruster"
+      ],
+      "C": [
+        "suit.coil"
+      ],
+      "S": [
+        "suit.spring"
+      ],
+      "G": [
+        "suit.tread"
+      ],
+      "D": [
+        "suit.dispenser"
+      ],
+      "K": [
+        "suit.abilities"
+      ],
+      "E": [
+        "suit.abilities"
+      ],
+      "N": [
+        "suit.abilities"
+      ],
+      "H": [
+        "mass"
+      ],
+      "W": [
+        "suit_wiring",
+        "suit.feeds"
+      ]
+    }
   },
   "required": [
     "H",
