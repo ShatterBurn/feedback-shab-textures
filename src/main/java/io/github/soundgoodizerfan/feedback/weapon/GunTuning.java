@@ -423,6 +423,9 @@ public final class GunTuning {
 
     /** A shot that has not hit anything by now is gone. */
     public static final int GUN_MAX_LIFE_TICKS = 80;
+    /** Placeholder [OPEN]. Rocket and fuse figures: kilograms of grain a motor item holds, burn ticks a grain adds (divided by the grain's burn rate), the exhaust speed (blocks per tick) of a nominal-potential grain, the speed a rocket is pushed out of its tube at, a proximity fuse's sensing radius and look-ahead (blocks), and the speed a cluster's pellets leave a burst at (blocks per tick). */
+    public static final float GUN_ROCKET_GRAIN_KG = 0.0005f, GUN_ROCKET_BURN_PER_GRAIN = 10f, GUN_ROCKET_EXHAUST = 3f, GUN_ROCKET_EJECT_SPEED = 0.6f,
+            GUN_PROXIMITY_RADIUS = 2.5f, GUN_PROXIMITY_REACH = 1.5f, GUN_CLUSTER_SPEED = 1.2f;
 
     /** How early the server accepts a shot against the cycle, for network jitter. Timestamp sync replaces this (spec 7.1). */
     public static final int GUN_FIRE_TOLERANCE_MS = 100;

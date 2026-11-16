@@ -38,13 +38,42 @@ import java.util.Optional;
  *                     keeps the bore from it. A polymer jacket round a core is a sabot.
  * @param vial         a potion carried in a glass vial in the bullet instead of a dust: it is let go where the round lands, as a thrown
  *                     flask lets it go, a smaller reach. Its strength fades as the potion's does, from its own stamp.
+ * @param fuse         what sets a shell off ({@link Fuse}); empty for a plain round, whose explosive payload goes up on impact.
+ * @param rocket       a round with its own motor: the charge is the motor's grain, not a powder charge, and the round burns it in flight.
  * @param seed         the item id of a seed carried in the bullet: it is planted where the round lands on farmland. An item, not a material,
  *                     because the thing planted is the block that item places; the press takes any item that places a crop.
  */
 public record Cartridge(int boreMm, ResourceLocation caseMaterial, List<Charge> charges, ResourceLocation projectile,
                         Optional<ResourceLocation> payload, boolean shot, BulletShape shape,
                         Optional<ResourceLocation> core, Optional<io.github.soundgoodizerfan.feedback.potion.PotionState> vial,
-                        Optional<ResourceLocation> seed) {
+                        Optional<ResourceLocation> seed, Optional<Fuse> fuse, boolean rocket) {
+
+    /** What sets a shell off: a timer, the first stop, any hit (a body it passes through too), or the near presence of a block or body. */
+    public enum Kind {
+        DELAY, IMPACT, INERTIA, PROXIMITY;
+
+        public static Kind of(String variant) {
+            return switch (variant) {
+                case "impact_fuse" -> IMPACT;
+                case "inertia_fuse" -> INERTIA;
+                case "proximity_fuse" -> PROXIMITY;
+                default -> DELAY;
+            };
+        }
+    }
+
+    /** A fuse part's kind and its delay in ticks (a delay fuse's flight time, a proximity fuse's arming time). */
+    public record Fuse(Kind kind, int ticks) {
+        public static final Codec<Fuse> CODEC = RecordCodecBuilder.create(i -> i.group(
+                Codec.STRING.fieldOf("kind").forGetter(f -> f.kind().name()),
+                Codec.intRange(0, 6000).fieldOf("ticks").forGetter(Fuse::ticks)
+        ).apply(i, (k, t) -> new Fuse(Kind.valueOf(k), t)));
+
+        public static final StreamCodec<RegistryFriendlyByteBuf, Fuse> STREAM_CODEC = StreamCodec.composite(
+                ByteBufCodecs.idMapper(i -> Kind.values()[i], Kind::ordinal), Fuse::kind,
+                ByteBufCodecs.VAR_INT, Fuse::ticks,
+                Fuse::new);
+    }
 
     /** One component of a charge. */
     public record Charge(ResourceLocation material, int count) {
@@ -78,7 +107,9 @@ public record Cartridge(int boreMm, ResourceLocation caseMaterial, List<Charge> 
             BulletShape.CODEC.optionalFieldOf("shape", BulletShape.ROUND_NOSE).forGetter(Cartridge::shape),
             ResourceLocation.CODEC.optionalFieldOf("core").forGetter(Cartridge::core),
             io.github.soundgoodizerfan.feedback.potion.PotionState.CODEC.optionalFieldOf("vial").forGetter(Cartridge::vial),
-            ResourceLocation.CODEC.optionalFieldOf("seed").forGetter(Cartridge::seed)
+            ResourceLocation.CODEC.optionalFieldOf("seed").forGetter(Cartridge::seed),
+            Fuse.CODEC.optionalFieldOf("fuse").forGetter(Cartridge::fuse),
+            Codec.BOOL.optionalFieldOf("rocket", false).forGetter(Cartridge::rocket)
     ).apply(i, Cartridge::new)), LEGACY);
 
     /** Written out by hand: ten fields is past what {@code composite} takes. */
@@ -94,6 +125,8 @@ public record Cartridge(int boreMm, ResourceLocation caseMaterial, List<Charge> 
                 ByteBufCodecs.optional(ResourceLocation.STREAM_CODEC).encode(buf, c.core());
                 ByteBufCodecs.optional(io.github.soundgoodizerfan.feedback.potion.PotionState.STREAM_CODEC).encode(buf, c.vial());
                 ByteBufCodecs.optional(ResourceLocation.STREAM_CODEC).encode(buf, c.seed());
+                ByteBufCodecs.optional(Fuse.STREAM_CODEC).encode(buf, c.fuse());
+                ByteBufCodecs.BOOL.encode(buf, c.rocket());
             },
             buf -> new Cartridge(ByteBufCodecs.VAR_INT.decode(buf), ResourceLocation.STREAM_CODEC.decode(buf),
                     Charge.STREAM_CODEC.apply(ByteBufCodecs.list()).decode(buf), ResourceLocation.STREAM_CODEC.decode(buf),
@@ -101,7 +134,8 @@ public record Cartridge(int boreMm, ResourceLocation caseMaterial, List<Charge> 
                     ByteBufCodecs.idMapper(i -> BulletShape.values()[i], BulletShape::ordinal).decode(buf),
                     ByteBufCodecs.optional(ResourceLocation.STREAM_CODEC).decode(buf),
                     ByteBufCodecs.optional(io.github.soundgoodizerfan.feedback.potion.PotionState.STREAM_CODEC).decode(buf),
-                    ByteBufCodecs.optional(ResourceLocation.STREAM_CODEC).decode(buf)));
+                    ByteBufCodecs.optional(ResourceLocation.STREAM_CODEC).decode(buf),
+                    ByteBufCodecs.optional(Fuse.STREAM_CODEC).decode(buf), ByteBufCodecs.BOOL.decode(buf)));
 
     /** A shot shell always has a shot shape and a bullet never does; a missing one is the plain one. */
     public Cartridge {
@@ -114,6 +148,15 @@ public record Cartridge(int boreMm, ResourceLocation caseMaterial, List<Charge> 
             vial = Optional.empty();
         if (seed == null || shot)
             seed = Optional.empty();
+        if (fuse == null)
+            fuse = Optional.empty();
+    }
+
+    /** A round with no fuse and no motor. */
+    public Cartridge(int boreMm, ResourceLocation caseMaterial, List<Charge> charges, ResourceLocation projectile,
+                     Optional<ResourceLocation> payload, boolean shot, BulletShape shape, Optional<ResourceLocation> core,
+                     Optional<io.github.soundgoodizerfan.feedback.potion.PotionState> vial, Optional<ResourceLocation> seed) {
+        this(boreMm, caseMaterial, charges, projectile, payload, shot, shape, core, vial, seed, Optional.empty(), false);
     }
 
     /** A round with no seed. */

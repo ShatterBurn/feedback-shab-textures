@@ -127,6 +127,20 @@
               "ticks": 0.0,
               "impact": 1.0
             }
+          },
+          {
+            "name": "inertia_fuse",
+            "params": {
+              "ticks": 0.0,
+              "inertia": 1.0
+            }
+          },
+          {
+            "name": "proximity_fuse",
+            "params": {
+              "ticks": 0.0,
+              "proximity": 1.0
+            }
           }
         ],
         "traits": []
@@ -138,7 +152,9 @@
           "default": 60,
           "step": 15,
           "variants": [
-            ""
+            "",
+            "inertia_fuse",
+            "proximity_fuse"
           ]
         }
       }

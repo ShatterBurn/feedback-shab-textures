@@ -144,6 +144,13 @@ public record LauncherSpec(float energy, float pistonMass, float boreMm, float l
                 energy / ModularTuning.AIR_COCK_J_PER_TICK));
     }
 
+    /** The work that pushes a rocket of {@code shellKg} out of the tube at {@code blocksPerTick}: the tube only ejects it, the motor does the rest. */
+    public float ejectWork(float shellKg, float blocksPerTick) {
+        float moving = shellKg + ModularTuning.AIR_PISTON_SHARE * pistonMass;
+        float mps = blocksPerTick * FTuning.TICKS_PER_SECOND;
+        return 0.5f * moving * mps * mps / Math.max(1e-3f, efficiency());
+    }
+
     /** The bore as the whole millimetre a round's die is set to. */
     public int boreInt() {
         return Math.round(boreMm);

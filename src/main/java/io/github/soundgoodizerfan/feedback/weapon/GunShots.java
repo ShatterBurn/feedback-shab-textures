@@ -103,6 +103,14 @@ public final class GunShots {
         float dragMult = 1f;
         /** Where the shot ended, for the streak to stop on. */
         Vec3 stopAt;
+        /** A rocket's motor: ticks of burn left and the acceleration it gives each (blocks per tick squared). */
+        int burnLeft;
+        float accel;
+        /** Ticks the shot may live: the plain life, and a rocket's burn on top. */
+        int maxLife = GunTuning.GUN_MAX_LIFE_TICKS;
+        /** Pellets a cluster shell scatters where it bursts, and whether it already has. */
+        int cluster = 1;
+        boolean scattered;
 
         Shot(LivingEntity shooter, Vec3 pos, Vec3 velocity, GunFigures figures) {
             this.shooter = shooter;
@@ -151,13 +159,25 @@ public final class GunShots {
     public record Flight(float drag, float damage, float ease, float glance, java.util.Map<io.github.soundgoodizerfan.feedback.process.Material.Perk, Integer> perks,
                          io.github.soundgoodizerfan.feedback.potion.PotionState vial,
                          java.util.Set<io.github.soundgoodizerfan.feedback.process.Material.Trait> traits,
-                         net.minecraft.resources.ResourceLocation seed) {
-        public static final Flight PLAIN = new Flight(1f, 1f, 1f, 1f, java.util.Map.of(), null, java.util.Set.of(), null);
+                         net.minecraft.resources.ResourceLocation seed, Cartridge.Fuse fuse, float motorKgPerTick, float exhaust, int burn, int pellets) {
+        public static final Flight PLAIN = new Flight(1f, 1f, 1f, 1f, java.util.Map.of(), null, java.util.Set.of(), null, null, 0f, 0f, 0, 1);
 
         /** The flight of {@code round} in {@code materials}. */
         public static Flight of(Cartridge round, java.util.Map<net.minecraft.resources.ResourceLocation, io.github.soundgoodizerfan.feedback.process.Material> materials) {
+            float kgPerTick = 0f, exhaust = 0f;
+            int burn = 0;
+            if (round.rocket()) {
+                var blend = Cartridge.Blend.of(materials, round.charges());
+                if (blend.isPresent()) {
+                    int n = round.charge();
+                    burn = Math.max(4, Math.min(200, Math.round(GunTuning.GUN_ROCKET_BURN_PER_GRAIN * n / blend.get().burnRate())));
+                    kgPerTick = n * GunTuning.GUN_ROCKET_GRAIN_KG / burn;
+                    exhaust = GunTuning.GUN_ROCKET_EXHAUST * (float) Math.sqrt(blend.get().potential() / n);
+                }
+            }
             return new Flight(round.drag(materials), round.shape().damage(), round.shape().ease(), round.shape().glance(),
-                    round.payloadPerks(materials), round.vial().orElse(null), round.payloadTraits(materials), round.seed().orElse(null));
+                    round.payloadPerks(materials), round.vial().orElse(null), round.payloadTraits(materials), round.seed().orElse(null),
+                    round.fuse().orElse(null), kgPerTick, exhaust, burn, round.fuse().isPresent() && round.shot() ? round.pellets() : 1);
         }
     }
 
@@ -166,6 +186,8 @@ public final class GunShots {
             net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.DAMAGE_TYPE, Feedback.id("bullet_pierce"));
 
     private static final Map<ServerLevel, List<Shot>> LIVE = new HashMap<>();
+    /** Shots made while the live ones are being stepped (a cluster's pellets): they join the flight when the step is done. */
+    private static final Map<ServerLevel, List<Shot>> BORN = new HashMap<>();
     /** Earliest wall-clock ms each shooter may fire again. */
     private static final Map<HandKey, Long> NEXT_OK = new HashMap<>();
 
@@ -342,6 +364,9 @@ public final class GunShots {
                                  GunSpec design, Cartridge round, float yaw, float pitch, long nowMs, boolean cookOff,
                                  boolean aimed, boolean together, InteractionHand hand) {
         var materials = io.github.soundgoodizerfan.feedback.process.MaterialTable.get().materials();
+        // A rocket carries its own motor and a shell no powder: neither goes in a chamber.
+        if (round.rocket() || round.charges().isEmpty())
+            return false;
         var base = design.firing(GunAmmo.count(gun)).bake(materials, round);
         var load = round.load(materials);
         if (base.isEmpty() || load.isEmpty())
@@ -824,6 +849,10 @@ public final class GunShots {
             shot.hardness = exact ? hardness * 2f : hardness;
             shot.gun = gun.copyWithCount(1);
             shot.flight = flight;
+            shot.burnLeft = flight.burn();
+            shot.maxLife = GunTuning.GUN_MAX_LIFE_TICKS + flight.burn();
+            shot.accel = flight.burn() > 0 ? flight.motorKgPerTick() * flight.exhaust() / Math.max(1e-6f, each.projectileMass().value()) : 0f;
+            shot.cluster = flight.pellets();
             shot.bend = bend;
             shot.keepsSpeedWet = wet;
             shot.argb = incendiary ? 0xFFFF8A2A : tracer ? 0xFFFFD27A : 0x70FFF0C8;
@@ -872,6 +901,9 @@ public final class GunShots {
                 it.remove();
             }
         }
+        List<Shot> born = BORN.remove(level);
+        if (born != null)
+            shots.addAll(born);
         if (shots.isEmpty())
             LIVE.remove(level);
     }
@@ -879,6 +911,7 @@ public final class GunShots {
     @SubscribeEvent
     public static void onServerStopped(ServerStoppedEvent event) {
         LIVE.clear();
+        BORN.clear();
         NEXT_OK.clear();
         LAST_SHOT.clear();
         RELOADS.clear();
@@ -1066,14 +1099,56 @@ public final class GunShots {
      * @return whether it went off.
      */
     private static boolean detonate(ServerLevel level, Shot s, Vec3 at) {
-        if (s.blast < FTuning.DEMO_POWER_MIN || s.age < GunTuning.DEMO_ROUND_ARM_TICKS)
+        if (s.age < GunTuning.DEMO_ROUND_ARM_TICKS)
             return false;
+        boolean went = false;
+        if (s.cluster > 1 && !s.scattered) {
+            s.scattered = true;
+            scatter(level, s, at);
+            went = true;
+        }
+        if (s.blast < FTuning.DEMO_POWER_MIN)
+            return went;
         float power = s.blast;
         s.blast = 0;
         level.explode(s.shooter, at.x, at.y, at.z, power, false,
                 mayChange(level, s.shooter, BlockPos.containing(at)) ? net.minecraft.world.level.Level.ExplosionInteraction.BLOCK
                         : net.minecraft.world.level.Level.ExplosionInteraction.NONE);
         return true;
+    }
+
+    /** A cluster shell bursts into its pellets: each a swept shot of its share of the mass, thrown out from where it burst at the cluster speed. */
+    private static void scatter(ServerLevel level, Shot s, Vec3 at) {
+        int n = s.cluster;
+        float each = s.massMu / n;
+        float speed = GunTuning.GUN_CLUSTER_SPEED;
+        float mps = speed * FTuning.TICKS_PER_SECOND;
+        GunFigures pellet = new GunFigures(new io.github.soundgoodizerfan.feedback.core.unit.Pu(0f), new io.github.soundgoodizerfan.feedback.core.unit.Pu(0f),
+                speed, 0.5f * each * mps * mps, new io.github.soundgoodizerfan.feedback.core.unit.Mu(each), new io.github.soundgoodizerfan.feedback.core.unit.Mu(0f),
+                each * mps, 0, 0f, 0f, 0f, 0f, 1f);
+        List<Shot> live = BORN.computeIfAbsent(level, l -> new ArrayList<>());
+        for (int k = 0; k < n; k++) {
+            Vec3 dir = new Vec3(level.random.nextGaussian(), level.random.nextGaussian(), level.random.nextGaussian()).normalize();
+            Shot p = new Shot(s.shooter, at.add(dir.scale(0.3)), dir.scale(speed), pellet);
+            p.hardness = s.hardness;
+            p.gun = s.gun;
+            p.flight = Flight.PLAIN;
+            p.argb = s.argb;
+            p.scattered = true;
+            io.github.soundgoodizerfan.feedback.net.GunTracerPayload.send(level, p.id, false, p.pos, p.velocity, p.argb, p.dragMult);
+            live.add(p);
+        }
+    }
+
+    /** Whether a body or a block is within a proximity fuse's sense of the shot: a body within the radius of where it is going, or a block just ahead of it. */
+    private static boolean near(ServerLevel level, Shot s) {
+        Vec3 ahead = s.pos.add(s.velocity);
+        if (!level.getEntitiesOfClass(LivingEntity.class, new AABB(ahead, ahead).inflate(GunTuning.GUN_PROXIMITY_RADIUS),
+                e -> e != s.shooter && e.isAlive()).isEmpty())
+            return true;
+        Vec3 look = ahead.add(s.velocity.normalize().scale(GunTuning.GUN_PROXIMITY_REACH));
+        return level.clip(new ClipContext(ahead, look, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, CollisionContext.empty()))
+                .getType() != HitResult.Type.MISS;
     }
 
     /**
@@ -1201,7 +1276,7 @@ public final class GunShots {
 
     /** One tick's travel. @return whether the shot is still flying. */
     private static boolean step(ServerLevel level, Shot s) {
-        if (s.shooter.isRemoved() || ++s.age > GunTuning.GUN_MAX_LIFE_TICKS)
+        if (s.shooter.isRemoved() || ++s.age > s.maxLife)
             return false;
         if (s.hold > 0) {
             if (--s.hold == GunFuTuning.COIN_HOLD_TICKS / 2)
@@ -1210,6 +1285,25 @@ public final class GunShots {
         }
         if (s.bend != 0)
             s.velocity = io.github.soundgoodizerfan.feedback.modular.attunement.LodeKinds.bend(level, s.shooter, s.pos, s.velocity, s.bend);
+        // A rocket's motor pushes it along its own heading while the grain burns; the clients are told its new course now and then.
+        if (s.burnLeft > 0) {
+            s.burnLeft--;
+            s.velocity = s.velocity.add(s.velocity.normalize().scale(s.accel));
+            if (s.age % 2 == 0) {
+                level.sendParticles(ParticleTypes.SMOKE, s.pos.x, s.pos.y, s.pos.z, 1, 0.02, 0.02, 0.02, 0.0);
+                level.sendParticles(ParticleTypes.FLAME, s.pos.x, s.pos.y, s.pos.z, 1, 0.02, 0.02, 0.02, 0.0);
+                io.github.soundgoodizerfan.feedback.net.GunTracerPayload.send(level, s.id, false, s.pos, s.velocity, s.argb, s.dragMult);
+            }
+        }
+        // A fuse that goes off in the air: a delay when its time is up, a proximity fuse once armed and a block or body is close.
+        Cartridge.Fuse fused = s.flight.fuse();
+        if (fused != null && (fused.kind() == Cartridge.Kind.DELAY && s.age >= fused.ticks()
+                || fused.kind() == Cartridge.Kind.PROXIMITY && s.age >= Math.max(fused.ticks(), GunTuning.DEMO_ROUND_ARM_TICKS) && near(level, s))) {
+            payloadHit(level, s, s.pos, null, null, null);
+            detonate(level, s, s.pos);
+            s.stopAt = s.pos;
+            return false;
+        }
         Vec3 from = s.pos, to = from.add(s.velocity);
 
         // A coin the shooter flipped, struck by this round: the metal decides what it does (CoinShot).
@@ -1276,7 +1370,7 @@ public final class GunShots {
             s.stopAt = hit.getLocation();
             GunImpacts.body(level, s.shooter, target, hit.getLocation(), s.velocity, damage,
                     target instanceof LivingEntity dead && dead.isDeadOrDying());
-            if (detonate(level, s, hit.getLocation()))
+            if ((fused == null || fused.kind() != Cartridge.Kind.IMPACT || damage <= health) && detonate(level, s, hit.getLocation()))
                 return false;
             if (damage <= health || !s.spend(health / (GunTuning.GUN_DAMAGE_PER_WORK * s.flight.damage())))
                 return false;

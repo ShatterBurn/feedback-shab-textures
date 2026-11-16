@@ -9416,5 +9416,10 @@
   "tooltip.feedback.launcher.pressure": "Pressure %s%%.",
   "tooltip.feedback.launcher.water": "Boiler water %s%%.",
   "tooltip.feedback.launcher.no_cell": "No cell seated.",
-  "tooltip.feedback.launcher.cell": "Cell %s%% charged."
+  "tooltip.feedback.launcher.cell": "Cell %s%% charged.",
+  "gui.feedback.reloading_press.fuse": "fuse",
+  "modular.feedback.variant.inertia_fuse": "Inertia Fuse",
+  "modular.feedback.desc.variant.inertia_fuse": "Sets a shell off on any hit, a body it passes through as well as the surface that stops it. In a shell its delay is the time it takes to arm.",
+  "modular.feedback.variant.proximity_fuse": "Proximity Fuse",
+  "modular.feedback.desc.variant.proximity_fuse": "Arms after its delay, then sets the shell off when a body or a block comes near its path. It costs a sensing sweep each tick it flies."
 }

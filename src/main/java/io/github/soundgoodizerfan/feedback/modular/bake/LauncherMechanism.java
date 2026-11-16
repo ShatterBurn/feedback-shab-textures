@@ -37,6 +37,7 @@ import io.github.soundgoodizerfan.feedback.weapon.GunMechanism;
 import io.github.soundgoodizerfan.feedback.weapon.GunShots;
 import io.github.soundgoodizerfan.feedback.weapon.GunSound;
 import io.github.soundgoodizerfan.feedback.weapon.GunStance;
+import io.github.soundgoodizerfan.feedback.weapon.GunTuning;
 
 /**
  * A launcher's mechanism: the seat gives the push, the round is the shell. A pull needs a cocked seat and a chambered round of the
@@ -59,17 +60,21 @@ public final class LauncherMechanism implements GunMechanism {
         LauncherSpec spec = ModularLauncher.spec(gun).orElse(null);
         if (spec == null || ModularStacks.broken(gun))
             return null;
-        float available = available(spec, gun, shooter.level());
-        if (available <= 0f)
-            return null;
         Optional<Cartridge> next = GunAmmo.next(gun);
-        if (next.isEmpty() || next.get().boreMm() != spec.boreInt())
+        if (next.isEmpty() || next.get().boreMm() != spec.boreInt() || !takes(next.get()))
+            return null;
+        boolean rocket = next.get().rocket();
+        float available = rocket ? 1f : available(spec, gun, shooter.level());
+        if (available <= 0f)
             return null;
         Map<ResourceLocation, Material> materials = MaterialTable.get().materials();
         Optional<Cartridge.Slug> slug = next.get().slug(materials);
         if (slug.isEmpty())
             return null;
         float shellKg = spec.pelletLitres() * slug.get().density();
+        // A rocket is only ejected from the tube; its motor does the work.
+        if (rocket)
+            available = spec.ejectWork(shellKg, GunTuning.GUN_ROCKET_EJECT_SPEED);
         ModularFigures baked = ModularStacks.figures(gun);
         float gunKg = baked == null || baked.get(ModularFigures.Fig.MASS) <= 0f ? spec.pistonMass() : baked.get(ModularFigures.Fig.MASS);
         GunFigures figures = spec.figures(shellKg, available, gunKg, GunCondition.condition(gun));
@@ -79,6 +84,11 @@ public final class LauncherMechanism implements GunMechanism {
                 figures = figures.oneHanded();
         }
         return new Prepared(spec, next.get(), figures, available);
+    }
+
+    /** Whether a launcher takes this round: a shell (no powder) or a rocket (its grain is its motor); never a powder round. */
+    private static boolean takes(Cartridge round) {
+        return round.charges().isEmpty() || round.rocket();
     }
 
     /** The work the seat can give this shot, 0 if it cannot fire: a spring only when cocked, a reservoir by its pressure, a solenoid by its cell, a boiler by its heat and water. */
@@ -146,10 +156,11 @@ public final class LauncherMechanism implements GunMechanism {
             return false;
         Map<ResourceLocation, Material> materials = MaterialTable.get().materials();
         GunAmmo.spend(gun);
-        spend(p.spec(), gun, p, level);
+        if (!p.round().rocket())
+            spend(p.spec(), gun, p, level);
         GunFigures figures = p.figures().withSpread(GunStance.of(shooter, aimed) * p.round().shape().spread()
                 * io.github.soundgoodizerfan.feedback.modular.attunement.MomentumKinds.braceSpread(shooter, gun));
-        GunShots.fire(level, shooter, figures, yaw, pitch, p.round().tracer(materials), p.round().incendiary(materials), 1,
+        GunShots.fire(level, shooter, figures, yaw, pitch, p.round().tracer(materials), p.round().incendiary(materials), p.round().fuse().isPresent() ? 1 : p.round().pellets(),
                 p.round().hardness(materials), gun, p.round().blast(materials), false, GunShots.Flight.of(p.round(), materials));
         GunShots.bookShot(level, shooter, gun, figures, 0f, hand, aimed);
         return true;
@@ -178,12 +189,15 @@ public final class LauncherMechanism implements GunMechanism {
 
     @Override
     public FireMode allow(ItemStack gun, FireMode set) {
-        return FireMode.SEMI;
+        // A spring is recocked by hand and cannot cycle; the others fire as fast as the seat recovers.
+        boolean auto = ModularLauncher.spec(gun).map(sp -> sp.seat() != LauncherSpec.Seat.SPRING).orElse(false);
+        return auto && set == FireMode.AUTO ? FireMode.AUTO : FireMode.SEMI;
     }
 
     @Override
     public FireMode next(ItemStack gun, FireMode current) {
-        return FireMode.SEMI;
+        boolean auto = ModularLauncher.spec(gun).map(sp -> sp.seat() != LauncherSpec.Seat.SPRING).orElse(false);
+        return auto && current == FireMode.SEMI ? FireMode.AUTO : FireMode.SEMI;
     }
 
     @Override
@@ -225,7 +239,7 @@ public final class LauncherMechanism implements GunMechanism {
         // An empty chamber takes a round of the bore from the pack first.
         boolean loaded = false;
         if (GunAmmo.next(gun).isEmpty())
-            loaded = loadFromPack(player, gun, spec);
+            loaded = loadFromPack(player, gun, spec) || loadMagazine(player, gun, spec);
         switch (spec.seat()) {
             case RESERVOIR -> {
                 pump(level, player, gun, spec);
@@ -273,11 +287,28 @@ public final class LauncherMechanism implements GunMechanism {
     private static boolean loadFromPack(Player player, ItemStack gun, LauncherSpec spec) {
         for (ItemStack s : player.getInventory().items) {
             Cartridge round = s.get(FWeapons.CARTRIDGE.get());
-            if (s.isEmpty() || !s.is(FWeapons.CARTRIDGE_ITEM.get()) || round == null || round.boreMm() != spec.boreInt() || !round.charges().isEmpty())
+            if (s.isEmpty() || !s.is(FWeapons.CARTRIDGE_ITEM.get()) || round == null || round.boreMm() != spec.boreInt() || !takes(round))
                 continue;
             gun.set(FWeapons.CHAMBER.get(), round);
             if (!player.getAbilities().instabuild)
                 s.shrink(1);
+            return true;
+        }
+        return false;
+    }
+
+    /** A magazine in the pack whose top round the launcher takes: seated in the gun as it is, and the chamber fed from it. */
+    private static boolean loadMagazine(Player player, ItemStack gun, LauncherSpec spec) {
+        for (ItemStack s : player.getInventory().items) {
+            if (s.isEmpty() || !s.is(FWeapons.MAGAZINE_ITEM.get()))
+                continue;
+            var mag = s.getOrDefault(FWeapons.MAGAZINE.get(), io.github.soundgoodizerfan.feedback.weapon.Magazine.EMPTY);
+            if (mag.isEmpty() || mag.top().boreMm() != spec.boreInt() || !takes(mag.top()))
+                continue;
+            gun.set(FWeapons.MAGAZINE.get(), mag);
+            gun.set(FWeapons.MAGAZINE_SIZE.get(), GunAmmo.size(s));
+            s.shrink(1);
+            GunAmmo.feed(gun);
             return true;
         }
         return false;

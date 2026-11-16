@@ -266,14 +266,14 @@ public class ReloadingPressScreen extends SkinnedScreen<ReloadingPressMenu> {
     @Override
     protected void renderLabels(GuiGraphics g, int mouseX, int mouseY) {
         super.renderLabels(g, mouseX, mouseY);
-        String[] names = {"case", "charge", "mix", "projectile", "core", "payload"};
+        String[] names = {"case", "charge", "mix", "projectile", "core", "payload", "fuse"};
         for (int i = 0; i < names.length; i++) {
             Component label = Component.translatable("gui.feedback.reloading_press." + names[i]);
             int cx = ReloadingPressMenu.SLOT_XY[i][0] + 8;
             g.drawString(font, label, cx - font.width(label) / 2, VIEW_Y + 6, skin.dim(), false);
         }
         Component roundLabel = Component.translatable("gui.feedback.reloading_press.round");
-        g.drawString(font, roundLabel, ReloadingPressMenu.SLOT_XY[6][0] + 8 - font.width(roundLabel) / 2, ReloadingPressMenu.SLOT_XY[6][1] - 14, skin.dim(), false);
+        g.drawString(font, roundLabel, ReloadingPressMenu.SLOT_XY[ReloadingPressBlockEntity.OUTPUT][0] + 8 - font.width(roundLabel) / 2, ReloadingPressMenu.SLOT_XY[ReloadingPressBlockEntity.OUTPUT][1] - 14, skin.dim(), false);
         g.drawString(font, Component.translatable("gui.feedback.reloading_press.bore"), 18, 120, skin.dim(), false);
 
         long now = net.minecraft.Util.getMillis();

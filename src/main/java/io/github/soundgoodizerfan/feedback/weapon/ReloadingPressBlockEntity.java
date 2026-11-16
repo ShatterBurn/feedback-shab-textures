@@ -38,8 +38,8 @@ import java.util.Optional;
  */
 public class ReloadingPressBlockEntity extends BlockEntity implements Container, MenuProvider {
 
-    public static final int CASE = 0, CHARGE = 1, CHARGE_B = 2, PROJECTILE = 3, CORE = 4, PAYLOAD = 5, OUTPUT = 6;
-    public static final int SLOTS = 7;
+    public static final int CASE = 0, CHARGE = 1, CHARGE_B = 2, PROJECTILE = 3, CORE = 4, PAYLOAD = 5, FUSE = 6, OUTPUT = 7;
+    public static final int SLOTS = 8;
 
     /** The perks a payload may carry to a living thing it strikes: what the press accepts besides a tracer, an incendiary or a filler. */
     private static final java.util.Set<Material.Perk> PAYLOAD_PERKS = java.util.EnumSet.of(Material.Perk.TOXIC,
@@ -79,6 +79,11 @@ public class ReloadingPressBlockEntity extends BlockEntity implements Container,
         // A brewed potion goes in the payload slot as a vial: a dud holds nothing.
         if (slot == PAYLOAD && stack.has(FDataComponents.POTION_STATE.get()))
             return !stack.get(FDataComponents.POTION_STATE.get()).dud();
+        // A fuse is a part made at the part bench: its kind and its delay are what the part was built as.
+        if (slot == FUSE)
+            return stack.getItem() instanceof io.github.soundgoodizerfan.feedback.modular.part.ModularPartItem
+                    && stack.has(FDataComponents.MADE_OF.get())
+                    && net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(stack.getItem()).getPath().equals("charge_fuse");
         var found = located(materials, stack);
         if (found.isEmpty())
             return false;
@@ -150,7 +155,10 @@ public class ReloadingPressBlockEntity extends BlockEntity implements Container,
         }
         var cas = located(materials, slots.get(CASE));
         var bullet = located(materials, slots.get(PROJECTILE));
-        if (cas.isEmpty() || bullet.isEmpty() || !fits(CASE, slots.get(CASE), materials)
+        // No case but a charge: the grain is packed in the round's own body and burns in flight, a rocket.
+        boolean rocket = slots.get(CASE).isEmpty() && !(slots.get(CHARGE).isEmpty() && slots.get(CHARGE_B).isEmpty());
+        if ((cas.isEmpty() && !rocket) || bullet.isEmpty() || (!rocket && !fits(CASE, slots.get(CASE), materials))
+                || (!slots.get(FUSE).isEmpty() && !fits(FUSE, slots.get(FUSE), materials))
                 || !fits(PROJECTILE, slots.get(PROJECTILE), materials)
                 || (!slots.get(CHARGE).isEmpty() && !fits(CHARGE, slots.get(CHARGE), materials))
                 || (!slots.get(CHARGE_B).isEmpty() && !fits(CHARGE_B, slots.get(CHARGE_B), materials))
@@ -192,7 +200,13 @@ public class ReloadingPressBlockEntity extends BlockEntity implements Container,
         // A core sits inside a bullet's jacket; shot has none.
         var core = shot || slots.get(CORE).isEmpty() ? java.util.Optional.<net.minecraft.resources.ResourceLocation>empty()
                 : java.util.Optional.of(located(materials, slots.get(CORE)).get().id());
-        Cartridge cartridge = new Cartridge(boreMm, cas.get().id(), charges, bullet.get().id(), payload, shot, shape, core, vial, seed);
+        java.util.Optional<Cartridge.Fuse> fuse = java.util.Optional.empty();
+        if (!slots.get(FUSE).isEmpty()) {
+            var made = slots.get(FUSE).get(FDataComponents.MADE_OF.get());
+            fuse = java.util.Optional.of(new Cartridge.Fuse(Cartridge.Kind.of(made.variant()),
+                    Math.round(made.measures().axes().getOrDefault("ticks", (float) GunTuning.DEMO_FUSE_TICKS))));
+        }
+        Cartridge cartridge = new Cartridge(boreMm, rocket ? bullet.get().id() : cas.get().id(), charges, bullet.get().id(), payload, shot, shape, core, vial, seed, fuse, rocket);
         // No powder in either charge slot: a shell, for a launcher's seat to drive. The press seats what it is given and does not ask whether a gun will fire it.
         if (!charges.isEmpty() && cartridge.load(materials).isEmpty()) {
             io.github.soundgoodizerfan.feedback.net.AimPayloads.screen(player, Component.translatable("message.feedback.press.no_blend"));
@@ -206,6 +220,7 @@ public class ReloadingPressBlockEntity extends BlockEntity implements Container,
         slots.get(PROJECTILE).shrink(1);
         slots.get(CORE).shrink(1);
         slots.get(PAYLOAD).shrink(1);
+        slots.get(FUSE).shrink(1);
         slots.set(OUTPUT, round);
         setChanged();
         if (level != null) {
