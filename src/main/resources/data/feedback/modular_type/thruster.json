@@ -1,5 +1,15 @@
 {
   "family": "block",
+  "measures": {
+    "show": [
+      "block.Force"
+    ],
+    "addons": {
+      "J": [
+        "block.Burn"
+      ]
+    }
+  },
   "required": [
     "S"
   ],

@@ -1,5 +1,13 @@
 {
   "family": "cell",
+  "measures": {
+    "show": [
+      "cell.capacity",
+      "cell.band",
+      "cell.cells",
+      "mass"
+    ]
+  },
   "required": [
     "P",
     "C"

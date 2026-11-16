@@ -1,5 +1,12 @@
 {
   "family": "block",
+  "measures": {
+    "show": [
+      "block.Load",
+      "block.MinRpm",
+      "block.RimRpm"
+    ]
+  },
   "required": [
     "S"
   ],

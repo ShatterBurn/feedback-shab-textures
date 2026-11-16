@@ -91,7 +91,7 @@ public class ModularBlueprintItem extends Item {
                 tooltip.add(mods);
         }
         if (figures != null)
-            figures(figures).forEach(line -> tooltip.add(line.copy().withStyle(ChatFormatting.DARK_AQUA)));
+            figures(figures, type, design, false).forEach(line -> tooltip.add(line.copy().withStyle(ChatFormatting.DARK_AQUA)));
     }
 
     /** One line per figure the design has: a figure a type does not use bakes to zero and is left out. */
@@ -112,11 +112,18 @@ public class ModularBlueprintItem extends Item {
 
     /** As {@link #figures(ModularFigures)}; {@code brief} cuts each label at its comma (the unit) to fit a column. */
     public static List<Component> figures(ModularFigures figures, boolean brief) {
+        return figures(figures, java.util.Arrays.stream(Fig.values()).filter(fig -> figures.get(fig) != 0).toList(), brief);
+    }
+
+    /** As {@link #figures(ModularFigures)} but only the figures {@code type}'s measures name for this design, in that order. */
+    public static List<Component> figures(ModularFigures figures, ModularType type, ModularDesign design, boolean brief) {
+        return figures(figures, io.github.soundgoodizerfan.feedback.modular.type.ModularMeasures.figs(type, null, design, figures), brief);
+    }
+
+    private static List<Component> figures(ModularFigures figures, List<Fig> which, boolean brief) {
         List<Component> out = new ArrayList<>();
-        for (Fig fig : Fig.values()) {
+        for (Fig fig : which) {
             float v = figures.get(fig);
-            if (v == 0)
-                continue;
             Component label = Component.translatable("modular.feedback.fig." + fig.name().toLowerCase(Locale.ROOT));
             if (brief)
                 label = Component.literal(label.getString().split(",", 2)[0]);

@@ -1,5 +1,55 @@
 {
   "family": "electric_gun",
+  "measures": {
+    "show": [
+      "shot_energy",
+      "muzzle_energy",
+      "cycle",
+      "spread",
+      "kick",
+      "fitting_limit",
+      "mass",
+      "egun.band",
+      "egun.loss"
+    ],
+    "addons": {
+      "h": [
+        "egun.hold"
+      ],
+      "p": [
+        "egun.pump"
+      ],
+      "z": [
+        "egun.zoom"
+      ],
+      "u": [
+        "egun.gauge"
+      ],
+      "g": [
+        "egun.sense"
+      ],
+      "l": [
+        "egun.lining"
+      ],
+      "k": [
+        "egun.sink"
+      ],
+      "j": [
+        "egun.lead"
+      ],
+      "t": [
+        "egun.lead"
+      ],
+      "i": [
+        "brace_kick",
+        "brace_spread"
+      ],
+      "I": [
+        "brace_kick",
+        "brace_spread"
+      ]
+    }
+  },
   "required": [
     "R",
     "B",

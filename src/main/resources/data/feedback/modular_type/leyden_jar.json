@@ -1,5 +1,17 @@
 {
   "family": "block",
+  "measures": {
+    "show": [
+      "block.StoresEu",
+      "block.Band"
+    ],
+    "addons": {
+      "W": [
+        "block.BurstAmps",
+        "block.Leak"
+      ]
+    }
+  },
   "required": [
     "S"
   ],

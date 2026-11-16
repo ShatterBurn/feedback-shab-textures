@@ -1,5 +1,11 @@
 {
   "family": "suit_module",
+  "measures": {
+    "show": [
+      "suit_wiring",
+      "mass"
+    ]
+  },
   "required": [
     "H",
     "W"

@@ -1,5 +1,15 @@
 {
   "family": "air_gun",
+  "measures": {
+    "show": [
+      "velocity",
+      "spring_energy",
+      "air_efficiency",
+      "draw",
+      "joint",
+      "mass"
+    ]
+  },
   "required": [
     "B",
     "S",

@@ -1,5 +1,18 @@
 {
   "family": "block",
+  "measures": {
+    "show": [
+      "block.Inertia"
+    ],
+    "addons": {
+      "B": [
+        "block.RimRpm"
+      ],
+      "G": [
+        "block.Drag"
+      ]
+    }
+  },
   "required": [
     "S"
   ],

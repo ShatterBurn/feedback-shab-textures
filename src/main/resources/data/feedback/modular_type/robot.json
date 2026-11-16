@@ -1,5 +1,10 @@
 {
   "family": "robot",
+  "measures": {
+    "show": [
+      "mass"
+    ]
+  },
   "required": [
     "C",
     "D",

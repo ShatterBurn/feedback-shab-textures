@@ -1,5 +1,11 @@
 {
   "family": "block",
+  "measures": {
+    "show": [
+      "block.Mass",
+      "block.Leak"
+    ]
+  },
   "required": [
     "S"
   ],

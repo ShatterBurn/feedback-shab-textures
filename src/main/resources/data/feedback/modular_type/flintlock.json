@@ -1,5 +1,25 @@
 {
   "family": "gun",
+  "measures": {
+    "show": [
+      "muzzle_energy",
+      "muzzle_speed",
+      "bullet_mass",
+      "cycle",
+      "spread",
+      "kick",
+      "report",
+      "overpressure",
+      "chamber_rating",
+      "mass"
+    ],
+    "addons": {
+      "i": [
+        "brace_kick",
+        "brace_spread"
+      ]
+    }
+  },
   "required": [
     "R",
     "B",

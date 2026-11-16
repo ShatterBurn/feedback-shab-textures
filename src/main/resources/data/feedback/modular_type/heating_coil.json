@@ -1,5 +1,13 @@
 {
   "family": "block",
+  "measures": {
+    "show": [
+      "block.Work",
+      "block.Amps",
+      "block.ServiceTu",
+      "block.Mass"
+    ]
+  },
   "required": [
     "S"
   ],

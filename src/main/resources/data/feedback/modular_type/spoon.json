@@ -1,5 +1,13 @@
 {
   "family": "hand",
+  "measures": {
+    "show": [
+      "durability",
+      "hardness",
+      "mass",
+      "corrosion"
+    ]
+  },
   "required": [
     "B",
     "S"

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """List lang keys the datapack needs but en_us.json lacks. Exit 1 when any are missing.
-Covers research plans (blurb and treatise name), modular_type (role name+tip, role dims, variant name+desc, trait desc, type name) and gun_option (item name by form).
+Covers modular_type measures (every id names a figure, family number, block figure or axis with a label), research plans (blurb and treatise name), modular_type (role name+tip, role dims, variant name+desc, trait desc, type name) and gun_option (item name by form).
 Add a rule below when a new data folder gets player-facing text."""
-import json, pathlib, sys
+import json, pathlib, re, sys
 R = pathlib.Path("src/main/resources")
 lang = json.loads((R / "assets/feedback/lang/en_us.json").read_text())
 need = {}  # key -> where
@@ -10,8 +10,30 @@ def want(key, where):
     need.setdefault(key, where)
 def traits(v):
     t = v.get("trait"); return [x for x in (t.split(",") if isinstance(t, str) else t or [])]
+J = pathlib.Path("src/main/java/io/github/soundgoodizerfan/feedback/modular")
+figs = set(re.findall(r"^\s+([A-Z][A-Z0-9_]*)[,;]", (J / "bake/ModularFigures.java").read_text().split("enum Fig {")[1].split("public static final int ATTACHMENTS")[0], re.M))
+figs |= {f"SUIT_{k}_{i}" for k in ("ATT", "POW", "ARG", "SUP") for i in range(1, 5)}  # declared several to a line
+uses = set(re.findall(r'"([a-z]+\.[a-z]+)"', (J / "type/ModularMeasures.java").read_text().split("USES = Set.of(")[1].split(");")[0]))
+def measure(n, mid, where):
+    """A measures id names a figure, a family number, a block figure or an axis, and each has its label."""
+    if mid.startswith("block."):
+        want("figure.feedback.block." + mid[6:], where)
+    elif mid.startswith("axis."):
+        want("modular.feedback.axis." + mid[5:], where)
+    elif "." in mid:
+        if mid not in uses:
+            print(f"{mid}  ({where}: not a family number of ModularMeasures.USES)"); sys.exit(1)
+        want("gui.feedback.blueprint_table." + mid, where)
+    else:
+        if mid.upper() not in figs:
+            print(f"{mid}  ({where}: not a ModularFigures.Fig)"); sys.exit(1)
+        want("modular.feedback.fig." + mid, where)
 for f in sorted((R / "data/feedback/modular_type").glob("*.json")):
     d = json.loads(f.read_text()); n = f.stem
+    ms = d.get("measures", {})
+    for mid in ms.get("show", []) + ms.get("sort", []) + [i for v in ms.get("roles", {}).values() for i in v] \
+            + [i for v in ms.get("addons", {}).values() for i in v] + [i for v in ms.get("variants", {}).values() for i in v]:
+        measure(n, mid, f"{n} measures")
     for des in d.get("names", {}).get("designations", []):
         prefix = "gun" if d.get("family") == "gun" else "armour"  # every non-gun type names its builds under armour.*
         want(f"{prefix}.feedback.designation.{des['name']}", f"{n} designation")

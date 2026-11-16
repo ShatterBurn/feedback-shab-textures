@@ -1,5 +1,63 @@
 {
   "family": "hafted",
+  "measures": {
+    "show": [
+      "damage",
+      "impact",
+      "bite",
+      "attack_speed",
+      "reach",
+      "dig_speed",
+      "hardness",
+      "edge_toughness",
+      "durability",
+      "balance",
+      "joint",
+      "mass",
+      "corrosion"
+    ],
+    "roles": {
+      "H": [
+        "damage",
+        "impact",
+        "bite",
+        "dig_speed",
+        "hardness",
+        "edge_toughness",
+        "durability",
+        "corrosion"
+      ],
+      "S": [
+        "balance",
+        "attack_speed",
+        "mass",
+        "joint",
+        "reach"
+      ],
+      "B": [
+        "joint",
+        "durability"
+      ],
+      "G": [
+        "joint",
+        "mass"
+      ]
+    },
+    "addons": {
+      "J": [
+        "dig_speed_off",
+        "hardness_off",
+        "edge_toughness_off",
+        "durability_b"
+      ],
+      "K": [
+        "dig_speed_third",
+        "hardness_third",
+        "edge_toughness_third",
+        "durability_c"
+      ]
+    }
+  },
   "strike": 1.0,
   "wear_litres": 0.375,
   "wear_role": "H",

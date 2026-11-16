@@ -1,5 +1,24 @@
 {
   "family": "block",
+  "measures": {
+    "show": [
+      "block.Intake",
+      "block.Stages",
+      "block.TipLimit",
+      "block.LinerTu",
+      "block.BladeTu"
+    ],
+    "variants": {
+      "nozzle_divergent": [
+        "block.Divergent"
+      ]
+    },
+    "addons": {
+      "A": [
+        "block.ReheatTu"
+      ]
+    }
+  },
   "required": [
     "S",
     "B",

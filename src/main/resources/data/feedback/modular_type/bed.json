@@ -1,5 +1,12 @@
 {
   "family": "bed",
+  "measures": {
+    "show": [
+      "bed.comfort",
+      "bed.warmth",
+      "mass"
+    ]
+  },
   "required": [
     "C"
   ],

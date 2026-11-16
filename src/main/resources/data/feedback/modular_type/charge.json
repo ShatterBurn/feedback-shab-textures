@@ -1,6 +1,14 @@
 {
   "school": "chemical:3",
   "family": "charge",
+  "measures": {
+    "show": [
+      "blast",
+      "burned",
+      "packed",
+      "mass"
+    ]
+  },
   "required": [
     "C",
     "F"

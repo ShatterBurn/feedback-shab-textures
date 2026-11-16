@@ -1,5 +1,12 @@
 {
   "family": "belt",
+  "measures": {
+    "show": [
+      "belt.grip",
+      "belt.heat",
+      "mass"
+    ]
+  },
   "required": [
     "B"
   ],

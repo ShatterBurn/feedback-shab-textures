@@ -1,5 +1,16 @@
 {
   "family": "block",
+  "measures": {
+    "show": [
+      "block.Power",
+      "block.RpmPerFlow"
+    ],
+    "addons": {
+      "R": [
+        "block.Inertia"
+      ]
+    }
+  },
   "required": [
     "S"
   ],

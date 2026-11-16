@@ -1,5 +1,26 @@
 {
   "family": "glove",
+  "measures": {
+    "show": [
+      "fist",
+      "armour",
+      "swing_drag",
+      "durability",
+      "mass",
+      "corrosion",
+      "hardness"
+    ],
+    "roles": {
+      "M": [
+        "fist",
+        "armour",
+        "swing_drag",
+        "mass",
+        "hardness",
+        "corrosion"
+      ]
+    }
+  },
   "required": [
     "B"
   ],

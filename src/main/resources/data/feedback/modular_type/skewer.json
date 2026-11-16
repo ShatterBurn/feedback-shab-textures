@@ -1,5 +1,17 @@
 {
   "family": "dish",
+  "measures": {
+    "show": [
+      "hunger",
+      "saturation",
+      "fat",
+      "fibre",
+      "charred",
+      "toxin",
+      "pathogen",
+      "litres"
+    ]
+  },
   "slot": "mainhand",
   "wear_role": "C",
   "primary": "C",

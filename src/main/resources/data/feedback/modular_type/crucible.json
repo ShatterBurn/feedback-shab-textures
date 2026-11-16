@@ -1,5 +1,13 @@
 {
   "family": "block",
+  "measures": {
+    "show": [
+      "block.Slots",
+      "block.Tank",
+      "block.ServiceTu",
+      "block.Mass"
+    ]
+  },
   "required": [
     "S"
   ],

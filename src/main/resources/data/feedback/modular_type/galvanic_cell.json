@@ -1,5 +1,11 @@
 {
   "family": "block",
+  "measures": {
+    "show": [
+      "block.AnodeEu",
+      "block.Amps"
+    ]
+  },
   "required": [
     "S"
   ],

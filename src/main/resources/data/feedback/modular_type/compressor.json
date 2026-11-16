@@ -1,5 +1,12 @@
 {
   "family": "block",
+  "measures": {
+    "show": [
+      "block.MbPerRpm",
+      "block.Load",
+      "block.Heat"
+    ]
+  },
   "required": [
     "S"
   ],
