@@ -81,6 +81,14 @@ public final class SpaceTravel {
         var seeing = new java.util.LinkedHashSet<>(aboard(from, body));
         for (Rider r : riders)
             seeing.add(r.player());
+        // Sable tells everyone following a body that it is gone, by where its plot is, once the body is removed. Plots are the same in
+        // both dimensions, so a rider already across would be told to forget the body they arrived on, and stop riding it. They stop
+        // following the bodies here now instead (Genesis's order; Sable has them follow the new ones on its next tick).
+        var fromContainer = dev.ryanhcode.sable.api.sublevel.ServerSubLevelContainer.getContainer(from);
+        if (fromContainer != null)
+            for (ServerSubLevel b : fromContainer.getAllSubLevels())
+                for (ServerPlayer p : seeing)
+                    b.getTrackingPlayers().remove(p.getUUID());
         Vector3d at = new Vector3d(body.logicalPose().position());
         int n = SubLevelWarper.warpConnectedSubLevels(body, target, at.set(at.x, y, at.z));
         if (n <= 0)
