@@ -356,7 +356,7 @@ public final class FTuning {
     /** Invented. The thruster: force at the block for a reference fuel (kpg x blocks / s^2, Sable's units) and mB a tick it burns for one. */
     public static final float THRUSTER_FORCE = 20000f, THRUSTER_FUEL_MB_PER_TICK = 1f;
 
-    /** Placeholder. Gravity in blocks per second squared, Sable's default (11, DimensionPhysics.DEFAULT_GRAVITY), for weighing thrust against mass. */
+    /** Placeholder. Gravity in blocks per second squared, Sable's default (11), for the weight of a person in a combat cast. A vehicle body reads the dimension's own gravity from {@code vehicle/Gravity}, never this. */
     public static final float GRAVITY_BLOCKS_PER_S2 = 11f;
 
     /** One bucket, in mB: the amount JEI draws a fluid at, and the litre a per-unit figure is shown for. */

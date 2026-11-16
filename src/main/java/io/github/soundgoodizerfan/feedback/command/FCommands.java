@@ -147,8 +147,8 @@ public final class FCommands {
         double k = io.github.soundgoodizerfan.feedback.vehicle.VehicleTuning.AIR_DRAG;
         String line = String.format("y %.1f, density %.3f, held %d, speed %.1f b/s, mass %.0f, area %.2f blocks2, drag %.0f N, weight %.0f N, terminal %.0f b/s",
                 y, density, io.github.soundgoodizerfan.feedback.space.SpaceTrigger.held(body.getUniqueId()), speed, mass, area,
-                k * density * area * speed * speed, mass * io.github.soundgoodizerfan.feedback.core.FTuning.GRAVITY_BLOCKS_PER_S2,
-                Math.sqrt(mass * io.github.soundgoodizerfan.feedback.core.FTuning.GRAVITY_BLOCKS_PER_S2 / Math.max(1e-6, k * density * area)));
+                k * density * area * speed * speed, mass * io.github.soundgoodizerfan.feedback.vehicle.Gravity.of(level),
+                Math.sqrt(mass * io.github.soundgoodizerfan.feedback.vehicle.Gravity.of(level) / Math.max(1e-6, k * density * area)));
         c.getSource().sendSuccess(() -> Component.literal(line), false);
         return 1;
     }

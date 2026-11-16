@@ -576,7 +576,7 @@ public final class Joint {
         Vector3d axis = toWorld(p, localAxis, false).normalize();
         Vector3d lever = com.sub(anchor);
         // r x (m g down) . axis
-        gravityTorque = lever.cross(new Vector3d(0, -mass.getMass() * FTuning.GRAVITY_BLOCKS_PER_S2, 0), new Vector3d()).dot(axis);
+        gravityTorque = lever.cross(io.github.soundgoodizerfan.feedback.vehicle.Gravity.vector(s.getLevel()).mul(mass.getMass()), new Vector3d()).dot(axis);
     }
 
     /** Sets the brake level, 0 to 1 (a card). */

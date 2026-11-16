@@ -107,7 +107,7 @@ public class BallastTankBlockEntity extends AnalogPartBlockEntity implements Blo
         float mu = weightMu;
         if (mu <= 0f)
             return;
-        double weight = mu / Units.MU_PER_KPG * FTuning.GRAVITY_BLOCKS_PER_S2;
+        double weight = mu / Units.MU_PER_KPG * io.github.soundgoodizerfan.feedback.vehicle.Gravity.of(subLevel.getLevel());
         subLevel.logicalPose().transformNormalInverse(down.set(0, -weight * dt, 0), local);
         force.applyImpulseAtPoint(subLevel.getMassTracker(), at.set(worldPosition.getX() + 0.5,
                 worldPosition.getY() + 0.5, worldPosition.getZ() + 0.5), local);

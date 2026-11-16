@@ -16,6 +16,7 @@ import dev.ryanhcode.sable.sublevel.ServerSubLevel;
 import io.github.soundgoodizerfan.feedback.core.FTuning;
 import io.github.soundgoodizerfan.feedback.core.unit.Units;
 import io.github.soundgoodizerfan.feedback.vehicle.FlightSensorBlockEntity;
+import io.github.soundgoodizerfan.feedback.vehicle.Gravity;
 import io.github.soundgoodizerfan.feedback.vehicle.ForceLedger;
 import io.github.soundgoodizerfan.feedback.vehicle.ForceLedger.Cause;
 import io.github.soundgoodizerfan.feedback.vehicle.ForceLedger.Sample;
@@ -70,7 +71,7 @@ public final class DiagramService {
         }
         Set<ServerSubLevel> bodies = assembly ? assemblyOf(level, root) : Set.of(root);
         Pose3dc rootPose = root.logicalPose();
-        double g = FTuning.GRAVITY_BLOCKS_PER_S2;
+        Vector3d field = Gravity.vector(level);
         List<UUID> ids = new ArrayList<>();
         List<Sample> samples = new ArrayList<>();
         double mass = 0;
@@ -89,9 +90,10 @@ public final class DiagramService {
                 com.fma(m, p);
                 mass += m;
                 // Weight: mass times the field, down in the world, taken to the root's frame.
-                f.set(0, -m * g, 0);
+                f.set(field).mul(m);
                 rootPose.transformNormalInverse(f);
-                samples.add(new Sample(Cause.GRAVITY, (float) p.x, (float) p.y, (float) p.z, (float) f.x, (float) f.y, (float) f.z));
+                if (f.lengthSquared() > 0)
+                    samples.add(new Sample(Cause.GRAVITY, (float) p.x, (float) p.y, (float) p.z, (float) f.x, (float) f.y, (float) f.z));
             }
             for (Sample s : ForceLedger.read(b)) {
                 if (samples.size() >= MAX_SAMPLES)

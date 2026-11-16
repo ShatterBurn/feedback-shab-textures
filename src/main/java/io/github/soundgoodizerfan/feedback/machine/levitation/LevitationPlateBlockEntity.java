@@ -77,7 +77,7 @@ public class LevitationPlateBlockEntity extends BlockEntity implements BlockEnti
         lift = field * dia;
         if (field <= 0f)
             return;
-        double weight = LevitationTuning.PLATE_SABLE_MASS * FTuning.GRAVITY_BLOCKS_PER_S2;
+        double weight = LevitationTuning.PLATE_SABLE_MASS * io.github.soundgoodizerfan.feedback.vehicle.Gravity.of(server);
         // Lift falls by (LIFT_AT_TOUCH / (reach - touch)) of a weight per block, which is also the hover's spring constant.
         double spring = weight * dia * LevitationTuning.LIFT_AT_TOUCH_WEIGHTS / (MagnetField.REACH - MagnetField.TOUCH);
         double lifting = weight * LevitationTuning.LIFT_AT_TOUCH_WEIGHTS * dia * field;

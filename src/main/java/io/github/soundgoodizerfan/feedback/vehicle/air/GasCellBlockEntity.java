@@ -319,7 +319,7 @@ public class GasCellBlockEntity extends BlockEntity implements BlockEntitySubLev
         var pose = subLevel.logicalPose();
         double y = pose.transformPosition(centre, world).y;
         double airMu = mb * Gases.airMuPerMb() * AirDensityTable.at(level, y);
-        double lift = (airMu - held.mu()) / Units.MU_PER_KPG * FTuning.GRAVITY_BLOCKS_PER_S2; // kpg blocks / s^2
+        double lift = (airMu - held.mu()) / Units.MU_PER_KPG * io.github.soundgoodizerfan.feedback.vehicle.Gravity.of(level); // kpg blocks / s^2
         if (Math.abs(lift) < 1e-9)
             return;
         pose.transformNormalInverse(up.set(0, lift * dt, 0), local);

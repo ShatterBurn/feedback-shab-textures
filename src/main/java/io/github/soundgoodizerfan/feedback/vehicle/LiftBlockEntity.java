@@ -179,7 +179,7 @@ public class LiftBlockEntity extends BlockEntity {
         if (thrust == 0)
             return balance;
         return balance.copy().append(" ").append(Component.translatable("message.feedback.lift.thrust",
-                String.format("%.2f", thrust / (kpg * io.github.soundgoodizerfan.feedback.core.FTuning.GRAVITY_BLOCKS_PER_S2))));
+                String.format("%.2f", thrust / (kpg * io.github.soundgoodizerfan.feedback.vehicle.Gravity.of(level)))));
     }
 
     /** Raises or lowers the lift by {@code steps}. Returns {@code height}, or {@code limit} at either end. */
