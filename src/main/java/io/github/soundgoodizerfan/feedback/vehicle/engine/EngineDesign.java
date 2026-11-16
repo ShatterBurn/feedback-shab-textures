@@ -33,12 +33,13 @@ import net.minecraft.util.Mth;
  * @param material the pistons' metal, which sets how fast they may move.
  * @param torqueMult torque per litre against a plain engine (the layout, the head).
  * @param revMult    redline against a plain engine (the layout, the crank's build and metal).
- * @param massMult   weight against a plain engine (the layout, the metal of the block, crank and head).
+ * @param massMu     what the whole engine weighs, in Mu: {@link #massMu(int, int, int, float, float)} of the metal of the block, crank and head. The bench's mass
+ *                   figure and the vehicle's weight are this one number.
  * @param plugLife   running ticks the spark plug lasts, from its electrode metal's melting point.
  * @param plugFoul   how readily the plug fouls as it wears (1 plain), from its metal's conductivity.
  */
 public record EngineDesign(int cylinders, int boreMm, int strokeMm, ResourceLocation material, Compression compression,
-                           float torqueMult, float revMult, float massMult, float plugLife, float plugFoul) {
+                           float torqueMult, float revMult, float massMu, float plugLife, float plugFoul) {
 
     /**
      * The compression ratio, a part choice (cylinder head and piston crown; petrochemistry spec 9.1).
@@ -74,7 +75,8 @@ public record EngineDesign(int cylinders, int boreMm, int strokeMm, ResourceLoca
 
     /** A plain engine: the middle compression and no multipliers. */
     public EngineDesign(int cylinders, int boreMm, int strokeMm, ResourceLocation material) {
-        this(cylinders, boreMm, strokeMm, material, Compression.MEDIUM, 1f, 1f, 1f, VehicleTuning.PLUG_LIFE_TICKS, 1f);
+        this(cylinders, boreMm, strokeMm, material, Compression.MEDIUM, 1f, 1f,
+                massMu(cylinders, boreMm, strokeMm, PLAIN_DENSITY, 1f), VehicleTuning.PLUG_LIFE_TICKS, 1f);
     }
 
 
@@ -90,7 +92,7 @@ public record EngineDesign(int cylinders, int boreMm, int strokeMm, ResourceLoca
             Compression.CODEC.optionalFieldOf("compression", Compression.MEDIUM).forGetter(EngineDesign::compression),
             Codec.FLOAT.optionalFieldOf("torque_mult", 1f).forGetter(EngineDesign::torqueMult),
             Codec.FLOAT.optionalFieldOf("rev_mult", 1f).forGetter(EngineDesign::revMult),
-            Codec.FLOAT.optionalFieldOf("mass_mult", 1f).forGetter(EngineDesign::massMult),
+            Codec.FLOAT.optionalFieldOf("mass", 0f).forGetter(EngineDesign::massMu),
             Codec.FLOAT.optionalFieldOf("plug_life", VehicleTuning.PLUG_LIFE_TICKS).forGetter(EngineDesign::plugLife),
             Codec.FLOAT.optionalFieldOf("plug_foul", 1f).forGetter(EngineDesign::plugFoul)
     ).apply(i, EngineDesign::new));
@@ -105,7 +107,7 @@ public record EngineDesign(int cylinders, int boreMm, int strokeMm, ResourceLoca
                 Compression.STREAM_CODEC.encode(buf, e.compression());
                 buf.writeFloat(e.torqueMult());
                 buf.writeFloat(e.revMult());
-                buf.writeFloat(e.massMult());
+                buf.writeFloat(e.massMu());
                 buf.writeFloat(e.plugLife());
                 buf.writeFloat(e.plugFoul());
             },
@@ -162,9 +164,22 @@ public record EngineDesign(int cylinders, int boreMm, int strokeMm, ResourceLoca
         return new Su(peakTorque().value() * Mth.clamp(1 - 0.55f * x * x, 0.3f, 1f));
     }
 
-    /** The engine's own weight: its metal times the material's density. Zero for a material nobody has weighed. */
-    public Mu mass(Material m) {
-        return new Mu(VehicleTuning.ENGINE_METAL_PER_MB * displacementMb() * m.density().muPerMb() * massMult);
+    /** What the engine weighs: the one number the Blueprint Table's mass bar prints and the vehicle carries. */
+    public Mu mass() {
+        return new Mu(massMu);
+    }
+
+    /** Density (Mu per mB) of the steel a plain engine, built without a design, is weighed in. */
+    public static final float PLAIN_DENSITY = 7.8f;
+
+    /**
+     * The one weight formula of an engine: {@link VehicleTuning#ENGINE_METAL_PER_MB} of metal per mB of displacement, at the mean
+     * density of the block, crank and head, times the layout's own {@code mass} multiplier ({@code ModularBake#engine} calls it).
+     */
+    public static float massMu(int cylinders, int boreMm, int strokeMm, float meanDensity, float layoutMass) {
+        double bore = boreMm / 1000.0, stroke = strokeMm / 1000.0;
+        float displacement = (float) (cylinders * Math.PI / 4 * bore * bore * stroke * 1000);
+        return VehicleTuning.ENGINE_METAL_PER_MB * displacement * meanDensity * layoutMass;
     }
 
     /**
@@ -183,7 +198,7 @@ public record EngineDesign(int cylinders, int boreMm, int strokeMm, ResourceLoca
         out.add(net.minecraft.network.chat.Component.translatable("engine.feedback.torque",
                 Math.round(peakTorque().value()), Math.round(peakRpm(m).value())));
         out.add(net.minecraft.network.chat.Component.translatable("engine.feedback.redline", Math.round(redline(m).value())));
-        out.add(net.minecraft.network.chat.Component.translatable("engine.feedback.mass", Math.round(mass(m).value())));
+        out.add(net.minecraft.network.chat.Component.translatable("engine.feedback.mass", Math.round(massMu)));
         return out;
     }
 

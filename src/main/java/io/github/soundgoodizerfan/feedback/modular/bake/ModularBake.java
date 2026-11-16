@@ -340,21 +340,31 @@ public final class ModularBake {
     }
 
     /**
-     * How heavy the parts of {@code roles} are against the same cells of {@code ref}: each part's cells of stock times its
-     * metal's density, over the cells times the reference density. A block cast of a light alloy round steel pistons weighs less.
+     * The mean density (Mu per mB) of the parts of {@code roles}, each part's cells of stock weighted by its own density (the share-weighted
+     * mean of its slots where it has them): what a vehicle part's single weight formula multiplies its metal by. A part not in the design
+     * counts for nothing; 0 when none is there.
      */
-    private static float massBlend(ModularDesign design, ModularType type, Map<ResourceLocation, Material> materials, Material ref, String... roles) {
-        float have = 0, cells = 0;
-        for (String r : roles) {
-            Part p = design.part(r);
-            Material m = p == null ? null : materials.get(p.material());
-            if (m == null)
-                continue;
-            int c = stockCells(type.roles().get(r), p);
-            have += c * m.density().muPerMb();
-            cells += c;
+    private static float meanDensity(ModularDesign design, ModularType type, Map<ResourceLocation, Material> materials, String... roles) {
+        Map<ResourceLocation, Material> outer = TABLE.get();
+        TABLE.set(materials);
+        try {
+            float have = 0, cells = 0;
+            for (String r : roles) {
+                Part p = design.part(r);
+                Material m = p == null ? null : materials.get(p.material());
+                if (m == null)
+                    continue;
+                int c = stockCells(type.roles().get(r), p);
+                have += c * density(type.roles().get(r), p, m);
+                cells += c;
+            }
+            return cells == 0 ? 0f : have / cells;
+        } finally {
+            if (outer == null)
+                TABLE.remove();
+            else
+                TABLE.set(outer);
         }
-        return cells == 0 || ref.density().muPerMb() <= 0 ? 1f : have / (cells * ref.density().muPerMb());
     }
 
     /**
@@ -387,7 +397,9 @@ public final class ModularBake {
         float pSpec = (float) Math.sqrt(pm.mechanical().yieldStrength().get().value() / pm.density().muPerMb());
         float cSpec = (float) Math.sqrt(cm.mechanical().yieldStrength().get().value() / cm.density().muPerMb());
         rev *= Math.min(1f, cSpec / pSpec);
-        float mass = param(type, block, "mass", 1f) * massBlend(design, type, materials, pm, ENGINE_BLOCK, ENGINE_CRANK, ENGINE_HEAD);
+        // The one weight formula (EngineDesign#massMu): displacement of metal at the mean density of block, crank and head.
+        float mass = io.github.soundgoodizerfan.feedback.vehicle.engine.EngineDesign.massMu(cylinders, bore, stroke,
+                meanDensity(design, type, materials, ENGINE_BLOCK, ENGINE_CRANK, ENGINE_HEAD), param(type, block, "mass", 1f));
         // The plug's electrode metal: a higher melting point resists spark erosion (life), a conductive one runs cold and fouls.
         Material em = materials.get(plug.material());
         float life = Math.clamp(em.thermal().meltingPoint().get().value() / VehicleTuning.PLUG_REFERENCE_MELT_TU,
@@ -466,8 +478,10 @@ public final class ModularBake {
         int count = Math.round(param(type, hub, "blades", 3f));
         int diameter = Math.round(type.roles().get(PROP_BLADES).axis(blades, "diameter"));
         int pitch = Math.round(param(type, blades, "pitch", 1f));
-        float mass = (1f + ModularTuning.PROP_HUB_MASS_PER_BLADE * (count - ModularTuning.PROP_HUB_MASS_REF_BLADES))
-                * massBlend(design, type, materials, bm, PROP_HUB, PROP_BLADES);
+        // The one weight formula (PropDesign#massMu): a hub (bigger with more blades) and the blades' length, at the mean density of hub and blades.
+        float mass = io.github.soundgoodizerfan.feedback.vehicle.air.PropDesign.massMu(count, diameter,
+                meanDensity(design, type, materials, PROP_HUB, PROP_BLADES),
+                1f + ModularTuning.PROP_HUB_MASS_PER_BLADE * (count - ModularTuning.PROP_HUB_MASS_REF_BLADES));
         return Optional.of(new io.github.soundgoodizerfan.feedback.vehicle.air.PropDesign(count, diameter, pitch, blades.material(), mass, design.part(PROP_SERVO) != null));
     }
 
@@ -493,8 +507,9 @@ public final class ModularBake {
         for (int g = 1; g <= count; g++)
             steps.add(Math.round(role.axis(gears, "g" + g) * io.github.soundgoodizerfan.feedback.vehicle.transmission.TransmissionDesign.PER_UNIT));
         float wear = param(type, synchro, "wear", 1f) * param(type, box, "wear", 1f);
-        float mass = param(type, synchro, "mass", 1f) * param(type, box, "mass", 1f)
-                * massBlend(design, type, materials, materials.get(gears.material()), GEAR_SET, GEAR_SYNCHRO, GEAR_CASE);
+        // The one weight formula (TransmissionDesign#massMu): metal per gear at the mean density of gear set, synchronisers and case.
+        float mass = io.github.soundgoodizerfan.feedback.vehicle.transmission.TransmissionDesign.massMu(count,
+                meanDensity(design, type, materials, GEAR_SET, GEAR_SYNCHRO, GEAR_CASE), param(type, synchro, "mass", 1f) * param(type, box, "mass", 1f));
         return Optional.of(new io.github.soundgoodizerfan.feedback.vehicle.transmission.TransmissionDesign(steps, gears.material(), wear, mass));
     }
 
@@ -1256,17 +1271,25 @@ public final class ModularBake {
                 f.put(Fig.MASS, total);
             }
             case ENGINE, GEARBOX, PROPELLER, PRESSURE, BLOCK -> {
+                // An engine, gearbox or propeller weighs what its design weighs: the bar and the vehicle carry the same number.
+                Float designed = switch (type.family()) {
+                    case ENGINE -> engine(design, type, materials).map(e -> e.massMu()).orElse(null);
+                    case PROPELLER -> propeller(design, type, materials).map(e -> e.massMu()).orElse(null);
+                    case GEARBOX -> gearbox(design, type, materials).map(e -> e.massMu()).orElse(null);
+                    default -> null;
+                };
                 if (switch (type.family()) {
                     case BLOCK -> BlockFigures.of(design, type, materials).isEmpty();
                     case PRESSURE -> tank(design, type, materials).isEmpty();
-                    case ENGINE -> engine(design, type, materials).isEmpty();
-                    case PROPELLER -> propeller(design, type, materials).isEmpty();
-                    default -> gearbox(design, type, materials).isEmpty();
+                    default -> designed == null;
                 })
                     return Optional.empty();
                 float total = 0;
-                for (Part p : design.parts())
-                    total += mass(type.roles().get(p.role()), p, by.get(p.role()));
+                if (designed != null)
+                    total = designed;
+                else
+                    for (Part p : design.parts())
+                        total += mass(type.roles().get(p.role()), p, by.get(p.role()));
                 f.put(Fig.MASS, total);
             }
             case BELT -> {

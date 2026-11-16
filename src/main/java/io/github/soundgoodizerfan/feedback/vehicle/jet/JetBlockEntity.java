@@ -61,6 +61,8 @@ public class JetBlockEntity extends RotationNode implements BlockEntitySubLevelA
 
     private final FuelBlend fuel = new FuelBlend(this::setChanged);
     private final FigureStore figures = new FigureStore();
+    /** The engine's weight on the vehicle: the bench's mass figure, carried. */
+    private final io.github.soundgoodizerfan.feedback.vehicle.CarriedMass carried = new io.github.soundgoodizerfan.feedback.vehicle.CarriedMass();
     private final Set<DataNodeRef> links = new HashSet<>();
 
     private boolean hand;
@@ -98,6 +100,12 @@ public class JetBlockEntity extends RotationNode implements BlockEntitySubLevelA
     /** 0 off, 1 spooling, 2 running, 3 stalled, 4 flamed out, 5 no air. */
     public int status() {
         return status;
+    }
+
+    @Override
+    public void setRemoved() {
+        super.setRemoved();
+        carried.release(this);
     }
 
     public float spool() {
@@ -180,6 +188,7 @@ public class JetBlockEntity extends RotationNode implements BlockEntitySubLevelA
     public void tickServer() {
         if (!(level instanceof ServerLevel server))
             return;
+        carried.tick(this, figures.mass());
         if (spool <= 0.001f && power <= 0f && !hand && card <= 0f) {
             status = 0;
             return;

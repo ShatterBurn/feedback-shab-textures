@@ -3,7 +3,9 @@
   "measures": {
     "show": [
       "block.Amps",
-      "block.Burnout"
+      "block.Ampacity",
+      "block.Burnout",
+      "block.Light"
     ]
   },
   "required": [

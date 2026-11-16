@@ -246,6 +246,10 @@ public final class ElectricMachineTuning {
     public static final float COIL_WEAR_PER_TU_EXCESS = 0.000005f;
 
     public static final float COIL_CONDITION_FLOOR = 0.5f;
+    /** Placeholder. Heating coil condition lost a tick per unit of overcurrent (current past what its wire carries, see {@code ElectricRules#overCurrent}). */
+    public static final float COIL_WEAR_PER_OVERCURRENT = 0.0005f;
+    /** Placeholder. Linear motor ring: condition lost a tick per unit of overcurrent, and the floor it never wears below (it never breaks). */
+    public static final float LINEAR_MOTOR_WEAR_PER_OVERCURRENT = 0.0005f, LINEAR_MOTOR_CONDITION_FLOOR = 0.5f;
 
     /**
      * Placeholder. The breaker: it trips above a copper cable's rating, the thing

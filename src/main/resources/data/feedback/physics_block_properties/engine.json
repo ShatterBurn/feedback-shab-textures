@@ -1,0 +1,6 @@
+{
+  "selector": "feedback:engine",
+  "properties": {
+    "sable:mass": 0.01
+  }
+}

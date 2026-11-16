@@ -51,6 +51,8 @@ public class ThrusterBlockEntity extends BlockEntity implements BlockEntitySubLe
     private volatile float power;
     /** The nozzle it was built with; a thruster placed with no figures runs on the fixed constants. */
     private final FigureStore figures = new FigureStore();
+    /** The nozzle's weight on the vehicle: the bench's mass figure, carried. */
+    private final io.github.soundgoodizerfan.feedback.vehicle.CarriedMass carried = new io.github.soundgoodizerfan.feedback.vehicle.CarriedMass();
 
     @Override
     protected void applyImplicitComponents(DataComponentInput input) {
@@ -67,6 +69,12 @@ public class ThrusterBlockEntity extends BlockEntity implements BlockEntitySubLe
     /** Force at the block for a reference fuel: the constant, times the nozzle's {@code Force}. */
     private float force() {
         return FTuning.THRUSTER_FORCE * figures.get("Force", 1f);
+    }
+
+    @Override
+    public void setRemoved() {
+        super.setRemoved();
+        carried.release(this);
     }
 
     public ThrusterBlockEntity(BlockPos pos, BlockState state) {
@@ -110,6 +118,7 @@ public class ThrusterBlockEntity extends BlockEntity implements BlockEntitySubLe
     public void tickServer() {
         if (!(level instanceof ServerLevel server))
             return;
+        carried.tick(this, figures.mass());
         float flame = running && !fuel.isEmpty() ? fuel.flame() : 0f;
         if (flame <= 0f || (!hasAir(server) && fuel.oxygen() <= 0f)) {
             power = 0f;

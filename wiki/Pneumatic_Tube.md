@@ -53,4 +53,6 @@ A coil ring placed against a tube block. Fed with current (2 A at MV), it drives
 A modular block built from one part, a **Motor Winding** cut from wire or fine wire of a metal. Drawing and assembling it take Electrical Treatise I: Coils and Magnets ([Treatise](Treatise.md)). Two measures set it:
 
 - **Turns**, 1 to 8: more turns push a magnetic capsule harder and draw more current.
-- **Gauge**, 20 to 100 percent: a thicker wire draws more current.
+- **Gauge**, 20 to 100 percent: a thicker wire pushes harder, in step with the gauge, but draws with the square of the gauge.
+
+The ring is rated for the lesser of its draw and the current its wire's metal carries (the **Carries** bar on the [Blueprint Table](Blueprint_Table.md)); a ring held down to what its wire carries pushes by the share of its draw that is allowed. Fed a higher band than rated, it draws more, and current past what its wire carries wears the ring: it pushes less, down to half. It never breaks.

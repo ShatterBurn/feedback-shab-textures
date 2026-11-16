@@ -84,11 +84,17 @@ public class LampBlockEntity extends ElectricNode implements Wearing, io.github.
             setGlow(state, LampBlock.Glow.BURNT);
             return;
         }
-        if (excess > 0f) {
-            condition = Math.max(ElectricMachineTuning.LAMP_CONDITION_FLOOR, condition - ElectricMachineTuning.LAMP_CONDITION_LOSS_PER_EXCESS * excess * io.github.soundgoodizerfan.feedback.modular.attunement.MachineKinds.wearShare(this));
+        // The filament also wears from current past what its wire carries (a resistive filament draws more at a higher packet); a tougher
+        // filament (the figure that sets its burnout) loses less.
+        float over = Math.max(excess, ElectricRules.overCurrent(amps, eu, ratedBand(), figures.get("Ampacity", 0f)));
+        if (over > 0f) {
+            float tough = figures.get("Burnout", ElectricMachineTuning.LAMP_BURNOUT_PACKET_FACTOR) / ElectricMachineTuning.LAMP_BURNOUT_PACKET_FACTOR;
+            condition = Math.max(ElectricMachineTuning.LAMP_CONDITION_FLOOR, condition - ElectricMachineTuning.LAMP_CONDITION_LOSS_PER_EXCESS * over / Math.max(0.25f, tough)
+                    * io.github.soundgoodizerfan.feedback.modular.attunement.MachineKinds.wearShare(this));
             setChanged();
         }
-        float fraction = ElectricRules.rate(eu, amps, wanted, ratedBand()) * condition;
+        // How bright it glows at a full feed is its filament's own figure, 1 for the plain one: a thin filament gives less light, a thick one more.
+        float fraction = ElectricRules.rate(eu, amps, wanted, ratedBand()) * condition * figures.get("Light", 1f);
         LampBlock.Glow next = step(now.ordinal(), fraction);
         if (next != now)
             setGlow(state, next);

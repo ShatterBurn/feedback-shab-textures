@@ -10,9 +10,11 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import io.github.soundgoodizerfan.feedback.machine.MachineTuning;
 import io.github.soundgoodizerfan.feedback.modular.bake.ModularFigures.Fig;
+import io.github.soundgoodizerfan.feedback.modular.item.ModularHafted;
 import io.github.soundgoodizerfan.feedback.modular.item.ModularMachineHead;
 import io.github.soundgoodizerfan.feedback.modular.item.ModularStacks;
 import io.github.soundgoodizerfan.feedback.modular.type.ModularDesign;
+import io.github.soundgoodizerfan.feedback.modular.type.ModularFaces;
 import io.github.soundgoodizerfan.feedback.modular.type.ModularType;
 import io.github.soundgoodizerfan.feedback.modular.type.ModularTypes;
 import io.github.soundgoodizerfan.feedback.process.Material;
@@ -22,7 +24,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
 /**
- * How fast a machine head (roll, wire die, lathe bit, drill bit, abrasive wheel) loses condition to the misuse it absorbs, read off its
+ * How fast a machine head (roll, wire die, lathe bit, drill bit, abrasive wheel, and the hammer head a Hammer or Press takes) loses condition to the misuse it absorbs, read off its
  * own material. The machines give the head a quantity to take ({@code HeadSlot#wear}: St a blow the head could not carry, Wu a wheel
  * grinds); this says what share of it the head is worn by. A head is measured against an iron head of the same shape and size: the
  * tougher its edge (it absorbs a blow without chipping), the longer-lived its material (durability), the heavier it is (it spreads the
@@ -36,6 +38,21 @@ import net.minecraft.world.item.ItemStack;
  * @param wheel   whether the unit is Wu ground (an abrasive wheel) rather than St of overload.
  */
 public record HeadWear(float factor, float perUnit, boolean wheel) {
+
+    /**
+     * Whether a design is a head a machine takes: a machine head type, or a hafted tool with a bench tool's striking face (the hammer head
+     * seated in a Hammer or Press, with or without its haft).
+     */
+    public static boolean machineHead(ModularDesign design, ModularType type) {
+        if (type.family() == ModularType.Family.HEAD)
+            return true;
+        if (type.family() != ModularType.Family.HAFTED)
+            return false;
+        for (ModularDesign.Part p : ModularFaces.faces(design))
+            if (!ModularFaces.spent(p) && ModularFaces.kind(p, type).filter(h -> h.combat() == ModularType.Family.HAND && h.strike() > 0f).isPresent())
+                return true;
+        return false;
+    }
 
     /** The type id of the abrasive wheel, whose wear runs per Wu ground. */
     public static final String WHEEL = "abrasive_wheel";
@@ -52,13 +69,13 @@ public record HeadWear(float factor, float perUnit, boolean wheel) {
 
     /** The factor of a head stack in a machine: its design's, 1 for a head with none or one that is not a machine head. */
     public static float factor(ItemStack head) {
-        if (!(head.getItem() instanceof ModularMachineHead))
+        if (!(head.getItem() instanceof ModularMachineHead || head.getItem() instanceof ModularHafted))
             return 1f;
         ModularDesign design = ModularStacks.design(head);
         if (design == null)
             return 1f;
         ModularType type = ModularTypes.known().get(design.type());
-        if (type == null)
+        if (type == null || !machineHead(design, type))
             return 1f;
         int generation = MaterialTable.generation();
         if (generation != cacheGeneration) {
@@ -76,9 +93,15 @@ public record HeadWear(float factor, float perUnit, boolean wheel) {
         ResourceLocation iron = ResourceLocation.parse(ModularTuning.HEAD_WEAR_REFERENCE);
         if (!materials.containsKey(iron))
             return Optional.empty();
+        // A head set on a haft is judged on its own faces: the haft stays what it is.
+        java.util.Set<String> faces = new java.util.HashSet<>();
+        if (type.family() == ModularType.Family.HAFTED)
+            for (ModularDesign.Part p : ModularFaces.faces(design))
+                faces.add(p.role());
         List<ModularDesign.Part> parts = new ArrayList<>();
         for (ModularDesign.Part p : design.parts())
-            parts.add(new ModularDesign.Part(p.role(), iron, p.form(), p.count(), p.kind(), p.variant(), p.flaw(), p.measures(), p.sub()));
+            parts.add(type.family() == ModularType.Family.HAFTED && !faces.contains(p.role()) ? p
+                    : new ModularDesign.Part(p.role(), iron, p.form(), p.count(), p.kind(), p.variant(), p.flaw(), p.measures(), p.sub()));
         return ModularBake.bake(design.withParts(parts), type, materials, 0);
     }
 

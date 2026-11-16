@@ -6,7 +6,7 @@ A burner for liquid and gas fuel, fed by a pipe. It heats whatever sits on top o
 
 Draw it at the [Blueprint Table](Blueprint_Table.md) (pick *Fluid Burner* in the type row); the bore is set there, along with the nozzle shape and addon. It needs no treatise. Shape a **Burner Nozzle** from plate at a bench (the [Smithing Table](Smithing_Table.md) for metal), then assemble it at the [Engineering Table](Engineering_Table.md) with two [fasteners](Fasteners.md); the Fluid Burner Blueprint in the blueprint slot judges the fit against your drawing. The burner comes out with the design of the nozzle, and the blueprint is kept.
 
-The nozzle has one measure, the **bore**, from 4 to 20 mm (10 by default). A wider bore burns more fuel. Its **shape** trades burn against flame temperature:
+The nozzle has one measure, the **bore**, from 4 to 20 mm (10 by default). A wider bore burns more fuel (with the square of the bore) and holds a hotter flame, a narrow one a cooler flame; the flame shifts by up to a fifth either way. Its **shape** trades burn against flame temperature:
 
 | Nozzle | Burn | Flame |
 | --- | --- | --- |

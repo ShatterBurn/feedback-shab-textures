@@ -25,7 +25,7 @@ import java.util.List;
  * gear, 0.8 an overdrive. There is also neutral (nothing coupled) and a reverse the size of first.
  * Materials set how fast it wears when shifted at speed ({@link VehicleTuning#TRANSMISSION_WEAR_PER_RPM}).
  */
-public record TransmissionDesign(List<Integer> steps, ResourceLocation material, float wearMult, float massMult) {
+public record TransmissionDesign(List<Integer> steps, ResourceLocation material, float wearMult, float massMu) {
 
     public static final int MIN_GEARS = 2, MAX_GEARS = 6;
     /** Ratio steps per 1.0, and the range, as steps (0.5 to 5.0). */
@@ -35,14 +35,14 @@ public record TransmissionDesign(List<Integer> steps, ResourceLocation material,
             Codec.INT.listOf().fieldOf("steps").forGetter(TransmissionDesign::steps),
             ResourceLocation.CODEC.fieldOf("material").forGetter(TransmissionDesign::material),
             Codec.FLOAT.optionalFieldOf("wear_mult", 1f).forGetter(TransmissionDesign::wearMult),
-            Codec.FLOAT.optionalFieldOf("mass_mult", 1f).forGetter(TransmissionDesign::massMult)
+            Codec.FLOAT.optionalFieldOf("mass", 0f).forGetter(TransmissionDesign::massMu)
     ).apply(i, TransmissionDesign::new));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, TransmissionDesign> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.VAR_INT.apply(ByteBufCodecs.list()), TransmissionDesign::steps,
             ResourceLocation.STREAM_CODEC, TransmissionDesign::material,
             ByteBufCodecs.FLOAT, TransmissionDesign::wearMult,
-            ByteBufCodecs.FLOAT, TransmissionDesign::massMult,
+            ByteBufCodecs.FLOAT, TransmissionDesign::massMu,
             TransmissionDesign::new);
 
     /** Pulled back into range, and padded or trimmed to a legal gear count, so a design is always buildable. */
@@ -80,9 +80,17 @@ public record TransmissionDesign(List<Integer> steps, ResourceLocation material,
         return 1f / ratio(position);
     }
 
-    /** The block's weight: gears' metal times the material's density. */
-    public Mu mass(Material m) {
-        return new Mu(VehicleTuning.TRANSMISSION_METAL_PER_GEAR_MB * gears() * m.density().muPerMb() * massMult);
+    /** The block's weight: the one number the Blueprint Table's mass bar prints and the vehicle carries. */
+    public Mu mass() {
+        return new Mu(massMu);
+    }
+
+    /**
+     * The one weight formula of a gearbox, in Mu: {@link VehicleTuning#TRANSMISSION_METAL_PER_GEAR_MB} of metal per gear at the mean
+     * density of the gear set, synchronisers and case, times their {@code mass} multipliers ({@code ModularBake#gearbox} calls it).
+     */
+    public static float massMu(int gears, float meanDensity, float partMass) {
+        return VehicleTuning.TRANSMISSION_METAL_PER_GEAR_MB * gears * meanDensity * partMass;
     }
 
     /** How much a shift at speed costs this material: softer wears faster, by the hardness the deformation table already holds. */
@@ -103,7 +111,7 @@ public record TransmissionDesign(List<Integer> steps, ResourceLocation material,
             out.add(Component.translatable("engine.feedback.unknown_material"));
             return out;
         }
-        out.add(Component.translatable("transmission.feedback.mass", Math.round(mass(m).value())));
+        out.add(Component.translatable("transmission.feedback.mass", Math.round(massMu)));
         return out;
     }
 

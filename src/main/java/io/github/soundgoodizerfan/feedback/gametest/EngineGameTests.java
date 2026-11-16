@@ -37,7 +37,7 @@ public class EngineGameTests {
         float steelRedline = square.redline(steel).value(), copperRedline = square.redline(copper).value();
         helper.assertTrue(steelRedline > 6000 && steelRedline < 8000, "a steel 4 x 80 x 80 redlines 6000-8000 RPM, got " + steelRedline);
         helper.assertTrue(copperRedline < 0.6f * steelRedline, "copper's lower yield strength redlines well below steel, got " + copperRedline);
-        helper.assertTrue(square.mass(copper).value() > square.mass(steel).value(), "copper is denser, so heavier");
+        helper.assertTrue(new EngineDesign(8, 80, 80, Feedback.id("steel")).mass().value() > square.mass().value(), "more displacement, more metal, heavier");
 
         Rpm peak = square.peakRpm(steel);
         helper.assertTrue(Math.abs(square.torqueAt(peak, steel).value() - square.peakTorque().value()) < 1e-3,
@@ -67,8 +67,7 @@ public class EngineGameTests {
         helper.assertTrue(liftBe.lift(helper.getLevel()).equals("lifted"), "the engine should lift");
         var body = dev.ryanhcode.sable.api.sublevel.ServerSubLevelContainer.getContainer(helper.getLevel()).getSubLevel(liftBe.body());
         var plot = body.getPlot().getBoundingBox();
-        double expected = io.github.soundgoodizerfan.feedback.core.unit.Units.kpg(
-                design.mass(MaterialTable.get().materials().get(Feedback.id("steel"))));
+        double expected = io.github.soundgoodizerfan.feedback.core.unit.Units.kpg(design.mass());
         helper.runAfterDelay(10, () -> {
             double carried = 0;
             for (var p : net.minecraft.core.BlockPos.betweenClosed(plot.minX(), plot.minY(), plot.minZ(), plot.maxX(), plot.maxY(), plot.maxZ()))

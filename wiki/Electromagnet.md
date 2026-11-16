@@ -6,7 +6,7 @@ The first machine that runs on [electricity](Electricity.md). While it's powered
 
 Draw it at the [Blueprint Table](Blueprint_Table.md) (pick *Electromagnet* in the type row); the turns are set there, along with the core shape and addon. It needs Electrical Treatise I: Coils and Magnets ([Treatise](Treatise.md)). Shape a **Magnet Core** from a metal ingot at the [Smithing Table](Smithing_Table.md), then assemble it at the [Engineering Table](Engineering_Table.md) with two [fasteners](Fasteners.md); the Electromagnet Blueprint in the blueprint slot judges the fit against your drawing. The magnet comes out with the design of the core, and the blueprint is kept.
 
-The core has one measure, the **turns**, from 50 to 150 percent (100 by default). More turns pull harder and draw more current. The core's metal sets the pull too: a core of a magnetic metal pulls much harder than a non-magnetic one. Its **shape** trades pull against reach:
+The core has one measure, the **turns**, from 50 to 150 percent (100 by default). More turns pull harder and draw more current, up to what the core's metal carries (the **Carries** bar on the Blueprint Table); a magnet that would draw more is held to that. The core's metal sets the pull too: a core of a magnetic metal pulls much harder than a non-magnetic one. Its **shape** trades pull against reach:
 
 | Core | Pull | Reach |
 | --- | --- | --- |
@@ -52,7 +52,7 @@ A magnet doesn't pass power through to whatever is on its other side. Give each 
 
 ## Wear
 
-Running a magnet normally never wears it out, however long it runs. The only thing that hurts a magnet is feeding it **a band above LV**. That heats it up and permanently weakens it, faster the further over (each band over is four times the packet), down to half strength. It never breaks completely. A fine-wound [Dynamotor](Dynamotor.md) at a steam engine's speed makes MV, so keep magnets on LV.
+Running a magnet normally never wears it out, however long it runs. The only thing that hurts a magnet is feeding it **a band above LV**. That heats it up and permanently weakens it, faster the further over (each band over is four times the packet), down to half strength. Current past what its winding carries wears it the same way. It never breaks completely. A fine-wound [Dynamotor](Dynamotor.md) at a steam engine's speed makes MV, so keep magnets on LV.
 
 You can check a magnet's condition with [Calipers](Instruments.md#calipers), but only while it's switched off. You can't measure a magnet while it's pulling.
 

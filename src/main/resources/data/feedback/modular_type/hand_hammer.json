@@ -13,7 +13,8 @@
       "joint",
       "mass",
       "corrosion",
-      "hammer.blow"
+      "hammer.blow",
+      "head.wear"
     ],
     "roles": {
       "H": [

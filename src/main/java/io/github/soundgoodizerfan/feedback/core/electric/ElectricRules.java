@@ -63,6 +63,19 @@ public final class ElectricRules {
     }
 
     /**
+     * How far past the current its conductor carries a winding is driven, 0 when it is not (or nothing arrives): the current a resistive
+     * winding draws follows the packet it is fed, so {@code amps} at the rated packet become {@code amps x packet / rated packet} at the one
+     * that arrives, set against {@code carriesAmps} (what its wire's ampacity allows, {@code ElectricMachineTuning#WIRE_AMPS_PER_AMPACITY}
+     * times its section). A winding with no stated limit (0) is never over. The caller turns it into condition loss, as it does
+     * {@link #overVoltage}: force that cannot go into the work goes into the machine (6.5).
+     */
+    public static float overCurrent(float amps, float packetEu, VoltageBand rated, float carriesAmps) {
+        if (carriesAmps <= 0f || amps <= 0f || packetEu <= 0f)
+            return 0f;
+        return Math.max(0f, amps * packetEu / packetEu(rated) / carriesAmps - 1f);
+    }
+
+    /**
      * Fraction by which the band a sink is fed is over its rating, 0 when it is not (or nothing arrives):
      * the packet ratio less one, so each band over is a factor of four. This is the force that cannot go into
      * the work (6.5): the caller turns it into condition loss and heat in its own body. <b>[OPEN]</b> the per-unit scale.

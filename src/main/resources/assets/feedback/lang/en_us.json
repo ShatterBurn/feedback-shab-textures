@@ -9338,5 +9338,9 @@
   "gui.feedback.blueprint_table.prop.rpm.label": "Tears at",
   "gui.feedback.blueprint_table.prop.servo.label": "Pitch ctl",
   "gui.feedback.blueprint_table.tank.air.label": "Safe air",
-  "gui.feedback.blueprint_table.tank.relief.label": "Relief"
+  "gui.feedback.blueprint_table.tank.relief.label": "Relief",
+  "figure.feedback.block.Ampacity": "Wire carries %s A",
+  "figure.feedback.block.Ampacity.label": "Carries",
+  "figure.feedback.block.Light": "Glows %s times a plain filament",
+  "figure.feedback.block.Light.label": "Brightness"
 }

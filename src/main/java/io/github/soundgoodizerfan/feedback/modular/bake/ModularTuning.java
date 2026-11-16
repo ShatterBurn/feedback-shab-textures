@@ -839,6 +839,19 @@ public final class ModularTuning {
     public static final float COIL_REF_GAUGE = 50f, COIL_REF_TURNS = 2f, COIL_DROP_HALF = 0.5f;
     /** Linear motor ring: the turns and gauge (percent) it draws its quoted amps at; its push over a magnetic capsule rises with the turns and the core's pull. */
     public static final float RING_REF_TURNS = 4f, RING_REF_GAUGE = 50f;
+    /**
+     * Placeholder. A burner's bore sets how hot a flame its nozzle holds, beside the fuel it burns (the bore squared): a flame's temperature
+     * follows the bore to this power, held within {@code BURNER_BORE_FLAME_RANGE} of the plain nozzle's (a narrow bore quenches its flame against
+     * the walls, a wide one keeps it).
+     */
+    public static final float BURNER_BORE_FLAME_EXP = 0.2f;
+    public static final float[] BURNER_BORE_FLAME_RANGE = {0.8f, 1.2f};
+    /**
+     * Placeholder. A lamp filament's brightness follows its gauge to this power (a thicker filament carries more current and glows more, but
+     * draws with the gauge squared, so a thin one gives more light per amp); a ring's push follows its gauge to {@code RING_PUSH_GAUGE_EXP}
+     * (a thick wire pushes harder but draws with the gauge squared).
+     */
+    public static final float LAMP_LIGHT_EXP = 0.5f, RING_PUSH_GAUGE_EXP = 1f;
     public static final float STORE_REF_CM = 20f, STORE_MASS = 1800f, STORE_LEAK = 0.05f, STORE_REF_DENSITY = 1.9f, STORE_REF_CONDUCTIVITY = 0.000175f;
     /** Leyden jar: the plate area (percent) and glass wall (mm) the fixed jar stands for, and its capacitance, leak per tick and burst amps. */
     public static final float JAR_REF_AREA = 50f, JAR_REF_WALL_MM = 4f, JAR_CAPACITY_PACKETS = 10f, JAR_LEAK = 0.002f, JAR_BURST_AMPS = 8f;

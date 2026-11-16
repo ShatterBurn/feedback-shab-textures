@@ -45,6 +45,11 @@ import net.minecraft.world.level.block.state.BlockState;
  * its own: more volts is more heat, and that is where it shows. A copper element is cheap and
  * wears above 300 Tu, an iron one holds to 500: a better element is a hotter coil. Condition
  * multiplies the heat; a coil never breaks.
+ *
+ * <h2>And its wire's</h2>
+ * The element is rated for the current its metal's ampacity allows over its section ({@code Ampacity}, which caps its {@code Amps}). Fed a
+ * higher band than it is rated for, a resistive element draws more current, and past what its wire carries it wears by the excess
+ * ({@link io.github.soundgoodizerfan.feedback.core.electric.ElectricRules#overCurrent}); fed as rated it never does.
  */
 public class CoilBlockEntity extends ElectricNode implements ThermalBody, HeatSource, Wearing {
 
@@ -93,6 +98,12 @@ public class CoilBlockEntity extends ElectricNode implements ThermalBody, HeatSo
     public void onResolved(VoltageBand band, float eu, float amps, float wanted, boolean blocked) {
         super.onResolved(band, eu, amps, wanted, blocked);
         powered = eu > 0f && amps > 0f;
+        float over = io.github.soundgoodizerfan.feedback.core.electric.ElectricRules.overCurrent(amps, eu, ratedBand(), figures.get("Ampacity", 0f));
+        if (over > 0f) {
+            condition = Math.max(ElectricMachineTuning.COIL_CONDITION_FLOOR, condition - ElectricMachineTuning.COIL_WEAR_PER_OVERCURRENT * over
+                    * io.github.soundgoodizerfan.feedback.modular.attunement.MachineKinds.wearShare(this));
+            setChanged();
+        }
         if (powered)
             Heat.warm(this, eu * amps * figures.get("Work", ElectricMachineTuning.COIL_WORK_PER_EU) * condition);
     }
