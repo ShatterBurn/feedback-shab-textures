@@ -51,7 +51,7 @@ New here? Start with [Metalworking](Metalworking.md), then [Heat](Heat.md). Want
 - [Rotation](Rotation.md): shafts, power and gearing
 - [Heat](Heat.md): fires, vessels, processes
 - [Electricity](Electricity.md): bands, amps, and what happens when you get them wrong
-- [Guns](Guns.md) · [Launcher](Launcher.md) · [Electric Gun](Electric_Gun.md) and [Gun Parts](Gun_Parts.md)
+- [Guns](Guns.md) · [Launcher](Launcher.md) · [Fluid Caster](Fluid_Caster.md) · [Electric Gun](Electric_Gun.md) and [Gun Parts](Gun_Parts.md)
 - [Tools and Weapons](Tools_and_Weapons.md), [Armor](Armor.md) and [Exosuit](Exosuit.md)
 - [Designations](Designations.md): every name a gun, tool, armor piece or dish earns, and what gives it
 - [Combat](Combat.md), [Skills](Skills.md) and [Material Perks](Material_Perks.md)
@@ -99,7 +99,7 @@ New here? Start with [Metalworking](Metalworking.md), then [Heat](Heat.md). Want
 
 **Control:** [Timer](Timer.md) · [Bimetallic Strip](Bimetallic_Strip.md) · [Controller](Controller.md) · [Electric Controller](Electric_Controller.md) · [Programming](Programming.md) · [Data Connector](Data_Connector.md) · [Radio Mast](Radio_Mast.md) · [Robots](Robots.md) · [Robot Arm](Robot_Arm.md) · [Robot Beacon](Robot_Beacon.md) · [Robot Dock](Robot_Dock.md) · [Tether Reel](Tether_Reel.md)
 
-**Guns:** [Gun Parts](Gun_Parts.md) · [Reloading Press](Reloading_Press.md) · [Magazine](Magazine.md) · [Mixer](Mixer.md) · [Demolition Charge](Demolition_Charge.md) · [Shock Capsule](Shock_Capsule.md)
+**Guns:** [Fluid Caster](Fluid_Caster.md) · [Gun Parts](Gun_Parts.md) · [Reloading Press](Reloading_Press.md) · [Magazine](Magazine.md) · [Mixer](Mixer.md) · [Demolition Charge](Demolition_Charge.md) · [Shock Capsule](Shock_Capsule.md)
 
 **Tools and armor:** [Backpack](Backpack.md) · [Bed](Bed.md) · [Hand Tools](Hand_Tools.md) · [Mortar](Mortar.md) · [Wrench](Wrench.md) · [Crowbar](Crowbar.md) · [Sawblade](Sawblade.md) · [Spatula](Spatula.md) · [Spoon](Spoon.md) · [Tasting Spoon](Tasting_Spoon.md) · [Smithing Table](Smithing_Table.md) · [Anvil](Anvil.md) · [Woodworking Table](Woodworking_Table.md) · [Stonecutter](Stonecutter.md) · [Engineering Table](Engineering_Table.md) · [Research Table](Research_Table.md) · [Fasteners](Fasteners.md) · [Recipe Data Stick](Data_Stick.md) · [Arc Welder](Arc_Welder.md) · [Tools and Weapons](Tools_and_Weapons.md) · [Hafted Tool](Hafted_Tool.md) · [Composed Parts](Composed_Parts.md) · [What a Part Slot Takes](What_a_Part_Slot_Takes.md) · [Designations](Designations.md) · [Armor](Armor.md) · [Exosuit](Exosuit.md) · [Heavy Core](Heavy_Core.md) · [Blueprint Table](Blueprint_Table.md) · [Blueprint Book](Blueprint_Book.md) · [Treatise](Treatise.md) · [Treatise Binder and Shelf](Treatise_Binder_and_Shelf.md)
 
