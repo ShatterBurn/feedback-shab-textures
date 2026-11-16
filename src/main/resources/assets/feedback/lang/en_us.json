@@ -8009,6 +8009,7 @@
   "modular.feedback.fig.draw.tip.air_gun": "Ticks to cock the spring by hand, for a wielder of ordinary strength. A stiffer or bigger spring takes longer.",
   "modular.feedback.fig.velocity.tip.air_gun": "Muzzle speed of an iron pellet of this bore, against a vanilla bow's arrow.",
   "modular.feedback.fig.joint.tip.air_gun": "The spring's energy over what the receiver holds. Over 1 the spring takes a set each time it is cocked; far over, it snaps.",
+  "cartridge.feedback.shell": "A shell: no powder. A launcher's seat drives it.",
   "tooltip.feedback.launcher.cocked": "Cocked.",
   "tooltip.feedback.launcher.chambered": "%s rounds loaded.",
   "feedback.jei.info.launcher": "A launcher drives a shell with work stored in its seat. The reload key loads a round of the bore with no powder in it, then cocks the spring: the time is the spring's energy over your strength. Left click fires. A denser shell hits harder. The spring's stored energy is its volume times its metal's stiffness; a longer barrel keeps more of it and a lighter piston wastes less. A spring stronger than the receiver is rated for takes a set each cocking, and far past it snaps and hurts you. The release is nearly silent.",

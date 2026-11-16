@@ -33,23 +33,28 @@ public class CartridgeItem extends Item {
             tooltip.add(Component.translatable("cartridge.feedback.shot", round.pellets()).withStyle(ChatFormatting.GRAY));
         var materials = context.level() == null ? java.util.Map.<net.minecraft.resources.ResourceLocation, io.github.soundgoodizerfan.feedback.process.Material>of()
                 : ClientMaterials.on(context.level());
-        var load = round.load(materials);
-        var rating = round.caseRating(materials);
-        if (load.isEmpty() || rating.isEmpty()) {
-            tooltip.add(Component.translatable("gun.feedback.unknown_material").withStyle(ChatFormatting.RED));
-            return;
+        // A shell has no powder: a launcher's seat gives the push.
+        if (round.charges().isEmpty())
+            tooltip.add(Component.translatable("cartridge.feedback.shell").withStyle(ChatFormatting.GRAY));
+        else {
+            var load = round.load(materials);
+            var rating = round.caseRating(materials);
+            if (load.isEmpty() || rating.isEmpty()) {
+                tooltip.add(Component.translatable("gun.feedback.unknown_material").withStyle(ChatFormatting.RED));
+                return;
+            }
+            // The round's spec against its own case: free and exact (philosophy 10), red when it asks too much.
+            var charge = Component.empty();
+            for (int k = 0; k < round.charges().size(); k++) {
+                var c = round.charges().get(k);
+                if (k > 0)
+                    charge.append(" + ");
+                charge.append(Component.translatable("cartridge.feedback.part", c.count(), name(c.material())));
+            }
+            tooltip.add(Component.translatable("cartridge.feedback.charge", charge,
+                    String.format("%.1f", load.get().peakPressure()), String.format("%.1f", rating.get().value()))
+                    .withStyle(load.get().peakPressure() > rating.get().value() ? ChatFormatting.RED : ChatFormatting.GRAY));
         }
-        // The round's spec against its own case: free and exact (philosophy 10), red when it asks too much.
-        var charge = Component.empty();
-        for (int k = 0; k < round.charges().size(); k++) {
-            var c = round.charges().get(k);
-            if (k > 0)
-                charge.append(" + ");
-            charge.append(Component.translatable("cartridge.feedback.part", c.count(), name(c.material())));
-        }
-        tooltip.add(Component.translatable("cartridge.feedback.charge", charge,
-                String.format("%.1f", load.get().peakPressure()), String.format("%.1f", rating.get().value()))
-                .withStyle(load.get().peakPressure() > rating.get().value() ? ChatFormatting.RED : ChatFormatting.GRAY));
         round.seed().ifPresent(sd -> tooltip.add(Component.translatable("cartridge.feedback.seed",
                 net.minecraft.core.registries.BuiltInRegistries.ITEM.get(sd).getDescription()).withStyle(ChatFormatting.GRAY)));
         round.vial().ifPresent(v -> v.effect().ifPresent(e -> tooltip.add(Component.translatable("cartridge.feedback.vial",

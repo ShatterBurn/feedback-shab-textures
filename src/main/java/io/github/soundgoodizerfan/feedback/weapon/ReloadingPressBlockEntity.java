@@ -193,7 +193,8 @@ public class ReloadingPressBlockEntity extends BlockEntity implements Container,
         var core = shot || slots.get(CORE).isEmpty() ? java.util.Optional.<net.minecraft.resources.ResourceLocation>empty()
                 : java.util.Optional.of(located(materials, slots.get(CORE)).get().id());
         Cartridge cartridge = new Cartridge(boreMm, cas.get().id(), charges, bullet.get().id(), payload, shot, shape, core, vial, seed);
-        if (cartridge.load(materials).isEmpty()) {
+        // No powder in either charge slot: a shell, for a launcher's seat to drive. The press seats what it is given and does not ask whether a gun will fire it.
+        if (!charges.isEmpty() && cartridge.load(materials).isEmpty()) {
             io.github.soundgoodizerfan.feedback.net.AimPayloads.screen(player, Component.translatable("message.feedback.press.no_blend"));
             return;
         }
