@@ -61,7 +61,12 @@ public final class SpaceTravel {
     }
 
     /** A player Sable has tracked on the chain: where they stood on their body, so they can follow it across. */
-    private record Rider(ServerPlayer player, java.util.UUID body, Vec3 local) {
+    private record Rider(ServerPlayer player, java.util.UUID body, Vec3 local, Vec3 velocity) {
+    }
+
+    private static Rider rider(dev.ryanhcode.sable.sublevel.system.SubLevelPhysicsSystem physics, ServerPlayer p, ServerSubLevel on) {
+        Vector3d v = physics.getPhysicsHandle(on).getLinearVelocity(new Vector3d());
+        return new Rider(p, on.getUniqueId(), on.logicalPose().transformPositionInverse(p.position()), new Vec3(v.x / 20, v.y / 20, v.z / 20));
     }
 
     /**
@@ -75,10 +80,15 @@ public final class SpaceTravel {
         for (ServerSubLevel b : chain)
             ids.add(b.getUniqueId());
         var riders = new java.util.ArrayList<Rider>();
+        var physics = dev.ryanhcode.sable.api.sublevel.ServerSubLevelContainer.getContainer(from).physicsSystem();
         for (ServerPlayer p : from.players())
             if (SableCompanion.INSTANCE.getTrackingOrVehicleSubLevel(p) instanceof ServerSubLevel s && ids.contains(s.getUniqueId()))
-                riders.add(new Rider(p, s.getUniqueId(), s.logicalPose().transformPositionInverse(p.position())));
+                riders.add(rider(physics, p, s));
         var seeing = new java.util.LinkedHashSet<>(aboard(from, body));
+        // Whoever is beside the craft is carried too, even if Sable does not have them standing on it.
+        for (ServerPlayer p : seeing)
+            if (riders.stream().noneMatch(r -> r.player() == p))
+                riders.add(rider(physics, p, body));
         for (Rider r : riders)
             seeing.add(r.player());
         // Sable tells everyone following a body that it is gone, by where its plot is, once the body is removed. Plots are the same in
@@ -94,11 +104,17 @@ public final class SpaceTravel {
         if (n <= 0)
             return n;
         var container = dev.ryanhcode.sable.api.sublevel.ServerSubLevelContainer.getContainer(target);
-        for (Rider r : riders)
+        for (Rider r : riders) {
             if (r.player().level() != target && container.getSubLevel(r.body()) instanceof ServerSubLevel moved) {
                 Vec3 w = moved.logicalPose().transformPosition(r.local());
                 r.player().teleportTo(target, w.x, w.y, w.z, java.util.Set.of(), r.player().getYRot(), r.player().getXRot());
             }
+            // The craft keeps its speed across, so its rider must, or it leaves them behind.
+            if (r.player().level() == target) {
+                r.player().setDeltaMovement(r.velocity());
+                r.player().hurtMarked = true;
+            }
+        }
         fade(seeing, up);
         return n;
     }
