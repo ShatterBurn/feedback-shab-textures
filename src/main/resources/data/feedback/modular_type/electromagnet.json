@@ -5,6 +5,7 @@
       "block.Pull",
       "block.Range",
       "block.Amps",
+      "block.Ampacity",
       "block.Eaten"
     ]
   },

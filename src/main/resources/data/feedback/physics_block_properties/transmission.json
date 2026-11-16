@@ -1,0 +1,6 @@
+{
+  "selector": "feedback:transmission",
+  "properties": {
+    "sable:mass": 0.01
+  }
+}

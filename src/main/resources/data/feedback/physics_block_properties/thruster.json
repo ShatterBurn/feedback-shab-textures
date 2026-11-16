@@ -1,0 +1,6 @@
+{
+  "selector": "feedback:thruster",
+  "properties": {
+    "sable:mass": 0.01
+  }
+}

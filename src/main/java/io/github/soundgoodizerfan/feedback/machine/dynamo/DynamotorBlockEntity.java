@@ -200,7 +200,7 @@ public class DynamotorBlockEntity extends ElectricNode implements ThermalBody, W
         if (level == null)
             return;
         float power = eu * amps;
-        float excess = generator() ? (ratedAmps > 0f ? Math.max(0f, amps / ratedAmps - 1f) : 0f) : ElectricRules.overVoltage(band, eu, this.band);
+        float excess = generator() ? (ratedAmps > 0f ? Math.max(0f, amps / ratedAmps - 1f) : 0f) : Math.max(ElectricRules.overVoltage(band, eu, this.band), ElectricRules.overCurrent(amps, eu, this.band, ratedAmps));
         if (power > 0f)
             Heat.warm(this, power * coreLoss + amps * amps * windingDrop + ElectricMachineTuning.MACHINE_HEAT_PER_EXCESS * power * excess);
         float lost = ElectricMachineTuning.MACHINE_WEAR_PER_EXCESS * excess;

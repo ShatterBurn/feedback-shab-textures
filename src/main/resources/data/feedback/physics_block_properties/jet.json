@@ -1,0 +1,6 @@
+{
+  "selector": "feedback:jet",
+  "properties": {
+    "sable:mass": 0.01
+  }
+}

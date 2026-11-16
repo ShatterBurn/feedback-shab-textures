@@ -53,6 +53,8 @@ public class PropBlockEntity extends RotationNode implements BlockEntitySubLevel
     private io.github.soundgoodizerfan.feedback.modular.type.ModularDesign build;
     @Nullable
     private volatile PropDesign design;
+    /** The propeller's weight on the vehicle: its design's mass (the bench's mass figure), carried. */
+    private final io.github.soundgoodizerfan.feedback.vehicle.CarriedMass carried = new io.github.soundgoodizerfan.feedback.vehicle.CarriedMass();
     private volatile float condition = 1f;
     /** Written by the server tick, read by the physics thread. */
     private volatile float rpm;
@@ -67,7 +69,7 @@ public class PropBlockEntity extends RotationNode implements BlockEntitySubLevel
 
     private final ForceTotal force = new ForceTotal();
     private final Vector3d centre = new Vector3d(), dir = new Vector3d(), lin = new Vector3d(), up = new Vector3d(),
-            worldDir = new Vector3d(), pushed = new Vector3d(), torque = new Vector3d(), down = new Vector3d(), weightLocal = new Vector3d();
+            worldDir = new Vector3d(), pushed = new Vector3d(), torque = new Vector3d();
 
     public PropBlockEntity(BlockPos pos, BlockState state) {
         super(FVehicles.PROPELLER_ENTITY.get(), pos, state);
@@ -205,6 +207,7 @@ public class PropBlockEntity extends RotationNode implements BlockEntitySubLevel
         PropDesign d = design;
         if (level == null || d == null)
             return;
+        carried.tick(this, d.mass());
         float turn = getRpm().value();
         rpm = turn;
         Vec3 at = Vec3.atCenterOf(worldPosition);
@@ -240,8 +243,6 @@ public class PropBlockEntity extends RotationNode implements BlockEntitySubLevel
     public void sable$physicsTick(ServerSubLevel subLevel, RigidBodyHandle handle, double dt) {
         PropDesign d = design;
         float turn = rpm, rho = rhoKgM3;
-        if (d != null)
-            weigh(d, subLevel, handle, dt);
         if (d == null || rho <= 0f || Math.abs(turn) < 1f) {
             status = 0;
             return;
@@ -279,16 +280,10 @@ public class PropBlockEntity extends RotationNode implements BlockEntitySubLevel
         handle.applyForcesAndReset(force);
     }
 
-    /** Sable weighs only the block, so what the design weighs past it is a force down at the hub, spinning or not. */
-    private void weigh(PropDesign d, ServerSubLevel subLevel, RigidBodyHandle handle, double dt) {
-        float extraMu = d.massMu() - VehicleTuning.PROP_BLOCK_MU;
-        if (extraMu <= 0f)
-            return;
-        double weight = extraMu / Units.MU_PER_KPG * io.github.soundgoodizerfan.feedback.vehicle.Gravity.of(subLevel.getLevel());
-        subLevel.logicalPose().transformNormalInverse(down.set(0, -weight * dt, 0), weightLocal);
-        centre.set(worldPosition.getX() + 0.5, worldPosition.getY() + 0.5, worldPosition.getZ() + 0.5);
-        force.applyImpulseAtPoint(subLevel.getMassTracker(), centre, weightLocal);
-        handle.applyForcesAndReset(force);
+    @Override
+    public void setRemoved() {
+        super.setRemoved();
+        carried.release(this);
     }
 
     // --- save ---------------------------------------------------------------------------------------

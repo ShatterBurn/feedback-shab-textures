@@ -30,6 +30,11 @@ public final class FigureStore {
         return figs.contains(key) ? figs.getFloat(key) : fallback;
     }
 
+    /** What the part weighs as the Blueprint Table's mass figure said, 0 when the block was not built from a design. */
+    public io.github.soundgoodizerfan.feedback.core.unit.Mu mass() {
+        return new io.github.soundgoodizerfan.feedback.core.unit.Mu(figures == null ? 0f : figures.get(ModularFigures.Fig.MASS));
+    }
+
     /** The design the block was built from, or null. */
     public ModularDesign design() {
         return design;

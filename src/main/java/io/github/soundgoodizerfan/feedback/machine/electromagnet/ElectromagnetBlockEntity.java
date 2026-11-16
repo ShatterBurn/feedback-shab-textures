@@ -128,7 +128,9 @@ public class ElectromagnetBlockEntity extends ElectricNode implements ThermalBod
             }
         }
 
-        float excess = ElectricRules.overVoltage(band, eu, ratedBand());
+        // Over its rating by volts, or by current past what its winding's metal carries (a resistive winding draws more at a higher packet).
+        float excess = Math.max(ElectricRules.overVoltage(band, eu, ratedBand()),
+                ElectricRules.overCurrent(amps, eu, ratedBand(), figures.get("Ampacity", 0f)));
         if (excess > 0f) {
             condition = Math.max(ElectricMachineTuning.ELECTROMAGNET_CONDITION_FLOOR,
                     condition - ElectricMachineTuning.ELECTROMAGNET_WEAR_PER_EXCESS * excess * io.github.soundgoodizerfan.feedback.modular.attunement.MachineKinds.wearShare(this));

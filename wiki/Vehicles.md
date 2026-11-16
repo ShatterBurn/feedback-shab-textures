@@ -21,6 +21,8 @@ A vehicle is a build of [micro cells](Micro_Core.md) and full-size blocks that a
 | **[Flight Sensor](Instruments.md#flight-sensor)** | Reads altitude, airspeed, pitch, roll, vertical speed or air density for a program; right-click opens the [Contraption Diagram](Instruments.md#contraption-diagram) of every force on the vehicle. |
 | **[Driver's Seat](#the-drivers-seat)** | Sit in it; your keyboard becomes the car's controls. |
 
+An engine, transmission, propeller, jet or thruster weighs on a vehicle what the **mass** bar of its drawing on the Blueprint Table shows, and the total mass the lift reports includes it.
+
 ## The Lift
 
 ```

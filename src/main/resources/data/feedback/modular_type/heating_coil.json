@@ -5,6 +5,7 @@
       "block.CoilPower",
       "block.Rise",
       "block.Amps",
+      "block.Ampacity",
       "block.ServiceTu",
       "block.Mass"
     ]

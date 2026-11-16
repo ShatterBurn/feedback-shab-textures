@@ -3,7 +3,8 @@
   "measures": {
     "show": [
       "block.Push",
-      "block.Amps"
+      "block.Amps",
+      "block.Ampacity"
     ]
   },
   "required": [

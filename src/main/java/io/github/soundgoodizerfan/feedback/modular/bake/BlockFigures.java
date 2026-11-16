@@ -58,7 +58,8 @@ public final class BlockFigures {
             case "galvanic_cell" -> material.kind().orElse(null) == Material.Kind.METAL && material.density().muPerMb() > 0;
             case "lamp" -> material.ampacity().isPresent();
             case "linear_motor" -> material.kind().orElse(null) == Material.Kind.METAL && material.density().muPerMb() > 0 && material.ampacity().isPresent();
-            case "heating_coil" -> material.kind().orElse(null) == Material.Kind.METAL && material.density().muPerMb() > 0 && material.thermal().serviceTemperature().isPresent();
+            case "heating_coil" -> material.kind().orElse(null) == Material.Kind.METAL && material.density().muPerMb() > 0 && material.thermal().serviceTemperature().isPresent()
+                    && material.ampacity().isPresent();
             case "tray" -> material.kind().orElse(null) == Material.Kind.METAL && material.density().muPerMb() > 0;
             case "gas_centrifuge" -> material.kind().orElse(null) == Material.Kind.METAL && material.density().muPerMb() > 0 && material.mechanical().yieldStrength().isPresent();
             case "electromagnet" -> material.kind().orElse(null) == Material.Kind.METAL && material.density().muPerMb() > 0;
@@ -67,6 +68,15 @@ public final class BlockFigures {
             case "leyden_jar" -> material.electrical().insulation().isPresent();
             default -> true;
         };
+    }
+
+    /**
+     * The current a winding of {@code m} carries before it is past its rating: its ampacity (copper's one) times {@code
+     * ElectricMachineTuning#WIRE_AMPS_PER_AMPACITY} times its section (1 for the reference wire, gauge squared for a thicker or thinner one).
+     * What every wound or filament part is rated for at most, the same figure a cable of the metal carries.
+     */
+    private static float carries(Material m, float section) {
+        return m.ampacity().orElse(0f) * ElectricMachineTuning.WIRE_AMPS_PER_AMPACITY * section;
     }
 
     /** {@code v} over {@code ref}, held to 0..1: how much of a reference property a part's metal has. */
@@ -192,7 +202,10 @@ float mass = ModularBake.param(type, part, "mass", 1f) * ModularTuning.STORE_MAS
                 float g = role.axis(part, "gauge") / ModularTuning.COIL_REF_GAUGE, turns = role.axis(part, "turns") / ModularTuning.COIL_REF_TURNS;
                 float drop = m.electrical().drop().orElse(0.5f);
                 float heat = drop / (drop + ModularTuning.COIL_DROP_HALF);
-                out.putFloat("Amps", ElectricMachineTuning.COIL_AMPS * g * g / turns);
+                // The wire carries what its ampacity allows over its section (gauge squared); the coil is rated for no more than that.
+                float carries = carries(m, g * g);
+                out.putFloat("Ampacity", carries);
+                out.putFloat("Amps", Math.min(ElectricMachineTuning.COIL_AMPS * g * g / turns, carries));
                 out.putFloat("Work", ElectricMachineTuning.COIL_WORK_PER_EU * heat / 0.5f);
                 out.putFloat("Mass", ElectricMachineTuning.COIL_MASS.workPerTu() * g * g * turns * (float) m.density().muPerMb() / 7.9f);
                 out.putFloat("ServiceTu", m.thermal().serviceTemperature().get().value());
@@ -201,8 +214,14 @@ float mass = ModularBake.param(type, part, "mass", 1f) * ModularTuning.STORE_MAS
             // (gauge squared); a push of 1 would be no ring, the reference ring pushes as the old fixed motor did.
             case "linear_motor" -> {
                 float turns = role.axis(part, "turns") / ModularTuning.RING_REF_TURNS, g = role.axis(part, "gauge") / ModularTuning.RING_REF_GAUGE;
-                out.putFloat("Amps", io.github.soundgoodizerfan.feedback.core.tube.TubeTuning.LINEAR_MOTOR_AMPS * turns * g * g);
-                out.putFloat("Push", 1f + (io.github.soundgoodizerfan.feedback.core.tube.TubeTuning.TUBE_LINEAR_FACTOR - 1f) * turns);
+                // The ring draws with turns and gauge squared, the wire carries with gauge squared: the rated draw is the lesser. A thicker wire pushes
+                // harder (ampere-turns) but draws far more for it; a ring held down by its wire pushes by the share of its draw it is allowed.
+                float draw = io.github.soundgoodizerfan.feedback.core.tube.TubeTuning.LINEAR_MOTOR_AMPS * turns * g * g;
+                float carries = carries(m, g * g);
+                out.putFloat("Ampacity", carries);
+                out.putFloat("Amps", Math.min(draw, carries));
+                out.putFloat("Push", 1f + (io.github.soundgoodizerfan.feedback.core.tube.TubeTuning.TUBE_LINEAR_FACTOR - 1f) * turns
+                        * (float) Math.pow(g, ModularTuning.RING_PUSH_GAUGE_EXP) * Math.min(1f, carries / draw));
             }
             // Charge held is plate area over glass thickness; thin glass leaks it away much faster (as the square).
             case "leyden_jar" -> {
@@ -250,7 +269,10 @@ float leak = ModularBake.param(type, part, "leak", 1f) * ModularTuning.JAR_LEAK 
             case "burner" -> {
                 float b = role.axis(part, "bore") / 10f;
                 out.putFloat("Burn", 0.5f * b * b * ModularBake.param(type, part, "burn", 1f));
-                out.putFloat("Flame", ModularBake.param(type, part, "flame", 1f) * flameHolder(design, materials));
+                // A wide bore keeps a hotter flame (the narrow one quenches against its walls) and pays for it in fuel with the bore squared.
+                float boreFlame = Math.max(ModularTuning.BURNER_BORE_FLAME_RANGE[0], Math.min(ModularTuning.BURNER_BORE_FLAME_RANGE[1],
+                        (float) Math.pow(b, ModularTuning.BURNER_BORE_FLAME_EXP)));
+                out.putFloat("Flame", ModularBake.param(type, part, "flame", 1f) * flameHolder(design, materials) * boreFlame);
             }
             // Nozzle: push and fuel burned both go with the bore area; the variant trades push against fuel; a regen jacket (an addon) warms the fuel first, so less of it burns.
             case "thruster" -> {
@@ -292,12 +314,19 @@ float leak = ModularBake.param(type, part, "leak", 1f) * ModularTuning.JAR_LEAK 
             // Core: turns raise the pull and the current together; the shape trades pull against reach; a yoke (an addon) closes the magnetic path.
             case "electromagnet" -> {
                 float n = role.axis(part, "turns") / 100f;
-                out.putFloat("Amps", n);
+                // The winding is the part's own metal: it draws with its turns, and carries what its ampacity allows; past that the magnet is held to it.
+                float drawn = n;
+                if (m.ampacity().isPresent()) {
+                    float carries = carries(m, 1f);
+                    out.putFloat("Ampacity", carries);
+                    drawn = Math.min(n, carries);
+                }
+                out.putFloat("Amps", drawn);
                 // the core is what is magnetised: a core that is not magnetic pulls only NONMAGNETIC_CORE of what iron does, and one that loses
                 // much to eddies and hysteresis keeps less of it
                 float core = m.separation().magnetic() ? 1f - 0.5f * share(m.electrical().coreLoss().orElse(ModularTuning.YOKE_REF_CORE_LOSS / 2f), ModularTuning.YOKE_REF_CORE_LOSS)
                         : ModularTuning.NONMAGNETIC_CORE;
-                out.putFloat("Pull", 0.08f * n * ModularBake.param(type, part, "pull", 1f) * yoke(design, materials) * core / 0.85f);
+                out.putFloat("Pull", 0.08f * drawn * ModularBake.param(type, part, "pull", 1f) * yoke(design, materials) * core / 0.85f);
                 out.putFloat("Range", 4f * ModularBake.param(type, part, "range", 1f));
             }
             // Anode: a bigger anode feeds more current and lasts in proportion to its bulk; the shape trades current against life; a cathode metal further above the anode draws more.
@@ -309,7 +338,12 @@ float leak = ModularBake.param(type, part, "leak", 1f) * ModularTuning.JAR_LEAK 
             // Filament: a thicker one draws more and lasts; the shape trades draw against toughness; a ballast (an addon) lets it ride a little overvoltage.
             case "lamp" -> {
                 float g = role.axis(part, "gauge") / 50f;
-                out.putFloat("Amps", 0.5f * g * g * ModularBake.param(type, part, "amps", 1f));
+                // The filament carries what its ampacity allows over its section; it is rated for the lesser of that and its draw. A thicker one glows
+                // brighter, and tougher, but draws with the gauge squared.
+                float carries = carries(m, g * g);
+                out.putFloat("Ampacity", carries);
+                out.putFloat("Amps", Math.min(0.5f * g * g * ModularBake.param(type, part, "amps", 1f), carries));
+                out.putFloat("Light", (float) Math.pow(g, ModularTuning.LAMP_LIGHT_EXP));
                 out.putFloat("Burnout", 1.5f * ModularBake.param(type, part, "tough", 1f) * (0.6f + 0.4f * g) * ballast(design, materials));
             }
             // A boiler is a shell like the vessel's: the shell sets the pressure it risks and gives way at, and the pressure its seams weep and its valve opens at follow it.

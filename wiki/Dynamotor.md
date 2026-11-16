@@ -70,7 +70,7 @@ A machine with a **pipe cooling** addon (a water jacket) has a tank of **2,000 m
 Misuse heats the machine more and wears it:
 
 - as a generator, drawing more than the rated amps;
-- as a motor, being fed a band above the one its winding makes;
+- as a motor, being fed a band above the one its winding makes, or drawing more current than its winding carries;
 - running hotter than the housing metal's service temperature.
 
 **Ward** on its frame, winding, core, housing or bearing slows this wear ([Enchanting Table](Enchanting_Table.md#on-a-machine)). Wear takes condition down to **half** and no further. The machine never refuses a line and is never destroyed; a worn one delivers less. An [Overspeed Trip](Overspeed_Trip.md) on the shaft protects a motor that is fed too high a band and spins too fast.

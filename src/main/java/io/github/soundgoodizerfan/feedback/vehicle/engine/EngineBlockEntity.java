@@ -52,14 +52,9 @@ import org.jetbrains.annotations.Nullable;
  * stand as in a car (philosophy 14).
  *
  * <h2>Its weight rides on a box</h2>
- * Sable weighs a block by its state alone, so every Engine block would weigh the same. The block
- * is tagged {@code sable:super_light} (0.25 kpg, 250 Mu), and once it is part of a vehicle it
- * carries the rest of its design's mass on a free box welded at its centre, contacts off -- what
- * plates did before they became cells. Boxes are not saved, so the tick re-makes it.
- * <p>
- * Not weightless, which was tried first: a vehicle of nothing but an engine then weighed zero
- * at the moment of lifting, before the box existed, and Sable discarded the body. The cost of
- * the floor is that an engine designed lighter than 250 Mu weighs 250.
+ * Sable weighs a block by its state alone, so every Engine block would weigh the same. The block is held light
+ * ({@code physics_block_properties/engine.json}) and the rest of its design's mass, the figure the Blueprint Table prints, rides on a
+ * box ({@link io.github.soundgoodizerfan.feedback.vehicle.CarriedMass}).
  */
 public class EngineBlockEntity extends RotationNode implements Switchable, Analog, DataNode, io.github.soundgoodizerfan.feedback.vehicle.VehiclePart,
         io.github.soundgoodizerfan.feedback.fitting.StoredFittable {
@@ -71,19 +66,12 @@ public class EngineBlockEntity extends RotationNode implements Switchable, Analo
         return fittings;
     }
 
-    /** Just inside the block, so the box never reaches past what is drawn. */
-    private static final double BOX_HALF = 0.45;
-    /** What Sable already counts for the block itself: {@code sable:super_light}. */
-    private static final double BLOCK_KPG = 0.25;
     /** How far the curve may move, in Su, before the network is told. */
     private static final float RECALC_SU = 1f;
 
     @Nullable
     private EngineDesign design;
-    @Nullable
-    private dev.ryanhcode.sable.api.physics.object.box.BoxPhysicsObject box;
-    @Nullable
-    private dev.ryanhcode.sable.api.physics.constraint.PhysicsConstraintHandle weld;
+    private final io.github.soundgoodizerfan.feedback.vehicle.CarriedMass carried = new io.github.soundgoodizerfan.feedback.vehicle.CarriedMass();
 
     private final FuelBlend fuel = new FuelBlend(this::setChanged);
     /** Fraction of as-built power left: knock wears it, to a floor. */
@@ -278,30 +266,8 @@ public class EngineBlockEntity extends RotationNode implements Switchable, Analo
 
     /** Puts the design's mass on the vehicle this engine is part of, once its box is in Sable. */
     private void carryMass(Level level, BlockPos pos) {
-        if (design == null || !(level instanceof net.minecraft.server.level.ServerLevel server)
-                || !(dev.ryanhcode.sable.companion.SableCompanion.INSTANCE.getContaining(this) instanceof dev.ryanhcode.sable.sublevel.ServerSubLevel body))
-            return;
-        Material material = material();
-        if (material == null)
-            return;
-        var system = dev.ryanhcode.sable.sublevel.system.SubLevelPhysicsSystem.get(server);
-        if (box == null || box.isRemoved()) {
-            org.joml.Vector3d centre = new org.joml.Vector3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
-            var pose = new dev.ryanhcode.sable.companion.math.Pose3d(body.logicalPose().transformPosition(centre, new org.joml.Vector3d()),
-                    new org.joml.Quaterniond(body.logicalPose().orientation()), new org.joml.Vector3d(), new org.joml.Vector3d(1, 1, 1));
-            box = new dev.ryanhcode.sable.api.physics.object.box.BoxPhysicsObject(pose,
-                    new org.joml.Vector3d(BOX_HALF, BOX_HALF, BOX_HALF),
-                    Math.max(1e-3, io.github.soundgoodizerfan.feedback.core.unit.Units.kpg(design.mass(material)) - BLOCK_KPG));
-            system.addObject(box);
-            weld = null;
-        }
-        if (box.getRuntimeId() == dev.ryanhcode.sable.api.physics.PhysicsPipelineBody.NULL_RUNTIME_ID
-                || (weld != null && weld.isValid()))
-            return;
-        org.joml.Vector3d centre = new org.joml.Vector3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
-        weld = system.getPipeline().addConstraint(body, box,
-                new dev.ryanhcode.sable.api.physics.constraint.FixedConstraintConfiguration(centre, new org.joml.Vector3d(), new org.joml.Quaterniond()));
-        weld.setContactsEnabled(false); // the box sits inside its own block
+        if (design != null)
+            carried.tick(this, design.mass());
     }
 
     // --- DataNode -----------------------------------------------------------------------------
@@ -342,16 +308,12 @@ public class EngineBlockEntity extends RotationNode implements Switchable, Analo
     @Override
     public void setRemoved() {
         super.setRemoved();
-        if (weld != null && weld.isValid())
-            weld.remove();
-        if (box != null && level instanceof net.minecraft.server.level.ServerLevel server && !box.isRemoved())
-            dev.ryanhcode.sable.sublevel.system.SubLevelPhysicsSystem.get(server).removeObject(box);
-        box = null;
+        carried.release(this);
     }
 
     /** The mass this engine puts on its vehicle, block and box, in kpg, for tests; the block alone until the box exists. */
     public double carriedKpg() {
-        return BLOCK_KPG + (box == null || box.isRemoved() ? 0 : box.getMass());
+        return carried.kpg();
     }
 
     @Override

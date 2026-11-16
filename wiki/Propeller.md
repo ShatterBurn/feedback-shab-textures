@@ -12,7 +12,7 @@ Draw the propeller at the [Blueprint Table](Blueprint_Table.md) (pick *Propeller
 | **Prop Blades** | **pitch** axis: fine, medium or coarse | The blade angle. Made from plate. |
 | **Pitch linkage** (optional addon) | A rod in the hub that turns the blades. A [Controller](Controller.md) card then sets the pitch; see [Pitch control](#pitch-control). |
 
-The **diameter** is set on the blades, from 80 to 600 cm. The blades' metal needs a measured yield strength: it sets the tip speed the blades survive. The propeller's weight follows the blade metal's density, the hub and the length of each blade.
+The **diameter** is set on the blades, from 80 to 600 cm. The blades' metal needs a measured yield strength: it sets the tip speed the blades survive. The propeller's weight follows the blade metal's density, the hub and the length of each blade. On a vehicle it weighs what the Blueprint Table's mass bar shows, and a heavy propeller is slow to spin up and to slow down.
 
 ## Using it
 

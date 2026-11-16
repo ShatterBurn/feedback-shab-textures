@@ -198,7 +198,7 @@ public final class VehicleTuning {
 
     /**
      * The transmission (vehicles spec). Placeholders. A gear costs {@code TRANSMISSION_INGOTS_PER_GEAR}
-     * ingots and {@code TRANSMISSION_METAL_PER_GEAR_MB} of metal in the block's mass. Shifting between
+     * ingots and {@code TRANSMISSION_METAL_PER_GEAR_MB} mB of metal in the block's mass (the one weight formula, {@code TransmissionDesign#massMu}). Shifting between
      * two gears above {@code TRANSMISSION_FREE_SHIFT_RPM} wears it by speed times
      * {@code TRANSMISSION_WEAR_PER_RPM} over the material's hardness, down to
      * {@code TRANSMISSION_CONDITION_FLOOR}. Worn below {@code TRANSMISSION_POP_BELOW} it jumps out of
@@ -206,7 +206,7 @@ public final class VehicleTuning {
      */
     public static final int TRANSMISSION_INGOTS_PER_GEAR = 1;
 
-    public static final float TRANSMISSION_METAL_PER_GEAR_MB = 144f, TRANSMISSION_FREE_SHIFT_RPM = 3f,
+    public static final float TRANSMISSION_METAL_PER_GEAR_MB = 3f, TRANSMISSION_FREE_SHIFT_RPM = 3f,
             TRANSMISSION_WEAR_PER_RPM = 0.03f, TRANSMISSION_CONDITION_FLOOR = 0.3f,
             TRANSMISSION_POP_BELOW = 0.6f, TRANSMISSION_POP_RATE = 0.01f;
 
@@ -316,10 +316,17 @@ public final class VehicleTuning {
     public static final float PROP_REVERSE_BAND = 0.2f;
 
     /**
-     * Placeholder [OPEN]. Weight of a propeller in Mu: the hub, plus per blade per metre of radius, both times the design's metal
-     * density against its blades' reference; the block itself weighs {@code PROP_BLOCK_MU} to Sable and the rest is a downward force.
+     * Placeholder [OPEN]. Weight of a propeller in Mu ({@code PropDesign#massMu}): a hub, plus per blade per metre of radius, scaled by
+     * the mean density of hub and blades against {@code PROP_REFERENCE_DENSITY} (aluminium, a plain light prop).
      */
-    public static final float PROP_HUB_MU = 6f, PROP_BLADE_MU_PER_M = 4f, PROP_BLOCK_MU = 10f;
+    public static final float PROP_HUB_MU = 6f, PROP_BLADE_MU_PER_M = 4f, PROP_REFERENCE_DENSITY = 2.7f;
+
+    /**
+     * What Sable weighs a vehicle part's own block at, in Mu (its {@code physics_block_properties} file says the same: 0.01 kpg). The rest
+     * of the part's design mass rides on a free box welded at its centre ({@code CarriedMass}), so a placed engine, gearbox, propeller, jet
+     * or thruster weighs what the bench's mass figure said.
+     */
+    public static final float VEHICLE_PART_BLOCK_MU = 10f;
 
     /**
      * Placeholder [OPEN]. A jet (flight A3). Air drawn through the intake at full spool and the extra per compressor stage (m/s);

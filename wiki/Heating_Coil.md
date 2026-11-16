@@ -6,7 +6,7 @@ Turns [electricity](Electricity.md) into [heat](Heat.md). Set it against a [Cruc
 
 A Heating Coil is a [modular](Tools_and_Weapons.md) block made from one part, a **Coil Element**. Cut the element at the [Blueprint Table](Blueprint_Table.md) or a Stonecutter from wire or fine wire of a metal ([Wire Drawer](Wire_Drawer.md)), then assemble it. Drawing and assembling it take Electrical Treatise I: Coils and Magnets ([Treatise](Treatise.md)). The element's metal sets how the coil behaves, and two measures set its build:
 
-- **Gauge**, 20 to 100 percent (50 by default): the thickness of the wire. A thicker wire draws more current.
+- **Gauge**, 20 to 100 percent (50 by default): the thickness of the wire. A thicker wire draws more current, and carries more: the coil is rated for the lesser of the current its turns and gauge ask for and the current its metal can carry over that thickness (the **Carries** bar on the [Blueprint Table](Blueprint_Table.md)). A metal that carries little, such as aluminum, limits a thick coil.
 - **Turns**, 1 to 4 (2 by default): more turns draw less current and weigh more.
 
 A metal that resists current (a high electrical drop, like nichrome) turns more of the current into heat than one that does not. Copper hardly heats; iron heats well.
@@ -36,3 +36,7 @@ The element runs a little hotter than what it's heating, and heats its vessel th
 ## The element's limit
 
 The coil holds as hot as its wire metal's service temperature. Above that the element **wears**, faster the further over, down to half condition. A worn element puts out less heat. It never breaks. A metal with a higher service temperature gives a coil that can run hotter.
+
+## Fed too high a band
+
+A coil fed a higher band than it is rated for draws more current, since it is a resistance. Once that current passes what its wire carries, the element wears the same way, faster the further past. Fed as rated, it never wears this way.

@@ -62,6 +62,7 @@ public class TransmissionBlockEntity extends BlockEntity implements Analog, Data
     private io.github.soundgoodizerfan.feedback.modular.type.ModularDesign build;
     @Nullable
     private TransmissionDesign design;
+    private final io.github.soundgoodizerfan.feedback.vehicle.CarriedMass carried = new io.github.soundgoodizerfan.feedback.vehicle.CarriedMass();
     private int position;
     private float condition = 1f;
     /** The clutch pedal, 0 to 1; the controller's (channel 1), so not saved. */
@@ -168,6 +169,12 @@ public class TransmissionBlockEntity extends BlockEntity implements Analog, Data
         published = ratio;
     }
 
+    @Override
+    public void setRemoved() {
+        super.setRemoved();
+        carried.release(this);
+    }
+
     /** The block is going: its link goes with it. */
     void unpublish() {
         if (level == null || level.isClientSide)
@@ -177,6 +184,8 @@ public class TransmissionBlockEntity extends BlockEntity implements Analog, Data
     }
 
     static void serverTick(Level level, BlockPos pos, BlockState state, TransmissionBlockEntity be) {
+        if (be.design != null)
+            be.carried.tick(be, be.design.mass());
         if (be.ratio() != be.published)
             be.publish();
         // A worn box jumps out of gear under load.

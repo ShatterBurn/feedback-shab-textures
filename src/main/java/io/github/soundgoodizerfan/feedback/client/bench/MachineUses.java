@@ -72,7 +72,7 @@ final class MachineUses {
                             fmt(c.capacity() / ElectricMachineTuning.BATTERY_DISCHARGE_TICKS / ElectricRules.packetEu(c.caseBand()))),
                     plain("cell.efficiency", c.plates().chargeEfficiency(), fmt(c.plates().chargeEfficiency() * 100f)),
                     plain("cell.cold", c.plates().coldFactor(), fmt(c.plates().coldFactor() * 100f)))).orElse(List.of());
-            case HEAD -> HeadWear.of(d, t, mats).<List<Use>>map(w -> List.of(
+            case HEAD, HAFTED -> !HeadWear.machineHead(d, t) ? List.<Use>of() : HeadWear.of(d, t, mats).<List<Use>>map(w -> List.of(
                     new Use("head.wear", Component.translatable(ModularMeasures.langKey("head.wear"), fmt(w.perUnit() * 1000f * 100f),
                             Component.translatable(w.wheel() ? "gui.feedback.blueprint_table.head.wear.wu" : "gui.feedback.blueprint_table.head.wear.st")), -w.perUnit()))).orElse(List.of());
             default -> List.of();

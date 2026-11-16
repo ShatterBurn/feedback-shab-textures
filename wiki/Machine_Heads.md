@@ -47,6 +47,6 @@ The head's condition stays on the head, so a worn one moved to another machine i
 
 A stroke, pass or push that lands nothing (metal too hard, too cold or already finished) wears the **head**, not the machine. A worn head carries less; wear stops at half condition and the head is never broken by it. Replace a spent head to start fresh.
 
-How fast a head wears per unit of misuse depends on its edge toughness, durability, mass and corrosion resistance, set against iron. The Blueprint Table shows it as **Wears X% per 1000 St of overload** (for a wheel, per Wu ground), so a tougher, longer-lived, heavier head wears less.
+How fast a head wears per unit of misuse depends on its edge toughness, durability, mass and corrosion resistance, set against iron. The Blueprint Table shows it as **Wears X% per 1000 St of overload** (for a wheel, per Wu ground), so a tougher, longer-lived, heavier head wears less. A hammer seated in a Mechanical Hammer or Press wears the same way.
 
 The **Abrasive Wheel** is different: its grit is used up by **every cut**, not only by a misuse. A fully worn wheel has no grit left and cuts nothing.
