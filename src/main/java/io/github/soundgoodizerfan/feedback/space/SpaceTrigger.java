@@ -64,7 +64,8 @@ public final class SpaceTrigger {
                 HELD.remove(body.getUniqueId());
             }
         }
-        HELD.keySet().retainAll(thin); // a body that was removed or left the thin air is forgotten
+        if (!shelf) // the Shelf's pass has no thin bodies and must not forget the Overworld's
+            HELD.keySet().retainAll(thin); // a body that was removed or left the thin air is forgotten
         for (ServerSubLevel body : movers) {
             HELD.remove(body.getUniqueId());
             if (!body.isRemoved()) // a chain moves with its first body
