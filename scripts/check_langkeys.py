@@ -14,16 +14,24 @@ J = pathlib.Path("src/main/java/io/github/soundgoodizerfan/feedback/modular")
 figs = set(re.findall(r"^\s+([A-Z][A-Z0-9_]*)[,;]", (J / "bake/ModularFigures.java").read_text().split("enum Fig {")[1].split("public static final int ATTACHMENTS")[0], re.M))
 figs |= {f"SUIT_{k}_{i}" for k in ("ATT", "POW", "ARG", "SUP") for i in range(1, 5)}  # declared several to a line
 uses = set(re.findall(r'"([a-z]+\.[a-z]+)"', (J / "type/ModularMeasures.java").read_text().split("USES = Set.of(")[1].split(");")[0]))
+# every family number and every block figure carries a row label, whether or not a type lists it yet
+for u in sorted(uses):
+    want("gui.feedback.blueprint_table." + u + ".label", "ModularMeasures.USES")
+for k in sorted(set(re.findall(r'putFloat\("(\w+)"', (J / "bake/BlockFigures.java").read_text()))):
+    want("figure.feedback.block." + k, "BlockFigures")
+    want("figure.feedback.block." + k + ".label", "BlockFigures")
 def measure(n, mid, where):
     """A measures id names a figure, a family number, a block figure or an axis, and each has its label."""
     if mid.startswith("block."):
         want("figure.feedback.block." + mid[6:], where)
+        want("figure.feedback.block." + mid[6:] + ".label", where)  # the short name of its row in the figure panel
     elif mid.startswith("axis."):
         want("modular.feedback.axis." + mid[5:], where)
     elif "." in mid:
         if mid not in uses:
             print(f"{mid}  ({where}: not a family number of ModularMeasures.USES)"); sys.exit(1)
         want("gui.feedback.blueprint_table." + mid, where)
+        want("gui.feedback.blueprint_table." + mid + ".label", where)  # the short name of its row in the figure panel
     else:
         if mid.upper() not in figs:
             print(f"{mid}  ({where}: not a ModularFigures.Fig)"); sys.exit(1)

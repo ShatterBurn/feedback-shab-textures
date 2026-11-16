@@ -71,8 +71,8 @@ import net.minecraft.world.item.ItemStack;
  * to take one off. Qualities are chips along the bottom edge.</li>
  * <li><b>Part panel</b> (bottom left): the selected part's material swatches and shape thumbnails. A material
  * item carried on the cursor paints any part it is clicked on; the sample slot sets the selected part once.</li>
- * <li><b>Figures</b> (bottom right): one bar per figure with a tick for the first drawing; the arrow says it
- * has moved. Shift prints the figure. Hovering a bar lights the parts that changed it ({@link #traceFor}).
+ * <li><b>Figures</b> (bottom right): one bar per figure and per quantity a family gives (words as text rows) with a tick for the first drawing; the arrow says it
+ * has moved. Shift prints the figure. Hovering a row lights the parts that changed it ({@link #traceFor}).
  * Hovering a swatch, a shape or a part with a material in hand shows the would-be figures as a ghost mark.
  * Pinned drafts (up to three, this session) add their own coloured tick to every bar.</li>
  * </ul>
@@ -164,6 +164,10 @@ public final class BlueprintBoard {
     private record Pin(Draft draft, ModularFigures figures, ModularDesign design) {
     }
 
+    /** One row of the figure panel: a figure ({@code fig}) or a number a family gives ({@code use}); {@code id} is its measure id. */
+    private record Row(String id, Fig fig, BenchUses.Use use) {
+    }
+
     private List<ResourceLocation> types;
     private final List<ItemStack> typeIcons = new ArrayList<>();
     /** The schools the types were last cut to; the list is rebuilt when the host says otherwise. */
@@ -228,6 +232,15 @@ public final class BlueprintBoard {
     /** The numbers beside the bars that the type lists for the picked part (its measures), and every one the build has. */
     private List<BenchUses.Use> uses = List.of();
     private List<BenchUses.Use> allUses = List.of();
+    /** The one list the figure panel scrolls and sorts by: the figures, then the numbers under them, then the words (see {@link BenchRows#text}). */
+    private List<Row> listed = List.of();
+    /** What a full bar is per use id (grown as the figures' are), the first drawing's value per id, and each pin's values (by pin). */
+    private final Map<String, Float> useTops = new HashMap<>();
+    private Map<String, Float> referenceUses = Map.of();
+    private final Map<Pin, Map<String, Float>> pinUses = new java.util.IdentityHashMap<>();
+    /** The ghost's value per use id, and what each ablated design gives (per part), filled when the pointer rests on a part or a use row. */
+    private Map<String, Float> ghostUseVals = Map.of();
+    private Map<String, Map<String, Float>> ablationUses;
     /** The measures the swatches of the picked part may be sorted by; null for any listed. */
     private Set<String> sortKeys;
     /** The part the lists above were cut for. */
@@ -281,7 +294,7 @@ public final class BlueprintBoard {
     private final List<Pin> pins = new ArrayList<>();
 
     // --- hover, set every frame in renderBg ------------------------------------------------------
-    private int hoverLink = -1, hoverNode = -1, hoverSwatch = -1, hoverShape = -1, hoverKind = -1, hoverFig = -1, hoverChip = -1, hoverDrawer = -1, hoverFault = -1;
+    private int hoverLink = -1, hoverNode = -1, hoverSwatch = -1, hoverShape = -1, hoverKind = -1, hoverRow = -1, hoverChip = -1, hoverDrawer = -1, hoverFault = -1;
     private boolean hoverCorner;
     /** The would-be drawing under a swatch, a shape or a carried material, as its parts and its figures. */
     private String ghostRole;
@@ -291,16 +304,11 @@ public final class BlueprintBoard {
     private final Map<String, Optional<ModularFigures>> ghosts = new HashMap<>();
     /** The parts that changed from the first drawing, and what each does to a figure: filled on first hover of a bar. */
     private Map<String, ModularFigures> ablation;
-    private Fig traceFor;
-    /** The figure the material swatches are sorted by (highest first), picked by clicking its bar; null keeps the list's own order. */
-    private Fig sortFig;
+    private String traceFor;
+    /** The measure id (a figure's or a use's) the material swatches are sorted by (highest first), picked by clicking its row; null keeps the list's own order. */
+    private String sortId;
     /** Whether the sort puts the lowest first (the second click on the same bar). */
     private boolean sortLeast;
-    /** As {@link #sortFig}, but for one of the numbers under the figure bars (a pulse gun's hold, a tank's room, a band): the line's translation key; null for none. Only one of the two sorts at a time. */
-    private String sortUse;
-    /** Most uses lines under the figure bars. */
-    private static final int MAX_USES = 6;
-    private int hoverUse = -1;
     /** The would-be uses lines of a part in a material and shape, worked out once per edit. */
     private final Map<String, List<BenchUses.Use>> ghostUses = new HashMap<>();
     private final Map<String, Float> trace = new HashMap<>();
@@ -773,23 +781,16 @@ public final class BlueprintBoard {
             fit.forEach(l -> ids.add(l.id()));
             fitSets.put(k, ids);
             List<Material.Located> out = new ArrayList<>(fit.stream().filter(this::matches).toList());
-            if (sortUse != null && !role.contains("#")) {
+            if (sortId != null && !role.contains("#")) {
                 int shape = shapeIndex(role);
-                String by = sortUse;
-                // the number the whole design would show on that line with each material in this part; a material with no such line goes last
+                String by = sortId;
+                Fig fig = ModularMeasures.fig(by).orElse(null);
+                // The number (a figure, or a line of the family) the whole design would show with each material in this part; a material with none goes last.
                 Map<ResourceLocation, Float> would = new HashMap<>();
                 for (Material.Located l : out)
-                    would.put(l.id(), ghostUsesOf(role, l.id(), shape).stream().filter(u -> by.equals(u.id())).map(BenchUses.Use::value)
-                            .filter(v -> !Float.isNaN(v)).findFirst().orElse(null));
-                java.util.Comparator<Float> order = sortLeast ? java.util.Comparator.naturalOrder() : java.util.Comparator.reverseOrder();
-                out.sort(java.util.Comparator.comparing((Material.Located l) -> would.get(l.id()), java.util.Comparator.nullsLast(order)));
-            } else if (sortFig != null && !role.contains("#")) {
-                int shape = shapeIndex(role);
-                Fig by = sortFig;
-                // The figure the whole design would have with each material in this part; a material that makes no design goes last.
-                Map<ResourceLocation, Float> would = new HashMap<>();
-                for (Material.Located l : out)
-                    would.put(l.id(), ghostOf(role, l.id(), shape).map(f -> f.get(by)).orElse(null));
+                    would.put(l.id(), fig != null ? ghostOf(role, l.id(), shape).map(f -> f.get(fig)).orElse(null)
+                            : ghostUsesOf(role, l.id(), shape).stream().filter(u -> by.equals(u.id())).map(BenchUses.Use::value)
+                                    .filter(v -> !Float.isNaN(v)).findFirst().orElse(null));
                 java.util.Comparator<Float> order = sortLeast ? java.util.Comparator.naturalOrder() : java.util.Comparator.reverseOrder();
                 out.sort(java.util.Comparator.comparing((Material.Located l) -> would.get(l.id()), java.util.Comparator.nullsLast(order)));
             }
@@ -981,10 +982,18 @@ public final class BlueprintBoard {
             uses = allUses.stream().filter(u -> !u.id().startsWith(ModularMeasures.AXIS)).toList();
         }
         sortKeys = ModularMeasures.sortKeys(t, role, d);
-        if (sortFig != null && (!shown.contains(sortFig) || !sorts(ModularMeasures.id(sortFig))))
-            sortFig = null;
-        if (sortUse != null && (uses.stream().noneMatch(u -> sortUse.equals(u.id())) || !sorts(sortUse)))
-            sortUse = null;
+        List<Row> all = new ArrayList<>();
+        for (Fig f : shown)
+            all.add(new Row(ModularMeasures.id(f), f, null));
+        for (BenchUses.Use u : uses)
+            if (!BenchRows.text(u.id()))
+                all.add(new Row(u.id(), null, u));
+        for (BenchUses.Use u : uses)
+            if (BenchRows.text(u.id()))
+                all.add(new Row(u.id(), null, u));
+        listed = List.copyOf(all);
+        if (sortId != null && (listed.stream().noneMatch(r -> sortId.equals(r.id())) || !sorts(sortId)))
+            sortId = null;
         swatchLists.clear();
         figScroll = 0;
     }
@@ -1004,7 +1013,10 @@ public final class BlueprintBoard {
         swatchLists.clear(); // a sorted list follows the other parts' figures
         ghostRole = null;
         ghost = Optional.empty();
+        ghostUseVals = Map.of();
         ablation = null;
+        ablationUses = null;
+        pinUses.clear();
         traceFor = null;
         trace.clear();
         icons.clear();
@@ -1043,7 +1055,14 @@ public final class BlueprintBoard {
             fresh = false;
             for (Fig f : Fig.values())
                 tops[f.ordinal()] = Math.max(figures.get().get(f), 0f) * 2.5f;
+            useTops.clear();
+            referenceUses = useValues(allUses);
+            for (BenchUses.Use u : allUses)
+                useTops.put(u.id(), Math.max(u.value(), 0f) * 2.5f);
         }
+        for (BenchUses.Use u : allUses)
+            if (!Float.isNaN(u.value()))
+                useTops.merge(u.id(), Math.max(u.value(), 0f) * (referenceUses.containsKey(u.id()) ? 1.25f : 2.5f), Math::max);
         if (figures.isPresent())
             for (Fig f : Fig.values())
                 tops[f.ordinal()] = Math.max(tops[f.ordinal()], figures.get().get(f) * 1.25f);
@@ -1988,31 +2007,15 @@ public final class BlueprintBoard {
                     pickShape(role, pick);
                 return true;
             }
-            if (button == 0 && hoverUse >= 0 && hoverUse < uses.size() && sorts(uses.get(hoverUse).id())) {
-                String k = uses.get(hoverUse).id();
-                sortFig = null;
-                if (!k.equals(sortUse)) {
-                    sortUse = k;
+            if (button == 0 && hoverRow >= 0 && hoverRow < listed.size() && sorts(listed.get(hoverRow).id())) {
+                String k = listed.get(hoverRow).id();
+                if (!k.equals(sortId)) {
+                    sortId = k;
                     sortLeast = false;
                 } else if (!sortLeast)
                     sortLeast = true;
                 else
-                    sortUse = null;
-                swatchLists.clear();
-                swatchScroll.snap(0);
-                GuiSkin.play(skin.click(), 1f);
-                return true;
-            }
-            if (button == 0 && hoverFig >= 0 && sorts(ModularMeasures.id(shown.get(hoverFig)))) {
-                Fig f = shown.get(hoverFig);
-                sortUse = null;
-                if (f != sortFig) {
-                    sortFig = f;
-                    sortLeast = false;
-                } else if (!sortLeast)
-                    sortLeast = true;
-                else
-                    sortFig = null;
+                    sortId = null;
                 swatchLists.clear();
                 swatchScroll.snap(0);
                 GuiSkin.play(skin.click(), 1f);
@@ -2161,7 +2164,7 @@ public final class BlueprintBoard {
             return true;
         }
         if (in(mx, my, ox + res.x(), oy + panelY, res.w(), panelH)) {
-            figScroll = Mth.clamp(figScroll + dir, 0, Math.max(0, shown.size() - figRows()));
+            figScroll = Mth.clamp(figScroll + dir, 0, Math.max(0, listed.size() - figRows()));
             return true;
         }
         return false;
@@ -2314,7 +2317,7 @@ public final class BlueprintBoard {
     }
 
     private int figRows() {
-        return Math.max(1, (panelH - 10 - rigH() - Math.min(uses.size(), MAX_USES) * 9) / ROW_H);
+        return Math.max(1, (panelH - 10 - rigH()) / ROW_H);
     }
 
     /** Whether the type has a test rig, and the height it takes off the top of the figures panel while it is on. */
@@ -2351,7 +2354,7 @@ public final class BlueprintBoard {
     private void updateHover(int mx, int my) {
         if (figures.isPresent() && !Objects.equals(sel(), listedRole))
             relist();
-        hoverNode = hoverSwatch = hoverShape = hoverKind = hoverFig = hoverUse = hoverChip = hoverDrawer = hoverFault = hoverLink = -1;
+        hoverNode = hoverSwatch = hoverShape = hoverKind = hoverRow = hoverChip = hoverDrawer = hoverFault = hoverLink = -1;
         hoverCorner = false;
         if (current() == null)
             return;
@@ -2406,11 +2409,8 @@ public final class BlueprintBoard {
         }
         if (in(mx, my, ox + res.x() + 2, oy + panelY + 5 + rigH(), res.w() - 4, figRows() * ROW_H)) {
             int i = figScroll + (my - oy - panelY - 5 - rigH()) / ROW_H;
-            hoverFig = i < shown.size() ? i : -1;
+            hoverRow = i < listed.size() ? i : -1;
         }
-        int usesShown = Math.min(uses.size(), MAX_USES), useTop = oy + panelY + panelH - 4 - usesShown * 9;
-        if (usesShown > 0 && in(mx, my, ox + res.x() + 2, useTop, res.w() - 4, usesShown * 9))
-            hoverUse = (my - useTop) / 9;
         updateGhost();
     }
 
@@ -2443,12 +2443,14 @@ public final class BlueprintBoard {
         ghostShape = gs;
         if (gr == null || gm == null) {
             ghost = Optional.empty();
+            ghostUseVals = Map.of();
             return;
         }
         String r = gr;
         ResourceLocation m = gm;
         int s = gs;
         ghost = ghostOf(r, m, s);
+        ghostUseVals = useValues(ghostUsesOf(r, m, s));
     }
 
     private List<BenchUses.Use> ghostUsesOf(String role, ResourceLocation mat, int shape) {
@@ -2912,68 +2914,120 @@ public final class BlueprintBoard {
         if (sel() == null)
             return;
         ModularFigures cur = figures.get();
-        int rows = figRows();
         int top = y + 5 + rigH();
         if (rigH() > 0) {
             BlueprintRig.draw(g, skin, rigInputs(), x + 2, y + 2, res.w() - 4, RIG_H - 4, GuiStyle.time(), ClientSettings.reduceMotion());
             g.fill(x + 3, y + RIG_H - 1, x + res.w() - 3, y + RIG_H, alpha(skin.ink(), 0x40));
         }
-        figScroll = Mth.clamp(figScroll, 0, Math.max(0, shown.size() - rows));
+        int count = listed.size();
+        figScroll = Mth.clamp(figScroll, 0, Math.max(0, count - figRows()));
         boolean shift = net.minecraft.client.gui.screens.Screen.hasShiftDown();
         int bx = x + 4 + LABEL_W + 4;
-        for (int r = 0; r < rows && figScroll + r < shown.size(); r++) {
-            Fig f = shown.get(figScroll + r);
+        for (int r = 0; r < figRows() && figScroll + r < count; r++) {
+            Row row = listed.get(figScroll + r);
             int ry = top + r * ROW_H;
-            skin.row(g, x + 2, ry - 1, res.w() - 7, ROW_H, false, figScroll + r == hoverFig);
-            fit(g, label(f), x + 5, ry + 1, LABEL_W, f == sortFig ? skin.accent() : sorts(ModularMeasures.id(f)) ? skin.ink() : skin.dim());
-            float v = cur.get(f);
-            if (shift) {
-                g.drawString(font, PartPresenter.num(v), bx, ry + 1, skin.ink(), false);
+            String id = row.id();
+            skin.row(g, x + 2, ry - 1, res.w() - 7, ROW_H, false, figScroll + r == hoverRow);
+            fit(g, row.fig() != null ? label(row.fig()) : BenchRows.label(row.use()), x + 5, ry + 1, LABEL_W,
+                    id.equals(sortId) ? skin.accent() : sorts(id) ? skin.ink() : skin.dim());
+            float v = row.fig() != null ? cur.get(row.fig()) : row.use().value();
+            Float was = row.fig() != null ? reference.map(rf -> rf.get(row.fig())).orElse(null) : referenceUses.get(id);
+            if (row.use() != null && BenchRows.text(id)) {
+                // a word, a rank or a yes/no: printed, with the would-be word in the accent and the arrow when it moved
+                Float gv = ghostUseVals.get(id);
+                String word = BenchRows.word(row.use());
+                int wordW = res.w() - (bx - x) - 14;
+                boolean differs = gv != null && gv != v;
+                fit(g, differs ? ghostWord(row.use(), gv) : word, bx, ry + 1, wordW, differs ? skin.accent() : skin.ink());
+                if (id.equals(traceFor))
+                    g.renderOutline(bx - 2, ry, wordW + 2, 9, alpha(skin.accent(), 0xA0));
+                if (was != null && was != v)
+                    g.drawString(font, v > was ? "\u25B2" : "\u25BC", x + res.w() - 13, ry + 1, skin.accent(), false);
                 continue;
             }
-            skin.bar(g, bx, ry + 2, BAR_W, 5, fill(f, v), f == Fig.JOINT ? 0.5f : -1f);
-            if (reference.isPresent())
-                g.fill(bx + Math.round(fill(f, reference.get().get(f)) * BAR_W), ry, bx + Math.round(fill(f, reference.get().get(f)) * BAR_W) + 1, ry + 9,
-                        skin.ink());
+            if (shift) {
+                g.drawString(font, row.fig() != null ? PartPresenter.num(v) : BenchRows.readout(row.use()), bx, ry + 1, skin.ink(), false);
+                continue;
+            }
+            Fn fill = row.fig() != null ? val -> fill(row.fig(), val) : val -> useFill(id, val);
+            skin.bar(g, bx, ry + 2, BAR_W, 5, fill.at(v), row.fig() == Fig.JOINT ? 0.5f : -1f);
+            if (was != null) {
+                int rx = bx + Math.round(fill.at(was) * BAR_W);
+                g.fill(rx, ry, rx + 1, ry + 9, skin.ink());
+            }
             for (int p = 0; p < pins.size(); p++)
                 if (pins.get(p).draft().type() == type) {
-                    int px = bx + Math.round(fill(f, pins.get(p).figures().get(f)) * BAR_W);
+                    Float pv = row.fig() != null ? Float.valueOf(pins.get(p).figures().get(row.fig())) : pinUsesOf(pins.get(p)).get(id);
+                    if (pv == null)
+                        continue;
+                    int px = bx + Math.round(fill.at(pv) * BAR_W);
                     g.fill(px, ry + 1, px + 2, ry + 8, PIN_COLOURS[p % PIN_COLOURS.length]);
                 }
-            if (ghost.isPresent()) {
-                int gx = bx + Math.round(fill(f, ghost.get().get(f)) * BAR_W), cx = bx + Math.round(fill(f, v) * BAR_W);
+            Float gv = row.fig() != null ? ghost.map(gf -> gf.get(row.fig())).orElse(null) : ghostUseVals.get(id);
+            if (gv != null) {
+                int gx = bx + Math.round(fill.at(gv) * BAR_W), cx = bx + Math.round(fill.at(v) * BAR_W);
                 if (gx != cx)
                     g.fill(Math.min(gx, cx), ry + 3, Math.max(gx, cx), ry + 6, alpha(skin.accent(), 0x90));
                 g.fill(gx - 1, ry, gx + 1, ry + 9, skin.accent());
             }
-            if (traceFor == f)
+            if (id.equals(traceFor))
                 g.renderOutline(bx - 1, ry + 1, BAR_W + 2, 7, alpha(skin.accent(), 0xA0));
-            if (reference.isPresent()) {
-                float was = reference.get().get(f);
+            if (was != null) {
                 float share = was == 0 ? (v == 0 ? 0 : 1) : (v - was) / Math.abs(was);
                 if (Math.abs(share) > 0.01f)
-                    g.drawString(font, share > 0 ? "▲" : "▼", x + res.w() - 13, ry + 1, skin.accent(), false);
+                    g.drawString(font, share > 0 ? "\u25B2" : "\u25BC", x + res.w() - 13, ry + 1, skin.accent(), false);
             }
         }
-        skin.scrollbar(g, x + res.w() - 4, top, rows * ROW_H, shown.size(), rows, figScroll);
-        int uy = y + panelH - 4 - Math.min(uses.size(), MAX_USES) * 9;
-        for (int i = 0; i < uses.size() && i < MAX_USES; i++)
-            g.drawString(font, uses.get(i).line().copy().withColor(uses.get(i).id().equals(sortUse) ? skin.accent() : i == hoverUse ? skin.accent() & 0xFFFFFF | 0xFF000000 : sorts(uses.get(i).id()) ? skin.ink() : skin.dim()),
-                    x + 5, uy + i * 9, 0xFFFFFFFF, false);
-        // the parts that changed a hovered figure, found once per figure
-        Fig hf = hoverFig >= 0 ? shown.get(hoverFig) : null;
-        if (hf != traceFor) {
+        skin.scrollbar(g, x + res.w() - 4, top, figRows() * ROW_H, count, figRows(), figScroll);
+        // the parts that changed a hovered row, found once per row
+        String hf = hoverRow >= 0 ? listed.get(hoverRow).id() : null;
+        if (!java.util.Objects.equals(hf, traceFor)) {
             traceFor = hf;
             traceParts(hf);
         }
     }
 
-    /** Which parts, changed from the first drawing, moved {@code fig}: each put back alone and the figure compared (cached per drawing). */
-    private void traceParts(Fig fig) {
+    private interface Fn {
+        float at(float v);
+    }
+
+    /** What share of a full bar {@code v} is for use {@code id}: against a fixed whole where the id has one, else the first drawing's scale. */
+    private float useFill(String id, float v) {
+        float top = BenchRows.fixedTop(id);
+        if (Float.isNaN(top))
+            top = useTops.getOrDefault(id, 0f);
+        return top <= 0 || Float.isNaN(v) ? 0 : Mth.clamp(v / top, 0f, 1f);
+    }
+
+    /** The values of a list of uses, by id. */
+    private static Map<String, Float> useValues(List<BenchUses.Use> list) {
+        Map<String, Float> out = new HashMap<>();
+        for (BenchUses.Use u : list)
+            if (!Float.isNaN(u.value()))
+                out.putIfAbsent(u.id(), u.value());
+        return out;
+    }
+
+    /** What a pinned draft's lines were, worked out once per edit. */
+    private Map<String, Float> pinUsesOf(Pin pin) {
+        return pinUses.computeIfAbsent(pin, k -> {
+            ModularType pt = ModularTypes.known(pin.design().type());
+            return pt == null ? Map.of() : useValues(BenchUses.of(pin.design(), pt));
+        });
+    }
+
+    /** The word a would-be value of a text row reads as. */
+    private static String ghostWord(BenchUses.Use u, float value) {
+        return BenchRows.word(new BenchUses.Use(u.id(), u.line(), value));
+    }
+
+    /** Which parts, changed from the first drawing, moved the row {@code id} (a figure or a use): each put back alone and the value compared (cached per drawing). */
+    private void traceParts(String id) {
         trace.clear();
-        if (fig == null || figures.isEmpty() || baked.isEmpty() || referenceDesign.isEmpty())
+        if (id == null || figures.isEmpty() || baked.isEmpty() || referenceDesign.isEmpty())
             return;
-        if (ablation == null) {
+        Fig fig = ModularMeasures.fig(id).orElse(null);
+        if (fig != null && ablation == null) {
             ablation = new HashMap<>();
             int tried = 0;
             for (ModularDesign.Part p : baked.get().parts()) {
@@ -2983,12 +3037,39 @@ public final class BlueprintBoard {
                 ToolDesigns.predict(baked.get().withPart(was), ModularTypes.known(), ClientMaterials.get()).ifPresent(f -> ablation.put(p.role(), f));
             }
         }
-        float max = 0;
-        for (Map.Entry<String, ModularFigures> e : ablation.entrySet()) {
-            float d = Math.abs(figures.get().get(fig) - e.getValue().get(fig));
-            trace.put(e.getKey(), d);
-            max = Math.max(max, d);
+        if (fig == null && ablationUses == null) {
+            ablationUses = new HashMap<>();
+            int tried = 0;
+            for (ModularDesign.Part p : baked.get().parts()) {
+                ModularDesign.Part was = referenceDesign.get().part(p.role());
+                if (was == null || was.equals(p) || ++tried > 6)
+                    continue;
+                ablationUses.put(p.role(), useValues(BenchUses.of(baked.get().withPart(was), current())));
+            }
         }
+        float now = 0;
+        if (fig != null)
+            now = figures.get().get(fig);
+        else {
+            Float cur = useValues(allUses).get(id);
+            if (cur == null)
+                return;
+            now = cur;
+        }
+        float max = 0;
+        if (fig != null)
+            for (Map.Entry<String, ModularFigures> e : ablation.entrySet()) {
+                float d = Math.abs(now - e.getValue().get(fig));
+                trace.put(e.getKey(), d);
+                max = Math.max(max, d);
+            }
+        else
+            for (Map.Entry<String, Map<String, Float>> e : ablationUses.entrySet()) {
+                Float was = e.getValue().get(id);
+                float d = Math.abs(now - (was == null ? 0 : was));
+                trace.put(e.getKey(), d);
+                max = Math.max(max, d);
+            }
         if (max <= 0) {
             trace.clear();
             return;
@@ -3082,8 +3163,15 @@ public final class BlueprintBoard {
         }
         if (hoverShape >= 0 && sel() != null && (hoverShape != shapeIndex(sel()) || shapeShut || fullDesc(sel(), hoverShape).size() > descLines(sel(), hoverShape).size()))
             return PartPresenter.describe(shapes(sel()).get(hoverShape));
-        if (hoverFig >= 0) {
-            Fig f = shown.get(hoverFig);
+        if (hoverRow >= 0 && hoverRow < listed.size()) {
+            Row row = listed.get(hoverRow);
+            if (row.use() != null) {
+                List<Component> out = new ArrayList<>();
+                out.add(row.use().line());
+                out.add(Component.translatable("gui.feedback.blueprint_table.rows.hint").withStyle(net.minecraft.ChatFormatting.DARK_GRAY));
+                return out;
+            }
+            Fig f = row.fig();
             List<Component> out = figureTip(f);
             if (net.minecraft.client.gui.screens.Screen.hasShiftDown() && reference.isPresent() && figures.isPresent())
                 out.add(FigureCompare.line(f, reference.get().get(f), figures.get().get(f)));
