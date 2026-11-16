@@ -32,6 +32,12 @@ public final class SpaceTrigger {
     private SpaceTrigger() {
     }
 
+    @SubscribeEvent
+    public static void onStopped(net.neoforged.neoforge.event.server.ServerStoppedEvent event) {
+        HELD.clear();
+        SpaceTravel.forgetStanding();
+    }
+
     /** Ticks {@code body} has sat in thin air (0 when it is not waiting to cross). For the probe command. */
     public static int held(UUID body) {
         return HELD.getOrDefault(body, 0);
@@ -44,6 +50,7 @@ public final class SpaceTrigger {
         boolean shelf = level.dimension().equals(SpaceTravel.SHELF);
         if (!shelf && !level.dimension().equals(Level.OVERWORLD))
             return;
+        SpaceTravel.noteStanding(level);
         var container = ServerSubLevelContainer.getContainer(level);
         if (container == null)
             return;

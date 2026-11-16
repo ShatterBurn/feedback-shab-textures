@@ -60,13 +60,39 @@ public final class SpaceTravel {
         return cross(from, from.getServer().overworld(), body, SpaceTuning.RETURN_Y, false);
     }
 
+    /** Where a player last stood on a body (their feet, in the body's frame) and when. */
+    private record Stand(java.util.UUID body, Vec3 local, long tick) {
+    }
+
+    private static final java.util.Map<java.util.UUID, Stand> STANDING = new java.util.HashMap<>();
+
+    /** Ticks a remembered standing place is still trusted. */
+    private static final long STAND_KEEP_TICKS = 200;
+
+    /**
+     * Remembers where each player on the ground stands on their body. A craft at speed leaves its rider trailing behind the deck
+     * by the time it crosses; where they last stood on it is where they belong on the other side.
+     */
+    public static void noteStanding(ServerLevel level) {
+        for (ServerPlayer p : level.players())
+            if (p.onGround() && SableCompanion.INSTANCE.getTrackingOrVehicleSubLevel(p) instanceof ServerSubLevel s)
+                STANDING.put(p.getUUID(), new Stand(s.getUniqueId(), s.logicalPose().transformPositionInverse(p.position()), level.getGameTime()));
+    }
+
+    public static void forgetStanding() {
+        STANDING.clear();
+    }
+
     /** A player Sable has tracked on the chain: where they stood on their body, so they can follow it across. */
     private record Rider(ServerPlayer player, java.util.UUID body, Vec3 local, Vec3 velocity) {
     }
 
     private static Rider rider(dev.ryanhcode.sable.sublevel.system.SubLevelPhysicsSystem physics, ServerPlayer p, ServerSubLevel on) {
         Vector3d v = physics.getPhysicsHandle(on).getLinearVelocity(new Vector3d());
-        return new Rider(p, on.getUniqueId(), on.logicalPose().transformPositionInverse(p.position()), new Vec3(v.x / 20, v.y / 20, v.z / 20));
+        Stand stood = STANDING.get(p.getUUID());
+        Vec3 local = stood != null && stood.body().equals(on.getUniqueId()) && on.getLevel().getGameTime() - stood.tick() <= STAND_KEEP_TICKS
+                ? stood.local() : on.logicalPose().transformPositionInverse(p.position());
+        return new Rider(p, on.getUniqueId(), local, new Vec3(v.x / 20, v.y / 20, v.z / 20));
     }
 
     /**
@@ -105,7 +131,7 @@ public final class SpaceTravel {
             return n;
         var container = dev.ryanhcode.sable.api.sublevel.ServerSubLevelContainer.getContainer(target);
         for (Rider r : riders) {
-            if (r.player().level() != target && container.getSubLevel(r.body()) instanceof ServerSubLevel moved) {
+            if (container.getSubLevel(r.body()) instanceof ServerSubLevel moved) {
                 Vec3 w = moved.logicalPose().transformPosition(r.local());
                 r.player().teleportTo(target, w.x, w.y, w.z, java.util.Set.of(), r.player().getYRot(), r.player().getXRot());
             }
