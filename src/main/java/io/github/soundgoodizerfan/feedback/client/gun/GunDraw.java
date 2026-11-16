@@ -80,87 +80,115 @@ final class GunDraw {
             caster(m, v);
     }
 
-    /** The grip both tools hold by: a block under the rear of the body, in the receiver's material. */
-    private static void toolGrip(GunMesh m, GunView v, float top) {
+    /** The grip both tools hold by, hung under the body at z 5.25 to 7.25 with a guard in front of it, in the receiver's material. */
+    private static void toolGrip(GunMesh m, GunView v, float bodyBottom) {
         m.part(v, "S");
-        m.box(-0.625f, -4f, 5.25f, 0.625f, top, 7.75f, Tile.PANEL);
+        m.box(-0.625f, -4.25f, 5.25f, 0.625f, bodyBottom, 7.25f, Tile.PANEL);
+        m.box(-0.375f, -2.75f, 3.25f, 0.375f, -2.5f, 5.25f, Tile.METAL);
+        m.box(-0.375f, -2.75f, 3.25f, 0.375f, bodyBottom, 3.5f, Tile.METAL);
     }
 
+    /**
+     * An air launcher: a stout barrel with a flared muzzle, the seat as a fat tube behind it on the same line (the way an air rifle's
+     * spring tube is), a trigger block and grip under, a shoulder stock behind, sights, the piston's cocking handle along the side.
+     */
     private static void launcher(GunMesh m, GunView v) {
-        float len = v.len(), r = v.r();
+        float len = v.len(), r = Math.max(v.r(), 0.625f) + 0.125f, y = 1.5f;
         m.part(v, "B");
-        m.rod(0, 1f, r + 0.125f, -len, 0.5f, Tile.BRUSHED);
-        m.rod(0, 1f, Math.max(0.125f, v.bore()), -len - 0.0625f, -len + 0.25f, Tile.BORE);
+        m.rod(0, y, r, -len, 0.5f, Tile.BRUSHED);
+        m.rod(0, y, r + 0.375f, -len, -len + 0.75f, Tile.RIBBED); // the muzzle's flare
+        m.rod(0, y, Math.max(0.125f, v.bore()), -len - 0.0625f, -len + 0.25f, Tile.BORE);
+        m.box(-0.125f, y + r, -len + 0.75f, 0.125f, y + r + 0.5f, -len + 1.25f, Tile.METAL); // the front sight
         m.part(v, "S");
-        m.box(-0.875f, -0.75f, 0f, 0.875f, 2.75f, 8f, Tile.PANEL);
-        m.box(-1f, 0.75f, 1.5f, 1f, 1.25f, 1.75f, Tile.RIBBED); // the barrel's collar
+        m.rod(0, y, 1.5f, -0.25f, 0.5f, Tile.RIBBED); // the collar the barrel is screwed into
+        m.box(-0.875f, -0.75f, 0.5f, 0.875f, 0f, 8f, Tile.PANEL);
         toolGrip(m, v, -0.75f);
-        // The seat rides on top, shaped by how it holds work.
+        // The stock and its butt plate.
+        m.box(-0.5f, -0.5f, 8f, 0.5f, 2.25f, 13.5f, Tile.PANEL);
+        m.box(-0.625f, -1.25f, 13.5f, 0.625f, 2.75f, 14.25f, Tile.KNURL);
+        m.box(-0.125f, 3f, 7f, 0.125f, 3.5f, 7.75f, Tile.METAL); // the rear sight
         m.part(v, "W");
         switch (v.variant("W")) {
             case "reservoir_seat" -> {
-                m.rod(0, 3.75f, 1.25f, 0.5f, 7.5f, Tile.BRUSHED);
-                m.rod(0, 3.75f, 0.5f, 7.5f, 8.25f, Tile.KNURL); // the pump's stem
-                m.box(-0.375f, 3.375f, 0.25f, 0.375f, 4.125f, 0.5f, Tile.METAL);
+                m.rod(0, y, 1.75f, 0.5f, 7.5f, Tile.BRUSHED);
+                m.rod(0, y, 1.25f, 7.5f, 8f, Tile.KNURL);
+                m.rings(0, y, 1.875f, 1f, 7f, 2, 0.5f, Tile.RIBBED);
+                m.box(1.75f, y - 0.5f, 3.25f, 2.25f, y + 0.5f, 4.25f, Tile.LAMP); // the gauge
+                m.rod(0, y + 1.75f, 0.375f, 5.5f, 6.25f, Tile.KNURL); // the fill valve
+                m.box(-0.25f, y + 1.75f, 5.25f, 0.25f, y + 2.25f, 6.5f, Tile.METAL);
             }
             case "solenoid_seat" -> {
-                m.rod(0, 3.75f, 1.0f, 0.75f, 7.25f, Tile.COIL);
-                m.box(-0.375f, 4.75f, 1f, 0.375f, 5.25f, 1.5f, Tile.LAMP); // the cell's contact
+                m.rod(0, y, 1.5f, 0.5f, 7.5f, Tile.COIL);
+                m.rod(0, y, 1.625f, 0.5f, 1f, Tile.METAL);
+                m.rod(0, y, 1.625f, 7f, 7.5f, Tile.METAL);
+                m.box(-0.375f, y + 1.5f, 3f, 0.375f, y + 2f, 4.5f, Tile.LAMP); // the cell's contact
+                m.box(-0.125f, y + 2f, 3.5f, 0.125f, y + 2.5f, 4f, Tile.METAL);
             }
             case "steam_seat" -> {
-                m.rod(0, 3.9f, 1.5f, 0.5f, 7f, Tile.BRUSHED);
-                m.rings(0, 3.9f, 1.5f, 0.75f, 6.75f, 3, 0.25f, Tile.RIBBED);
-                m.box(-0.375f, 5.4f, 5f, 0.375f, 6.5f, 5.75f, Tile.METAL); // the stack
+                m.rod(0, y, 1.75f, 0.5f, 7.5f, Tile.BRUSHED);
+                m.rings(0, y, 1.875f, 0.75f, 7.25f, 4, 0.375f, Tile.RIBBED); // lagging bands
+                m.box(-0.5f, y + 1.75f, 1.5f, 0.5f, y + 3.5f, 2.5f, Tile.METAL); // the stack
+                m.box(-0.75f, y + 3.5f, 1.25f, 0.75f, y + 3.75f, 2.75f, Tile.RIBBED);
+                m.box(-1f, -0.75f, 0.75f, 1f, 0f, 4f, Tile.VENT); // the firebox grille
             }
-            default -> { // spring_seat: the coil in a cage
-                m.rod(0, 3.5f, 0.875f, 0.75f, 7.25f, Tile.COIL);
-                m.box(-1f, 3.25f, 0.5f, 1f, 3.5f, 0.75f, Tile.METAL);
-                m.box(-1f, 3.25f, 7.25f, 1f, 3.5f, 7.5f, Tile.METAL);
+            default -> { // spring_seat: the tube, a cap on the rear, a plug the spring is cocked through
+                m.rod(0, y, 1.5f, 0.5f, 7.5f, Tile.BRUSHED);
+                m.rings(0, y, 1.625f, 1.5f, 7f, 3, 0.375f, Tile.RIBBED);
+                m.rod(0, y, 1.125f, 7.5f, 8f, Tile.KNURL);
             }
         }
         m.part(v, "P");
-        m.rod(0, 1f, 0.5f, 8f, 10f, Tile.BRUSHED);
-        m.box(-0.75f, 0.25f, 10f, 0.75f, 1.75f, 10.5f, Tile.KNURL);
+        // The cocking handle: a slide along the side of the tube with a knob.
+        m.rod(1.875f, y, 0.25f, 1f, 6f, Tile.BRUSHED);
+        m.box(1.5f, y - 0.5f, 6f, 2.5f, y + 0.5f, 6.75f, Tile.KNURL);
     }
 
+    /**
+     * A fluid caster, a sprayer: a short body with a grip, the tank on top of it (as long as its design, as stout as its walls), a pipe out the
+     * front with a valve on it ending in the nozzle's variant, a pump's slide under the pipe like a shotgun's forend.
+     */
     private static void caster(GunMesh m, GunView v) {
         float tankLen = v.len2(), tankR = v.r2(), outR = v.r();
-        float zFront = -(tankLen - 5f), axis = 2f;
+        float zTankFront = 7f - tankLen, axis = 1.75f + tankR, py = 0.25f;
+        float zTip = v.len() > 0 ? -v.len() : -4f; // the pipe's end, past the tank's front
         m.part(v, "S");
-        m.box(-0.875f, -1.5f, Math.min(zFront, 0f), 0.875f, 0.75f, 8f, Tile.PANEL);
-        toolGrip(m, v, -1.5f);
+        m.box(-0.875f, -1.25f, -1f, 0.875f, 1.75f, 8f, Tile.PANEL);
+        toolGrip(m, v, -1.25f);
+        m.box(-0.75f, 0.25f, 8f, 0.75f, 1.75f, 8.75f, Tile.KNURL); // the rear plate
         m.part(v, "T");
-        m.rod(0, axis, tankR, zFront, 5f, Tile.BRUSHED);
-        m.rings(0, axis, tankR + 0.125f, zFront + 0.25f, 4.75f, 2, 0.5f, Tile.RIBBED); // the bands
-        // A filler cap on top at the rear.
-        m.box(-0.5f, axis + tankR, 3.5f, 0.5f, axis + tankR + 0.5f, 4.5f, Tile.KNURL);
+        m.rod(0, axis, tankR, zTankFront, 7f, Tile.BRUSHED);
+        m.rod(0, axis, tankR - 0.25f, zTankFront - 0.25f, zTankFront, Tile.METAL); // the domed ends
+        m.rod(0, axis, tankR - 0.25f, 7f, 7.25f, Tile.METAL);
+        m.rings(0, axis, tankR + 0.125f, zTankFront + 0.75f, 6.5f, 2, 0.5f, Tile.RIBBED); // the straps
+        m.rod(0, axis + tankR, 0.375f, 5.5f, 6.5f, Tile.KNURL); // the filler cap
         m.part(v, "V");
-        m.box(-0.375f, axis + tankR - 0.25f, zFront - 0.25f, 0.375f, axis + tankR + 0.75f, zFront + 1f, Tile.METAL);
-        m.rod(0, axis + tankR + 0.75f, 0.625f, zFront - 0.25f, zFront + 0.5f, Tile.KNURL); // the wheel
+        float zv = zTip + 3.5f; // the valve sits on the pipe behind the nozzle
+        m.box(-0.375f, py, zv, 0.375f, py + 1.25f, zv + 1f, Tile.METAL);
+        m.box(-1f, py + 1.25f, zv - 0.125f, 1f, py + 1.75f, zv + 1.125f, Tile.KNURL); // the handwheel
         m.part(v, "N");
-        float z0 = zFront, z1 = zFront - 3f;
+        float zn = zTip + 3f; // the nozzle's base
+        m.rod(0, py, 0.5f, zn, -1f, Tile.METAL); // the pipe
         switch (v.variant("N")) {
             case "fan" -> {
-                m.rod(0, axis, outR + 0.25f, z0, z0 - 1f, Tile.METAL);
-                m.box(-outR - 1.25f, axis - outR * 0.5f, z0 - 1f, outR + 1.25f, axis + outR * 0.5f, z1, Tile.METAL);
+                m.rod(0, py, 0.75f, zn, zn - 0.75f, Tile.METAL);
+                m.box(-2.25f, py - 0.375f, zTip, 2.25f, py + 0.375f, zn - 0.75f, Tile.METAL); // a flat slot: a sheet, not a jet
             }
             case "mist" -> {
-                m.rod(0, axis, outR + 0.25f, z0, z0 - 1f, Tile.METAL);
-                m.rod(0, axis, outR + 0.5f, z0 - 1f, z0 - 2f, Tile.RIBBED);
-                m.rod(0, axis, outR + 1f, z0 - 2f, z1, Tile.VENT);
+                m.rod(0, py, 0.75f, zn, zn - 0.75f, Tile.METAL);
+                m.rod(0, py, 1.25f, zn - 0.75f, zTip, Tile.VENT); // a rose
             }
             case "atomiser" -> {
-                m.rod(0, axis, outR + 0.25f, z0, z1 + 1f, Tile.METAL);
-                m.rod(0, axis, outR + 0.625f, z0 - 1f, z0 - 1.5f, Tile.KNURL);
-                m.rod(0, axis, outR + 0.125f, z1 + 1f, z1, Tile.VENT);
+                m.rod(0, py, 0.75f, zn, zn - 1f, Tile.KNURL);
+                m.rod(0, py, 0.5f, zn - 1f, zTip + 0.5f, Tile.METAL);
+                m.rod(0, py, 0.875f, zTip + 0.5f, zTip, Tile.VENT); // a swirl cap
             }
-            default -> m.rod(0, axis, outR + 0.125f, z0, z1, Tile.METAL);
+            default -> m.rod(0, py, outR + 0.125f, zn, zTip, Tile.METAL); // a plain bore
         }
         if (v.has("D")) {
             m.part(v, "D");
-            m.rod(0, -2.25f, 0.625f, Math.min(zFront + 1f, 0f), 3f, Tile.BRUSHED);
-            m.rod(0, -2.25f, 0.25f, 3f, 5f, Tile.KNURL);
-            m.box(-1.25f, -2.625f, 5f, 1.25f, -1.875f, 5.5f, Tile.RIBBED); // the handle
+            float zs = Math.min(zTip + 5f, -1f);
+            m.box(-0.75f, -1.75f, zs, 0.75f, -0.5f, 3f, Tile.RIBBED); // the pump's slide, forend-shaped
+            m.rod(0, -1.1f, 0.25f, 3f, 4f, Tile.KNURL);
         }
     }
 

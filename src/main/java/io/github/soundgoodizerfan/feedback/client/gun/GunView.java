@@ -204,7 +204,7 @@ record GunView(GunLayout.Type type, String action, boolean slide, float len, flo
             float tankLen = tank != null && tr != null ? snap(Math.max(5f, Math.min(tr.axis(tank, "length") * 0.5f, 20f)), 0.25f) : 10f;
             float tankR = tank != null && tr != null ? snap(1f + tr.axis(tank, "wall") * 0.0625f, 0.125f) : 1.25f;
             float outR = nozzle != null && nr != null ? snap(0.25f + nr.axis(nozzle, "bore") * 0.0625f, 0.125f) : 0.5f;
-            return new GunView(kind, tool, false, tankLen - 5f + 3f, outR, outR * 0.5f, tankLen, tankR, colours, variants, surfaces, woods, glow, null, 0, false, null, -1f);
+            return new GunView(kind, tool, false, Math.max(tankLen - 6f, 1f) + 4f, outR, outR * 0.5f, tankLen, tankR, colours, variants, surfaces, woods, glow, null, 0, false, null, -1f);
         }
         boolean slide = colours.containsKey("A");
         String action = slide ? variants.getOrDefault("A", "self_loading")
@@ -317,7 +317,7 @@ record GunView(GunLayout.Type type, String action, boolean slide, float len, flo
     /** Top of the receiver or slide, where a sight sits. */
     float top() {
         if (tool())
-            return 2.75f; // the fit adds 1.75 for a gun with a sight role ("S" is the receiver here): the drawing's top is 4.5
+            return action.equals("launcher") ? 2.0f : 3.0f; // the fit adds 1.75 (a gun with a sight role; "S" is the receiver here): the drawing's top
         return switch (type) {
             case HANDGUN -> openFrame() ? 1f : 0.75f;
             case LONG_GUN -> slide ? 1.5f : 1f;
@@ -411,7 +411,7 @@ record GunView(GunLayout.Type type, String action, boolean slide, float len, flo
     /** Rearmost point: slide back, stock butt. */
     float rear() {
         if (tool())
-            return action.equals("launcher") ? 10.5f : 8.5f;
+            return action.equals("launcher") ? 14.25f : 8.75f;
         return type == GunLayout.Type.HANDGUN ? 1.75f : back() + 10f;
     }
 
