@@ -37,7 +37,7 @@ A volume after the first takes an item built from the volume before it, and that
 | Volume | Specimen |
 | --- | --- |
 | Weapons II | cleaver, maul or spear |
-| Weapons III | crossbow, gun or spring gun |
+| Weapons III | crossbow, gun or launcher |
 | Mechanical II | engine or flywheel |
 | Aerospace II | propeller |
 | Chemical II | boiler, gas tank or pressure vessel |

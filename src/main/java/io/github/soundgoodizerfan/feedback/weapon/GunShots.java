@@ -1297,7 +1297,7 @@ public final class GunShots {
         }
         // A fuse that goes off in the air: a delay when its time is up, a proximity fuse once armed and a block or body is close.
         Cartridge.Fuse fused = s.flight.fuse();
-        if (fused != null && (fused.kind() == Cartridge.Kind.DELAY && s.age >= fused.ticks()
+        if (fused != null && (fused.kind() == Cartridge.Kind.DELAY && s.age >= Math.max(fused.ticks(), GunTuning.DEMO_ROUND_ARM_TICKS)
                 || fused.kind() == Cartridge.Kind.PROXIMITY && s.age >= Math.max(fused.ticks(), GunTuning.DEMO_ROUND_ARM_TICKS) && near(level, s))) {
             payloadHit(level, s, s.pos, null, null, null);
             detonate(level, s, s.pos);
@@ -1370,7 +1370,7 @@ public final class GunShots {
             s.stopAt = hit.getLocation();
             GunImpacts.body(level, s.shooter, target, hit.getLocation(), s.velocity, damage,
                     target instanceof LivingEntity dead && dead.isDeadOrDying());
-            if ((fused == null || fused.kind() != Cartridge.Kind.IMPACT || damage <= health) && detonate(level, s, hit.getLocation()))
+            if ((fused == null || fused.kind() == Cartridge.Kind.INERTIA || damage <= health) && detonate(level, s, hit.getLocation()))
                 return false;
             if (damage <= health || !s.spend(health / (GunTuning.GUN_DAMAGE_PER_WORK * s.flight.damage())))
                 return false;

@@ -8009,6 +8009,7 @@
   "modular.feedback.fig.draw.tip.air_gun": "Ticks to cock the spring by hand, for a wielder of ordinary strength. A stiffer or bigger spring takes longer.",
   "modular.feedback.fig.velocity.tip.air_gun": "Muzzle speed of an iron pellet of this bore, against a vanilla bow's arrow.",
   "modular.feedback.fig.joint.tip.air_gun": "The spring's energy over what the receiver holds. Over 1 the spring takes a set each time it is cocked; far over, it snaps.",
+  "cartridge.feedback.rocket": "A rocket: %s grain burns in flight. The tube only ejects it.",
   "cartridge.feedback.shell": "A shell: no powder. A launcher's seat drives it.",
   "tooltip.feedback.launcher.cocked": "Cocked.",
   "tooltip.feedback.launcher.chambered": "%s rounds loaded.",

@@ -9,7 +9,7 @@ Each school has one item per volume. Every volume is a subject of its own: holdi
 | Treatise | Types it opens |
 | --- | --- |
 | Weapons Treatise I: Blades and Heads | maul, spear, cleaver |
-| Weapons Treatise II: Firearms | gun, spring gun, crossbow |
+| Weapons Treatise II: Firearms | gun, launcher, crossbow |
 | Weapons Treatise III: Electric Guns | electric gun |
 | Mechanical Treatise I: Engines, Flywheels and Dynamotors | engine, flywheel, [dynamotor](Dynamotor.md) |
 | Mechanical Treatise II: Transmission | transmission |
@@ -43,7 +43,7 @@ Paper + Paper + Leather + Ink Sac (shapeless)
 A specimen is one ready-made item of a type, built to a fixed cheap design, crafted in the crafting grid. It is not a good tool; it is something to take apart on the Engineering Table's [Treatise tab](Engineering_Table.md#treatise-tab) with a Blank Treatise. A specimen is made of the metal or wood named after it. Layouts are shown as in a grid; blank spaces are empty.
 
 ```
-Gun (iron)                 Spring gun (iron)         Crossbow (wood)
+Gun (iron)                 Launcher (iron)           Crossbow (wood)
 I I G                      I I S                     S I S
   P S                      P C I                     T P T
     S                          S                       S

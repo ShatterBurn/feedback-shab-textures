@@ -167,6 +167,10 @@ The **payload** slot is optional. Whatever you put there is carried in the bulle
 | A **seed** (any item that plants a crop) | **Seed round**: planted on the farmland the round lands on, if the crop can stand there. The round is the seed spent. |
 | Slime (**bounce**) fired at a surface within 4 blocks | **Recoil cancel**: the moment you pull the trigger it throws you *backwards along your aim*, a rocket jump with a pellet. Aim down at your feet and you go up; aim straight ahead and you go back. Nothing within 4 blocks in line, nothing to push off. |
 
+## Shells and rockets
+
+A round with no powder is a **shell**, and a round of grain with no case is a **rocket**. A [launcher](Launcher.md) fires them; a powder gun refuses them. See [Rounds](Launcher.md#rounds).
+
 ## Loading
 
 Box and belt guns take a [Magazine](Magazine.md). Guns with a cylinder, tube or barrels load loose rounds, one at a time, while you hold **R**.

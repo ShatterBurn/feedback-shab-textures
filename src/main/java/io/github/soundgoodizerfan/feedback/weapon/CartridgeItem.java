@@ -34,7 +34,9 @@ public class CartridgeItem extends Item {
         var materials = context.level() == null ? java.util.Map.<net.minecraft.resources.ResourceLocation, io.github.soundgoodizerfan.feedback.process.Material>of()
                 : ClientMaterials.on(context.level());
         // A shell has no powder: a launcher's seat gives the push.
-        if (round.charges().isEmpty())
+        if (round.rocket())
+            tooltip.add(Component.translatable("cartridge.feedback.rocket", round.charge()).withStyle(ChatFormatting.GRAY));
+        else if (round.charges().isEmpty())
             tooltip.add(Component.translatable("cartridge.feedback.shell").withStyle(ChatFormatting.GRAY));
         else {
             var load = round.load(materials);

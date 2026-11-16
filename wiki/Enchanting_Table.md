@@ -244,7 +244,7 @@ Every bullet that hits carries the attunements of the gun's parts, in the part's
 | **Stock** | **Grudge** and **Calm** as on the receiver. **Piezo**: butt-striking a Leyden jar with the gun charges it a little. **Dowse** (mirror **Shun**): a needle toward (or away from) the nearest magnetic, dense, conductive or flammable block, one effect per kind. **Hold**: the gun clamps to your hand and cannot be knocked away; mirror **Free**: the gun may slip from your hand when it is struck, and the stock gives under force |
 | **Foregrip** | **Hold** and **Free** as on the stock |
 | **Bayonet** | **Edge**: the thrust cuts deeper; mirror **Spread**: it does less damage. **Grudge** and **Calm** as on the receiver; **Piezo** as on the stock. **Ward**, **Mend** and **Tithe** as on any part |
-| **Mainspring** of a [Spring Gun](Spring_Gun.md) | **Spring**: the spring stores more energy for the same size; mirror **Snap**: it is cocked in less time |
+| **Seat** of a [Launcher](Launcher.md) | **Spring**: the seat stores more energy for the same size; mirror **Snap**: a spring is cocked in less time |
 | **Seat** of an [Electric Gun](Electric_Gun.md) | **Charge**: the seat holds a bigger pulse |
 | **Any part** | **Ward** turns away part of the gun's wear (each level leaves one share in levels + 1); **Mend** drinks experience to close the gun's wear; its mirror **Tithe** pays experience per kill and wears the gun |
 

@@ -85,7 +85,7 @@ The balance scale, the calipers and the [draw gauge](#draw-gauge) also stamp a r
 
 ## Draw Gauge
 
-A spring balance with a hook, made from a string, a stick and wrought iron plates. Held with a bow, a crossbow, a spring or a spring gun in the other hand it stamps the weapon's draw time, launch speed and stored energy.
+A spring balance with a hook, made from a string, a stick and wrought iron plates. Held with a bow, a crossbow, a spring or a launcher in the other hand it stamps the weapon's draw time, launch speed and stored energy.
 
 ## Scratch File Set
 

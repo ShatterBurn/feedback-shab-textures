@@ -108,11 +108,12 @@ public final class LauncherMechanism implements GunMechanism {
                 return Math.min(spec.energy(), BatteryStack.charge(state) * ModularTuning.EGUN_WORK_PER_EU * ModularTuning.SEAT_SOL_EFF);
             }
             case STEAM -> {
-                float tu = io.github.soundgoodizerfan.feedback.core.thermal.ItemHeat.get(gun, level).value();
-                float boil = io.github.soundgoodizerfan.feedback.core.FTuning.POT_BOIL_TU.value();
-                if (ModularLauncher.water(gun) <= 0f || tu <= boil)
+                if (ModularLauncher.water(gun) <= 0f
+                        || io.github.soundgoodizerfan.feedback.core.thermal.ItemHeat.get(gun, level).value() <= io.github.soundgoodizerfan.feedback.core.FTuning.POT_BOIL_TU.value())
                     return 0f;
-                return spec.energy() * Math.min(1f, (tu - boil) / (ModularTuning.SEAT_STEAM_REF_TU - boil));
+                return spec.energy() * Math.min(1f, (io.github.soundgoodizerfan.feedback.core.thermal.ItemHeat.get(gun, level).value()
+                        - io.github.soundgoodizerfan.feedback.core.FTuning.POT_BOIL_TU.value())
+                        / (ModularTuning.SEAT_STEAM_REF_TU - io.github.soundgoodizerfan.feedback.core.FTuning.POT_BOIL_TU.value()));
             }
             default -> {
                 return ModularLauncher.cocked(gun) ? spec.energy() * (1f - SpringSet.set(gun)) : 0f;
@@ -342,10 +343,12 @@ public final class LauncherMechanism implements GunMechanism {
         if (ModularLauncher.water(gun) >= 1f)
             return;
         for (ItemStack s : player.getInventory().items)
-            if (s.is(net.minecraft.world.item.Items.WATER_BUCKET)) {
+            if (!s.isEmpty() && net.neoforged.neoforge.fluids.FluidUtil.getFluidContained(s)
+                    .filter(f -> f.getAmount() >= 1000 && f.is(net.minecraft.tags.FluidTags.WATER)).isPresent()) {
                 if (!player.getAbilities().instabuild) {
+                    ItemStack back = s.hasCraftingRemainingItem() ? s.getCraftingRemainingItem() : new ItemStack(net.minecraft.world.item.Items.BUCKET);
                     s.shrink(1);
-                    GunAmmo.give(player, new ItemStack(net.minecraft.world.item.Items.BUCKET));
+                    GunAmmo.give(player, back);
                 }
                 ModularLauncher.setWater(gun, 1f);
                 level.playSound(null, player.blockPosition(), SoundEvents.BUCKET_EMPTY, SoundSource.PLAYERS, 0.6f, 1.2f);

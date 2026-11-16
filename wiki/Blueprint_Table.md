@@ -73,7 +73,7 @@ Machine parts give more figures:
   - A gun shows its **bore life**: how many shots it takes to wear the bore to its floor.
   - Armor shows the share of slash turned, and of blunt on mail or of shock on a rigid breastplate.
   - A spoon shows its stirring and skimming against the standard spoon, and the heat it can be held over a pot at.
-  - A spring gun shows what a pellet hits for.
+  - A launcher shows the speed a shell leaves at.
 
 Every row behaves the same way:
 
@@ -121,7 +121,7 @@ Some **parts** and **shapes** belong to a school too (the servos of a powered su
 | Volume | Types |
 | --- | --- |
 | Weapons I | maul, spear, cleaver |
-| Weapons II | gun, spring gun, crossbow |
+| Weapons II | gun, launcher, crossbow |
 | Weapons III | electric gun |
 | Mechanical I | engine, flywheel, dynamotor |
 | Mechanical II | transmission |
