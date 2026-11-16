@@ -53,7 +53,7 @@ The governor's **element** is how fast it follows the barrel: a housing that con
 
 The same fittings as a gun's, made of metal and behaving as described under [Gun Parts](Gun_Parts.md#fittings), where they make sense: a **suppressor** (a quieter report, more heat), a **muzzle brake** (louder), a **bayonet**, a **bipod** (steadier), a **counterweight**, a **shroud** and a **thermal sleeve** (the gun sheds heat faster, so it recovers faster) and a **resonance weight**; the sleeve's and the weight's metals matter as described under [Gun Parts](Gun_Parts.md#fittings). The pulse gun's own:
 
-The [Blueprint Table](Blueprint_Table.md) lists, for a pulse gun, up to six of the numbers its fittings read off their metals: spring hold, pump winding, zoom field, gauge resolution, governor heat sense, lens lining, heat sink capacity, shock lead and barrel loss.
+The [Blueprint Table](Blueprint_Table.md) also lists a pulse gun's charge time, shots from a full battery and, with a coherence lens, its bounces off stone. It lists, for a pulse gun, up to six of the numbers its fittings read off their metals: spring hold, pump winding, zoom field, gauge resolution, governor heat sense, lens lining, heat sink capacity, shock lead and barrel loss.
 
 The **reload key works exactly one fitting** per gun: a pump charge, a hold-charge trigger, a surge shunt or a shock lead. The [Blueprint Table](Blueprint_Table.md) refuses two.
 

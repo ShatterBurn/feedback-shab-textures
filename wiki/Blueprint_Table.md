@@ -108,4 +108,10 @@ An [electric gun](Electric_Gun.md) drawing also has a **beam color**: a swatch a
 
 The pulse gun's fittings add lines for the figures they take from their metals, as percentages: how much of a charge the spring holds, what the pump winding gives, the zoom field, how finely the gauge reads, how closely the governor follows heat, how much the lens lining keeps, the heat sink's capacity against copper, the shock lead's carry against copper, and the barrel's loss a shot. Every line under the figure bars sorts the material list when clicked, like a bar. A pulse gun also lists the voltage band its receiver insulates to.
 
+A pulse gun's drawing also shows how it fires, in three lines:
+
+- **Charges a shot in N t (S s):** the wait for a shot, in ticks and seconds. A cylinder is the time one chamber takes to refill from the receiver's largest battery; a bank is the time it takes to recharge; the other seats are ready again after their own cycle.
+- **N shots from a full battery:** how many pulses a full stock battery of the most cells the receiver takes gives, counting what a tether lead loses in the line.
+- **Bounces off stone: N:** with a coherence lens fitted, how many bounces the pulse makes off stone. Each bounce keeps only the share the surface reflects, and a pulse that has fallen very low stops, so the lining's own bounce count is cut short; stone keeps little, so a pulse survives at most one stone bounce.
+
 The real-world name of the build you are drawing shows beside the type's name: a gun is named by its action and barrel, and armor, blades, shields, bows and electric guns by their shape and the ranges their axes sit in (a cuirass, a rapier, a tower shield, a Railcannon). A build with no recognised name shows none here; the item itself still gets a name from its size, shape and material.
