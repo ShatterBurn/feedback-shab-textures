@@ -160,7 +160,8 @@ record GunView(GunLayout.Type type, String action, boolean slide, float len, flo
             colours.put("lh", design.part("l").measures().slot("housing").map(sl -> 0xFF000000 | MaterialColors.of(sl.material())).orElse(0xFF8A8F96));
             surfaces.put("lh", Surface.METAL);
         }
-        GunLayout.Type kind = GunLayout.Type.of(variants.getOrDefault("R", ""));
+        String tool = type.family() == ModularType.Family.AIR_GUN ? "launcher" : type.family() == ModularType.Family.CASTER ? "caster" : null;
+        GunLayout.Type kind = tool != null ? GunLayout.Type.LONG_GUN : GunLayout.Type.of(variants.getOrDefault("R", ""));
         if (stack.getItem() instanceof io.github.soundgoodizerfan.feedback.modular.item.ModularElectricGun) {
             // A pulse gun has no action and no slide: a frame, a cell bay, a seat, and a pulse barrel.
             ModularType.Role role = type.roles().get("B");
@@ -191,6 +192,19 @@ record GunView(GunLayout.Type type, String action, boolean slide, float len, flo
             Pulse pulse = new Pulse(angle % 360f, lit, io.github.soundgoodizerfan.feedback.modular.item.ModularElectricGun.heatFraction(stack, level),
                     design.colour(), charge, io.github.soundgoodizerfan.feedback.modular.item.ModularElectricGun.hot(stack));
             return new GunView(kind, "none", false, eb[0], eb[1], eb[2], 0, 0, colours, variants, surfaces, woods, 0, null, 0, true, pulse, soc);
+        }
+        if (tool != null) {
+            // A launcher is drawn from its barrel; a caster from its tank (length: centimetres) and nozzle (bore: millimetres).
+            if (tool.equals("launcher")) {
+                float[] lb = barrel(type, "B", design.part("B"));
+                return new GunView(kind, tool, false, lb[0], lb[1], lb[2], 0, 0, colours, variants, surfaces, woods, glow, null, rounds, false, null, -1f);
+            }
+            ModularDesign.Part tank = design.part("T"), nozzle = design.part("N");
+            ModularType.Role tr = type.roles().get("T"), nr = type.roles().get("N");
+            float tankLen = tank != null && tr != null ? snap(Math.max(5f, Math.min(tr.axis(tank, "length") * 0.5f, 20f)), 0.25f) : 10f;
+            float tankR = tank != null && tr != null ? snap(1f + tr.axis(tank, "wall") * 0.0625f, 0.125f) : 1.25f;
+            float outR = nozzle != null && nr != null ? snap(0.25f + nr.axis(nozzle, "bore") * 0.0625f, 0.125f) : 0.5f;
+            return new GunView(kind, tool, false, tankLen - 5f + 3f, outR, outR * 0.5f, tankLen, tankR, colours, variants, surfaces, woods, glow, null, 0, false, null, -1f);
         }
         boolean slide = colours.containsKey("A");
         String action = slide ? variants.getOrDefault("A", "self_loading")
@@ -249,6 +263,11 @@ record GunView(GunLayout.Type type, String action, boolean slide, float len, flo
         return variants.getOrDefault(letter, "");
     }
 
+    /** Whether it is a launcher or a fluid caster: drawn from its own parts by {@link GunDraw#tool}, not as a firearm. */
+    boolean tool() {
+        return action.equals("launcher") || action.equals("caster");
+    }
+
     boolean longGun() {
         return type != GunLayout.Type.HANDGUN;
     }
@@ -297,6 +316,8 @@ record GunView(GunLayout.Type type, String action, boolean slide, float len, flo
 
     /** Top of the receiver or slide, where a sight sits. */
     float top() {
+        if (tool())
+            return 2.75f; // the fit adds 1.75 for a gun with a sight role ("S" is the receiver here): the drawing's top is 4.5
         return switch (type) {
             case HANDGUN -> openFrame() ? 1f : 0.75f;
             case LONG_GUN -> slide ? 1.5f : 1f;
@@ -389,6 +410,8 @@ record GunView(GunLayout.Type type, String action, boolean slide, float len, flo
 
     /** Rearmost point: slide back, stock butt. */
     float rear() {
+        if (tool())
+            return action.equals("launcher") ? 10.5f : 8.5f;
         return type == GunLayout.Type.HANDGUN ? 1.75f : back() + 10f;
     }
 

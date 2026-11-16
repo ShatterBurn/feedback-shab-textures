@@ -209,7 +209,8 @@ public final class GunPreview {
         PoseStack pose = g.pose();
         pose.pushPose();
         pose.translate(cx, cy, z);
-        if (type != null && (type.family() == ModularType.Family.GUN || type.family() == ModularType.Family.ELECTRIC_GUN)) {
+        if (type != null && (type.family() == ModularType.Family.GUN || type.family() == ModularType.Family.ELECTRIC_GUN
+                || type.family() == ModularType.Family.AIR_GUN || type.family() == ModularType.Family.CASTER)) {
             GunView view = GunView.of(stack);
             if (view.pulse() != null) {
                 // The table's rig shows the seat working: the cylinder indexes a chamber about twice a second and refills, the flywheel spins.

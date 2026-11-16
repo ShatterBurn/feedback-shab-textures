@@ -25,6 +25,10 @@ final class GunDraw {
 
     static void draw(GunMesh m, GunView v, GunMotion.Parts p) {
         m.layered = true; // parts nest and share planes: each role draws a hair larger than the one inside it
+        if (v.tool()) {
+            tool(m, v);
+            return;
+        }
         switch (v.type()) {
             case HANDGUN -> {
                 if (v.electric())
@@ -62,6 +66,102 @@ final class GunDraw {
         }
         sides(m, v);
         sight(m, v); // last: its see-through panes and lens go through other buffers
+    }
+
+    /**
+     * A launcher or a fluid caster, drawn from its own parts (the {@code feedback:launcher} and {@code feedback:caster} types), muzzle toward -z,
+     * grip under the rear. A launcher: barrel along the bore, receiver behind it, the seat on top in its variant's shape, the piston's cocking rod out the back.
+     * A caster: tank along the top, the nozzle in line with it in its variant's shape, a valve wheel on the tank, a hand pump under the body if it has one.
+     */
+    private static void tool(GunMesh m, GunView v) {
+        if (v.action().equals("launcher"))
+            launcher(m, v);
+        else
+            caster(m, v);
+    }
+
+    /** The grip both tools hold by: a block under the rear of the body, in the receiver's material. */
+    private static void toolGrip(GunMesh m, GunView v, float top) {
+        m.part(v, "S");
+        m.box(-0.625f, -4f, 5.25f, 0.625f, top, 7.75f, Tile.PANEL);
+    }
+
+    private static void launcher(GunMesh m, GunView v) {
+        float len = v.len(), r = v.r();
+        m.part(v, "B");
+        m.rod(0, 1f, r + 0.125f, -len, 0.5f, Tile.BRUSHED);
+        m.rod(0, 1f, Math.max(0.125f, v.bore()), -len - 0.0625f, -len + 0.25f, Tile.BORE);
+        m.part(v, "S");
+        m.box(-0.875f, -0.75f, 0f, 0.875f, 2.75f, 8f, Tile.PANEL);
+        m.box(-1f, 0.75f, 1.5f, 1f, 1.25f, 1.75f, Tile.RIBBED); // the barrel's collar
+        toolGrip(m, v, -0.75f);
+        // The seat rides on top, shaped by how it holds work.
+        m.part(v, "W");
+        switch (v.variant("W")) {
+            case "reservoir_seat" -> {
+                m.rod(0, 3.75f, 1.25f, 0.5f, 7.5f, Tile.BRUSHED);
+                m.rod(0, 3.75f, 0.5f, 7.5f, 8.25f, Tile.KNURL); // the pump's stem
+                m.box(-0.375f, 3.375f, 0.25f, 0.375f, 4.125f, 0.5f, Tile.METAL);
+            }
+            case "solenoid_seat" -> {
+                m.rod(0, 3.75f, 1.0f, 0.75f, 7.25f, Tile.COIL);
+                m.box(-0.375f, 4.75f, 1f, 0.375f, 5.25f, 1.5f, Tile.LAMP); // the cell's contact
+            }
+            case "steam_seat" -> {
+                m.rod(0, 3.9f, 1.5f, 0.5f, 7f, Tile.BRUSHED);
+                m.rings(0, 3.9f, 1.5f, 0.75f, 6.75f, 3, 0.25f, Tile.RIBBED);
+                m.box(-0.375f, 5.4f, 5f, 0.375f, 6.5f, 5.75f, Tile.METAL); // the stack
+            }
+            default -> { // spring_seat: the coil in a cage
+                m.rod(0, 3.5f, 0.875f, 0.75f, 7.25f, Tile.COIL);
+                m.box(-1f, 3.25f, 0.5f, 1f, 3.5f, 0.75f, Tile.METAL);
+                m.box(-1f, 3.25f, 7.25f, 1f, 3.5f, 7.5f, Tile.METAL);
+            }
+        }
+        m.part(v, "P");
+        m.rod(0, 1f, 0.5f, 8f, 10f, Tile.BRUSHED);
+        m.box(-0.75f, 0.25f, 10f, 0.75f, 1.75f, 10.5f, Tile.KNURL);
+    }
+
+    private static void caster(GunMesh m, GunView v) {
+        float tankLen = v.len2(), tankR = v.r2(), outR = v.r();
+        float zFront = -(tankLen - 5f), axis = 2f;
+        m.part(v, "S");
+        m.box(-0.875f, -1.5f, Math.min(zFront, 0f), 0.875f, 0.75f, 8f, Tile.PANEL);
+        toolGrip(m, v, -1.5f);
+        m.part(v, "T");
+        m.rod(0, axis, tankR, zFront, 5f, Tile.BRUSHED);
+        m.rings(0, axis, tankR + 0.125f, zFront + 0.25f, 4.75f, 2, 0.5f, Tile.RIBBED); // the bands
+        // A filler cap on top at the rear.
+        m.box(-0.5f, axis + tankR, 3.5f, 0.5f, axis + tankR + 0.5f, 4.5f, Tile.KNURL);
+        m.part(v, "V");
+        m.box(-0.375f, axis + tankR - 0.25f, zFront - 0.25f, 0.375f, axis + tankR + 0.75f, zFront + 1f, Tile.METAL);
+        m.rod(0, axis + tankR + 0.75f, 0.625f, zFront - 0.25f, zFront + 0.5f, Tile.KNURL); // the wheel
+        m.part(v, "N");
+        float z0 = zFront, z1 = zFront - 3f;
+        switch (v.variant("N")) {
+            case "fan" -> {
+                m.rod(0, axis, outR + 0.25f, z0, z0 - 1f, Tile.METAL);
+                m.box(-outR - 1.25f, axis - outR * 0.5f, z0 - 1f, outR + 1.25f, axis + outR * 0.5f, z1, Tile.METAL);
+            }
+            case "mist" -> {
+                m.rod(0, axis, outR + 0.25f, z0, z0 - 1f, Tile.METAL);
+                m.rod(0, axis, outR + 0.5f, z0 - 1f, z0 - 2f, Tile.RIBBED);
+                m.rod(0, axis, outR + 1f, z0 - 2f, z1, Tile.VENT);
+            }
+            case "atomiser" -> {
+                m.rod(0, axis, outR + 0.25f, z0, z1 + 1f, Tile.METAL);
+                m.rod(0, axis, outR + 0.625f, z0 - 1f, z0 - 1.5f, Tile.KNURL);
+                m.rod(0, axis, outR + 0.125f, z1 + 1f, z1, Tile.VENT);
+            }
+            default -> m.rod(0, axis, outR + 0.125f, z0, z1, Tile.METAL);
+        }
+        if (v.has("D")) {
+            m.part(v, "D");
+            m.rod(0, -2.25f, 0.625f, Math.min(zFront + 1f, 0f), 3f, Tile.BRUSHED);
+            m.rod(0, -2.25f, 0.25f, 3f, 5f, Tile.KNURL);
+            m.box(-1.25f, -2.625f, 5f, 1.25f, -1.875f, 5.5f, Tile.RIBBED); // the handle
+        }
     }
 
     /** Where a break action hinges: under the barrels at the front of the frame (a revolver's front strap, a shotgun's breech face). */

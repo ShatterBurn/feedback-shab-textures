@@ -1,0 +1,26 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "feedback:item/modular/grey/part_jet_nozzle"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "feedback:variant": 2
+      },
+      "model": "feedback:item/caster_nozzle_fan"
+    },
+    {
+      "predicate": {
+        "feedback:variant": 3
+      },
+      "model": "feedback:item/caster_nozzle_mist"
+    },
+    {
+      "predicate": {
+        "feedback:variant": 4
+      },
+      "model": "feedback:item/caster_nozzle_atomiser"
+    }
+  ]
+}

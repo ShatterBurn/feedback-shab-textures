@@ -1,6 +1,26 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "feedback:item/modular/grey/part_metal_alloy_frame"
-  }
+    "layer0": "feedback:item/modular/grey/part_metal_spring"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "feedback:variant": 2
+      },
+      "model": "feedback:item/launcher_seat_reservoir"
+    },
+    {
+      "predicate": {
+        "feedback:variant": 3
+      },
+      "model": "feedback:item/launcher_seat_solenoid"
+    },
+    {
+      "predicate": {
+        "feedback:variant": 4
+      },
+      "model": "feedback:item/launcher_seat_steam"
+    }
+  ]
 }
