@@ -1,4 +1,4 @@
-// 1.21.1	2026-11-14T04:48:58.10086483	Block States: feedback
+// 1.21.1	2026-11-15T20:54:38.659695121	Block States: feedback
 0a87f2bb026369e040cdeed32dd5071ea4e35b44 assets/feedback/blockstates/alnico_block.json
 50ce162472eb5d1ced5989c7d098f6ea1a570ccf assets/feedback/blockstates/alnico_pipe.json
 4a4a4f3dba74d39a8a934c2874f25fc8932a02e5 assets/feedback/blockstates/alumina_deepslate_ore.json
@@ -201,6 +201,8 @@ e272f4b02e87ddf7753a9d5b79f195e078d7a339 assets/feedback/blockstates/osmiridium_
 5a1435526feefd86adf6f0544d9f1868e76387d0 assets/feedback/blockstates/platinum_block.json
 50ce162472eb5d1ced5989c7d098f6ea1a570ccf assets/feedback/blockstates/platinum_pipe.json
 7886243071bdc45b89d7e7d3a530c7279bc9fdcb assets/feedback/blockstates/plywood_block.json
+2f2f9ac1df72044ea8d932ba3032161fec43b562 assets/feedback/blockstates/polyester_block.json
+50ce162472eb5d1ced5989c7d098f6ea1a570ccf assets/feedback/blockstates/polyester_pipe.json
 3332c89443693ea2ad9583e43178f57cd023e3ac assets/feedback/blockstates/polyethylene_block.json
 50ce162472eb5d1ced5989c7d098f6ea1a570ccf assets/feedback/blockstates/polyethylene_pipe.json
 7fd409f7166b17dedf3f3568475a7a2e2ac2c31b assets/feedback/blockstates/polypropylene_block.json
@@ -451,6 +453,7 @@ a25a6fdf9eae81c710624b79e3dd9f7d6181a9dd assets/feedback/models/block/pewter_blo
 a25a6fdf9eae81c710624b79e3dd9f7d6181a9dd assets/feedback/models/block/phantom_ripstop_block.json
 a25a6fdf9eae81c710624b79e3dd9f7d6181a9dd assets/feedback/models/block/platinum_block.json
 a25a6fdf9eae81c710624b79e3dd9f7d6181a9dd assets/feedback/models/block/plywood_block.json
+a25a6fdf9eae81c710624b79e3dd9f7d6181a9dd assets/feedback/models/block/polyester_block.json
 a25a6fdf9eae81c710624b79e3dd9f7d6181a9dd assets/feedback/models/block/polyethylene_block.json
 a25a6fdf9eae81c710624b79e3dd9f7d6181a9dd assets/feedback/models/block/polypropylene_block.json
 a25a6fdf9eae81c710624b79e3dd9f7d6181a9dd assets/feedback/models/block/polytetrafluoroethylene_block.json
@@ -724,6 +727,8 @@ b3b9c22d441599906bf6bb973803fc23b05095c4 assets/feedback/models/item/pentlandite
 66e184fa4d80e3fbcd389a343b11d189668c597e assets/feedback/models/item/platinum_block.json
 220c3a56bd41c563f0690f6c2070049e10f96e54 assets/feedback/models/item/platinum_pipe.json
 b5e93819aced927c018a8b44d25670b85b7311fc assets/feedback/models/item/plywood_block.json
+0bfa01408a01c0b58677ad47e0cb54fa816ff9b5 assets/feedback/models/item/polyester_block.json
+220c3a56bd41c563f0690f6c2070049e10f96e54 assets/feedback/models/item/polyester_pipe.json
 06532b32624fd6ad095da236834ba79ac3750192 assets/feedback/models/item/polyethylene_block.json
 220c3a56bd41c563f0690f6c2070049e10f96e54 assets/feedback/models/item/polyethylene_pipe.json
 c93f056878c89e3ff335a1720dd16fd26252e308 assets/feedback/models/item/polypropylene_block.json
