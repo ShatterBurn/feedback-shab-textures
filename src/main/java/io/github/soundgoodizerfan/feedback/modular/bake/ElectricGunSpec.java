@@ -390,6 +390,49 @@ public record ElectricGunSpec(Seat seat, int tier, float boreMm, float lengthM, 
                 + (holdCharge ? Math.round(ModularTuning.EGUN_COHERENCE_HOLD_BOUNCES * holdShare) : 0);
     }
 
+    /** Whether a pulse of {@code kept} work is still coherent after a bounce off a pulse that left the barrel with {@code full}: the one floor PulseShot and the Blueprint Table both read. */
+    public static boolean keeps(float kept, float full) {
+        return kept >= full * ModularTuning.EGUN_COHERENCE_FLOOR;
+    }
+
+    /**
+     * Bounces this gun's pulse survives against a surface of {@code reflectivity}: its lining's bounces (no held charge), cut short where
+     * the work kept ({@code reflectivity} compounds at every bounce, as in PulseShot) falls under {@link #keeps}.
+     */
+    public int bouncesAgainst(float reflectivity) {
+        int n = 0, allowed = bounces(0f);
+        float kept = 1f;
+        while (n < allowed && keeps(kept *= reflectivity, 1f))
+            n++;
+        return n;
+    }
+
+    /** Eu a shot draws from the battery: its pulse's work at the seat, over the work an Eu does, and what a tether lead loses. */
+    public float shotEu() {
+        return pulseWork() * seatMult() / ModularTuning.EGUN_WORK_PER_EU * (1f + tetherLoss);
+    }
+
+    /**
+     * Shots a full reference battery of this receiver's most cells gives. The reference cell is a stock battery block's
+     * ({@code 48000 Eu x FTuning.BATTERY_INGOTS_PER_CELL}, BatteryBlockEntity's default), not any one built battery.
+     */
+    public int shotsPerBattery() {
+        float eu = shotEu();
+        return eu <= 0f ? 0 : (int) (maxCells * ModularTuning.EGUN_REF_CELL_EU / eu);
+    }
+
+    /**
+     * Ticks to ready one shot at the seat's charge rate: a cylinder refills a chamber at its refill rate (the type's most cells in the seat's
+     * band), a bank recharges in {@link #bankRechargeTicks}, any other seat is ready after its cycle.
+     */
+    public int chargeTicks() {
+        return switch (seat) {
+            case CYLINDER -> Math.max(1, Math.round(FTuning.TICKS_PER_SECOND / refillPerSecond(band, maxCells)));
+            case CAPACITOR_BANK, BURST_BANK -> bankRechargeTicks(maxCells);
+            default -> cycleTicks(false);
+        };
+    }
+
     /** The thermopile's return, a share of a shot's energy, with the barrel at {@code heat} of its limit and the sink {@code soak} full (0 to 1). */
     public float pileShare(float heat, float soak) {
         return seat == Seat.THERMOPILE ? pileReturn * Mth.clamp(heat, 0f, 1f) * (1f - Mth.clamp(soak, 0f, 1f)) : 0f;

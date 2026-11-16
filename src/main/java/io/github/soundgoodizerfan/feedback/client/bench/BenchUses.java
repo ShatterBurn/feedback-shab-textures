@@ -7,7 +7,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import io.github.soundgoodizerfan.feedback.core.FTuning;
 import io.github.soundgoodizerfan.feedback.core.unit.VoltageBand;
+import io.github.soundgoodizerfan.feedback.modular.bake.ModularTuning;
 import io.github.soundgoodizerfan.feedback.modular.bake.ElectricGunSpec;
 import io.github.soundgoodizerfan.feedback.modular.bake.ModularBake;
 import io.github.soundgoodizerfan.feedback.modular.bake.ModularFigures.Fig;
@@ -140,6 +142,11 @@ final class BenchUses {
         if (e.lead())
             out.add(pct("egun.lead", e.leadAmp()));
         out.add(pct("egun.loss", e.barrelLoss()));
+        int ticks = e.chargeTicks();
+        out.add(num("egun.charge", ticks, ticks + " t (" + io.github.soundgoodizerfan.feedback.client.tooltip.Readout.number(ticks / FTuning.TICKS_PER_SECOND) + " s)"));
+        out.add(round("egun.shots", e.shotsPerBattery()));
+        if (e.coherence())
+            out.add(round("egun.bounces", e.bouncesAgainst(ModularTuning.BLOCK_REFLECT_STONE)));
         return out;
     }
 

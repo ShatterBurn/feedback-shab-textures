@@ -37,7 +37,7 @@ public final class ModularMeasures {
             "pack.slots", "pack.carry", "pack.points", "pack.stores",
             "bed.comfort", "bed.warmth",
             "head.ceiling", "head.hardness",
-            "egun.band", "egun.hold", "egun.pump", "egun.zoom", "egun.gauge", "egun.sense", "egun.lining", "egun.sink", "egun.lead", "egun.loss",
+            "egun.band", "egun.hold", "egun.pump", "egun.zoom", "egun.gauge", "egun.sense", "egun.lining", "egun.sink", "egun.lead", "egun.loss", "egun.charge", "egun.shots", "egun.bounces",
             "engine.cylinders", "engine.displacement", "engine.torque", "engine.peak", "engine.redline",
             "gearbox.gears", "gearbox.low", "gearbox.top", "gearbox.wear",
             "prop.blades", "prop.diameter", "prop.pitch",

@@ -175,7 +175,7 @@ public final class PulseShot {
                 }
                 // A coherence lens keeps the pulse coherent enough to bounce: what it keeps is the struck surface's reflectivity.
                 float kept = bounces > 0 ? work * BlockReflectivity.of(level, block.getBlockPos(), state) : 0f;
-                if (kept < plan.work() * ModularTuning.EGUN_COHERENCE_FLOOR)
+                if (!ElectricGunSpec.keeps(kept, plan.work()))
                     return;
                 Vec3 normal = Vec3.atLowerCornerOf(block.getDirection().getNormal());
                 dir = dir.subtract(normal.scale(2 * dir.dot(normal))).normalize();

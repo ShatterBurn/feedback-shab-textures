@@ -10,7 +10,9 @@
       "fitting_limit",
       "mass",
       "egun.band",
-      "egun.loss"
+      "egun.loss",
+      "egun.charge",
+      "egun.shots"
     ],
     "addons": {
       "h": [
@@ -29,7 +31,8 @@
         "egun.sense"
       ],
       "l": [
-        "egun.lining"
+        "egun.lining",
+        "egun.bounces"
       ],
       "k": [
         "egun.sink"
