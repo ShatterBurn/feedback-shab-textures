@@ -6,11 +6,11 @@ You build everything from parts you put together yourself. A sword, a furnace, a
 
 The strange parts of Minecraft are ordinary science here. Blazes, ender, [experience](Experience.md) and sculk obey rules that mean exactly what they say; there is no magic path and no exotic material. Vanilla blocks and systems are replaced only where they contradict the physics.
 
-## What Feedback is not
+## How progress works
 
-- **Not a tech tree.** Progress is a growing ability to make, observe, control and reproduce physical things. A stage that only does the same job faster is not a step. The [ages](Ages.md) (Stone, Bronze, Iron, Steel, Machine, Alloy) name where your materials have come to, and no recipe requires one.
-- **Not a tech mod with other systems attached.** Machines are one part of the world. Combat, survival, food, potions, enchanting and villages follow the same physics and the same inventor rule.
-- **Nothing is locked behind precision.** Nothing is keyed on an item's name: machines apply a physical action such as heat or force, and sorting and processing read properties such as density, magnetism and particle size. If you can reach the temperature, strength or hardness, you can attempt it by hand, badly. Automation makes a job practical; it unlocks nothing.
+- **Progress is ability.** It is a growing power to make, observe, control and reproduce physical things. A stage that only does the same job faster is not a step, so each stage changes the kind of problem you solve. The [ages](Ages.md) (Stone, Bronze, Iron, Steel, Machine, Alloy) name where your materials have come to, and every recipe is open at any age.
+- **One world, one physics.** Machines are one part of it. Combat, survival, food, potions, enchanting and villages follow the same physics and the same inventor rule.
+- **Properties, not names.** Machines apply a physical action such as heat or force, and sorting and processing read properties such as density, magnetism and particle size. If you can reach the temperature, strength or hardness, you can attempt a job by hand, badly. Automation makes a job practical; it unlocks nothing.
 
 ## How it plays
 
