@@ -1,0 +1,65 @@
+{
+  "family": "head",
+  "required": [
+    "H"
+  ],
+  "strike": 15.0,
+  "wear_litres": 0.05,
+  "wear_role": "H",
+  "primary": "H",
+  "blueprint": true,
+  "roles": {
+    "H": {
+      "name": "bit",
+      "class": "working_face",
+      "forms": [
+        "lathe_blank"
+      ],
+      "litres": 0.05,
+      "layer": 0,
+      "part": {
+        "item": "feedback:lathe_blank",
+        "cells": 1,
+        "stock": [
+          "@lump",
+          "@gem"
+        ],
+        "base": "negative_rake",
+        "variants": [
+          {
+            "name": "negative_rake",
+            "strike": 1.2
+          },
+          {
+            "name": "positive_rake",
+            "strike": 0.8
+          }
+        ],
+        "slots": [
+          {
+            "name": "body",
+            "share": 3
+          },
+          {
+            "name": "edge",
+            "forms": [
+              "@lump",
+              "@gem"
+            ],
+            "share": 1,
+            "traits": []
+          }
+        ]
+      }
+    }
+  },
+  "patterns": [
+    [
+      "H"
+    ]
+  ],
+  "defaults": {
+    "H": "feedback:iron"
+  },
+  "school": "materials:1"
+}

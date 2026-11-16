@@ -50,6 +50,9 @@ public class RollingMillBlock extends Block implements EntityBlock, Rotatable {
         if (!(level.getBlockEntity(pos) instanceof RollingMillBlockEntity mill))
             return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 
+        if (mill.tryHead(player, stack))
+            return ItemInteractionResult.sidedSuccess(level.isClientSide);
+
         if (!level.isClientSide) {
             if (mill.getWorkpiece().isEmpty())
                 mill.insert(stack);
@@ -65,7 +68,14 @@ public class RollingMillBlock extends Block implements EntityBlock, Rotatable {
         if (!(level.getBlockEntity(pos) instanceof RollingMillBlockEntity mill))
             return InteractionResult.PASS;
         if (!level.isClientSide)
-            give(player, mill.getCladding().isEmpty() ? mill.removeWorkpiece() : mill.removeCladding());
+            {
+            if (!mill.getCladding().isEmpty())
+                give(player, mill.removeCladding());
+            else if (!mill.getWorkpiece().isEmpty())
+                give(player, mill.removeWorkpiece());
+            else
+                mill.giveHead(player);
+        }
         return InteractionResult.sidedSuccess(level.isClientSide);
     }
 
@@ -79,7 +89,7 @@ public class RollingMillBlock extends Block implements EntityBlock, Rotatable {
     @Override
     protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean moved) {
         if (!state.is(newState.getBlock()) && level.getBlockEntity(pos) instanceof RollingMillBlockEntity mill) {
-            for (ItemStack held : List.of(mill.getWorkpiece(), mill.getCladding()))
+            for (ItemStack held : List.of(mill.getWorkpiece(), mill.getCladding(), mill.getHead().get()))
                 if (!held.isEmpty())
                     Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), held);
         }

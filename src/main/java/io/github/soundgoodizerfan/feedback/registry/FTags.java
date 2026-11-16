@@ -24,8 +24,6 @@ public final class FTags {
     public static final TagKey<Item> PUNCH_CARDS = TagKey.create(Registries.ITEM, Feedback.id("punch_cards"));
     /** What an Engine Stand prints a design onto: blank paper, or a blueprint to edit. */
     public static final TagKey<Item> BLUEPRINT_PAPER = TagKey.create(Registries.ITEM, Feedback.id("blueprint_paper"));
-    /** What a Lathe accepts in its tool post. */
-    public static final TagKey<Item> LATHE_TOOL_BITS = TagKey.create(Registries.ITEM, Feedback.id("lathe_tool_bits"));
     /** Held containers a stockpot can ladle a serving into. */
     public static final TagKey<Item> LADLE_CONTAINERS = TagKey.create(Registries.ITEM, Feedback.id("ladle_containers"));
     /** Held tools that flip a piece in a skillet and lift the pan off the fire. */

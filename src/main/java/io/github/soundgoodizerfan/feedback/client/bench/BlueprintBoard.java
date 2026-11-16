@@ -3010,6 +3010,10 @@ public final class BlueprintBoard {
                     Component.translatable("gui.feedback.blueprint_table.bed.comfort", Math.round(100 * f.get(ModularFigures.Fig.COMFORT))),
                     Component.translatable("gui.feedback.blueprint_table.bed.warmth", Math.round(100 * f.get(ModularFigures.Fig.WARMTH)))))
                     .orElse(List.of());
+            case HEAD -> ModularBake.bake(d, t, ClientMaterials.get(), 0).<List<Component>>map(f -> List.of(
+                    Component.translatable("gui.feedback.blueprint_table.head.ceiling", String.format(java.util.Locale.ROOT, "%.3g", f.get(ModularFigures.Fig.STRIKE_ST))),
+                    Component.translatable("gui.feedback.blueprint_table.head.hardness", String.format(java.util.Locale.ROOT, "%.3g", f.get(ModularFigures.Fig.HARDNESS)))))
+                    .orElse(List.of());
             default -> List.of();
         };
     }

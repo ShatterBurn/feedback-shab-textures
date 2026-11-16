@@ -357,6 +357,10 @@ public class FeedbackJeiPlugin implements IModPlugin {
         // Basic electronics: machines with no recipe, and the items an operation turns out.
         info(registration, FItems.COHERER.get(), "coherer");
         info(registration, FItems.ROLLING_MILL.get(), "rolling_mill");
+        info(registration, FItems.WIRE_DRAWER.get(), "wire_drawer");
+        info(registration, FItems.LATHE.get(), "lathe");
+        info(registration, FItems.DRILL_PRESS.get(), "drill_press");
+        info(registration, FItems.GRINDING_WHEEL.get(), "grinding_wheel");
         info(registration, FItems.MORTAR.get(), "mortar");
         info(registration, FModular.BATTERY.get(), "battery");
         info(registration, FItems.HYDROMETER.get(), "hydrometer");
@@ -378,7 +382,6 @@ public class FeedbackJeiPlugin implements IModPlugin {
         info(registration, FItems.REFLOW_OVEN.get(), "reflow_oven");
         info(registration, FItems.SOLDERING_IRON.get(), "soldering_iron");
         info(registration, FItems.ARC_WELDER.get(), "arc_welder");
-        info(registration, FItems.DIAMOND_GRINDING_WHEEL.get(), "diamond_grinding_wheel");
         info(registration, FItems.MASS_PROBE.get(), "mass_probe");
         info(registration, FItems.TRACE_BOARD.get(), "trace_board");
         info(registration, FItems.CIRCUIT.get(), "circuit");
@@ -522,6 +525,8 @@ public class FeedbackJeiPlugin implements IModPlugin {
         info(registration, FItems.ENDER_ANCHOR.get(), "ender_anchor");
         info(registration, io.github.soundgoodizerfan.feedback.registry.FBlocks.GAS_TURBINE.get().asItem(), "gas_turbine");
         info(registration, FModular.HEAT_EXCHANGER.get(), "heat_exchanger");
+        for (net.neoforged.neoforge.registries.DeferredItem<io.github.soundgoodizerfan.feedback.modular.item.ModularMachineHead> head : FModular.MACHINE_HEADS)
+            info(registration, head.get(), head.getId().getPath());
         info(registration, FModular.HAND_CRANK.get(), "hand_crank");
         info(registration, FModular.LEYDEN_JAR.get(), "leyden_jar");
         info(registration, io.github.soundgoodizerfan.feedback.registry.FBlocks.OVERSPEED_TRIP.get().asItem(), "overspeed_trip");
@@ -560,7 +565,7 @@ public class FeedbackJeiPlugin implements IModPlugin {
                 FItems.MECHANICAL_HAMMER.get(), FItems.WIRE_DRAWER.get(),
                 FItems.ROLLING_MILL.get(), FItems.MECHANICAL_PRESS.get(), FModular.HAFTED_TOOL.get());
         registration.addRecipeCatalysts(RemovalCategory.TYPE,
-                FItems.DRILL_PRESS.get(), FItems.LATHE.get(), FItems.GRINDING_WHEEL.get(), FItems.DIAMOND_GRINDING_WHEEL.get());
+                FItems.DRILL_PRESS.get(), FItems.LATHE.get(), FItems.GRINDING_WHEEL.get());
         registration.addRecipeCatalysts(ThermalProcessCategory.TYPE, FItems.INGOT_MOLD.get(), FItems.BULLET_MOLD.get(), FItems.BALL_MOLD.get(), FItems.TUBE_MOLD.get(),
                 FItems.GLASS_BLOCK_MOLD.get(), FItems.GLASS_PANE_MOLD.get(), FItems.GLASS_BOTTLE_MOLD.get(),
                 FItems.PICKAXE_HEAD_MOLD.get(), FItems.AXE_HEAD_MOLD.get(), FItems.SHOVEL_HEAD_MOLD.get(), FItems.HOE_HEAD_MOLD.get(), FItems.SICKLE_HEAD_MOLD.get(), FItems.SAW_BLADE_MOLD.get(), FItems.ATOMISING_MOLD.get());

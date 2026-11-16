@@ -7,7 +7,7 @@ import io.github.soundgoodizerfan.feedback.core.thermal.ItemHeat;
 import io.github.soundgoodizerfan.feedback.core.unit.St;
 import io.github.soundgoodizerfan.feedback.core.unit.Su;
 import io.github.soundgoodizerfan.feedback.core.unit.Tu;
-import io.github.soundgoodizerfan.feedback.machine.ShopMachineBlockEntity;
+import io.github.soundgoodizerfan.feedback.machine.HeadedShopMachineBlockEntity;
 import io.github.soundgoodizerfan.feedback.process.Operation;
 import io.github.soundgoodizerfan.feedback.process.Removing;
 import io.github.soundgoodizerfan.feedback.registry.FBlockEntities;
@@ -16,9 +16,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 
 /**
- * Same removal primitive as the Drill Press and the Lathe, with the wheel's own hardness rating
- * set above both of theirs -- the only route through a material like hardened tool steel, not a
- * finishing upgrade over them (see {@link MachineTuning#GRINDING_WHEEL_HARDNESS}).
+ * Same removal primitive as the Drill Press and the Lathe, cut by the seated abrasive wheel: its
+ * grit's hardness is the wheel's rating, so a diamond-gritted wheel is the route through a material
+ * like hardened tool steel or quartz, and its grit axis sets how hard it can be driven.
  *
  * <h2>The one real exception to wear-only-from-misuse</h2>
  * The Hammer and the Lathe's tool bit both wear <em>only</em> from misuse -- force or a cut the
@@ -37,14 +37,15 @@ import net.minecraft.world.level.block.state.BlockState;
  * hardened can walk its temperature back into a tempering-relevant range and soften it, which
  * needed nothing new to be written for it to happen.
  */
-public class GrindingWheelBlockEntity extends ShopMachineBlockEntity {
+public class GrindingWheelBlockEntity extends HeadedShopMachineBlockEntity {
 
     public GrindingWheelBlockEntity(BlockPos pos, BlockState state) {
         super(FBlockEntities.GRINDING_WHEEL.get(), pos, state);
     }
 
-    public boolean isCoarseGrit() {
-        return getBlockState().getValue(GrindingWheelBlock.COARSE);
+    @Override
+    public String headKind() {
+        return "abrasive_wheel";
     }
 
     @Override
@@ -52,22 +53,16 @@ public class GrindingWheelBlockEntity extends ShopMachineBlockEntity {
         return MachineTuning.GRINDING_WHEEL_LOAD_SU;
     }
 
-    private St toolHardness() {
-        float rating = getBlockState().getBlock() instanceof GrindingWheelBlock w
-                ? w.gritHardness().value() : MachineTuning.GRINDING_WHEEL_HARDNESS.value();
-        return new St(rating * condition);
-    }
-
     public void tickServer() {
-        if (level == null || level.isClientSide || workpiece.isEmpty())
+        if (level == null || level.isClientSide || workpiece.isEmpty() || getHead().isEmpty())
             return;
         float passes = passesDue();
         if (passes <= 0)
             return;
 
-        boolean coarse = isCoarseGrit();
-        St driveForce = coarse ? MachineTuning.GRINDING_WHEEL_ST_COARSE : MachineTuning.GRINDING_WHEEL_ST_FINE;
-        Removing.Cut cut = Removing.apply(workpiece, driveForce, toolHardness(), Operation.GRIND,
+        // The wheel's grit sets both how hard it can be driven and how hard it cuts; as the grit goes the ceiling falls with it, and a bald wheel drives nothing.
+        St driveForce = getHead().ceiling();
+        Removing.Cut cut = Removing.apply(workpiece, driveForce, getHead().hardness(), Operation.GRIND,
                 passes, carriedWu, level);
         carriedWu = cut.carried();
 
@@ -75,8 +70,9 @@ public class GrindingWheelBlockEntity extends ShopMachineBlockEntity {
         float wu = cut.landed() ? cut.delivered() : driveForce.value() * passes;
         if (cut.landed()) {
             workpiece = cut.result();
-            float wearPerWu = coarse ? MachineTuning.GRINDING_WHEEL_WEAR_PER_WU_COARSE : MachineTuning.GRINDING_WHEEL_WEAR_PER_WU_FINE;
-            condition = Math.max(MachineTuning.GRINDING_WHEEL_CONDITION_FLOOR, condition - wu * wearPerWu);
+            if (getHead().wear(wu, MachineTuning.GRINDING_WHEEL_WEAR_PER_WU, MachineTuning.GRINDING_WHEEL_CONDITION_FLOOR))
+                sync();
+            setChanged();
             maybeDropSwarf(cut);
         }
 

@@ -1,0 +1,19 @@
+{
+  "type": "feedback:bootstrap_specimen",
+  "category": "equipment",
+  "modular_type": "feedback:lathe_bit",
+  "material": "feedback:iron",
+  "pattern": [
+    "I",
+    "N",
+    "N"
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "N": {
+      "item": "minecraft:iron_nugget"
+    }
+  }
+}

@@ -147,7 +147,7 @@ public class FBlockEntities {
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<GrindingWheelBlockEntity>> GRINDING_WHEEL =
             BLOCK_ENTITIES.register("grinding_wheel", () -> BlockEntityType.Builder
-                    .of(GrindingWheelBlockEntity::new, FBlocks.GRINDING_WHEEL.get(), FBlocks.DIAMOND_GRINDING_WHEEL.get())
+                    .of(GrindingWheelBlockEntity::new, FBlocks.GRINDING_WHEEL.get())
                     .build(null));
 
     /** One type for both pulley sizes, same as the cogs. */

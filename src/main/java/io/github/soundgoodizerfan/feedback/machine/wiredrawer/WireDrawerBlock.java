@@ -63,6 +63,9 @@ public class WireDrawerBlock extends Block implements EntityBlock, Rotatable {
         if (!(level.getBlockEntity(pos) instanceof WireDrawerBlockEntity drawer))
             return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 
+        if (drawer.tryHead(player, stack))
+            return ItemInteractionResult.sidedSuccess(level.isClientSide);
+
         if (!level.isClientSide) {
             if (drawer.getWorkpiece().isEmpty())
                 drawer.insert(stack);
@@ -81,8 +84,10 @@ public class WireDrawerBlock extends Block implements EntityBlock, Rotatable {
         if (!level.isClientSide) {
             if (player.isShiftKeyDown())
                 level.setBlockAndUpdate(pos, state.setValue(FAST, !state.getValue(FAST)));
-            else
+            else if (!drawer.getWorkpiece().isEmpty())
                 give(player, drawer.removeWorkpiece());
+            else
+                drawer.giveHead(player);
         }
         return InteractionResult.sidedSuccess(level.isClientSide);
     }
@@ -97,6 +102,7 @@ public class WireDrawerBlock extends Block implements EntityBlock, Rotatable {
     @Override
     protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean moved) {
         if (!state.is(newState.getBlock()) && level.getBlockEntity(pos) instanceof WireDrawerBlockEntity drawer) {
+            Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), drawer.getHead().get());
             ItemStack held = drawer.getWorkpiece();
             if (!held.isEmpty())
                 Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), held);

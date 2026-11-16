@@ -1,0 +1,77 @@
+{
+  "family": "head",
+  "required": [
+    "H"
+  ],
+  "strike": 1.85,
+  "wear_litres": 0.5,
+  "wear_role": "H",
+  "primary": "H",
+  "blueprint": true,
+  "roles": {
+    "H": {
+      "name": "roll",
+      "class": "working_face",
+      "forms": [
+        "roll_body"
+      ],
+      "litres": 0.5,
+      "layer": 0,
+      "axes": {
+        "diameter": {
+          "min": 30,
+          "max": 100,
+          "unit": "%",
+          "default": 60,
+          "step": 5
+        }
+      },
+      "params": {
+        "axis_exp": 1.0
+      },
+      "part": {
+        "item": "feedback:roll_body",
+        "cells": 6,
+        "stock": [
+          "@lump"
+        ],
+        "base": "broad_roll",
+        "variants": [
+          {
+            "name": "broad_roll",
+            "cells": 8
+          },
+          {
+            "name": "narrow_roll",
+            "cells": 4,
+            "strike": 1.5
+          }
+        ],
+        "slots": [
+          {
+            "name": "body",
+            "share": 3
+          },
+          {
+            "name": "edge",
+            "forms": [
+              "@lump",
+              "@gem"
+            ],
+            "share": 1,
+            "traits": []
+          }
+        ]
+      }
+    }
+  },
+  "patterns": [
+    [
+      "H"
+    ]
+  ],
+  "defaults": {
+    "H": "feedback:iron"
+  },
+  "school": "materials:1"
+}

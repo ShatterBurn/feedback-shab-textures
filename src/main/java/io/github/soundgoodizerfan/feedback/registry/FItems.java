@@ -76,12 +76,7 @@ public class FItems {
 
     public static final DeferredItem<BlockItem> LATHE = ITEMS.registerSimpleBlockItem(FBlocks.LATHE);
 
-    /** A physical, wearable component -- philosophy 5's "upgrades are physical components," and
-     * the Lathe's {@code Wearing} condition lives on it. See {@code FDataComponents#TOOL_CONDITION}. */
-    public static final DeferredItem<Item> LATHE_TOOL_BIT = ITEMS.registerSimpleItem("lathe_tool_bit");
-
     public static final DeferredItem<BlockItem> GRINDING_WHEEL = ITEMS.registerSimpleBlockItem(FBlocks.GRINDING_WHEEL);
-    public static final DeferredItem<BlockItem> DIAMOND_GRINDING_WHEEL = ITEMS.registerSimpleBlockItem(FBlocks.DIAMOND_GRINDING_WHEEL);
 
     /** The one route through hardened tool steel -- see {@code removal/hardened_steel.json}. */
     public static final DeferredItem<Item> GROUND_HARDENED_STEEL = ITEMS.registerSimpleItem("ground_hardened_steel");

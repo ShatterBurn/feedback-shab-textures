@@ -56,7 +56,14 @@ public final class HeadSlot {
 
     /** The most St a blow can carry now: the head's baked ceiling, less what wear has cost. Zero with no head. */
     public St ceiling() {
-        return new St(ModularHandTool.blow(head) * EdgeKinds.headBlow(head) * condition());
+        float blow = head.getItem() instanceof io.github.soundgoodizerfan.feedback.modular.item.ModularMachineHead
+                ? io.github.soundgoodizerfan.feedback.modular.item.ModularMachineHead.ceiling(head) : ModularHandTool.blow(head);
+        return new St(blow * EdgeKinds.headBlow(head) * condition());
+    }
+
+    /** The hardness of a machine head's edge as built, wear not taken off; zero with no head or one that carries none. */
+    public St hardness() {
+        return new St(io.github.soundgoodizerfan.feedback.modular.item.ModularMachineHead.hardness(head));
     }
 
     /**

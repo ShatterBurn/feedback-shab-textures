@@ -1,6 +1,6 @@
 # Rolling Mill
 
-A pair of driven rollers that rolls ingots into rods and plates into pipes, and rolls a plate of one metal onto a plate of another as a coat.
+A pair of driven rollers, a [Roll](Machine_Heads.md) in the mill, that rolls ingots into rods and plates into pipes, and rolls a plate of one metal onto a plate of another as a coat.
 
 ## Crafting
 
@@ -11,24 +11,27 @@ S S S
 
 I is a Wrought Iron Plate, B is a [Bearing](Bearing.md) and S is a [Shaft](Shaft.md). Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 3 [fasteners](Fasteners.md).
 
+The roll is a [machine head](Machine_Heads.md): draw it at the Blueprint Table and put it together in a crafting grid.
+
 ## Using it
 
 The mill sits **directly on a shaft line**; connect it from any side. The faster it turns, the faster it rolls.
 
-The mill has two slots side by side: the **workpiece**, and a **skin** for [cladding](#cladding).
+The mill has three places: the **roll**, the **workpiece**, and a **skin** for [cladding](#cladding). With no roll the mill does nothing.
 
+- **Right-click with a Roll** to seat it; the roll it replaces comes back.
 - **Right-click with an item** to put it in the workpiece slot (or swap it for what's there). With a workpiece already in and the skin slot empty, a plate is laid in the skin slot instead.
-- **Right-click with an empty hand** to take the skin out first, then the workpiece.
+- **Right-click with an empty hand** to take the skin out first, then the workpiece, then the roll.
 - Hoppers can take items out too.
-- Breaking the mill drops both.
+- Breaking the mill drops all three.
 
 ## What it makes
 
 **Ingot → Rod** and **Plate → Pipe**, for every metal.
 
-There's nothing further to roll a rod or a pipe into. That makes the mill more forgiving than the [hammer](Mechanical_Hammer.md): a finished piece doesn't get ruined if you leave it. But the mill keeps rolling, and **rolling a finished rod or pipe wears the mill**. So does rolling a piece that is cold-worked to its limit; anneal it first ([Work hardening](Metalworking.md#work-hardening)). Take it out promptly, or use a hopper.
+There's nothing further to roll a rod or a pipe into. That makes the mill more forgiving than the [hammer](Mechanical_Hammer.md): a finished piece doesn't get ruined if you leave it. But the mill keeps rolling, and **rolling a finished rod or pipe wears the roll**. So does rolling a piece that is cold-worked to its limit; anneal it first ([Work hardening](Metalworking.md#work-hardening)). Take it out promptly, or use a hopper.
 
-The mill rolls at **44 St**, hard enough for steel (heat steel to 900–1100 Tu first; see [Metalworking](Metalworking.md#hot-metal)). A copper rod is about two strokes; a steel rod about ten. It's a **50 Su** load.
+The roll's material, mass and diameter set how hard the mill rolls; a roll strong enough works steel (heat steel to 900–1100 Tu first; see [Metalworking](Metalworking.md#hot-metal)). It's a **50 Su** load.
 
 ## Grinding to dust
 

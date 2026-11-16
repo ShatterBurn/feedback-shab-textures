@@ -40,36 +40,12 @@ import net.minecraft.world.phys.BlockHitResult;
 /**
  * The removal primitive's third and hardest-hitting machine, sitting directly on the network
  * like a Gearbox. Right click with an item to insert or swap the workpiece, empty-handed to take
- * it back out -- unchanged from every other machine in this family. Sneak with an empty hand
- * swaps coarse/fine grit.
+ * it back out, then the wheel -- unchanged from every other machine in this family.
  */
 public class GrindingWheelBlock extends Block implements EntityBlock, Rotatable {
 
-    public static final BooleanProperty COARSE = BooleanProperty.create("coarse");
-
-    /** Material the grit is made of; null is the stone wheel and its flat rating. */
-    @Nullable
-    private final ResourceLocation grit;
-
     public GrindingWheelBlock(Properties properties) {
-        this(properties, null);
-    }
-
-    public GrindingWheelBlock(Properties properties, @Nullable ResourceLocation grit) {
         super(properties);
-        this.grit = grit;
-        registerDefaultState(defaultBlockState().setValue(COARSE, true));
-    }
-
-    /** The wheel's cutting rating: the grit material's own hardness, or the stone wheel's flat figure. */
-    public St gritHardness() {
-        Material m = grit == null ? null : MaterialTable.get().materials().get(grit);
-        return m == null ? MachineTuning.GRINDING_WHEEL_HARDNESS : m.hardness();
-    }
-
-    @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(COARSE);
     }
 
     @Override
@@ -79,6 +55,9 @@ public class GrindingWheelBlock extends Block implements EntityBlock, Rotatable 
             return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         if (!(level.getBlockEntity(pos) instanceof GrindingWheelBlockEntity wheel))
             return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+
+        if (wheel.tryHead(player, stack))
+            return ItemInteractionResult.sidedSuccess(level.isClientSide);
 
         if (!level.isClientSide) {
             if (wheel.getWorkpiece().isEmpty())
@@ -96,10 +75,10 @@ public class GrindingWheelBlock extends Block implements EntityBlock, Rotatable 
             return InteractionResult.PASS;
 
         if (!level.isClientSide) {
-            if (player.isShiftKeyDown())
-                level.setBlockAndUpdate(pos, state.setValue(COARSE, !state.getValue(COARSE)));
-            else
+            if (!wheel.getWorkpiece().isEmpty())
                 give(player, wheel.removeWorkpiece());
+            else
+                wheel.giveHead(player);
         }
         return InteractionResult.sidedSuccess(level.isClientSide);
     }
@@ -114,6 +93,7 @@ public class GrindingWheelBlock extends Block implements EntityBlock, Rotatable 
     @Override
     protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean moved) {
         if (!state.is(newState.getBlock()) && level.getBlockEntity(pos) instanceof GrindingWheelBlockEntity wheel) {
+            Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), wheel.getHead().get());
             ItemStack held = wheel.getWorkpiece();
             if (!held.isEmpty())
                 Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), held);

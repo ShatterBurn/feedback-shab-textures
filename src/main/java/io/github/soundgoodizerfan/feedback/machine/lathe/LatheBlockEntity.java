@@ -13,7 +13,7 @@ import io.github.soundgoodizerfan.feedback.core.unit.Su;
 import io.github.soundgoodizerfan.feedback.fitting.SensorFitting;
 import io.github.soundgoodizerfan.feedback.instrument.Instruments;
 import io.github.soundgoodizerfan.feedback.instrument.Quantity;
-import io.github.soundgoodizerfan.feedback.machine.ShopMachineBlockEntity;
+import io.github.soundgoodizerfan.feedback.machine.HeadedShopMachineBlockEntity;
 import io.github.soundgoodizerfan.feedback.process.Operation;
 import io.github.soundgoodizerfan.feedback.process.Removing;
 import io.github.soundgoodizerfan.feedback.registry.FBlockEntities;
@@ -32,7 +32,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 /**
- * Stock chucked and spun by the network; a mounted tool bit removes material continuously toward
+ * Stock chucked and spun by the network; the seated lathe bit removes material continuously toward
  * whatever the workpiece's {@code Removal} entry calls its target. Same removal primitive as the
  * Drill Press, cutting continuously by speed ({@code passesDue}) rather than on discrete pushes --
  * a lathe's cut is continuous over the whole pass, not a series of separate feeds.
@@ -48,16 +48,15 @@ import net.minecraft.world.level.block.state.BlockState;
  * Nothing new was added to {@code control/}.
  *
  * <h2>The tool bit wears; the machine does not</h2>
- * {@link #getCondition} is the mounted bit's, which lives on the {@link ItemStack} (see
+ * {@link #getCondition} is the seated bit's, which lives on the {@link ItemStack} (see
  * {@code FDataComponents#TOOL_CONDITION}), because philosophy 5 calls the bit itself the physical
  * component you point at -- a machine-wide condition figure was explicitly the wrong shape here.
  * A worn bit cuts less of each pass; it never stops clearing what its rating clears.
  */
-public class LatheBlockEntity extends ShopMachineBlockEntity implements SensorFitting {
+public class LatheBlockEntity extends HeadedShopMachineBlockEntity implements SensorFitting {
 
     private static final String LINKS = "Links";
 
-    private ItemStack toolBit = ItemStack.EMPTY;
     private final Set<DataNodeRef> links = new HashSet<>();
     /** Wu turned off the piece now chucked -- what the sensor reads. Unlike the workpiece's own
      * WORK it does not reset when a stage completes, so done and not-started read differently. */
@@ -75,23 +74,9 @@ public class LatheBlockEntity extends ShopMachineBlockEntity implements SensorFi
         return inserted;
     }
 
-    public ItemStack getToolBit() {
-        return toolBit;
-    }
-
-    public boolean insertToolBit(ItemStack stack) {
-        if (!toolBit.isEmpty() || stack.isEmpty())
-            return false;
-        toolBit = stack.split(1);
-        sync();
-        return true;
-    }
-
-    public ItemStack removeToolBit() {
-        ItemStack taken = toolBit;
-        toolBit = ItemStack.EMPTY;
-        sync();
-        return taken;
+    @Override
+    public String headKind() {
+        return "lathe_bit";
     }
 
     public boolean isHeavyPass() {
@@ -103,17 +88,8 @@ public class LatheBlockEntity extends ShopMachineBlockEntity implements SensorFi
         return MachineTuning.LATHE_LOAD_SU;
     }
 
-    /**
-     * The lathe's condition is its bit's -- the component you point at (philosophy 5) -- and an
-     * absent bit reads as brand new, so nothing to cut with never shows up as a worn tool.
-     */
-    @Override
-    public float getCondition() {
-        return toolBit.isEmpty() ? 1f : toolBit.getOrDefault(FDataComponents.TOOL_CONDITION.get(), 1f);
-    }
-
     public void tickServer() {
-        if (level == null || level.isClientSide || workpiece.isEmpty() || toolBit.isEmpty())
+        if (level == null || level.isClientSide || workpiece.isEmpty() || getHead().isEmpty())
             return;
         float passes = passesDue();
         if (passes <= 0)
@@ -121,13 +97,14 @@ public class LatheBlockEntity extends ShopMachineBlockEntity implements SensorFi
 
         // A blunt bit cuts less of every pass; it never stops clearing what its rating clears,
         // which would have turned wear into a hard gate on steel.
-        St driveForce = new St((isHeavyPass() ? MachineTuning.LATHE_ST_HEAVY : MachineTuning.LATHE_ST_LIGHT).value() * getCondition());
-        Removing.Cut cut = Removing.apply(workpiece, driveForce, MachineTuning.LATHE_BIT_HARDNESS, Operation.TURN,
+        St driveForce = new St(Math.min((isHeavyPass() ? MachineTuning.LATHE_ST_HEAVY : MachineTuning.LATHE_ST_LIGHT).value() * getCondition(),
+                getHead().ceiling().value()));
+        Removing.Cut cut = Removing.apply(workpiece, driveForce, getHead().hardness(), Operation.TURN,
                 passes, carriedWu, level);
         carriedWu = cut.carried();
 
         if (!cut.landed()) {
-            wearBit(driveForce.value() * passes);
+            wear(driveForce.value() * passes);
             return;
         }
 
@@ -135,19 +112,6 @@ public class LatheBlockEntity extends ShopMachineBlockEntity implements SensorFi
         workpiece = cut.result();
         maybeDropSwarf(cut);
         sync();
-    }
-
-    /** The bit absorbs force it could not cut with -- the Hammer's own rule, one component down. */
-    private void wearBit(float stAbsorbed) {
-        if (toolBit.isEmpty() || stAbsorbed <= 0)
-            return;
-        int before = FTuning.conditionBand(getCondition());
-        float condition = Math.max(MachineTuning.LATHE_BIT_CONDITION_FLOOR,
-                getCondition() - stAbsorbed * MachineTuning.LATHE_BIT_WEAR_PER_ST);
-        toolBit.set(FDataComponents.TOOL_CONDITION.get(), condition);
-        setChanged();
-        if (FTuning.conditionBand(condition) != before)
-            sync();
     }
 
     // --- Instrument / SensorFitting ------------------------------------------------------------
@@ -217,7 +181,6 @@ public class LatheBlockEntity extends ShopMachineBlockEntity implements SensorFi
     @Override
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
-        tag.put("ToolBit", toolBit.saveOptional(registries));
         tag.putFloat("TurnedWu", turnedWu);
         ListTag list = new ListTag();
         for (DataNodeRef ref : links)
@@ -228,7 +191,6 @@ public class LatheBlockEntity extends ShopMachineBlockEntity implements SensorFi
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
-        toolBit = ItemStack.parseOptional(registries, tag.getCompound("ToolBit"));
         turnedWu = tag.getFloat("TurnedWu");
         links.clear();
         for (Tag entry : tag.getList(LINKS, Tag.TAG_COMPOUND))

@@ -1,0 +1,78 @@
+{
+  "family": "head",
+  "required": [
+    "H"
+  ],
+  "strike": 2.5,
+  "wear_litres": 0.3,
+  "wear_role": "H",
+  "primary": "H",
+  "blueprint": true,
+  "roles": {
+    "H": {
+      "name": "wheel",
+      "class": "working_face",
+      "forms": [
+        "wheel_blank"
+      ],
+      "litres": 0.3,
+      "layer": 0,
+      "axes": {
+        "grit": {
+          "min": 10,
+          "max": 90,
+          "unit": "%",
+          "default": 30,
+          "step": 5
+        }
+      },
+      "params": {
+        "axis_exp": -0.9
+      },
+      "part": {
+        "item": "feedback:wheel_blank",
+        "cells": 4,
+        "stock": [
+          "@lump",
+          "@gem"
+        ],
+        "base": "straight_wheel",
+        "variants": [
+          {
+            "name": "straight_wheel",
+            "cells": 4
+          },
+          {
+            "name": "cup_wheel",
+            "cells": 3,
+            "strike": 1.2
+          }
+        ],
+        "slots": [
+          {
+            "name": "body",
+            "share": 3
+          },
+          {
+            "name": "edge",
+            "forms": [
+              "@lump",
+              "@gem"
+            ],
+            "share": 1,
+            "traits": []
+          }
+        ]
+      }
+    }
+  },
+  "patterns": [
+    [
+      "H"
+    ]
+  ],
+  "defaults": {
+    "H": "feedback:iron"
+  },
+  "school": "materials:1"
+}

@@ -34,9 +34,9 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 
 /**
- * Stock chucked and spun by the network, cut by a mounted tool bit. Sits directly on the network
- * like a Gearbox. Two slots, both item-typed rather than sharing one interaction: a Lathe Tool
- * Bit inserts or swaps the bit, anything else inserts or swaps the workpiece -- the same "which
+ * Stock chucked and spun by the network, cut by a seated lathe bit. Sits directly on the network
+ * like a Gearbox. Two slots, both item-typed rather than sharing one interaction: a lathe bit
+ * is seated or swapped, anything else inserts or swaps the workpiece -- the same "which
  * physical component does this go into" question {@code CrankLinkageBlock#useItemOn} already asks
  * of a shaft in hand, not a sorting rule. Sneak with an empty hand swaps light/heavy pass.
  */
@@ -62,18 +62,14 @@ public class LatheBlock extends Block implements EntityBlock, Rotatable {
         if (!(level.getBlockEntity(pos) instanceof LatheBlockEntity lathe))
             return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 
+        if (lathe.tryHead(player, stack))
+            return ItemInteractionResult.sidedSuccess(level.isClientSide);
+
         if (!level.isClientSide) {
-            if (stack.is(FTags.LATHE_TOOL_BITS)) {
-                if (lathe.getToolBit().isEmpty())
-                    lathe.insertToolBit(stack);
-                else
-                    give(player, lathe.removeToolBit());
-            } else {
-                if (lathe.getWorkpiece().isEmpty())
-                    lathe.insert(stack);
-                else
-                    give(player, lathe.removeWorkpiece());
-            }
+            if (lathe.getWorkpiece().isEmpty())
+                lathe.insert(stack);
+            else
+                give(player, lathe.removeWorkpiece());
         }
         return ItemInteractionResult.sidedSuccess(level.isClientSide);
     }
@@ -81,8 +77,16 @@ public class LatheBlock extends Block implements EntityBlock, Rotatable {
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player,
                                                BlockHitResult hit) {
-        if (!level.isClientSide && player.isShiftKeyDown())
-            level.setBlockAndUpdate(pos, state.setValue(HEAVY, !state.getValue(HEAVY)));
+        if (!level.isClientSide) {
+            if (player.isShiftKeyDown())
+                level.setBlockAndUpdate(pos, state.setValue(HEAVY, !state.getValue(HEAVY)));
+            else if (level.getBlockEntity(pos) instanceof LatheBlockEntity lathe) {
+                if (!lathe.getWorkpiece().isEmpty())
+                    give(player, lathe.removeWorkpiece());
+                else
+                    lathe.giveHead(player);
+            }
+        }
         return InteractionResult.sidedSuccess(level.isClientSide);
     }
 
@@ -98,8 +102,8 @@ public class LatheBlock extends Block implements EntityBlock, Rotatable {
         if (!state.is(newState.getBlock()) && level.getBlockEntity(pos) instanceof LatheBlockEntity lathe) {
             if (!lathe.getWorkpiece().isEmpty())
                 Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), lathe.getWorkpiece());
-            if (!lathe.getToolBit().isEmpty())
-                Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), lathe.getToolBit());
+            if (!lathe.getHead().isEmpty())
+                Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), lathe.getHead().get());
         }
         super.onRemove(state, level, pos, newState, moved);
     }

@@ -58,6 +58,9 @@ public class DrillPressBlock extends Block implements EntityBlock, Rotatable {
         if (!(level.getBlockEntity(pos) instanceof DrillPressBlockEntity press))
             return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 
+        if (press.tryHead(player, stack))
+            return ItemInteractionResult.sidedSuccess(level.isClientSide);
+
         if (!level.isClientSide) {
             if (press.getWorkpiece().isEmpty())
                 press.insert(stack);
@@ -76,6 +79,8 @@ public class DrillPressBlock extends Block implements EntityBlock, Rotatable {
         if (!level.isClientSide) {
             if (player.isShiftKeyDown())
                 level.setBlockAndUpdate(pos, state.setValue(FAST, !state.getValue(FAST)));
+            else if (press.getWorkpiece().isEmpty())
+                press.giveHead(player);
             else
                 press.push();
         }
@@ -92,6 +97,7 @@ public class DrillPressBlock extends Block implements EntityBlock, Rotatable {
     @Override
     protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean moved) {
         if (!state.is(newState.getBlock()) && level.getBlockEntity(pos) instanceof DrillPressBlockEntity press) {
+            Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), press.getHead().get());
             ItemStack held = press.getWorkpiece();
             if (!held.isEmpty())
                 Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), held);

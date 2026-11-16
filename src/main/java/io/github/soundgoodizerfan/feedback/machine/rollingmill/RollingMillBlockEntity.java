@@ -5,7 +5,7 @@ package io.github.soundgoodizerfan.feedback.machine.rollingmill;
 import io.github.soundgoodizerfan.feedback.machine.MachineTuning;
 import io.github.soundgoodizerfan.feedback.core.unit.St;
 import io.github.soundgoodizerfan.feedback.core.unit.Su;
-import io.github.soundgoodizerfan.feedback.machine.ShopMachineBlockEntity;
+import io.github.soundgoodizerfan.feedback.machine.HeadedShopMachineBlockEntity;
 import io.github.soundgoodizerfan.feedback.process.Deforming;
 import io.github.soundgoodizerfan.feedback.process.Operation;
 import io.github.soundgoodizerfan.feedback.registry.FBlockEntities;
@@ -25,7 +25,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 /**
  * A driven roller pair. Same shape as {@code MechanicalHammerBlockEntity}'s plate-making, through
- * {@link Operation#ROLL}: one pass of {@link MachineTuning#ROLLING_MILL_ST} per {@link #strokesDue}, the
+ * {@link Operation#ROLL}: one stroke of the seated roll's ceiling per {@link #strokesDue}, the
  * same {@link Deforming#apply} the Hammer and Wire Drawer already share. A pass that cannot move
  * the metal is absorbed by the rolls.
  * <p>
@@ -38,9 +38,14 @@ import net.minecraft.world.level.block.state.BlockState;
  * point (a cold roll joins nothing: the mill holds off and hints); a skin rolled past
  * {@link MachineTuning#CLAD_OVERRUN_MELT_SHARE} of its melting point comes out burnt.
  */
-public class RollingMillBlockEntity extends ShopMachineBlockEntity {
+public class RollingMillBlockEntity extends HeadedShopMachineBlockEntity {
 
     private static final Operation OPERATION = Operation.ROLL;
+
+    @Override
+    public String headKind() {
+        return "roll";
+    }
 
     private ItemStack cladding = ItemStack.EMPTY;
 
@@ -128,7 +133,7 @@ public class RollingMillBlockEntity extends ShopMachineBlockEntity {
     }
 
     public void tickServer() {
-        if (level == null || level.isClientSide)
+        if (level == null || level.isClientSide || getHead().isEmpty())
             return;
         boolean changed = false;
         for (int due = strokesDue(); due > 0 && !workpiece.isEmpty(); due--) {
@@ -136,7 +141,7 @@ public class RollingMillBlockEntity extends ShopMachineBlockEntity {
                 changed |= clad();
                 continue;
             }
-            St strength = new St(MachineTuning.ROLLING_MILL_ST.value() * condition);
+            St strength = getHead().stroke(level.random, this);
             Deforming.Blow blow = Deforming.apply(workpiece, strength, level, OPERATION);
             if (!blow.landed()) {
                 wear(strength.value());

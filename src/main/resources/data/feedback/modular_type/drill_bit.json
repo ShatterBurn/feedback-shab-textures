@@ -1,0 +1,77 @@
+{
+  "family": "head",
+  "required": [
+    "H"
+  ],
+  "strike": 21.0,
+  "wear_litres": 0.05,
+  "wear_role": "H",
+  "primary": "H",
+  "blueprint": true,
+  "roles": {
+    "H": {
+      "name": "bit",
+      "class": "working_face",
+      "forms": [
+        "drill_blank"
+      ],
+      "litres": 0.05,
+      "layer": 0,
+      "axes": {
+        "flute": {
+          "min": 20,
+          "max": 80,
+          "unit": "%",
+          "default": 50,
+          "step": 5
+        }
+      },
+      "params": {
+        "axis_exp": -0.4
+      },
+      "part": {
+        "item": "feedback:drill_blank",
+        "cells": 1,
+        "stock": [
+          "@lump",
+          "@gem"
+        ],
+        "base": "twist_flute",
+        "variants": [
+          {
+            "name": "twist_flute",
+            "strike": 1.0
+          },
+          {
+            "name": "spade_flute",
+            "strike": 0.75
+          }
+        ],
+        "slots": [
+          {
+            "name": "body",
+            "share": 3
+          },
+          {
+            "name": "edge",
+            "forms": [
+              "@lump",
+              "@gem"
+            ],
+            "share": 1,
+            "traits": []
+          }
+        ]
+      }
+    }
+  },
+  "patterns": [
+    [
+      "H"
+    ]
+  ],
+  "defaults": {
+    "H": "feedback:iron"
+  },
+  "school": "materials:1"
+}

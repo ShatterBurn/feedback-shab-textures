@@ -1,0 +1,19 @@
+{
+  "type": "feedback:bootstrap_specimen",
+  "category": "equipment",
+  "modular_type": "feedback:roll",
+  "material": "feedback:iron",
+  "pattern": [
+    "III",
+    "SIS",
+    "III"
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "S": {
+      "item": "feedback:shaft"
+    }
+  }
+}

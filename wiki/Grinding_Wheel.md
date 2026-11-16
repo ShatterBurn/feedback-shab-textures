@@ -1,6 +1,6 @@
 # Grinding Wheel
 
-An abrasive stone wheel, the hardest cutter among the machines: it cuts what a drill bit or a lathe bit cannot, such as tungsten carbide and cermet.
+Spins an [Abrasive Wheel](Machine_Heads.md) against a workpiece. With a hard grit it cuts what a drill bit or a lathe bit cannot, such as tungsten carbide and cermet.
 
 The first part cut on a grinding wheel enters the [Machine Age](Ages.md) for you and any player nearby.
 
@@ -14,15 +14,19 @@ C B C
 
 C is Cobblestone, B is a [Bearing](Bearing.md) and S is a [Shaft](Shaft.md).
 
+The wheel is a [machine head](Machine_Heads.md): draw it at the Blueprint Table and put it together in a crafting grid. Its edge material is the grit; a wheel with diamond grit cuts the hardest stock.
+
 ## Using it
 
 It sits **directly on a shaft line**; connect it from any side. Faster turning grinds faster. It's a **45 Su** load.
 
-The wheel's hardness is **196** (alumina grit). It cuts everything softer than that, quartz and amethyst (108) and cermet (177) included. Titanium carbide and boron (294) need the Diamond Grinding Wheel below.
+The wheel's **grit hardness** decides what it cuts: everything softer than its grit, quartz and amethyst (108) and cermet (177) included. Titanium carbide and boron (294) need harder grit, such as diamond. The wheel's grit axis and shape set how hard the machine may drive it.
 
+- **Right-click with an Abrasive Wheel** to seat it; the wheel it replaces comes back.
 - **Right-click with an item** to put a workpiece in (or take the current one back).
-- **Right-click with an empty hand** to take it out.
-- **Sneak-right-click with an empty hand** switches between **coarse** and **fine** grit.
+- **Right-click with an empty hand** to take the workpiece out, then the wheel.
+
+With no wheel the machine does nothing.
 
 ## What it makes
 
@@ -38,23 +42,6 @@ The wheel **heats whatever it's grinding**, 0.4 Tu for every Wu it grinds. Enoug
 
 ## The wheel wears out, and that's normal
 
-Every other machine wears only when misused. A grinding wheel is different: **it wears every time it cuts**, because the grit is being used up.
+Every other head wears only when misused. An abrasive wheel is different: **it wears every time it cuts**, because the grit is being used up. A finer grit cuts gently and sheds slowly.
 
-- **Coarse** (35 St) cuts fast and wears the wheel fast: a wheel lasts **250 Wu** of grinding.
-- **Fine** (13 St) cuts slower and makes the wheel last longer: about **670 Wu**.
-
-A fully worn (bald) wheel **can't cut anything at all**. Breaking and replacing it doesn't help, because the wear goes with the item. Craft a new one.
-
-## Diamond Grinding Wheel
-
-The same wheel with diamond grit. Its hardness is **the diamond material's own (981)**, so it cuts everything the stone wheel does and the hardest stock too: titanium carbide and boron (294).
-
-```
-D C D
-C B C
-  S
-```
-
-D is a Diamond, C is Cobblestone, B is a [Bearing](Bearing.md) and S is a [Shaft](Shaft.md).
-
-It works exactly like the stone wheel: it sits on a shaft line, 45 Su, coarse and fine grit by sneak-right-click, heats what it grinds. **Grit is still the consumable**: it wears at the same rate per Wu as the stone wheel and a bald one cuts nothing.
+A fully worn (bald) wheel **can't cut anything at all**. The wear goes with the wheel, so taking it out and putting it back does not help. Make another.

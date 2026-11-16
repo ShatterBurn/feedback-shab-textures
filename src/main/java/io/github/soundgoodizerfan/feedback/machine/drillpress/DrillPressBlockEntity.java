@@ -5,7 +5,7 @@ package io.github.soundgoodizerfan.feedback.machine.drillpress;
 import io.github.soundgoodizerfan.feedback.machine.MachineTuning;
 import io.github.soundgoodizerfan.feedback.core.unit.St;
 import io.github.soundgoodizerfan.feedback.core.unit.Su;
-import io.github.soundgoodizerfan.feedback.machine.ShopMachineBlockEntity;
+import io.github.soundgoodizerfan.feedback.machine.HeadedShopMachineBlockEntity;
 import io.github.soundgoodizerfan.feedback.process.Operation;
 import io.github.soundgoodizerfan.feedback.process.Removing;
 import io.github.soundgoodizerfan.feedback.registry.FBlockEntities;
@@ -35,10 +35,15 @@ import net.minecraft.world.level.block.state.BlockState;
  * takes the rest of it to swarf. A bound, fast-fed bit -- see {@link MachineTuning#BIT_SNAP_CHANCE} --
  * costs the push; a push that cannot cut costs the machine (see {@code ShopMachineBlockEntity}).
  */
-public class DrillPressBlockEntity extends ShopMachineBlockEntity {
+public class DrillPressBlockEntity extends HeadedShopMachineBlockEntity {
 
     public DrillPressBlockEntity(BlockPos pos, BlockState state) {
         super(FBlockEntities.DRILL_PRESS.get(), pos, state);
+    }
+
+    @Override
+    public String headKind() {
+        return "drill_bit";
     }
 
     public boolean isFastFeed() {
@@ -55,7 +60,7 @@ public class DrillPressBlockEntity extends ShopMachineBlockEntity {
      * unpowered spindle biting into anything is a hazard in reality and a no-op here.
      */
     public void push() {
-        if (level == null || level.isClientSide || workpiece.isEmpty() || !isTurning())
+        if (level == null || level.isClientSide || workpiece.isEmpty() || getHead().isEmpty() || !isTurning())
             return;
 
         boolean fast = isFastFeed();
@@ -64,8 +69,9 @@ public class DrillPressBlockEntity extends ShopMachineBlockEntity {
             return;
         }
 
-        St driveForce = new St((fast ? MachineTuning.DRILL_PRESS_ST_FAST : MachineTuning.DRILL_PRESS_ST_SLOW).value() * condition);
-        Removing.Cut cut = Removing.apply(workpiece, driveForce, MachineTuning.DRILL_BIT_HARDNESS, Operation.DRILL,
+        St driveForce = new St(Math.min((fast ? MachineTuning.DRILL_PRESS_ST_FAST : MachineTuning.DRILL_PRESS_ST_SLOW).value() * getCondition(),
+                getHead().ceiling().value()));
+        Removing.Cut cut = Removing.apply(workpiece, driveForce, getHead().hardness(), Operation.DRILL,
                 1f, carriedWu, level);
         carriedWu = cut.carried();
         if (!cut.landed()) {

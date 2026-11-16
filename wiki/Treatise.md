@@ -19,7 +19,7 @@ Each school has one item per volume. Every volume is a subject of its own: holdi
 | Chemical Treatise I: Pressure Vessels | pressure vessel, boiler, gas tank |
 | Chemical Treatise II: Heat and Compression | heat exchanger, gas compressor |
 | Chemical Treatise III: Explosives | demolition charge |
-| Materials Treatise I: Machine-Shop Consumables | no types |
+| Materials Treatise I: Machine-Shop Consumables | roll, wire die, lathe bit, drill bit, abrasive wheel ([Machine Heads](Machine_Heads.md)) |
 
 Types outside every volume (tools, armor, water wheel, thermal store, Leyden jar, pump, fluid burner, electromagnet, galvanic cell, lamp, dynamotor, battery, belt and the rest) need no treatise.
 

@@ -20,7 +20,7 @@ A **File** is a toothed bar on a handle. Shape a **File Head** from a plate or a
 
 The head comes in three **cuts**. A **bastard cut** takes two grains a stroke, a **second cut** one, a **smooth cut** half a grain. Coarse strokes leave tool marks on the part; a part left with enough marks reads one flaw worse. Each stroke of a smooth file burnishes the marks of a coarser one away. A longer head takes more per stroke and wanders more (its **length** axis).
 
-A file also works parts at a bench: carried in your inventory, it takes a grain off an axis of a made part at the [Smithing Table](Smithing_Table.md#filing) and every other part bench. Put a file in a tool slot of the [Engineering Table](Engineering_Table.md). Recipes that ask for a file (the [Calipers](Instruments.md#calipers), a [Lathe Tool Bit](Lathe.md), a [Saw Head](Power_Cutter.md)) wear it a point.
+A file also works parts at a bench: carried in your inventory, it takes a grain off an axis of a made part at the [Smithing Table](Smithing_Table.md#filing) and every other part bench. Put a file in a tool slot of the [Engineering Table](Engineering_Table.md). Recipes that ask for a file (the [Calipers](Instruments.md#calipers), a [Saw Head](Power_Cutter.md)) wear it a point.
 
 ## Screwdriver
 

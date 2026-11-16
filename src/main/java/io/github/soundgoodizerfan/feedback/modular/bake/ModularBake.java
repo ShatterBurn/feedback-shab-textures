@@ -1190,8 +1190,17 @@ public final class ModularBake {
                     total += mass(type.roles().get(p.role()), p, by.get(p.role()));
                 f.put(Fig.MASS, total);
                 // Heavier, harder and tougher lifts the ceiling; brittleness has already cost the competence its square.
-                f.put(Fig.STRIKE_ST, ModularTuning.HEAD_ST_PER_MU_COMPETENCE * total * zone.wear()
-                        * type.roles().get(type.wearRole()).strike(wearPart));
+                // The type's own scale sets how much a blow of the head's stock is worth to the machine it seats in (a roll
+                // carries more than a die of the same mass), a variant's `strike` trades it, and the role's one axis moves it
+                // as `axis_exp` says (a wider roll carries more, a wider die bore leaves a thinner wall).
+                ModularType.Role headRole = type.roles().get(type.wearRole());
+                float axisShare = 1f;
+                float axisExp = headRole.params().getOrDefault("axis_exp", 0f);
+                if (axisExp != 0f)
+                    for (Map.Entry<String, ModularType.Axis> a : headRole.axesFor(wearPart).entrySet())
+                        axisShare *= (float) Math.pow(headRole.axis(wearPart, a.getKey()) / a.getValue().def(), axisExp);
+                f.put(Fig.STRIKE_ST, ModularTuning.HEAD_ST_PER_MU_COMPETENCE * total * zone.wear() * type.strike()
+                        * headRole.strike(wearPart) * axisShare);
             }
             case SUIT_MODULE -> {
                 Optional<Map<Fig, Float>> module = suitModule(type, by, design, materials);

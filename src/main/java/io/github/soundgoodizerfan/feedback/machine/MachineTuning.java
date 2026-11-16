@@ -273,16 +273,13 @@ public final class MachineTuning {
     // --- continuous deformation (machine shop) -----------------------------------------------
 
     /**
-     * Invented. The Wire Drawer's two draw speeds, in St -- the same shape as the hand crank's
-     * short/long throw (§17 of the philosophy), just relabelled for a machine with no crank of
-     * its own: slow is gentle and always safe, fast clears a higher hardness at the cost of a
-     * per-tick chance the wire snaps outright (see {@link #WIRE_SNAP_CHANCE}). Fast clears steel's
-     * hardness of 15; slow does not, which is a genuine hard gate rather than a slower route --
-     * steel wire is only reachable by accepting the risk, not by waiting it out.
+     * Invented. The Wire Drawer's two draw speeds, as a share of the seated die's ceiling -- the same shape as
+     * the hand crank's short/long throw (§17 of the philosophy): fast draws with the die's full ceiling at the cost
+     * of a per-tick chance the wire snaps outright (see {@link #WIRE_SNAP_CHANCE}); slow is gentle, always safe,
+     * and takes about a third of it, so a metal that only the die's full ceiling clears is reached only by
+     * accepting the risk, not by waiting it out.
      */
-    public static final St WIRE_DRAWER_ST_SLOW = new St(13f);
-
-    public static final St WIRE_DRAWER_ST_FAST = new St(40f);
+    public static final float WIRE_DRAWER_SLOW_SHARE = 0.325f;
 
     /** Invented. Chance per landed fast draw that the wire snaps outright (a draw lands about
      * four times a second at 32 RPM, so this is roughly the old 1%-per-tick rate). A
@@ -292,11 +289,6 @@ public final class MachineTuning {
     public static final float WIRE_SNAP_CHANCE = 0.05f;
 
     public static final Su WIRE_DRAWER_LOAD_SU = new Su(30f);
-
-    /** Invented. The Rolling Mill has one setting -- no discrete choice is named for it in the
-     * spec, so none is invented here. High enough to clear steel's hardness of 15 as well as
-     * copper's. */
-    public static final St ROLLING_MILL_ST = new St(44f);
 
     public static final Su ROLLING_MILL_LOAD_SU = new Su(50f);
 
@@ -332,13 +324,9 @@ public final class MachineTuning {
      */
     public static final float SWARF_DROP_CHANCE = 0.15f;
 
-    /** The Drill Press's stock bit: high-speed steel, about 800 HV, so 78 St (1 St = 0.1 GPa Vickers). A fixed rating rather than a swappable
-     * item this pass, since the Lathe is where a physical, wearable tool bit earns its own class. Clears steel (about 15 St). */
-    public static final St DRILL_BIT_HARDNESS = new St(78f);
-
     /** Invented. The Drill Press's two feed speeds -- slow is always safe, fast risks a bound,
      * snapped bit (see {@link #BIT_SNAP_CHANCE}) but cuts faster. Both clear steel's hardness once
-     * the bit itself does ({@link #DRILL_BIT_HARDNESS}); the choice is speed against risk, not
+     * the seated bit's edge does; the choice is speed against risk, not
      * possible against impossible, unlike the Wire Drawer's pair. */
     public static final St DRILL_PRESS_ST_SLOW = new St(22f);
 
@@ -351,42 +339,14 @@ public final class MachineTuning {
 
     public static final Su DRILL_PRESS_LOAD_SU = new Su(35f);
 
-    /**
-     * The Lathe's tool bit: a cemented-carbide insert, about 1500 HV, so 150 St (see {@code
-     * FDataComponents#TOOL_CONDITION}). Harder than the Drill Press's high-speed steel, softer than the grinding wheel.
-     */
-    public static final St LATHE_BIT_HARDNESS = new St(150f);
-
     /** Invented. Light/heavy pass -- same shape as every other discrete throw in the mod: heavy
      * cuts faster and coarser, light is slower and controllable. Neither risks the bit; only
-     * cutting a material the bit's own rating cannot clear wears it (see {@link #LATHE_BIT_WEAR_PER_ST}). */
+     * cutting a material the bit's own rating cannot clear wears it (see {@link #SHOP_MACHINE_WEAR_PER_ST}). */
     public static final St LATHE_ST_LIGHT = new St(18f);
 
     public static final St LATHE_ST_HEAVY = new St(40f);
 
     public static final Su LATHE_LOAD_SU = new Su(40f);
-
-    /** Invented. Same "force that cannot go into the work goes into the machine" rule the Hammer
-     * already uses, applied to the bit instead of a machine body: a cut the bit's own rating
-     * cannot clear wears it, landing a cut never does. */
-    public static final float LATHE_BIT_WEAR_PER_ST = 0.0005f;
-
-    public static final float LATHE_BIT_CONDITION_FLOOR = 0.4f;
-
-    /**
-     * The Grinding Wheel's own hardness: an alumina wheel, about 2000 HV, so 196 St. Set above every other removal tool in
-     * this document ({@link #DRILL_BIT_HARDNESS}, {@link #LATHE_BIT_HARDNESS}) on purpose, so it
-     * is the one route through a material like hardened tool steel rather than a finishing
-     * upgrade. {@link io.github.soundgoodizerfan.feedback.process.Removal#canBeCutBy} is the same gate either way; this is simply the one
-     * tool whose rating clears it.
-     */
-    public static final St GRINDING_WHEEL_HARDNESS = new St(196f);
-
-    /** Invented. Coarse/fine grit -- coarse removes faster and wears the wheel faster; fine is
-     * slower on both counts. Discrete, per §3, not a continuous grit number. */
-    public static final St GRINDING_WHEEL_ST_COARSE = new St(35f);
-
-    public static final St GRINDING_WHEEL_ST_FINE = new St(13f);
 
     public static final Su GRINDING_WHEEL_LOAD_SU = new Su(45f);
 
@@ -397,19 +357,9 @@ public final class MachineTuning {
      * GrindingWheelBlockEntity}'s own class doc for why this diverges from the Lathe and the
      * Hammer. Coarse wastes more grit per Wu than fine, matching real abrasive wear.
      */
-    public static final float GRINDING_WHEEL_WEAR_PER_WU_COARSE = 0.004f;
+    public static final float GRINDING_WHEEL_WEAR_PER_WU = 0.003f;
 
-    public static final float GRINDING_WHEEL_WEAR_PER_WU_FINE = 0.0015f;
-
-    /**
-     * Invented. Unlike every other condition floor in the mod ({@link #HAMMER_CONDITION_FLOOR},
-     * {@link #LATHE_BIT_CONDITION_FLOOR}), this one is zero: the wheel is genuinely consumed by
-     * use, not merely battered. At zero its effective hardness ({@code condition x rating}) is
-     * also zero, so a bald wheel fails {@link io.github.soundgoodizerfan.feedback.process.Removal#canBeCutBy} against anything -- a real hard
-     * gate (§7), not a machine refusing to run for no physical reason. The block itself is not
-     * destroyed; what is gone is the grit, and the block stays exactly as inspectable as any other
-     * spent tool.
-     */
+    /** The wheel is consumed to nothing: its condition floor is zero, and a bald wheel has no hardness left to cut with. */
     public static final float GRINDING_WHEEL_CONDITION_FLOOR = 0f;
 
     /** Invented. Tu added to the workpiece per Wu ground, proportional and small -- real

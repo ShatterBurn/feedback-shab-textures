@@ -5,7 +5,7 @@ package io.github.soundgoodizerfan.feedback.machine.wiredrawer;
 import io.github.soundgoodizerfan.feedback.machine.MachineTuning;
 import io.github.soundgoodizerfan.feedback.core.unit.St;
 import io.github.soundgoodizerfan.feedback.core.unit.Su;
-import io.github.soundgoodizerfan.feedback.machine.ShopMachineBlockEntity;
+import io.github.soundgoodizerfan.feedback.machine.HeadedShopMachineBlockEntity;
 import io.github.soundgoodizerfan.feedback.process.Deforming;
 import io.github.soundgoodizerfan.feedback.process.Operation;
 import io.github.soundgoodizerfan.feedback.registry.FBlockEntities;
@@ -24,18 +24,23 @@ import net.minecraft.world.level.block.state.BlockState;
  * with this on the same input item.
  *
  * <h2>Draw speed is the block's one setting</h2>
- * Fast clears a higher hardness -- {@link MachineTuning#WIRE_DRAWER_ST_FAST} reaches steel, {@link
- * MachineTuning#WIRE_DRAWER_ST_SLOW} does not, a genuine hard gate rather than patience -- but risks the
- * wire snapping on each draw that lands. A draw that cannot move the metal (too hard for the
- * setting, nothing left to draw) is absorbed by the die and wears the machine, the Hammer's rule.
- * Slow is always safe and is what a plain copper draw actually wants.
+ * Fast draws with the seated die's full ceiling and so clears a higher hardness, but risks the wire
+ * snapping on each draw that lands; slow draws with {@link MachineTuning#WIRE_DRAWER_SLOW_SHARE} of it,
+ * is always safe, and does not reach a metal only the full ceiling clears -- a genuine hard gate rather
+ * than patience. A draw that cannot move the metal is absorbed by the die and wears it, the Hammer's
+ * rule; with no die the drawer does nothing.
  */
-public class WireDrawerBlockEntity extends ShopMachineBlockEntity {
+public class WireDrawerBlockEntity extends HeadedShopMachineBlockEntity {
 
     private static final Operation OPERATION = Operation.DRAW;
 
     public WireDrawerBlockEntity(BlockPos pos, BlockState state) {
         super(FBlockEntities.WIRE_DRAWER.get(), pos, state);
+    }
+
+    @Override
+    public String headKind() {
+        return "wire_die";
     }
 
     public boolean isFastDraw() {
@@ -48,12 +53,12 @@ public class WireDrawerBlockEntity extends ShopMachineBlockEntity {
     }
 
     public void tickServer() {
-        if (level == null || level.isClientSide)
+        if (level == null || level.isClientSide || getHead().isEmpty())
             return;
         boolean fast = isFastDraw();
         boolean changed = false;
         for (int due = strokesDue(); due > 0 && !workpiece.isEmpty(); due--) {
-            St strength = new St((fast ? MachineTuning.WIRE_DRAWER_ST_FAST : MachineTuning.WIRE_DRAWER_ST_SLOW).value() * condition);
+            St strength = new St(getHead().stroke(level.random, this).value() * (fast ? 1f : MachineTuning.WIRE_DRAWER_SLOW_SHARE));
             Deforming.Blow blow = Deforming.apply(workpiece, strength, level, OPERATION);
             if (!blow.landed()) {
                 wear(strength.value());

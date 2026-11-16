@@ -1,6 +1,6 @@
 # Drill Press
 
-A spinning bit over a workpiece. The shaft keeps the bit turning, but **nothing gets drilled until you push it**. It's hand-fed, one push per click.
+A spinning [Drill Bit](Machine_Heads.md) over a workpiece. The shaft keeps the bit turning, but **nothing gets drilled until you push it**. It's hand-fed, one push per click.
 
 The first part cut on a drill press enters the [Machine Age](Ages.md) for you and any player nearby.
 
@@ -14,22 +14,25 @@ I I I
 
 I is a Wrought Iron Plate, B is a [Bearing](Bearing.md) and S is a [Shaft](Shaft.md). Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 3 [fasteners](Fasteners.md).
 
+The bit is a [machine head](Machine_Heads.md): draw it at the Blueprint Table and put it together in a crafting grid.
+
 ## Using it
 
 1. Put it on a shaft line (any side) and get it turning. It's a **35 Su** load.
-2. **Right-click with a workpiece** to put it under the bit.
-3. **Right-click with an empty hand** to push the bit down once. Each push cuts a little.
-4. **Right-click with an item** on an occupied press to take the workpiece back.
+2. **Right-click with a Drill Bit** to seat it; the bit it replaces comes back.
+3. **Right-click with a workpiece** to put it under the bit.
+4. **Right-click with an empty hand** to push the bit down once. Each push cuts a little.
+5. **Right-click with an item** on an occupied press to take the workpiece back. With the workpiece out, an empty hand takes the bit.
 
 **Sneak-right-click** with an empty hand switches between **slow feed** and **fast feed**.
 
-The bit has to be spinning. Pushing a stopped bit does nothing.
+The bit has to be spinning. Pushing a stopped bit does nothing, and a press with no bit does nothing.
 
 ## What it makes
 
 **Plate → Drilled Plate → Swarf**
 
-Keep pushing after the holes are done and you drill the plate away into swarf. Bits of swarf also fly off the top of the press now and then while you cut (15% of cuts).
+Keep pushing after the holes are done and you drill the plate away into swarf. Bits of swarf also fly off the top of the press while you cut (15% of cuts).
 
 It also drills most [gun parts](Gun_Parts.md): a turned rod into a **Gun Barrel** (and wider), an ingot into a **Receiver**, a ground ingot into a **Cylinder**, a rod into a **Magazine Tube**, a magazine tube into a **Muzzle Brake**, a nugget into a **Relief Vent**.
 
@@ -39,7 +42,7 @@ Two Wrought Iron Drilled Plates make a **Bullet Mold** (see [Ammunition](Ammunit
 
 ## Cutting is different from hammering
 
-Hammering is about **force**. Cutting is about the **tool being harder than the metal**. The drill bit is **78**: hard enough for copper, iron, cast iron, steel (15) and hardened steel (69), but **not** netherite (130) or tungsten carbide (157). Those need a harder cutter such as the [Grinding Wheel](Grinding_Wheel.md). JEI shows each metal's hardness under *"Tool must beat"*.
+Hammering is about **force**. Cutting is about the **tool being harder than the metal**. The drill bit's **edge hardness** decides what it cuts: a bit with an edge harder than the metal cuts it, one that is not does nothing but wear. Steel is 15, hardened steel 69, netherite 130 and tungsten carbide 157. A harder edge, or the [Grinding Wheel](Grinding_Wheel.md), reaches the hard stock. JEI shows each metal's hardness under *"Tool must beat"*.
 
 ## Slow vs. fast feed
 
@@ -50,4 +53,4 @@ Each push removes strength ÷ hardness in work. A drilled steel plate (about 13 
 
 ## Wear
 
-Pushing when the bit can't cut (metal too hard, or nothing left) wears the press.
+Pushing when the bit can't cut (metal too hard, or nothing left) wears the **bit**, not the press. See [Machine Heads](Machine_Heads.md#wear).

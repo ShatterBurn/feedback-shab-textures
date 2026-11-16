@@ -261,7 +261,7 @@ public class FBlocks {
                     .noOcclusion()));
 
     /** Same removal primitive as the Drill Press, adding the live-diameter sensor loop and a
-     * wearable physical tool bit. See {@code LatheBlockEntity}. */
+     * seated, wearable lathe bit. See {@code LatheBlockEntity}. */
     public static final DeferredBlock<LatheBlock> LATHE = BLOCKS.register("lathe",
             () -> new LatheBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.METAL)
@@ -278,16 +278,6 @@ public class FBlocks {
                     .strength(3.5f)
                     .sound(SoundType.STONE)
                     .noOcclusion()));
-
-    /** The stone wheel with diamond grit: rating is the diamond material's hardness, so it cuts
-     * crystals (quartz, amethyst) the stone wheel cannot. Same wear rules; grit is the consumable. */
-    public static final DeferredBlock<GrindingWheelBlock> DIAMOND_GRINDING_WHEEL = BLOCKS.register("diamond_grinding_wheel",
-            () -> new GrindingWheelBlock(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.DIAMOND)
-                    .strength(3.5f)
-                    .sound(SoundType.STONE)
-                    .noOcclusion(),
-                    net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("feedback", "diamond")));
 
     /**
      * The one genuinely new engine piece in the machine shop -- a second transmission type with

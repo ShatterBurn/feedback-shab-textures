@@ -1,0 +1,78 @@
+{
+  "family": "head",
+  "required": [
+    "H"
+  ],
+  "strike": 5.6,
+  "wear_litres": 0.15,
+  "wear_role": "H",
+  "primary": "H",
+  "blueprint": true,
+  "roles": {
+    "H": {
+      "name": "die",
+      "class": "working_face",
+      "forms": [
+        "die_blank"
+      ],
+      "litres": 0.15,
+      "layer": 0,
+      "axes": {
+        "aperture": {
+          "min": 20,
+          "max": 80,
+          "unit": "%",
+          "default": 50,
+          "step": 5
+        }
+      },
+      "params": {
+        "axis_exp": -0.5
+      },
+      "part": {
+        "item": "feedback:die_blank",
+        "cells": 2,
+        "stock": [
+          "@lump",
+          "@gem"
+        ],
+        "base": "short_bearing",
+        "variants": [
+          {
+            "name": "short_bearing",
+            "cells": 2
+          },
+          {
+            "name": "long_bearing",
+            "cells": 3,
+            "strike": 1.3
+          }
+        ],
+        "slots": [
+          {
+            "name": "body",
+            "share": 3
+          },
+          {
+            "name": "edge",
+            "forms": [
+              "@lump",
+              "@gem"
+            ],
+            "share": 1,
+            "traits": []
+          }
+        ]
+      }
+    }
+  },
+  "patterns": [
+    [
+      "H"
+    ]
+  ],
+  "defaults": {
+    "H": "feedback:iron"
+  },
+  "school": "materials:1"
+}
