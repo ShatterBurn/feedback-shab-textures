@@ -18,7 +18,7 @@ public enum School {
     /** Engines, gearboxes and the machinery that turns fuel into work. */
     MECHANICAL(2),
     /** Propellers and what flies. */
-    AEROSPACE(2),
+    AEROSPACE(3),
     /** Powered armour and its modules. */
     ROBOTICS(1),
     /** Pressure vessels, exchangers, boilers and the plant that holds and moves a process (chemical engineering). */

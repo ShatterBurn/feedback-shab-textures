@@ -1,0 +1,7 @@
+{
+  "parent": "feedback:block/gearbox",
+  "textures": {
+    "housing": "feedback:block/freewheel_housing",
+    "particle": "feedback:block/freewheel_housing"
+  }
+}

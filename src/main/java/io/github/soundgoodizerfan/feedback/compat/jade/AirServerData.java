@@ -35,6 +35,11 @@ public class AirServerData implements IServerDataProvider<BlockAccessor> {
         } else if (accessor.getBlockEntity() instanceof BallastTankBlockEntity ballast) {
             data.putString(KIND, "ballast");
             data.putFloat(FILL, ballast.getTank().getFluidAmount() / (float) ballast.getTank().getCapacity());
+        } else if (accessor.getBlockEntity() instanceof io.github.soundgoodizerfan.feedback.vehicle.jet.JetBlockEntity jet) {
+            data.putString(KIND, "jet");
+            data.putInt(STATUS, jet.status());
+            data.putBoolean(WORN, jet.condition() < 0.7f);
+            data.putBoolean("AirReheat", jet.reheating());
         } else if (accessor.getBlockEntity() instanceof PropBlockEntity prop) {
             data.putString(KIND, "prop");
             data.putInt(STATUS, prop.status());

@@ -10,6 +10,7 @@ A [vehicle](Vehicles.md) that floats on a lift gas. Its envelope is a block of [
 | [Vent Valve](Vent_Valve.md) | Lets gas out of the cells beside it to come down or relieve a full cell. |
 | [Ballast Tank](Ballast_Tank.md) | Holds water that weighs the craft down; dumping it lifts the craft. |
 | [Propeller](Propeller.md) | Pulls the craft along its facing from a turning shaft. |
+| [Jet](Jet.md) | Burns fuel in drawn air and pushes the craft along its facing. |
 | [Thruster](Thruster.md) | Pushes the craft along its facing by burning fuel. |
 | [Control Surfaces](Control_Surfaces.md) | Hinged wing plates that roll, pitch and yaw the craft. |
 

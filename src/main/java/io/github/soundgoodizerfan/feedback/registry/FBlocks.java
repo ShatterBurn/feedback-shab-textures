@@ -139,6 +139,11 @@ public class FBlocks {
                     .sound(SoundType.COPPER)
                     .noOcclusion()));
 
+    /** One shaft in, one shaft out that the input drives only while it is the faster; see {@code FreewheelBlock}. */
+    public static final DeferredBlock<io.github.soundgoodizerfan.feedback.machine.freewheel.FreewheelBlock> FREEWHEEL = BLOCKS.register("freewheel",
+            () -> new io.github.soundgoodizerfan.feedback.machine.freewheel.FreewheelBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.METAL).strength(3.0f).sound(SoundType.COPPER).noOcclusion()));
+
     /** One shaft in, two axles out, sharing the speed by their loads; see {@code DifferentialBlock}. */
     public static final DeferredBlock<io.github.soundgoodizerfan.feedback.machine.differential.DifferentialBlock> DIFFERENTIAL = BLOCKS.register("differential",
             () -> new io.github.soundgoodizerfan.feedback.machine.differential.DifferentialBlock(BlockBehaviour.Properties.of()

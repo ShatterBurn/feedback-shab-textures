@@ -38,6 +38,7 @@ public final class BlockFigures {
             return switch (idOf(type) + "/" + roleKey) {
                 case "heat_exchanger/F" -> material.thermal().conductivity().isPresent();
                 case "water_wheel/R", "pump/V", "compressor/I", "burner/F", "thruster/J", "hand_crank/G", "electromagnet/Y", "boiler/B", "flywheel/B", "flywheel/G", "lamp/B" -> material.density().muPerMb() > 0;
+                case "jet/B", "jet/T", "jet/A" -> material.thermal().serviceTemperature().isPresent() && material.density().muPerMb() > 0;
                 case "thermal_store/I" -> true;
                 case "thermal_store/F" -> material.density().muPerMb() > 0;
                 case "leyden_jar/F" -> material.ampacity().isPresent();
@@ -50,6 +51,8 @@ public final class BlockFigures {
             case "gas_tank", "boiler" -> material.kind().orElse(null) == Material.Kind.METAL && material.density().muPerMb() > 0
                     && material.mechanical().yieldStrength().isPresent();
             case "thruster" -> material.kind().orElse(null) == Material.Kind.METAL && material.density().muPerMb() > 0
+                    && material.mechanical().yieldStrength().isPresent();
+            case "jet" -> material.kind().orElse(null) == Material.Kind.METAL && material.density().muPerMb() > 0
                     && material.mechanical().yieldStrength().isPresent();
             case "water_wheel", "pump", "compressor", "burner", "hand_crank" -> material.density().muPerMb() > 0;
             case "galvanic_cell" -> material.kind().orElse(null) == Material.Kind.METAL && material.density().muPerMb() > 0;
@@ -254,6 +257,24 @@ float leak = ModularBake.param(type, part, "leak", 1f) * ModularTuning.JAR_LEAK 
                 float b = role.axis(part, "bore") / 20f;
                 out.putFloat("Force", b * b * ModularBake.param(type, part, "thrust", 1f));
                 out.putFloat("Burn", io.github.soundgoodizerfan.feedback.core.FTuning.THRUSTER_FUEL_MB_PER_TICK * b * b * ModularBake.param(type, part, "burn", 1f) * regenJacket(design, materials));
+            }
+            // Jet: the compressor sets the intake (its diameter) and the stages; the nozzle is converging or converging-diverging; the combustor
+            // liner and the turbine blades each state the heat they stand; an afterburner (an addon) adds a reheat stage behind the turbine.
+            case "jet" -> {
+                Part nozzle = design.part("N"), liner = design.part("B"), blades = design.part("T"), reheat = design.part("A");
+                Material lm = liner == null ? null : materials.get(liner.material()), bm = blades == null ? null : materials.get(blades.material()),
+                        am = reheat == null ? null : materials.get(reheat.material());
+                float d = role.axis(part, "diameter") / 100f;
+                out.putFloat("Intake", (float) (Math.PI / 4 * d * d));
+                out.putFloat("Stages", ModularBake.param(type, part, "stages", 3f));
+                out.putFloat("Divergent", nozzle == null ? 0f : ModularBake.param(type, nozzle, "divergent", 0f));
+                out.putFloat("LinerTu", lm == null ? 0f : lm.thermal().serviceTemperature().get().value());
+                out.putFloat("BladeTu", bm == null ? 0f : bm.thermal().serviceTemperature().get().value());
+                out.putFloat("ReheatTu", am == null ? 0f : am.thermal().serviceTemperature().get().value());
+                if (m.mechanical().yieldStrength().isPresent() && m.density().muPerMb() > 0)
+                    out.putFloat("TipLimit", Math.min(io.github.soundgoodizerfan.feedback.vehicle.VehicleTuning.PROP_TIP_SPEED_CAP,
+                            io.github.soundgoodizerfan.feedback.vehicle.VehicleTuning.PROP_TIP_SPEED_PER_SQRT_SPECIFIC_YIELD
+                                    * (float) Math.sqrt(m.mechanical().yieldStrength().get().value() / m.density().muPerMb())));
             }
             // Crank: a longer arm is more lever and a slower hand; a flywheel (an addon) carries it through the dead spot.
             case "hand_crank" -> {

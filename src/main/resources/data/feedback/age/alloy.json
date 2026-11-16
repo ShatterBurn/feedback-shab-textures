@@ -1,3 +1,23 @@
 {
-  "materials": ["feedback:stainless_steel", "feedback:nickel", "feedback:nickel_iron", "feedback:chromium", "feedback:aluminium", "feedback:titanium", "feedback:tungsten", "feedback:cobalt", "feedback:titanium_carbide", "feedback:tungsten_carbide", "feedback:thorium_tungsten", "feedback:cermet", "feedback:netherite", "feedback:cast_netherite", "feedback:osmium", "feedback:osmiridium"]
+  "materials": [
+    "feedback:stainless_steel",
+    "feedback:nickel",
+    "feedback:nickel_iron",
+    "feedback:chromium",
+    "feedback:aluminium",
+    "feedback:titanium",
+    "feedback:tungsten",
+    "feedback:cobalt",
+    "feedback:titanium_carbide",
+    "feedback:tungsten_carbide",
+    "feedback:thorium_tungsten",
+    "feedback:cermet",
+    "feedback:netherite",
+    "feedback:cast_netherite",
+    "feedback:osmium",
+    "feedback:osmiridium"
+  ],
+  "volumes": [
+    "aerospace:3"
+  ]
 }

@@ -1,0 +1,105 @@
+{
+  "school": "aerospace",
+  "volume": 3,
+  "title": "Air is the propellant",
+  "concepts": {
+    "propeller": {
+      "label": "A propeller",
+      "traits": [
+        "air",
+        "spin"
+      ]
+    },
+    "air": {
+      "label": "Air",
+      "traits": [
+        "air",
+        "gas"
+      ]
+    },
+    "compressor": {
+      "label": "A compressor",
+      "traits": [
+        "air",
+        "spin",
+        "pressure"
+      ]
+    },
+    "combustor": {
+      "label": "A combustor",
+      "traits": [
+        "burn",
+        "heat"
+      ]
+    },
+    "turbine": {
+      "label": "A turbine",
+      "traits": [
+        "spin",
+        "heat"
+      ]
+    },
+    "nozzle": {
+      "label": "A nozzle",
+      "traits": [
+        "pressure",
+        "jet"
+      ]
+    },
+    "momentum": {
+      "label": "Momentum",
+      "traits": [
+        "push",
+        "reaction"
+      ]
+    },
+    "exhaust": {
+      "label": "Exhaust",
+      "traits": [
+        "gas",
+        "jet"
+      ]
+    },
+    "jet": {
+      "label": "A jet",
+      "traits": [
+        "jet",
+        "air"
+      ]
+    },
+    "blade": {
+      "label": "A blade",
+      "traits": [
+        "spin",
+        "push"
+      ]
+    },
+    "lift": {
+      "label": "Lift",
+      "traits": [
+        "air",
+        "push"
+      ]
+    }
+  },
+  "start": "propeller",
+  "goal": "jet",
+  "replay": [
+    "A propeller throws air backward, slowly, a lot of it.",
+    "Squeeze the air first, burn fuel in it, and what leaves the nozzle is much faster.",
+    "The fast it is thrown, the less the aircraft's own speed matters; the faster the aircraft, the less it gains."
+  ],
+  "question": "Where does a jet get the stuff it throws backward?",
+  "options": [
+    "From its tank alone",
+    "From the air it passes through",
+    "From the ground"
+  ],
+  "answer": 1,
+  "eureka": {
+    "kind": "used",
+    "item": "feedback:thruster",
+    "threshold": 5,
+    "ink": 2
+  }
+}

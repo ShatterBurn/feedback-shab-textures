@@ -87,6 +87,15 @@
           }
         ]
       }
+    },
+    "V": {
+      "name": "pitch_linkage",
+      "forms": [
+        "rod"
+      ],
+      "litres": 0.03,
+      "bulk": 1,
+      "mount": "hub"
     }
   },
   "patterns": [
@@ -96,7 +105,8 @@
   ],
   "defaults": {
     "H": "feedback:steel",
-    "B": "feedback:aluminium"
+    "B": "feedback:aluminium",
+    "V": "feedback:steel"
   },
   "school": "aerospace:1"
 }

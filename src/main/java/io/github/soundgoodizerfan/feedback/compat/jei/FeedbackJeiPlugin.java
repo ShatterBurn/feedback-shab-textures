@@ -278,6 +278,7 @@ public class FeedbackJeiPlugin implements IModPlugin {
         registration.addIngredientInfo(FItems.MICRO_WEDGE.get(), Component.translatable("feedback.jei.info.micro_wedge"));
         registration.addIngredientInfo(FItems.LARGE_RING_GEAR.get(), Component.translatable("feedback.jei.info.large_ring_gear"));
         registration.addIngredientInfo(FItems.JOINT_LINK.get(), Component.translatable("feedback.jei.info.joint_link"));
+        registration.addIngredientInfo(FItems.FREEWHEEL.get(), Component.translatable("feedback.jei.info.freewheel"));
         registration.addIngredientInfo(FItems.DIFFERENTIAL.get(), Component.translatable("feedback.jei.info.differential"));
         registration.addIngredientInfo(FItems.TIRE_RUBBER.get(), Component.translatable("feedback.jei.info.tire_rubber"));
         registration.addIngredientInfo(FItems.BALL_JOINT.get(), Component.translatable("feedback.jei.info.ball_joint"));
@@ -465,6 +466,7 @@ public class FeedbackJeiPlugin implements IModPlugin {
         info(registration, FItems.CRYSTAL_HOLDER.get(), "crystal_holder");
         info(registration, FModular.BURNER.get(), "burner");
         info(registration, FModular.THRUSTER.get(), "thruster");
+        info(registration, FModular.JET.get(), "jet");
         info(registration, io.github.soundgoodizerfan.feedback.registry.FBlocks.BREAKER.get().asItem(), "breaker");
         info(registration, io.github.soundgoodizerfan.feedback.registry.FBlocks.BELLOWS.get().asItem(), "bellows");
         info(registration, io.github.soundgoodizerfan.feedback.registry.FBlocks.BIMETALLIC_STRIP.get().asItem(), "bimetallic_strip");

@@ -33,6 +33,7 @@ public class FItems {
     public static final DeferredItem<BlockItem> SMALL_COG = ITEMS.registerSimpleBlockItem(FBlocks.SMALL_COG);
     public static final DeferredItem<BlockItem> LARGE_COG = ITEMS.registerSimpleBlockItem(FBlocks.LARGE_COG);
     public static final DeferredItem<BlockItem> GEARBOX = ITEMS.registerSimpleBlockItem(FBlocks.GEARBOX);
+    public static final DeferredItem<BlockItem> FREEWHEEL = ITEMS.registerSimpleBlockItem(FBlocks.FREEWHEEL);
     public static final DeferredItem<BlockItem> DIFFERENTIAL = ITEMS.registerSimpleBlockItem(FBlocks.DIFFERENTIAL);
     public static final DeferredItem<BlockItem> ROTATION_ADAPTER = ITEMS.registerSimpleBlockItem(FBlocks.ROTATION_ADAPTER);
     public static final DeferredItem<BlockItem> ROTARY_BEARING = ITEMS.registerSimpleBlockItem(FBlocks.ROTARY_BEARING);

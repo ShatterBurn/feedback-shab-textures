@@ -15,6 +15,7 @@ Each school has one item per volume. Every volume is a subject of its own: holdi
 | Mechanical Treatise II: Transmission | transmission |
 | Aerospace Treatise I: Propellers | propeller |
 | Aerospace Treatise II: Thrusters | thruster |
+| Aerospace Treatise III: Jets | [jet](Jet.md) |
 | Robotics Treatise I: Suit Modules | suit module, and the servo, gauge, sensor head, battery bay and upgrade fittings of armor ([Exosuit](Exosuit.md)) |
 | Chemical Treatise I: Pressure Vessels | pressure vessel, boiler, gas tank |
 | Chemical Treatise II: Heat and Compression | heat exchanger, gas compressor |

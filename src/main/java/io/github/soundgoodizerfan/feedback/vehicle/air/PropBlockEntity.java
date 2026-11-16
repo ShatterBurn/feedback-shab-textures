@@ -45,7 +45,8 @@ import net.minecraft.world.phys.Vec3;
  * <p>Cost: no work unless the shaft turns. The server tick reads one speed and one density; the
  * physics step is one impulse and one torque with nothing allocated.
  */
-public class PropBlockEntity extends RotationNode implements BlockEntitySubLevelActor, io.github.soundgoodizerfan.feedback.machine.Mendable {
+public class PropBlockEntity extends RotationNode implements BlockEntitySubLevelActor, io.github.soundgoodizerfan.feedback.machine.Mendable,
+        io.github.soundgoodizerfan.feedback.control.Analog, io.github.soundgoodizerfan.feedback.control.data.DataNode, io.github.soundgoodizerfan.feedback.vehicle.VehiclePart {
 
     /** The modular build this was made from, kept so its parts' attunements act while it is placed and it can be reworked after it is picked up. */
     @Nullable
@@ -58,12 +59,15 @@ public class PropBlockEntity extends RotationNode implements BlockEntitySubLevel
     private volatile float rhoKgM3;
     private volatile float tipLimit = Float.MAX_VALUE;
     private float dragSu;
+    /** The card's pitch level, 0 reverse to 1 coarse; negative while no card has set it (a servo then holds the built pitch). */
+    private volatile float pitchLevel = -1f;
+    private final java.util.Set<io.github.soundgoodizerfan.feedback.control.data.DataNodeRef> links = new java.util.HashSet<>();
     /** 0 idle, 1 pulling, 2 stalled (past its zero-thrust advance ratio or too thin an air), 3 blade tips over their limit; set by the physics step. */
     private volatile int status;
 
     private final ForceTotal force = new ForceTotal();
     private final Vector3d centre = new Vector3d(), dir = new Vector3d(), lin = new Vector3d(), up = new Vector3d(),
-            worldDir = new Vector3d(), pushed = new Vector3d(), torque = new Vector3d();
+            worldDir = new Vector3d(), pushed = new Vector3d(), torque = new Vector3d(), down = new Vector3d(), weightLocal = new Vector3d();
 
     public PropBlockEntity(BlockPos pos, BlockState state) {
         super(FVehicles.PROPELLER_ENTITY.get(), pos, state);
@@ -105,16 +109,89 @@ public class PropBlockEntity extends RotationNode implements BlockEntitySubLevel
         return (float) Math.pow(d.blades() / 3f, VehicleTuning.PROP_BLADE_EXPONENT);
     }
 
+    // --- the pitch linkage ----------------------------------------------------------------------
+
+    @Override
+    public void setLevel(int channel, float level) {
+        pitchLevel = Math.clamp(level, 0f, 1f);
+    }
+
+    @Override
+    public String[] channelKeys() {
+        return new String[] {"feedback.analog.pitch"};
+    }
+
+    @Override
+    public boolean acceptsLinks() {
+        return false;
+    }
+
+    @Override
+    public BlockPos getNodePos() {
+        return worldPosition;
+    }
+
+    @Nullable
+    @Override
+    public Direction getNodeSide() {
+        return null;
+    }
+
+    @Override
+    public net.minecraft.world.level.Level getNodeLevel() {
+        return level;
+    }
+
+    @Override
+    public net.minecraft.world.level.block.entity.BlockEntity getNodeOwner() {
+        return this;
+    }
+
+    @Override
+    public java.util.Set<io.github.soundgoodizerfan.feedback.control.data.DataNodeRef> getNodeLinks() {
+        return links;
+    }
+
+    /** True while a card holds the blades in reverse pitch (a linkage only). */
+    private static boolean reversed(PropDesign d, float lvl) {
+        return d.servo() && lvl >= 0f && lvl < VehicleTuning.PROP_REVERSE_BAND;
+    }
+
+    /** The pitch index, 0 fine to 2 coarse (fractional between steps); the built step when no card sets it. */
+    private static float pitchIndex(PropDesign d, float lvl) {
+        if (!d.servo() || lvl < 0f)
+            return d.pitch();
+        float band = VehicleTuning.PROP_REVERSE_BAND;
+        return lvl < band ? 0f : (lvl - band) / (1f - band) * 2f;
+    }
+
+    private static float between(float[] table, float idx) {
+        int i = Math.min(1, (int) idx);
+        return table[i] + (table[i + 1] - table[i]) * (idx - i);
+    }
+
+    /** Thrust coefficient at rest for the pitch now: fades to nothing as a reverse level nears the feathered band edge. */
+    private static float ct0(PropDesign d, float lvl) {
+        float c = between(VehicleTuning.PROP_CT0, pitchIndex(d, lvl));
+        return reversed(d, lvl) ? c * (1f - lvl / VehicleTuning.PROP_REVERSE_BAND) : c;
+    }
+
+    private static float j0(PropDesign d, float lvl) {
+        return between(VehicleTuning.PROP_J0, pitchIndex(d, lvl));
+    }
+
     // --- the shaft ------------------------------------------------------------------------------
 
     /** The power coefficient: what the disc absorbs from the shaft, a share of its zero-airspeed thrust times where it quits. */
-    private static float cp(PropDesign d) {
-        return VehicleTuning.PROP_CP_PER_CT0_J0 * VehicleTuning.PROP_CT0[d.pitch()] * VehicleTuning.PROP_J0[d.pitch()] * solidity(d);
+    private static float cp(PropDesign d, float lvl) {
+        // A reversed disc still loads the shaft like a fine one; only its push fades toward feathered.
+        float c = between(VehicleTuning.PROP_CT0, pitchIndex(d, lvl));
+        return VehicleTuning.PROP_CP_PER_CT0_J0 * c * j0(d, lvl) * solidity(d);
     }
 
     /** Torque the disc takes from the shaft in N m at {@code n} turns a second and density {@code rho}: {@code Cp rho n^2 D^5 / 2 pi}. */
-    private static float torqueNm(PropDesign d, float n, float rho) {
-        return (float) (cp(d) * rho * n * n * Math.pow(d.diameter(), 5) / (2 * Math.PI));
+    private static float torqueNm(PropDesign d, float lvl, float n, float rho) {
+        return (float) (cp(d, lvl) * rho * n * n * Math.pow(d.diameter(), 5) / (2 * Math.PI));
     }
 
     @Override
@@ -150,7 +227,7 @@ public class PropBlockEntity extends RotationNode implements BlockEntitySubLevel
             condition = Math.max(VehicleTuning.PROP_CONDITION_FLOOR, condition - VehicleTuning.PROP_WEAR_PER_TICK * (tip / limit - 1f) * io.github.soundgoodizerfan.feedback.modular.attunement.MachineKinds.wearShare(this));
             setChanged();
         }
-        float drag = Math.abs(turn) < 1f ? 0f : torqueNm(d, n, rho) / Math.abs(turn);
+        float drag = Math.abs(turn) < 1f ? 0f : torqueNm(d, pitchLevel, n, rho) / Math.abs(turn);
         if (drag > 0f ? Math.abs(drag - dragSu) > 0.15f * dragSu : dragSu > 0f) {
             dragSu = drag;
             RotationPropagator.rebuildFrom(level, worldPosition);
@@ -163,6 +240,8 @@ public class PropBlockEntity extends RotationNode implements BlockEntitySubLevel
     public void sable$physicsTick(ServerSubLevel subLevel, RigidBodyHandle handle, double dt) {
         PropDesign d = design;
         float turn = rpm, rho = rhoKgM3;
+        if (d != null)
+            weigh(d, subLevel, handle, dt);
         if (d == null || rho <= 0f || Math.abs(turn) < 1f) {
             status = 0;
             return;
@@ -173,12 +252,14 @@ public class PropBlockEntity extends RotationNode implements BlockEntitySubLevel
         pose.transformNormal(dir, worldDir);
         handle.getLinearVelocity(lin);
         // A reversed shaft pushes the other way and is measured against motion along its own thrust direction.
-        float sense = Math.signum(turn);
+        float lvl = pitchLevel;
+        boolean flipped = reversed(d, lvl);
+        float sense = Math.signum(turn) * (flipped ? -1f : 1f);
         double airspeed = Math.max(0, lin.dot(worldDir) * sense);
         float n = Math.abs(turn) / 60f;
         double diameter = d.diameter();
         double j = airspeed / (n * diameter);
-        float ct0 = VehicleTuning.PROP_CT0[d.pitch()], j0 = VehicleTuning.PROP_J0[d.pitch()];
+        float ct0 = ct0(d, lvl), j0 = j0(d, lvl);
         double ct = ct0 * solidity(d) * Math.max(0, 1 - j / j0);
         double tip = Math.PI * diameter * n, limit = tipLimit;
         status = tip > limit ? 3 : ct <= 1e-4 ? 2 : 1;
@@ -193,8 +274,20 @@ public class PropBlockEntity extends RotationNode implements BlockEntitySubLevel
         io.github.soundgoodizerfan.feedback.vehicle.ForceLedger.record(subLevel, io.github.soundgoodizerfan.feedback.vehicle.ForceLedger.Cause.PROPULSION,
                 centre.x, centre.y, centre.z, pushed.x, pushed.y, pushed.z);
         // The spin's reaction on the airframe: the torque the disc takes from the shaft, against its sense.
-        double q = torqueNm(d, n, rho) / Units.SU_PER_KPG_TORQUE;
+        double q = torqueNm(d, lvl, n, rho) / Units.SU_PER_KPG_TORQUE;
         force.applyTorqueImpulse(torque.set(dir).mul(-Math.signum(turn) * q * dt));
+        handle.applyForcesAndReset(force);
+    }
+
+    /** Sable weighs only the block, so what the design weighs past it is a force down at the hub, spinning or not. */
+    private void weigh(PropDesign d, ServerSubLevel subLevel, RigidBodyHandle handle, double dt) {
+        float extraMu = d.massMu() - VehicleTuning.PROP_BLOCK_MU;
+        if (extraMu <= 0f)
+            return;
+        double weight = extraMu / Units.MU_PER_KPG * io.github.soundgoodizerfan.feedback.vehicle.Gravity.of(subLevel.getLevel());
+        subLevel.logicalPose().transformNormalInverse(down.set(0, -weight * dt, 0), weightLocal);
+        centre.set(worldPosition.getX() + 0.5, worldPosition.getY() + 0.5, worldPosition.getZ() + 0.5);
+        force.applyImpulseAtPoint(subLevel.getMassTracker(), centre, weightLocal);
         handle.applyForcesAndReset(force);
     }
 

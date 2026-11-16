@@ -309,6 +309,36 @@ public final class VehicleTuning {
     /** Placeholder [OPEN]. Condition a prop loses per tick per unit of tip speed over its limit (relative), and the lowest it falls to. */
     public static final float PROP_WEAR_PER_TICK = 0.002f, PROP_CONDITION_FLOOR = 0.2f;
 
+    /**
+     * Placeholder [OPEN]. A variable-pitch propeller (a pitch linkage on the hub): the card level below which the blades run reverse
+     * (full reverse at 0, feathered at this level), above it fine to coarse across the rest. A prop with no card sits at its built pitch.
+     */
+    public static final float PROP_REVERSE_BAND = 0.2f;
+
+    /**
+     * Placeholder [OPEN]. Weight of a propeller in Mu: the hub, plus per blade per metre of radius, both times the design's metal
+     * density against its blades' reference; the block itself weighs {@code PROP_BLOCK_MU} to Sable and the rest is a downward force.
+     */
+    public static final float PROP_HUB_MU = 6f, PROP_BLADE_MU_PER_M = 4f, PROP_BLOCK_MU = 10f;
+
+    /**
+     * Placeholder [OPEN]. A jet (flight A3). Air drawn through the intake at full spool and the extra per compressor stage (m/s);
+     * exhaust speed at the reference flame and the extra per stage (m/s); a divergent nozzle's exhaust speed share at rest and the
+     * speed it reaches 1.3 (m/s); the afterburner's added exhaust share and fuel multiple; the fuel a full-spool 1 m^2 intake burns (mB a tick).
+     */
+    public static final float JET_DRAW_SPEED = 90f, JET_STAGE_DRAW = 0.06f, JET_EXHAUST_SPEED = 650f, JET_STAGE_EXHAUST = 0.05f,
+            JET_CD_REST = 0.85f, JET_CD_SPEED = 250f, JET_AB_BOOST = 0.35f, JET_AB_FUEL = 2.5f, JET_FUEL_MB_PER_TICK_M2 = 6f;
+
+    /** Placeholder [OPEN]. Spool share a tick rises and falls at, the spool a lit jet holds itself at, the shaft RPM that starts one, the airspeed that windmills one (m/s). */
+    public static final float JET_SPOOL_UP = 0.004f, JET_SPOOL_DOWN = 0.0015f, JET_SELF_SUSTAIN = 0.2f, JET_STARTER_RPM = 20f, JET_WINDMILL_SPEED = 60f;
+
+    /** Placeholder [OPEN]. A throttle rise bigger than this on a spooled core stalls the compressor for this many ticks; each stall wears. */
+    public static final float JET_STALL_GAP = 0.45f, JET_STALL_WEAR = 0.01f;
+    public static final int JET_STALL_TICKS = 80;
+
+    /** Placeholder [OPEN]. Compressor tip speed at full spool (m/s) and the extra per stage; wear a tick per unit over the limit, and over a blade or liner temperature. */
+    public static final float JET_TIP_SPEED = 220f, JET_STAGE_TIP = 0.04f, JET_WEAR_PER_TICK = 0.002f, JET_CONDITION_FLOOR = 0.2f;
+
     /** Real-world derived. Water over air by density, for a screw in water. */
     public static final float WATER_OVER_AIR_DENSITY = 816f;
 

@@ -145,7 +145,7 @@ public class FCreativeTabs {
     private static final List<DeferredItem<?>> VEHICLE_PARTS = of(FVehicles.LIFT_ITEM, FVehicles.GAS_CELL_CLOTH_ITEM,
             FVehicles.GAS_CELL_RUBBER_ITEM, FVehicles.GAS_CELL_PLATE_ITEM, FVehicles.GAS_CELL_BLADDER_ITEM,
             FVehicles.GAS_CELL_MEMBRANE_ITEM, FVehicles.VENT_VALVE_ITEM, FVehicles.BALLAST_TANK_ITEM,
-            FVehicles.FLIGHT_SENSOR_ITEM, FVehicles.MICRO_CORE, FVehicles.SEAT_ITEM, FModular.THRUSTER,
+            FVehicles.FLIGHT_SENSOR_ITEM, FVehicles.MICRO_CORE, FVehicles.SEAT_ITEM, FModular.THRUSTER, FModular.JET,
             FItems.TIRE_RUBBER);
 
     // ---- Machines & Stations ----
@@ -213,7 +213,7 @@ public class FCreativeTabs {
     /** Rotation, in transmission order: shaft, bearings, gears, belts, then what controls the line. */
     private static final List<DeferredItem<?>> ROTATION = of(FItems.SHAFT, FItems.BEARING, FItems.ROTARY_BEARING,
             FItems.SMALL_COG, FItems.LARGE_COG, FItems.RING_GEAR, FItems.LARGE_RING_GEAR, FItems.SMALL_PULLEY,
-            FItems.LARGE_PULLEY, FItems.BELT, FItems.GEARBOX, FItems.DIFFERENTIAL, FItems.ROTATION_ADAPTER,
+            FItems.LARGE_PULLEY, FItems.BELT, FItems.GEARBOX, FItems.DIFFERENTIAL, FItems.FREEWHEEL, FItems.ROTATION_ADAPTER,
             FItems.CLUTCH, FItems.OVERSPEED_TRIP, FItems.ESCAPEMENT, FItems.SHEAVE, FModular.FLYWHEEL,
             FItems.MICRO_WEDGE);
 

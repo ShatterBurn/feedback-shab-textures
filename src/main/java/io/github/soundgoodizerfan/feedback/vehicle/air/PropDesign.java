@@ -22,8 +22,9 @@ import net.minecraft.util.Mth;
  * @param pitch      0 fine, 1 medium, 2 coarse: fine pulls hard from a standstill and tops out slow, coarse is the reverse.
  * @param material   the blades' metal.
  * @param massMult   weight against a plain prop (the hub and the mix of metals).
+ * @param servo      a pitch linkage is fitted: a controller card sets the pitch as a level, reverse through fine to coarse.
  */
-public record PropDesign(int blades, int diameterCm, int pitch, ResourceLocation material, float massMult) {
+public record PropDesign(int blades, int diameterCm, int pitch, ResourceLocation material, float massMult, boolean servo) {
 
     public static final int MIN_BLADES = 2, MAX_BLADES = 6, MIN_CM = 80, MAX_CM = 600;
 
@@ -32,7 +33,8 @@ public record PropDesign(int blades, int diameterCm, int pitch, ResourceLocation
             Codec.intRange(MIN_CM, MAX_CM).fieldOf("diameter").forGetter(PropDesign::diameterCm),
             Codec.intRange(0, 2).fieldOf("pitch").forGetter(PropDesign::pitch),
             ResourceLocation.CODEC.fieldOf("material").forGetter(PropDesign::material),
-            Codec.FLOAT.optionalFieldOf("mass_mult", 1f).forGetter(PropDesign::massMult)).apply(i, PropDesign::new));
+            Codec.FLOAT.optionalFieldOf("mass_mult", 1f).forGetter(PropDesign::massMult),
+            Codec.BOOL.optionalFieldOf("servo", false).forGetter(PropDesign::servo)).apply(i, PropDesign::new));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, PropDesign> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.VAR_INT, PropDesign::blades,
@@ -40,6 +42,7 @@ public record PropDesign(int blades, int diameterCm, int pitch, ResourceLocation
             ByteBufCodecs.VAR_INT, PropDesign::pitch,
             ResourceLocation.STREAM_CODEC, PropDesign::material,
             ByteBufCodecs.FLOAT, PropDesign::massMult,
+            ByteBufCodecs.BOOL, PropDesign::servo,
             PropDesign::new);
 
     /** The settings pulled back into range, so a design is always buildable. */
@@ -47,6 +50,12 @@ public record PropDesign(int blades, int diameterCm, int pitch, ResourceLocation
         blades = Mth.clamp(blades, MIN_BLADES, MAX_BLADES);
         diameterCm = Mth.clamp(diameterCm, MIN_CM, MAX_CM);
         pitch = Mth.clamp(pitch, 0, 2);
+    }
+
+    /** What the propeller weighs in Mu: a hub and, per blade, its length, times the metal's density against the blades' reference. */
+    public float massMu() {
+        return massMult * (io.github.soundgoodizerfan.feedback.vehicle.VehicleTuning.PROP_HUB_MU
+                + blades * (float) diameter() / 2f * io.github.soundgoodizerfan.feedback.vehicle.VehicleTuning.PROP_BLADE_MU_PER_M);
     }
 
     /** Disc diameter in blocks (metres). */

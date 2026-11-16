@@ -36,3 +36,4 @@ A Clutch can be a voxel of a [micro build](Micro_Core.md). A [Controller](Contro
 - Stopping one machine without stopping the whole line.
 - Automating stops with a [Timer](Timer.md) or [Controller](Controller.md).
 - An automatic version that trips on overspeed is the [Overspeed Trip](Overspeed_Trip.md).
+- A coupling that lets the output run free whenever it outpaces the input is the [Freewheel](Freewheel.md).

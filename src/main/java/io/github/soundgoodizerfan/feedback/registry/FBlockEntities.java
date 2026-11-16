@@ -85,6 +85,9 @@ public class FBlockEntities {
                     .of(GearboxBlockEntity::new, FBlocks.GEARBOX.get())
                     .build(null));
 
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<io.github.soundgoodizerfan.feedback.machine.freewheel.FreewheelBlockEntity>> FREEWHEEL =
+            BLOCK_ENTITIES.register("freewheel", () -> BlockEntityType.Builder
+                    .of(io.github.soundgoodizerfan.feedback.machine.freewheel.FreewheelBlockEntity::new, FBlocks.FREEWHEEL.get()).build(null));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<io.github.soundgoodizerfan.feedback.machine.differential.DifferentialBlockEntity>> DIFFERENTIAL =
             BLOCK_ENTITIES.register("differential", () -> BlockEntityType.Builder
                     .of(io.github.soundgoodizerfan.feedback.machine.differential.DifferentialBlockEntity::new, FBlocks.DIFFERENTIAL.get())

@@ -1,0 +1,163 @@
+{
+  "family": "block",
+  "required": [
+    "S",
+    "B",
+    "T",
+    "N"
+  ],
+  "school": "aerospace:3",
+  "slot": "mainhand",
+  "wear_litres": 0.5,
+  "wear_role": "S",
+  "primary": "S",
+  "blueprint": true,
+  "roles": {
+    "S": {
+      "name": "jet_compressor",
+      "class": "working_face",
+      "forms": [
+        "jet_compressor"
+      ],
+      "litres": 0.5,
+      "layer": 0,
+      "axes": {
+        "diameter": {
+          "min": 30,
+          "max": 120,
+          "unit": "cm",
+          "default": 60,
+          "step": 5,
+          "scales": true
+        }
+      },
+      "part": {
+        "item": "feedback:jet_compressor",
+        "cells": 6,
+        "stock": [
+          "plate"
+        ],
+        "base": "compressor_3",
+        "variants": [
+          {
+            "name": "compressor_3",
+            "cells": 5,
+            "params": {
+              "stages": 3
+            }
+          },
+          {
+            "name": "compressor_6",
+            "cells": 8,
+            "params": {
+              "stages": 6
+            }
+          },
+          {
+            "name": "compressor_9",
+            "cells": 11,
+            "params": {
+              "stages": 9
+            }
+          }
+        ],
+        "slots": [
+          {
+            "name": "core",
+            "share": 3
+          },
+          {
+            "name": "surface",
+            "share": 1,
+            "standard": "feedback:iron"
+          }
+        ]
+      }
+    },
+    "B": {
+      "name": "combustor_liner",
+      "class": "housing",
+      "forms": [
+        "plate"
+      ],
+      "litres": 0.04,
+      "layer": 1,
+      "bulk": 2
+    },
+    "T": {
+      "name": "turbine_blades",
+      "class": "housing",
+      "forms": [
+        "plate"
+      ],
+      "litres": 0.04,
+      "layer": 2,
+      "bulk": 2
+    },
+    "N": {
+      "name": "jet_nozzle",
+      "class": "working_face",
+      "forms": [
+        "jet_nozzle"
+      ],
+      "litres": 0.3,
+      "layer": 3,
+      "part": {
+        "item": "feedback:jet_nozzle",
+        "cells": 4,
+        "stock": [
+          "plate"
+        ],
+        "base": "nozzle_converging",
+        "variants": [
+          {
+            "name": "nozzle_converging",
+            "cells": 4,
+            "params": {
+              "divergent": 0
+            }
+          },
+          {
+            "name": "nozzle_divergent",
+            "cells": 6,
+            "params": {
+              "divergent": 1
+            }
+          }
+        ],
+        "slots": [
+          {
+            "name": "core",
+            "share": 3
+          },
+          {
+            "name": "surface",
+            "share": 1,
+            "standard": "feedback:iron"
+          }
+        ]
+      }
+    },
+    "A": {
+      "name": "afterburner",
+      "class": "housing",
+      "forms": [
+        "plate"
+      ],
+      "litres": 0.06,
+      "layer": 4,
+      "bulk": 2
+    }
+  },
+  "patterns": [
+    [
+      "SBTN"
+    ]
+  ],
+  "defaults": {
+    "S": "feedback:titanium",
+    "B": "feedback:stainless_steel",
+    "T": "feedback:cobalt",
+    "N": "feedback:stainless_steel"
+  }
+}

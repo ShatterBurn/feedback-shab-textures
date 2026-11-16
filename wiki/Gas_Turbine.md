@@ -30,4 +30,5 @@ If the spool is under the self-sustaining level, and nothing else is turning the
 
 - Fuel is burned at 2 mB a tick at full spool for a standard fuel.
 - A large [Dynamotor](Dynamotor.md) on a heavy-dense (8-turn) winding turns the 240 RPM shaft into the EHV band, which powers an [Arc Furnace](Arc_Furnace.md#power).
+- The [Jet](Jet.md) burns fuel the same way but pushes a craft directly.
 - A [Flare Stack](Flare_Stack.md) is the safe place to send gas the turbine does not need.

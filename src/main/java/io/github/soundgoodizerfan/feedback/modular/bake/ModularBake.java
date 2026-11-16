@@ -324,7 +324,7 @@ public final class ModularBake {
     /** The role letters of the engine's four parts and the gearbox's three. */
     public static final String ENGINE_BLOCK = "K", ENGINE_PISTONS = "P", ENGINE_CRANK = "C", ENGINE_HEAD = "H", ENGINE_PLUG = "S";
     /** The role letters of the propeller's two parts. */
-    public static final String PROP_HUB = "H", PROP_BLADES = "B";
+    public static final String PROP_HUB = "H", PROP_BLADES = "B", PROP_SERVO = "V";
     /** The role letter of the pressure vessel's shell. */
     public static final String TANK_SHELL = "S", TANK_BANDS = "B", TANK_VALVE = "V";
     public static final String GEAR_SET = "G", GEAR_SYNCHRO = "S", GEAR_CASE = "H";
@@ -468,7 +468,7 @@ public final class ModularBake {
         int pitch = Math.round(param(type, blades, "pitch", 1f));
         float mass = (1f + ModularTuning.PROP_HUB_MASS_PER_BLADE * (count - ModularTuning.PROP_HUB_MASS_REF_BLADES))
                 * massBlend(design, type, materials, bm, PROP_HUB, PROP_BLADES);
-        return Optional.of(new io.github.soundgoodizerfan.feedback.vehicle.air.PropDesign(count, diameter, pitch, blades.material(), mass));
+        return Optional.of(new io.github.soundgoodizerfan.feedback.vehicle.air.PropDesign(count, diameter, pitch, blades.material(), mass, design.part(PROP_SERVO) != null));
     }
 
     /**

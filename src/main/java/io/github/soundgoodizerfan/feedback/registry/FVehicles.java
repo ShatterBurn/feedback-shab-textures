@@ -123,6 +123,12 @@ public class FVehicles {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<io.github.soundgoodizerfan.feedback.vehicle.ThrusterBlockEntity>> THRUSTER_ENTITY =
             BLOCK_ENTITIES.register("thruster", () -> BlockEntityType.Builder.of(io.github.soundgoodizerfan.feedback.vehicle.ThrusterBlockEntity::new, THRUSTER.get()).build(null));
 
+    /** Jet (flight A3): compressor, combustor, turbine and nozzle in one block, pushing along its facing. */
+    public static final DeferredBlock<io.github.soundgoodizerfan.feedback.vehicle.jet.JetBlock> JET = BLOCKS.register("jet",
+            () -> new io.github.soundgoodizerfan.feedback.vehicle.jet.JetBlock(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(3.0f).sound(SoundType.METAL)));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<io.github.soundgoodizerfan.feedback.vehicle.jet.JetBlockEntity>> JET_ENTITY =
+            BLOCK_ENTITIES.register("jet", () -> BlockEntityType.Builder.of(io.github.soundgoodizerfan.feedback.vehicle.jet.JetBlockEntity::new, JET.get()).build(null));
+
     /** Flight sensor: altitude, airspeed, pitch or roll for a Controller card. */
     public static final DeferredBlock<io.github.soundgoodizerfan.feedback.vehicle.FlightSensorBlock> FLIGHT_SENSOR = BLOCKS.register("flight_sensor",
             () -> new io.github.soundgoodizerfan.feedback.vehicle.FlightSensorBlock(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(2.0f).sound(SoundType.METAL)));

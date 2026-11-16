@@ -42,6 +42,13 @@ public class AirComponent implements IBlockComponentProvider {
             }
             case "ballast" -> tooltip.add(Component.translatable("jade.feedback.air.ballast." + fill(data.getFloat(AirServerData.FILL)))
                     .withStyle(ChatFormatting.GRAY));
+            case "jet" -> {
+                tooltip.add(Component.translatable("jade.feedback.air.jet." + data.getInt(AirServerData.STATUS)).withStyle(ChatFormatting.GRAY));
+                if (data.getBoolean("AirReheat"))
+                    tooltip.add(Component.translatable("jade.feedback.air.jet.reheat").withStyle(ChatFormatting.GOLD));
+                if (data.getBoolean(AirServerData.WORN))
+                    tooltip.add(Component.translatable("jade.feedback.air.jet.worn").withStyle(ChatFormatting.YELLOW));
+            }
             case "prop" -> {
                 tooltip.add(Component.translatable("jade.feedback.air.prop." + data.getInt(AirServerData.STATUS)).withStyle(ChatFormatting.GRAY));
                 if (data.getBoolean(AirServerData.WORN))

@@ -10,8 +10,9 @@ Draw the propeller at the [Blueprint Table](Blueprint_Table.md) (pick *Propeller
 | --- | --- | --- |
 | **Prop Hub** | **blades** axis, 2 to 4 | The number of blades. More blades pull harder for the same diameter and weigh more. Made from ingots. |
 | **Prop Blades** | **pitch** axis: fine, medium or coarse | The blade angle. Made from plate. |
+| **Pitch linkage** (optional addon) | A rod in the hub that turns the blades. A [Controller](Controller.md) card then sets the pitch; see [Pitch control](#pitch-control). |
 
-The **diameter** is set on the blades, from 80 to 600 cm. The blades' metal needs a measured yield strength: it sets the tip speed the blades survive.
+The **diameter** is set on the blades, from 80 to 600 cm. The blades' metal needs a measured yield strength: it sets the tip speed the blades survive. The propeller's weight follows the blade metal's density, the hub and the length of each blade.
 
 ## Using it
 
@@ -31,6 +32,14 @@ Thrust grows with the shaft's turns, the disc diameter, the blade count, the pit
 - **Reverse.** A shaft turning backwards pushes the craft the other way, with noticeably weaker thrust than forward.
 - **Reaction.** The torque the blades take from the shaft pushes the airframe the other way, so a lone propeller rolls the craft against its spin.
 - **Water.** Under water a propeller is a ship's screw, with a load about 816 times that of air.
+
+## Pitch control
+
+With a pitch linkage, a [Controller](Controller.md) card sets the pitch as an analog level on the *Pitch* channel. From 0 to 0.2 the blades are in **reverse pitch**, fading to feathered at 0.2. Above that the pitch runs continuously from fine to coarse. Without a card the blades keep their built pitch.
+
+## Rotors
+
+A propeller facing up is a **rotor**: it lifts the craft, which gives a hover or a helicopter. The reaction torque spins the craft the other way, so a lone rotor turns the craft around it. A tail rotor, or a counter-rotating pair of rotors, cancels the spin.
 
 ## Misuse and hazards
 

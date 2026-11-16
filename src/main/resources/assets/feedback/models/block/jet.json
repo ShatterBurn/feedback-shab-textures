@@ -1,0 +1,23 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "intake": "feedback:block/jet_intake",
+    "exhaust": "feedback:block/jet_exhaust",
+    "side": "feedback:block/block_metal_hepatizon",
+    "particle": "feedback:block/block_metal_hepatizon"
+  },
+  "elements": [
+    {
+      "from": [0, 0, 0],
+      "to": [16, 16, 16],
+      "faces": {
+        "down": { "texture": "#exhaust", "cullface": "down" },
+        "up": { "texture": "#intake", "cullface": "up" },
+        "north": { "texture": "#side", "cullface": "north" },
+        "south": { "texture": "#side", "cullface": "south" },
+        "west": { "texture": "#side", "cullface": "west" },
+        "east": { "texture": "#side", "cullface": "east" }
+      }
+    }
+  ]
+}
