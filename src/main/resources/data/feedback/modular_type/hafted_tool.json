@@ -9,7 +9,7 @@
       "reach",
       "dig_speed",
       "hardness",
-      "edge_toughness",
+      "chip.limit",
       "durability",
       "balance",
       "joint",
@@ -23,7 +23,7 @@
         "bite",
         "dig_speed",
         "hardness",
-        "edge_toughness",
+        "chip.limit",
         "durability",
         "corrosion"
       ],
@@ -44,7 +44,7 @@
       ],
       "T": [
         "hardness",
-        "edge_toughness",
+        "chip.limit",
         "bite",
         "damage",
         "durability"

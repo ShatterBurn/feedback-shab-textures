@@ -65,7 +65,13 @@ Machine parts give more figures:
   - A spear or throwing axe shows its thrown speed in blocks a tick.
   - A gun shows the rounds it holds itself, the heat each shot adds to the barrel and the heat the barrel sheds a second (both in Tu), and how quickly its sight comes up (in ms).
   - A demolition charge shows its fragment damage and its fuse (or "on impact").
-  - A shield shows how much it slows you while raised and the heat it holds full strength to (or "never softens").
+  - A sword, spear, maul or axe build shows its **parry window**, **recovery**, **cone** and **rating** (see [Combat](Combat.md#parry)).
+  - A hafted head shows **Cuts clean to**: the hardest block its edge cuts without chipping. A brittle edge cuts clean only to softer blocks.
+  - A hafted file, screwdriver bit or knife lists its bench job in words: a file cuts coarse, medium or fine and leaves marks or a polish; a bit's tip suits screws, bolts or rivets, and it ratchets or not; a knife's blade slides or grains.
+  - A bow or crossbow shows its draw time, speed, damage, spread, pierce and the slow of drawing it, with the limb or prod length, a recurve, a rest, a stabilizer and a magazine already counted in.
+  - A shield shows how much it slows you while raised, the heat it holds full strength to (or "never softens"), its **wear rate** and the **chip damage**: the blocked damage a face takes without chipping.
+  - A gun shows its **bore life**: how many shots it takes to wear the bore to its floor.
+  - Armor shows the share of slash turned, and of blunt on mail or of shock on a rigid breastplate.
   - A spoon shows its stirring and skimming against the standard spoon, and the heat it can be held over a pot at.
   - A spring gun shows what a pellet hits for.
 

@@ -98,6 +98,40 @@ public final class ShieldHeat {
         return face == null ? Optional.empty() : Grip.stands(face);
     }
 
+    /** What a face's hardness does for it: how many times better than iron's it resists wear and heat softening (the square root of the ratio, kept near 1). */
+    public static float resist(float hardness) {
+        if (hardness <= 0f)
+            return 1f;
+        return Math.max(ModularTuning.SHIELD_RESIST_MIN, Math.min(ModularTuning.SHIELD_RESIST_MAX,
+                (float) Math.sqrt(hardness / ModularTuning.SHIELD_REF_HARDNESS)));
+    }
+
+    /** The share of the way from the room to the softening point that a face of {@code hardness} holds full strength to: a hard face holds further. */
+    public static float onset(float hardness) {
+        return Math.min(ModularTuning.SHIELD_SOFTEN_ONSET_MAX, ModularTuning.SHIELD_SOFTEN_ONSET * resist(hardness));
+    }
+
+    /** The temperature a face of {@code hardness} softening at {@code stands} holds full strength up to, in a room at {@code ambient}. */
+    public static float holdsFullTo(float ambient, float stands, float hardness) {
+        return ambient + onset(hardness) * (stands - ambient);
+    }
+
+    /** The blocked damage a face of edge {@code toughness} takes without chipping. */
+    public static float chipDamage(float toughness) {
+        return Math.max(0.01f, toughness) * ModularTuning.SHIELD_CHIP_SLACK / ModularTuning.SHIELD_WORK_PER_DAMAGE;
+    }
+
+    /** The extra points of wear a blow of {@code blocked} damage chips off a face of edge {@code toughness}: none under {@link #chipDamage}. */
+    public static int chip(float blocked, float toughness) {
+        float limit = chipDamage(toughness);
+        return blocked > limit ? Math.min(ModularTuning.CHIP_MAX, (int) (blocked / limit)) : 0;
+    }
+
+    private static float hardnessOf(ItemStack shield) {
+        ModularFigures f = ModularStacks.figures(shield);
+        return f == null ? 0f : f.get(ModularFigures.Fig.HARDNESS);
+    }
+
     /** The share of its capacity the face holds at its present temperature, 1 when cool. */
     public static float hold(Level level, ItemStack shield) {
         Optional<Float> stands = stands(level, shield);
@@ -105,9 +139,10 @@ public final class ShieldHeat {
         if (stands.isEmpty() || stands.get() <= ambient)
             return 1f;
         float frac = (ItemHeat.get(shield, level).value() - ambient) / (stands.get() - ambient);
-        if (frac <= ModularTuning.SHIELD_SOFTEN_ONSET)
+        float onset = onset(hardnessOf(shield));
+        if (frac <= onset)
             return 1f;
-        float t = Math.min(1f, (frac - ModularTuning.SHIELD_SOFTEN_ONSET) / (1f - ModularTuning.SHIELD_SOFTEN_ONSET));
+        float t = Math.min(1f, (frac - onset) / (1f - onset));
         return 1f + (ModularTuning.SHIELD_SOFTEN_FLOOR - 1f) * t;
     }
 
@@ -151,9 +186,17 @@ public final class ShieldHeat {
         t = approach(t, source, mass, ModularTuning.SHIELD_FIRE_TICKS);
         // A whole coat that would not melt in the source keeps part of the heat out of the face.
         t = now + (t - now) * (1f - ModularStacks.coatShield(shield, source));
+        ModularFigures figures = ModularStacks.figures(shield);
+        // A hard face takes less of the blow as wear; a brittle one chips under a heavy blow (a point a multiple, never the lot).
+        float wear = event.shieldDamage() / resist(figures.get(ModularFigures.Fig.HARDNESS));
         if (stands(level, shield).map(s -> now > s).orElse(false))
-            event.setShieldDamage(event.shieldDamage() * ModularTuning.SHIELD_HOT_WEAR_MULT);
+            wear *= ModularTuning.SHIELD_HOT_WEAR_MULT;
+        event.setShieldDamage(wear);
+        int chipped = chip(event.getBlockedDamage(), figures.get(ModularFigures.Fig.EDGE_TOUGHNESS));
+        if (chipped > 0)
+            shield.hurtAndBreak(ModularStacks.cap(shield, chipped), blocker, LivingEntity.getSlotForHand(blocker.getUsedItemHand()));
         stamp(shield, t, level);
+        ModularStacks.wetUse(shield, blocker);
     }
 
     /**

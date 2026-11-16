@@ -126,4 +126,18 @@ public final class ParryTuning {
     public static float coneHalfDegrees(float balance) {
         return CONE_MIN_DEG + CONE_BALANCE_DEG * Mth.clamp(balance, 0f, 1f);
     }
+
+    /** What a melee weapon of this mass, reach and balance makes of a parry: the one reading the runtime and the Blueprint Table both use. */
+    public record Profile(int window, int recovery, float coneHalfDeg, float rating) {
+    }
+
+    public static Profile profile(float mass, float reach, float balance) {
+        float heaviness = heaviness(mass, reach);
+        return new Profile(window(heaviness), recovery(heaviness), coneHalfDegrees(balance), rating(mass));
+    }
+
+    /** The Work a parry takes clean from a weapon of {@code mass} Mu before it wears (the weapon's rating). */
+    public static float rating(float mass) {
+        return mass * RATING_PER_MU;
+    }
 }

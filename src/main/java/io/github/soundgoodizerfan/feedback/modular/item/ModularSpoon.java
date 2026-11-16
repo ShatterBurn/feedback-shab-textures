@@ -124,8 +124,10 @@ public class ModularSpoon extends ModularItem {
             if (pot.temperature() > stands)
                 HotContact.burn(player, new Tu(pot.temperature()));
         }
-        if (held % ModularTuning.POT_STIR_WEAR_TICKS == 0)
+        if (held % ModularTuning.POT_STIR_WEAR_TICKS == 0) {
             stack.hurtAndBreak(1, player, user.getUsedItemHand() == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND);
+            ModularStacks.wetUse(stack, player);
+        }
     }
 
     @Override
@@ -135,7 +137,9 @@ public class ModularSpoon extends ModularItem {
         if (getUseDuration(stack, user) - remaining > ModularTuning.SPOON_TAP_TICKS)
             return;
         StockpotBlockEntity pot = pot(player, level);
-        if (pot != null && pot.skim(scoop(stack)))
+        if (pot != null && pot.skim(scoop(stack))) {
             stack.hurtAndBreak(1, player, user.getUsedItemHand() == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND);
+            ModularStacks.wetUse(stack, player);
+        }
     }
 }

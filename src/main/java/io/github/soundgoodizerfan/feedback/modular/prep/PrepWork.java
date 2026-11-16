@@ -68,7 +68,14 @@ public final class PrepWork {
         public static Edge of(net.minecraft.world.item.ItemStack knife) {
             var design = ModularStacks.design(knife);
             var type = design == null ? null : ModularTypes.known(design.type());
-            var blade = type == null ? null : design.part(type.primary());
+            return type == null ? PLAIN : of(design, type);
+        }
+
+        /** As {@link #of(net.minecraft.world.item.ItemStack)} for a design and its type. */
+        public static Edge of(io.github.soundgoodizerfan.feedback.modular.type.ModularDesign design,
+                              io.github.soundgoodizerfan.feedback.modular.type.ModularType type) {
+            type = io.github.soundgoodizerfan.feedback.modular.type.ModularFaces.view(type, design);
+            var blade = design.part(type.primary());
             if (blade == null)
                 return PLAIN;
             // The blade's length is what decides it: a short boning blade pulls to the grain and skids little on fat, a long slicer the reverse.

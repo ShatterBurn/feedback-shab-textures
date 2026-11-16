@@ -8,6 +8,8 @@
       "joint",
       "mass",
       "corrosion",
+      "file.cut",
+      "file.finish",
       "axis.length"
     ],
     "roles": {

@@ -116,8 +116,10 @@ public final class OffhandStrike {
             float yaw = player.getYRot() * Mth.DEG_TO_RAD;
             if (target instanceof LivingEntity living)
                 living.knockback(ModularTuning.SWEEP_KNOCKBACK * charge, Mth.sin(yaw), -Mth.cos(yaw));
-            if (!weapon.isEmpty())
+            if (!weapon.isEmpty()) {
                 weapon.hurtAndBreak(ModularStacks.cap(weapon, 1), player, EquipmentSlot.OFFHAND);
+                ModularStacks.wetUse(weapon, player);
+            }
             // After the blow, so its own landing (which rearms a strike clock) does not rearm the feint it was.
             if (feint && target instanceof LivingEntity living) {
                 CombatTicker.stagger(living, MeleeTuning.FEINT_STAGGER, ParryTuning.STAGGER_SLOW);

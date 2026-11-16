@@ -36,14 +36,43 @@ public final class RangedDispatch {
 
     /** The product of {@code name} over the traits the weapon has (its archetype and its addons); {@code fallback} when none names it. */
     private static float param(ItemStack weapon, String name, float fallback) {
+        return param(ModularTraits.actives(weapon), name, fallback);
+    }
+
+    private static float param(java.util.List<ModularTraits.Active> actives, String name, float fallback) {
         float product = 1f;
         boolean any = false;
-        for (ModularTraits.Active a : ModularTraits.actives(weapon))
+        for (ModularTraits.Active a : actives)
             if (a.params().values().containsKey(name)) {
                 product *= a.params().get(name, 1f);
                 any = true;
             }
         return any ? product : fallback;
+    }
+
+    /**
+     * What a ranged build does at full draw once its traits have their say: draw time in ticks, the launch speed as a multiple of the
+     * draw's own, the damage multiple, the inaccuracy multiple, mobs pierced and the share of walking speed lost while drawn. The same
+     * reads as {@link #drawScale}, {@link #launch}, {@link #spread} and the traits' {@code onArrow}, over any list of traits, so a
+     * drawing and a stack agree.
+     */
+    public record Shot(float drawTicks, float speed, float damage, float spread, int pierce, float slow) {
+    }
+
+    public static Shot shot(java.util.List<ModularTraits.Active> actives, ModularFigures f) {
+        float damage = 1f, slow = 0f;
+        int pierce = 0;
+        for (ModularTraits.Active a : actives) {
+            damage *= a.trait().shotDamage(a.params(), true);
+            pierce = Math.max(pierce, a.trait().shotPierce(a.params(), true));
+            if (slow <= 0f && a.trait() instanceof io.github.soundgoodizerfan.feedback.modular.trait.Handling)
+                slow = io.github.soundgoodizerfan.feedback.modular.trait.Handling.slow(a.params());
+        }
+        float baked = f.get(ModularFigures.Fig.DRAW) <= 0 ? io.github.soundgoodizerfan.feedback.modular.bake.ModularTuning.DRAW_REFERENCE_TICKS
+                : f.get(ModularFigures.Fig.DRAW);
+        float velocity = f.get(ModularFigures.Fig.VELOCITY) <= 0 ? 1f : f.get(ModularFigures.Fig.VELOCITY);
+        return new Shot(baked * param(actives, "draw_mult", 1f), velocity * param(actives, "velocity_mult", 1f), damage,
+                param(actives, "spread_mult", 1f), pierce, slow);
     }
 
     /** The multiple of the baked draw (or load) time this weapon's archetype takes. */

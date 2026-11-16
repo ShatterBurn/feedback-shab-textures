@@ -18,6 +18,7 @@
       "gun.rounds",
       "gun.heat",
       "gun.cool",
+      "gun.wear",
       "axis.bore",
       "axis.length"
     ],
@@ -33,14 +34,16 @@
         "chamber_rating",
         "mass",
         "gun.heat",
-        "gun.cool"
+        "gun.cool",
+        "gun.wear"
       ],
       "D": [
         "overpressure",
         "chamber_rating",
         "mass",
         "gun.heat",
-        "gun.cool"
+        "gun.cool",
+        "gun.wear"
       ],
       "T": [
         "spread",

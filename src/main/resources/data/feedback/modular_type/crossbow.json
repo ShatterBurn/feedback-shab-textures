@@ -2,8 +2,12 @@
   "family": "crossbow",
   "measures": {
     "show": [
-      "velocity",
-      "draw",
+      "bow.speed",
+      "bow.draw",
+      "bow.damage",
+      "bow.spread",
+      "bow.pierce",
+      "bow.slow",
       "joint",
       "mass",
       "durability",
@@ -12,15 +16,17 @@
     ],
     "roles": {
       "P": [
-        "velocity",
-        "draw",
+        "bow.speed",
+        "bow.draw",
+        "bow.damage",
+        "bow.pierce",
         "joint",
         "mass",
         "durability"
       ],
       "W": [
         "joint",
-        "velocity"
+        "bow.speed"
       ],
       "S": [
         "mass"
@@ -29,17 +35,21 @@
         "mass"
       ],
       "M": [
-        "draw",
+        "bow.damage",
+        "bow.spread",
+        "bow.draw",
         "mass"
       ],
       "B": [
         "joint"
       ],
       "E": [
+        "bow.spread",
         "mass"
       ],
       "X": [
-        "draw",
+        "bow.spread",
+        "bow.draw",
         "mass"
       ]
     }

@@ -110,6 +110,16 @@ public interface ModularTrait {
     default void onWornRemoved(Player wearer) {
     }
 
+    /** The multiple of a projectile's damage this trait gives ({@code fullDraw}: a bow drawn all the way); what {@link #onArrow} applies, so the Blueprint Table reads the same figure. */
+    default float shotDamage(Params params, boolean fullDraw) {
+        return 1f;
+    }
+
+    /** The mobs a projectile of this trait passes through; as {@link #shotDamage}. */
+    default int shotPierce(Params params, boolean fullDraw) {
+        return 0;
+    }
+
     /** A projectile the weapon has just made, before it is shot (ranged weapons): its damage and piercing may be set. */
     default void onArrow(net.minecraft.world.entity.projectile.AbstractArrow arrow, ItemStack weapon, Params params) {
     }

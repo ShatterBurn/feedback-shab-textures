@@ -40,6 +40,9 @@ public final class ModularMeasures {
             // weapons, tools and hand types (client/bench/WeaponUses)
             "hammer.blow", "dig.class", "throw.speed", "gun.rounds", "gun.heat", "gun.cool", "gun.aim", "charge.frag", "charge.fuse",
             "shield.slow", "shield.hot", "spoon.stir", "spoon.skim", "spoon.hold", "spring.damage",
+            "parry.window", "parry.recover", "parry.cone", "parry.rating", "chip.limit", "gun.wear", "shield.wear", "shield.chip",
+            "bow.draw", "bow.speed", "bow.damage", "bow.spread", "bow.pierce", "bow.slow", "armour.slash", "armour.blunt", "armour.shock",
+            "file.cut", "file.finish", "driver.fit", "driver.ratchet", "knife.cut",
             "egun.band", "egun.hold", "egun.pump", "egun.zoom", "egun.gauge", "egun.sense", "egun.lining", "egun.sink", "egun.lead", "egun.loss", "egun.charge", "egun.shots", "egun.bounces",
             "engine.cylinders", "engine.displacement", "engine.torque", "engine.peak", "engine.redline",
             "gearbox.gears", "gearbox.low", "gearbox.top", "gearbox.wear",

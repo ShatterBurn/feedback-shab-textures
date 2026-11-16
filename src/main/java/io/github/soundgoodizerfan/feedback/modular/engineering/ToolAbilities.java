@@ -64,7 +64,14 @@ public final class ToolAbilities {
     public static Face face(ItemStack tool, String kind) {
         var design = ModularStacks.design(tool);
         var type = design == null ? null : io.github.soundgoodizerfan.feedback.modular.type.ModularTypes.known(design.type());
-        if (type == null || type.family() != io.github.soundgoodizerfan.feedback.modular.type.ModularType.Family.HAFTED)
+        return type == null ? null : face(design, type, kind);
+    }
+
+    /** As {@link #face(ItemStack, String)} for a design and its type (the Blueprint Table reads a drawing through this). */
+    @Nullable
+    public static Face face(io.github.soundgoodizerfan.feedback.modular.type.ModularDesign design,
+                            io.github.soundgoodizerfan.feedback.modular.type.ModularType type, String kind) {
+        if (type.family() != io.github.soundgoodizerfan.feedback.modular.type.ModularType.Family.HAFTED)
             return null;
         for (var p : io.github.soundgoodizerfan.feedback.modular.type.ModularFaces.faces(design)) {
             var role = type.roles().get(p.role());
@@ -102,8 +109,16 @@ public final class ToolAbilities {
      */
     public static float ratchet(ItemStack driver) {
         var design = ModularStacks.design(driver);
-        var part = design == null || face(driver, "driver_bit") == null ? null : design.part("W");
-        var material = part == null ? null : io.github.soundgoodizerfan.feedback.process.MaterialTable.get().materials().get(part.material());
+        var type = design == null ? null : io.github.soundgoodizerfan.feedback.modular.type.ModularTypes.known(design.type());
+        return type == null ? 0f : ratchet(design, type, io.github.soundgoodizerfan.feedback.process.MaterialTable.get().materials());
+    }
+
+    /** As {@link #ratchet(ItemStack)} for a design and its type, over the materials of the side asking. */
+    public static float ratchet(io.github.soundgoodizerfan.feedback.modular.type.ModularDesign design,
+                                io.github.soundgoodizerfan.feedback.modular.type.ModularType type,
+                                java.util.Map<ResourceLocation, io.github.soundgoodizerfan.feedback.process.Material> materials) {
+        var part = face(design, type, "driver_bit") == null ? null : design.part("W");
+        var material = part == null ? null : materials.get(part.material());
         if (material == null)
             return 0f;
         return Math.max(0.01f, io.github.soundgoodizerfan.feedback.combat.gear.GearTuning.saturate(

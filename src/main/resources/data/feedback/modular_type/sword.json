@@ -8,12 +8,16 @@
       "attack_speed",
       "reach",
       "hardness",
-      "edge_toughness",
+      "chip.limit",
       "durability",
       "balance",
       "joint",
       "mass",
       "corrosion",
+      "parry.window",
+      "parry.recover",
+      "parry.cone",
+      "parry.rating",
       "axis.length",
       "axis.width"
     ],
@@ -23,7 +27,7 @@
         "impact",
         "bite",
         "hardness",
-        "edge_toughness",
+        "chip.limit",
         "durability",
         "corrosion"
       ]

@@ -10,6 +10,8 @@
       "corrosion",
       "shield.slow",
       "shield.hot",
+      "shield.wear",
+      "shield.chip",
       "axis.face_size",
       "axis.rim_width"
     ],
@@ -17,6 +19,8 @@
       "F": [
         "capacity",
         "shield.hot",
+        "shield.wear",
+        "shield.chip",
         "mass",
         "durability"
       ],

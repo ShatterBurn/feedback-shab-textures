@@ -157,6 +157,12 @@ public final class GunTuning {
     /** Bore erosion per Work delivered, times (1 + how hot the barrel is as a fraction of ignition). */
     public static final float GUN_WEAR_PER_WORK = 4.5e-7f;
 
+    /**
+     * Invented. A barrel of this hardness (iron's) wears at the round's own rate; a harder one wears less per shot and a softer one more,
+     * by the ratio, within these bounds ({@code GunCondition.boreWearPerShot}).
+     */
+    public static final float GUN_BORE_REF_HARDNESS = 8f, GUN_BORE_HARD_MIN = 0.25f, GUN_BORE_HARD_MAX = 4f;
+
     /** A worn gun bottoms out here (philosophy 10: a worse gun, never an empty one). */
     public static final float GUN_CONDITION_FLOOR = 0.4f;
 

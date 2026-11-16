@@ -179,11 +179,12 @@ public final class ModularFaces {
     /** The family a swing of {@code stack} is judged as, from its front live face: the base for any item that is not hafted. */
     public static ModularType.Family combat(ItemStack stack) {
         ModularDesign d = ModularStacks.design(stack);
-        if (d == null)
-            return null;
-        ModularType type = ModularTypes.known(d.type());
-        if (type == null)
-            return null;
+        ModularType type = d == null ? null : ModularTypes.known(d.type());
+        return type == null ? null : combat(d, type);
+    }
+
+    /** As {@link #combat(ItemStack)} for a design and its type. */
+    public static ModularType.Family combat(ModularDesign d, ModularType type) {
         if (type.family() != ModularType.Family.HAFTED)
             return type.family();
         for (String letter : LETTERS) {
@@ -199,10 +200,15 @@ public final class ModularFaces {
 
     /** What the live faces of {@code stack} do to a block they are used on, merged: strip, scrape, till and the rest. */
     public static Set<String> actions(ItemStack stack) {
-        Set<String> out = new LinkedHashSet<>();
         ModularDesign d = ModularStacks.design(stack);
         ModularType type = d == null ? null : ModularTypes.known(d.type());
-        if (type == null || type.family() != ModularType.Family.HAFTED)
+        return type == null ? new LinkedHashSet<>() : actions(d, type);
+    }
+
+    /** As {@link #actions(ItemStack)} for a design and its type. */
+    public static Set<String> actions(ModularDesign d, ModularType type) {
+        Set<String> out = new LinkedHashSet<>();
+        if (type.family() != ModularType.Family.HAFTED)
             return out;
         for (Part p : faces(d))
             if (!spent(p)) {

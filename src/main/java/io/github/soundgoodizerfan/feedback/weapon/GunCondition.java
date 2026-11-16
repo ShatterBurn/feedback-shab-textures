@@ -67,6 +67,7 @@ public final class GunCondition {
         gun.set(FDataComponents.HEATED_AT.get(), level.getGameTime());
         // A receiver the barrel's heat carries past its service temperature softens: each shot wears the gun by the excess.
         float soft = 0f;
+        io.github.soundgoodizerfan.feedback.process.Material boreMetal = null;
         var spec = GunSpec.of(gun);
         if (spec.isPresent()) {
             var rm = io.github.soundgoodizerfan.feedback.process.MaterialTable.get().materials().get(spec.get().parts().receiver());
@@ -75,6 +76,7 @@ public final class GunCondition {
             // The fittings are worked too: a brake's ports are cut by the gas, a vent's seat by what it lets out.
             var mats = io.github.soundgoodizerfan.feedback.process.MaterialTable.get().materials();
             var barrel = mats.get(spec.get().material());
+            boreMetal = barrel;
             float barrelYield = barrel == null ? 1f : barrel.mechanical().yieldStrength().map(y -> y.value()).orElse(1f);
             boolean vented = spec.get().fitted(mats).values().stream().anyMatch(fp -> {
                 float at = fp.reliefAt(barrelYield);
@@ -82,10 +84,28 @@ public final class GunCondition {
             });
             soft += spec.get().fittingWear(mats, vented);
         }
-        float worn = soft + f.muzzleEnergy() * GunTuning.GUN_WEAR_PER_WORK * boreWear * (1 + Math.max(0f, heat));
+        float worn = soft + boreWearPerShot(f.muzzleEnergy(), boreWear, boreMetal, heat);
         // An attuned Ward part turns wear away as it does on a tool: n levels leave 1/(n+1) of it.
         gun.set(FWeapons.GUN_WEAR.get(), wear(gun)
                 + worn / (1 + io.github.soundgoodizerfan.feedback.modular.attunement.WardKinds.levels(gun)));
+    }
+
+    /**
+     * What a shot of {@code muzzleEnergy} Work takes off the bore (the share of the gun's condition): the round's own erosion
+     * ({@link Cartridge#boreWear}) times how little the barrel's metal resists it (its hardness against {@code GUN_BORE_REF_HARDNESS},
+     * kept within {@code GUN_BORE_HARD_MIN..MAX}: a harder barrel is worked less per blow), larger again for a hot barrel. The
+     * runtime books it and the Blueprint Table counts shots with it, so the figure the player reads is the rule that acts.
+     */
+    public static float boreWearPerShot(float muzzleEnergy, float roundWear, io.github.soundgoodizerfan.feedback.process.Material barrel, float heat) {
+        float hardness = barrel == null ? 0f : barrel.hardness().value();
+        float yield = hardness <= 0f ? 1f : Math.max(GunTuning.GUN_BORE_HARD_MIN, Math.min(GunTuning.GUN_BORE_HARD_MAX, GunTuning.GUN_BORE_REF_HARDNESS / hardness));
+        return muzzleEnergy * GunTuning.GUN_WEAR_PER_WORK * roundWear * yield * (1 + Math.max(0f, heat));
+    }
+
+    /** How many shots of {@code muzzleEnergy} Work a cold bore takes before the gun is at its floor ({@link #condition}). */
+    public static float shotsToFloor(float muzzleEnergy, float roundWear, io.github.soundgoodizerfan.feedback.process.Material barrel) {
+        float per = boreWearPerShot(muzzleEnergy, roundWear, barrel, 0f);
+        return per <= 0f ? Float.MAX_VALUE : (1f - GunTuning.GUN_CONDITION_FLOOR) / per;
     }
 
     /**
