@@ -38,7 +38,7 @@ Right-click the Programmer. Put a blank Punch Card in its slot.
 | **Less Than** | number, number → yes/no | Yes if the left is smaller than the right. |
 | **Logic** | yes/no, yes/no → yes/no | **AND**: yes only if both are yes. **OR**: yes if either is yes. **NOT**: yes if its one input is no (the second input disappears). Click the middle to cycle AND, OR, NOT. |
 | **Math** | number, number → number | + − × ÷, min or max. Click the middle to cycle; the right input can be a typed number. For vehicles. |
-| **Delay** | number or yes/no → the same | Passes its input along after a wait. Click the middle to choose number or yes/no; click the length to step through 1 s, 5 s, 30 s, 2 min and 10 min; click *type a length* to enter any number of ticks from 20 (1 s) to 72000 (1 h). The length reads like `600 t (30 s)`. Typed lengths need an **Escapement** fitted to the [Controller](Controller.md#memory-and-upgrades). |
+| **Delay** | number or yes/no → the same | Passes its input along after a wait. Click the middle to choose number or yes/no; click the length to step through 1 s, 5 s, 30 s, 2 min and 10 min; click *type a length* to enter any number of ticks from 20 (1 s) to 72000 (1 h). The length reads like `600 t (30 s)`. The length row has a second input pin: wire any number card (sensor, math, read, another Delay) into it and the length follows that number in ticks, rounded and held between 1 and 72000 each step; the length buttons are hidden and the row reads *ticks*. Typed and wired lengths need an **Escapement** fitted to the [Controller](Controller.md#memory-and-upgrades). |
 | **Read** | → number or yes/no | The current value of one variable. Click the card to step through your variables; its output is a number or yes/no to match. |
 | **Write** | number or yes/no, yes/no → | Stores its first input in one variable on the moment its second input (the *when*) turns yes. Click the card to pick the variable; the first pin follows that variable's kind. |
 | **Switch** | yes/no or number → | Switches one linked block: on for yes, off for no. Works on clutches, valves, dampers, engines and breakers. A number only moves a vehicle part, such as an engine's throttle. |
@@ -58,7 +58,7 @@ The panel at the top right of the canvas declares the program's **variables**: n
 
 ## Loops
 
-A program may loop back on itself only through a *Delay*, since a Delay's output is what its input read earlier. Any other loop is refused. A *Read* has no input, so a *Write* feeding a *Read* through a variable is not a loop: the *Read* sees the stored value one step later.
+A program may loop back on itself only through a *Delay*, since a Delay's output is what its input read earlier. A Delay's length wire is read before its history, so the data input can still close a loop while the length comes from elsewhere. Any other loop is refused. A *Read* has no input, so a *Write* feeding a *Read* through a variable is not a loop: the *Read* sees the stored value one step later.
 
 
 ## Controls
@@ -90,7 +90,7 @@ Press **Print**. The program is checked first, and you'll be told if:
 - there are more than 40 cards or 16 variables (the most any [Controller](Controller.md#memory-and-upgrades) can hold), or
 - a Read or Write card names a variable that isn't declared, or a Delay length is out of range.
 
-Print does not know which Controller the card will go in. A Controller refuses to take a card that needs more cards or variables than it has room for, or a typed Delay length without an Escapement fitted, and says why.
+Print does not know which Controller the card will go in. A Controller refuses to take a card that needs more cards or variables than it has room for, or a typed or wired Delay length without an Escapement fitted, and says why.
 
 A printed Punch Card is **read-only**: *"Printed -- read only."* To change a program, print a new card.
 

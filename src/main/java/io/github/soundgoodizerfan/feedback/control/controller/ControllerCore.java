@@ -94,6 +94,8 @@ public class ControllerCore implements Container, Fittable {
     private long clock;
     /** Clock at which a delay's output next changes; {@link Long#MAX_VALUE} if none is pending. */
     private long nextDue = Long.MAX_VALUE;
+    /** The count each delay used on its last evaluated step, by node id: a wired count moves, so the due time follows it. */
+    private final Map<Integer, Integer> delayTicks = new HashMap<>();
     /** A variable changed: run another step so Reads see it. */
     private boolean dirty;
     private boolean priming;
@@ -319,11 +321,12 @@ public class ControllerCore implements Container, Fittable {
         }
 
         @Override
-        public Object delayed(DelayNode node) {
+        public Object delayed(DelayNode node, int ticks) {
+            delayTicks.put(node.id(), ticks);
             DelayHistory h = delays.get(node.id());
             if (h == null)
                 return node.type().zero();
-            float v = h.valueAt(clock - node.ticks());
+            float v = h.valueAt(clock - ticks);
             return node.type() == ValueType.NUMBER ? (Object) v : (Object) (v > 0.5f);
         }
 
@@ -335,7 +338,7 @@ public class ControllerCore implements Container, Fittable {
                 // Seeded as if the input had always been this: the output starts at the current input.
                 h = new DelayHistory();
                 delays.put(node.id(), h);
-                h.push(clock - node.ticks(), v);
+                h.push(clock - delayTicks.getOrDefault(node.id(), node.ticks()), v);
             } else if (!priming) {
                 h.pushIfChanged(clock, v);
             }
@@ -365,7 +368,9 @@ public class ControllerCore implements Container, Fittable {
     };
 
     private int ticksOf(int nodeId) {
-        return lastGraph.find(nodeId).map(n -> n instanceof DelayNode d ? d.ticks() : 0).orElse(0);
+        Integer last = delayTicks.get(nodeId);
+        return last != null ? last
+                : lastGraph.find(nodeId).map(n -> n instanceof DelayNode d ? d.ticks() : 0).orElse(0);
     }
 
     private float readSensor(SensorNode sensor) {
@@ -569,6 +574,7 @@ public class ControllerCore implements Container, Fittable {
     private void cardChanged() {
         lastGraph = ProgramGraph.EMPTY;
         delays.clear();
+        delayTicks.clear();
         pendingWrites.clear();
         nextDue = Long.MAX_VALUE;
         dirty = false;
@@ -682,6 +688,7 @@ public class ControllerCore implements Container, Fittable {
             upgrades.add(new EscapementFitting());
         lastGraph = ProgramGraph.EMPTY;
         delays.clear();
+        delayTicks.clear();
         nextDue = Long.MAX_VALUE;
     }
 }

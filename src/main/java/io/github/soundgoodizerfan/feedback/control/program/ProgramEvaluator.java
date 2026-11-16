@@ -61,9 +61,13 @@ public final class ProgramEvaluator {
             return true; // a dangling wire is ProgramGraph#findError's problem, not a cycle
 
         visiting.add(id);
-        // A delay's output is history, not a function of this step's input: its input edge is not
-        // a dependency, which is what lets a wire cycle pass through one.
-        if (!(node instanceof DelayNode))
+        // A delay's output is history, not a function of this step's input: its data edge is not
+        // a dependency, which is what lets a wire cycle pass through one. Its tick-count edge is: the
+        // count is read this step, before the history is looked up.
+        if (node instanceof DelayNode d) {
+            if (d.countWired() && !visit(d.ticksInput(), byId, visited, visiting, order))
+                return false;
+        } else
             for (int input : node.inputs())
                 if (!visit(input, byId, visited, visiting, order))
                     return false;
@@ -92,10 +96,10 @@ public final class ProgramEvaluator {
         /** Sets the variable; takes effect for reads from the next step. */
         void write(String variable, Object value);
 
-        /** The delay card's output this step: its input as it was {@code ticks} ago. */
-        Object delayed(DelayNode node);
+        /** The delay card's output this step: its input as it was {@code ticks} ago (the card's count, or the wired one, already clamped). */
+        Object delayed(DelayNode node, int ticks);
 
-        /** This step's input of the delay card, to remember. */
+        /** This step's input of the delay card, to remember; {@link #delayed} ran first with this step's count. */
         void record(DelayNode node, Object input);
 
         void endStep();
@@ -112,7 +116,7 @@ public final class ProgramEvaluator {
             }
 
             @Override
-            public Object delayed(DelayNode node) {
+            public Object delayed(DelayNode node, int ticks) {
                 return node.type().zero();
             }
 
@@ -241,7 +245,8 @@ public final class ProgramEvaluator {
                         actuatorWriter.write(n.target(), n.channel(), in instanceof Float ? in : (Object) asBoolean(in));
                         yield null;
                     }
-                    case DelayNode n -> coerce(state.delayed(n), n.type());
+                    case DelayNode n -> coerce(state.delayed(n, n.countWired()
+                            ? DelayNode.clampTicks(asFloat(value(right[p]))) : n.ticks()), n.type());
                     case ReadNode n -> coerce(state.read(n.variable()), variableType[p]);
                     case WriteNode n -> {
                         if (asBoolean(value(right[p])))

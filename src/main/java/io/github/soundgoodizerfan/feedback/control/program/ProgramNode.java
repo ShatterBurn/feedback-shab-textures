@@ -47,7 +47,7 @@ public sealed interface ProgramNode permits SensorNode, ComparatorNode, LogicNod
                     ? List.of(n.leftInput())
                     : List.of(n.leftInput(), n.rightInput());
             case ActuatorNode n -> List.of(n.input());
-            case DelayNode n -> List.of(n.input());
+            case DelayNode n -> n.countWired() ? List.of(n.input(), n.ticksInput()) : List.of(n.input());
             case ReadNode ignored -> List.of();
             case WriteNode n -> List.of(n.valueInput(), n.triggerInput());
         };
@@ -64,7 +64,7 @@ public sealed interface ProgramNode permits SensorNode, ComparatorNode, LogicNod
             case LogicNode n -> n.op().unary() ? List.of(n.leftInput()) : List.of(n.leftInput(), n.rightInput());
             case MathNode n -> List.of(n.leftInput(), n.rightInput());
             case ActuatorNode n -> List.of(n.input());
-            case DelayNode n -> List.of(n.input());
+            case DelayNode n -> List.of(n.input(), n.ticksInput());
             case ReadNode ignored -> List.of();
             case WriteNode n -> List.of(n.valueInput(), n.triggerInput());
         };
@@ -83,7 +83,9 @@ public sealed interface ProgramNode permits SensorNode, ComparatorNode, LogicNod
                     ? new MathNode(n.id(), n.op(), fromId, n.rightInput(), n.literalDefault())
                     : new MathNode(n.id(), n.op(), n.leftInput(), fromId, n.literalDefault());
             case ActuatorNode n -> new ActuatorNode(n.id(), fromId, n.target(), n.channel());
-            case DelayNode n -> new DelayNode(n.id(), fromId, n.type(), n.ticks());
+            case DelayNode n -> slot == 0
+                    ? new DelayNode(n.id(), fromId, n.type(), n.ticks(), n.ticksInput())
+                    : new DelayNode(n.id(), n.input(), n.type(), n.ticks(), fromId);
             case WriteNode n -> slot == 0
                     ? new WriteNode(n.id(), n.variable(), fromId, n.triggerInput())
                     : new WriteNode(n.id(), n.variable(), n.valueInput(), fromId);
@@ -100,7 +102,7 @@ public sealed interface ProgramNode permits SensorNode, ComparatorNode, LogicNod
             case LogicNode n -> new LogicNode(id, n.op(), n.leftInput(), n.rightInput());
             case MathNode n -> new MathNode(id, n.op(), n.leftInput(), n.rightInput(), n.literalDefault());
             case ActuatorNode n -> new ActuatorNode(id, n.input(), n.target(), n.channel());
-            case DelayNode n -> new DelayNode(id, n.input(), n.type(), n.ticks());
+            case DelayNode n -> new DelayNode(id, n.input(), n.type(), n.ticks(), n.ticksInput());
             case ReadNode n -> new ReadNode(id, n.variable());
             case WriteNode n -> new WriteNode(id, n.variable(), n.valueInput(), n.triggerInput());
         };
