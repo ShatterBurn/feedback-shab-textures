@@ -253,8 +253,13 @@ public final class VehicleTuning {
      */
     public static final float TIRE_WEAR_PER_BLOCK = 0.0001f, TIRE_SKID_WEAR_PER_BLOCK = 0.0005f, TIRE_CONDITION_FLOOR = 0.3f;
 
-    /** Invented. Air drag on every body (kpg per block^2 of cross-section): force is this times relative air density times the cross-section facing the motion times speed squared. About half of air's density times a blunt body's drag coefficient, so a stone block's terminal speed is near 40 blocks/s. Drivetrain frames drag by silhouette instead. */
-    public static final float AIR_DRAG = 0.6f;
+    /**
+     * Invented. Air drag on every body, in Sable's units (a kpg is a tonne): force is this times relative air density times the
+     * cross-section (blocks^2) facing the motion times speed squared. Half of air's density times a blunt body's drag coefficient
+     * of 1, so a stone block (2 kpg, 1 block^2) falls at about 190 blocks/s at most and a heavy craft is barely slowed.
+     * Drivetrain frames drag by silhouette instead.
+     */
+    public static final float AIR_DRAG = AIR_HALF_DENSITY_KPG_PER_BLOCK3 * 1.0f;
 
     /** Invented. Tunnelling guard: the farthest (blocks) a thruster body may move in one physics step; its speed ceiling is this over the step. Sable steps 1/40 s by default (2 substeps), so 1.0 is 40 blocks/s. */
     public static final float THRUSTER_MAX_STEP_BLOCKS = 1.0f;
