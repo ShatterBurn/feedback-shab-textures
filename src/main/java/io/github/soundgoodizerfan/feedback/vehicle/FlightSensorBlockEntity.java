@@ -95,6 +95,11 @@ public class FlightSensorBlockEntity extends BlockEntity implements SensorFittin
 
     /** The true figure for the current mode. */
     private float truth() {
+        return truth(mode);
+    }
+
+    /** The true figure for {@code m}. */
+    private float truth(Mode m) {
         Direction facing = getBlockState().getValue(FlightSensorBlock.FACING);
         Vector3d front = new Vector3d(facing.getStepX(), facing.getStepY(), facing.getStepZ());
         Vector3d up = new Vector3d(0, 1, 0);
@@ -104,7 +109,7 @@ public class FlightSensorBlockEntity extends BlockEntity implements SensorFittin
             body.logicalPose().transformNormal(front);
             body.logicalPose().transformNormal(up);
         }
-        return switch (mode) {
+        return switch (m) {
             case ALTITUDE -> (float) (at.y - (level == null ? 0 : level.getMinBuildHeight()));
             case AIRSPEED -> (float) speed;
             case VERTICAL_SPEED -> (float) climb;
@@ -146,6 +151,18 @@ public class FlightSensorBlockEntity extends BlockEntity implements SensorFittin
     public Component readValue() {
         return Instruments.signed(this, Component.translatable("feedback.flight_sensor.reading."
                 + mode.getSerializedName(), Instruments.format(truth(), resolution(mode.quantity()))));
+    }
+
+    /**
+     * Every figure this sensor can read, one line each, as it reads them: each quantised to the sensor's own resolution and
+     * signed as {@link #readValue} is. The Contraption Diagram shows them while it is open.
+     */
+    public java.util.List<Component> readings() {
+        java.util.List<Component> out = new java.util.ArrayList<>();
+        for (Mode m : Mode.values())
+            out.add(Instruments.signed(this, Component.translatable("feedback.flight_sensor.reading." + m.getSerializedName(),
+                    Instruments.format(truth(m), resolution(m.quantity())))));
+        return out;
     }
 
     @Override

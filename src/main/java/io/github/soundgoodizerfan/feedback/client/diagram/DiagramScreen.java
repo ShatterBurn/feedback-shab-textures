@@ -98,6 +98,16 @@ public class DiagramScreen extends Screen {
                 g.fill(x + PAD - 4, ly + 3, x + PAD, ly + 11, 0xFF000000 | c.colour());
                 ly += 16;
             }
+            // The sensor's own readings under the toggles, as it reads them (quantised, signed); live with the diagram's refresh.
+            var data = page.data();
+            if (data != null && data.onBody() && !data.flight().isEmpty()) {
+                int fy = y + 24 + Cause.values().length * 16 + 6 + 3 * 18 + 8;
+                g.drawString(font, Component.translatable("screen.feedback.diagram.flight"), x + PAD, fy, SKIN.dim(), false);
+                for (Component line : data.flight()) {
+                    fy += 11;
+                    g.drawString(font, font.split(line, LEGEND + 4).get(0), x + PAD, fy, SKIN.ink(), false);
+                }
+            }
             tip[0] = page.draw(g, SKIN, font, x + PAD * 2 + LEGEND, y + 24, side(), mx, my, partial);
             g.drawString(font, page.massText(), x + PAD * 2 + LEGEND + 88, y + 24 + side() + 9, SKIN.ink(), false);
             super.render(g, mx, my, partial);

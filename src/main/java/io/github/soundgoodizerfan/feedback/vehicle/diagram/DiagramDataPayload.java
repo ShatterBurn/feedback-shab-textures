@@ -23,7 +23,8 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
  * more in assembly mode). {@code onBody} is false when the sensor is not on a Sable body.
  */
 public record DiagramDataPayload(BlockPos sensor, boolean onBody, boolean assembly, float massMu,
-                                 float comX, float comY, float comZ, List<UUID> bodies, List<Sample> samples)
+                                 float comX, float comY, float comZ, List<UUID> bodies, List<Sample> samples,
+                                 List<net.minecraft.network.chat.Component> flight)
         implements CustomPacketPayload {
 
     public static final Type<DiagramDataPayload> TYPE = new Type<>(Feedback.id("diagram_data"));
@@ -42,6 +43,9 @@ public record DiagramDataPayload(BlockPos sensor, boolean onBody, boolean assemb
         buf.writeVarInt(p.bodies.size());
         for (UUID id : p.bodies)
             buf.writeUUID(id);
+        buf.writeVarInt(p.flight.size());
+        for (var c : p.flight)
+            net.minecraft.network.chat.ComponentSerialization.TRUSTED_STREAM_CODEC.encode(buf, c);
         buf.writeVarInt(p.samples.size());
         for (Sample s : p.samples) {
             buf.writeByte(s.cause().ordinal());
@@ -62,13 +66,17 @@ public record DiagramDataPayload(BlockPos sensor, boolean onBody, boolean assemb
         List<UUID> bodies = new ArrayList<>(nb);
         for (int i = 0; i < nb; i++)
             bodies.add(buf.readUUID());
+        int nf = buf.readVarInt();
+        List<net.minecraft.network.chat.Component> flight = new ArrayList<>(nf);
+        for (int i = 0; i < nf; i++)
+            flight.add(net.minecraft.network.chat.ComponentSerialization.TRUSTED_STREAM_CODEC.decode(buf));
         int ns = buf.readVarInt();
         List<Sample> samples = new ArrayList<>(ns);
         Cause[] causes = Cause.values();
         for (int i = 0; i < ns; i++)
             samples.add(new Sample(causes[Math.floorMod(buf.readByte(), causes.length)],
                     buf.readFloat(), buf.readFloat(), buf.readFloat(), buf.readFloat(), buf.readFloat(), buf.readFloat()));
-        return new DiagramDataPayload(sensor, onBody, assembly, mass, cx, cy, cz, bodies, samples);
+        return new DiagramDataPayload(sensor, onBody, assembly, mass, cx, cy, cz, bodies, samples, flight);
     }
 
     @Override

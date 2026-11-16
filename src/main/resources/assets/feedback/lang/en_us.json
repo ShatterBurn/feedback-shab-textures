@@ -8853,5 +8853,6 @@
   "feedback.jei.info.air_valve": "A wall valve. Air from a pipe (or a compressed-air bucket) goes through it into the sealed cabin it opens on, topping up the air people breathe. A cabin with a hole loses air through it faster than a valve can supply.",
   "modular.feedback.role.face_piece.tip": "The part that seals over the nose and mouth. Soft sheet (leather, cloth) seals the face.",
   "modular.feedback.role.filter.tip": "A cartridge of porous media (charcoal). A deeper bed works in thinner air and lasts longer, and makes breathing harder.",
-  "modular.feedback.role.cylinder.tip": "A cylinder that holds air for the mask. A thicker wall of a stronger metal holds more."
+  "modular.feedback.role.cylinder.tip": "A cylinder that holds air for the mask. A thicker wall of a stronger metal holds more.",
+  "screen.feedback.diagram.flight": "Flight sensor"
 }

@@ -65,7 +65,7 @@ public final class DiagramService {
         if (player.distanceToSqr(where.x, where.y, where.z) > REACH_SQ)
             return;
         if (root == null) {
-            PacketDistributor.sendToPlayer(player, new DiagramDataPayload(pos, false, assembly, 0, 0, 0, 0, List.of(), List.of()));
+            PacketDistributor.sendToPlayer(player, new DiagramDataPayload(pos, false, assembly, 0, 0, 0, 0, List.of(), List.of(), List.of()));
             return;
         }
         Set<ServerSubLevel> bodies = assembly ? assemblyOf(level, root) : Set.of(root);
@@ -106,7 +106,8 @@ public final class DiagramService {
         if (mass > 0)
             com.div(mass);
         PacketDistributor.sendToPlayer(player, new DiagramDataPayload(pos, true, assembly, (float) (mass * Units.MU_PER_KPG),
-                (float) com.x, (float) com.y, (float) com.z, ids, samples));
+                (float) com.x, (float) com.y, (float) com.z, ids, samples,
+                ((FlightSensorBlockEntity) level.getBlockEntity(pos)).readings()));
     }
 
     private static Set<ServerSubLevel> assemblyOf(ServerLevel level, ServerSubLevel root) {
