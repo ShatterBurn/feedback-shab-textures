@@ -41,6 +41,42 @@
       "G": [
         "joint",
         "mass"
+      ],
+      "T": [
+        "hardness",
+        "edge_toughness",
+        "bite",
+        "damage",
+        "durability"
+      ],
+      "P": [
+        "balance",
+        "attack_speed",
+        "mass"
+      ],
+      "Z": [
+        "joint"
+      ],
+      "R": [
+        "mass"
+      ],
+      "Y": [
+        "mass"
+      ],
+      "W": [
+        "mass"
+      ],
+      "J": [
+        "dig_speed_off",
+        "hardness_off",
+        "edge_toughness_off",
+        "durability_b"
+      ],
+      "K": [
+        "dig_speed_third",
+        "hardness_third",
+        "edge_toughness_third",
+        "durability_c"
       ]
     },
     "addons": {

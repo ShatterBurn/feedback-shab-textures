@@ -2,11 +2,24 @@
   "family": "hand",
   "measures": {
     "show": [
+      "spoon.stir",
+      "spoon.skim",
+      "spoon.hold",
+      "axis.depth",
       "durability",
-      "hardness",
-      "mass",
       "corrosion"
-    ]
+    ],
+    "roles": {
+      "B": [
+        "spoon.stir",
+        "spoon.skim",
+        "durability"
+      ],
+      "S": [
+        "spoon.hold",
+        "durability"
+      ]
+    }
   },
   "required": [
     "B",

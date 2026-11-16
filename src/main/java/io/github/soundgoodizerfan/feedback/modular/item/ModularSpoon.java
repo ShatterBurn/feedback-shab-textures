@@ -43,13 +43,21 @@ public class ModularSpoon extends ModularItem {
 
     /** The bowl against the reference spoon: 1 is the reference; a bigger bowl does proportionally more. */
     public static float bowl(ItemStack stack) {
-        float mb = ModularStacks.volumeMb(stack);
+        return bowl(ModularStacks.volumeMb(stack));
+    }
+
+    /** The bowl of {@code mb} against the reference spoon. */
+    public static float bowl(float mb) {
         return mb <= 0f ? 1f : mb / ModularTuning.SPOON_REF_BOWL_MB;
     }
 
     /** A figure of the bowl's shape by name ({@code stir}, {@code scoop}, {@code reach}: the variant's) and its depth axis; 1 for an unreadable design. */
     private static float shape(ItemStack stack, String name) {
-        ModularDesign design = ModularStacks.design(stack);
+        return shape(ModularStacks.design(stack), name);
+    }
+
+    /** A figure of the bowl of {@code design} by name, as {@link #shape(ItemStack, String)}; the Blueprint Table reads it off a drawing. */
+    public static float shape(ModularDesign design, String name) {
         ModularType type = design == null ? null : ModularTypes.known(design.type());
         var bowl = design == null ? null : design.part("B");
         if (type == null || bowl == null)
@@ -72,6 +80,11 @@ public class ModularSpoon extends ModularItem {
     /** What a skim of this spoon lifts, against the reference spoon. */
     public static float scoop(ItemStack stack) {
         return bowl(stack) * shape(stack, "scoop");
+    }
+
+    /** The hottest pot, in Tu, a hand may stir over with the handle of {@code material} at the bowl's reach {@code reach}. */
+    public static float holdsTo(net.minecraft.world.level.Level level, net.minecraft.resources.ResourceLocation material, float reach) {
+        return Grip.safeUpTo(level, material, ModularTuning.SPOON_EXPOSURE / reach);
     }
 
     @Override
@@ -107,7 +120,7 @@ public class ModularSpoon extends ModularItem {
         if (held % 20 == 0) {
             ModularDesign design = ModularStacks.design(stack);
             var handle = design == null ? null : design.part("S");
-            float stands = handle == null ? ThermalTuning.CONTACT_PAIN_TU.value() : Grip.safeUpTo(level, handle.material(), ModularTuning.SPOON_EXPOSURE / shape(stack, "reach"));
+            float stands = handle == null ? ThermalTuning.CONTACT_PAIN_TU.value() : holdsTo(level, handle.material(), shape(stack, "reach"));
             if (pot.temperature() > stands)
                 HotContact.burn(player, new Tu(pot.temperature()));
         }

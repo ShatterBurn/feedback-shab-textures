@@ -4,15 +4,46 @@
     "show": [
       "muzzle_energy",
       "muzzle_speed",
-      "bullet_mass",
       "cycle",
       "spread",
       "kick",
       "report",
       "overpressure",
       "chamber_rating",
-      "mass"
+      "mass",
+      "gun.rounds",
+      "axis.bore",
+      "axis.length"
     ],
+    "roles": {
+      "R": [
+        "chamber_rating",
+        "overpressure",
+        "spread",
+        "mass"
+      ],
+      "B": [
+        "overpressure",
+        "chamber_rating",
+        "mass"
+      ],
+      "T": [
+        "spread",
+        "mass"
+      ],
+      "G": [
+        "kick",
+        "mass"
+      ],
+      "K": [
+        "cycle",
+        "mass"
+      ],
+      "i": [
+        "brace_kick",
+        "brace_spread"
+      ]
+    },
     "addons": {
       "i": [
         "brace_kick",

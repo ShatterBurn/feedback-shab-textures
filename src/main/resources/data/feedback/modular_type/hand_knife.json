@@ -1,5 +1,29 @@
 {
   "face": true,
+  "measures": {
+    "show": [
+      "hardness",
+      "edge_toughness",
+      "durability",
+      "joint",
+      "mass",
+      "corrosion",
+      "axis.length",
+      "axis.width"
+    ],
+    "roles": {
+      "H": [
+        "hardness",
+        "edge_toughness",
+        "durability",
+        "corrosion"
+      ],
+      "S": [
+        "mass",
+        "joint"
+      ]
+    }
+  },
   "actions": [],
   "family": "hand",
   "strike": 0.0,

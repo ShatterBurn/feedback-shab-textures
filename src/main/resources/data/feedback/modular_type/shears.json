@@ -6,11 +6,24 @@
       "clip_fine",
       "reach",
       "durability",
-      "hardness",
       "edge_toughness",
       "mass",
-      "corrosion"
-    ]
+      "corrosion",
+      "axis.length"
+    ],
+    "roles": {
+      "B": [
+        "clip",
+        "clip_fine",
+        "reach",
+        "durability",
+        "edge_toughness",
+        "mass"
+      ],
+      "P": [
+        "durability"
+      ]
+    }
   },
   "required": [
     "B"

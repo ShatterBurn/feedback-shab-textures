@@ -612,6 +612,12 @@ public record ModularType(Family family, Slot slot, List<Mine> mines, float stri
                 blueprint, names, trait, traitParams, ranges, shapes, bakes, board, school, fasteners, tools, minigame, fitOrder, actions, face, required, measures);
     }
 
+    /** This type with {@code measures} in place of its own: the hafted plan's as its faces say ({@link ModularFaces#measuresOf}). */
+    public ModularType withMeasures(Measures measures) {
+        return new ModularType(family, slot, mines, strike, wearLitres, wearRole, primary, roles, patterns, defaults, vanilla, armourMax,
+                blueprint, names, trait, traitParams, ranges, shapes, bakes, board, school, fasteners, tools, minigame, fitOrder, actions, face, required, measures);
+    }
+
     /** This type with {@code school} as its gate and, if it has one, as a complex type: the plan as a build of gated faces sees it. */
     public ModularType withGate(String school) {
         return new ModularType(family, slot, mines, strike, wearLitres, wearRole, primary, roles, patterns, defaults, vanilla, armourMax,

@@ -37,6 +37,9 @@ public final class ModularMeasures {
             "pack.slots", "pack.carry", "pack.points", "pack.stores",
             "bed.comfort", "bed.warmth",
             "head.ceiling", "head.hardness",
+            // weapons, tools and hand types (client/bench/WeaponUses)
+            "hammer.blow", "dig.class", "throw.speed", "gun.rounds", "gun.heat", "gun.cool", "gun.aim", "charge.frag", "charge.fuse",
+            "shield.slow", "shield.hot", "spoon.stir", "spoon.skim", "spoon.hold", "spring.damage",
             "egun.band", "egun.hold", "egun.pump", "egun.zoom", "egun.gauge", "egun.sense", "egun.lining", "egun.sink", "egun.lead", "egun.loss", "egun.charge", "egun.shots", "egun.bounces",
             "engine.cylinders", "engine.displacement", "engine.torque", "engine.peak", "engine.redline",
             "gearbox.gears", "gearbox.low", "gearbox.top", "gearbox.wear",
@@ -73,6 +76,11 @@ public final class ModularMeasures {
         return fig(id).isPresent() || USES.contains(id) || id.startsWith(BLOCK) && id.length() > BLOCK.length() || id.startsWith(AXIS) && id.length() > AXIS.length();
     }
 
+    /** The measures of {@code type} as {@code design} builds it: a hafted plan's carry its faces' ({@link ModularFaces#measuresOf}), any other type's are its own. */
+    private static ModularType.Measures of(ModularType type, ModularDesign design) {
+        return type.family() == ModularType.Family.HAFTED ? ModularFaces.measuresOf(type, design) : type.measures();
+    }
+
     /** Whether the type states what matters. A type that does not shows everything it bakes. */
     public static boolean declared(ModularType type) {
         return type != null && !type.measures().show().isEmpty();
@@ -85,10 +93,11 @@ public final class ModularMeasures {
     public static List<String> show(ModularType type, String role, ModularDesign design) {
         if (!declared(type))
             return List.of();
+        ModularType.Measures m = of(type, design);
         Set<String> out = new LinkedHashSet<>();
         if (role != null)
-            out.addAll(type.measures().roles().getOrDefault(role, List.of()));
-        out.addAll(type.measures().show());
+            out.addAll(m.roles().getOrDefault(role, List.of()));
+        out.addAll(m.show());
         out.addAll(added(type, design));
         return List.copyOf(out);
     }
@@ -97,28 +106,32 @@ public final class ModularMeasures {
     public static List<String> added(ModularType type, ModularDesign design) {
         if (type == null || design == null)
             return List.of();
+        ModularType.Measures m = of(type, design);
         List<String> out = new ArrayList<>();
         for (ModularDesign.Part p : design.parts()) {
-            out.addAll(type.measures().addons().getOrDefault(p.role(), List.of()));
+            out.addAll(m.addons().getOrDefault(p.role(), List.of()));
             if (p.variant() != null && !p.variant().isEmpty())
-                out.addAll(type.measures().variants().getOrDefault(p.variant(), List.of()));
+                out.addAll(m.variants().getOrDefault(p.variant(), List.of()));
         }
         return out;
     }
 
     /**
      * The ids the swatches of part {@code role} may be sorted by: the part's own, else the type's {@code sort}, else everything it shows.
-     * Null when the type declares none (every listed figure sorts).
+     * Never an axis: a part's measure is the same for every swatch of it, so sorting by one sorts nothing. Null when the type
+     * declares none (every listed figure sorts).
      */
     public static Set<String> sortKeys(ModularType type, String role, ModularDesign design) {
         if (!declared(type))
             return null;
+        ModularType.Measures m = of(type, design);
         Set<String> out = new LinkedHashSet<>(added(type, design));
-        List<String> own = role == null ? List.of() : type.measures().roles().getOrDefault(role, List.of());
+        List<String> own = role == null ? List.of() : m.roles().getOrDefault(role, List.of());
         if (!own.isEmpty())
             out.addAll(own);
         else
-            out.addAll(type.measures().sort().isEmpty() ? type.measures().show() : type.measures().sort());
+            out.addAll(m.sort().isEmpty() ? m.show() : m.sort());
+        out.removeIf(id -> id.startsWith(AXIS));
         return out;
     }
 
@@ -142,24 +155,35 @@ public final class ModularMeasures {
         return show(type, null, null).stream().anyMatch(id -> fig(id).isEmpty());
     }
 
-    /** Ids a type names that nothing can read, for the load log. */
+    /**
+     * Ids a type names that nothing can read, for the load log. A face definition's {@code roles} and {@code addons} are keyed by the
+     * letters of the hafted plan it is fitted to, and its (and the plan's) {@code variants} may name a head variant of any face.
+     */
     public static List<String> problems(Map<ResourceLocation, ModularType> types) {
         List<String> out = new ArrayList<>();
+        ModularType plan = types.get(ModularFaces.PLAN);
+        Set<String> faceVariants = new java.util.HashSet<>();
+        for (ModularType f : types.values())
+            if (f.face())
+                faceVariants.addAll(variantNames(f));
         types.forEach((id, t) -> {
+            // A face is fitted to the plan: its role letters are the plan's.
+            ModularType letters = t.face() && plan != null ? plan : t;
             List<String> all = new ArrayList<>(t.measures().show());
             all.addAll(t.measures().sort());
             t.measures().roles().forEach((role, ids) -> {
-                if (!t.roles().containsKey(role))
+                if (!letters.roles().containsKey(role))
                     out.add(id + " measures: role '" + role + "' is not a role of the type");
                 all.addAll(ids);
             });
             t.measures().addons().forEach((role, ids) -> {
-                if (!t.roles().containsKey(role))
+                if (!letters.roles().containsKey(role))
                     out.add(id + " measures: addon '" + role + "' is not a role of the type");
                 all.addAll(ids);
             });
-            Set<String> names = new java.util.HashSet<>();
-            t.roles().values().forEach(r -> r.part().ifPresent(sh -> sh.variants().forEach(v -> names.add(v.name()))));
+            Set<String> names = variantNames(t);
+            if (t.face() || t.family() == ModularType.Family.HAFTED)
+                names.addAll(faceVariants);
             t.measures().variants().forEach((name, ids) -> {
                 if (!names.contains(name))
                     out.add(id + " measures: '" + name + "' is no variant of the type");
@@ -170,5 +194,12 @@ public final class ModularMeasures {
                     out.add(id + " measures: '" + m + "' is no figure, family number or axis");
         });
         return out;
+    }
+
+    /** The names of the variants of every part of {@code t}. */
+    private static Set<String> variantNames(ModularType t) {
+        Set<String> names = new java.util.HashSet<>();
+        t.roles().values().forEach(r -> r.part().ifPresent(sh -> sh.variants().forEach(v -> names.add(v.name()))));
+        return names;
     }
 }

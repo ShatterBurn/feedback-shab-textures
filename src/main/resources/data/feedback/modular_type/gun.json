@@ -4,19 +4,22 @@
     "show": [
       "muzzle_energy",
       "muzzle_speed",
-      "bullet_mass",
       "cycle",
       "spread",
       "kick",
       "report",
       "overpressure",
       "chamber_rating",
-      "peak_pressure",
       "heat_factor",
       "shed_factor",
       "fitting_limit",
       "fitting_wear",
-      "mass"
+      "mass",
+      "gun.rounds",
+      "gun.heat",
+      "gun.cool",
+      "axis.bore",
+      "axis.length"
     ],
     "roles": {
       "R": [
@@ -26,14 +29,122 @@
         "mass"
       ],
       "B": [
-        "muzzle_energy",
-        "muzzle_speed",
+        "overpressure",
+        "chamber_rating",
+        "mass",
+        "gun.heat",
+        "gun.cool"
+      ],
+      "D": [
+        "overpressure",
+        "chamber_rating",
+        "mass",
+        "gun.heat",
+        "gun.cool"
+      ],
+      "T": [
         "spread",
+        "mass"
+      ],
+      "G": [
+        "kick",
+        "mass"
+      ],
+      "A": [
+        "cycle",
+        "mass"
+      ],
+      "K": [
+        "cycle",
+        "mass"
+      ],
+      "F": [
+        "mass"
+      ],
+      "E": [
+        "mass"
+      ],
+      "Y": [
+        "mass"
+      ],
+      "b": [
+        "mass"
+      ],
+      "S": [
+        "gun.aim"
+      ],
+      "M": [
+        "report",
+        "heat_factor",
+        "mass"
+      ],
+      "N": [
+        "kick",
+        "report",
+        "fitting_wear"
+      ],
+      "Q": [
+        "muzzle_energy",
+        "heat_factor",
+        "report"
+      ],
+      "Z": [
         "heat_factor",
         "shed_factor",
-        "fitting_limit",
-        "fitting_wear",
+        "fitting_limit"
+      ],
+      "H": [
+        "shed_factor",
         "mass"
+      ],
+      "V": [
+        "overpressure",
+        "fitting_wear"
+      ],
+      "C": [
+        "kick",
+        "mass"
+      ],
+      "I": [
+        "brace_kick",
+        "brace_spread",
+        "mass"
+      ],
+      "a": [
+        "mass"
+      ],
+      "L": [
+        "mass"
+      ],
+      "P": [
+        "mass"
+      ],
+      "c": [
+        "kick",
+        "spread"
+      ],
+      "d": [
+        "kick",
+        "cycle"
+      ],
+      "e": [
+        "spread"
+      ],
+      "f": [
+        "spread",
+        "cycle"
+      ],
+      "g": [
+        "spread",
+        "mass"
+      ],
+      "i": [
+        "brace_kick",
+        "brace_spread"
+      ],
+      "W": [
+        "brace_kick",
+        "brace_spread"
       ]
     },
     "addons": {
@@ -48,6 +159,10 @@
       "W": [
         "brace_kick",
         "brace_spread"
+      ],
+      "S": [
+        "gun.aim",
+        "axis.zoom"
       ]
     }
   },

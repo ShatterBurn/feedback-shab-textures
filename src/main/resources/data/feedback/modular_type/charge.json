@@ -6,8 +6,43 @@
       "blast",
       "burned",
       "packed",
-      "mass"
-    ]
+      "mass",
+      "charge.frag",
+      "charge.fuse",
+      "axis.scoring",
+      "axis.ticks"
+    ],
+    "sort": [
+      "blast",
+      "burned",
+      "mass",
+      "charge.frag",
+      "charge.fuse"
+    ],
+    "roles": {
+      "C": [
+        "blast",
+        "charge.frag",
+        "mass"
+      ],
+      "F": [
+        "blast",
+        "burned"
+      ],
+      "G": [
+        "blast",
+        "burned"
+      ],
+      "W": [
+        "charge.fuse"
+      ],
+      "R": [
+        "burned"
+      ],
+      "P": [
+        "charge.frag"
+      ]
+    }
   },
   "required": [
     "C",

@@ -7,8 +7,42 @@
       "joint",
       "mass",
       "durability",
-      "corrosion"
-    ]
+      "corrosion",
+      "axis.prod_length"
+    ],
+    "roles": {
+      "P": [
+        "velocity",
+        "draw",
+        "joint",
+        "mass",
+        "durability"
+      ],
+      "W": [
+        "joint",
+        "velocity"
+      ],
+      "S": [
+        "mass"
+      ],
+      "L": [
+        "mass"
+      ],
+      "M": [
+        "draw",
+        "mass"
+      ],
+      "B": [
+        "joint"
+      ],
+      "E": [
+        "mass"
+      ],
+      "X": [
+        "draw",
+        "mass"
+      ]
+    }
   },
   "required": [
     "P",

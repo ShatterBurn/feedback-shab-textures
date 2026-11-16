@@ -1,5 +1,25 @@
 {
   "face": true,
+  "measures": {
+    "show": [
+      "damage",
+      "impact",
+      "bite",
+      "attack_speed",
+      "reach",
+      "dig_speed",
+      "hardness",
+      "edge_toughness",
+      "durability",
+      "balance",
+      "joint",
+      "mass",
+      "corrosion",
+      "dig.class",
+      "axis.edge_length",
+      "axis.head_size"
+    ]
+  },
   "actions": [
     "flatten"
   ],

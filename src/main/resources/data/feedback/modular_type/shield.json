@@ -7,8 +7,34 @@
       "mass",
       "hardness",
       "edge_toughness",
-      "corrosion"
-    ]
+      "corrosion",
+      "shield.slow",
+      "shield.hot",
+      "axis.face_size",
+      "axis.rim_width"
+    ],
+    "roles": {
+      "F": [
+        "capacity",
+        "shield.hot",
+        "mass",
+        "durability"
+      ],
+      "R": [
+        "capacity",
+        "mass"
+      ],
+      "G": [
+        "mass"
+      ],
+      "O": [
+        "capacity",
+        "mass"
+      ],
+      "A": [
+        "capacity"
+      ]
+    }
   },
   "required": [
     "F",

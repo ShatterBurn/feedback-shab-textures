@@ -33,12 +33,14 @@ public record ModularHeads(List<ModularType.Mine> mines, float strike, int cells
     private static int generation = -1;
     private static Map<String, ModularHeads> cache = Map.of();
     private static Map<String, Map<String, ModularType.Axis>> axesCache = Map.of();
+    private static Map<String, ModularType.Measures> measuresCache = Map.of();
 
     /** The head kind {@code kind} names ({@code pickaxe_head}), if some face definition's wearing role is made of it. */
     public static Optional<ModularHeads> of(String kind) {
         if (generation != ModularTypes.generation()) {
             Map<String, ModularHeads> built = new HashMap<>();
             Map<String, Map<String, ModularType.Axis>> axes = new HashMap<>();
+            Map<String, ModularType.Measures> measures = new HashMap<>();
             for (ModularType type : ModularTypes.known().values()) {
                 // A face definition ({@code "face": true}): never assembled or an item, a head kind as its wearing part.
                 if (!type.face())
@@ -50,9 +52,11 @@ public record ModularHeads(List<ModularType.Mine> mines, float strike, int cells
                 built.put(shaping.item().getPath(), new ModularHeads(type.mines(), type.strike(), (int) Math.ceil(shaping.cells()), shaping,
                         type.family(), type.wearLitres(), type.actions(), wear, type.school(), type.trait(), type.traitParams()));
                 axes.put(shaping.item().getPath(), wear.axes());
+                measures.put(shaping.item().getPath(), type.measures());
             }
             cache = built;
             axesCache = axes;
+            measuresCache = measures;
             generation = ModularTypes.generation();
         }
         return Optional.ofNullable(cache.get(kind));
@@ -68,6 +72,12 @@ public record ModularHeads(List<ModularType.Mine> mines, float strike, int cells
     public static Map<String, ModularType.Axis> axesOf(String kind) {
         of(kind);
         return axesCache.getOrDefault(kind, Map.of());
+    }
+
+    /** What the face definition of kind {@code kind} says matters for a hafted build with it: its {@code measures}, or none. */
+    public static ModularType.Measures measuresOf(String kind) {
+        of(kind);
+        return measuresCache.getOrDefault(kind, ModularType.Measures.NONE);
     }
 
     /** The kind a part of a striking role is: what it records, else the role's first kind. */

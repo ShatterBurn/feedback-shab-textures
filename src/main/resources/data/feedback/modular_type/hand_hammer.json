@@ -1,5 +1,32 @@
 {
   "face": true,
+  "measures": {
+    "show": [
+      "damage",
+      "impact",
+      "bite",
+      "attack_speed",
+      "hardness",
+      "edge_toughness",
+      "durability",
+      "balance",
+      "joint",
+      "mass",
+      "corrosion",
+      "hammer.blow"
+    ],
+    "roles": {
+      "H": [
+        "damage",
+        "impact",
+        "bite",
+        "hardness",
+        "edge_toughness",
+        "durability",
+        "corrosion"
+      ]
+    }
+  },
   "actions": [],
   "family": "hand",
   "strike": 1.0,

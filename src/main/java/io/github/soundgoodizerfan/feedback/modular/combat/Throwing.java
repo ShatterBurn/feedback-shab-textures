@@ -40,6 +40,11 @@ public final class Throwing {
     private Throwing() {
     }
 
+    /** Blocks per tick a weapon of {@code mass} Mu leaves the hand at full effort: one arm's throw over its mass, clamped. */
+    public static float launchSpeed(float mass) {
+        return Mth.clamp(ModularTuning.THROW_SPEED_K / (float) Math.sqrt(Math.max(0.1f, mass)), ModularTuning.THROW_SPEED_MIN, ModularTuning.THROW_SPEED_MAX);
+    }
+
     /**
      * Throws {@code weapon} from {@code player} if the wind-up was long enough.
      *
@@ -63,8 +68,7 @@ public final class Throwing {
             return false;
         float effort = effort(held, params);
         float mass = Math.max(0.1f, figures.get(Fig.MASS));
-        float speed = Mth.clamp(ModularTuning.THROW_SPEED_K / (float) Math.sqrt(mass), ModularTuning.THROW_SPEED_MIN, ModularTuning.THROW_SPEED_MAX)
-                * effort;
+        float speed = launchSpeed(mass) * effort;
 
         // A spring-launched head: the spring adds to the throw, a set takes some of that back, and a heavy head at that speed overloads it.
         if (spring != null) {

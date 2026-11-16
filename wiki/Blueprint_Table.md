@@ -39,11 +39,22 @@ A gun's name (pistol, rifle, shotgun...), read from its parts, is shown beside t
 
 The sheet shows the design's figures as **bars**, and only the figures that matter for the type drawn (a pickaxe does not list armor figures). The selected part's own figures come first. Machine parts add their numbers as lines under the bars (an engine's torque, displacement and redline, a gearbox's ratios, a propeller's disc, a dynamotor's rpm, a belt's grip). Fitted attachments and chosen variants add their own figures too: a stock or bipod adds brace figures, an armor servo adds drive and loss. Bars show, for a battery: cells, the band it is rated and its capacity in Eu; for a backpack: slots, carry rating, mounting points left and store slots; for a [bed](Bed.md): comfort and warmth; for a belt: its grip on cargo and the hottest cargo it carries. Qualities and adjectives the design earns sit along the bottom edge.
 
+- The figures follow the part: a sword lists no dig speed, and a file, knife or screwdriver head lists no damage, impact or bite. Each hafted head lists its own.
+- **Part sizes** (length, width, head size, limb length, face size, bore and the like) show as plain lines. They are set by the steppers, not by the material, so they cannot be sorted by.
+- Further lines name what a type does with its numbers:
+  - A hand hammer shows the share of a hand-forging blow it carries.
+  - A digging tool shows what it harvests: soft blocks only, or stone-, iron- or diamond-class blocks.
+  - A spear or throwing axe shows its thrown speed in blocks a tick.
+  - A gun shows the rounds it holds itself, the heat each shot adds to the barrel and the heat the barrel sheds a second (both in Tu), and how quickly its sight comes up (in ms).
+  - A demolition charge shows its fragment damage and its fuse (or "on impact").
+  - A shield shows how much it slows you while raised and the heat it holds full strength to (or "never softens").
+  - A spoon shows its stirring and skimming against the standard spoon, and the heat it can be held over a pot at.
+  - A spring gun shows what a pellet hits for.
 - A mark on each bar shows where the **first drawing** stood. An arrow shows which way the bar has moved since.
 - **Hold Shift** to read the exact figure. Hover the **mass** bar for what it counts: the tooltip is written for the kind of thing drawn (a gun, a belt, a backpack, a bed, a shield, a battery cell, a charge, a vessel, a machine part).
 - **Hover a swatch, a variant row, or a part while carrying a material** to preview how the bars would change.
 - **Hover a bar** to light the parts that moved it.
-- **Click a bar or a number** to sort the material swatches by that figure, using the figure the whole design would have with each material. The first click puts the highest first, a second click the lowest first, a third click turns the sort off. The sorted figure's label turns the accent color. Figures the selected part does not move are dimmed and do not sort.
+- **Click a bar or a number** to sort the material swatches by that figure, using the figure the whole design would have with each material. The first click puts the highest first, a second click the lowest first, a third click turns the sort off. The sorted figure's label turns the accent color. Only figures the selected part can move sort the swatches; the rest are dimmed.
 - **Pin** keeps a draft: each pinned draft puts its own colored mark on every bar to compare against, up to three. Click a pinned draft to open it, Shift-click to drop it.
 
 A blueprint's tooltip lists the same figures. Blueprints stack to sixteen. The table offers exactly what a [crafting grid](Tools_and_Weapons.md#putting-one-together) can assemble, because it asks the same rules: if a drawing is on the sheet, those parts put together at the [Engineering Table](Engineering_Table.md) make that tool. Heat and forging flaws are not part of a drawing: a blueprint is paper, and flaws are what forging adds. Requirements and blueprints are free; what a finished piece *has* still costs an instrument ([Balance Scale](Instruments.md#balance-scale), [Scratch Files](Instruments.md#scratch-file-set)).
