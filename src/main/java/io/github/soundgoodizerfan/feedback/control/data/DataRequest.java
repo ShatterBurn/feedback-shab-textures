@@ -13,6 +13,9 @@ import org.jetbrains.annotations.Nullable;
  * What a program card asks of the data blocks bound to its Controller: a {@code signal} to read (null for an
  * actuator), a preferred {@code kind} (null for any), a link {@code color} (-1 for any) and, for a reading, how
  * several matches combine. It names no block and no position.
+ * <p>
+ * Design from Super Factory Manager (MPL-2.0, design only): a program names a request and a separate binding resolves it. Rejected there:
+ * free-text labels, position maps, capability probing, a silent unordered union of matches. See {@code THIRD-PARTY-LICENSES.md}.
  */
 public record DataRequest(@Nullable ResourceLocation signal, @Nullable ResourceLocation kind, int color, Reduction reduction) {
 
