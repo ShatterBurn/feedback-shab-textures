@@ -20,11 +20,17 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
  * @param flowMb mB that left this tick: how thick the stream is drawn.
  * @param rgb   the colour, or -1 when the fluid has none of its own (the client takes its sprite's average, by {@code fluid}).
  * @param flame blocks from the start the nozzle's pilot flame stands out, or 0 if it is not lit.
+ * @param speed exit speed, blocks a tick: how hard the jet is driven (sets its arc and whether it keeps a core).
+ * @param thick how thick the fluid is, 0 to 255 on a log scale of its viscosity (unsigned).
+ * @param flags {@link #FROZEN}, {@link #FLARED}, {@link #POTION}.
+ * @param flameTu the burning fuel's flame temperature in Tu (0 for none): sets how white it burns and how much soot it leaves.
  */
 public record CasterStreamPayload(double x, double y, double z, float dx, float dy, float dz, float length, float spread, int rgb, byte kind,
-                                  int flowMb, float flame, net.minecraft.resources.ResourceLocation fluid) implements CustomPacketPayload {
+                                  int flowMb, float flame, net.minecraft.resources.ResourceLocation fluid, float speed, byte thick, byte flags, int flameTu) implements CustomPacketPayload {
 
     public static final byte LIQUID = 0, BURNING = 1, MIST = 2;
+    /** Cold enough to freeze; an oxidiser with a flame in its path; a potion. */
+    public static final byte FROZEN = 1, FLARED = 2, POTION = 4;
 
     public static final Type<CasterStreamPayload> TYPE = new Type<>(Feedback.id("caster_stream"));
 
@@ -43,9 +49,13 @@ public record CasterStreamPayload(double x, double y, double z, float dx, float 
                 buf.writeVarInt(p.flowMb);
                 buf.writeFloat(p.flame);
                 buf.writeResourceLocation(p.fluid);
+                buf.writeFloat(p.speed);
+                buf.writeByte(p.thick);
+                buf.writeByte(p.flags);
+                buf.writeVarInt(p.flameTu);
             },
             buf -> new CasterStreamPayload(buf.readDouble(), buf.readDouble(), buf.readDouble(), buf.readFloat(), buf.readFloat(),
-                    buf.readFloat(), buf.readFloat(), buf.readFloat(), buf.readInt(), buf.readByte(), buf.readVarInt(), buf.readFloat(), buf.readResourceLocation()));
+                    buf.readFloat(), buf.readFloat(), buf.readFloat(), buf.readInt(), buf.readByte(), buf.readVarInt(), buf.readFloat(), buf.readResourceLocation(), buf.readFloat(), buf.readByte(), buf.readByte(), buf.readVarInt()));
 
     @Override
     public Type<? extends CustomPacketPayload> type() {
@@ -53,9 +63,9 @@ public record CasterStreamPayload(double x, double y, double z, float dx, float 
     }
 
     public static void send(ServerLevel level, Vec3 from, Vec3 dir, float length, float spread, int rgb, byte kind, int flowMb, float flame,
-                            net.minecraft.resources.ResourceLocation fluid) {
+                            net.minecraft.resources.ResourceLocation fluid, float speed, byte thick, byte flags, int flameTu) {
         PacketDistributor.sendToPlayersNear(level, null, from.x, from.y, from.z, 96,
-                new CasterStreamPayload(from.x, from.y, from.z, (float) dir.x, (float) dir.y, (float) dir.z, length, spread, rgb, kind, flowMb, flame, fluid));
+                new CasterStreamPayload(from.x, from.y, from.z, (float) dir.x, (float) dir.y, (float) dir.z, length, spread, rgb, kind, flowMb, flame, fluid, speed, thick, flags, flameTu));
     }
 
     public static void handle(CasterStreamPayload payload, IPayloadContext context) {

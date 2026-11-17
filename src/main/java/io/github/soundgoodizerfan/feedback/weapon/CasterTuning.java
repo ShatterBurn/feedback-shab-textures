@@ -44,6 +44,18 @@ public final class CasterTuning {
     /** Wear (fraction of condition) a tick a motor runs with nothing to move. */
     public static final float WEAR_DRY_MOTOR = 0.0005f;
 
+    // --- the spray (client drawing) ---------------------------------------------------------------
+    /** Droplets one stream spawns a tick at particles "all", "decreased", "minimal". */
+    public static final int SPRAY_DROPS_ALL = 6, SPRAY_DROPS_DECREASED = 3, SPRAY_DROPS_MINIMAL = 1;
+    /** Live droplets from other players' streams over which no more spawn; your own stream is never held to it. */
+    public static final int SPRAY_MAX_LIVE = 400;
+    /** Blocks past which a stream is a bare strip, and past half of which it spawns half as many droplets. */
+    public static final float SPRAY_FAR = 48f;
+    /** Droplet fall, blocks a tick squared. */
+    public static final float SPRAY_GRAVITY = 0.045f;
+    /** A jet driven over this share of {@link #SPEED_MAX} keeps a bright core ribbon for the first third of its reach. */
+    public static final float SPRAY_CORE_SPEED_SHARE = 0.4f;
+
     // --- effects ----------------------------------------------------------------------------------
     /** A stream hotter than this scalds what it hits; one at or under {@link #FREEZE_TU} chills it. */
     public static final float SCALD_TU = 55f, FREEZE_TU = 0f;

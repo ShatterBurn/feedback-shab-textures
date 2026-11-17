@@ -127,9 +127,22 @@ Nothing places a fluid block in the world.
 
 Press the **Gun option** key (unbound until you set it) with a piloted caster in hand to turn the pilot flame off or on; the action bar reads *Pilot flame: lit* or *Pilot flame: out*. With the pilot out there is no flame at the nozzle and no trickle drawn from the tank.
 
-The pilot is lit only while the valve is open, the tank's fluid burns or is an oxidiser, and the muzzle is not under water; closing the valve puts it out. While lit it draws a trickle from the tank, more through a wider orifice, and shows as fire particles at the nozzle. It counts as an open flame in the stream's path, so a burning stream, a body set alight, fires and a vapor cloud going off all follow as above.
+The pilot is lit only while the valve is open, the tank's fluid burns or is an oxidiser, and the muzzle is not under water; closing the valve puts it out. While lit it shows as a small flame at the nozzle and draws a trickle from the tank, more through a wider orifice. It counts as an open flame in the stream's path, so a burning stream, a body set alight, fires and a vapor cloud going off all follow as above.
 
 Its tip also lights a campfire or a candle, starts a fire beside a flammable block where the game's fire spread allows it, and sets off a flammable block the tip is inside, about four times a second.
+
+## How the stream looks
+
+The stream is drawn from the fluid and the nozzle, so you can read what is in the tank and how hard it is driven from the spray.
+
+- **Liquid** leaves as droplets in a cone and falls in an arc. A weakly driven gun sags and drops its stream short. A wider spread makes smaller droplets; a thicker fluid makes bigger ones. A hard-driven jet keeps a bright core near the nozzle.
+- **Gas and mist** leave as soft puffs that slow as they go.
+- **Burning fuel** is a billowing flame that runs white-yellow, then orange, then red, with a rim of soot, and glows where it lands. A cooler fuel leaves more soot; a hotter one burns whiter.
+- **Cold fluid** (0 Tu or under) is pale, trails fog and leaves frost motes where it lands.
+- **A potion** sparkles.
+- **An oxidiser** with a flame in its path whitens as the drops fly.
+
+A stream 48 blocks or more away is drawn as a bare strip. A lower **Particles** setting in the video options thins the droplets.
 
 ## Misuse and hazards
 

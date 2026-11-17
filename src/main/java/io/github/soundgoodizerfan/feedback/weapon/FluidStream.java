@@ -201,7 +201,11 @@ public final class FluidStream {
         int rgb = potion ? PotionSpray.colour(fluid) : m != null && m.color().isPresent() ? m.color().get() : -1; // none of its own: the client averages the fluid's sprite
         CasterStreamPayload.send(level, start, dir, length, spreadDeg, rgb, burnable && lit ? CasterStreamPayload.BURNING
                 : atomiser || f.gas() ? CasterStreamPayload.MIST : CasterStreamPayload.LIQUID, flowMb, pilot ? flameReach : 0f,
-                net.minecraft.core.registries.BuiltInRegistries.FLUID.getKey(fluid.getFluid()));
+                net.minecraft.core.registries.BuiltInRegistries.FLUID.getKey(fluid.getFluid()), speed,
+                (byte) Math.round(Math.min(1f, (float) Math.log10(1 + f.viscosity()) / 4f) * 255f),
+                (byte) ((tu <= CasterTuning.FREEZE_TU ? CasterStreamPayload.FROZEN : 0) | (oxidiser && lit ? CasterStreamPayload.FLARED : 0)
+                        | (potion ? CasterStreamPayload.POTION : 0)),
+                burnable && lit ? Math.round(f.flameTu()) : 0);
         return new Result(burnable && lit, pilot, ignitionAt, length);
     }
 
