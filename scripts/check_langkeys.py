@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """List lang keys the datapack needs but en_us.json lacks. Exit 1 when any are missing.
 Covers modular_type measures (every id names a figure, family number, block figure or axis with a label), research plans (blurb and treatise name), modular_type (role name+tip, role dims, variant name+desc, trait desc, type name) and gun_option (item name by form).
+Also every registered item and block (registry/F*.java, by id; loop-built ids and `_delegate` internals skipped) and every mob effect (FEffects) names itself, and every modular_type's primary-part variant names the item (modular.feedback.archetype.*).
 Add a rule below when a new data folder gets player-facing text."""
 import json, pathlib, re, sys
 R = pathlib.Path("src/main/resources")
@@ -68,6 +69,8 @@ for f in sorted((R / "data/feedback/modular_type").glob("*.json")):
             want(f"modular.feedback.desc.variant.{v['name']}", f"{n} variant")
             if rid == d.get("wear_role") and d.get("names", {}).get("designations") and d.get("family") not in ("gun", "flintlock", "launcher"):  # named in an automatic build name
                 want(f"modular.feedback.archetype.{v['name']}", f"{n} variant")
+            if rid == d.get("primary") and not d.get("strikers"):  # the item's name is its primary part's variant (ModularStacks.name): "Titanium Lance Caster"
+                want(f"modular.feedback.archetype.{v['name']}", f"{n} primary-part variant")
             for t in traits(v):
                 want(f"modular.feedback.desc.trait.{t}", f"{n} variant {v['name']}")
 for f in sorted((R / "data/feedback/gun_option").glob("*.json")):
@@ -85,6 +88,23 @@ for f in sorted((R / "data/feedback/research").glob("*.json")):
         continue
     want(f"gui.feedback.research_table.blurb.{f.stem}", "research plan")
     want(f"item.feedback.treatise_{f.stem}", "research plan")
+# every registered item, block and mob effect has its name (registrations whose id is built in a loop end in "_" and are skipped; the delegates are never shown)
+RG = pathlib.Path("src/main/java/io/github/soundgoodizerfan/feedback/registry")
+for f in sorted(RG.glob("*.java")):
+    t = f.read_text()
+    for m in re.finditer(r'(?:registerItem|registerSimpleItem|ITEMS\.register|registerSimpleBlockItem)\(\s*"([a-z0-9_]+)"', t):
+        i = m.group(1)
+        if i.endswith("_") or i.endswith("_delegate"):
+            continue
+        if f"item.feedback.{i}" not in lang and f"block.feedback.{i}" not in lang:
+            want(f"item.feedback.{i}", f"registry/{f.name} item")
+    for m in re.finditer(r'(?:registerBlock|registerSimpleBlock|BLOCKS\.register)\(\s*"([a-z0-9_]+)"', t):
+        if not m.group(1).endswith("_"):
+            want(f"block.feedback.{m.group(1)}", f"registry/{f.name} block")
+    if f.name == "FEffects.java":
+        for m in re.finditer(r'register\(\s*"([a-z0-9_]+)"', t):
+            want(f"effect.feedback.{m.group(1)}", "FEffects")
+
 missing = {k: w for k, w in need.items() if k not in lang}
 for k, w in sorted(missing.items()):
     print(f"{k}  ({w})")
