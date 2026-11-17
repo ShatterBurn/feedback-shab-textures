@@ -479,8 +479,6 @@ public class ComputerBlockEntity extends ElectricNode implements ControllerHost,
     }
 
     private java.util.List<FileInfo> internalInfo = java.util.List.of();
-    /** Set while the program in the running slot is a card made from an internal file, which is discarded when it stops. */
-    private boolean transientRun;
 
     /** The internal disk's files, as last sent; the server's list is kept current by {@link #changedFiles}. */
     public java.util.List<FileInfo> internalFiles() {
@@ -523,6 +521,11 @@ public class ComputerBlockEntity extends ElectricNode implements ControllerHost,
             notice(player, file.fits() ? "gui.feedback.computer.internal_full" : "gui.feedback.computer.file_too_big");
             return;
         }
+        // an app is installed, not copied: the disk is left blank
+        if (file.kind() == ComputerFile.Kind.APP) {
+            bays.setItem(drive, new ItemStack(io.github.soundgoodizerfan.feedback.registry.FItems.FLOPPY_DISK.get()));
+            bays.setChanged();
+        }
         log("save", file.name());
         changedFiles();
     }
@@ -546,6 +549,14 @@ public class ComputerBlockEntity extends ElectricNode implements ControllerHost,
         ComputerFile file = internal(index);
         if (file == null || drive < 0 || drive >= ComputerBays.SIZE)
             return;
+        // the file the editor has open is addressed by its place in the list: nothing may shift the list meanwhile
+        if (move && editorDrive >= EDIT_INTERNAL)
+            return;
+        // an app is installed once: writing it out moves it, so a researched disk never becomes many
+        if (file.kind() == ComputerFile.Kind.APP && !move) {
+            notice(player, "gui.feedback.computer.app_move_only");
+            return;
+        }
         if (!ComputerFiles.write(bays.getItem(drive), file)) {
             notice(player, "gui.feedback.computer.no_blank_there", String.valueOf((char) ('A' + drive)));
             return;
@@ -558,6 +569,8 @@ public class ComputerBlockEntity extends ElectricNode implements ControllerHost,
     }
 
     public void deleteInternal(int index) {
+        if (editorDrive >= EDIT_INTERNAL)
+            return;
         if (internal(index) != null && store().remove(disk, index)) {
             log("erase", "internal");
             changedFiles();
@@ -578,8 +591,7 @@ public class ComputerBlockEntity extends ElectricNode implements ControllerHost,
             log("refused", "feedback.programmer.error." + refusal.get());
             return;
         }
-        core.setItem(0, card);
-        transientRun = true;
+        core.setItem(0, ComputerFiles.markTransient(card));
         log("run", file.name());
         setChanged();
     }
@@ -593,7 +605,7 @@ public class ComputerBlockEntity extends ElectricNode implements ControllerHost,
         ItemStack card = new ItemStack(io.github.soundgoodizerfan.feedback.registry.FItems.FLOPPY_DISK.get());
         card.set(io.github.soundgoodizerfan.feedback.registry.FDataComponents.PROGRAM_GRAPH, graph);
         programmer.resetWorking();
-        programmer.setItem(0, card);
+        programmer.setItem(0, ComputerFiles.markTransient(card));
         editorDrive = EDIT_INTERNAL + index;
         editorOwner = player.getUUID();
         log("edit", file.name());
@@ -602,7 +614,7 @@ public class ComputerBlockEntity extends ElectricNode implements ControllerHost,
     }
 
     /** The editor closed on an internal file: its graph (printed, or the working copy) replaces the file. */
-    private void closeInternalEditor() {
+    private void closeInternalEditor(ServerPlayer player) {
         int index = editorDrive - EDIT_INTERNAL;
         editorOwner = null;
         editorDrive = -1;
@@ -614,6 +626,8 @@ public class ComputerBlockEntity extends ElectricNode implements ControllerHost,
             ComputerFile edited = ComputerFiles.program(old.name(), graph);
             if (edited.fits())
                 store().replace(disk, index, edited);
+            else
+                notice(player, "gui.feedback.computer.file_too_big");
         }
         programmer.sync();
         changedFiles();
@@ -700,8 +714,6 @@ public class ComputerBlockEntity extends ElectricNode implements ControllerHost,
 
     @Override
     public void tickServer() {
-        if (transientRun && core.getItem(0).isEmpty())
-            transientRun = false;
         if (disk != null && level != null && level.getGameTime() % 100 == 0 && level.getServer() != null)
             ComputerStore.get(level.getServer()).touch(disk, this);
         io.github.soundgoodizerfan.feedback.control.endernet.Endernet.sync(this);
@@ -748,9 +760,8 @@ public class ComputerBlockEntity extends ElectricNode implements ControllerHost,
     /** Stops the running program: its medium goes back to a free bay, or to the player. */
     public void stop(ServerPlayer player) {
         ItemStack medium = core.removeItemNoUpdate(0);
-        if (transientRun) {
+        if (ComputerFiles.isTransient(medium)) {
             // a card made from an internal file has nowhere to go: the file is the program
-            transientRun = false;
             log("stop", "");
             return;
         }
@@ -777,7 +788,7 @@ public class ComputerBlockEntity extends ElectricNode implements ControllerHost,
         if (editorDrive < 0 || editorOwner != null && !editorOwner.equals(player.getUUID()))
             return;
         if (editorDrive >= EDIT_INTERNAL) {
-            closeInternalEditor();
+            closeInternalEditor(player);
             return;
         }
         editorOwner = null;
@@ -869,7 +880,6 @@ public class ComputerBlockEntity extends ElectricNode implements ControllerHost,
             files.add(one);
         }
         tag.put("Internal", files);
-        tag.putBoolean("TransientRun", transientRun);
         core.save(tag, registries);
         net.minecraft.world.ContainerHelper.saveAllItems(tag, bays.getItems(), true, registries);
         tag.putInt("EditorDrive", editorDrive);
@@ -944,7 +954,6 @@ public class ComputerBlockEntity extends ElectricNode implements ControllerHost,
                 files.add(new FileInfo(ComputerFile.Kind.values()[k], one.getString("N"), one.getInt("B")));
         }
         internalInfo = files;
-        transientRun = tag.getBoolean("TransientRun");
         core.load(tag, registries);
         bays.getItems().clear();
         net.minecraft.world.ContainerHelper.loadAllItems(tag, bays.getItems(), registries);

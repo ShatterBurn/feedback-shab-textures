@@ -36,8 +36,6 @@ public class ComputerBlock extends Block implements EntityBlock {
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player,
             InteractionHand hand, BlockHitResult hit) {
-        if (player.isShiftKeyDown())
-            return openDriveWay(level, pos, player) ? ItemInteractionResult.sidedSuccess(level.isClientSide) : ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         return ControllerHands.insert(stack, level, pos, player);
     }
 
@@ -62,11 +60,27 @@ public class ComputerBlock extends Block implements EntityBlock {
         return true;
     }
 
+    /** A player's break drops the Computer with its disk id (not in creative): only then does the disk travel as an item. */
+    @Override
+    public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+        if (!player.isCreative() && level.getBlockEntity(pos) instanceof ComputerBlockEntity computer)
+            computer.markCarried();
+        return super.playerWillDestroy(level, pos, state, player);
+    }
+
+    @Override
+    public void onBlockExploded(BlockState state, Level level, BlockPos pos, net.minecraft.world.level.Explosion explosion) {
+        if (level.getBlockEntity(pos) instanceof ComputerBlockEntity computer)
+            computer.markCarried();
+        super.onBlockExploded(state, level, pos, explosion);
+    }
+
     @Override
     protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState next, boolean moved) {
         if (!state.is(next.getBlock())) {
             if (level.getBlockEntity(pos) instanceof ComputerBlockEntity computer) {
-                computer.markCarried();
+                if (ComputerFiles.isTransient(computer.programmer().getItem(0)))
+                    computer.programmer().removeItemNoUpdate(0);
                 Containers.dropContents(level, pos, computer.programmer());
                 Containers.dropContents(level, pos, computer.bays());
             }

@@ -71,6 +71,9 @@ public final class ControllerHands {
 
     public static void dropContents(Level level, BlockPos pos) {
         if (level.getBlockEntity(pos) instanceof ControllerHost controller) {
+            for (int i = 0; i < controller.getContainerSize(); i++)
+                if (io.github.soundgoodizerfan.feedback.control.computer.ComputerFiles.isTransient(controller.getItem(i)))
+                    controller.removeItemNoUpdate(i);
             Containers.dropContents(level, pos, controller);
             Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), controller.core().takeCircuit());
             Fittable.dropAll(controller, level, pos);

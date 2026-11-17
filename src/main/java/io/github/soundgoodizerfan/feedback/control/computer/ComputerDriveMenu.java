@@ -45,7 +45,13 @@ public class ComputerDriveMenu extends AbstractContainerMenu {
         this.running = computer != null ? computer.core() : new SimpleContainer(1);
         for (int i = 0; i < ComputerBays.SIZE; i++)
             addSlot(new Slot(bays, i, BAY_X + i * BAY_STEP, BAY_Y));
-        addSlot(new Slot(running, 0, RUN_X, BAY_Y));
+        addSlot(new Slot(running, 0, RUN_X, BAY_Y) {
+            @Override
+            public boolean mayPickup(Player player) {
+                // a card made from an internal file is the Computer's, not an item
+                return !ComputerFiles.isTransient(getItem());
+            }
+        });
         if (computer != null && computer.core().hasCircuitSlot())
             addSlot(new CircuitSlot(computer.core(), CIRCUIT_X, BAY_Y));
         for (int row = 0; row < 3; row++)

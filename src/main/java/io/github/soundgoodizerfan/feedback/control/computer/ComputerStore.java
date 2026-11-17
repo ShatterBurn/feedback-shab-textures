@@ -154,6 +154,11 @@ public final class ComputerStore extends SavedData {
         CLAIMED.remove(id, computer);
     }
 
+    /** The server stopped: no Computer is loaded any more. */
+    public static void clearClaims() {
+        CLAIMED.clear();
+    }
+
     /** The Computer was broken and its id went with the item it dropped as: nothing in the world holds the disk now. */
     public void carry(UUID id, long now) {
         Entry entry = entries.get(id);

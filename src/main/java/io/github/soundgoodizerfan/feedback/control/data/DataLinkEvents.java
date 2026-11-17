@@ -39,6 +39,11 @@ public final class DataLinkEvents {
             io.github.soundgoodizerfan.feedback.control.computer.ComputerStore.get(event.getServer()).sweep(event.getServer());
     }
 
+    @SubscribeEvent
+    private static void onServerStopped(net.neoforged.neoforge.event.server.ServerStoppedEvent event) {
+        io.github.soundgoodizerfan.feedback.control.computer.ComputerStore.clearClaims();
+    }
+
     /** The client forgets a chunk's links when the chunk leaves view, and all of them when its level goes. */
     @SubscribeEvent
     private static void onChunkUnload(ChunkEvent.Unload event) {

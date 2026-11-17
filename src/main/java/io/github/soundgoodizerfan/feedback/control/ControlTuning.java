@@ -65,9 +65,6 @@ public final class ControlTuning {
     /** Files a Computer's internal disk holds. Invented. */
     public static final int INTERNAL_DISK_FILES = 16;
 
-    /** Files a Punch Card, a USB Drive and a Floppy Disk hold by default; an item may carry its own figure ({@code MEDIA_CAPACITY}). Invented. */
-    public static final int PUNCH_CARD_FILES = 1, USB_DRIVE_FILES = 4, FLOPPY_DISK_FILES = 8;
-
     /** The most bytes (of a file's compressed saved form) one file may take on a medium: removable media carry files in an item component. Invented. */
     public static final int FILE_MAX_BYTES = 16384;
 

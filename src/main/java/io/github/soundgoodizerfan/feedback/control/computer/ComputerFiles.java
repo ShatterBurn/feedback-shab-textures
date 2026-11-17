@@ -22,7 +22,17 @@ import org.jetbrains.annotations.Nullable;
  */
 public final class ComputerFiles {
 
-    private static final String GRAPH = "G";
+    private static final String GRAPH = "G", TRANSIENT = "ComputerTransient";
+
+    /** Marks a stack made only to run or edit an internal file: it never leaves the Computer and is discarded rather than dropped. */
+    public static ItemStack markTransient(ItemStack stack) {
+        net.minecraft.world.item.component.CustomData.update(DataComponents.CUSTOM_DATA, stack, tag -> tag.putBoolean(TRANSIENT, true));
+        return stack;
+    }
+
+    public static boolean isTransient(ItemStack stack) {
+        return !stack.isEmpty() && stack.getOrDefault(DataComponents.CUSTOM_DATA, net.minecraft.world.item.component.CustomData.EMPTY).contains(TRANSIENT);
+    }
 
     private ComputerFiles() {
     }

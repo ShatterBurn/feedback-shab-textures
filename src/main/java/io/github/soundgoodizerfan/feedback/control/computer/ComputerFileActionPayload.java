@@ -14,7 +14,7 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 /**
  * Client -> server: something done to a file on the Computer's internal disk. {@code index} is the file's place in the list the server last
- * sent, {@code drive} a bay, and the server checks both; only honoured while that player has that Computer's desktop open.
+ * sent, {@code drive} a bay, and the server bounds-checks both and refuses what would shift the list while a file is open in the editor; only honoured while that player has that Computer's desktop open.
  */
 public record ComputerFileActionPayload(BlockPos pos, int op, int index, int drive) implements CustomPacketPayload {
 

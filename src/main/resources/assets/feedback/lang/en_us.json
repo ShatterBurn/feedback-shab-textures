@@ -10163,5 +10163,6 @@
   "gui.feedback.computer.internal_full": "The internal disk is full",
   "gui.feedback.computer.file_too_big": "That file is too big to keep",
   "gui.feedback.computer.delete": "Delete",
-  "gui.feedback.computer.drive_way": "Drive way"
+  "gui.feedback.computer.drive_way": "Drive way",
+  "gui.feedback.computer.app_move_only": "An app is installed once: move it to a disk, not copy it"
 }

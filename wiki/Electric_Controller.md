@@ -36,7 +36,7 @@ Right-click it to open the desktop, a fixed panel drawn as a terminal. The color
 
 The desktop has no inventory slots. Down the left are icons for **drive bays A: to D:**, the **RUN** slot and **INT**, the internal disk (see [Internal disk](#internal-disk)); each drive icon shows what its medium holds. Click an icon to open its **Drive** window, which shows a memory bar for the medium. Right-click a drive icon for its menu.
 
-**Sneak** and right-click the Computer to open the **drive way** instead: an ordinary slot screen with the four bays (A to D), the running slot and your inventory, where program media (Punch Card, Circuit Board, Floppy Disk, USB Drive) and app disks go in and out by hand.
+**Sneak** and right-click the Computer with an empty hand to open the **drive way** instead: an ordinary slot screen with the four bays (A to D), the running slot, the circuit slot and your inventory, where program media (Punch Card, Circuit Board, Floppy Disk, USB Drive) and app disks go in and out by hand.
 
 The Drive window offers:
 
@@ -116,7 +116,7 @@ A Computer with power shows sensors linked straight to it (made with the [Data C
 
 Every Computer has an internal disk of **16 files**, each at most **16 KiB**. The files stay with the Computer: break it and place the dropped item again and the files are there; a copy of the Computer gets a copy of the files.
 
-The Internal disk window lists the files, each with a **Run**, **Edit** and **Delete** button. **Edit** opens the program in an Editor window, and closing the Editor saves it back. A right-click menu offers **Copy to** and **Move to** a drive, which needs a blank Floppy Disk or USB Drive alone in that bay. A program or app disk goes onto the internal disk from its drive icon's menu (**Save to internal disk**, **Install on internal disk**). An app installed on the internal disk runs with no disk in a bay. A program received over the network is kept on the internal disk when there is room.
+The Internal disk window lists the files, each with a **Run**, **Edit** and **Delete** button. **Edit** opens the program in an Editor window, and closing the Editor saves it back. A right-click menu offers **Copy to** and **Move to** a drive, which needs a blank Floppy Disk or USB Drive alone in that bay. An app is installed, not copied: saving an app disk leaves the disk blank, and an app can only be moved back onto a blank disk. A program or app disk goes onto the internal disk from its drive icon's menu (**Save to internal disk**, **Install on internal disk**). An app installed on the internal disk runs with no disk in a bay. A program received over the network is kept on the internal disk when there is room.
 
 Media have a capacity (Punch Card 1, USB Drive 4, Floppy Disk 8), but a medium still holds one program or one app.
 
