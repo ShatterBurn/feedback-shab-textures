@@ -134,6 +134,8 @@ public final class ControlTuning {
 
     /** The Network app: hops walked past the far end and entries listed, and how often (ticks) a watching Computer re-lists. */
     public static final int NETWORK_MAX_HOPS = 6, NETWORK_MAX_ENTRIES = 24, NETWORK_REFRESH_TICKS = 20;
+    /** Most sensors a Computer shows from its own links, with no program reading them; placeholder. */
+    public static final int ATTACHED_MAX = 8;
 
     /** Invented. Amps an Electric Controller and a Computer want from the line. */
     public static final float CONTROLLER_ELECTRIC_AMPS = 0.3f, COMPUTER_AMPS = 0.6f;

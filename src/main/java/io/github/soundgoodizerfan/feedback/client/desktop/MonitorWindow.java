@@ -40,7 +40,8 @@ final class MonitorWindow extends DesktopWindow {
     protected void render(Ui ui, int mx, int my) {
         GuiSkin skin = ui.skin();
         ProgramGraph graph = ctx.running();
-        if (graph.nodes().isEmpty()) {
+        ComputerBlockEntity linked = ctx.computer();
+        if (graph.nodes().isEmpty() && (linked == null || linked.attached().isEmpty())) {
             ui.wrapped(0, 0, ui.w(), Component.translatable("gui.feedback.computer.nothing_running"), skin.dim());
             return;
         }
@@ -76,6 +77,16 @@ final class MonitorWindow extends DesktopWindow {
             ui.row(4, y, inner - 4, q.getSerializedName(), text, skin.accent());
             y += Ui.LINE;
             index++;
+        }
+        if (linked != null && !linked.attached().isEmpty()) {
+            y += 4;
+            ui.text(4, y, Component.translatable("gui.feedback.computer.linked_sensors"), skin.dim());
+            y += 11;
+            for (ComputerBlockEntity.Attached a : linked.attached()) {
+                String text = a.quantity() == Quantity.STATE ? (a.value() > 0.5f ? "on" : "off") : Readout.figure(a.quantity(), a.value());
+                ui.row(4, y, inner - 4, a.quantity().getSerializedName(), text, skin.accent());
+                y += Ui.LINE;
+            }
         }
         scroll.end(ui, y - top + 4);
     }

@@ -83,16 +83,18 @@ Each app disk is shapeless: one blank Floppy Disk plus one item.
 
 #### Built-in apps
 
-- **Monitor**: the running program's variables and the last reading of each of its sensor cards.
+A Computer with power shows sensors linked straight to it (made with the [Data Connector](Data_Connector.md): Sensor fittings, Flight Sensors, channel sources such as a Driver's Seat) in the Monitor, Diagram and Scope apps with no program running. These reads travel the data wire like a Sensor card's: wire reach, a poor wire's rounding and circuit read noise all apply.
+
+- **Monitor**: the running program's variables and the last reading of each of its sensor cards. A **Linked sensors** section lists the sensors [linked](Data_Connector.md) straight to the Computer, up to 8, whether or not a program reads them.
 - **Links**: the blocks the running program's cards are linked to, with their positions.
-- **Diagram**: the [Contraption Diagram](Instruments.md#contraption-diagram) of the vehicle a Flight Sensor is on, for a sensor an Input card of the running program is linked to. **Next sensor** steps between linked sensors; the angle, merge and assembly controls are the same as on the sensor's own screen.
+- **Diagram**: the [Contraption Diagram](Instruments.md#contraption-diagram) of the vehicle a Flight Sensor is on, for a sensor an Input card of the running program is linked to, or for any Flight Sensor linked straight to the Computer. **Next sensor** steps between linked sensors; the angle, merge and assembly controls are the same as on the sensor's own screen.
 - **Console**: a log of what the Computer did, newest at the bottom: programs started and stopped, things its program switched on and off, switches you flipped over an endernet pair (*flipped over the pair*), power lost and back, media ejected, edited or copied, and media it refused.
 - **Files**: in the Menu. Lists drives A to D and RUN with what each holds. Click a row to pick it, double-click to open its Drive window. The buttons are **Open**, **Edit**, **Run** (**Stop** for the running medium) and **Eject**. With the Library app disk in a bay, drag a written program onto another drive row to copy it onto a blank Floppy Disk or USB Drive (the same rule as the Library's Copy), or onto the **Trash** box to erase it: it asks first, and the medium is left blank and reusable. Erase needs no Library disk. Without the Library disk, dragging and Copy are unavailable.
 - **Settings**: see below.
 
 #### Disk apps
 
-- **Scope**: a trace for each sensor card of the running program, up to four, each scaled to its own range. **Pause** freezes the traces, **1x**, **2x** and **4x** set the time scale, **Clear** wipes them. Readings arrive a few times a second, so the traces are stepped.
+- **Scope**: a trace for each sensor card of the running program, then for each sensor linked straight to the Computer, up to four traces in all, each scaled to its own range. **Pause** freezes the traces, **1x**, **2x** and **4x** set the time scale, **Clear** wipes them. Readings arrive a few times a second, so the traces are stepped.
 - **Link Map**: a plan view with the Computer in the middle and every linked block around it. Inputs are squares, outputs are crosses, and a block in an unloaded chunk is drawn hollow. Hover a mark for the block, its position and its distance. Cards without a link are counted.
 - **Notes**: a text pad of up to 2000 characters, saved on the block and the same for everyone.
 - **Converter**: converts between units in three tabs. Metal covers block, ingot, Qu and mB of melt (1 Qu is a nugget, 9 Qu make an ingot, 81 a block, and molten metal is 16 mB per Qu). Volume covers bucket (1000 mB), ingot (144 mB) and mB. Time covers day (24000 ticks), minute (1200), second (20) and tick.

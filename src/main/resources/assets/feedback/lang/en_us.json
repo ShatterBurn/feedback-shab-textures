@@ -7746,6 +7746,7 @@
   "gui.feedback.computer.variables": "Variables",
   "gui.feedback.computer.no_variables": "None declared.",
   "gui.feedback.computer.sensors": "Sensors",
+  "gui.feedback.computer.linked_sensors": "Linked sensors",
   "gui.feedback.computer.no_links": "The running program has no linked cards.",
   "block.feedback.computer.desktop": "Computer",
   "gui.feedback.enchant.unknown": "???",

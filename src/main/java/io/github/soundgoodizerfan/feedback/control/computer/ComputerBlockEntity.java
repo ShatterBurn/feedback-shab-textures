@@ -224,6 +224,45 @@ public class ComputerBlockEntity extends ElectricNode implements ControllerHost,
         return readings;
     }
 
+    /** A sensor data-linked to this Computer, read whether or not a program uses it: where it is, what it reads and its last figure. */
+    public record Attached(io.github.soundgoodizerfan.feedback.control.data.DataNodeRef ref, io.github.soundgoodizerfan.feedback.instrument.Quantity quantity, int channel, float value) {
+    }
+
+    private java.util.List<Attached> attached = java.util.List.of();
+
+    /** The sensors linked straight to this Computer, as last pushed; the Scope, Monitor and Diagram apps show them with no program running. */
+    public java.util.List<Attached> attached() {
+        return attached;
+    }
+
+    /** Reads every sensor linked to this Computer, as a Sensor card would (wire, noise); only a powered Computer reads. */
+    private java.util.List<Attached> readAttached() {
+        if (level == null || !powered())
+            return java.util.List.of();
+        java.util.List<Attached> out = new java.util.ArrayList<>();
+        for (var ref : getNodeLinks()) {
+            if (out.size() >= ControlTuning.ATTACHED_MAX)
+                break;
+            var node = io.github.soundgoodizerfan.feedback.control.data.DataNode.resolveOrNull(level, ref);
+            io.github.soundgoodizerfan.feedback.instrument.Quantity q = null;
+            int channel = 0;
+            if (node instanceof io.github.soundgoodizerfan.feedback.control.ChannelSource source && source.offersChannels()) {
+                q = io.github.soundgoodizerfan.feedback.instrument.Quantity.CONTROL;
+                channel = source.defaultChannel();
+            } else if (node instanceof io.github.soundgoodizerfan.feedback.fitting.SensorFitting fitting) {
+                for (var quantity : io.github.soundgoodizerfan.feedback.instrument.Quantity.values())
+                    if (fitting.canRead(quantity)) {
+                        q = quantity;
+                        break;
+                    }
+            }
+            if (q != null)
+                out.add(new Attached(ref, q, channel, core.readAttached(ref, channel)));
+        }
+        out.sort(java.util.Comparator.comparing(Attached::ref));
+        return out;
+    }
+
     public ComputerSettings settings() {
         return settings;
     }
@@ -444,6 +483,7 @@ public class ComputerBlockEntity extends ElectricNode implements ControllerHost,
         }
         if (watchers > 0 && level != null && level.getGameTime() % 5 == 0) {
             readings = core.readings();
+            attached = readAttached();
             poweredSeen = powered();
             packetSeen = getPacketEu();
             bandSeen = getBand();
@@ -583,6 +623,16 @@ public class ComputerBlockEntity extends ElectricNode implements ControllerHost,
         for (float r : readings)
             seen.add(net.minecraft.nbt.FloatTag.valueOf(r));
         tag.put("Readings", seen);
+        net.minecraft.nbt.ListTag att = new net.minecraft.nbt.ListTag();
+        for (Attached a : attached) {
+            CompoundTag c = new CompoundTag();
+            c.put("Ref", a.ref().toTag());
+            c.putString("Q", a.quantity().getSerializedName());
+            c.putInt("Ch", a.channel());
+            c.putFloat("V", a.value());
+            att.add(c);
+        }
+        tag.put("Attached", att);
         tag.putBoolean("PoweredSeen", poweredSeen);
         tag.put("Net", saveNet());
         net.minecraft.nbt.ListTag mail = new net.minecraft.nbt.ListTag();
@@ -639,6 +689,14 @@ public class ComputerBlockEntity extends ElectricNode implements ControllerHost,
         readings = new float[seen.size()];
         for (int i = 0; i < readings.length; i++)
             readings[i] = seen.getFloat(i);
+        java.util.List<Attached> att = new java.util.ArrayList<>();
+        for (net.minecraft.nbt.Tag t : tag.getList("Attached", net.minecraft.nbt.Tag.TAG_COMPOUND)) {
+            CompoundTag c = (CompoundTag) t;
+            var q = io.github.soundgoodizerfan.feedback.instrument.Quantity.CODEC.parse(net.minecraft.nbt.NbtOps.INSTANCE, net.minecraft.nbt.StringTag.valueOf(c.getString("Q"))).result();
+            if (q.isPresent())
+                att.add(new Attached(io.github.soundgoodizerfan.feedback.control.data.DataNodeRef.fromTag(c.getCompound("Ref")), q.get(), c.getInt("Ch"), c.getFloat("V")));
+        }
+        attached = att;
         poweredSeen = tag.getBoolean("PoweredSeen");
         settings = ComputerSettings.load(tag.getCompound("Settings"));
         notes = tag.getString("Notes");

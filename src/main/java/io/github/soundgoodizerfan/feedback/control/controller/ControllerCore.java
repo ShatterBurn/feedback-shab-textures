@@ -587,6 +587,11 @@ public class ControllerCore implements Container, Fittable {
                 : lastGraph.find(nodeId).map(n -> n instanceof DelayNode d ? d.ticks() : 0).orElse(0);
     }
 
+    /** One reading of {@code ref} as a Sensor card would take it (wire reach, poor-wire rounding, read noise); for the Computer's attached sensors. */
+    public float readAttached(DataNodeRef ref, int channel) {
+        return readSensor(new SensorNode(0, ref, null, channel));
+    }
+
     private float readSensor(SensorNode sensor) {
         DataNodeRef ref = sensor.target() == null || level() == null ? null
                 : sensor.target();

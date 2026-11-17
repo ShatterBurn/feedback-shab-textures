@@ -10,6 +10,7 @@ import io.github.soundgoodizerfan.feedback.client.gui.GuiSkin;
 import io.github.soundgoodizerfan.feedback.client.gui.GuiStyle;
 import io.github.soundgoodizerfan.feedback.control.program.ProgramNode;
 import io.github.soundgoodizerfan.feedback.control.program.SensorNode;
+import io.github.soundgoodizerfan.feedback.control.computer.ComputerBlockEntity;
 import io.github.soundgoodizerfan.feedback.vehicle.FlightSensorBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -60,7 +61,7 @@ final class DiagramWindow extends DesktopWindow {
             page.turn(yaw, pitch);
     }
 
-    /** Positions of the Flight Sensors the running program reads. */
+    /** Positions of the Flight Sensors the running program reads, and those linked straight to the Computer. */
     private List<BlockPos> sensors() {
         List<BlockPos> out = new ArrayList<>();
         var level = Minecraft.getInstance().level;
@@ -70,6 +71,11 @@ final class DiagramWindow extends DesktopWindow {
             if (node instanceof SensorNode s && s.target() != null && level.getBlockEntity(s.target().pos()) instanceof FlightSensorBlockEntity
                     && !out.contains(s.target().pos()))
                 out.add(s.target().pos());
+        ComputerBlockEntity computer = ctx.computer();
+        if (computer != null)
+            for (ComputerBlockEntity.Attached a : computer.attached())
+                if (level.getBlockEntity(a.ref().pos()) instanceof FlightSensorBlockEntity && !out.contains(a.ref().pos()))
+                    out.add(a.ref().pos());
         return out;
     }
 

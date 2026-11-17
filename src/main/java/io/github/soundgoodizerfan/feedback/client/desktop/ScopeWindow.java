@@ -54,11 +54,26 @@ final class ScopeWindow extends DesktopWindow {
         }, 0, 0, 44, 14), 176, 0);
     }
 
+    /** How many of the channels are the running program's own sensor cards; the rest are sensors linked to the Computer. */
+    private int programChannels() {
+        int n = 0;
+        for (ProgramNode node : ctx.running().nodes())
+            if (node instanceof SensorNode && n < CHANNELS)
+                n++;
+        return n;
+    }
+
     private List<Quantity> channels() {
         java.util.ArrayList<Quantity> out = new java.util.ArrayList<>();
         for (ProgramNode node : ctx.running().nodes())
             if (node instanceof SensorNode s && out.size() < CHANNELS)
                 out.add(s.quantity() == null ? Quantity.FIGURE : s.quantity());
+        // sensors linked straight to the Computer follow the program's, whether or not anything reads them
+        ComputerBlockEntity computer = ctx.computer();
+        if (computer != null)
+            for (ComputerBlockEntity.Attached a : computer.attached())
+                if (out.size() < CHANNELS)
+                    out.add(a.quantity());
         return out;
     }
 
@@ -67,7 +82,15 @@ final class ScopeWindow extends DesktopWindow {
         if (paused || ++ticks % stride != 0)
             return;
         ComputerBlockEntity computer = ctx.computer();
-        float[] seen = computer == null ? new float[0] : computer.readings();
+        float[] own = computer == null ? new float[0] : computer.readings();
+        int program = programChannels();
+        float[] seen = new float[CHANNELS];
+        for (int c = 0; c < CHANNELS; c++) {
+            if (c < program)
+                seen[c] = c < own.length ? own[c] : 0f;
+            else if (computer != null && c - program < computer.attached().size())
+                seen[c] = computer.attached().get(c - program).value();
+        }
         count = Math.min(channels().size(), CHANNELS);
         for (int c = 0; c < CHANNELS; c++)
             ring[c][at] = c < seen.length ? seen[c] : 0f;
