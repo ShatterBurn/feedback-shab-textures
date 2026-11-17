@@ -35,7 +35,7 @@ import net.minecraft.world.item.Items;
  */
 public class ResearchTableScreen extends SkinnedScreen<ResearchTableMenu> {
 
-    private static final GuiSkin TREATISES = GuiSkin.CONSOLE, ATTUNEMENTS = GuiSkin.MYSTIC;
+    private static final GuiSkin TREATISES = GuiSkin.CONSOLE, ATTUNEMENTS = GuiSkin.MYSTIC, APPS = GuiSkin.TERMINAL;
     private static final int LIST_X = 10, LIST_Y = 28, LIST_W = 136, LIST_H = 142, ROW = 26, TAB_Y = 10, TAB_W = 50, TAB_GAP = 2, PAGE_X = ResearchTableMenu.PAGE_X, PAGE_W = 138;
 
     private int tabMode = -1, scroll, descIndex = -1, descMode = -1;
@@ -58,7 +58,7 @@ public class ResearchTableScreen extends SkinnedScreen<ResearchTableMenu> {
     }
 
     private GuiSkin listSkin() {
-        return menu.mode() == 1 ? ATTUNEMENTS : TREATISES;
+        return menu.mode() == 1 ? ATTUNEMENTS : menu.mode() == 2 ? APPS : TREATISES;
     }
 
     @Override
@@ -89,8 +89,8 @@ public class ResearchTableScreen extends SkinnedScreen<ResearchTableMenu> {
                 ? GuiStyle.primary(ATTUNEMENTS, b, x -> press(ResearchTableMenu.BTN_ATTUNEMENTS), x2, topPos + TAB_Y, TAB_W, 14, null)
                 : GuiStyle.button(ATTUNEMENTS, b, x -> press(ResearchTableMenu.BTN_ATTUNEMENTS), x2, topPos + TAB_Y, TAB_W, 14));
         apps = addRenderableWidget(tabMode == 2
-                ? GuiStyle.primary(TREATISES, c, x -> press(ResearchTableMenu.BTN_APPS), x3, topPos + TAB_Y, w3, 14, null)
-                : GuiStyle.button(TREATISES, c, x -> press(ResearchTableMenu.BTN_APPS), x3, topPos + TAB_Y, w3, 14));
+                ? GuiStyle.primary(APPS, c, x -> press(ResearchTableMenu.BTN_APPS), x3, topPos + TAB_Y, w3, 14, null)
+                : GuiStyle.button(APPS, c, x -> press(ResearchTableMenu.BTN_APPS), x3, topPos + TAB_Y, w3, 14));
     }
 
     @Override
