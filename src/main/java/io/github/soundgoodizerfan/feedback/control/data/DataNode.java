@@ -133,8 +133,10 @@ public interface DataNode {
     }
 
     default void unlink(DataNodeRef ref) {
-        if (getNodeLinks().remove(ref))
+        if (getNodeLinks().remove(ref)) {
+            DataLinkStore.forgetColor(getNodeLevel(), getNodeRef(), ref);
             linksChanged();
+        }
     }
 
     /** Forgets links whose far end is gone, so dead links stop counting against the cap.

@@ -146,6 +146,26 @@ public final class DataLinkStore extends SavedData {
             changed(level, controller);
     }
 
+    /** A link between {@code a} and {@code b} is gone: forget any color either end gave the other. */
+    public static void forgetColor(Level level, DataNodeRef a, DataNodeRef b) {
+        if (!(level instanceof ServerLevel server))
+            return;
+        DataLinkStore store = of(server);
+        boolean had = false;
+        for (DataNodeRef[] pair : new DataNodeRef[][]{{a, b}, {b, a}}) {
+            Map<DataNodeRef, Integer> mine = store.colors.get(pair[0]);
+            if (mine != null && mine.remove(pair[1]) != null) {
+                had = true;
+                if (mine.isEmpty())
+                    store.colors.remove(pair[0]);
+            }
+        }
+        if (had) {
+            changed(level, a);
+            changed(level, b);
+        }
+    }
+
     /** Client: the color some Controller gave its link to {@code node} (for tinting the node), or -1. */
     public static int tintOf(DataNodeRef node) {
         for (Map<DataNodeRef, Integer> tints : CLIENT.colors.values()) {

@@ -501,6 +501,7 @@ public class ControllerCore implements Container, Fittable {
     /** Checks and compiles a graph new to this controller; leaves {@link #plan} null if it cannot run. */
     private void loadGraph(ProgramGraph graph) {
         lastGraph = graph;
+        matched.clear();
         // The full edit check, not just the limits: a creative or datapack card never met the Programmer.
         runnable = graph.findEditError(limits()).isEmpty();
         Optional<List<Integer>> order = runnable ? ProgramEvaluator.topologicalOrder(graph) : Optional.empty();
@@ -821,6 +822,7 @@ public class ControllerCore implements Container, Fittable {
     /** Saves, and forgets the cached graph so a new card is evaluated on its first turning tick. */
     private void cardChanged() {
         lastGraph = ProgramGraph.EMPTY;
+        matched.clear();
         delays.clear();
         delayTicks.clear();
         pendingWrites.clear();
