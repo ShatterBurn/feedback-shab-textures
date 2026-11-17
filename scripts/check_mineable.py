@@ -14,7 +14,9 @@ for d in ("main", "generated"):
             if v.startswith("feedback:"):
                 tagged.add(v[9:])
 # Intended tool-less: instant-break plants, fluids, soft seeps, unbreakable creative sources/chassis.
-OK = {"crude_oil", "crude_pool", "seep", "chassis_cell", "copper_flower", "zinc_violet", "bladder_campion"}
+OK = {"crude_oil", "crude_pool", "seep", "chassis_cell", "copper_flower", "zinc_violet", "bladder_campion",
+      # Tool-less on purpose: an invisible light that removes itself, a bed (instant by hand), a soil seep.
+      "pack_light", "placed_bed", "soul_seep", "heat_probe"}
 missing = sorted(b for b in blocks - tagged
                  if b not in OK and not b.endswith("_crop") and not b.startswith("creative_"))
 print("\n".join(missing))

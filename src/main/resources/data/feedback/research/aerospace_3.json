@@ -43,7 +43,8 @@
       "label": "A nozzle",
       "traits": [
         "pressure",
-        "jet"
+        "jet",
+        "reaction"
       ]
     },
     "momentum": {
@@ -57,7 +58,8 @@
       "label": "Exhaust",
       "traits": [
         "gas",
-        "jet"
+        "jet",
+        "burn"
       ]
     },
     "jet": {
