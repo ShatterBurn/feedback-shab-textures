@@ -24,7 +24,7 @@ public class ComputerDriveMenu extends AbstractContainerMenu {
 
     public static final int WIDTH = 176, HEIGHT = 168;
     /** Where the bays sit, left to right, then the running slot after a gap. */
-    public static final int BAY_X = 20, BAY_Y = 24, BAY_STEP = 26, RUN_X = 20 + 4 * 26 + 8;
+    public static final int BAY_X = 20, BAY_Y = 24, BAY_STEP = 26, RUN_X = 20 + 4 * 26 + 8, CIRCUIT_X = RUN_X + 26;
     public static final int INVENTORY_Y = 86, HOTBAR_Y = 144;
 
     private final BlockPos pos;
@@ -46,6 +46,8 @@ public class ComputerDriveMenu extends AbstractContainerMenu {
         for (int i = 0; i < ComputerBays.SIZE; i++)
             addSlot(new Slot(bays, i, BAY_X + i * BAY_STEP, BAY_Y));
         addSlot(new Slot(running, 0, RUN_X, BAY_Y));
+        if (computer != null && computer.core().hasCircuitSlot())
+            addSlot(new CircuitSlot(computer.core(), CIRCUIT_X, BAY_Y));
         for (int row = 0; row < 3; row++)
             for (int column = 0; column < 9; column++)
                 addSlot(new Slot(inventory, 9 + row * 9 + column, 8 + column * 18, INVENTORY_Y + row * 18));
@@ -74,12 +76,15 @@ public class ComputerDriveMenu extends AbstractContainerMenu {
             return ItemStack.EMPTY;
         ItemStack held = slot.getItem();
         ItemStack moved = held.copy();
-        int firstInventory = ComputerBays.SIZE + 1;
+        int firstInventory = slots.size() - 36;
         if (index < firstInventory) {
             if (!moveItemStackTo(held, firstInventory, slots.size(), true))
                 return ItemStack.EMPTY;
         } else if (held.is(FTags.PUNCH_CARDS)) {
             if (!moveItemStackTo(held, 0, ComputerBays.SIZE, false))
+                return ItemStack.EMPTY;
+        } else if (firstInventory > ComputerBays.SIZE + 1 && computer.core().canFitCircuit(held)) {
+            if (!moveItemStackTo(held, ComputerBays.SIZE + 1, ComputerBays.SIZE + 2, false))
                 return ItemStack.EMPTY;
         } else {
             return ItemStack.EMPTY;
@@ -89,5 +94,63 @@ public class ComputerDriveMenu extends AbstractContainerMenu {
         else
             slot.setChanged();
         return moved;
+    }
+
+    /** The circuit slot of the Computer's controller, as a menu slot: a circuit goes in when it is empty, and comes out unless the program running needs the variables its lattice holds. */
+    private static final class CircuitSlot extends Slot {
+
+        private final io.github.soundgoodizerfan.feedback.control.controller.ControllerCore core;
+
+        CircuitSlot(io.github.soundgoodizerfan.feedback.control.controller.ControllerCore core, int x, int y) {
+            super(new SimpleContainer(1), 0, x, y);
+            this.core = core;
+        }
+
+        @Override
+        public ItemStack getItem() {
+            return core.circuit();
+        }
+
+        @Override
+        public boolean hasItem() {
+            return !core.circuit().isEmpty();
+        }
+
+        @Override
+        public boolean mayPlace(ItemStack stack) {
+            return core.canFitCircuit(stack);
+        }
+
+        @Override
+        public boolean mayPickup(Player player) {
+            return core.canTakeCircuit();
+        }
+
+        @Override
+        public void set(ItemStack stack) {
+            if (stack.isEmpty())
+                core.takeCircuit();
+            else
+                core.fitCircuit(stack);
+        }
+
+        @Override
+        public void setByPlayer(ItemStack stack) {
+            set(stack);
+        }
+
+        @Override
+        public ItemStack remove(int amount) {
+            return core.canTakeCircuit() ? core.takeCircuit() : ItemStack.EMPTY;
+        }
+
+        @Override
+        public int getMaxStackSize() {
+            return 1;
+        }
+
+        @Override
+        public void setChanged() {
+        }
     }
 }

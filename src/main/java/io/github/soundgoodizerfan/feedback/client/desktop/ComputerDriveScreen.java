@@ -44,6 +44,8 @@ public class ComputerDriveScreen extends SkinnedScreen<ComputerDriveMenu> {
             g.drawString(font, String.valueOf((char) ('A' + i)), leftPos + ComputerDriveMenu.BAY_X + i * ComputerDriveMenu.BAY_STEP + 6,
                     topPos + ComputerDriveMenu.BAY_Y - 10, skin.dim(), false);
         g.drawString(font, "RUN", leftPos + ComputerDriveMenu.RUN_X - 1, topPos + ComputerDriveMenu.BAY_Y - 10, skin.accent(), false);
+        if (menu.slots.size() > ComputerBays.SIZE + 1 + 36)
+            g.drawString(font, "CIR", leftPos + ComputerDriveMenu.CIRCUIT_X, topPos + ComputerDriveMenu.BAY_Y - 10, skin.dim(), false);
         g.drawString(font, playerInventoryTitle, leftPos + 8, topPos + ComputerDriveMenu.INVENTORY_Y - 11, skin.dim(), false);
         for (var slot : menu.slots)
             skin.slot(g, leftPos + slot.x, topPos + slot.y);
