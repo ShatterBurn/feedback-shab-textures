@@ -26,7 +26,7 @@ A [Component Tester](Instruments.md#component-tester) held against a circuit rea
 | Figure | Set by | What it does for a host |
 | --- | --- | --- |
 | **Stability** | a bigger crystal, a stronger ring | A steadier program clock and less wobble in sensor readings. Like a quartz plate on the board, it steadies the rest of the circuit. |
-| **Channels** | a narrower cut (higher cut) | How many channels an [Endernet Upgrade](Endernet_Upgrade.md) on the host can separate. The [Network app](Electric_Controller.md#disk-apps) shows the count, and a [robot's](Robots.md#the-brain) endernet leash offers more of its senses and actions with more channels. |
+| **Channels** | a narrower cut (higher cut) | How many channels an [Endernet Upgrade](Endernet_Upgrade.md#channel-and-address) on the host can be tuned to, and a [Data Port](Data_Port.md#channels) with the circuit, from 1 up to 16. The [Network app](Electric_Controller.md#disk-apps) shows the count, and a [robot's](Robots.md#the-brain) endernet leash offers more of its senses and actions with more channels. |
 | **Bandwidth** | a stronger ring, a better conductor, a smaller crystal, a wider cut | More signals a minute through a [Data Port](Data_Port.md) that holds the circuit. |
 
 A bigger crystal is steadier and carries less; a narrower cut separates more channels and carries less. The circuit's best figure of each kind counts when a board carries more than one.
