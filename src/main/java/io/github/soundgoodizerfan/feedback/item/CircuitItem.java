@@ -40,8 +40,9 @@ public class CircuitItem extends Item {
             // A tubed circuit says how warm its bulb is: cold it is slow and noisy, warm it works at its best.
             net.minecraft.world.level.Level level = context.level();
             float w = level == null ? 0f : c.warmth(stack, level);
-            tooltip.add(Component.translatable(w >= 0.95f ? "tooltip.feedback.circuit.warm" : w >= 0.4f ? "tooltip.feedback.circuit.warming" : "tooltip.feedback.circuit.cold")
-                    .withStyle(net.minecraft.ChatFormatting.GRAY));
+            String word = w >= 0.95f ? "warm" : w >= 0.4f ? "warming" : "cold";
+            tooltip.add(io.github.soundgoodizerfan.feedback.client.tooltip.Readout.gloss(Component.translatable("tooltip.feedback.circuit." + word),
+                    "tooltip.feedback.circuit.gloss." + word, Math.round(0.95f * 100f), Math.round(0.4f * 100f)).copy().withStyle(net.minecraft.ChatFormatting.GRAY));
         }
         tooltip.add(Component.translatable("tooltip.feedback.role.circuit").withStyle(net.minecraft.ChatFormatting.GRAY));
     }

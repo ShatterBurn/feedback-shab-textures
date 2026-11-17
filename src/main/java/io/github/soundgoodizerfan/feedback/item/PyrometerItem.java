@@ -57,7 +57,7 @@ public class PyrometerItem extends Item implements Instrument {
             Float known = Instruments.reference(level, hit.getBlockPos(), hit.getDirection(), Quantity.TEMPERATURE);
             if (known != null) {
                 Instruments.recalibrate(stack, Quantity.TEMPERATURE);
-                Instrument fresh = Instruments.fitted(stack, this);
+                Instrument fresh = Instruments.fitted(stack, this, level);
                 float shown = fresh.shown(Quantity.TEMPERATURE, known);
                 io.github.soundgoodizerfan.feedback.net.AimPayloads.dial(player, hit.getBlockPos(), fresh, Component.translatable("feedback.readout.tu", Math.round(shown)),
                         Quantity.TEMPERATURE, shown);
@@ -65,7 +65,7 @@ public class PyrometerItem extends Item implements Instrument {
             }
         }
         if (hit.getType() == HitResult.Type.BLOCK && level.getBlockEntity(hit.getBlockPos()) instanceof ThermalBody body) {
-            Instrument self = Instruments.fitted(stack, this);
+            Instrument self = Instruments.fitted(stack, this, level);
             float shown = self.shown(Quantity.TEMPERATURE, body.getTemperature().value());
             io.github.soundgoodizerfan.feedback.net.AimPayloads.dial(player, hit.getBlockPos(), self, Component.translatable("feedback.readout.tu", Math.round(shown)),
                     Quantity.TEMPERATURE, shown);

@@ -61,7 +61,7 @@ public class PressureGaugeItem extends Item implements Instrument {
         if (known != null) {
             if (!level.isClientSide) {
                 Instruments.recalibrate(stack, Quantity.PRESSURE);
-                Instrument fresh = Instruments.fitted(stack, this);
+                Instrument fresh = Instruments.fitted(stack, this, level);
                 float shown = fresh.shown(Quantity.PRESSURE, known);
                 io.github.soundgoodizerfan.feedback.net.AimPayloads.dial(player, context.getClickedPos(), fresh, Component.translatable("feedback.unit.pu",
                         Instruments.format(shown, fresh.resolution(Quantity.PRESSURE))), Quantity.PRESSURE, shown);
@@ -72,7 +72,7 @@ public class PressureGaugeItem extends Item implements Instrument {
             return InteractionResult.PASS;
 
         if (!level.isClientSide) {
-            Instrument self = Instruments.fitted(stack, this);
+            Instrument self = Instruments.fitted(stack, this, level);
             float truth = holder.getPressure().value();
             float shown = self.shown(Quantity.PRESSURE, truth);
             io.github.soundgoodizerfan.feedback.net.AimPayloads.dial(player, context.getClickedPos(), self, Component.translatable("feedback.unit.pu",

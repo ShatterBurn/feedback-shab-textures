@@ -98,7 +98,7 @@ public class ThermometerItem extends Item implements Instrument {
             if (known != null) {
                 if (!level.isClientSide) {
                     Instruments.recalibrate(stack, Quantity.TEMPERATURE);
-                    Instrument fresh = Instruments.fitted(stack, this);
+                    Instrument fresh = Instruments.fitted(stack, this, level);
                     float shown = fresh.shown(Quantity.TEMPERATURE, known);
                     io.github.soundgoodizerfan.feedback.net.AimPayloads.dial(player, pos, fresh, Component.translatable("feedback.readout.tu", Math.round(shown)),
                             Quantity.TEMPERATURE, shown);
@@ -107,7 +107,7 @@ public class ThermometerItem extends Item implements Instrument {
             }
             if (!io.github.soundgoodizerfan.feedback.process.CropClimate.covers(level.getBlockState(pos)))
                 return InteractionResult.PASS;
-            Instrument self = Instruments.fitted(stack, this);
+            Instrument self = Instruments.fitted(stack, this, level);
             if (!level.isClientSide) {
                 float rate = io.github.soundgoodizerfan.feedback.process.CropClimate.rate(level, pos, level.getBlockState(pos));
                 float shown = self.shown(Quantity.TEMPERATURE, io.github.soundgoodizerfan.feedback.process.CropClimate.weather(level, pos));
@@ -119,7 +119,7 @@ public class ThermometerItem extends Item implements Instrument {
         }
 
         if (!level.isClientSide) {
-            Instrument self = Instruments.fitted(stack, this);
+            Instrument self = Instruments.fitted(stack, this, level);
             float shown = self.shown(Quantity.TEMPERATURE, body.getTemperature().value());
             Instruments.strain(stack, this, Quantity.TEMPERATURE, body.getTemperature().value());
             io.github.soundgoodizerfan.feedback.net.AimPayloads.dial(player, context.getClickedPos(), self, Component.translatable("feedback.readout.tu", Math.round(shown)),

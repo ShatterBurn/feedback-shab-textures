@@ -48,7 +48,7 @@ public class HydrometerItem extends Item implements Instrument {
         if (player == null || !(level.getBlockEntity(context.getClickedPos()) instanceof BatteryBlockEntity battery))
             return InteractionResult.PASS;
         if (!level.isClientSide) {
-            Instrument self = Instruments.fitted(stack, this);
+            Instrument self = Instruments.fitted(stack, this, level);
             if (battery.ready())
                 io.github.soundgoodizerfan.feedback.net.AimPayloads.dial(player, context.getClickedPos(), self, Component.translatable("feedback.battery.charge",
                         Instruments.format(battery.stateOfCharge() * 100f, self.resolution(Quantity.CHARGE) * 100f)), Quantity.CHARGE,

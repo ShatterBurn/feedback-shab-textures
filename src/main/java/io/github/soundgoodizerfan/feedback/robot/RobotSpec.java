@@ -57,7 +57,15 @@ public record RobotSpec(float mass, float speed, float headSt, String sensor, St
 
     /** How steadily a hand lands, from a circuit: its speed times how quiet it is, halved by a cold joint; a dead or missing one reads 0. */
     public static float dexterity(ItemStack circuit) {
-        var c = io.github.soundgoodizerfan.feedback.process.Circuit.of(circuit);
+        return dexterity(io.github.soundgoodizerfan.feedback.process.Circuit.of(circuit));
+    }
+
+    /** As above, for a circuit read at the warmth its stack is at now (a tubed brain that is cold is slow and noisy). */
+    public static float dexterity(ItemStack circuit, net.minecraft.world.level.Level level) {
+        return dexterity(io.github.soundgoodizerfan.feedback.process.Circuit.of(circuit, level));
+    }
+
+    private static float dexterity(io.github.soundgoodizerfan.feedback.process.Circuit c) {
         if (c.elements() <= 0)
             return 0f;
         float d = c.speed() * (1f - c.noise());
@@ -65,6 +73,10 @@ public record RobotSpec(float mass, float speed, float headSt, String sensor, St
     }
 
     /** The same figures with a brain fitted: the arm takes its circuit by hand. */
+    public RobotSpec withBrain(ItemStack circuit, net.minecraft.world.level.Level level) {
+        return new RobotSpec(mass, speed, headSt, sensor, drive, loader, radio, dexterity(circuit, level));
+    }
+
     public RobotSpec withBrain(ItemStack circuit) {
         return new RobotSpec(mass, speed, headSt, sensor, drive, loader, radio, dexterity(circuit));
     }

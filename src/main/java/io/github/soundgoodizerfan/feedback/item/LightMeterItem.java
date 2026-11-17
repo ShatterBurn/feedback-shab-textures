@@ -60,7 +60,7 @@ public class LightMeterItem extends Item implements Instrument {
         Float known = Instruments.reference(level, pos, context.getClickedFace(), Quantity.LIGHT);
         if (known != null) {
             Instruments.recalibrate(stack, Quantity.LIGHT);
-            Instrument fresh = Instruments.fitted(stack, this);
+            Instrument fresh = Instruments.fitted(stack, this, level);
             float shown = Math.max(0f, fresh.shown(Quantity.LIGHT, known));
             io.github.soundgoodizerfan.feedback.net.AimPayloads.dial(player, pos, fresh,
                     Component.translatable("feedback.readout.light.lamp", Instruments.format(shown, fresh.resolution(Quantity.LIGHT))), Quantity.LIGHT, shown);
@@ -69,7 +69,7 @@ public class LightMeterItem extends Item implements Instrument {
         BlockPos at = pos.relative(context.getClickedFace());
         float block = level.getBrightness(LightLayer.BLOCK, at);
         float sky = Math.max(0, level.getBrightness(LightLayer.SKY, at) - level.getSkyDarken());
-        Instrument self = Instruments.fitted(stack, this);
+        Instrument self = Instruments.fitted(stack, this, level);
         float res = self.resolution(Quantity.LIGHT);
         float shownBlock = Math.max(0f, self.shown(Quantity.LIGHT, block)), shownSky = Math.max(0f, self.shown(Quantity.LIGHT, sky));
         io.github.soundgoodizerfan.feedback.net.AimPayloads.dial(player, pos, self, Component.translatable("feedback.readout.light",

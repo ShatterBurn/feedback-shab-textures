@@ -84,7 +84,8 @@ public class RobotArmBlockEntity extends ElectricNode implements ControllerCore.
 
     @Override
     public RobotSpec spec() {
-        return spec;
+        // The brain is read at the warmth it is at now.
+        return brain.isEmpty() || level == null ? spec : BARE.withBrain(brain, level);
     }
 
     private void setBrainQuietly(ItemStack circuit) {

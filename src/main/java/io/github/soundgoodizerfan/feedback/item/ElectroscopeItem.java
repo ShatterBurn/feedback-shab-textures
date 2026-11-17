@@ -59,7 +59,7 @@ public class ElectroscopeItem extends Item implements Instrument {
             return InteractionResult.PASS;
 
         if (!level.isClientSide) {
-            Instrument self = Instruments.fitted(stack, this);
+            Instrument self = Instruments.fitted(stack, this, level);
             if (node.isLive()) {
                 float shown = Instruments.quantise(node.getBand().ordinal(), self.resolution(Quantity.BAND));
                 io.github.soundgoodizerfan.feedback.net.AimPayloads.dial(player, context.getClickedPos(), self,

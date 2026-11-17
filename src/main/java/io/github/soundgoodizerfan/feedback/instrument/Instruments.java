@@ -124,12 +124,17 @@ public final class Instruments {
      * through a stack -- carried or held -- goes through this, so resolution is looked up in one place.
      */
     public static Instrument fitted(ItemStack stack, Instrument item) {
+        return fitted(stack, item, null);
+    }
+
+    /** As above, with the fitted circuit read at the warmth its stack is at in {@code level} (a tubed one that is cold narrows the step less). */
+    public static Instrument fitted(ItemStack stack, Instrument item, net.minecraft.world.level.Level level) {
         if (Boolean.TRUE.equals(stack.get(io.github.soundgoodizerfan.feedback.registry.FDataComponents.CALIBRATED.get())))
             return new Reference(item);
         var drift = stack.get(io.github.soundgoodizerfan.feedback.registry.FDataComponents.DRIFT.get());
         if (drift != null && !drift.isEmpty())
             item = new Drifted(item, drift);
-        Circuit circuit = Circuit.of(stack);
+        Circuit circuit = level == null ? Circuit.of(stack) : Circuit.of(stack, level);
         return circuit.live() ? new Fitted(item, circuit.stepFactor()) : item;
     }
 

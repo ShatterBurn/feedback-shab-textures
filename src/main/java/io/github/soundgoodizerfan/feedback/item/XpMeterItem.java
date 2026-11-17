@@ -63,7 +63,7 @@ public class XpMeterItem extends Item implements Instrument {
         if (player == null || !(level.getBlockEntity(context.getClickedPos()) instanceof XpNode node))
             return InteractionResult.PASS;
         if (!level.isClientSide) {
-            Instrument self = Instruments.fitted(stack, this);
+            Instrument self = Instruments.fitted(stack, this, level);
             XpNetwork net = node.network();
             if (node.xpStore() != null) {
                 XpStore st = node.xpStore();
@@ -84,7 +84,7 @@ public class XpMeterItem extends Item implements Instrument {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (!level.isClientSide) {
-            Instrument self = Instruments.fitted(stack, this);
+            Instrument self = Instruments.fitted(stack, this, level);
             XpStore held = XpItems.store(player.getItemInHand(hand == InteractionHand.MAIN_HAND ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND));
             float lvl = held != null ? held.level() : player.experienceLevel + player.experienceProgress;
             io.github.soundgoodizerfan.feedback.net.AimPayloads.dial(player, self, held != null ? store(self, held.level(), held.points(), held.maxPoints())
@@ -98,7 +98,7 @@ public class XpMeterItem extends Item implements Instrument {
     public InteractionResult interactLivingEntity(ItemStack stack, Player player, LivingEntity target, InteractionHand hand) {
         if (player.level().isClientSide)
             return InteractionResult.SUCCESS;
-        Instrument self = Instruments.fitted(stack, this);
+        Instrument self = Instruments.fitted(stack, this, player.level());
         if (target instanceof Villager villager) {
             io.github.soundgoodizerfan.feedback.net.AimPayloads.read(player, villager, self, Component.translatable("feedback.xp.villager",
                     villager.getVillagerData().getLevel(), villager.getVillagerXp()));
