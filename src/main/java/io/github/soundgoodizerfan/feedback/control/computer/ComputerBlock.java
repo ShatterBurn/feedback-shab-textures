@@ -54,6 +54,7 @@ public class ComputerBlock extends Block implements EntityBlock {
     protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState next, boolean moved) {
         if (!state.is(next.getBlock())) {
             if (level.getBlockEntity(pos) instanceof ComputerBlockEntity computer) {
+                computer.markCarried();
                 Containers.dropContents(level, pos, computer.programmer());
                 Containers.dropContents(level, pos, computer.bays());
             }

@@ -90,6 +90,9 @@ public final class FCommands {
                                                 io.github.soundgoodizerfan.feedback.space.SpaceTravel.maxScale()))
                                         .executes(c -> space(c, 2, com.mojang.brigadier.arguments.DoubleArgumentType.getDouble(c, "k"))))))
                 .then(Commands.literal("charge").executes(FCommands::charge))
+                .then(Commands.literal("computers").executes(c -> computers(c, null, false))
+                        .then(Commands.literal("purge")
+                                .then(Commands.argument("id", StringArgumentType.word()).executes(c -> computers(c, StringArgumentType.getString(c, "id"), true)))))
                 .then(Commands.literal("audit").then(Commands.literal("materials").executes(FCommands::auditMaterials)))
                 .then(Commands.literal("build").executes(FCommands::build)
                         .then(Commands.literal("parts").executes(FCommands::parts)))
@@ -460,5 +463,37 @@ public final class FCommands {
         if (stack.isEmpty())
             throw NO_MATERIAL.create();
         return stack.get();
+    }
+
+    /** Lists the internal disks of every Computer (placed or carried, last seen, files, bytes), or purges the one whose id starts with {@code id}. */
+    private static int computers(CommandContext<CommandSourceStack> c, String id, boolean purge) {
+        var store = io.github.soundgoodizerfan.feedback.control.computer.ComputerStore.get(c.getSource().getServer());
+        long now = c.getSource().getServer().overworld().getGameTime();
+        var rows = new java.util.ArrayList<java.util.Map.Entry<java.util.UUID, io.github.soundgoodizerfan.feedback.control.computer.ComputerStore.Entry>>(store.all().entrySet());
+        // carried and long unseen first: those are the ones worth purging
+        rows.sort(java.util.Comparator.comparing((java.util.Map.Entry<java.util.UUID, io.github.soundgoodizerfan.feedback.control.computer.ComputerStore.Entry> e) -> !e.getValue().carried())
+                .thenComparingLong(e -> e.getValue().lastSeen()));
+        if (purge) {
+            java.util.List<java.util.UUID> hits = rows.stream().map(java.util.Map.Entry::getKey).filter(u -> u.toString().startsWith(id)).toList();
+            if (hits.size() != 1) {
+                c.getSource().sendFailure(Component.literal(hits.isEmpty() ? "No computer disk starts with " + id : "Several disks start with " + id));
+                return 0;
+            }
+            if (store.isClaimed(hits.get(0))) {
+                c.getSource().sendFailure(Component.literal("That disk is in a loaded Computer"));
+                return 0;
+            }
+            store.purge(hits.get(0));
+            c.getSource().sendSuccess(() -> Component.literal("Purged " + hits.get(0)), true);
+            return 1;
+        }
+        for (var e : rows) {
+            var entry = e.getValue();
+            String where = entry.carried() ? "carried" : store.isClaimed(e.getKey()) ? "placed, loaded" : "placed";
+            c.getSource().sendSuccess(() -> Component.literal(e.getKey().toString().substring(0, 8) + " " + where + ", "
+                    + entry.files().size() + " files, " + entry.bytes() + " bytes, last seen " + Math.max(0, now - entry.lastSeen()) / 1200 + " min ago"), false);
+        }
+        c.getSource().sendSuccess(() -> Component.literal(rows.size() + " computer disks"), false);
+        return rows.size();
     }
 }

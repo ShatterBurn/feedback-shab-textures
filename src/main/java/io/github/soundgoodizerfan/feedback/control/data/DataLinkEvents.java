@@ -32,6 +32,13 @@ public final class DataLinkEvents {
             DataLinkStore.sweep(level);
     }
 
+    /** Every few seconds the internal disks of Computers that are gone are forgotten (control/computer/ComputerStore). */
+    @SubscribeEvent
+    private static void onServerTick(net.neoforged.neoforge.event.tick.ServerTickEvent.Post event) {
+        if (event.getServer().getTickCount() % 100 == 0)
+            io.github.soundgoodizerfan.feedback.control.computer.ComputerStore.get(event.getServer()).sweep(event.getServer());
+    }
+
     /** The client forgets a chunk's links when the chunk leaves view, and all of them when its level goes. */
     @SubscribeEvent
     private static void onChunkUnload(ChunkEvent.Unload event) {

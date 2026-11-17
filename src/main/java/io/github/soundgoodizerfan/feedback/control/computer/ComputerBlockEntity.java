@@ -457,20 +457,89 @@ public class ComputerBlockEntity extends ElectricNode implements ControllerHost,
         }
     }
 
+    /** The id of this Computer's internal disk ({@link ComputerStore}), allocated on first use; null until then. Only the id is saved here. */
+    @org.jetbrains.annotations.Nullable
+    private java.util.UUID disk;
+
+    /** The internal disk, allocated now if this Computer has never used one. Server only; null on a client. */
+    @org.jetbrains.annotations.Nullable
+    public java.util.UUID disk() {
+        if (level == null || level.isClientSide || level.getServer() == null)
+            return null;
+        if (disk == null) {
+            ComputerStore store = ComputerStore.get(level.getServer());
+            disk = store.claim(store.allocate(), this);
+            setChanged();
+        }
+        return disk;
+    }
+
+    /** This Computer's files, or null on a client or before it has any disk. */
+    @org.jetbrains.annotations.Nullable
+    public ComputerStore.Entry diskEntry() {
+        java.util.UUID id = disk();
+        return id == null ? null : ComputerStore.get(level.getServer()).find(id);
+    }
+
+    /** The block was broken and its disk travels with the item it drops as. */
+    public void markCarried() {
+        if (disk != null && level != null && !level.isClientSide && level.getServer() != null)
+            ComputerStore.get(level.getServer()).carry(disk, level.getGameTime());
+    }
+
+    private void claimDisk() {
+        if (disk == null || level == null || level.isClientSide || level.getServer() == null)
+            return;
+        java.util.UUID mine = ComputerStore.get(level.getServer()).claim(disk, this);
+        if (!mine.equals(disk)) {
+            disk = mine;
+            setChanged();
+        }
+    }
+
+    @Override
+    public void onLoad() {
+        super.onLoad();
+        claimDisk();
+    }
+
+    @Override
+    protected void collectImplicitComponents(net.minecraft.core.component.DataComponentMap.Builder components) {
+        super.collectImplicitComponents(components);
+        if (disk != null)
+            components.set(io.github.soundgoodizerfan.feedback.registry.FDataComponents.COMPUTER_DISK.get(), disk);
+    }
+
+    @Override
+    protected void applyImplicitComponents(net.minecraft.world.level.block.entity.BlockEntity.DataComponentInput input) {
+        super.applyImplicitComponents(input);
+        java.util.UUID carried = input.get(io.github.soundgoodizerfan.feedback.registry.FDataComponents.COMPUTER_DISK.get());
+        if (carried != null) {
+            disk = carried;
+            claimDisk();
+        }
+    }
+
     @Override
     public void onChunkUnloaded() {
         super.onChunkUnloaded();
+        if (disk != null)
+            ComputerStore.release(disk, this);
         io.github.soundgoodizerfan.feedback.control.endernet.Endernet.leave(this);
     }
 
     @Override
     public void setRemoved() {
+        if (disk != null)
+            ComputerStore.release(disk, this);
         io.github.soundgoodizerfan.feedback.control.endernet.Endernet.leave(this);
         super.setRemoved();
     }
 
     @Override
     public void tickServer() {
+        if (disk != null && level != null && level.getGameTime() % 100 == 0 && level.getServer() != null)
+            ComputerStore.get(level.getServer()).touch(disk, this);
         io.github.soundgoodizerfan.feedback.control.endernet.Endernet.sync(this);
         core.tickServer();
         if (level != null && level.getGameTime() % 20 == 0) {
@@ -615,6 +684,8 @@ public class ComputerBlockEntity extends ElectricNode implements ControllerHost,
     @Override
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
+        if (disk != null)
+            tag.putUUID("Disk", disk);
         core.save(tag, registries);
         net.minecraft.world.ContainerHelper.saveAllItems(tag, bays.getItems(), true, registries);
         tag.putInt("EditorDrive", editorDrive);
@@ -680,6 +751,7 @@ public class ComputerBlockEntity extends ElectricNode implements ControllerHost,
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
+        disk = tag.hasUUID("Disk") ? tag.getUUID("Disk") : null;
         core.load(tag, registries);
         bays.getItems().clear();
         net.minecraft.world.ContainerHelper.loadAllItems(tag, bays.getItems(), registries);

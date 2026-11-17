@@ -342,6 +342,20 @@ public class FDataComponents {
                     .networkSynchronized(ProgramGraph.STREAM_CODEC)
                     .build());
 
+    /** The internal disk a Computer carries as an item: only the id, never the files ({@code control/computer/ComputerStore}). */
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<java.util.UUID>> COMPUTER_DISK =
+            COMPONENTS.register("computer_disk", () -> DataComponentType.<java.util.UUID>builder()
+                    .persistent(net.minecraft.core.UUIDUtil.CODEC)
+                    .networkSynchronized(net.minecraft.core.UUIDUtil.STREAM_CODEC)
+                    .build());
+
+    /** How many files a medium holds, when it is not the default of its item (a bigger drive). */
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> MEDIA_CAPACITY =
+            COMPONENTS.register("media_capacity", () -> DataComponentType.<Integer>builder()
+                    .persistent(com.mojang.serialization.Codec.intRange(1, 256))
+                    .networkSynchronized(net.minecraft.network.codec.ByteBufCodecs.VAR_INT)
+                    .build());
+
     /**
      * An app on a medium (a Floppy Disk): the id of a Computer app that runs while the disk sits in one of its drive bays
      * ({@code control/computer/ComputerApps}). A disk with an app is not a program medium.

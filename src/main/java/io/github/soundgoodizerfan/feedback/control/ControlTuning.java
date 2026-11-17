@@ -62,6 +62,21 @@ public final class ControlTuning {
      */
     public static final int CONTROLLER_MAX_NODES = 16;
 
+    /** Files a Computer's internal disk holds. Invented. */
+    public static final int INTERNAL_DISK_FILES = 16;
+
+    /** Files a Punch Card, a USB Drive and a Floppy Disk hold by default; an item may carry its own figure ({@code MEDIA_CAPACITY}). Invented. */
+    public static final int PUNCH_CARD_FILES = 1, USB_DRIVE_FILES = 4, FLOPPY_DISK_FILES = 8;
+
+    /** The most bytes (of a file's compressed saved form) one file may take on a medium: removable media carry files in an item component. Invented. */
+    public static final int FILE_MAX_BYTES = 16384;
+
+    /** The longest name a file keeps. */
+    public static final int FILE_NAME_MAX = 32;
+
+    /** How long a placed internal disk may go unclaimed in a loaded chunk before its Computer is taken to be gone, in ticks. */
+    public static final int COMPUTER_ORPHAN_TICKS = 200;
+
     /** Data nodes a bare Controller binds. Invented; each Card Rack adds {@link #CARD_RACK_LINKS}. */
     public static final int CONTROLLER_BASE_LINKS = 8;
 
