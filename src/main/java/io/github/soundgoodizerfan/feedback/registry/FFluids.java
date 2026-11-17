@@ -337,6 +337,12 @@ public final class FFluids {
     public static final DeferredHolder<Fluid, Fluid> CRYOLITE_BATH_FLOWING =
             FLUIDS.register("cryolite_bath_flowing", () -> new BaseFlowingFluid.Flowing(petro(FFluidTypes.CRYOLITE_BATH, FFluids.CRYOLITE_BATH, FFluids.CRYOLITE_BATH_FLOWING)));
 
+    /** A brewed potion as a fluid: one fluid, the potion on the stack as a {@code potion_state}; never placed (see {@code PotionFluids}). */
+    public static final DeferredHolder<Fluid, Fluid> POTION =
+            FLUIDS.register("potion", () -> new BaseFlowingFluid.Source(petro(FFluidTypes.POTION, FFluids.POTION, FFluids.POTION_FLOWING)));
+    public static final DeferredHolder<Fluid, Fluid> POTION_FLOWING =
+            FLUIDS.register("potion_flowing", () -> new BaseFlowingFluid.Flowing(petro(FFluidTypes.POTION, FFluids.POTION, FFluids.POTION_FLOWING)));
+
     /** The vapour of the unstable spatial solvent (data/feedback/thermal_process/phase_slurry_solvent.json); the liquids of the teleportant chain are in {@link Liquors}. */
     public static final DeferredHolder<Fluid, Fluid> UNSTABLE_SOLVENT_VAPOUR =
             FLUIDS.register("unstable_solvent_vapour", () -> new BaseFlowingFluid.Source(petro(FFluidTypes.UNSTABLE_SOLVENT_VAPOUR, FFluids.UNSTABLE_SOLVENT_VAPOUR, FFluids.UNSTABLE_SOLVENT_VAPOUR_FLOWING)));

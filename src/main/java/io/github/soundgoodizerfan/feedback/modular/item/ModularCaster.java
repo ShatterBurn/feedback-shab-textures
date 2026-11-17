@@ -72,6 +72,19 @@ public class ModularCaster extends GunItem {
         FluidStack held = content(stack);
         tooltip.add(held.isEmpty() ? Component.translatable("tooltip.feedback.caster.empty")
                 : Component.translatable("tooltip.feedback.caster.holds", held.getHoverName(), held.getAmount()).withStyle(ChatFormatting.GRAY));
+        // A potion names its effect and how strong it has kept, in words (the bottle's own wording).
+        var potion = io.github.soundgoodizerfan.feedback.potion.PotionFluids.state(held);
+        if (potion != null) {
+            if (potion.dud())
+                tooltip.add(Component.translatable("item.feedback.dud_draught").withStyle(ChatFormatting.GRAY));
+            else if (context.level() != null) {
+                float p = potion.potencyNow(context.level());
+                tooltip.add(Component.translatable("tooltip.feedback.caster.potion", io.github.soundgoodizerfan.feedback.potion.PotionEffects.name(potion.effect().get()),
+                        Component.translatable(p >= 0.75f ? "tooltip.feedback.potion.fresh" : p >= 0.4f ? "tooltip.feedback.potion.fading"
+                                : p >= io.github.soundgoodizerfan.feedback.potion.PotionTuning.MIN_POTENCY ? "tooltip.feedback.potion.stale" : "tooltip.feedback.potion.flat"))
+                        .withStyle(ChatFormatting.GRAY));
+            }
+        }
         // Words are free; the figure is a gauge's to give (philosophy 10).
         if (spec(stack).map(CasterSpec::electric).orElse(false)) {
             ItemStack cell = io.github.soundgoodizerfan.feedback.modular.item.ModularElectricGun.cell(stack);

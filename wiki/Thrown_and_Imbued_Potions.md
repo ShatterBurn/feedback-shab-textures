@@ -25,6 +25,20 @@ Where a potion is not listed here, thrown it gives its drunk effect to every bod
 
 Fine palate or assay thrown over dropped laced food reveals it to the thrower on a message: fine palate says the food tastes laced, assay names the potion. See [Brewing Stand](Brewing_Stand.md#lacing-food).
 
+## Sprayed from a fluid caster
+
+A potion is a fluid as well as a bottle. A potion bottle holds 250 mB. In an inventory, pick a potion bottle up on the cursor and right-click a [Fluid Caster](Fluid_Caster.md) in its slot to pour the 250 mB into its tank and get a glass bottle back; an empty glass bottle dropped the same way takes 250 mB out as a potion bottle. A pipe, a tank or any other fluid container fills and drains a bottle the same way. A potion keeps its effect, level, length and potency in a tank, and fades on the same clock as a bottle.
+
+Two potions of one brew (same effect, level and length, in the same solvent) run together in one tank, their potency averaged by amount. Different brews do not mix; the caster refuses the second.
+
+Sprayed, each body in the stream gets the potion's effect for the share of the bottle's length that lands on it: 250 mB is the full length. It adds to the time the body has left and never stacks levels. The stream takes the potion's tint.
+
+- The **fire** potion sets bodies alight and lights a fire where it lands. The **explosion** potion detonates at the landing point about once per 250 mB sprayed.
+- Green thumb, quench, static ground and the laced-food reveal act where the stream lands, as thrown.
+- Second wind, springheel, slipstream and quench fire about once per bottle's worth sprayed.
+- A potion carried in water wets what it hits: it puts out fire and hurts creatures that hate water, but never fills a cauldron or waters farmland.
+- An **atomiser** nozzle leaves a potion mist where the stream lands. It hangs for about 5 seconds and doses whatever stands in it.
+
 ## Imbuing
 
 A tool can be soaked in a potion so that its blows carry the potion's effect for a while. Hold the tool in one hand and the potion in the other and sneak and use: the bottle is spent and the tool takes a **soak**. Only sword-type and axe-type weapons (swords, axes, spears, mauls, twin blades, cleavers and sickles) take one, and only potions of an elemental effect do it: poison, fire and frost.

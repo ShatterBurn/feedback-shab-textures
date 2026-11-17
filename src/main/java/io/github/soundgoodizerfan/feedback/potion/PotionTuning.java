@@ -190,6 +190,14 @@ public final class PotionTuning {
             GREEN_THUMB_PULSE = 6f, GREEN_THUMB_SPRINKLE_STRENGTH = 1.5f, QUENCH_DOUSE_KEEP = 0.35f, STATIC_GROUND_ZONE_HEIGHT = 2f;
     public static final int GREEN_THUMB_SPRINKLE_PASSES = 5, QUENCH_DOUSE_TICKS = 400;
 
+    /**
+     * A potion in a caster's stream and mist (placeholders). Place effects (green thumb, quench, held ground) reach {@code SPRAY_PLACE_REACH}
+     * blocks where the stream lands. A mist keeps {@code MIST_YIELD} of the mB sprayed into it, hangs {@code MIST_TICKS}, reaches
+     * {@code MIST_RADIUS} blocks and doses what stands in it {@code MIST_DOSE_MB} every {@code MIST_EVERY} ticks (at most {@code MIST_MAX_CLOUDS} a dimension).
+     */
+    public static final float SPRAY_PLACE_REACH = 1.5f, MIST_YIELD = 0.5f, MIST_RADIUS = 2f;
+    public static final int MIST_TICKS = 100, MIST_EVERY = 10, MIST_DOSE_MB = 8, MIST_MAX_CLOUDS = 24;
+
     /** How far a thrown bottle reaches, blocks: the radius of a bottle's liquid, spread. */
     public static float throwReach() {
         return THROW_SPREAD * (float) Math.cbrt(BOTTLE_MB / 1000f);

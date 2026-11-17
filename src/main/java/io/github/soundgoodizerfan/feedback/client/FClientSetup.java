@@ -270,6 +270,7 @@ public class FClientSetup {
                 event.registerFluidType(moltenFluid(io.github.soundgoodizerfan.feedback.registry.MoltenMetals.tint(id)), type.get()));
         event.registerFluidType(steamFluid(), FFluidTypes.STEAM.get());
         // Petrochemistry: vanilla water sprites tinted by hand (fluid materials carry no colour field).
+        event.registerFluidType(potionTinted(), FFluidTypes.POTION.get());
         event.registerFluidType(waterTinted(0xFF1A1410), FFluidTypes.CRUDE_OIL.get());
         event.registerFluidType(waterTinted(0xFF0E0B09), FFluidTypes.HEAVY_OIL.get());
         event.registerFluidType(waterTinted(0xFFE8D9A0), FFluidTypes.NAPHTHA.get());
@@ -353,6 +354,31 @@ public class FClientSetup {
             @Override
             public int getTintColor() {
                 return tint;
+            }
+        };
+    }
+
+    /** A potion fluid: the water sprite tinted by the potion the stack carries. */
+    private static IClientFluidTypeExtensions potionTinted() {
+        return new IClientFluidTypeExtensions() {
+            @Override
+            public ResourceLocation getStillTexture() {
+                return ResourceLocation.withDefaultNamespace("block/water_still");
+            }
+
+            @Override
+            public ResourceLocation getFlowingTexture() {
+                return ResourceLocation.withDefaultNamespace("block/water_flow");
+            }
+
+            @Override
+            public int getTintColor() {
+                return 0xFFB0C8E8;
+            }
+
+            @Override
+            public int getTintColor(net.neoforged.neoforge.fluids.FluidStack stack) {
+                return 0xFF000000 | io.github.soundgoodizerfan.feedback.potion.PotionSpray.colour(stack);
             }
         };
     }
