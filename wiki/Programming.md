@@ -81,6 +81,8 @@ An **Input** card has these rows:
 - **Reduction**: how several matches combine: *average of matches* (the default), *lowest of matches* or *highest of matches*.
 - **Input**: for a [Driver's Seat](Vehicles.md#the-drivers-seat), which key to read, 0 to 1 (default **W**). Click the row and press the key.
 
+Once a kind is picked, the Signal list shows the signals that kind reports on its own first, then the other quantities, then a robot's senses (a robot's senses first when the kind is Robot).
+
 A kind is a preference for an Input card. When no linked node of that kind offers the signal, any linked node that does offer it answers, so one program works with a crucible or an arc hearth. A card for *On or off* reads yes while the block is on.
 
 A **Switch** card has a **Kind**, an optional **Color** and, for blocks with several inputs, a **Channel** row. It drives every linked node that matches. It never falls back: if no node of that kind (and color) is linked, it does nothing.

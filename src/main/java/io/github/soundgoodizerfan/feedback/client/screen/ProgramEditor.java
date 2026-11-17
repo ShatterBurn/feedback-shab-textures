@@ -1066,15 +1066,51 @@ public final class ProgramEditor {
 
     /** Every signal a Sensor card can ask for: each quantity, and the robot's own senses. */
     private List<Choice> signalChoices(SensorNode n) {
-        List<Choice> out = new ArrayList<>();
-        for (Quantity q : Quantity.values()) {
-            ResourceLocation id = Signals.of(q);
-            out.add(new Choice(signalName(id), 0, () -> replace(n.withSignal(id))));
-        }
+        List<ResourceLocation> signals = new ArrayList<>();
+        for (Quantity q : Quantity.values())
+            signals.add(Signals.of(q));
+        List<ResourceLocation> robot = new ArrayList<>();
         for (RobotChannel channel : RobotChannel.values())
             if (!channel.actuator())
-                out.add(new Choice(signalName(channel.signal()), 0, () -> replace(n.withSignal(channel.signal()))));
+                robot.add(channel.signal());
+        // A picked kind puts the signals its blocks read unfitted first, the other quantities next, and the
+        // robot's senses last (first for the robot kind); with no kind the list keeps its plain order.
+        ResourceLocation kind = n.kind();
+        if (kind != null) {
+            Set<ResourceLocation> native_ = nativeReads(kind);
+            signals.sort(java.util.Comparator.comparingInt(s -> native_.contains(s) ? 0 : 1));
+            if (RobotChannel.KIND.equals(kind))
+                signals.addAll(0, robot);
+            else
+                signals.addAll(robot);
+        } else
+            signals.addAll(robot);
+        List<Choice> out = new ArrayList<>();
+        for (ResourceLocation id : signals)
+            out.add(new Choice(signalName(id), 0, () -> replace(n.withSignal(id))));
         return out;
+    }
+
+    private static final Map<ResourceLocation, Set<ResourceLocation>> NATIVE_READS = new HashMap<>();
+
+    /** What the blocks of a kind read with no fitting mounted: their default block entity's spec, unioned. Cached per kind. */
+    private static Set<ResourceLocation> nativeReads(ResourceLocation kind) {
+        return NATIVE_READS.computeIfAbsent(kind, k -> {
+            Set<ResourceLocation> reads = new java.util.HashSet<>();
+            net.minecraft.core.registries.BuiltInRegistries.BLOCK
+                    .getTag(net.minecraft.tags.TagKey.create(net.minecraft.core.registries.Registries.BLOCK, k))
+                    .ifPresent(tag -> tag.forEach(holder -> {
+                        if (holder.value() instanceof net.minecraft.world.level.block.EntityBlock eb)
+                            try {
+                                if (eb.newBlockEntity(BlockPos.ZERO, holder.value().defaultBlockState())
+                                        instanceof io.github.soundgoodizerfan.feedback.control.data.DataNode node)
+                                    reads.addAll(node.dataSpec().reads());
+                            } catch (RuntimeException ignored) {
+                                // a block entity that needs a level to exist simply adds nothing
+                            }
+                    }));
+            return reads;
+        });
     }
 
     /** "any kind", then every kind the tags declare, then the robot's own. */
