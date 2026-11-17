@@ -61,7 +61,7 @@ public final class DataLinkManager {
         UUID id = player.getUUID();
         Level level = node.getNodeLevel();
         DataNodeRef previous = Optional.ofNullable(pending.remove(id))
-                .filter(p -> p.dimension() == level.dimension()).map(Pending::ref).filter(r -> !r.isLocal()).orElse(null);
+                .filter(p -> p.dimension() == level.dimension()).map(Pending::ref).orElse(null);
 
         if (previous == null || previous.equals(node.getNodeRef())) {
             pending.put(id, new Pending(level.dimension(), node.getNodeRef()));

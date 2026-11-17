@@ -518,7 +518,7 @@ public class RobotEntity extends Entity implements ControllerCore.Locals, RobotW
         if (held.getItem() instanceof DataConnectorItem) {
             // a mast selected first: pair it with this robot; otherwise step through this robot's channels
             var pending = io.github.soundgoodizerfan.feedback.control.data.DataLinkManager.get().peekPending(player);
-            if (pending.isPresent() && !pending.get().isLocal()
+            if (pending.isPresent()
                     && level().getBlockEntity(pending.get().pos()) instanceof RobotMastBlockEntity mast) {
                 io.github.soundgoodizerfan.feedback.control.data.DataLinkManager.get().takePending(player);
                 player.displayClientMessage(Component.translatable(mast.link(this) ? "robot.feedback.mast_linked" : "robot.feedback.mast_no_radio"), true);

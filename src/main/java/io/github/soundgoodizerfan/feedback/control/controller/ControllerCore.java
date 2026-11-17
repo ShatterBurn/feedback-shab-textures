@@ -126,7 +126,7 @@ public class ControllerCore implements Container, Fittable {
     private final BlockEntity host;
     private final java.util.function.Supplier<Level> levelOf;
     private final Runnable changed;
-    /** A robot's own channels, answering the {@code DataNodeRef.local} cards; null on a block host. */
+    /** A robot's own channels, answering the cards whose signal or kind is the robot's; null on a block host. */
     @Nullable
     private final Locals locals;
     private final BooleanSupplier powered;

@@ -122,7 +122,7 @@ public final class DataLinkStore extends SavedData {
 
     private static DataNodeRef follow(DataNodeRef ref, Map<net.minecraft.core.BlockPos, net.minecraft.core.BlockPos> moves) {
         net.minecraft.core.BlockPos to = moves.get(ref.pos());
-        return to == null ? ref : new DataNodeRef(to, ref.side(), ref.voxel(), ref.local());
+        return to == null ? ref : new DataNodeRef(to, ref.side(), ref.voxel());
     }
 
     /** The color {@code controller} gave its link to {@code node}, or -1 for none. */

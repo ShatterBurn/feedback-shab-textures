@@ -996,12 +996,20 @@ public final class ProgramEditor {
     @Nullable
     private Runnable extraControl(ProgramNode node, int row) {
         if (row == 4 && node instanceof SensorNode s && Signals.CONTROL.equals(s.signal()))
-            return () -> awaitingKey = s.id();
+            return readsKeys(s) ? () -> awaitingKey = s.id() : () -> replace(s.withChannel((s.channel() + 1) % CONTROL_CHANNELS));
         return null;
     }
 
     /** A Sensor card waiting for the next key pressed to read it from its seat; -1 for none. */
     private int awaitingKey = -1;
+
+    /** Channels a control reading cycles through when its kind is not a seat. */
+    private static final int CONTROL_CHANNELS = 16;
+
+    /** Whether a control reading is of a driver's seat, whose channel is the key pressed rather than a number. */
+    private static boolean readsKeys(SensorNode s) {
+        return s.kind() != null && s.kind().equals(io.github.soundgoodizerfan.feedback.Feedback.id("data_kind/seat"));
+    }
 
     /** Inputs an analog actuator card cycles through; a part says what each does. */
     private static final int ACTUATOR_INPUTS = 6;
@@ -1774,7 +1782,8 @@ public final class ProgramEditor {
                 graphics.drawString(font, Component.translatable("feedback.programmer.reduction." + n.reduction().getSerializedName()),
                         8, rowTextY(3), COLOR_MUTED, false);
                 if (Signals.CONTROL.equals(n.signal()))
-                    graphics.drawString(font, awaitingKey == n.id() ? Component.translatable("feedback.programmer.press_key")
+                    graphics.drawString(font, !readsKeys(n) ? Component.translatable("feedback.programmer.input", n.channel() + 1)
+                            : awaitingKey == n.id() ? Component.translatable("feedback.programmer.press_key")
                             : Component.translatable("feedback.programmer.key",
                             InputConstants.Type.KEYSYM.getOrCreate(n.channel()).getDisplayName()), 8, rowTextY(4), COLOR_TEXT, false);
             }

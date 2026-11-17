@@ -120,6 +120,13 @@ public enum RobotChannel {
 
     private static final RobotChannel[] ALL = values();
 
+    /** Tells the program evaluator which robot signals are two-state; called once at start-up. */
+    public static void declareSignals() {
+        for (RobotChannel channel : ALL)
+            if (!channel.actuator && channel.bool)
+                io.github.soundgoodizerfan.feedback.control.data.Signals.declareBoolean(channel.signal());
+    }
+
     @Nullable
     public static RobotChannel of(int ordinal) {
         return ordinal >= 0 && ordinal < ALL.length ? ALL[ordinal] : null;

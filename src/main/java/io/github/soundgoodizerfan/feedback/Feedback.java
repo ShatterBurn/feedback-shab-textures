@@ -55,6 +55,7 @@ public class Feedback {
 
     public Feedback(IEventBus modBus, ModContainer container) {
         io.github.soundgoodizerfan.feedback.core.EventTrigger.register(modBus);
+        io.github.soundgoodizerfan.feedback.robot.RobotChannel.declareSignals();
         FFluidTypes.register(modBus);
         FFluids.register(modBus);
         io.github.soundgoodizerfan.feedback.registry.FCrops.init();
