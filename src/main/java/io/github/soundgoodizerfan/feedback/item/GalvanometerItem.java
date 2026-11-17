@@ -53,6 +53,11 @@ public class GalvanometerItem extends Item implements Instrument {
     }
 
     @Override
+    public float floor(Quantity quantity) {
+        return ItemTuning.GALVANOMETER_FLOOR_AMPS;
+    }
+
+    @Override
     public Component label() {
         return Component.translatable("feedback.instrument.galvanometer");
     }
@@ -66,6 +71,11 @@ public class GalvanometerItem extends Item implements Instrument {
 
         if (!level.isClientSide) {
             Instrument self = Instruments.fitted(stack, this, level);
+            // A trickle fainter than the needle can feel, for the gain it has, gives no reading at all (not a reading of zero).
+            if (!Instruments.readable(self, Quantity.CURRENT, node.getAmps(), io.github.soundgoodizerfan.feedback.process.Circuit.of(stack, level).gain())) {
+                io.github.soundgoodizerfan.feedback.net.AimPayloads.report(player, context.getClickedPos(), Component.translatable("feedback.readout.faint"));
+                return InteractionResult.sidedSuccess(false);
+            }
             // A dead line carries nothing: set against it the needle is back on zero. Past its band the needle is slammed and sits off.
             if (node.getAmps() == 0f && node.getWantedAmps() == 0f) {
                 Instruments.recalibrate(stack, Quantity.CURRENT);

@@ -138,6 +138,16 @@ public final class Instruments {
         return circuit.live() ? new Fitted(item, circuit.stepFactor()) : item;
     }
 
+    /** The faintest signal {@code device} reads for {@code quantity} with a circuit of {@code gain} fitted (at its warmth): its floor over {@code 1 + CIRCUIT_FAINT_GAIN x gain}. */
+    public static float faintest(Instrument device, Quantity quantity, float gain) {
+        return device.floor(quantity) / (1f + io.github.soundgoodizerfan.feedback.process.ProcessTuning.CIRCUIT_FAINT_GAIN * Math.max(0f, gain));
+    }
+
+    /** Whether a true figure is strong enough for {@code device} with {@code gain} to read: always for a device with no floor and for a true zero. */
+    public static boolean readable(Instrument device, Quantity quantity, float truth, float gain) {
+        return truth == 0f || Math.abs(truth) >= faintest(device, quantity, gain);
+    }
+
     /** The same device after misuse: reads off by the stored offset, signed the same. */
     private record Drifted(Instrument base, java.util.Map<Quantity, Float> drift) implements Instrument {
         @Override

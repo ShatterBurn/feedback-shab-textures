@@ -44,6 +44,11 @@ public class ElectrolyticCellBlock extends Block implements EntityBlock {
             return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         if (FluidUtil.interactWithFluidHandler(player, hand, level, pos, hit.getDirection()))
             return ItemInteractionResult.sidedSuccess(level.isClientSide);
+        if (io.github.soundgoodizerfan.feedback.machine.CircuitSlot.accepts(stack)) {
+            if (!level.isClientSide)
+                give(player, cell.seatCircuit(stack));
+            return ItemInteractionResult.sidedSuccess(level.isClientSide);
+        }
         boolean side = hit.getDirection().getAxis().isHorizontal();
         if (!(side ? ElectrolyticCellBlockEntity.hangable(stack) : ElectrolyticCellBlockEntity.isAnode(stack)))
             return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
@@ -64,7 +69,7 @@ public class ElectrolyticCellBlock extends Block implements EntityBlock {
             return InteractionResult.PASS;
         if (!level.isClientSide) {
             if (player.isShiftKeyDown())
-                give(player, cell.removeAnode());
+                give(player, cell.getAnode().isEmpty() ? cell.circuit().take() : cell.removeAnode());
             else if (!cell.getWork().isEmpty())
                 cell.takeWork().forEach(stack -> give(player, stack));
             else
@@ -83,6 +88,7 @@ public class ElectrolyticCellBlock extends Block implements EntityBlock {
     @Override
     protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean moved) {
         if (!state.is(newState.getBlock()) && level.getBlockEntity(pos) instanceof ElectrolyticCellBlockEntity cell) {
+            Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), cell.circuit().take());
             Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), cell.removeAnode());
             for (ItemStack stack : cell.takeWork())
                 Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), stack);

@@ -55,6 +55,16 @@ public final class DataWires {
         return grade == Grade.GOOD ? ControlTuning.WIRE_RANGE_GOOD : ControlTuning.WIRE_RANGE_POOR;
     }
 
+    /** The reach of a wire of {@code grade} between ends whose amplifiers give {@code gain} (the larger of the two): the base range lengthened by the gain. */
+    public static int range(Grade grade, float gain) {
+        return (int) (range(grade) * (1f + io.github.soundgoodizerfan.feedback.process.ProcessTuning.CIRCUIT_WIRE_RANGE_GAIN * Math.max(0f, gain)));
+    }
+
+    /** The gain a node's circuit adds to a link that ends at it, 0 for a node that amplifies nothing. */
+    public static float gainOf(DataNode node) {
+        return node instanceof Amplifying a ? a.amplifierGain() : 0f;
+    }
+
     private static TagKey<Item> tag(Grade grade) {
         return grade == Grade.GOOD ? GOOD_WIRE : POOR_WIRE;
     }
@@ -68,12 +78,17 @@ public final class DataWires {
      * else the good. Creative players pay nothing and get the good grade. Takes nothing when it fails.
      */
     public static Paid pay(Player player, int blocks) {
+        return pay(player, blocks, 0f);
+    }
+
+    /** As above for a link whose ends' amplifiers give {@code gain}: the wire reaches further ({@link #range(Grade, float)}); the pieces are still one a block. */
+    public static Paid pay(Player player, int blocks, float gain) {
         int pieces = Math.max(1, blocks);
         if (player.getAbilities().instabuild)
             return new Paid(Grade.GOOD, true, true, pieces);
         boolean anyInRange = false;
         for (Grade grade : Grade.values()) {
-            if (pieces > range(grade))
+            if (pieces > range(grade, gain))
                 continue;
             anyInRange = true;
             if (count(player, grade) >= pieces) {

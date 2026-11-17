@@ -194,7 +194,8 @@ public record Circuit(int elements, float speed, float noise, Board.Joint joint,
         float w = Math.max(0f, warmth);
         float slow = speed * (ProcessTuning.CIRCUIT_COLD_SPEED + (1f - ProcessTuning.CIRCUIT_COLD_SPEED) * w);
         float noisy = Math.min(1f, noise + (1f - w) * ProcessTuning.CIRCUIT_COLD_NOISE);
-        return new Circuit(elements, slow, noisy, joint, limitTu, ratingAmps, gain, power, warmTu, warmRate, clockRateOf(slow), line);
+        // a cold tube amplifies in proportion to its warmth, none at all at ambient
+        return new Circuit(elements, slow, noisy, joint, limitTu, ratingAmps, gain * w, power, warmTu, warmRate, clockRateOf(slow), line);
     }
 
     /**

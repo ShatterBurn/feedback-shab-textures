@@ -22,10 +22,16 @@ import net.minecraft.world.item.ItemStack;
  * them and which media they take; the card slot, the upgrades and the evaluation are one {@link ControllerCore}. Every {@link Container}
  * and {@link Fittable} call goes through to it, so code that holds a host (the block, the upgrade items, the crowbar) does not care which.
  */
-public interface ControllerHost extends Container, Fittable, io.github.soundgoodizerfan.feedback.control.ChannelSource,
+public interface ControllerHost extends Container, Fittable, io.github.soundgoodizerfan.feedback.control.data.Amplifying, io.github.soundgoodizerfan.feedback.control.ChannelSource,
         io.github.soundgoodizerfan.feedback.control.Steppable, io.github.soundgoodizerfan.feedback.control.RemoteChannels {
 
     ControllerCore core();
+
+    /** A host's circuit amplifies a data link that ends at it ({@code control/data/Amplifying}). */
+    @Override
+    default float amplifierGain() {
+        return core().gain();
+    }
 
     // --- remote variables: another controller reads and sets this one's declared variables through its ordinary Sensor and Actuator cards ---
 

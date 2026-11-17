@@ -103,6 +103,7 @@ public class WireDrawerBlock extends Block implements EntityBlock, Rotatable {
     protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean moved) {
         if (!state.is(newState.getBlock()) && level.getBlockEntity(pos) instanceof WireDrawerBlockEntity drawer) {
             Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), drawer.getHead().get());
+            Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), drawer.circuit().take());
             ItemStack held = drawer.getWorkpiece();
             if (!held.isEmpty())
                 Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), held);

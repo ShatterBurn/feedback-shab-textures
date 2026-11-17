@@ -382,6 +382,13 @@ public final class ProcessTuning {
 
     public static final int CIRCUIT_HOLD_GRACE_TICKS = 100;
 
+    /**
+     * Placeholder. Gain (a circuit's, at its warmth) buys two things. A faint-signal instrument (one that states a floor) reads a signal down to
+     * {@code floor / (1 + FAINT_GAIN x gain)}; fainter than that it gives no reading at all. And a data link may be longer by
+     * {@code 1 + WIRE_RANGE_GAIN x gain} (the larger of its two ends' gains), for the same wire at the same cost per block.
+     */
+    public static final float CIRCUIT_FAINT_GAIN = 4f, CIRCUIT_WIRE_RANGE_GAIN = 1f;
+
     // --- vacuum tubes (spec: circuits, tube family). Design only taken from PowerGrid; see THIRD-PARTY-LICENSES.md ---
 
     /**

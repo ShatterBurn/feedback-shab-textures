@@ -113,6 +113,9 @@ public final class ItemTuning {
      */
     public static final float GALVANOMETER_RESOLUTION_AMPS = 0.25f;
 
+    /** Placeholder. The faintest current a galvanometer reads with no circuit fitted, in amps, and the faintest radiation rate a Geiger counter reads, in Ru: fainter is no reading (a fitted circuit's gain lowers both). */
+    public static final float GALVANOMETER_FLOOR_AMPS = 0.2f, GEIGER_FLOOR_RU = 0.3f;
+
     /** A light meter's step, in light levels: a photocell tells a lit room from a lamp, not level 7 from level 8. Invented. */
     public static final float LIGHT_METER_RESOLUTION = 2f;
 

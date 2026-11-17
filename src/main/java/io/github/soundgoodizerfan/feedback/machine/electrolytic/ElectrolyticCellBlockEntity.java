@@ -93,13 +93,17 @@ import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
  * The electromagnet's rule: a band over its LV rating is condition lost and heat into its own
  * body, never a refusal and never destruction. Condition multiplies the metal moved per amp.
  */
-public class ElectrolyticCellBlockEntity extends ElectricNode implements ThermalBody, Wearing {
+public class ElectrolyticCellBlockEntity extends ElectricNode implements ThermalBody, Wearing,
+        io.github.soundgoodizerfan.feedback.control.ChannelSource, io.github.soundgoodizerfan.feedback.control.RemoteChannels,
+        io.github.soundgoodizerfan.feedback.control.data.Amplifying {
 
     private static final float EPS = 1e-5f;
 
     private float temperature = ThermalTuning.AMBIENT_TU.value();
     private float condition = 1f;
     private boolean working;
+    /** An optional circuit (see {@code machine/CircuitSlot}): a quiet one sharpens the deposit, so less of what is not the dominant metal counts against purity. */
+    private final io.github.soundgoodizerfan.feedback.machine.CircuitSlot circuit = new io.github.soundgoodizerfan.feedback.machine.CircuitSlot();
 
     private ItemStack anode = ItemStack.EMPTY;
     /** The piece of anode currently dissolving: its material, and Qu of it left. */
@@ -392,7 +396,7 @@ public class ElectrolyticCellBlockEntity extends ElectricNode implements Thermal
             return out;
         }
         Plating.Quality quality = burnt / total > ElectricMachineTuning.PLATING_BURNT_SHARE ? Plating.Quality.BURNT
-                : grown.get(dominant) / total < ElectricMachineTuning.ELECTROLYTIC_PURE_FRACTION ? Plating.Quality.MIXED
+                : purity(grown.get(dominant), total) < ElectricMachineTuning.ELECTROLYTIC_PURE_FRACTION ? Plating.Quality.MIXED
                 : total < FTuning.PLATING_POROUS_BELOW_QU ? Plating.Quality.POROUS
                 : Plating.Quality.SOUND;
         piece.set(FDataComponents.PLATING.get(), new Plating(dominant, total, quality));
@@ -477,7 +481,7 @@ public class ElectrolyticCellBlockEntity extends ElectricNode implements Thermal
         Material material = dominant == null ? null : MaterialTable.get().materials().get(dominant);
         if (whole <= 0 || material == null)
             return List.of();
-        boolean pure = deposit.get(dominant) / total >= ElectricMachineTuning.ELECTROLYTIC_PURE_FRACTION;
+        boolean pure = purity(deposit.get(dominant), total) >= ElectricMachineTuning.ELECTROLYTIC_PURE_FRACTION;
         Optional<Item> item = material.item(dominant, pure ? "ingot" : "scrap");
         if (item.isEmpty())
             return List.of();
@@ -557,6 +561,61 @@ public class ElectrolyticCellBlockEntity extends ElectricNode implements Thermal
         return out;
     }
 
+    // --- the circuit slot -----------------------------------------------------------------------
+
+    /**
+     * The share of a deposit that counts as the dominant metal: with no circuit it is the plain share; a fitted circuit scales the foreign
+     * share by {@code CircuitSlot#oddsFactor} (1 with none, down to 0.4 for a silent one), the sharper cell depositing less of what it
+     * should not. Nothing is refused: the same cell without a circuit works as it always did.
+     */
+    private float purity(float dominantQu, float totalQu) {
+        float foreign = Math.max(0f, totalQu - dominantQu);
+        float factor = level == null ? 1f : circuit.oddsFactor(level);
+        return dominantQu <= 0f ? 0f : dominantQu / (dominantQu + foreign * factor);
+    }
+
+    @Override
+    public float amplifierGain() {
+        return level == null ? 0f : circuit.gain(level);
+    }
+
+    public io.github.soundgoodizerfan.feedback.machine.CircuitSlot circuit() {
+        return circuit;
+    }
+
+    /** Seats one circuit of {@code stack}; the one it replaces comes back. */
+    public ItemStack seatCircuit(ItemStack stack) {
+        ItemStack old = circuit.seat(stack);
+        setChanged();
+        return old;
+    }
+
+    /** Channel 0: ingots of metal on the cathode so far; 1: purity of the deposit; 2: the cell's condition. A fitted live circuit makes the cell readable by a Sensor card. */
+    @Override
+    public float read(int channel) {
+        float total = 0f, dominant = 0f;
+        for (float v : deposit.values()) {
+            total += v;
+            dominant = Math.max(dominant, v);
+        }
+        return switch (channel) {
+            case 0 -> total / FTuning.QU_PER_INGOT.value();
+            case 1 -> total <= 0f ? 0f : purity(dominant, total);
+            case 2 -> condition;
+            default -> 0f;
+        };
+    }
+
+    @Override
+    public boolean offersChannels() {
+        return level != null && !circuit.isEmpty() && circuit.read(level).live();
+    }
+
+    @Override
+    public String[] senseKeys() {
+        return new String[] {"feedback.machine.sense.deposit", "feedback.machine.sense.purity", "feedback.machine.sense.condition"};
+    }
+
     // --- Wearing ------------------------------------------------------------------------------
 
     @Override
@@ -596,6 +655,7 @@ public class ElectrolyticCellBlockEntity extends ElectricNode implements Thermal
     @Override
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
+        circuit.save(tag, registries);
         tag.putFloat("Temperature", temperature);
         tag.putFloat("Condition", condition);
         if (!anode.isEmpty())
@@ -618,6 +678,7 @@ public class ElectrolyticCellBlockEntity extends ElectricNode implements Thermal
         super.loadAdditional(tag, registries);
         if (tag.contains("Temperature"))
             temperature = tag.getFloat("Temperature");
+        circuit.load(tag, registries);
         condition = tag.contains("Condition") ? tag.getFloat("Condition") : 1f;
         anode = ItemStack.parseOptional(registries, tag.getCompound("Anode"));
         dissolving = tag.contains("Dissolving") ? ResourceLocation.tryParse(tag.getString("Dissolving")) : null;

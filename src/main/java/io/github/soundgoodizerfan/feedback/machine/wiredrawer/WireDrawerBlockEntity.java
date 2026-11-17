@@ -39,6 +39,11 @@ public class WireDrawerBlockEntity extends HeadedShopMachineBlockEntity {
     }
 
     @Override
+    protected boolean takesCircuit() {
+        return true;
+    }
+
+    @Override
     public String headKind() {
         return "wire_die";
     }
@@ -65,7 +70,7 @@ public class WireDrawerBlockEntity extends HeadedShopMachineBlockEntity {
                 continue;
             }
             // Only a draw that actually pulls metal through the die can snap it.
-            if (fast && level.random.nextFloat() < MachineTuning.WIRE_SNAP_CHANCE) {
+            if (fast && level.random.nextFloat() < MachineTuning.WIRE_SNAP_CHANCE * spoilFactor()) {
                 workpiece = ItemStack.EMPTY;
                 level.playSound(null, worldPosition, SoundEvents.TRIPWIRE_DETACH, SoundSource.BLOCKS, 0.6f, 0.7f);
             } else {

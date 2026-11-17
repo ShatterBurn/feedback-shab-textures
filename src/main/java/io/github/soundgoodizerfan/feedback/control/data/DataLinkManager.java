@@ -93,7 +93,7 @@ public final class DataLinkManager {
             return;
         }
         int blocks = (int) Math.ceil(Math.sqrt(a.getNodePos().distSqr(node.getNodePos())));
-        DataWires.Paid paid = DataWires.pay(player, blocks);
+        DataWires.Paid paid = DataWires.pay(player, blocks, Math.max(DataWires.gainOf(a), DataWires.gainOf(node)));
         if (!paid.enough()) {
             player.displayClientMessage(Component.translatable(paid.inRange()
                     ? "feedback.data_connector.wire" : "feedback.data_connector.range", paid.pieces()), true);

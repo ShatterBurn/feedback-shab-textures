@@ -51,7 +51,7 @@ import net.minecraft.world.level.block.state.BlockState;
  * then holds off guessing. A tubed circuit's heater draws from the cutter's line. Fitted, the cutter is also a data source: a Sensor card
  * reads its cut progress, head condition and output fill.
  */
-public class PowerCutterBlockEntity extends ElectricNode implements Headed, Wearing, ChannelSource, RemoteChannels {
+public class PowerCutterBlockEntity extends ElectricNode implements Headed, Wearing, ChannelSource, RemoteChannels, io.github.soundgoodizerfan.feedback.control.data.Amplifying {
 
     private final HeadSlot head = new HeadSlot();
     private ItemStack stick = ItemStack.EMPTY;
@@ -234,6 +234,11 @@ public class PowerCutterBlockEntity extends ElectricNode implements Headed, Wear
         ItemStack taken = head.take();
         sync();
         return taken;
+    }
+
+    @Override
+    public float amplifierGain() {
+        return level == null ? 0f : circuit.gain(level);
     }
 
     public ItemStack getCircuit() {

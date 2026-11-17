@@ -34,7 +34,7 @@ import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
  * {@link ControlTuning#ENDERNET_SIGNALS_PER_MIN} bandwidth, which refills lazily from the game clock. A dry or saturated port simply does not
  * carry until it recovers; it never destroys anything.
  */
-public class DataPortBlockEntity extends ElectricNode implements Endernet.End, PairEnd {
+public class DataPortBlockEntity extends ElectricNode implements Endernet.End, PairEnd, io.github.soundgoodizerfan.feedback.control.data.Amplifying {
 
     @Nullable
     private UUID pair;
@@ -119,6 +119,11 @@ public class DataPortBlockEntity extends ElectricNode implements Endernet.End, P
         return ControlTuning.ENDERNET_SIGNALS_PER_MIN
                 * (1f + io.github.soundgoodizerfan.feedback.process.ProcessTuning.CIRCUIT_BANDWIDTH_GAIN
                         * io.github.soundgoodizerfan.feedback.process.Circuit.of(circuit.get()).bandwidth());
+    }
+
+    @Override
+    public float amplifierGain() {
+        return level == null ? 0f : circuit.gain(level);
     }
 
     public io.github.soundgoodizerfan.feedback.machine.CircuitSlot circuit() {

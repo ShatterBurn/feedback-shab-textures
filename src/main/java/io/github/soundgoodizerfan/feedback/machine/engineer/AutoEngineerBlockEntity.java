@@ -72,7 +72,8 @@ import net.minecraft.world.level.block.state.BlockState;
  * machine is a data source: a Sensor card reads its assembly progress, condition and output fill.
  */
 public class AutoEngineerBlockEntity extends ElectricNode implements Wearing,
-        io.github.soundgoodizerfan.feedback.control.ChannelSource, io.github.soundgoodizerfan.feedback.control.RemoteChannels {
+        io.github.soundgoodizerfan.feedback.control.ChannelSource, io.github.soundgoodizerfan.feedback.control.RemoteChannels,
+        io.github.soundgoodizerfan.feedback.control.data.Amplifying {
 
     /** Parts bay slots (the grid it lays parts on is the table's 3x3), tool slots and fastener stock slots. */
     public static final int BAY = 9, TOOLS = 4, FASTENERS = 3;
@@ -474,6 +475,11 @@ public class AutoEngineerBlockEntity extends ElectricNode implements Wearing,
             sync();
         }
         return out;
+    }
+
+    @Override
+    public float amplifierGain() {
+        return level == null ? 0f : circuit.gain(level);
     }
 
     public ItemStack getCircuit() {

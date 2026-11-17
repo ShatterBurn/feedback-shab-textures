@@ -31,6 +31,11 @@ public class GeigerCounterItem extends Item implements Instrument {
     }
 
     @Override
+    public float floor(Quantity quantity) {
+        return ItemTuning.GEIGER_FLOOR_RU;
+    }
+
+    @Override
     public Component label() {
         return Component.translatable("feedback.instrument.geiger_counter");
     }

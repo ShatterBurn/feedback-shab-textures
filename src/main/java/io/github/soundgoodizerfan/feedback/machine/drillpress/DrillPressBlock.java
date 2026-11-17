@@ -98,6 +98,7 @@ public class DrillPressBlock extends Block implements EntityBlock, Rotatable {
     protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean moved) {
         if (!state.is(newState.getBlock()) && level.getBlockEntity(pos) instanceof DrillPressBlockEntity press) {
             Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), press.getHead().get());
+            Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), press.circuit().take());
             ItemStack held = press.getWorkpiece();
             if (!held.isEmpty())
                 Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), held);

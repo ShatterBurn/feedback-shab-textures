@@ -42,6 +42,11 @@ public class DrillPressBlockEntity extends HeadedShopMachineBlockEntity {
     }
 
     @Override
+    protected boolean takesCircuit() {
+        return true;
+    }
+
+    @Override
     public String headKind() {
         return "drill_bit";
     }
@@ -64,7 +69,7 @@ public class DrillPressBlockEntity extends HeadedShopMachineBlockEntity {
             return;
 
         boolean fast = isFastFeed();
-        if (fast && level.random.nextFloat() < MachineTuning.BIT_SNAP_CHANCE) {
+        if (fast && level.random.nextFloat() < MachineTuning.BIT_SNAP_CHANCE * spoilFactor()) {
             level.playSound(null, worldPosition, SoundEvents.ANVIL_LAND, SoundSource.BLOCKS, 0.2f, 0.5f);
             return;
         }

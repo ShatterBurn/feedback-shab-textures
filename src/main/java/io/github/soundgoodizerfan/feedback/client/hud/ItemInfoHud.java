@@ -125,7 +125,8 @@ public final class ItemInfoHud {
         list.add(PlatingTooltip.intact(plating));
         list.add(PlatingTooltip.deposit(stack, plating));
         if (stack.getItem() instanceof io.github.soundgoodizerfan.feedback.item.GeigerCounterItem && Readout.instrumented(Quantity.RADIATION))
-            list.add(Readout.reading(Quantity.RADIATION, "feedback.readout.radiation",
+            list.add(GeigerClient.faint() ? Component.translatable("feedback.readout.faint")
+                    : Readout.reading(Quantity.RADIATION, "feedback.readout.radiation",
                     Readout.figure(Quantity.RADIATION, GeigerClient.reading())));
         if (stack.getItem() instanceof io.github.soundgoodizerfan.feedback.item.DosimeterItem && Readout.instrumented(Quantity.DOSE))
             list.add(Readout.reading(Quantity.DOSE, "feedback.readout.dose", Readout.figure(Quantity.DOSE,

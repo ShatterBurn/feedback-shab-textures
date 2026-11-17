@@ -52,6 +52,15 @@ public interface Instrument {
         return 0f;
     }
 
+    /**
+     * The faintest true figure this device reads on its own, in the quantity's units; zero (the default) for a device with no faint tail.
+     * Fainter than {@link Instruments#faintest} (the floor over what a fitted circuit's gain buys) it gives no reading at all, which is
+     * not a reading of zero. A true zero is a reading.
+     */
+    default float floor(Quantity quantity) {
+        return 0f;
+    }
+
     /** What this device shows for a true figure: the offset added, then quantised to the step. */
     default float shown(Quantity quantity, float truth) {
         return Instruments.quantise(truth + offset(quantity), resolution(quantity));

@@ -79,6 +79,11 @@ public final class CircuitSlot {
         return random.nextFloat() > oddsFactor(level);
     }
 
+    /** The gain of the circuit seated, at its warmth. */
+    public float gain(Level level) {
+        return stack.isEmpty() ? 0f : Circuit.of(stack, level).gain();
+    }
+
     /** Amps the tube heater wants from a line of {@code packetEu}. */
     public float heaterAmps(float packetEu) {
         return packetEu <= 0f ? 0f : Circuit.of(stack).heaterPower() / packetEu;

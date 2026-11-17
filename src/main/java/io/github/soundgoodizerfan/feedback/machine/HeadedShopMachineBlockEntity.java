@@ -17,6 +17,22 @@ import net.minecraft.world.level.block.state.BlockState;
 public abstract class HeadedShopMachineBlockEntity extends ShopMachineBlockEntity implements Headed {
 
     private final HeadSlot head = new HeadSlot();
+    /** An optional circuit on a machine whose output can spoil ({@link #takesCircuit}): its noise cuts the chance a stroke spoils the work. The machine works without one, as it always did. */
+    private final CircuitSlot circuit = new CircuitSlot();
+
+    /** Whether this machine has a circuit slot: the ones whose strokes can ruin the workpiece (the Wire Drawer, the Drill Press). */
+    protected boolean takesCircuit() {
+        return false;
+    }
+
+    public CircuitSlot circuit() {
+        return circuit;
+    }
+
+    /** The scale on this machine's chance of spoiling a stroke: 1 with no circuit, down to {@code 1 - CIRCUIT_ACCURACY_CUT} for a silent one. */
+    protected float spoilFactor() {
+        return level == null ? 1f : circuit.oddsFactor(level);
+    }
 
     protected HeadedShopMachineBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -37,6 +53,13 @@ public abstract class HeadedShopMachineBlockEntity extends ShopMachineBlockEntit
      * replaces comes back to the player. Returns whether it was a head.
      */
     public boolean tryHead(net.minecraft.world.entity.player.Player player, ItemStack stack) {
+        if (takesCircuit() && CircuitSlot.accepts(stack)) {
+            if (!player.level().isClientSide) {
+                give(player, circuit.seat(stack));
+                sync();
+            }
+            return true;
+        }
         String kind = headKind();
         if (kind == null || !io.github.soundgoodizerfan.feedback.modular.item.ModularMachineHead.is(stack, kind))
             return false;
@@ -47,7 +70,7 @@ public abstract class HeadedShopMachineBlockEntity extends ShopMachineBlockEntit
 
     /** The empty-handed take-out once the workpiece is out: the head. */
     public void giveHead(net.minecraft.world.entity.player.Player player) {
-        give(player, removeHead());
+        give(player, getHead().isEmpty() ? circuit.take() : removeHead());
     }
 
     public static void give(net.minecraft.world.entity.player.Player player, ItemStack stack) {
@@ -88,11 +111,13 @@ public abstract class HeadedShopMachineBlockEntity extends ShopMachineBlockEntit
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
         head.save(tag, registries);
+        circuit.save(tag, registries);
     }
 
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
         head.load(tag, registries);
+        circuit.load(tag, registries);
     }
 }

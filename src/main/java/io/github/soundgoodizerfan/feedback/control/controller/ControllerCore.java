@@ -279,6 +279,11 @@ public class ControllerCore implements Container, Fittable {
         setChanged();
     }
 
+    /** The gain of the held circuit at its warmth: 0 with none or a host with no slot. */
+    public float gain() {
+        return circuitSlot ? Circuit.of(circuit, level()).gain() : 0f;
+    }
+
     /** Named channels the fitted endernet upgrade separates: the constant, or what a resonator on the circuit can separate if more. */
     public int endernetChannels() {
         return Math.max(ControlTuning.ENDERNET_CHANNELS, circuitSlot ? Circuit.of(circuit).selectivity() : 0);

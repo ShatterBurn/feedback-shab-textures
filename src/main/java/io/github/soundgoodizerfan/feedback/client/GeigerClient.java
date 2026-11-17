@@ -37,6 +37,8 @@ public final class GeigerClient {
     private static final int REFRESH_TICKS = 4;
 
     private static float trueRate;
+    /** Whether the field is fainter than the held counter, with its circuit's gain, can read: no reading, which the HUD says. */
+    private static boolean faint;
     /** Clicks heard in each of the last {@link #WINDOW_TICKS} ticks, as a ring. */
     private static final byte[] HEARD = new byte[WINDOW_TICKS];
     private static int head;
@@ -64,6 +66,12 @@ public final class GeigerClient {
         lastTick = now;
         if (now % REFRESH_TICKS == 0)
             trueRate = Radiation.rate(player, ClientMaterials.get());
+        {
+            var held0 = player.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof GeigerCounterItem ? player.getItemInHand(InteractionHand.MAIN_HAND)
+                    : player.getItemInHand(InteractionHand.OFF_HAND);
+            float gain = io.github.soundgoodizerfan.feedback.process.Circuit.of(held0, mc.level).gain();
+            faint = held0.getItem() instanceof GeigerCounterItem g && !Instruments.readable(g, Quantity.RADIATION, trueRate, gain);
+        }
         float expected = (ItemTuning.GEIGER_BACKGROUND_CPS + ItemTuning.GEIGER_CPS_PER_RU * trueRate) / FTuning.TICKS_PER_SECOND;
         int clicks = poisson(Math.min(expected, 20f), mc.level.random);
         head = (head + 1) % WINDOW_TICKS;
@@ -82,6 +90,11 @@ public final class GeigerClient {
             product *= random.nextDouble();
         } while (product > limit);
         return k - 1;
+    }
+
+    /** Whether the field is too faint for the held counter to read at all. */
+    public static boolean faint() {
+        return faint;
     }
 
     /** What the clicks of the last few seconds say the rate is, in Ru; never below nothing. */
