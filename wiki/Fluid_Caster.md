@@ -46,7 +46,27 @@ The pilot comes in two variants:
 | **Pilot Flame** | 0.4 blocks out from the muzzle | A small part. |
 | **Torch** | 1.2 blocks out from the muzzle | More metal, and more fluid burned. |
 
-The blueprint and the tooltips show the tank's capacity, its wall rating, and the reach and flow of a stream of water at the pressure the walls hold (or at the pump's head).
+The blueprint and the tooltips show these figures:
+
+- **Tank**: how much fluid it holds.
+- **Wall rating** (Pu): the pressure the walls hold before they weep.
+- **Reach** and **Flow**: of a stream of water at the pressure the walls hold (or at the pump's head).
+- **Head** (Pu): the steady pressure the stream is made at, a pump's head or what the walls hold with no pump. Under **4 Pu** nothing leaves the nozzle.
+- **Corrosion resistance** (0 to 1): the weakest among the tank, valve and nozzle.
+- **Tank service** (Tu): the hottest fluid the tank walls hold before they soften.
+- **Pump over walls**: what the pump would drive over what the walls hold. Past **0.8** the walls hold the pump down to 0.8.
+
+The caster's name takes an adjective for each fault, and Shift explains it:
+
+| Adjective | Meaning |
+| --- | --- |
+| **feeble** | The head is under 4 Pu, so the stream does not leave the nozzle. |
+| **short** | The reach is under 3 blocks. |
+| **pump held back** | Pump over walls is above 0.8. |
+| **undriven** | No pump is fitted, so it runs on the tank's own air. |
+| **corrodible** | A part's corrosion resistance is under 0.3. |
+
+The Blueprint Table marks a missing required part with "Required part missing." It also faults a tank whose metal states no strength: "This tank metal states no strength, so its walls hold no pressure."
 
 ## Filling
 

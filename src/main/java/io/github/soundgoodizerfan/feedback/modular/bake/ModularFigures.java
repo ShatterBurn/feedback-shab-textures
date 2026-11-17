@@ -232,6 +232,16 @@ public record ModularFigures(List<Float> values, int step) {
         CASTER_REACH,
         /** mB a tick the nozzle passes at that pressure. */
         CASTER_FLOW,
+        /** {@code Pu}: the steady head the stream is made at (a pump's, or what the walls hold). */
+        CASTER_HEAD,
+        /** The weakest corrosion resistance among tank, valve and nozzle, 0 to 1: what an aggressive fluid eats first. */
+        CASTER_RESIST,
+        /** {@code Tu}: the hottest fluid the tank walls hold before they soften. */
+        CASTER_SERVICE,
+        /** Share of the pump's own head the walls allow, over 1 meaning the pump is held back; 0 without a pump. */
+        CASTER_PUMP_LOAD,
+        /** What drives the stream: 0 the tank's own air, 1 a hand pump, 2 a motor. */
+        CASTER_DRIVE,
         // --- shears (family SHEARS) ---
         /** The speed multiple of coarse clipping (wool, leaves): the blade pair's snap and the bite of its length. */
         CLIP,

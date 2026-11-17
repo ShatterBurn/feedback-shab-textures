@@ -228,7 +228,7 @@ public final class ProcessTuning {
      * lower and more stable heat. Sits well inside {@link #FOOD_MAX_TU}'s wall so a hold near
      * the optimum has real margin before the recipe burns instead of finishing.
      */
-    public static final Tu SMOKING_OPTIMAL_TU = new Tu(250f);
+    public static final Tu SMOKING_OPTIMAL_TU = new Tu(170f);
 
     /**
      * Invented. Where a generic (non-blasting) metal-classified vanilla-fallback recipe -- the

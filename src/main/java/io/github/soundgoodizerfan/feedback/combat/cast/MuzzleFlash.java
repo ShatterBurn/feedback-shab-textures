@@ -39,6 +39,9 @@ final class MuzzleFlash {
             if (e.getBoundingBox().getCenter().subtract(eye).normalize().dot(look) < 0.6)
                 continue;
             stagger(p, e, new Work(work));
+            // Concussive: the blast drives a dose of the pack's potion into every body it staggers.
+            if (io.github.soundgoodizerfan.feedback.combat.skill.Skills.unlocked(p, "concussive"))
+                Vials.dose(p, e, Vials.draw(p, io.github.soundgoodizerfan.feedback.potion.PotionTuning.SPRAY_DOSE_MB));
             Disorder.note(p, e, Disorder.Kind.BLINDED);
             e.addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.BLINDNESS,
                     io.github.soundgoodizerfan.feedback.combat.skill.Skills.unlocked(p, "dazzle") ? 120 : 50));
@@ -52,6 +55,14 @@ final class MuzzleFlash {
             lv.sendParticles(i % 3 == 0 ? ParticleTypes.SMOKE : ParticleTypes.FLAME, muzzle.x, muzzle.y, muzzle.z, 0, d.x, d.y, d.z, 0.5 + lv.random.nextDouble() * 0.5);
         }
         Vec3 edge = eye.add(look.scale(3));
+        // Dazzle: the flash lights a bottle dashed ahead of it, and the mist hangs where the blast ends.
+        if (io.github.soundgoodizerfan.feedback.combat.skill.Skills.unlocked(p, "dazzle")) {
+            var drawn = Vials.draw(p, io.github.soundgoodizerfan.feedback.potion.PotionTuning.SPRAY_DOSE_MB * 4);
+            if (!drawn.isEmpty()) {
+                io.github.soundgoodizerfan.feedback.potion.PotionSpray.mist(lv, edge, drawn, drawn.getAmount() * 2);
+                Vials.splash(lv, edge, drawn);
+            }
+        }
         lv.sendParticles(ParticleTypes.SONIC_BOOM, edge.x, edge.y, edge.z, 1, 0, 0, 0, 0);
         CastFx.line(lv, CastFx.fade(0xFFFFFF, CastFx.EMBER, 1.2f), muzzle, eye.add(look.scale(6)), 0.4);
         CastFx.sound(lv, muzzle, SoundEvents.FIREWORK_ROCKET_LARGE_BLAST, 1f, 0.7f);

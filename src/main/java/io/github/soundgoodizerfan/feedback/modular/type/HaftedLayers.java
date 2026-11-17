@@ -128,7 +128,9 @@ public final class HaftedLayers {
      * head); the same for every variant of the kind.
      */
     private static final Map<String, int[]> SEAT = Map.of("axe", new int[] {-1, -1}, "pickaxe", new int[] {-1, -1}, "hoe", new int[] {-1, -1},
-            "cleaver", new int[] {-1, 0}, "screwdriver", new int[] {1, 1});
+            "cleaver", new int[] {-1, 0}, "screwdriver", new int[] {1, 1},
+            // A sword's blade is seated one step down its own haft (along (-1,+1)), so its base meets the guard and binding and no bare haft shows between them.
+            "sword", new int[] {-1, 1});
 
     /** One head on the plan: its file kind ({@code pickaxe}), variant, extra edge slices, and the letter of the mount it sits on ({@code H}, {@code J}, {@code K}). */
     public record Face(String letter, String kind, String variant, int edge) {
@@ -261,10 +263,14 @@ public final class HaftedLayers {
         boolean guardOver = ALONG.contains(plan.frontKind());
         if (!guardOver)
             part(out, sprites, plan, "G", "guard", steps);
-        part(out, sprites, plan, "B", "binding", steps);
+        // The binding is the join: under an across-haft head, but over a blade's base, which starts where the binding ends and never hides it.
+        if (!guardOver)
+            part(out, sprites, plan, "B", "binding", steps);
         out.addAll(heads);
-        if (guardOver)
+        if (guardOver) {
+            part(out, sprites, plan, "B", "binding", steps);
             part(out, sprites, plan, "G", "guard", steps);
+        }
         if (!any)
             return List.of();
         if (plan.parts().containsKey("Z"))

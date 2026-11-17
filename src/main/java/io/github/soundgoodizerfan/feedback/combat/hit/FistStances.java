@@ -107,8 +107,12 @@ public final class FistStances {
             if (Skills.unlocked(p, "opening_cut") && (Weakness.unaware(target) || Weakness.backTurned(p, target)))
                 bleed *= FistTuning.OPENING_CUT;
             // Gouge: a claw hit on a creature already bleeding stacks the bleed, and bleeding is a kind of disorder.
-            if (Skills.unlocked(p, "gouge") && Billhook.stack(target, FistTuning.GOUGE_STACKS, seconds))
+            if (Skills.unlocked(p, "gouge") && Billhook.stack(target, FistTuning.GOUGE_STACKS, seconds)) {
                 Disorder.note(p, target, Disorder.Kind.BLEEDING);
+                // The claw runs a half dose of the pack's potion into the stacked wound.
+                io.github.soundgoodizerfan.feedback.combat.cast.Vials.dose(p, target,
+                        io.github.soundgoodizerfan.feedback.combat.cast.Vials.draw(p, io.github.soundgoodizerfan.feedback.potion.PotionTuning.SPRAY_DOSE_MB / 2));
+            }
             else
                 Billhook.open(target, seconds, bleed);
             // Tear straps: the claws rake the target's armour, and wear on their own points.

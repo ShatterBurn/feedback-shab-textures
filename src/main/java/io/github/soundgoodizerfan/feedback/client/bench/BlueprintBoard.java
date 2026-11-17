@@ -1108,6 +1108,11 @@ public final class BlueprintBoard {
                 return out;
             }
         }
+        if (t.family() == ModularType.Family.CASTER) {
+            // The parts are all there but the tank's metal states no yield strength, so its walls hold no pressure.
+            out.add(new Fault(List.of("T"), Component.translatable("message.feedback.blueprint_table.fault.caster_tank")));
+            return out;
+        }
         if (t.family() == ModularType.Family.GUN) {
             List<GunSpec.Fault> found = GunSpec.faults(design.get(), t, ClientMaterials.get());
             for (GunSpec.Fault f : found)

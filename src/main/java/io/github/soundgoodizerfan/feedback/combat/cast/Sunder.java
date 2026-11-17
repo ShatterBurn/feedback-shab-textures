@@ -58,6 +58,8 @@ final class Sunder {
         }
         Disorder.selfWear(p, h);
         Disorder.note(p, t, Disorder.Kind.STRIPPED);
+        // The opened body takes a bottle broken across it.
+        Vials.dose(p, t, Vials.draw(p, io.github.soundgoodizerfan.feedback.potion.PotionTuning.SPRAY_DOSE_MB));
         stagger(p, t, new Work(io.github.soundgoodizerfan.feedback.combat.tether.BodyMass.of(p) * FTuning.GRAVITY_BLOCKS_PER_S2));
         p.swing(InteractionHand.MAIN_HAND, true);
         ServerLevel lv = p.serverLevel();

@@ -79,6 +79,9 @@ public final class MeleeStances {
             int ticks = Math.round(MeleeTuning.PRY_TICKS * soft * worn);
             if (pry(target, ticks)) {
                 Rearms.spend(player, "pry_open");
+                // The opened hand takes a bottle broken across it.
+                io.github.soundgoodizerfan.feedback.combat.cast.Vials.dose(player, target,
+                        io.github.soundgoodizerfan.feedback.combat.cast.Vials.draw(player, io.github.soundgoodizerfan.feedback.potion.PotionTuning.SPRAY_DOSE_MB));
                 io.github.soundgoodizerfan.feedback.combat.cast.Disorder.note(player, target, io.github.soundgoodizerfan.feedback.combat.cast.Disorder.Kind.STRIPPED);
             }
         }

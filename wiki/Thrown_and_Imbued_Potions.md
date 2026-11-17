@@ -31,11 +31,11 @@ A potion is a fluid as well as a bottle. A potion bottle holds 250 mB. In an inv
 
 Two potions of one brew (same effect, level and length, in the same solvent) run together in one tank, their potency averaged by amount. Different brews do not mix; the caster refuses the second.
 
-Sprayed, each body in the stream gets the potion's effect for the share of the bottle's length that lands on it: 250 mB is the full length. It adds to the time the body has left and never stacks levels. The stream takes the potion's tint.
+Sprayed, each body in the stream gets the potion's effect for the share of the bottle's length that lands on it: 50 mB, a fifth of a bottle, is the full length. It adds to the time the body has left and never stacks levels. The stream takes the potion's tint.
 
-- The **fire** potion sets bodies alight and lights a fire where it lands. The **explosion** potion detonates at the landing point about once per 250 mB sprayed.
+- The **fire** potion sets bodies alight and lights a fire where it lands. The **explosion** potion detonates at the landing point about once per 50 mB sprayed.
 - Green thumb, quench, static ground and the laced-food reveal act where the stream lands, as thrown.
-- Second wind, springheel, slipstream and quench fire about once per bottle's worth sprayed.
+- Second wind, springheel, slipstream and quench fire about once per 50 mB sprayed.
 - A potion carried in water wets what it hits: it puts out fire and hurts creatures that hate water, but never fills a cauldron or waters farmland.
 - An **atomiser** nozzle leaves a potion mist where the stream lands. It hangs for about 5 seconds and doses whatever stands in it.
 

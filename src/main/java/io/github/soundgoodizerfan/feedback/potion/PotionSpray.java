@@ -18,10 +18,10 @@ import net.neoforged.neoforge.fluids.FluidStack;
 
 /**
  * A potion let go as a stream (a fluid caster's tank): the same place-and-strength acts a thrown bottle does ({@link PotionEffects}),
- * scaled by how much of it lands. A full bottle is {@link PotionTuning#BOTTLE_MB}: a body soaked with that much carries the effect for its
+ * scaled by how much of it lands. A full dose is {@link PotionTuning#SPRAY_DOSE_MB} (a fifth of a bottle): a body soaked with that much carries the effect for its
  * whole length, and a thinner stream carries it for the share of the length the millilitres make. A status adds to what the body has left
  * of the same effect (never stacks levels, never past the bottle's own length); an act that happens once a bottle (a refill, a launch, the
- * landing pulse of a place effect, a blast) happens with the chance of that share each tick, so a bottle's worth does it once on average.
+ * landing pulse of a place effect, a blast) happens with the chance of that share each tick, so a dose's worth does it once on average.
  * Dispatch is on the potion's own properties, never the fluid's id. Create's open pipe applies a full flat dose whatever the flow; that is
  * the thing not taken.
  */
@@ -63,7 +63,7 @@ public final class PotionSpray {
             return;
         int amplifier = state.amplifierNow(level);
         var id = state.effect().get();
-        float share = Math.min(1f, mb / (float) PotionTuning.BOTTLE_MB);
+        float share = Math.min(1f, mb / (float) PotionTuning.SPRAY_DOSE_MB);
         if (PotionEffects.EXPLOSION.equals(id) || PotionEffects.placeOnly(id))
             return; // acts where it lands
         if (PotionEffects.IGNITE.equals(id)) {
@@ -88,7 +88,7 @@ public final class PotionSpray {
         PotionState state = live(level, fluid);
         if (state == null || mb <= 0)
             return;
-        float share = Math.min(1f, mb / (float) PotionTuning.BOTTLE_MB);
+        float share = Math.min(1f, mb / (float) PotionTuning.SPRAY_DOSE_MB);
         if (level.random.nextFloat() >= share)
             return;
         int amplifier = state.amplifierNow(level);

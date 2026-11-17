@@ -44,7 +44,7 @@ The Annealing Furnace tops out at 380 Tu, so it can't overshoot; the Kiln needs 
 | Furnace | Recipe | Character |
 | --- | --- | --- |
 | **Furnace** | Ring of Cobblestone | Light and quick. General purpose. Gets hot enough to burn food if you leave it. |
-| **Smoker** | Furnace with four Logs around it | **Physically can't get above 380 Tu**, so it can't burn food. Great for food, useless for metal. |
+| **Smoker** | Furnace with four Logs around it | **Physically can't get above 170 Tu**, so it can't burn food. Great for food, useless for metal. |
 | **Crude Blast Furnace** | Furnace, Wrought Iron Ingots around the top, Smooth Stone below | Very heavy and very well sealed. Slow to heat, but gets hot and stays steady. Good for ore. |
 | **Improved Furnace** | Furnace surrounded by Steel Ingots | Between the two. The only furnace with an opening, so a [Temperature Sensor](Instruments.md#temperature-sensor) can be fitted and a controller can watch it. |
 | **Kiln** | Bricks: a row of three over two columns (`###` / `#_#` / `#_#`) | For ceramics and sintered carbides. Tops out at **1330 Tu**: enough for **Firebrick** (1200–1500), never enough for steel (1350). |

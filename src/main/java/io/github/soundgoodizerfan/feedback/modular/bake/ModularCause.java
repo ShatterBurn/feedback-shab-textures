@@ -105,7 +105,10 @@ public final class ModularCause {
                 case SHOT_ENERGY -> role.name().equals(ElectricGunSpec.SEAT);
                 // a caster's: the tank's walls hold the pressure and the room, the nozzle's bore (and a pump's head) set the stream
                 case CASTER_CAPACITY, CASTER_RATING -> role.name().equals(CasterSpec.TANK);
-                case CASTER_REACH, CASTER_FLOW -> role.name().equals(CasterSpec.NOZZLE) || role.name().equals(CasterSpec.DRIVE);
+                case CASTER_RESIST -> role.name().equals(CasterSpec.TANK) || role.name().equals(CasterSpec.VALVE) || role.name().equals(CasterSpec.NOZZLE);
+                case CASTER_SERVICE -> role.name().equals(CasterSpec.TANK);
+                case CASTER_PUMP_LOAD, CASTER_DRIVE -> role.name().equals(CasterSpec.DRIVE) || role.name().equals(CasterSpec.TANK);
+                case CASTER_HEAD, CASTER_REACH, CASTER_FLOW -> role.name().equals(CasterSpec.NOZZLE) || role.name().equals(CasterSpec.DRIVE);
                 case JOINT, DRAW, VELOCITY -> air
                         ? (fig == Fig.JOINT ? role.name().equals(LauncherSpec.RECEIVER) || role.name().equals(LauncherSpec.SPRING)
                         : fig == Fig.DRAW ? role.name().equals(LauncherSpec.SPRING)

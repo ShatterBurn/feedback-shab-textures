@@ -286,6 +286,49 @@
         "unlock": "suppressing_fire"
       },
       "rearm": "time"
+    },
+    {
+      "id": "crack_vial",
+      "cost": 55,
+      "requires": [
+        "rend"
+      ],
+      "effect": {
+        "unlock": "crack_vial"
+      },
+      "rearm": "time"
+    },
+    {
+      "id": "fume",
+      "cost": 60,
+      "requires": [
+        "crack_vial"
+      ],
+      "effect": {
+        "unlock": "fume"
+      },
+      "rearm": "time"
+    },
+    {
+      "id": "cascade",
+      "cost": 60,
+      "requires": [
+        "crack_vial"
+      ],
+      "effect": {
+        "unlock": "cascade"
+      },
+      "rearm": "time"
+    },
+    {
+      "id": "tainted_wound",
+      "cost": 45,
+      "requires": [
+        "crack_vial"
+      ],
+      "effect": {
+        "unlock": "tainted_wound"
+      }
     }
   ]
 }

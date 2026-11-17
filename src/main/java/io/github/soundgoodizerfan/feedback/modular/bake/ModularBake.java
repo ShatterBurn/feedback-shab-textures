@@ -974,6 +974,11 @@ public final class ModularBake {
                 float v = caster.speed(head, 1f);
                 f.put(Fig.CASTER_REACH, caster.reach(v));
                 f.put(Fig.CASTER_FLOW, caster.flow(v));
+                f.put(Fig.CASTER_HEAD, caster.head());
+                f.put(Fig.CASTER_RESIST, caster.weakestResist());
+                f.put(Fig.CASTER_SERVICE, Math.min(caster.tankServiceTu(), 99999f));
+                f.put(Fig.CASTER_PUMP_LOAD, caster.pump() ? caster.pumpOverWalls() : 0f);
+                f.put(Fig.CASTER_DRIVE, !caster.pump() ? 0f : caster.electric() ? 2f : 1f);
                 // The shared gun figures the pipeline reads (cycle, sound, the stance spread): a stream has no shot, only a tick's flow.
                 f.putAll(new io.github.soundgoodizerfan.feedback.weapon.GunFigures(new io.github.soundgoodizerfan.feedback.core.unit.Pu(0f),
                         new io.github.soundgoodizerfan.feedback.core.unit.Pu(caster.danger()), v, 0f,

@@ -195,6 +195,8 @@ public final class PotionTuning {
      * blocks where the stream lands. A mist keeps {@code MIST_YIELD} of the mB sprayed into it, hangs {@code MIST_TICKS}, reaches
      * {@code MIST_RADIUS} blocks and doses what stands in it {@code MIST_DOSE_MB} every {@code MIST_EVERY} ticks (at most {@code MIST_MAX_CLOUDS} a dimension).
      */
+    /** Invented. The mB of a spray that carries a bottle's whole effect: sprayed potion is taken up through the skin and the air at a fifth of the drinking dose, so a stream does not have to deliver a bottle to count. */
+    public static final int SPRAY_DOSE_MB = 50;
     public static final float SPRAY_PLACE_REACH = 1.5f, MIST_YIELD = 0.5f, MIST_RADIUS = 2f;
     public static final int MIST_TICKS = 100, MIST_EVERY = 10, MIST_DOSE_MB = 8, MIST_MAX_CLOUDS = 24;
 

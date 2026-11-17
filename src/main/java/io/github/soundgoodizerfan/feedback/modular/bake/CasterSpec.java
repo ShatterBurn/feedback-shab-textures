@@ -33,11 +33,12 @@ import io.github.soundgoodizerfan.feedback.weapon.CasterTuning;
  * @param pilotServiceTu the hottest fluid (Tu) the pilot's metal takes washing over it.
  * @param reachMult   the frame's multiple of the stream's reach (a long frame keeps the pipe true).
  * @param lineLoss    the share of pressure that reaches the nozzle (a hose from a pack loses some).
+ * @param pumpWantPu the head the pump would make before the walls hold it back (0 without a pump).
  * @param electric    the drive is a motor: it draws charge from a seated cell, and the reload key does nothing.
  * @param tankServiceTu the hottest fluid (Tu) the tank walls hold before they soften, and {@code tankMeltTu} where they run.
  */
 public record CasterSpec(float capacityMb, float danger, float critical, float boreMm, float spreadDeg, boolean atomiser, boolean pump,
-                         float pumpPu, float strokeTicks, float tankResist, float valveResist, float nozzleResist, float pilotReach, float pilotBleed, float pilotServiceTu, float tankServiceTu, float tankMeltTu, float massKg, float reachMult, float lineLoss, boolean electric) {
+                         float pumpPu, float strokeTicks, float tankResist, float valveResist, float nozzleResist, float pilotReach, float pilotBleed, float pilotServiceTu, float tankServiceTu, float tankMeltTu, float massKg, float reachMult, float lineLoss, boolean electric, float pumpWantPu) {
 
     public static final String TANK = "tank", NOZZLE = "nozzle", RECEIVER = "receiver", VALVE = "valve", DRIVE = "drive", PILOT = "pilot";
 
@@ -107,9 +108,10 @@ public record CasterSpec(float capacityMb, float danger, float critical, float b
         if (!(tank && nozzle && receiver && valve) || bore <= 0 || capacity <= 0)
             return Optional.empty();
         // A pump never drives harder than the walls hold.
+        float pumpWant = pumpPu;
         pumpPu = Math.min(pumpPu, danger * CasterTuning.PUMP_DANGER_SHARE);
         return Optional.of(new CasterSpec(capacity * capacityMult, danger, danger * ModularTuning.TANK_CRITICAL_OVER_DANGER, bore, spread * spreadMult, atomise, pump,
-                pumpPu, stroke, tankR, valveR, nozzleR, pilotReach, pilotBleed, pilotService, service, melt, mass, reachMult, line, electric));
+                pumpPu, stroke, tankR, valveR, nozzleR, pilotReach, pilotBleed, pilotService, service, melt, mass, reachMult, line, electric, pump ? pumpWant : 0f));
     }
 
     /** Exit speed in blocks a tick of a fluid of {@code density} (Mu per mB) at gauge pressure {@code pu}. */
@@ -127,6 +129,16 @@ public record CasterSpec(float capacityMb, float danger, float critical, float b
     /** mB a tick leaving at exit speed {@code speed}: a wide bore passes more. */
     public float flow(float speed) {
         return CasterTuning.FLOW_PER_MM2 * boreMm * boreMm * speed;
+    }
+
+    /** The steady head the stream is made at: a pump's, or what the walls hold. */
+    public float head() {
+        return pump ? pumpPu : danger;
+    }
+
+    /** The pump's own head over what the walls hold; above {@link CasterTuning#PUMP_DANGER_SHARE} the walls hold it back. */
+    public float pumpOverWalls() {
+        return pumpWantPu / Math.max(0.001f, danger);
     }
 
     /** A pilot is fitted: its flame lights a stream that burns. */

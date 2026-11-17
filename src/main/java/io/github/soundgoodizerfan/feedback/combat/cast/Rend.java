@@ -33,6 +33,9 @@ final class Rend {
         t.hurt(p.damageSources().playerAttack(p), 2f);
         Disorder.selfWear(p, struck);
         Disorder.note(p, t, Disorder.Kind.WORN);
+        // Tainted wound: the opened armour takes a dose of the pack's potion.
+        if (io.github.soundgoodizerfan.feedback.combat.skill.Skills.unlocked(p, "tainted_wound"))
+            Vials.dose(p, t, Vials.draw(p, io.github.soundgoodizerfan.feedback.potion.PotionTuning.SPRAY_DOSE_MB));
         p.swing(InteractionHand.MAIN_HAND, true);
         ServerLevel lv = p.serverLevel();
         Vec3 chest = t.position().add(0, t.getBbHeight() * 0.65, 0);

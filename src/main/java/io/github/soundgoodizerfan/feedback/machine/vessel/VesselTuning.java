@@ -345,14 +345,15 @@ public final class VesselTuning {
      * is the genuinely emergent half of the claim. The Smoker is the one place the mechanism is
      * declared rather than discovered, and this should say so rather than pretend otherwise.
      *
-     * <h3>Under {@link FTuning#FOOD_CHAR_TU}, over {@link FTuning#FOOD_COOK_FULL_TU} -- got wrong a second time</h3>
-     * 380 cleared {@link ProcessTuning#FOOD_MAX_TU}'s old reasoning but not the food rework's: food chars above
-     * 300, so a Smoker at its ceiling burned meat in about six seconds, before the pathogen was
-     * dead. The wall now sits between full cooking speed (200) and char (300): the Smoker cooks
-     * at full rate and cannot char food however long it is left. Food in it is still perishable
-     * to continued operation -- it dries out (evaporation starts at 100) -- just never to char.
+     * <h3>Under every food's char point -- got wrong a third time</h3>
+     * A food chars at its material's {@code char_tu}, else its {@code oxidation_temperature}, which the kind templates give: 200 for meat,
+     * seafood and dishes, 180 for fruit, vegetable and fungus ({@link FTuning#FOOD_CHAR_TU}, 300, is only the fallback for a food with
+     * neither). The wall sat at 250, over all of those, so food began to char the moment it went in and was black in about ten seconds.
+     * The wall now sits under the lowest of them (180): the Smoker cooks at three quarters of full speed and cannot char any food
+     * however long it is left. Food in it is still perishable to continued operation -- it dries out (evaporation starts at 100) --
+     * just never to char.
      */
-    public static final Tu SMOKER_CEILING_TU = new Tu(250f);
+    public static final Tu SMOKER_CEILING_TU = new Tu(170f);
 
     /**
      * Invented. Furnace thermal mass and leak -- the generalist, mediocre at both bands.

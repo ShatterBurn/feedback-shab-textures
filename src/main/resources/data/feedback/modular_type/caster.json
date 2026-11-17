@@ -4,8 +4,12 @@
     "show": [
       "caster_capacity",
       "caster_rating",
+      "caster_head",
       "caster_reach",
       "caster_flow",
+      "caster_resist",
+      "caster_service",
+      "caster_pump_load",
       "mass",
       "axis.bore"
     ],
@@ -20,9 +24,13 @@
       "T": [
         "caster_capacity",
         "caster_rating",
+        "caster_resist",
+        "caster_service",
         "mass"
       ],
       "N": [
+        "caster_resist",
+        "caster_head",
         "caster_reach",
         "caster_flow",
         "mass"
@@ -34,6 +42,9 @@
         "mass"
       ],
       "D": [
+        "caster_head",
+        "caster_pump_load",
+        "caster_drive",
         "caster_reach",
         "mass"
       ],

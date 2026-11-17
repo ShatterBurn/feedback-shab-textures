@@ -3,6 +3,7 @@
 package io.github.soundgoodizerfan.feedback.modular.bake;
 
 import io.github.soundgoodizerfan.feedback.core.FTuning;
+import io.github.soundgoodizerfan.feedback.weapon.CasterTuning;
 import io.github.soundgoodizerfan.feedback.weapon.GunTuning;
 import java.util.ArrayList;
 import java.util.List;
@@ -257,6 +258,20 @@ public final class ModularModifiers {
         // A dish has no edge to be brittle or soft; its own adjectives (soggy, rich) come from its stack in of(ItemStack).
         if (type != null && type.family() == ModularType.Family.DISH)
             return out;
+        if (type != null && type.family() == ModularType.Family.CASTER) {
+            // A caster has no edge; what its figures can say is what keeps it from casting, or from casting what it is fed.
+            if (f.get(Fig.CASTER_HEAD) < CasterTuning.MIN_PRESSURE)
+                out.add(adjective("feeble", Fig.CASTER_HEAD, n(CasterTuning.MIN_PRESSURE)));
+            else if (f.get(Fig.CASTER_REACH) < CasterTuning.SHORT_REACH_BLOCKS)
+                out.add(adjective("short", Fig.CASTER_REACH, n(CasterTuning.SHORT_REACH_BLOCKS)));
+            if (f.get(Fig.CASTER_PUMP_LOAD) > CasterTuning.PUMP_DANGER_SHARE)
+                out.add(adjective("pump_held_back", Fig.CASTER_PUMP_LOAD, n(CasterTuning.PUMP_DANGER_SHARE)));
+            if (f.get(Fig.CASTER_DRIVE) == 0)
+                out.add(adjective("undriven", Fig.CASTER_DRIVE));
+            if (f.get(Fig.CASTER_RESIST) < CasterTuning.CORRODIBLE_BELOW)
+                out.add(adjective("corrodible", Fig.CASTER_RESIST, n(CasterTuning.CORRODIBLE_BELOW)));
+            return out;
+        }
         if (type != null && type.family() == ModularType.Family.GUN) {
             // A gun has no edge to be brittle or soft; what its figures can say is that its chamber is asked too much.
             if (f.get(Fig.OVERPRESSURE) > 1)

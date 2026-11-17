@@ -108,6 +108,12 @@ public final class CasterTuning {
     /** Wear (fraction of condition) a tick a pilot books while a fluid hotter than its metal's service temperature washes it. */
     public static final float WEAR_PILOT_HOT = 0.0005f;
 
+    // --- what a design says of itself ------------------------------------------------------------
+    /** A stream that reaches less than this (blocks) at the head the design makes is short. */
+    public static final float SHORT_REACH_BLOCKS = 3f;
+    /** A part whose metal resists corrosion less than this is eaten by an aggressive fluid. */
+    public static final float CORRODIBLE_BELOW = 0.3f;
+
     // --- misuse -----------------------------------------------------------------------------------
     /** Wear (fraction of condition) a dry pump stroke, a weeping tank, a flashback and a burst each book. */
     public static final float WEAR_DRY_PUMP = 0.01f, WEAR_WEEP = 0.02f, WEAR_FLASHBACK = 0.15f, WEAR_BURST = 0.3f;
