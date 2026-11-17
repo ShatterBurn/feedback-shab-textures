@@ -335,6 +335,90 @@ public final class ProcessTuning {
      */
     public static final float CIRCUIT_INSTRUMENT_GAIN = 0.6f;
 
+    /**
+     * Placeholder. A circuit's clock: the program steps a second a host takes from it. No circuit steps at the base rate; speed 1 reaches the
+     * most, which is one step a tick (a program never steps twice in a tick).
+     */
+    public static final float CIRCUIT_BASE_STEPS_PER_SECOND = 4f, CIRCUIT_MAX_STEPS_PER_SECOND = 20f;
+
+    /**
+     * Placeholder. A circuit with a tube on it reads cold until its heater has warmed it: its speed falls to this share of the working
+     * figure at zero warmth, and its noise gains up to {@link #CIRCUIT_COLD_NOISE} (both linear in warmth, never a refusal).
+     */
+    public static final float CIRCUIT_COLD_SPEED = 0.15f, CIRCUIT_COLD_NOISE = 0.5f;
+
+    /** Placeholder. The most of a board's trace limit a heater warms it to: past it the traces would lift, so the heater stops there and the tube runs short of working warmth. */
+    public static final float CIRCUIT_HEATER_LIMIT_SHARE = 0.9f;
+
+    // --- vacuum tubes (spec: circuits, tube family). Design only taken from PowerGrid; see THIRD-PARTY-LICENSES.md ---
+
+    /**
+     * Placeholder. Emitter physics. A cathode's work function in eV is {@code BASE + SLOPE x electrode_potential} (reactive metals give up
+     * electrons easily, noble ones do not), clamped to the min and max. The temperature it needs for a standard emission is
+     * {@code K_PER_EV x work function}; the hottest it may be held is {@code MELT_SHARE x its melting point} in kelvin. Emission is 1 where it
+     * can be held at the needed temperature and falls as {@code exp(SLOPE_E x (1 - needed / held))} where it cannot.
+     */
+    public static final float TUBE_WORK_BASE = 4.4f, TUBE_WORK_PER_VOLT = 0.45f, TUBE_WORK_MIN = 2f, TUBE_WORK_MAX = 6f;
+
+    /** Celsius to kelvin: a {@code Tu} is a degree Celsius. */
+    public static final float TUBE_KELVIN = 273.15f;
+
+    public static final float TUBE_K_PER_EV = 580f, TUBE_MELT_SHARE = 0.85f, TUBE_EMISSION_SLOPE = 20f;
+
+    /** Placeholder. The share of the cathode's heat above ambient that shows on the bulb, so a circuit item is warmed to {@code ambient + share x (cathode - ambient)}, never under {@link #TUBE_MIN_WARM_TU}. */
+    public static final float TUBE_BULB_SHARE = 0.08f, TUBE_MIN_WARM_TU = 80f;
+
+    /** Placeholder. Heater power, Eu a tick, of an emitter at the reference length and the reference cathode temperature; it grows with the length and the square of the temperature over the reference. */
+    public static final float TUBE_HEATER_EU = 0.5f, TUBE_EMITTER_REF_MM = 15f, TUBE_CATHODE_REF_K = 2600f;
+
+    /**
+     * Placeholder. Tu a tick (gross: the circuit's stack sheds {@code ThermalTuning.ITEM_COOLING_TU_PER_TICK} against it) one Eu a tick of
+     * heater warms a bulb of the reference diameter by; a wider bulb warms in proportion slower.
+     */
+    public static final float TUBE_WARM_TU_PER_EU = 10f, TUBE_BULB_REF_MM = 30f;
+
+    /** Placeholder. Gain (a stage's) of a tube by its grid count, none to three; times the grid pitch factor and the grid metal's conductivity share. A diode has none. */
+    public static final float[] TUBE_GRID_GAIN = {0f, 1f, 1.4f, 1.8f};
+
+    /** Placeholder. A grid pitch of 100 per cent is this share of the gain of the finest (20 per cent): gain falls linearly across the range. */
+    public static final float TUBE_COARSE_GAIN = 0.4f;
+
+    /** Placeholder. Speed before the plate: a plate of 100 per cent area costs this share of it, a grid costs this each, and a plate metal that sheds heat poorly costs up to this much of the rest. */
+    public static final float TUBE_PLATE_SLOW = 0.5f, TUBE_GRID_SLOW = 0.08f, TUBE_HOT_PLATE_SLOW = 0.3f;
+
+    /** Placeholder. Thermal conductivity (the table's scale: copper 0.1) at which a plate sheds heat fully. */
+    public static final float TUBE_PLATE_COND_REF = 0.1f;
+
+    /** Placeholder. A grid metal's conductivity (copper 1) at which the grid holds its potential fully; under it the gain falls by up to this share. */
+    public static final float TUBE_GRID_COND_LOSS = 0.5f;
+
+    /** Placeholder. Noise (0-1) of a tube: a floor, plus up to this much for a poor emitter, plus up to this much for a soft vacuum. */
+    public static final float TUBE_NOISE_BASE = 0.04f, TUBE_NOISE_POOR_EMITTER = 0.4f, TUBE_NOISE_GAS = 0.6f;
+
+    /** Placeholder. A seal under this vacuum quality holds gas: a grid tube with it is a thyratron. */
+    public static final float TUBE_GAS_BELOW = 0.5f;
+
+    /**
+     * Placeholder. What each character does to the figures, by {@code Tube.Kind} ordinal (diode, triode, tetrode, pentode, thyratron): a
+     * share of the speed, a share of the noise, a share of the gain.
+     */
+    public static final float[] TUBE_KIND_SPEED = {1f, 0.9f, 0.95f, 1f, 0.35f};
+
+    public static final float[] TUBE_KIND_NOISE = {1f, 1f, 1.3f, 0.8f, 1.5f};
+
+    public static final float[] TUBE_KIND_GAIN = {0f, 1f, 1f, 1f, 2.5f};
+
+    /**
+     * Placeholder. Sealing: a vacuum dryer pulls the chamber to a depth (0 at the dryer's working gauge, 1 at its deepest); the seal's
+     * vacuum quality is {@code (FLOOR + (1 - FLOOR) x depth) x (BAKE_FLOOR + (1 - BAKE_FLOOR) x bake) x tightness}, where bake is how far the
+     * chamber's heat has come between {@code BAKE_MIN_TU} and {@link #CIRCUIT_HEATER_LIMIT_SHARE} of the envelope's service temperature.
+     * An envelope hotter than its service temperature slumps and seals no vacuum.
+     */
+    /** Placeholder. Envelope tightness: corrosion resistance times {@code FLOOR + (1 - FLOOR) x log10(melt viscosity) / LOG}, so a stiff glass holds a better vacuum than a runny ceramic. */
+    public static final float TUBE_TIGHT_FLOOR = 0.6f, TUBE_TIGHT_VISC_LOG = 5f;
+
+    public static final float TUBE_VACUUM_FLOOR = 0.2f, TUBE_BAKE_FLOOR = 0.5f, TUBE_BAKE_MIN_TU = 150f;
+
     /** mB of the quench oil a dunk in a tank costs (invented). */
     public static final int QUENCH_TANK_MB = 50;
 

@@ -1,0 +1,162 @@
+{
+  "family": "tube",
+  "measures": {
+    "show": [
+      "mass"
+    ],
+    "roles": {
+      "E": [
+        "axis.bulb"
+      ],
+      "C": [
+        "axis.emitter"
+      ],
+      "G": [
+        "axis.grids",
+        "axis.pitch"
+      ],
+      "P": [
+        "axis.area"
+      ]
+    }
+  },
+  "required": [
+    "E",
+    "C",
+    "P"
+  ],
+  "slot": "mainhand",
+  "wear_litres": 0.05,
+  "wear_role": "E",
+  "primary": "E",
+  "roles": {
+    "E": {
+      "name": "tube_envelope",
+      "class": "housing",
+      "forms": [
+        "tube_envelope"
+      ],
+      "litres": 0.0625,
+      "layer": 0,
+      "axes": {
+        "bulb": {
+          "min": 15,
+          "max": 60,
+          "unit": "mm",
+          "default": 30,
+          "step": 5,
+          "scales": true
+        }
+      },
+      "part": {
+        "item": "feedback:tube_envelope",
+        "cells": 3,
+        "stock": [
+          "tubing",
+          "ingot"
+        ]
+      }
+    },
+    "C": {
+      "name": "tube_cathode",
+      "class": "working_face",
+      "forms": [
+        "tube_cathode"
+      ],
+      "litres": 0.015625,
+      "layer": 1,
+      "axes": {
+        "emitter": {
+          "min": 5,
+          "max": 30,
+          "unit": "mm",
+          "default": 15,
+          "step": 1,
+          "scales": true
+        }
+      },
+      "part": {
+        "item": "feedback:tube_cathode",
+        "cells": 1,
+        "stock": [
+          "wire",
+          "rod"
+        ]
+      }
+    },
+    "G": {
+      "name": "tube_grid",
+      "class": "working_face",
+      "forms": [
+        "tube_grid"
+      ],
+      "litres": 0.015625,
+      "layer": 2,
+      "axes": {
+        "grids": {
+          "min": 1,
+          "max": 3,
+          "default": 1,
+          "step": 1,
+          "scales": true
+        },
+        "pitch": {
+          "min": 20,
+          "max": 100,
+          "unit": "%",
+          "default": 50,
+          "step": 10
+        }
+      },
+      "part": {
+        "item": "feedback:tube_grid",
+        "cells": 1,
+        "stock": [
+          "fine_wire",
+          "wire"
+        ]
+      }
+    },
+    "P": {
+      "name": "tube_plate",
+      "class": "housing",
+      "forms": [
+        "tube_plate"
+      ],
+      "litres": 0.03125,
+      "layer": 3,
+      "axes": {
+        "area": {
+          "min": 20,
+          "max": 100,
+          "unit": "%",
+          "default": 50,
+          "step": 10,
+          "scales": true
+        }
+      },
+      "part": {
+        "item": "feedback:tube_plate",
+        "cells": 1,
+        "stock": [
+          "plate",
+          "foil"
+        ]
+      }
+    }
+  },
+  "patterns": [
+    [
+      "ECP"
+    ],
+    [
+      "ECPG"
+    ]
+  ],
+  "defaults": {
+    "E": "feedback:glass",
+    "C": "feedback:tungsten",
+    "G": "feedback:nickel",
+    "P": "feedback:nickel"
+  }
+}

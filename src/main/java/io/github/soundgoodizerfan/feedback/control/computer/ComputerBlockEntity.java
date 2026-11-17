@@ -39,7 +39,7 @@ import net.minecraft.world.level.block.state.BlockState;
  */
 public class ComputerBlockEntity extends ElectricNode implements ControllerHost, ProgrammerProvider, net.minecraft.world.MenuProvider {
 
-    private final ControllerCore core = new ControllerCore(this, this::powered, stack -> stack.is(FTags.PUNCH_CARDS) && !ComputerApps.isApp(stack));
+    private final ControllerCore core = new ControllerCore(this, this::powered, stack -> stack.is(FTags.PUNCH_CARDS) && !ComputerApps.isApp(stack)).withCircuitSlot(true);
     private final EmbeddedProgrammer programmer = new EmbeddedProgrammer(this);
     private final ComputerBays bays = new ComputerBays(this::setChanged);
     /** The bay the medium in the editor came from, or -1. */
@@ -387,7 +387,7 @@ public class ComputerBlockEntity extends ElectricNode implements ControllerHost,
 
     @Override
     public float wantedAmps() {
-        return ControlTuning.COMPUTER_AMPS;
+        return ControlTuning.COMPUTER_AMPS + core.heaterAmps(io.github.soundgoodizerfan.feedback.core.electric.ElectricRules.packetEu(ratedBand()));
     }
 
     @Override

@@ -373,6 +373,13 @@ public class FDataComponents {
                     .networkSynchronized(io.github.soundgoodizerfan.feedback.process.Circuit.STREAM_CODEC)
                     .build());
 
+    /** A sealed vacuum tube's finished figures; absent is a tube not yet evacuated. See {@code process/Tube}. */
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<io.github.soundgoodizerfan.feedback.process.Tube>> TUBE =
+            COMPONENTS.register("tube", () -> DataComponentType.<io.github.soundgoodizerfan.feedback.process.Tube>builder()
+                    .persistent(io.github.soundgoodizerfan.feedback.process.Tube.CODEC)
+                    .networkSynchronized(io.github.soundgoodizerfan.feedback.process.Tube.STREAM_CODEC)
+                    .build());
+
     /** How far a crystal plate is ground; absent is the first cut. See {@code process/Cut}. */
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<io.github.soundgoodizerfan.feedback.process.Cut>> CUT =
             COMPONENTS.register("cut", () -> DataComponentType.<io.github.soundgoodizerfan.feedback.process.Cut>builder()

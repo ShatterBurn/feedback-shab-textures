@@ -29,6 +29,7 @@ import io.github.soundgoodizerfan.feedback.fitting.UpgradeFitting;
 import io.github.soundgoodizerfan.feedback.fitting.upgrade.CardRackFitting;
 import io.github.soundgoodizerfan.feedback.fitting.upgrade.EscapementFitting;
 import io.github.soundgoodizerfan.feedback.fitting.upgrade.MemoryDrumFitting;
+import io.github.soundgoodizerfan.feedback.process.Circuit;
 import io.github.soundgoodizerfan.feedback.registry.FDataComponents;
 import io.github.soundgoodizerfan.feedback.registry.FTags;
 
@@ -60,8 +61,15 @@ public class ControllerCore implements Container, Fittable {
     private static final String DRUMS = "Drums";
     private static final String RACKS = "Racks";
     private static final String ESCAPEMENT = "Escapement";
+    private static final String CIRCUIT = "Circuit";
 
     private ItemStack card = ItemStack.EMPTY;
+
+    /** The circuit in this host's circuit slot (a host that has one: {@link #withCircuitSlot}). It sets the clock rate and the read noise; none still runs, slower and noisier. */
+    private ItemStack circuit = ItemStack.EMPTY;
+    private boolean circuitSlot, circuitHeater;
+    /** Steps owed: a tick adds the clock rate over twenty and a step is taken at one. Not persisted. */
+    private float stepCredit;
 
     /** Fitted upgrades; stateless, so a count or flag per kind is the whole of their persistence. */
     private final List<UpgradeFitting> upgrades = new ArrayList<>();
@@ -152,6 +160,68 @@ public class ControllerCore implements Container, Fittable {
         return levelOf.get();
     }
 
+    /**
+     * Gives this host the circuit slot: it then steps at its circuit's clock rate (the base rate with none) and reads sensors through its
+     * noise. A host with no slot (a robot, the arm, the lift) steps every tick and reads true, as before. {@code heater}: the host has
+     * power for a tube's heater and warms the circuit it holds with it, which it pays for ({@link #heaterAmps}).
+     */
+    public ControllerCore withCircuitSlot(boolean heater) {
+        circuitSlot = true;
+        circuitHeater = heater;
+        return this;
+    }
+
+    public boolean hasCircuitSlot() {
+        return circuitSlot;
+    }
+
+    /** The circuit held, as a stack (empty for none). */
+    public ItemStack circuit() {
+        return circuit;
+    }
+
+    /** Whether a stack may go in the circuit slot: a circuit item, and the slot empty. */
+    public boolean canFitCircuit(ItemStack stack) {
+        return circuitSlot && circuit.isEmpty() && stack.getItem() instanceof io.github.soundgoodizerfan.feedback.item.CircuitItem;
+    }
+
+    public void fitCircuit(ItemStack stack) {
+        circuit = stack;
+        stepCredit = 0f;
+        setChanged();
+    }
+
+    public ItemStack takeCircuit() {
+        ItemStack out = circuit;
+        circuit = ItemStack.EMPTY;
+        setChanged();
+        return out;
+    }
+
+    /** Amps the circuit's tube heater wants from a line of {@code packetEu}: its standing power over the packet. 0 with none, with a host that has no heater. */
+    public float heaterAmps(float packetEu) {
+        if (!circuitHeater || circuit.isEmpty() || packetEu <= 0f)
+            return 0f;
+        return Circuit.of(circuit).heaterPower() / packetEu;
+    }
+
+    /** Program steps a second the held circuit gives at its warmth now. */
+    public float clockRate() {
+        return Circuit.of(circuit, level()).clockRate();
+    }
+
+    /** What the sensor reads multiply by: noise of the circuit at its warmth now, or 1 for none. */
+    private float readNoise() {
+        return Circuit.of(circuit, level()).noise();
+    }
+
+    /** A quantity read through this host's circuit: jittered by its noise; a two-state or zero reading carries none. */
+    private float jitter(float value) {
+        if (!circuitSlot || value == 0f || value == 1f || level() == null)
+            return value;
+        return value * (1f + (level().random.nextFloat() * 2f - 1f) * readNoise() * ControlTuning.CONTROLLER_READ_JITTER);
+    }
+
     @Override
     public void setChanged() {
         changed.run();
@@ -238,6 +308,19 @@ public class ControllerCore implements Container, Fittable {
             return; // no motive force, no switching -- outputs, variables and delays hold
 
         clock++;
+        if (circuitSlot) {
+            if (!circuit.isEmpty() && clock % ControlTuning.CIRCUIT_HEAT_EVERY_TICKS == 0) {
+                if (circuitHeater)
+                    Circuit.warm(circuit, level(), ControlTuning.CIRCUIT_HEAT_EVERY_TICKS, 1f);
+                if (clock % 20 == 0)
+                    Circuit.scorch(circuit, level());
+            }
+            // The clock: a step is taken when a tick brings the credit to one. At most one a tick, so a program never steps twice in a tick.
+            stepCredit = Math.min(1f, stepCredit + clockRate() / 20f);
+            if (stepCredit < 1f)
+                return;
+            stepCredit -= 1f;
+        }
         ProgramGraph graph = card.getOrDefault(FDataComponents.PROGRAM_GRAPH, ProgramGraph.EMPTY);
         if (graph.nodes().isEmpty())
             return;
@@ -393,11 +476,11 @@ public class ControllerCore implements Container, Fittable {
 
     private float readNode(DataNode node, SensorNode sensor) {
         if (node instanceof ChannelSource source && source.offersChannels())
-            return source.read(sensor.channel());
+            return jitter(source.read(sensor.channel()));
         // An actuator's own state, read back: 1 engaged, 0 not. ProgramEvaluator turns it into a boolean.
         if (node instanceof Switchable sw)
             return sw.isEngaged() ? 1f : 0f;
-        return node instanceof SensorFitting fitting ? fitting.readRaw() : 0f;
+        return node instanceof SensorFitting fitting ? jitter(fitting.readRaw()) : 0f;
     }
 
     /**
@@ -654,6 +737,8 @@ public class ControllerCore implements Container, Fittable {
     public void save(CompoundTag tag, HolderLookup.Provider registries) {
         if (!card.isEmpty())
             tag.put(CARD, card.save(registries, new CompoundTag()));
+        if (!circuit.isEmpty())
+            tag.put(CIRCUIT, circuit.save(registries, new CompoundTag()));
         ListTag list = new ListTag();
         variables.forEach((name, value) -> {
             CompoundTag entry = new CompoundTag();
@@ -673,6 +758,9 @@ public class ControllerCore implements Container, Fittable {
     public void load(CompoundTag tag, HolderLookup.Provider registries) {
         card = tag.contains(CARD)
                 ? ItemStack.parse(registries, tag.getCompound(CARD)).orElse(ItemStack.EMPTY)
+                : ItemStack.EMPTY;
+        circuit = tag.contains(CIRCUIT)
+                ? ItemStack.parse(registries, tag.getCompound(CIRCUIT)).orElse(ItemStack.EMPTY)
                 : ItemStack.EMPTY;
         variables.clear();
         for (Tag t : tag.getList(VARIABLES, Tag.TAG_COMPOUND)) {

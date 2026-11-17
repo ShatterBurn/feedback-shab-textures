@@ -160,7 +160,8 @@ public final class ModularStacks {
                 && type.family() != ModularType.Family.MACHINE && type.family() != ModularType.Family.BELT
                 && type.family() != ModularType.Family.ENGINE && type.family() != ModularType.Family.GEARBOX
                 && type.family() != ModularType.Family.PROPELLER && type.family() != ModularType.Family.SUIT_MODULE
-                && type.family() != ModularType.Family.PRESSURE && type.family() != ModularType.Family.BLOCK) {
+                && type.family() != ModularType.Family.PRESSURE && type.family() != ModularType.Family.BLOCK
+                && type.family() != ModularType.Family.TUBE) {
             stack.set(DataComponents.MAX_DAMAGE, (int) baked.get().get(Fig.DURABILITY));
             stack.set(DataComponents.DAMAGE, Math.min(stack.getDamageValue(), stack.getMaxDamage() - 1));
         }
@@ -187,6 +188,9 @@ public final class ModularStacks {
                     t.putFloat("Condition", old.getFloat("Condition"));
                 stack.set(FDataComponents.BLOCK_FIGURES.get(), t);
             });
+        // A tube opened or rebuilt is no longer sealed: its figures were the old parts' and its vacuum is gone.
+        if (type.family() == ModularType.Family.TUBE && (before == null || !before.equals(design)))
+            stack.remove(FDataComponents.TUBE.get());
         if (type.family() == ModularType.Family.PRESSURE)
             ModularBake.tank(design, type, materials).ifPresent(v -> {
                 net.minecraft.nbt.CompoundTag tag = stack.getOrDefault(FDataComponents.PRESSURE_VESSEL.get(), new net.minecraft.nbt.CompoundTag()).copy();

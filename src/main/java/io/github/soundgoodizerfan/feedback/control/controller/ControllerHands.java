@@ -24,6 +24,12 @@ public final class ControllerHands {
 
     /** A program medium in hand goes into the slot, if this host takes that medium and the card fits its limits. */
     public static ItemInteractionResult insert(ItemStack stack, Level level, BlockPos pos, Player player) {
+        // A circuit in hand goes into the circuit slot of a host that has one.
+        if (!player.isShiftKeyDown() && level.getBlockEntity(pos) instanceof ControllerHost host && host.core().canFitCircuit(stack)) {
+            if (!level.isClientSide)
+                host.core().fitCircuit(stack.split(1));
+            return ItemInteractionResult.sidedSuccess(level.isClientSide);
+        }
         if (!stack.is(FTags.PUNCH_CARDS) || player.isShiftKeyDown())
             return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         if (!(level.getBlockEntity(pos) instanceof ControllerHost controller) || !controller.getItem(0).isEmpty())
@@ -45,12 +51,14 @@ public final class ControllerHands {
         return ItemInteractionResult.sidedSuccess(level.isClientSide);
     }
 
-    /** An empty hand takes the medium back out. */
+    /** An empty hand takes the medium back out, and with the medium gone, the circuit. */
     public static InteractionResult take(Level level, BlockPos pos, Player player) {
         if (!(level.getBlockEntity(pos) instanceof ControllerHost controller))
             return InteractionResult.PASS;
         if (!level.isClientSide) {
             ItemStack taken = controller.removeItemNoUpdate(0);
+            if (taken.isEmpty())
+                taken = controller.core().takeCircuit();
             if (!taken.isEmpty() && !player.getInventory().add(taken))
                 player.drop(taken, false);
         }
@@ -60,6 +68,7 @@ public final class ControllerHands {
     public static void dropContents(Level level, BlockPos pos) {
         if (level.getBlockEntity(pos) instanceof ControllerHost controller) {
             Containers.dropContents(level, pos, controller);
+            Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), controller.core().takeCircuit());
             Fittable.dropAll(controller, level, pos);
         }
     }

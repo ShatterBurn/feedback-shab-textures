@@ -258,6 +258,8 @@ public record ModularType(Family family, Slot slot, List<Mine> mines, float stri
         PRESSURE,
         /** A robot ({@code robot}): chassis, drive and tool head, placed from the hand as a {@code robot/RobotEntity}; its figures are read from the design by {@code robot/RobotSpec}. Carries a program medium and a swappable battery on the entity, not in the design. */
         ROBOT,
+        /** A vacuum tube ({@code vacuum_tube}): envelope, cathode, plate and optional grids, evacuated and sealed by a vacuum dryer; its bake is {@link TubeDesign} and the sealed figures ride on the stack as a {@code Tube}. Mounted on a circuit board as an element. No wear and no tool figures. */
+        TUBE,
         /** A fixed block made from parts (heat exchanger, gas tank, water wheel): its bake is {@link BlockFigures}, the named figures the placed block's {@link FigureStore} hands back. */
         BLOCK,
         MACHINE;

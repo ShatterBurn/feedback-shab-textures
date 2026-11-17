@@ -22,7 +22,7 @@ import net.minecraft.world.level.block.state.BlockState;
  */
 public class ElectricControllerBlockEntity extends ElectricNode implements ControllerHost {
 
-    private final ControllerCore core = new ControllerCore(this, this::powered, stack -> stack.is(FTags.PUNCH_CARDS));
+    private final ControllerCore core = new ControllerCore(this, this::powered, stack -> stack.is(FTags.PUNCH_CARDS)).withCircuitSlot(true);
 
     public ElectricControllerBlockEntity(BlockPos pos, BlockState state) {
         this(FBlockEntities.ELECTRIC_CONTROLLER.get(), pos, state);
@@ -48,7 +48,7 @@ public class ElectricControllerBlockEntity extends ElectricNode implements Contr
 
     @Override
     public float wantedAmps() {
-        return ControlTuning.CONTROLLER_ELECTRIC_AMPS;
+        return ControlTuning.CONTROLLER_ELECTRIC_AMPS + core.heaterAmps(ElectricRules.packetEu(ratedBand()));
     }
 
     @Override

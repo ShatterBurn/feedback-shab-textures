@@ -92,6 +92,15 @@ public final class ControlTuning {
     /** Longest variable name, in characters. Invented. */
     public static final int VARIABLE_NAME_MAX = 12;
 
+    /**
+     * Placeholder. A host with a circuit slot reads its sensors through the circuit: a quantity (not a two-state reading) is multiplied by
+     * {@code 1 + u x noise x this}, u uniform in -1 to 1 and noise the circuit's (a host with none reads full noise). The heater of a tubed
+     * circuit is topped up every {@link #CIRCUIT_HEAT_EVERY_TICKS} ticks.
+     */
+    public static final float CONTROLLER_READ_JITTER = 0.04f;
+
+    public static final int CIRCUIT_HEAT_EVERY_TICKS = 5;
+
     /** Invented. Amps an Electric Controller and a Computer want from the line. */
     public static final float CONTROLLER_ELECTRIC_AMPS = 0.3f, COMPUTER_AMPS = 0.6f;
 

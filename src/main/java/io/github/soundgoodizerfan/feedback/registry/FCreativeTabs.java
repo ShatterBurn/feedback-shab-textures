@@ -407,6 +407,12 @@ public class FCreativeTabs {
             if (isHard(m) && m.ampacity().isPresent())
                 out.accept(madeOf(FItems.PLASMA_HEAD, id, "ingot"));
         });
+        // One of each vacuum tube part per material its role can use: an envelope insulates and takes heat, a cathode melts high and emits, a grid conducts, a plate sheds heat.
+        for (var part : List.of(new String[] {"tube_envelope", "E"}, new String[] {"tube_cathode", "C"}, new String[] {"tube_grid", "G"}, new String[] {"tube_plate", "P"}))
+            FModular.PARTS.stream().filter(p -> p.getId().getPath().equals(part[0])).findFirst().ifPresent(item -> forMaterials((id, m) -> {
+                if (io.github.soundgoodizerfan.feedback.modular.bake.TubeDesign.suits(part[1], m))
+                    out.accept(madeOf(item, id, m.item(id, "tubing").isPresent() ? "tubing" : m.item(id, "wire").isPresent() ? "wire" : m.item(id, "plate").isPresent() ? "plate" : "ingot"));
+            }));
         // One electrode per material that can carry an arc.
         forMaterials((id, m) -> {
             if (m.electrodeLimit().isPresent())

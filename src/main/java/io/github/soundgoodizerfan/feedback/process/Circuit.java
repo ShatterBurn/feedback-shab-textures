@@ -9,6 +9,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import io.github.soundgoodizerfan.feedback.core.thermal.ItemHeat;
+import io.github.soundgoodizerfan.feedback.core.thermal.ThermalTuning;
 import io.github.soundgoodizerfan.feedback.instrument.Instrument;
 import io.github.soundgoodizerfan.feedback.instrument.Testable;
 import io.github.soundgoodizerfan.feedback.registry.FDataComponents;
@@ -23,42 +24,55 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 /**
- * The Basic Electronic Circuit: a part that carries properties, not a tier. It is
- * the data component on the circuit item, read off a soldered {@link Board} when its joints are
- * graded, and it is what later machines eat as a quality input.
+ * The circuit: a part that carries properties, not a tier. It is the data component on the circuit
+ * item, read off a soldered {@link Board} when its joints are graded, and it is what hosts eat as a
+ * quality input. One item, one record: a board's elements decide which figures are non-zero (a
+ * relay, coherer or crystal board has no gain; a board with a tube does), and a circuit has no
+ * failure mode of its own beyond the two overrun paths below.
  *
  * <h2>The accessor</h2>
  * A machine or a modular-item role that wants a circuit's quality calls {@link #of} on the stack it
  * holds and reads the figures it cares about; no circuit is {@link #NONE}, which reads as zero
  * elements, zero speed and full noise, so "works without one, just worse" is a number and not a
- * branch. Nothing may ask whether a circuit is present in order to refuse to run.
+ * branch. Whether a host refuses to run for lack of a circuit is that host's own rule, stated in its
+ * dev doc: hosts that take a recipe data stick may gate, every other host works without it, only worse.
  *
  * <h2>The figures</h2>
  * <ul>
- * <li>{@code elements}: switching elements on the board (relays, coherers, rectifying crystals).
- * Zero is a dead part.</li>
- * <li>{@code speed} (0-1): the fastest element's. A crystal is fast in proportion to its
- * {@code rectifying}; a relay's contacts and a coherer's grains are slow.</li>
+ * <li>{@code elements}: switching elements on the board (relays, coherers, rectifying crystals,
+ * tubes). Zero is a dead part.</li>
+ * <li>{@code speed} (0-1): the fastest element's, at working warmth. A crystal is fast in proportion to its
+ * {@code rectifying}; a relay's contacts and a coherer's grains are slow; a tube's follows its geometry.</li>
  * <li>{@code noise} (0-1, never below {@link ProcessTuning#CIRCUIT_NOISE_FLOOR}): the elements' own, the
  * trace route's, and a cold joint's, cut by a ringing clock plate in proportion to its
  * {@code piezo_coupling}. Lower is better; it multiplies the spread of whatever the circuit
- * conditions.</li>
+ * conditions, and is the read jitter of a Controller's sensors.</li>
  * <li>{@code joint}: how the joints came out ({@link Board.Joint#GOOD} or {@code COLD}).</li>
  * <li>{@code limitTu}, {@code ratingAmps}: where the traces lift and what they carry, taken from
  * the board's materials and route when built, so a consumer needs no material lookup.</li>
+ * <li>{@code gain}: what the tubes add as amplifiers, summed; 0 without a tube.</li>
+ * <li>{@code power}: the standing heater power of the tubes, Eu a tick, summed; the host pays it
+ * (a Controller draws it from its line), the circuit has no load of its own.</li>
+ * <li>{@code warmTu}, {@code warmRate}: the bulb temperature the tubes work at (0 with none: nothing
+ * to warm) and how fast one Eu a tick of heater raises it. A tubed circuit is read through its
+ * stack's {@link ItemHeat}: cold it is slow and noisy ({@link #at}), never refused; a host that
+ * powers its heater warms it ({@link #warm}); fire warms it too.</li>
+ * <li>{@code clockRate}: program steps a second a host takes from it at working warmth
+ * ({@link #clockRateOf}); a Controller steps at this rate.</li>
  * </ul>
  *
  * <h2>Overrun, sense, stop</h2>
  * Heat past {@code limitTu} lifts the traces (the circuit goes dead, {@link #scorch}); current past
- * {@code ratingAmps} through a consumer fuses an element ({@link #fused}). Sense: the component
- * tester (this is a {@link Testable}) and a thermometer on whatever heats it. Stop: take it out of
+ * {@code ratingAmps} through a consumer fuses an element ({@link #fused}). A heater stops short of
+ * the limit, so a tube on a poor board runs under its working warmth instead of lifting it. Sense: the
+ * component tester (this is a {@link Testable}) and a thermometer on whatever heats it. Stop: take it out of
  * the heat or off the current. Neither is wear by uptime.
  */
-public record Circuit(int elements, float speed, float noise, Board.Joint joint, float limitTu, float ratingAmps)
-        implements Testable {
+public record Circuit(int elements, float speed, float noise, Board.Joint joint, float limitTu, float ratingAmps,
+                      float gain, float power, float warmTu, float warmRate, float clockRate) implements Testable {
 
     /** No circuit at all: what a machine reads when none is fitted. */
-    public static final Circuit NONE = new Circuit(0, 0f, 1f, Board.Joint.NONE, 0f, 0f);
+    public static final Circuit NONE = new Circuit(0, 0f, 1f, Board.Joint.NONE, 0f, 0f, 0f, 0f, 0f, 0f, clockRateOf(0f));
 
     public static final Codec<Circuit> CODEC = RecordCodecBuilder.create(i -> i.group(
             Codec.INT.fieldOf("elements").forGetter(Circuit::elements),
@@ -66,7 +80,12 @@ public record Circuit(int elements, float speed, float noise, Board.Joint joint,
             Codec.FLOAT.fieldOf("noise").forGetter(Circuit::noise),
             Board.Joint.CODEC.fieldOf("joint").forGetter(Circuit::joint),
             Codec.FLOAT.fieldOf("limit_tu").forGetter(Circuit::limitTu),
-            Codec.FLOAT.fieldOf("rating_amps").forGetter(Circuit::ratingAmps)).apply(i, Circuit::new));
+            Codec.FLOAT.fieldOf("rating_amps").forGetter(Circuit::ratingAmps),
+            Codec.FLOAT.fieldOf("gain").forGetter(Circuit::gain),
+            Codec.FLOAT.fieldOf("power").forGetter(Circuit::power),
+            Codec.FLOAT.fieldOf("warm_tu").forGetter(Circuit::warmTu),
+            Codec.FLOAT.fieldOf("warm_rate").forGetter(Circuit::warmRate),
+            Codec.FLOAT.fieldOf("clock_rate").forGetter(Circuit::clockRate)).apply(i, Circuit::new));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, Circuit> STREAM_CODEC = ByteBufCodecs.fromCodecWithRegistries(CODEC);
 
@@ -76,9 +95,68 @@ public record Circuit(int elements, float speed, float noise, Board.Joint joint,
         return c == null ? NONE : c;
     }
 
+    /** What a stack carries, read at the temperature it is at now: a tubed circuit's speed, noise and clock follow how warm its bulb is ({@link #at}). */
+    public static Circuit of(ItemStack stack, Level level) {
+        Circuit c = of(stack);
+        return c.tubed() && c.live() ? c.at(c.warmth(stack, level)) : c;
+    }
+
     /** A circuit whose traces lifted or whose elements all fused: kept as an item, reads as nothing. */
     public static Circuit dead(Board.Joint joint) {
-        return new Circuit(0, 0f, 1f, joint, 0f, 0f);
+        return new Circuit(0, 0f, 1f, joint, 0f, 0f, 0f, 0f, 0f, 0f, clockRateOf(0f));
+    }
+
+    /** Program steps a second a clock of this speed gives: the base rate with none, one a tick at speed 1. */
+    public static float clockRateOf(float speed) {
+        return ProcessTuning.CIRCUIT_BASE_STEPS_PER_SECOND
+                + Math.max(0f, Math.min(1f, speed)) * (ProcessTuning.CIRCUIT_MAX_STEPS_PER_SECOND - ProcessTuning.CIRCUIT_BASE_STEPS_PER_SECOND);
+    }
+
+    /** Whether the board carries a tube, so its figures wait on a heater. */
+    public boolean tubed() {
+        return warmTu > 0f;
+    }
+
+    /** How far this circuit's bulb has come toward working warmth, 0 to 1: its stack's {@link ItemHeat}, read where the stack is. 1 for a circuit with no tube. */
+    public float warmth(ItemStack stack, Level level) {
+        if (!tubed())
+            return 1f;
+        return Tube.warmth(ItemHeat.get(stack, level).value(), warmTu, ThermalTuning.AMBIENT_TU.value());
+    }
+
+    /** These figures at {@code warmth}: a tubed circuit that is cold is slow and noisy, in proportion; a warm one is as built. Never a refusal. */
+    public Circuit at(float warmth) {
+        if (!tubed() || !live() || warmth >= 1f)
+            return this;
+        float w = Math.max(0f, warmth);
+        float slow = speed * (ProcessTuning.CIRCUIT_COLD_SPEED + (1f - ProcessTuning.CIRCUIT_COLD_SPEED) * w);
+        float noisy = Math.min(1f, noise + (1f - w) * ProcessTuning.CIRCUIT_COLD_NOISE);
+        return new Circuit(elements, slow, noisy, joint, limitTu, ratingAmps, gain, power, warmTu, warmRate, clockRateOf(slow));
+    }
+
+    /**
+     * A host's heater warms the circuit it holds for {@code ticks} at {@code share} of its full power (1 when the line delivers it
+     * all): the bulb rises toward working warmth at {@code power x warmRate}, stopping at {@link ProcessTuning#CIRCUIT_HEATER_LIMIT_SHARE}
+     * of the traces' limit. The stack's temperature is its {@link ItemHeat}, so the same warmth comes from a fire, and cools the same way.
+     * (Heater temperature as the emission input is PowerGrid's, design only: see {@link Tube}.)
+     */
+    public static void warm(ItemStack stack, Level level, int ticks, float share) {
+        Circuit c = of(stack);
+        if (!c.live() || c.power <= 0f || share <= 0f)
+            return;
+        float target = Math.min(c.warmTu, c.limitTu * ProcessTuning.CIRCUIT_HEATER_LIMIT_SHARE);
+        float now = ItemHeat.get(stack, level).value();
+        if (now >= target)
+            return;
+        float next = Math.min(target, now + ticks * share * c.warmRate * c.power);
+        // Stamped directly: ItemHeat.set drops anything under the warm line, and a heater has to climb through it.
+        stack.set(FDataComponents.TEMPERATURE.get(), next);
+        stack.set(FDataComponents.HEATED_AT.get(), level.getGameTime());
+    }
+
+    /** The standing heater power, Eu a tick, this circuit costs its host while the host heats it. */
+    public float heaterPower() {
+        return live() ? power : 0f;
     }
 
     /** What a fitted circuit does to an instrument's resolution step: 1 for none or dead, down to about half for a quiet one. */
@@ -92,7 +170,7 @@ public record Circuit(int elements, float speed, float noise, Board.Joint joint,
 
     /** One element fused by over-current; the last one makes it a dead part. */
     public Circuit fused() {
-        return elements <= 1 ? dead(joint) : new Circuit(elements - 1, speed, noise, joint, limitTu, ratingAmps);
+        return elements <= 1 ? dead(joint) : new Circuit(elements - 1, speed, noise, joint, limitTu, ratingAmps, gain, power, warmTu, warmRate, clockRate);
     }
 
     /**
@@ -108,6 +186,10 @@ public record Circuit(int elements, float speed, float noise, Board.Joint joint,
 
     /** What kind of part a stack is when mounted on a board, if any. By tag and material property, never by id. */
     public static Board.Part part(ItemStack stack, Material.Located found) {
+        // A sealed tube carries its own finished figures; an unsealed one is a bulb of air and mounts as nothing.
+        Tube sealed = stack.get(FDataComponents.TUBE.get());
+        if (sealed != null)
+            return new Board.Part(Board.Kind.TUBE, sealed.vacuum(), java.util.Optional.of(sealed));
         if (stack.is(FTags.CIRCUIT_RELAYS))
             return new Board.Part(Board.Kind.RELAY, 1f);
         if (stack.is(FTags.CIRCUIT_COHERERS))
@@ -129,9 +211,21 @@ public record Circuit(int elements, float speed, float noise, Board.Joint joint,
     /** As above, with {@code defects} cold or bridged pads each adding {@link ProcessTuning#CIRCUIT_DEFECT_NOISE}. */
     public static Circuit assemble(Board board, Board.Joint joint, Map<ResourceLocation, Material> materials, int defects) {
         int elements = 0;
-        float speed = 0f, noise = 0f, steady = 0f;
+        float speed = 0f, noise = 0f, steady = 0f, gain = 0f, power = 0f, warmTu = 0f, warmRate = Float.MAX_VALUE;
         for (Board.Part p : board.parts()) {
             switch (p.kind()) {
+                case TUBE -> {
+                    Tube t = p.tube().orElse(null);
+                    if (t != null) {
+                        elements++;
+                        speed = Math.max(speed, t.speed());
+                        noise += t.noise();
+                        gain += t.gain();
+                        power += t.power();
+                        warmTu = Math.max(warmTu, t.warmTu());
+                        warmRate = Math.min(warmRate, t.warmRate());
+                    }
+                }
                 case SWITCH -> {
                     elements++;
                     speed = Math.max(speed, ProcessTuning.CIRCUIT_CRYSTAL_SPEED * p.figure());
@@ -159,7 +253,7 @@ public record Circuit(int elements, float speed, float noise, Board.Joint joint,
         noise *= 1f - ProcessTuning.CIRCUIT_CLOCK_STEADY * steady;
         float rating = board.trace() == Board.Trace.PRINTED ? ProcessTuning.PRINTED_RATING_AMPS : ProcessTuning.ETCHED_RATING_AMPS;
         return new Circuit(elements, speed, Math.max(ProcessTuning.CIRCUIT_NOISE_FLOOR, Math.min(1f, noise)), joint,
-                Soldering.limit(board, materials), rating);
+                Soldering.limit(board, materials), rating, gain, power, warmTu, warmTu > 0f ? warmRate : 0f, clockRateOf(speed));
     }
 
     @Override
@@ -171,6 +265,11 @@ public record Circuit(int elements, float speed, float noise, Board.Joint joint,
         out.accept(Component.translatable("feedback.circuit.elements", elements));
         out.accept(Testable.response(tester, speed));
         out.accept(Testable.noise(tester, noise));
+        if (tubed()) {
+            out.accept(Component.translatable("feedback.test.gain",
+                    io.github.soundgoodizerfan.feedback.instrument.Instruments.format(gain, tester.resolution(io.github.soundgoodizerfan.feedback.instrument.Quantity.RESPONSE))));
+            out.accept(Component.translatable("feedback.circuit.heater"));
+        }
         out.accept(Component.translatable("feedback.board.joint", Component.translatable(joint.translationKey())));
     }
 }

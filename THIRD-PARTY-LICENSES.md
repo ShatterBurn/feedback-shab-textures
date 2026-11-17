@@ -26,6 +26,7 @@ departs from all three of these deliberately.
 | **PneumaticCraft: Repressurized** | GPL-3.0 | **Yes** | Same licence as this project, code and assets both — the most direct route read all session. Assets still never used, per this project's own universal-no rule, not because the licence would forbid it |
 | **RetroSFM** | MIT | **Yes** | Permissive, same as Create. Preserve the notice, state the origin |
 | **Super Factory Manager** | MPL-2.0 | **Yes** | No per-file "Incompatible With Secondary Licenses" notice found, so combinable under GPL-3.0 per MPL §3.3/§10.4's default. Read, nothing taken — see below |
+| **PowerGrid** | Apache-2.0 (`architectury-1.21.1/dev`, commit `0938be0`) | **Yes** | Permissive and GPL-3.0-compatible one way. Preserve the notice, state the origin if code is ever copied. Read for vacuum tubes (2026-11-16); design only, nothing copied. Assets never |
 | **Silent Gear** | MIT | **Yes** | Permissive. Preserve the notice, state the origin. Read for modular items; design taken. **Textures copied as placeholders (2026-10-21, user ruling)** -- the repo's MIT licence covers them; see *Textures* below |
 | **Tinkers' Construct** | MIT | **Yes** | Permissive. Only a 1.20.1 source exists, so any port is to 1.21 data components. Read for modular items; design taken, nothing copied |
 | **Dimensional Sable** | MIT | **Yes** | Required dependency (not shipped, Modrinth maven); its public `SubLevelWarper` API is called, nothing copied. Players install it |
@@ -508,6 +509,20 @@ MPL-2.0 (`LICENSE.txt`), no per-file "Incompatible With Secondary Licenses" noti
 source read, so under MPL §10.4 the code remains available under GPL-3.0 as a Secondary
 Licence — a real route, just not one walked, same as GregTech's linking-only route was never
 walked either.
+
+## PowerGrid (vacuum tubes, 2026-11-16)
+
+Read at `architectury-1.21.1/dev`, commit `0938be0`, Apache-2.0, for the tube family of the circuit (`process/Tube`,
+`modular/bake/TubeDesign`, `process/Circuit`). Design only: no code and no assets copied.
+
+- **Taken:** a tube's emission depends on its heater's temperature, so a cold tube is slow and noisy, never off
+  (a circuit's tube figures follow its stack's `ItemHeat`; warm-up is a cost, not a branch on presence); heater
+  power derives from the emitter's size (a tube's standing power); a tube's character (diode, triode, pentode,
+  thyratron) is computed from built geometry and materials (grid count, gas fill), never from per-type ids.
+- **Rejected:** typed continuous knobs on a component (figures here come from measurements set when the part is cut
+  and from the materials), the SPICE/MNA per-tick solver, overheat destroying a part (a circuit's `scorch` and
+  `fused` stay its only overrun paths), id-keyed component assembly (a tube is mounted by its component, a board's
+  parts are matched by property or tag), voltage and watt displays (bands only), and every asset.
 
 ## PneumaticCraft: Repressurized
 

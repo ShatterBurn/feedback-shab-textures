@@ -68,8 +68,9 @@ public class WhiskerBlockEntity extends SparkDetectorBlockEntity implements io.g
                 .map(f -> f.material().electrical().rectifying().orElse(0f)).orElse(0f);
     }
 
+    /** The circuit in the stage, at the warmth its stack is at now (a tubed one reads cold unless something warms it). */
     public Circuit stage() {
-        return Circuit.of(stage);
+        return level == null ? Circuit.of(stage) : Circuit.of(stage, level);
     }
 
     public boolean hasStage() {

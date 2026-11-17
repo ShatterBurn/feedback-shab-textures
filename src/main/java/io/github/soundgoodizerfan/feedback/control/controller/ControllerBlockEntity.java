@@ -21,7 +21,7 @@ import net.minecraft.world.level.block.state.BlockState;
  */
 public class ControllerBlockEntity extends RotationNode implements ControllerHost {
 
-    private final ControllerCore core = new ControllerCore(this, this::powered, stack -> stack.is(FTags.MECHANICAL_CARDS));
+    private final ControllerCore core = new ControllerCore(this, this::powered, stack -> stack.is(FTags.MECHANICAL_CARDS)).withCircuitSlot(false);
 
     public ControllerBlockEntity(BlockPos pos, BlockState state) {
         this(FBlockEntities.CONTROLLER.get(), pos, state);

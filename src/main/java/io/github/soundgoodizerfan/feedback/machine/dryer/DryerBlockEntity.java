@@ -20,6 +20,11 @@ import io.github.soundgoodizerfan.feedback.potion.PotionTuning;
 import io.github.soundgoodizerfan.feedback.registry.FBlockEntities;
 import io.github.soundgoodizerfan.feedback.registry.FDataComponents;
 import io.github.soundgoodizerfan.feedback.registry.FItems;
+import io.github.soundgoodizerfan.feedback.modular.bake.TubeDesign;
+import io.github.soundgoodizerfan.feedback.modular.item.ModularStacks;
+import io.github.soundgoodizerfan.feedback.modular.item.ModularTube;
+import io.github.soundgoodizerfan.feedback.modular.type.ModularTypes;
+import io.github.soundgoodizerfan.feedback.process.ClientMaterials;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -46,6 +51,12 @@ import net.minecraft.world.level.block.state.BlockState;
  * <h2>Misuse</h2>
  * Over {@link PotionTuning#DRYER_SCORCH_TU} the drying salt scorches: potency lost per tick grows with the excess, and the loss is fixed in the salts.
  * Over {@link PotionTuning#DRYER_CRACK_TU} under vacuum the bottle can crack (it is lost). A correct run costs nothing; the machine itself takes no wear.
+ *
+ * <h2>Sealing a vacuum tube</h2>
+ * The same chamber evacuates and seals a built, still-open vacuum tube ({@link ModularTube}): held hot and thin for the same
+ * {@link PotionTuning#DRYER_TICKS}, it comes out sealed, its vacuum set by how deep the pump had pulled, how hot the chamber had baked
+ * the envelope and how tight the envelope is ({@link TubeDesign#vacuum}). A shallow, cool seal leaves gas in a gridded tube, which makes it
+ * a thyratron; an envelope taken past its service temperature slumps and holds none. Nothing is refused or destroyed.
  */
 public class DryerBlockEntity extends RotationNode implements ThermalBody, PressureHolder {
 
@@ -97,6 +108,18 @@ public class DryerBlockEntity extends RotationNode implements ThermalBody, Press
 
     /** A real potion bottle goes in when the chamber holds nothing; a dud draught has no effect to keep. Returns whether it was taken. */
     public boolean insert(ItemStack stack, boolean simulate) {
+        if (stack.getItem() instanceof ModularTube) {
+            if (stack.has(FDataComponents.TUBE.get()) || !input.isEmpty() || !output.isEmpty() || level == null || tubeBuild(stack, level).isEmpty())
+                return false;
+            if (!simulate) {
+                input = stack.copyWithCount(1);
+                stack.shrink(1);
+                ticks = 0;
+                scorch = 0f;
+                setChanged();
+            }
+            return true;
+        }
         PotionState state = stack.get(FDataComponents.POTION_STATE.get());
         if (state == null || state.dud() || !input.isEmpty() || !output.isEmpty() || stack.is(FItems.POTION_SALTS.get()))
             return false;
@@ -139,7 +162,10 @@ public class DryerBlockEntity extends RotationNode implements ThermalBody, Press
         pressure += (target - pressure) * PotionTuning.DRYER_RELAX_PER_TICK;
 
         boolean evacuated = pressure <= PotionTuning.DRYER_MAX_PU.value();
-        if (!input.isEmpty()) {
+        if (input.getItem() instanceof ModularTube) {
+            if (evacuated && temperature >= PotionTuning.DRYER_MIN_TU.value() && ++ticks >= PotionTuning.DRYER_TICKS)
+                sealTube();
+        } else if (!input.isEmpty()) {
             if (evacuated && temperature > PotionTuning.DRYER_CRACK_TU.value() && level.random.nextFloat() < PotionTuning.DRYER_CRACK_CHANCE) {
                 input = ItemStack.EMPTY;
                 ticks = 0;
@@ -151,6 +177,26 @@ public class DryerBlockEntity extends RotationNode implements ThermalBody, Press
             }
         }
         setChanged();
+    }
+
+    /** What a tube stack is before its seal, read on whichever side asks; empty if it is not a buildable design. */
+    private static java.util.Optional<TubeDesign.Build> tubeBuild(ItemStack stack, net.minecraft.world.level.Level level) {
+        var design = ModularStacks.design(stack);
+        var type = design == null ? null : ModularTypes.known(design.type());
+        return type == null ? java.util.Optional.empty() : TubeDesign.of(design, type, ClientMaterials.on(level));
+    }
+
+    /** The tube comes out sealed: the chamber's depth now, its heat now and the envelope's tightness decide the vacuum. */
+    private void sealTube() {
+        var build = tubeBuild(input, level);
+        if (build.isPresent()) {
+            float depth = (pressure - PotionTuning.DRYER_MAX_PU.value()) / (PotionTuning.DRYER_FULL_PU.value() - PotionTuning.DRYER_MAX_PU.value());
+            output = input.copy();
+            output.set(FDataComponents.TUBE.get(), TubeDesign.seal(build.get(), TubeDesign.vacuum(build.get(), depth, temperature)));
+        } else
+            output = input.copy();
+        input = ItemStack.EMPTY;
+        ticks = 0;
     }
 
     private void finish() {

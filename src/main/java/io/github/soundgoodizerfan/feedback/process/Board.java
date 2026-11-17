@@ -41,7 +41,9 @@ public record Board(Trace trace, ResourceLocation traceMaterial, ResourceLocatio
         /** A coherer: slowest and noisiest, the granular part. */
         COHERER("coherer"),
         /** A ringing piezo plate: switches nothing, steadies the rest. */
-        CLOCK("clock");
+        CLOCK("clock"),
+        /** A sealed vacuum tube: fast and quiet once its heater has warmed it, carries its own figures ({@link Part#tube}). */
+        TUBE("tube");
 
         public static final Codec<Kind> CODEC = StringRepresentable.fromEnum(Kind::values);
         private final String key;
@@ -58,12 +60,17 @@ public record Board(Trace trace, ResourceLocation traceMaterial, ResourceLocatio
 
     /**
      * One mounted part: its class and the material figure that sets how good it is (a crystal's
-     * {@code rectifying}, a plate's {@code piezo_coupling}; 1 for the classes that have none).
+     * {@code rectifying}, a plate's {@code piezo_coupling}; 1 for the classes that have none). A tube carries its own figures.
      */
-    public record Part(Kind kind, float figure) {
+    public record Part(Kind kind, float figure, Optional<Tube> tube) {
+        public Part(Kind kind, float figure) {
+            this(kind, figure, Optional.empty());
+        }
+
         public static final Codec<Part> CODEC = RecordCodecBuilder.create(i -> i.group(
                 Kind.CODEC.fieldOf("kind").forGetter(Part::kind),
-                Codec.FLOAT.fieldOf("figure").forGetter(Part::figure)).apply(i, Part::new));
+                Codec.FLOAT.fieldOf("figure").forGetter(Part::figure),
+                Tube.CODEC.optionalFieldOf("tube").forGetter(Part::tube)).apply(i, Part::new));
     }
 
     /** How the traces were laid. */

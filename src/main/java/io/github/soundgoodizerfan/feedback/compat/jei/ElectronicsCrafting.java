@@ -172,7 +172,7 @@ public final class ElectronicsCrafting {
 
         // Instruments: each fittable one with a circuit (a quiet one, so the fitted result is not a dead stack).
         ItemStack circuit = new ItemStack(FItems.CIRCUIT.get());
-        circuit.set(FDataComponents.CIRCUIT.get(), new Circuit(1, 1f, ProcessTuning.CIRCUIT_NOISE_FLOOR, Board.Joint.GOOD, 0f, 0f));
+        circuit.set(FDataComponents.CIRCUIT.get(), new Circuit(1, 1f, ProcessTuning.CIRCUIT_NOISE_FLOOR, Board.Joint.GOOD, 0f, 0f, 0f, 0f, 0f, 0f, Circuit.clockRateOf(1f)));
         for (var item : net.minecraft.core.registries.BuiltInRegistries.ITEM.getTagOrEmpty(FTags.CIRCUIT_FITTABLE)) {
             ItemStack fitted = new ItemStack(item.value());
             fitted.set(FDataComponents.CIRCUIT.get(), circuit.get(FDataComponents.CIRCUIT.get()));
@@ -241,6 +241,11 @@ public final class ElectronicsCrafting {
         List<ItemStack> parts = new ArrayList<>(), mounted = new ArrayList<>();
         List<ItemStack> candidates = new ArrayList<>(List.of(new ItemStack(FItems.RELAY.get()), new ItemStack(FItems.COHERER.get()),
                 new ItemStack(FItems.GALENA.get()), new ItemStack(FItems.PYRITE.get())));
+        // A sealed tube (an example: a triode at a good vacuum; the real ones come from a vacuum dryer).
+        ItemStack tube = new ItemStack(io.github.soundgoodizerfan.feedback.registry.FModular.VACUUM_TUBE.get());
+        tube.set(FDataComponents.TUBE.get(), new io.github.soundgoodizerfan.feedback.process.Tube(
+                io.github.soundgoodizerfan.feedback.process.Tube.Kind.TRIODE, 0.9f, 1f, 0.8f, 0.1f, 0.5f, 200f, 0.7f));
+        candidates.add(tube);
         materials.forEach((id, m) -> {
             ItemStack plate = of(materials, id, "crystal_plate");
             if (plate != null)
