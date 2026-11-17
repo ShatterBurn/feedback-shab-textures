@@ -124,6 +124,34 @@
       }
     ]
   },
+  "ui.app_key": {
+    "sounds": [
+      {
+        "name": "feedback:terminal/app_key"
+      }
+    ]
+  },
+  "ui.app_deny": {
+    "sounds": [
+      {
+        "name": "feedback:terminal/app_deny"
+      }
+    ]
+  },
+  "ui.app_hack": {
+    "sounds": [
+      {
+        "name": "feedback:terminal/app_hack"
+      }
+    ]
+  },
+  "ui.app_found": {
+    "sounds": [
+      {
+        "name": "feedback:terminal/app_found"
+      }
+    ]
+  },
   "ui.punch": {
     "sounds": [
       {

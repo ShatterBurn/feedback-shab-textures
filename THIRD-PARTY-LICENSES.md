@@ -906,6 +906,10 @@ Log every file here. Row: path, Soundza id, creator and title, download date, `a
 | `assets/feedback/sounds/gun/egun_shock.ogg` | Soundza `cmvl67ogefvi2yvo8qx577rf4` "Electric Noise Zap" layered with Soundza `cmvl6luz5xk0y09uxqjbc9369` "Electrical Buzz Static", no creator listed, 2026-11-13 | no | first 0.8 s of the zap over a 0.8 s slice of the buzz at half level, mono, normalised | Soundza Standard License |
 | `assets/feedback/sounds/gun/egun_zoom.ogg` | Soundza `cmv0i6i8f01es06l8zeko8cis` "Electric Power Up", no creator listed, 2026-11-13 | no | 0.9 s slice pitched down 30%, low-passed, faded in and out, mono, normalised | Soundza Standard License |
 | `assets/feedback/sounds/gun/egun_blip.ogg` | Soundza `cmvcmg962fgioul3nwtiwxjwt` "Futuristic UI Blip", no creator listed, 2026-11-13 | no | two copies pitched 1.3 and 1.6 offset 60 ms, faded, mono, normalised | Soundza Standard License |
+| `assets/feedback/sounds/terminal/app_key.ogg` | Soundza `cmukcw3uhdxlbqeqotebabmhg` "Mechanical Keyboard Keystroke", no creator listed, 2026-11-17 | no | re-pitched 0.8, mono, normalised to -22 LUFS | Soundza Standard License |
+| `assets/feedback/sounds/terminal/app_deny.ogg` | Soundza `cmujgouuydwtkv2uiqv8j4cqr` "Access Denied Buzz", no creator listed, 2026-11-17 | no | re-pitched 0.7, low-passed at 2.4 kHz, mono, normalised to -20 LUFS | Soundza Standard License |
+| `assets/feedback/sounds/terminal/app_hack.ogg` | Soundza `cmvjp6944xq99a9279bj26olo` "Short Laser Charge Up", no creator listed, 2026-11-17 | no | re-pitched 1.1, high-passed at 200 Hz, normalised to -20 LUFS | Soundza Standard License |
+| `assets/feedback/sounds/terminal/app_found.ogg` | Soundza `cmukcc2txkea6expgzboxjtzq` "Synth Power-Up Ascending", no creator listed, 2026-11-17 | no | re-pitched 0.85, faded out over 0.5 s, mono, normalised to -18 LUFS | Soundza Standard License |
 
 ## Skins
 

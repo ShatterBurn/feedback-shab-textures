@@ -33,6 +33,8 @@ public final class ResearchPlan {
     /** Each concept's traits, in the order authored. */
     public final Map<String, Set<String>> traits = new LinkedHashMap<>();
     public final List<String> replay = new ArrayList<>(), options = new ArrayList<>(), specimens = new ArrayList<>();
+    /** An app's plan only: every word of the dump (the {@code goal} is one of them), uppercase and of the goal's length; empty for every other plan. */
+    public final List<String> words = new ArrayList<>();
     public final int answer;
     public final Eureka eureka;
     /** What an app's research is about, an item id or a {@code #tag} (the thing the app is the use of); empty for every other plan. */
@@ -43,20 +45,27 @@ public final class ResearchPlan {
         this.key = key;
         this.json = json;
         title = o.get("title").getAsString();
-        start = o.get("start").getAsString();
         goal = o.get("goal").getAsString();
-        question = o.get("question").getAsString();
-        answer = o.get("answer").getAsInt();
-        for (var e : o.getAsJsonObject("concepts").entrySet()) {
-            JsonObject c = e.getValue().getAsJsonObject();
-            labels.put(e.getKey(), c.get("label").getAsString());
-            Set<String> ts = new LinkedHashSet<>();
-            for (JsonElement t : c.getAsJsonArray("traits"))
-                ts.add(t.getAsString());
-            traits.put(e.getKey(), ts);
+        if (o.has("words")) {
+            // an app's plan: the goal word and the equal-length words it hides among, no chain
+            start = question = "";
+            answer = 0;
+            strings(o.getAsJsonArray("words"), words);
+        } else {
+            start = o.get("start").getAsString();
+            question = o.get("question").getAsString();
+            answer = o.get("answer").getAsInt();
+            for (var e : o.getAsJsonObject("concepts").entrySet()) {
+                JsonObject c = e.getValue().getAsJsonObject();
+                labels.put(e.getKey(), c.get("label").getAsString());
+                Set<String> ts = new LinkedHashSet<>();
+                for (JsonElement t : c.getAsJsonArray("traits"))
+                    ts.add(t.getAsString());
+                traits.put(e.getKey(), ts);
+            }
+            strings(o.getAsJsonArray("replay"), replay);
+            strings(o.getAsJsonArray("options"), options);
         }
-        strings(o.getAsJsonArray("replay"), replay);
-        strings(o.getAsJsonArray("options"), options);
         subject = o.has("subject") ? o.get("subject").getAsString() : "";
         if (o.has("specimens"))
             strings(o.getAsJsonArray("specimens"), specimens);

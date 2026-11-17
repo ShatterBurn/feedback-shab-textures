@@ -1,6 +1,6 @@
 # Research Table
 
-The Research Table is where what is not yet known is found out. It writes a [Blank Treatise](Treatise.md#blank-treatise) into a treatise volume, writes a [Rite](Enchanting_Table.md#rites) for an attunement, or writes an app onto a blank Floppy Disk, by working out, on a board of linked concepts, how something you already have leads to the new idea.
+The Research Table is where what is not yet known is found out. It writes a [Blank Treatise](Treatise.md#blank-treatise) into a treatise volume, writes a [Rite](Enchanting_Table.md#rites) for an attunement, or writes an app onto a blank Floppy Disk. Treatises and attunements are worked out on a board of linked concepts; an app is won by breaking into a terminal.
 
 ## Crafting
 
@@ -14,7 +14,7 @@ P is paper, W is any plank, L is a lectern.
 
 ## Using it
 
-The screen is an open book. The left page is a list with three tabs, **Treatises**, **Rites** and **Apps**; each entry has a spinning icon. Click an entry to pick it. The right page shows the picked entry's two-line blurb, what it asks for, its slots and the **Research** button, which opens the research board and costs 40 experience points.
+The screen is an open book. The left page is a list with three tabs, **Treatises**, **Rites** and **Apps**; each entry has a spinning icon. Click an entry to pick it. The right page shows the picked entry's two-line blurb, what it asks for, its slots and the **Research** button, which costs 40 experience points. It opens the research board for a treatise or an attunement and the terminal for an app.
 
 A volume has a slot for one Blank Treatise and a slot for one **specimen**. An attunement has a slot for an **offering**, a slot for a **reagent** and a slot for a **Blank Rite**. The text on the right page says what is missing.
 
@@ -53,7 +53,27 @@ The **reagent** is an optional brewed potion.
 
 The Apps tab lists every app a [Computer](Electric_Controller.md#apps) can run from a disk. An app has a slot for a **disk**, a blank [Floppy Disk](Programming.md#media) with no program and no app on it, and a slot for **About**, the thing the app is about: a spyglass for Scope, a compass for Link Map, a book for Notes, a clock for Converter, redstone for Calculator, a redstone lamp for Power, a note block for Arcade, paper for Blueprint, and an Ender Pearl or Synthetic Pearl for Network.
 
-Reaching the goal in an honest time writes the app onto the disk. The About item is only studied and stays in its slot. A failed run costs the 40 experience points only; the disk stays blank.
+The **Research** button opens a green phosphor terminal. A column of hex addresses sits beside a dump of junk characters, two columns of 16 rows. Hidden in the dump are 8 to 12 words of equal length, all from the app's own vocabulary (Arcade: ARCADE, SCORES, TOKENS and the like). One of them is the answer. The longer and more alike the words, the harder the app. A log column at the right records what you try, and pips show the tries left.
+
+Click a word to try it. The terminal answers **LIKENESS=n**, how many of its letters match the answer in the same place, and spends a try. A wrong word gives ENTRY DENIED. Use the likeness to narrow the words down. Finding the answer writes the app onto the disk with a long tone; the About item is only studied and stays in its slot. Running out of tries locks the terminal: the 40 experience points are spent and the disk stays blank.
+
+A matched pair of brackets on one row, such as `( )`, `[ ]`, `{ }` or `< >`, can be clicked as a **hack**, once per pair. Three times in four it removes a wrong word, shown as dots. One time in four it refills the tries. A stamp grades the notes by whether the answer was found, the tries left and the hacks unused. The grade does not change the app.
+
+A plain run has 3 tries and no brackets. Each ink above the base of seven adds a try, up to 6, and every 2 ink above the base adds a bracket pair. The extra ink comes from having done the real thing before. Doing it enough times gives the bonus:
+
+| App | Done before | Extra ink |
+| --- | --- | --- |
+| Arcade | crafted 8 note blocks | 2 |
+| Blueprint | crafted 32 paper | 2 |
+| Calculator | crafted 8 repeaters | 2 |
+| Converter | crafted 2 clocks | 3 |
+| Link Map | crafted 2 compasses | 2 |
+| Network | used 8 ender pearls | 3 |
+| Notes | crafted 4 books | 2 |
+| Power | crafted 4 redstone lamps | 2 |
+| Scope | crafted 1 spyglass | 3 |
+
+Keys, a low buzz on a denied word, a rising tone on a hack and the long tone on success sound as you play.
 
 ### Blank Rite
 
@@ -65,7 +85,7 @@ One offering is used up per run, and the potion with it. No specimen is worn.
 
 ## The research board
 
-Each volume, each attunement and each app has its own story, start and goal concepts, concepts and traits.
+Each volume and each attunement has its own story, start and goal concepts, concepts and traits.
 
 The board is a hex board. The concept you already know sits at one end (the start) and the new idea at the other (the goal). Six hexes are rubble and cannot be used. Beside the board is a hand of concepts.
 
@@ -91,7 +111,7 @@ On a volume, a few fizzles wear the specimen: it comes back worn and can be repa
 
 ## What comes out
 
-A treatise carries the quality as its notes. An attunement gives a [Rite](Enchanting_Table.md#rites) whose quality is the research board's quality. The experience is spent either way, and a scrawl still turns the Blank Treatise into the volume. Pressing Esc before closing the notebook spends nothing.
+An app is written onto the disk as it is, whatever the grade. A treatise carries the quality as its notes. An attunement gives a [Rite](Enchanting_Table.md#rites) whose quality is the research board's quality. The experience is spent either way, and a scrawl still turns the Blank Treatise into the volume. Pressing Esc before closing the notebook spends nothing.
 
 ## See also
 

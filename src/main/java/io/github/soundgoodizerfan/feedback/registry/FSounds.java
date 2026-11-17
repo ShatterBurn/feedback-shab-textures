@@ -253,6 +253,15 @@ public class FSounds {
     /** A heavy toggle switch thrown: an instrument panel's switches. */
     public static final DeferredHolder<SoundEvent, SoundEvent> UI_TOGGLE = ui("ui.toggle");
 
+    /** The apps' research terminal: a key struck to pick a word. */
+    public static final DeferredHolder<SoundEvent, SoundEvent> APP_KEY = ui("ui.app_key");
+    /** A wrong word: the terminal buzzes low. */
+    public static final DeferredHolder<SoundEvent, SoundEvent> APP_DENY = ui("ui.app_deny");
+    /** A bracket pair hacked: a rising tone. */
+    public static final DeferredHolder<SoundEvent, SoundEvent> APP_HACK = ui("ui.app_hack");
+    /** The answer found: one long tone. */
+    public static final DeferredHolder<SoundEvent, SoundEvent> APP_FOUND = ui("ui.app_found");
+
     /** The field first rises past the coercive field in the Enchanting Table: the part begins to take. */
     public static final DeferredHolder<SoundEvent, SoundEvent> ENCHANT_ENGAGE = ui("ui.enchant_engage");
     /** The held field, sounded every few ticks, its pitch following the field: a tone you steer. */
