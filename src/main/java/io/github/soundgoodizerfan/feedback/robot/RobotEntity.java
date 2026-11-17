@@ -60,7 +60,8 @@ public class RobotEntity extends Entity implements ControllerCore.Locals, RobotW
     private final SimpleContainer cargo = new SimpleContainer(RobotTuning.CARGO);
     private final boolean[] on = new boolean[RobotChannel.values().length];
     private RobotSpec spec = RobotSpec.NONE;
-    private final ControllerCore core = new ControllerCore(this::level, this::setChangedFlag, this, this::powered, s -> s.is(FTags.PUNCH_CARDS));
+    private final ControllerCore core = new ControllerCore(this::level, this::setChangedFlag, this, this::powered, s -> s.is(FTags.PUNCH_CARDS))
+            .cardCap(() -> spec.cards());
 
     /** Eu in the battery as of the last flush, and Eu drawn since: the battery stack is written once a step, not every tick. */
     private float chargeEu, pendingEu;
@@ -71,6 +72,14 @@ public class RobotEntity extends Entity implements ControllerCore.Locals, RobotW
     private int originX, originY, originZ;
     private float errX, errZ;
     private boolean beaconNear, switched;
+    /** The pair id of the endernet upgrade fitted as this robot's leash (its base is the Data Port bonded under it), or null. */
+    @Nullable
+    private java.util.UUID leash;
+    private java.util.UUID leashJoined;
+    /** The places it remembers (the lattice's memory of them), in its own dead reckoning: set, east, south; and the one chosen. */
+    private final boolean[] placeSet = new boolean[io.github.soundgoodizerfan.feedback.process.ProcessTuning.CIRCUIT_MEMORY_MAX];
+    private final float[] placeX = new float[placeSet.length], placeZ = new float[placeSet.length];
+    private int placeAt;
     private final BlockPos.MutableBlockPos scan = new BlockPos.MutableBlockPos();
     /** The reel this robot is tied to, or null; it may roam {@link RobotTuning#TETHER_LENGTH} blocks from it. */
     @Nullable
@@ -252,6 +261,11 @@ public class RobotEntity extends Entity implements ControllerCore.Locals, RobotW
             case POS_Z -> (float) (getZ() - (originZ + 0.5)) + errZ;
             case ALTITUDE -> (float) (getY() - originY);
             case HEADING -> spec.sensor().equals(RobotSpec.INERTIAL) ? facing().get2DDataValue() : 0f;
+            case PLACES -> placeCount();
+            case PLACE_DX -> placeSet[placeAt] ? placeX[placeAt] - readX() : 0f;
+            case PLACE_DZ -> placeSet[placeAt] ? placeZ[placeAt] - readZ() : 0f;
+            case PLACE_DIST -> placeSet[placeAt] ? (float) Math.hypot(placeX[placeAt] - readX(), placeZ[placeAt] - readZ()) : 0f;
+            case AT_PLACE -> placeSet[placeAt] && Math.hypot(placeX[placeAt] - readX(), placeZ[placeAt] - readZ()) <= RobotTuning.PLACE_NEAR ? 1f : 0f;
             default -> 0f;
         };
     }
@@ -259,13 +273,70 @@ public class RobotEntity extends Entity implements ControllerCore.Locals, RobotW
     @Override
     public void write(int channel, boolean value) {
         RobotChannel c = RobotChannel.of(channel);
-        if (c != null && c.actuator())
-            on[channel] = value;
+        if (c == null || !c.actuator())
+            return;
+        boolean was = on[channel];
+        on[channel] = value;
+        // the two memory switches act once, as they come on
+        if (value && !was && c == RobotChannel.REMEMBER)
+            remember();
+        else if (value && !was && c == RobotChannel.NEXT_PLACE && spec.places() > 0)
+            placeAt = (placeAt + 1) % Math.min(placeSet.length, spec.places());
+    }
+
+    private float readX() {
+        return (float) (getX() - (originX + 0.5)) + errX;
+    }
+
+    private float readZ() {
+        return (float) (getZ() - (originZ + 0.5)) + errZ;
+    }
+
+    private int placeCount() {
+        int n = 0;
+        for (int i = 0; i < Math.min(placeSet.length, spec.places()); i++)
+            if (placeSet[i])
+                n++;
+        return n;
+    }
+
+    /** Stores where it stands, as its dead reckoning has it, in the chosen place; with no lattice there is no place to keep. */
+    private void remember() {
+        if (spec.places() <= 0)
+            return;
+        placeAt = Math.min(placeAt, Math.min(placeSet.length, spec.places()) - 1);
+        placeSet[placeAt] = true;
+        placeX[placeAt] = readX();
+        placeZ[placeAt] = readZ();
+    }
+
+    // --- the leash ---------------------------------------------------------------------------------------
+
+    /** Whether the leash can carry now: an upgrade is fitted, the brain is live and the pack has charge. */
+    public boolean leashLive() {
+        return leash != null && spec.leashes() && powered();
+    }
+
+    @Nullable
+    public java.util.UUID leashPair() {
+        return leash;
+    }
+
+    /** Keeps the leash registry as the robot stands: joined while it can carry, out of it otherwise. */
+    private void syncLeash() {
+        java.util.UUID want = leashLive() ? leash : null;
+        if (java.util.Objects.equals(want, leashJoined))
+            return;
+        if (leashJoined != null)
+            RobotLeash.leave(leashJoined, this);
+        leashJoined = want;
+        if (want != null)
+            RobotLeash.join(want, this);
     }
 
     /** Whether a landmark block stands within reach; a beacon wipes the position error. */
     private boolean scanBeacon() {
-        int r = RobotTuning.BEACON_RANGE;
+        int r = spec.senseReach(RobotTuning.BEACON_RANGE);
         BlockPos at = blockPosition();
         for (int dx = -r; dx <= r; dx++)
             for (int dy = -1; dy <= 1; dy++)
@@ -315,6 +386,10 @@ public class RobotEntity extends Entity implements ControllerCore.Locals, RobotW
     public void onRemovedFromLevel() {
         if (!level().isClientSide) {
             RobotCaps.remove(level());
+            if (leashJoined != null) {
+                RobotLeash.leave(leashJoined, this);
+                leashJoined = null;
+            }
             if (ticketChunk != NO_CHUNK && level() instanceof ServerLevel server) {
                 ChunkPos old = new ChunkPos(ticketChunk);
                 RobotTickets.release(server, this, old.x, old.z);
@@ -334,6 +409,10 @@ public class RobotEntity extends Entity implements ControllerCore.Locals, RobotW
         pendingEu += RobotTuning.EU_IDLE_PER_TICK;
         if (ticketChunk != NO_CHUNK)
             pendingEu += RobotTuning.EU_LOADER_PER_TICK;
+        // the brain's heater and the leash's standing power come out of the pack
+        pendingEu += spec.heaterEu();
+        if (leash != null && spec.leashes())
+            pendingEu += RobotTuning.EU_LEASH_PER_TICK;
         if (tickCount % RobotTuning.STEP_TICKS == 0) {
             flush();
             if (powered()) {
@@ -341,6 +420,7 @@ public class RobotEntity extends Entity implements ControllerCore.Locals, RobotW
                 applySwitch();
             }
             holdChunk(powered());
+            syncLeash();
             if (tickCount % (RobotTuning.STEP_TICKS * 5) == 0) {
                 beaconNear = scanBeacon();
                 if (beaconNear) {
@@ -382,13 +462,17 @@ public class RobotEntity extends Entity implements ControllerCore.Locals, RobotW
             errZ += (random.nextFloat() - 0.5f) * 2f * wobble;
         }
         if (flying) {
-            pendingEu += RobotTuning.EU_HOVER_PER_TICK;
+            pendingEu += spec.hoverEu();
             float rise = on[RobotChannel.ASCEND.ordinal()] ? spec.speed() * 0.6f : on[RobotChannel.DESCEND.ordinal()] ? -spec.speed() * 0.6f : 0f;
             if (!walking && rise == 0f) {
                 setDeltaMovement(0, 0, 0);
                 return; // hovering: nothing to move
             }
             setDeltaMovement(walking ? heading.getStepX() * spec.speed() : 0, rise, walking ? heading.getStepZ() * spec.speed() : 0);
+        } else if (spec.floats()) {
+            // a gas cell holds its height with no power at all: dead, it drifts nowhere
+            setDeltaMovement(0, 0, 0);
+            return;
         } else if (!walking && onGround()) {
             return; // idle on the ground: nothing to move, nothing allocated
         } else {
@@ -453,6 +537,17 @@ public class RobotEntity extends Entity implements ControllerCore.Locals, RobotW
                 player.displayClientMessage(Component.translatable("robot.feedback.tether_tied"), true);
             } else {
                 player.displayClientMessage(Component.translatable("robot.feedback.tether_none"), true);
+            }
+            return InteractionResult.CONSUME;
+        }
+        if (held.getItem() instanceof io.github.soundgoodizerfan.feedback.item.EndernetUpgradeItem) {
+            // an endernet upgrade fitted as the leash: its bond is this robot's, and the Data Port at the other end is its base
+            java.util.UUID pair = io.github.soundgoodizerfan.feedback.item.EndernetUpgradeItem.pairOf(held);
+            if (pair != null && leash == null) {
+                leash = pair;
+                if (!player.getAbilities().instabuild)
+                    held.shrink(1);
+                player.displayClientMessage(Component.translatable("robot.feedback.leash_fitted"), true);
             }
             return InteractionResult.CONSUME;
         }
@@ -558,6 +653,14 @@ public class RobotEntity extends Entity implements ControllerCore.Locals, RobotW
         t.putInt("OriginZ", originZ);
         t.putFloat("ErrX", errX);
         t.putFloat("ErrZ", errZ);
+        if (leash != null)
+            t.putUUID("Leash", leash);
+        t.putInt("PlaceAt", placeAt);
+        for (int i = 0; i < placeSet.length; i++)
+            if (placeSet[i]) {
+                t.putFloat("PlaceX" + i, placeX[i]);
+                t.putFloat("PlaceZ" + i, placeZ[i]);
+            }
         return t;
     }
 
@@ -574,6 +677,13 @@ public class RobotEntity extends Entity implements ControllerCore.Locals, RobotW
         }
         errX = t.getFloat("ErrX");
         errZ = t.getFloat("ErrZ");
+        leash = t.hasUUID("Leash") ? t.getUUID("Leash") : null;
+        placeAt = Math.max(0, Math.min(placeSet.length - 1, t.getInt("PlaceAt")));
+        for (int i = 0; i < placeSet.length; i++) {
+            placeSet[i] = t.contains("PlaceX" + i);
+            placeX[i] = t.getFloat("PlaceX" + i);
+            placeZ[i] = t.getFloat("PlaceZ" + i);
+        }
     }
 
     @Override

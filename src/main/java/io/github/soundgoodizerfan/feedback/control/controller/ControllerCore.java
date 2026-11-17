@@ -69,6 +69,9 @@ public class ControllerCore implements Container, Fittable {
     /** The circuit in this host's circuit slot (a host that has one: {@link #withCircuitSlot}). It sets the clock rate and the read noise; none still runs, slower and noisier. */
     private ItemStack circuit = ItemStack.EMPTY;
     private boolean circuitSlot, circuitHeater, endernetCapable;
+    /** A host whose program size is something other than the upgrades' (a robot's brain): the cards it may hold. */
+    @Nullable
+    private java.util.function.IntSupplier cardCap;
     /** Steps owed: a tick adds the clock rate over twenty and a step is taken at one. Not persisted. */
     private float stepCredit;
     /** Ticks this host has stood without power, and what an adapting circuit has learned of each sensor's reading (not persisted). */
@@ -188,6 +191,12 @@ public class ControllerCore implements Container, Fittable {
             if (u instanceof io.github.soundgoodizerfan.feedback.fitting.upgrade.EndernetFitting e)
                 return e.pair();
         return null;
+    }
+
+    /** Sets the cards this host's program may hold from {@code cap} instead of the Card Racks (a robot's brain decides). */
+    public ControllerCore cardCap(java.util.function.IntSupplier cap) {
+        cardCap = cap;
+        return this;
     }
 
     public boolean hasCircuitSlot() {
@@ -369,7 +378,8 @@ public class ControllerCore implements Container, Fittable {
             else if (u instanceof EscapementFitting)
                 escapement = true;
         }
-        return ControllerLimits.of(drums, racks, escapement, circuitSlot && without != CIRCUIT_OUT ? Circuit.of(circuit).memory() : 0);
+        ControllerLimits base = ControllerLimits.of(drums, racks, escapement, circuitSlot && without != CIRCUIT_OUT ? Circuit.of(circuit).memory() : 0);
+        return cardCap == null ? base : new ControllerLimits(cardCap.getAsInt(), base.variables(), base.typedDelays());
     }
 
     private static final UpgradeFitting CIRCUIT_OUT = new EscapementFitting();

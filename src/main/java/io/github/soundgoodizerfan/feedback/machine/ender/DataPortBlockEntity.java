@@ -34,7 +34,9 @@ import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
  * {@link ControlTuning#ENDERNET_SIGNALS_PER_MIN} bandwidth, which refills lazily from the game clock. A dry or saturated port simply does not
  * carry until it recovers; it never destroys anything.
  */
-public class DataPortBlockEntity extends ElectricNode implements Endernet.End, PairEnd, io.github.soundgoodizerfan.feedback.control.data.Amplifying {
+public class DataPortBlockEntity extends ElectricNode implements Endernet.End, PairEnd, io.github.soundgoodizerfan.feedback.control.data.Amplifying,
+        io.github.soundgoodizerfan.feedback.control.ChannelSource, io.github.soundgoodizerfan.feedback.control.Steppable,
+        io.github.soundgoodizerfan.feedback.control.RemoteChannels {
 
     @Nullable
     private UUID pair;
@@ -130,6 +132,87 @@ public class DataPortBlockEntity extends ElectricNode implements Endernet.End, P
         return circuit;
     }
 
+    // --- a robot's base: the port its leash is bonded to ---------------------------------------------------
+
+    /**
+     * The robot whose endernet upgrade is bonded under this port's pair and whose leash can carry now (a live brain, power in its pack,
+     * loaded), or null. The port is then that robot's base station, as a mast is for a radio one: a Sensor card linked to it reads the robot's
+     * senses, an Actuator card holds its actions, over the pair and with the pair's costs, as far as the leash carries
+     * ({@code RobotSpec.leashChannels}, from the brain circuit's selectivity). A port with no robot on it does none of this.
+     */
+    @Nullable
+    public io.github.soundgoodizerfan.feedback.robot.RobotEntity leashed() {
+        if (pair == null || level == null || !live())
+            return null;
+        var r = io.github.soundgoodizerfan.feedback.robot.RobotLeash.get(pair);
+        return r != null && r.level() == level && r.leashLive() ? r : null;
+    }
+
+    public boolean hasLeash() {
+        return pair != null && io.github.soundgoodizerfan.feedback.robot.RobotLeash.get(pair) != null;
+    }
+
+    private boolean carries(io.github.soundgoodizerfan.feedback.robot.RobotEntity r, int channel, int length) {
+        if (channel < 0 || channel >= length || channel >= r.spec().leashChannels())
+            return false;
+        return pay((float) Math.sqrt(r.distanceToSqr(worldPosition.getX() + 0.5, worldPosition.getY() + 0.5, worldPosition.getZ() + 0.5)));
+    }
+
+    @Override
+    public float read(int channel) {
+        var r = leashed();
+        var senses = io.github.soundgoodizerfan.feedback.robot.RobotMastBlockEntity.SENSES;
+        return r == null || !carries(r, channel, senses.length) ? 0f : r.read(senses[channel].ordinal(), 0);
+    }
+
+    @Override
+    public boolean offersChannels() {
+        return leashed() != null;
+    }
+
+    @Override
+    public String[] senseKeys() {
+        var senses = io.github.soundgoodizerfan.feedback.robot.RobotMastBlockEntity.SENSES;
+        String[] keys = new String[senses.length];
+        for (int i = 0; i < keys.length; i++)
+            keys[i] = senses[i].langKey();
+        return keys;
+    }
+
+    @Override
+    public String[] channelKeys() {
+        var actions = io.github.soundgoodizerfan.feedback.robot.RobotMastBlockEntity.ACTIONS;
+        String[] keys = new String[actions.length];
+        for (int i = 0; i < keys.length; i++)
+            keys[i] = actions[i].langKey();
+        return keys;
+    }
+
+    /** Channel 0 of an Actuator card: the robot's first action (roll forward), held while on. A port with no robot on it moves nothing. */
+    @Override
+    public void setEngaged(boolean engaged) {
+        hold(0, engaged);
+    }
+
+    @Override
+    public boolean isEngaged() {
+        var r = leashed();
+        return r != null && r.read(io.github.soundgoodizerfan.feedback.robot.RobotMastBlockEntity.ACTIONS[0].ordinal(), 0) != 0f;
+    }
+
+    @Override
+    public void pulse(int channel, boolean on) {
+        hold(channel, on);
+    }
+
+    private void hold(int channel, boolean on) {
+        var actions = io.github.soundgoodizerfan.feedback.robot.RobotMastBlockEntity.ACTIONS;
+        var r = leashed();
+        // out of the leash's reach or unpaid, the action is let go: the robot hears nothing
+        if (r != null && channel >= 0 && channel < actions.length)
+            r.write(actions[channel].ordinal(), on && carries(r, channel, actions.length));
+    }
+
     public IFluidHandler getFluidHandler() {
         return tank;
     }
@@ -159,6 +242,8 @@ public class DataPortBlockEntity extends ElectricNode implements Endernet.End, P
             return "message.feedback.data_port.unbonded";
         if (!live())
             return "message.feedback.data_port.dark";
+        if (leashed() != null)
+            return "message.feedback.data_port.robot";
         return Endernet.partner(this).isPresent() ? "message.feedback.data_port.linked" : "message.feedback.data_port.away";
     }
 

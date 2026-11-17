@@ -61,7 +61,20 @@ public enum RobotChannel {
     /** Blocks above the block it was set down on. */
     ALTITUDE(false, false),
     /** Use the first stack it carries on the block ahead as a hand would (nothing carried: an empty hand); how true the hand lands is its dexterity. */
-    USE(true, true);
+    USE(true, true),
+    /** Store where it is, as dead reckoning has it, in the chosen place; needs a lattice on its brain. Done on the switch coming on. */
+    REMEMBER(true, true),
+    /** Choose the next remembered place, once each time the switch comes on. */
+    NEXT_PLACE(true, true),
+    /** East and south of the chosen place from where it is now, in blocks, by its dead reckoning; 0 with no place stored. */
+    PLACE_DX(false, false),
+    PLACE_DZ(false, false),
+    /** Blocks to the chosen place. */
+    PLACE_DIST(false, false),
+    /** The chosen place is within a block and a half. */
+    AT_PLACE(false, true),
+    /** How many places it holds. */
+    PLACES(false, false);
 
     private final boolean actuator;
     private final boolean bool;

@@ -157,10 +157,12 @@ public final class Endernet {
 
     private static Entry entry(Level level, DataNodeRef ref, DataNode node) {
         var owner = node.getNodeOwner();
-        Entry.Kind kind = node instanceof End ? Entry.Kind.PORT
+        boolean leashed = node instanceof io.github.soundgoodizerfan.feedback.machine.ender.DataPortBlockEntity p && p.hasLeash();
+        Entry.Kind kind = leashed ? Entry.Kind.ROBOT : node instanceof End ? Entry.Kind.PORT
                 : node instanceof io.github.soundgoodizerfan.feedback.control.controller.ControllerHost ? Entry.Kind.COMPUTER
                 : owner instanceof io.github.soundgoodizerfan.feedback.robot.RobotMastBlockEntity ? Entry.Kind.ROBOT : Entry.Kind.MACHINE;
-        boolean switchable = node instanceof io.github.soundgoodizerfan.feedback.control.Switchable;
+        // a Data Port is a switch only as a robot's base: otherwise it moves nothing
+        boolean switchable = node instanceof io.github.soundgoodizerfan.feedback.control.Switchable && (!(node instanceof End) || leashed);
         boolean engaged = node instanceof io.github.soundgoodizerfan.feedback.control.Switchable sw && sw.isEngaged();
         return new Entry(ref, owner.getBlockState().getBlock().getDescriptionId(), kind, switchable, engaged);
     }

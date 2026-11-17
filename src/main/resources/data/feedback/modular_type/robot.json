@@ -7,6 +7,10 @@
       "robot.lift",
       "robot.step",
       "robot.drift",
+      "robot.cards",
+      "robot.sense",
+      "robot.places",
+      "robot.leash",
       "mass"
     ],
     "roles": {
@@ -20,6 +24,12 @@
       ],
       "S": [
         "robot.drift"
+      ],
+      "K": [
+        "robot.cards",
+        "robot.sense",
+        "robot.places",
+        "robot.leash"
       ]
     }
   },
@@ -77,6 +87,11 @@
           {
             "name": "rotor",
             "cells": 2,
+            "adjective": true
+          },
+          {
+            "name": "gas_cell",
+            "cells": 3,
             "adjective": true
           }
         ]

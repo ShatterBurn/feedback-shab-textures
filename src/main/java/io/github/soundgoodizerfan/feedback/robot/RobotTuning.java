@@ -28,6 +28,21 @@ public final class RobotTuning {
     public static final int BEACON_RANGE = 3, RANGE_MAX = 8;
     /** Speed of a legged and of a rotor robot against a wheeled one; the mass (Mu) above which a rotor cannot lift; Eu a tick to hover and to hold a chunk loaded. */
     public static final float LEGS_SPEED = 0.8f, ROTOR_SPEED = 0.7f, ROTOR_LIFT_MU = 60f, EU_HOVER_PER_TICK = 0.3f, EU_LOADER_PER_TICK = 1f;
+    /**
+     * Placeholder. What the brain circuit decides. Program size: {@code CARDS_BASE} cards with no brain, {@code CARDS_PER_ELEMENT} more for each
+     * element on it (never over the Controller ceiling). Sense reach (a rangefinder's range, a beacon's) grows by {@code SENSE_GAIN x gain}; the
+     * numeric senses (range, hardness) wobble by the brain's noise times the Controller's read jitter, a robot with no brain at full noise.
+     * A leash (a fitted endernet upgrade bonded to a Data Port) carries the first {@code LEASH_CHANNELS_BASE x max(1, selectivity)} senses and
+     * actions, and costs {@code EU_LEASH_PER_TICK} from the pack, as the brain's own heater does ({@code Circuit.power}). Places the robot
+     * remembers: the lattice's memory, a robot within {@code PLACE_NEAR} blocks of the chosen one is at it.
+     */
+    public static final int CARDS_BASE = 6, CARDS_PER_ELEMENT = 5, LEASH_CHANNELS_BASE = 6;
+
+    public static final float SENSE_GAIN = 1f, EU_LEASH_PER_TICK = 0.02f, PLACE_NEAR = 1.5f;
+
+    /** A gas-cell robot: the mass (Mu) it can float, its speed against a wheeled one. It holds its height with no power at all, and drifts nowhere when its power dies. */
+    public static final float GAS_CELL_LIFT_MU = 150f, GAS_CELL_SPEED = 0.4f;
+
     /** Blocks a tethered robot may roam from its reel. */
     public static final float TETHER_LENGTH = 12f;
     /** The fixed tool head strength of an arm, and the amps it asks of its line while it has a program. */

@@ -49,7 +49,7 @@ public final class ModularMeasures {
             "prop.blades", "prop.diameter", "prop.pitch",
             "belt.grip", "belt.heat",
             "suit.feeds", "suit.optic", "suit.spring", "suit.actuator", "suit.tread", "suit.filter", "suit.thermal", "suit.thruster", "suit.plate", "suit.coil", "suit.dispenser", "suit.cost", "suit.abilities",
-            "robot.speed", "robot.dig", "robot.lift", "robot.step", "robot.drift",
+            "robot.speed", "robot.dig", "robot.lift", "robot.step", "robot.drift", "robot.cards", "robot.sense", "robot.places", "robot.leash",
             "pack.free", "pack.fire", "resp.airtime", "resp.filtertime", "bed.heal", "bed.nights",
             "dish.buffs", "dish.eat", "dish.seal", "dish.spill");
 

@@ -206,12 +206,20 @@ final class MiscUses {
         out.add(line("robot.speed", perSecond, key("robot.speed", n(perSecond)), List.of()));
         if (spec.hardest() > 0f)
             out.add(line("robot.dig", spec.hardest(), key("robot.dig", n(spec.hardest())), List.of()));
-        if (spec.drive().equals(RobotSpec.ROTOR))
+        if (spec.drive().equals(RobotSpec.ROTOR) || spec.drive().equals(RobotSpec.GAS_CELL))
             out.add(line("robot.lift", spec.liftMargin(), key("robot.lift", n(spec.liftMargin())), List.of()));
         else
             out.add(line("robot.step", spec.stepUp(), key("robot.step", n(spec.stepUp())), List.of()));
         if (spec.sensor().equals(RobotSpec.INERTIAL))
             out.add(line("robot.drift", spec.drift(), key("robot.drift", pct(spec.drift())), List.of()));
+        // the brain decides the rest: a small program with none, more for each element, and what its figures add
+        out.add(line("robot.cards", spec.cards(), key("robot.cards", n(spec.cards())), List.of()));
+        if (spec.brain().gain() > 0f)
+            out.add(line("robot.sense", spec.senseReach(1), key("robot.sense", n(spec.senseReach(io.github.soundgoodizerfan.feedback.robot.RobotTuning.RANGE_MAX))), List.of()));
+        if (spec.places() > 0)
+            out.add(line("robot.places", spec.places(), key("robot.places", n(spec.places())), List.of()));
+        if (spec.leashes())
+            out.add(line("robot.leash", spec.leashChannels(), key("robot.leash", n(spec.leashChannels())), List.of()));
         return out;
     }
 

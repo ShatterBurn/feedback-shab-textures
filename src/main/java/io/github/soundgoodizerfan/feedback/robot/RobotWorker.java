@@ -94,12 +94,14 @@ public final class RobotWorker {
 
     /** Blocks to the first solid thing ahead, as far as a rangefinder reaches. */
     public static float range(Body b, BlockPos.MutableBlockPos scan) {
-        for (int i = 1; i <= RobotTuning.RANGE_MAX; i++) {
+        // the brain's gain lengthens the reach
+        int reach = b.spec().senseReach(RobotTuning.RANGE_MAX);
+        for (int i = 1; i <= reach; i++) {
             scan.set(b.pos()).move(b.facing(), i);
             if (solid(b, scan))
                 return i;
         }
-        return RobotTuning.RANGE_MAX;
+        return reach;
     }
 
     public static float hardness(Body b, BlockPos pos) {
@@ -124,8 +126,9 @@ public final class RobotWorker {
             case ITEM_AHEAD -> items(b.level(), ahead).isEmpty() ? 0f : 1f;
             case CARGO_FULL -> cargoFull(b.cargo()) ? 1f : 0f;
             case DOCK_AHEAD -> b.level().isLoaded(ahead) && b.level().getBlockState(ahead).is(FTags.ROBOT_DOCKS) ? 1f : 0f;
-            case RANGE_AHEAD -> spec.sensor().equals(RobotSpec.RANGEFINDER) ? range(b, scan) : 0f;
-            case HARDNESS_AHEAD -> spec.sensor().equals(RobotSpec.PROBE) ? hardness(b, ahead) : 0f;
+            // a number as the brain gives it: wobbled by its noise, a robot with no brain most
+            case RANGE_AHEAD -> spec.sensor().equals(RobotSpec.RANGEFINDER) ? spec.senseJitter(range(b, scan), b.level().random) : 0f;
+            case HARDNESS_AHEAD -> spec.sensor().equals(RobotSpec.PROBE) ? spec.senseJitter(hardness(b, ahead), b.level().random) : 0f;
             default -> Float.NaN;
         };
     }

@@ -31,7 +31,7 @@ public class RobotArmBlockEntity extends ElectricNode implements ControllerCore.
 
     private final SimpleContainer cargo = new SimpleContainer(RobotTuning.CARGO);
     private final boolean[] on = new boolean[RobotChannel.values().length];
-    private final ControllerCore core = new ControllerCore(this, this, () -> getAmps() > 0f, s -> s.is(FTags.PUNCH_CARDS));
+    private final ControllerCore core = new ControllerCore(this, this, () -> getAmps() > 0f, s -> s.is(FTags.PUNCH_CARDS)).cardCap(() -> spec().cards());
     private final BlockPos.MutableBlockPos scan = new BlockPos.MutableBlockPos();
     private RobotChannel doing;
     private int doingTicks;

@@ -23,11 +23,18 @@ import net.minecraft.world.item.ItemStack;
  * @param loader  whether a chunk-loading part is fitted.
  * @param radio   whether a radio part is fitted.
  * @param dexterity how steadily its hand lands, 0 to 1, from the circuit in its brain: speed times quiet, halved by a cold joint; 0 with no circuit.
+ * @param brain   the brain circuit's figures as the robot reads them ({@code Circuit.NONE} with none): a tubed brain works at its working figures while the pack pays its heater. It sets the program size, the sense reach and fidelity, the leash and the places the robot remembers.
  */
-public record RobotSpec(float mass, float speed, float headSt, String sensor, String drive, boolean loader, boolean radio, float dexterity) {
+public record RobotSpec(float mass, float speed, float headSt, String sensor, String drive, boolean loader, boolean radio, float dexterity,
+                        io.github.soundgoodizerfan.feedback.process.Circuit brain) {
+
+    /** A robot with no brain figures beyond its dexterity. */
+    public RobotSpec(float mass, float speed, float headSt, String sensor, String drive, boolean loader, boolean radio, float dexterity) {
+        this(mass, speed, headSt, sensor, drive, loader, radio, dexterity, io.github.soundgoodizerfan.feedback.process.Circuit.NONE);
+    }
 
     public static final String PROBE = "probe", RANGEFINDER = "rangefinder", INERTIAL = "inertial";
-    public static final String WHEELS = "wheels", LEGS = "legs", ROTOR = "rotor";
+    public static final String WHEELS = "wheels", LEGS = "legs", ROTOR = "rotor", GAS_CELL = "gas_cell";
     public static final RobotSpec NONE = new RobotSpec(0f, 0f, 0f, "", WHEELS, false, false, 0f);
 
     public static RobotSpec of(ItemStack stack) {
@@ -42,9 +49,9 @@ public record RobotSpec(float mass, float speed, float headSt, String sensor, St
         float mass = figures.get(Fig.MASS);
         ModularDesign.Part driveGear = design.part("D");
         String drive = driveGear == null || driveGear.variant() == null || driveGear.variant().isEmpty() ? WHEELS : driveGear.variant();
-        float factor = drive.equals(LEGS) ? RobotTuning.LEGS_SPEED : drive.equals(ROTOR) ? RobotTuning.ROTOR_SPEED : 1f;
+        float factor = drive.equals(LEGS) ? RobotTuning.LEGS_SPEED : drive.equals(GAS_CELL) ? RobotTuning.GAS_CELL_SPEED : drive.equals(ROTOR) ? RobotTuning.ROTOR_SPEED : 1f;
         // a rotor too heavy to lift has nothing to roll on: it stays where it was set down
-        float speed = drive.equals(ROTOR) && mass > RobotTuning.ROTOR_LIFT_MU ? 0f
+        float speed = (drive.equals(ROTOR) || drive.equals(GAS_CELL)) && mass > liftOf(drive) ? 0f
                 : RobotTuning.SPEED_MAX * factor * RobotTuning.SPEED_HALF_MASS / (RobotTuning.SPEED_HALF_MASS + mass);
         ModularDesign.Part head = design.part("T");
         Material m = head == null ? null : materials.get(head.material());
@@ -52,7 +59,8 @@ public record RobotSpec(float mass, float speed, float headSt, String sensor, St
         ModularDesign.Part sensor = design.part("S");
         ModularDesign.Part brain = design.part("K");
         return new RobotSpec(mass, speed, st, sensor == null || sensor.variant() == null ? "" : sensor.variant(), drive,
-                design.part("L") != null, design.part("R") != null, brain == null ? 0f : dexterity(brain.sub()));
+                design.part("L") != null, design.part("R") != null, brain == null ? 0f : dexterity(brain.sub()),
+                brain == null ? io.github.soundgoodizerfan.feedback.process.Circuit.NONE : io.github.soundgoodizerfan.feedback.process.Circuit.of(brain.sub()));
     }
 
     /** How steadily a hand lands, from a circuit: its speed times how quiet it is, halved by a cold joint; a dead or missing one reads 0. */
@@ -74,11 +82,13 @@ public record RobotSpec(float mass, float speed, float headSt, String sensor, St
 
     /** The same figures with a brain fitted: the arm takes its circuit by hand. */
     public RobotSpec withBrain(ItemStack circuit, net.minecraft.world.level.Level level) {
-        return new RobotSpec(mass, speed, headSt, sensor, drive, loader, radio, dexterity(circuit, level));
+        return new RobotSpec(mass, speed, headSt, sensor, drive, loader, radio, dexterity(circuit, level),
+                io.github.soundgoodizerfan.feedback.process.Circuit.of(circuit, level));
     }
 
     public RobotSpec withBrain(ItemStack circuit) {
-        return new RobotSpec(mass, speed, headSt, sensor, drive, loader, radio, dexterity(circuit));
+        return new RobotSpec(mass, speed, headSt, sensor, drive, loader, radio, dexterity(circuit),
+                io.github.soundgoodizerfan.feedback.process.Circuit.of(circuit));
     }
 
     /** Whether the head can break a block of this hardness at all. */
@@ -97,9 +107,63 @@ public record RobotSpec(float mass, float speed, float headSt, String sensor, St
         return sensor.equals(INERTIAL) ? RobotTuning.INERTIAL_DRIFT_SHARE : 1f;
     }
 
-    /** A rotor robot light enough to lift itself. */
+    private static float liftOf(String drive) {
+        return drive.equals(GAS_CELL) ? RobotTuning.GAS_CELL_LIFT_MU : RobotTuning.ROTOR_LIFT_MU;
+    }
+
+    /** A rotor or gas-cell robot light enough to lift itself: a drone. */
     public boolean flies() {
-        return drive.equals(ROTOR) && mass <= RobotTuning.ROTOR_LIFT_MU;
+        return (drive.equals(ROTOR) || drive.equals(GAS_CELL)) && mass <= liftOf(drive);
+    }
+
+    /** A gas-cell drone: it floats, holds its height with no power and drifts nowhere when its power dies (a rotor falls). */
+    public boolean floats() {
+        return drive.equals(GAS_CELL) && flies();
+    }
+
+    /** Eu a tick it draws to hold its height: a rotor's hover, nothing for a gas cell. */
+    public float hoverEu() {
+        return drive.equals(GAS_CELL) ? 0f : RobotTuning.EU_HOVER_PER_TICK;
+    }
+
+    // --- what the brain decides ---------------------------------------------------------------------------
+
+    /** Cards its program may hold: a small base with no brain, more for each element on the circuit, never over the Controller ceiling. */
+    public int cards() {
+        return Math.min(io.github.soundgoodizerfan.feedback.control.program.ControllerLimits.MAX.nodes(),
+                RobotTuning.CARDS_BASE + RobotTuning.CARDS_PER_ELEMENT * Math.max(0, brain.elements()));
+    }
+
+    /** A sense reach (blocks) lengthened by the brain's gain; the base with none. */
+    public int senseReach(int base) {
+        return Math.round(base * (1f + RobotTuning.SENSE_GAIN * Math.max(0f, brain.gain())));
+    }
+
+    /** A numeric sense as the brain gives it: wobbled by its noise times the read jitter (a robot with no brain, at full noise, most). */
+    public float senseJitter(float value, net.minecraft.util.RandomSource random) {
+        if (value == 0f)
+            return 0f;
+        return value * (1f + (random.nextFloat() * 2f - 1f) * brain.noise() * io.github.soundgoodizerfan.feedback.control.ControlTuning.CONTROLLER_READ_JITTER);
+    }
+
+    /** Places it remembers: the lattice's memory. */
+    public int places() {
+        return Math.max(0, brain.memory());
+    }
+
+    /** Whether a leash can carry at all: a live brain, never none. */
+    public boolean leashes() {
+        return brain.live();
+    }
+
+    /** Channels of senses and actions the leash carries: a base, times the brain's selectivity (at least once). */
+    public int leashChannels() {
+        return RobotTuning.LEASH_CHANNELS_BASE * Math.max(1, brain.selectivity());
+    }
+
+    /** Eu a tick the brain's heater draws from the pack. */
+    public float heaterEu() {
+        return brain.heaterPower();
     }
 
     /** The height of ledge it steps over without a program: legs a block, wheels a slab, a rotor none. */
@@ -114,6 +178,6 @@ public record RobotSpec(float mass, float speed, float headSt, String sensor, St
 
     /** Mu of mass left before a rotor cannot lift (negative: it is grounded). */
     public float liftMargin() {
-        return RobotTuning.ROTOR_LIFT_MU - mass;
+        return liftOf(drive) - mass;
     }
 }

@@ -85,6 +85,15 @@ public final class RobotModel {
                 b.box(driveColour, -1, 0.5f, -7, 1, 1, 7);
                 pose.popPose();
             }
+            case RobotSpec.GAS_CELL -> {
+                // a gas cell over the body: a tall bag on cords, and a skid under
+                b.box(driveColour, -6, 17, -6, 6, 29, 6);
+                b.box(driveColour, -4, 29, -4, 4, 31, 4);
+                for (int sx = -1; sx <= 1; sx += 2)
+                    for (int sz = -1; sz <= 1; sz += 2)
+                        b.box(driveColour, sx * 3f - 0.25f, 11, sz * 3f - 0.25f, sx * 3f + 0.25f, 17, sz * 3f + 0.25f);
+                b.box(driveColour, -4, 0, -4, 4, 1, 4);
+            }
             default -> {
                 // four wheels, a pixel-wide tyre band round each, and axles between
                 for (int sx = -1; sx <= 1; sx += 2)
