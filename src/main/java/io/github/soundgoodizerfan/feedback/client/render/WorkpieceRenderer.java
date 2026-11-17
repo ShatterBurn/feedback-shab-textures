@@ -32,7 +32,6 @@ public class WorkpieceRenderer<T extends ShopMachineBlockEntity> implements Bloc
 
     @Override
     public void render(T machine, float partialTick, PoseStack pose, MultiBufferSource buffers, int light, int overlay) {
-        DataNodeRenderer.drawNodes(machine);
         // A seated roll, die, bit or wheel shows at the corner, so the machine reads as headed (the Hammer's and Press's heads stay inside).
         if (machine instanceof io.github.soundgoodizerfan.feedback.machine.HeadedShopMachineBlockEntity headed
                 && headed.getHead().get().getItem() instanceof io.github.soundgoodizerfan.feedback.modular.item.ModularMachineHead) {

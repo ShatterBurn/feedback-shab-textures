@@ -1,0 +1,12 @@
+{
+  "values": [
+    {
+      "id": "feedback:ballast_tank",
+      "required": false
+    },
+    {
+      "id": "feedback:vent_valve",
+      "required": false
+    }
+  ]
+}

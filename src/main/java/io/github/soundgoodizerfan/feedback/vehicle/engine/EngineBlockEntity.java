@@ -97,7 +97,6 @@ public class EngineBlockEntity extends RotationNode implements Switchable, Analo
     /** Capacity as the network last read it, so the tick knows when the curve has moved. */
     private float reportedSu;
     /** Required by {@link DataNode}; nothing links to an engine, a card targets it. Not saved. */
-    private final Set<DataNodeRef> links = new HashSet<>();
 
     public EngineBlockEntity(BlockPos pos, BlockState state) {
         super(FVehicles.ENGINE_ENTITY.get(), pos, state);
@@ -273,11 +272,6 @@ public class EngineBlockEntity extends RotationNode implements Switchable, Analo
     // --- DataNode -----------------------------------------------------------------------------
 
     @Override
-    public boolean acceptsLinks() {
-        return false;
-    }
-
-    @Override
     public BlockPos getNodePos() {
         return worldPosition;
     }
@@ -296,11 +290,6 @@ public class EngineBlockEntity extends RotationNode implements Switchable, Analo
     @Override
     public BlockEntity getNodeOwner() {
         return this;
-    }
-
-    @Override
-    public Set<DataNodeRef> getNodeLinks() {
-        return links;
     }
 
     // --- lifecycle ----------------------------------------------------------------------------

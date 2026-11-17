@@ -86,9 +86,14 @@ public class ComputerBlockEntity extends ElectricNode implements ControllerHost,
         setChanged();
     }
 
-    /** Whether a disk with this app is in a bay. */
+    /** Whether the app is installed: a disk with it in a bay, or its file on the internal disk. */
     public boolean hasApp(String id) {
-        return ComputerApps.installed(bays, ComputerBays.SIZE, id);
+        if (ComputerApps.installed(bays, ComputerBays.SIZE, id))
+            return true;
+        for (FileInfo f : internalInfo)
+            if (f.kind() == ComputerFile.Kind.APP && f.name().equals(id))
+                return true;
+        return false;
     }
 
     public java.util.List<LogEntry> logEntries() {
@@ -156,7 +161,7 @@ public class ComputerBlockEntity extends ElectricNode implements ControllerHost,
 
     /** Copies the program in bay {@code drive} onto a blank soft medium (Floppy, USB) in another bay. */
     public void copy(int drive, ServerPlayer player) {
-        if (!copyable(drive) || !hasApp("library"))
+        if (!copyable(drive))
             return;
         for (int i = 0; i < ComputerBays.SIZE; i++)
             if (i != drive && blank(bays.getItem(i))) {
@@ -168,7 +173,7 @@ public class ComputerBlockEntity extends ElectricNode implements ControllerHost,
 
     /** Copies the program in bay {@code source} onto the blank soft medium in bay {@code target}: the Files app's drag, with the Library disk in. */
     public void copyTo(int source, int target, ServerPlayer player) {
-        if (!copyable(source) || !hasApp("library") || target < 0 || target >= ComputerBays.SIZE || target == source)
+        if (!copyable(source) || target < 0 || target >= ComputerBays.SIZE || target == source)
             return;
         if (blank(bays.getItem(target)))
             write(source, target);
@@ -212,6 +217,11 @@ public class ComputerBlockEntity extends ElectricNode implements ControllerHost,
     }
 
     @Override
+    public int getMaxNodeLinks() {
+        return core().maxLinks();
+    }
+
+    @Override
     public ControllerCore core() {
         return core;
     }
@@ -240,24 +250,18 @@ public class ComputerBlockEntity extends ElectricNode implements ControllerHost,
         if (level == null || !powered())
             return java.util.List.of();
         java.util.List<Attached> out = new java.util.ArrayList<>();
-        for (var ref : getNodeLinks()) {
+        for (var hit : core.bindings()) {
             if (out.size() >= ControlTuning.ATTACHED_MAX)
                 break;
-            var node = io.github.soundgoodizerfan.feedback.control.data.DataNode.resolveOrNull(level, ref);
-            io.github.soundgoodizerfan.feedback.instrument.Quantity q = null;
-            int channel = 0;
-            if (node instanceof io.github.soundgoodizerfan.feedback.control.ChannelSource source && source.offersChannels()) {
-                q = io.github.soundgoodizerfan.feedback.instrument.Quantity.CONTROL;
-                channel = source.defaultChannel();
-            } else if (node instanceof io.github.soundgoodizerfan.feedback.fitting.SensorFitting fitting) {
-                for (var quantity : io.github.soundgoodizerfan.feedback.instrument.Quantity.values())
-                    if (fitting.canRead(quantity)) {
-                        q = quantity;
-                        break;
-                    }
+            for (var signal : hit.spec().reads()) {
+                var q = io.github.soundgoodizerfan.feedback.control.data.Signals.quantity(signal);
+                if (q == null)
+                    continue;
+                int channel = hit.node() instanceof io.github.soundgoodizerfan.feedback.control.ChannelSource source ? source.defaultChannel() : 0;
+                float value = core.readOne(hit.node(), signal, channel);
+                if (!Float.isNaN(value))
+                    out.add(new Attached(hit.ref(), q, channel, value));
             }
-            if (q != null)
-                out.add(new Attached(ref, q, channel, core.readAttached(ref, channel)));
         }
         out.sort(java.util.Comparator.comparing(Attached::ref));
         return out;
@@ -279,6 +283,9 @@ public class ComputerBlockEntity extends ElectricNode implements ControllerHost,
         return editorDrive >= 0;
     }
 
+    /** A file on the internal disk open in the editor, as an {@code editorDrive} of this much plus its index (a bay is 0 to 3). */
+    private static final int EDIT_INTERNAL = 100;
+
     /** The power state as of the last push to an open desktop. */
     public boolean poweredSeen() {
         return poweredSeen;
@@ -294,6 +301,8 @@ public class ComputerBlockEntity extends ElectricNode implements ControllerHost,
     }
 
     public void watch(int delta) {
+        if (delta > 0 && level != null && !level.isClientSide)
+            changedFiles();
         watchers = Math.max(0, watchers + delta);
     }
 
@@ -392,6 +401,11 @@ public class ComputerBlockEntity extends ElectricNode implements ControllerHost,
 
     @Override
     public boolean land(io.github.soundgoodizerfan.feedback.control.program.ProgramGraph program) {
+        if (disk() != null && store().put(disk, ComputerFiles.program("received " + (internalInfo.size() + 1), program))) {
+            log("net_file", "internal");
+            changedFiles();
+            return true;
+        }
         for (int i = 0; i < ComputerBays.SIZE; i++)
             if (blank(bays.getItem(i))) {
                 ItemStack medium = bays.getItem(i);
@@ -458,20 +472,250 @@ public class ComputerBlockEntity extends ElectricNode implements ControllerHost,
         }
     }
 
+    // --- the internal disk, as the desktop sees it ---------------------------------------------------------
+
+    /** One file on the internal disk as the desktop lists it. */
+    public record FileInfo(ComputerFile.Kind kind, String name, int bytes) {
+    }
+
+    private java.util.List<FileInfo> internalInfo = java.util.List.of();
+
+    /** The internal disk's files, as last sent; the server's list is kept current by {@link #changedFiles}. */
+    public java.util.List<FileInfo> internalFiles() {
+        return internalInfo;
+    }
+
+    private void changedFiles() {
+        java.util.List<FileInfo> now = new java.util.ArrayList<>();
+        ComputerStore.Entry entry = disk != null && level != null && level.getServer() != null
+                ? ComputerStore.get(level.getServer()).find(disk) : null;
+        if (entry != null)
+            for (ComputerFile f : entry.files())
+                now.add(new FileInfo(f.kind(), f.name(), f.bytes()));
+        internalInfo = now;
+        setChanged();
+        if (level != null)
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+    }
+
+    private ComputerStore store() {
+        return ComputerStore.get(level.getServer());
+    }
+
+    private static void notice(ServerPlayer player, String key, Object... args) {
+        io.github.soundgoodizerfan.feedback.net.AimPayloads.screen(player, Component.translatable(key, args));
+    }
+
+    /** Saves the file on the medium in bay {@code drive} to the internal disk. */
+    public void saveToInternal(int drive, ServerPlayer player) {
+        if (drive < 0 || drive >= ComputerBays.SIZE || disk() == null)
+            return;
+        ComputerFile file = ComputerFiles.read(bays.getItem(drive));
+        if (file == null)
+            return;
+        if (file.kind() == ComputerFile.Kind.APP && hasInternalApp(file.name())) {
+            notice(player, "gui.feedback.computer.already_installed");
+            return;
+        }
+        if (!store().put(disk, file)) {
+            notice(player, file.fits() ? "gui.feedback.computer.internal_full" : "gui.feedback.computer.file_too_big");
+            return;
+        }
+        // an app is installed, not copied: the disk is left blank
+        if (file.kind() == ComputerFile.Kind.APP) {
+            bays.setItem(drive, new ItemStack(io.github.soundgoodizerfan.feedback.registry.FItems.FLOPPY_DISK.get()));
+            bays.setChanged();
+        }
+        log("save", file.name());
+        changedFiles();
+    }
+
+    private boolean hasInternalApp(String id) {
+        for (FileInfo f : internalInfo)
+            if (f.kind() == ComputerFile.Kind.APP && f.name().equals(id))
+                return true;
+        return false;
+    }
+
+    /** The file at {@code index} on the internal disk, or null. */
+    @org.jetbrains.annotations.Nullable
+    private ComputerFile internal(int index) {
+        ComputerStore.Entry entry = diskEntry();
+        return entry == null || index < 0 || index >= entry.files().size() ? null : entry.files().get(index);
+    }
+
+    /** Copies (or, with {@code move}, moves) the internal file at {@code index} onto the blank soft medium in bay {@code drive}. */
+    public void writeFromInternal(int index, int drive, boolean move, ServerPlayer player) {
+        ComputerFile file = internal(index);
+        if (file == null || drive < 0 || drive >= ComputerBays.SIZE)
+            return;
+        // the file the editor has open is addressed by its place in the list: nothing may shift the list meanwhile
+        if (move && editorDrive >= EDIT_INTERNAL)
+            return;
+        // an app is installed once: writing it out moves it, so a researched disk never becomes many
+        if (file.kind() == ComputerFile.Kind.APP && !move) {
+            notice(player, "gui.feedback.computer.app_move_only");
+            return;
+        }
+        if (!ComputerFiles.write(bays.getItem(drive), file)) {
+            notice(player, "gui.feedback.computer.no_blank_there", String.valueOf((char) ('A' + drive)));
+            return;
+        }
+        bays.setChanged();
+        if (move)
+            store().remove(disk, index);
+        log(move ? "move" : "copy", file.name());
+        changedFiles();
+    }
+
+    public void deleteInternal(int index) {
+        if (editorDrive >= EDIT_INTERNAL)
+            return;
+        if (internal(index) != null && store().remove(disk, index)) {
+            log("erase", "internal");
+            changedFiles();
+        }
+    }
+
+    /** Runs the program file at {@code index}: a card made from it goes in the running slot and is discarded when it stops. */
+    public void runInternal(int index, ServerPlayer player) {
+        ComputerFile file = internal(index);
+        var graph = file == null ? null : ComputerFiles.graphOf(file);
+        if (graph == null || graph.nodes().isEmpty() || !core.getItem(0).isEmpty())
+            return;
+        ItemStack card = new ItemStack(io.github.soundgoodizerfan.feedback.registry.FItems.PUNCH_CARD.get());
+        card.set(io.github.soundgoodizerfan.feedback.registry.FDataComponents.PROGRAM_GRAPH, graph);
+        var refusal = core.refusalFor(card);
+        if (refusal.isPresent()) {
+            notice(player, "feedback.controller.card_refused", Component.translatable("feedback.programmer.error." + refusal.get()));
+            log("refused", "feedback.programmer.error." + refusal.get());
+            return;
+        }
+        core.setItem(0, ComputerFiles.markTransient(card));
+        log("run", file.name());
+        setChanged();
+    }
+
+    /** Opens the program file at {@code index} in the editor on a floppy made from it; what the editor holds when it closes replaces the file. */
+    public void editInternal(int index, ServerPlayer player) {
+        ComputerFile file = internal(index);
+        var graph = file == null ? null : ComputerFiles.graphOf(file);
+        if (graph == null || graph.nodes().isEmpty() || !programmer.getItem(0).isEmpty())
+            return;
+        ItemStack card = new ItemStack(io.github.soundgoodizerfan.feedback.registry.FItems.FLOPPY_DISK.get());
+        card.set(io.github.soundgoodizerfan.feedback.registry.FDataComponents.PROGRAM_GRAPH, graph);
+        programmer.resetWorking();
+        programmer.setItem(0, ComputerFiles.markTransient(card));
+        editorDrive = EDIT_INTERNAL + index;
+        editorOwner = player.getUUID();
+        log("edit", file.name());
+        programmer.sync();
+        setChanged();
+    }
+
+    /** The editor closed on an internal file: its graph (printed, or the working copy) replaces the file. */
+    private void closeInternalEditor(ServerPlayer player) {
+        int index = editorDrive - EDIT_INTERNAL;
+        editorOwner = null;
+        editorDrive = -1;
+        var graph = programmer.getDisplayedGraph();
+        programmer.removeItemNoUpdate(0);
+        programmer.resetWorking();
+        ComputerFile old = internal(index);
+        if (old != null && !graph.nodes().isEmpty()) {
+            ComputerFile edited = ComputerFiles.program(old.name(), graph);
+            if (edited.fits())
+                store().replace(disk, index, edited);
+            else
+                notice(player, "gui.feedback.computer.file_too_big");
+        }
+        programmer.sync();
+        changedFiles();
+    }
+
+    /** The id of this Computer's internal disk ({@link ComputerStore}), allocated on first use; null until then. Only the id is saved here. */
+    @org.jetbrains.annotations.Nullable
+    private java.util.UUID disk;
+
+    /** The internal disk, allocated now if this Computer has never used one. Server only; null on a client. */
+    @org.jetbrains.annotations.Nullable
+    public java.util.UUID disk() {
+        if (level == null || level.isClientSide || level.getServer() == null)
+            return null;
+        if (disk == null) {
+            ComputerStore store = ComputerStore.get(level.getServer());
+            disk = store.claim(store.allocate(), this);
+            setChanged();
+        }
+        return disk;
+    }
+
+    /** This Computer's files, or null on a client or before it has any disk. */
+    @org.jetbrains.annotations.Nullable
+    public ComputerStore.Entry diskEntry() {
+        java.util.UUID id = disk();
+        return id == null ? null : ComputerStore.get(level.getServer()).find(id);
+    }
+
+    /** The block was broken and its disk travels with the item it drops as. */
+    public void markCarried() {
+        if (disk != null && level != null && !level.isClientSide && level.getServer() != null)
+            ComputerStore.get(level.getServer()).carry(disk, level.getGameTime());
+    }
+
+    private void claimDisk() {
+        if (disk == null || level == null || level.isClientSide || level.getServer() == null)
+            return;
+        java.util.UUID mine = ComputerStore.get(level.getServer()).claim(disk, this);
+        if (!mine.equals(disk)) {
+            disk = mine;
+            setChanged();
+        }
+    }
+
+    @Override
+    public void onLoad() {
+        super.onLoad();
+        claimDisk();
+    }
+
+    @Override
+    protected void collectImplicitComponents(net.minecraft.core.component.DataComponentMap.Builder components) {
+        super.collectImplicitComponents(components);
+        if (disk != null)
+            components.set(io.github.soundgoodizerfan.feedback.registry.FDataComponents.COMPUTER_DISK.get(), disk);
+    }
+
+    @Override
+    protected void applyImplicitComponents(net.minecraft.world.level.block.entity.BlockEntity.DataComponentInput input) {
+        super.applyImplicitComponents(input);
+        java.util.UUID carried = input.get(io.github.soundgoodizerfan.feedback.registry.FDataComponents.COMPUTER_DISK.get());
+        if (carried != null) {
+            disk = carried;
+            claimDisk();
+        }
+    }
+
     @Override
     public void onChunkUnloaded() {
         super.onChunkUnloaded();
+        if (disk != null)
+            ComputerStore.release(disk, this);
         io.github.soundgoodizerfan.feedback.control.endernet.Endernet.leave(this);
     }
 
     @Override
     public void setRemoved() {
+        if (disk != null)
+            ComputerStore.release(disk, this);
         io.github.soundgoodizerfan.feedback.control.endernet.Endernet.leave(this);
         super.setRemoved();
     }
 
     @Override
     public void tickServer() {
+        if (disk != null && level != null && level.getGameTime() % 100 == 0 && level.getServer() != null)
+            ComputerStore.get(level.getServer()).touch(disk, this);
         io.github.soundgoodizerfan.feedback.control.endernet.Endernet.sync(this);
         core.tickServer();
         if (level != null && level.getGameTime() % 20 == 0) {
@@ -516,6 +760,11 @@ public class ComputerBlockEntity extends ElectricNode implements ControllerHost,
     /** Stops the running program: its medium goes back to a free bay, or to the player. */
     public void stop(ServerPlayer player) {
         ItemStack medium = core.removeItemNoUpdate(0);
+        if (ComputerFiles.isTransient(medium)) {
+            // a card made from an internal file has nowhere to go: the file is the program
+            log("stop", "");
+            return;
+        }
         if (!medium.isEmpty()) {
             shelve(medium, player, -1);
             log("stop", "");
@@ -538,6 +787,10 @@ public class ComputerBlockEntity extends ElectricNode implements ControllerHost,
     public void closeEditor(ServerPlayer player) {
         if (editorDrive < 0 || editorOwner != null && !editorOwner.equals(player.getUUID()))
             return;
+        if (editorDrive >= EDIT_INTERNAL) {
+            closeInternalEditor(player);
+            return;
+        }
         editorOwner = null;
         ItemStack medium = programmer.removeItemNoUpdate(0);
         if (!medium.isEmpty())
@@ -616,6 +869,17 @@ public class ComputerBlockEntity extends ElectricNode implements ControllerHost,
     @Override
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
+        if (disk != null)
+            tag.putUUID("Disk", disk);
+        net.minecraft.nbt.ListTag files = new net.minecraft.nbt.ListTag();
+        for (FileInfo f : internalInfo) {
+            CompoundTag one = new CompoundTag();
+            one.putByte("K", (byte) f.kind().ordinal());
+            one.putString("N", f.name());
+            one.putInt("B", f.bytes());
+            files.add(one);
+        }
+        tag.put("Internal", files);
         core.save(tag, registries);
         net.minecraft.world.ContainerHelper.saveAllItems(tag, bays.getItems(), true, registries);
         tag.putInt("EditorDrive", editorDrive);
@@ -681,6 +945,15 @@ public class ComputerBlockEntity extends ElectricNode implements ControllerHost,
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
+        disk = tag.hasUUID("Disk") ? tag.getUUID("Disk") : null;
+        java.util.List<FileInfo> files = new java.util.ArrayList<>();
+        for (net.minecraft.nbt.Tag t : tag.getList("Internal", net.minecraft.nbt.Tag.TAG_COMPOUND)) {
+            CompoundTag one = (CompoundTag) t;
+            int k = one.getByte("K");
+            if (k >= 0 && k < ComputerFile.Kind.values().length)
+                files.add(new FileInfo(ComputerFile.Kind.values()[k], one.getString("N"), one.getInt("B")));
+        }
+        internalInfo = files;
         core.load(tag, registries);
         bays.getItems().clear();
         net.minecraft.world.ContainerHelper.loadAllItems(tag, bays.getItems(), registries);

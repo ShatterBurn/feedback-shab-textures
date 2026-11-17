@@ -1,0 +1,12 @@
+{
+  "values": [
+    {
+      "id": "feedback:engine",
+      "required": false
+    },
+    {
+      "id": "feedback:dynamotor",
+      "required": false
+    }
+  ]
+}

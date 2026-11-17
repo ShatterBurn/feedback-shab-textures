@@ -82,7 +82,7 @@ public sealed interface ProgramNode permits SensorNode, ComparatorNode, LogicNod
             case MathNode n -> slot == 0
                     ? new MathNode(n.id(), n.op(), fromId, n.rightInput(), n.literalDefault())
                     : new MathNode(n.id(), n.op(), n.leftInput(), fromId, n.literalDefault());
-            case ActuatorNode n -> new ActuatorNode(n.id(), fromId, n.target(), n.channel());
+            case ActuatorNode n -> new ActuatorNode(n.id(), fromId, n.kind(), n.color(), n.channel());
             case DelayNode n -> slot == 0
                     ? new DelayNode(n.id(), fromId, n.type(), n.ticks(), n.ticksInput())
                     : new DelayNode(n.id(), n.input(), n.type(), n.ticks(), fromId);
@@ -97,11 +97,11 @@ public sealed interface ProgramNode permits SensorNode, ComparatorNode, LogicNod
     /** This node renumbered, wiring untouched -- the editor's paste remaps inputs separately. */
     default ProgramNode withId(int id) {
         return switch (this) {
-            case SensorNode n -> new SensorNode(id, n.target(), n.quantity(), n.channel());
+            case SensorNode n -> new SensorNode(id, n.signal(), n.kind(), n.color(), n.reduction(), n.channel());
             case ComparatorNode n -> new ComparatorNode(id, n.op(), n.leftInput(), n.rightInput(), n.literalDefault());
             case LogicNode n -> new LogicNode(id, n.op(), n.leftInput(), n.rightInput());
             case MathNode n -> new MathNode(id, n.op(), n.leftInput(), n.rightInput(), n.literalDefault());
-            case ActuatorNode n -> new ActuatorNode(id, n.input(), n.target(), n.channel());
+            case ActuatorNode n -> new ActuatorNode(id, n.input(), n.kind(), n.color(), n.channel());
             case DelayNode n -> new DelayNode(id, n.input(), n.type(), n.ticks(), n.ticksInput());
             case ReadNode n -> new ReadNode(id, n.variable());
             case WriteNode n -> new WriteNode(id, n.variable(), n.valueInput(), n.triggerInput());

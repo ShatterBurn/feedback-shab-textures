@@ -45,7 +45,6 @@ import net.minecraft.world.level.block.state.BlockState;
  */
 public abstract class ElectricNode extends BlockEntity implements ElectricMember, DataNode {
 
-    private static final String LINKS = "Links";
 
     @Nullable
     private ElectricRun run;
@@ -56,7 +55,6 @@ public abstract class ElectricNode extends BlockEntity implements ElectricMember
     private float wanted;
     private boolean blocked;
 
-    private final Set<DataNodeRef> links = new HashSet<>();
 
     /** When this was last saved, so a load can say how long it was away. See {@link Catchup}. */
     private final Catchup catchup = new Catchup();
@@ -187,20 +185,11 @@ public abstract class ElectricNode extends BlockEntity implements ElectricMember
         return this;
     }
 
-    @Override
-    public Set<DataNodeRef> getNodeLinks() {
-        return links;
-    }
-
     // --- persistence --------------------------------------------------------------------------
 
     @Override
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
-        ListTag list = new ListTag();
-        for (DataNodeRef ref : links)
-            list.add(ref.toTag());
-        tag.put(LINKS, list);
         catchup.save(tag, level);
     }
 
@@ -208,8 +197,5 @@ public abstract class ElectricNode extends BlockEntity implements ElectricMember
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
         catchup.load(tag);
-        links.clear();
-        for (Tag entry : tag.getList(LINKS, Tag.TAG_COMPOUND))
-            links.add(DataNodeRef.fromTag((CompoundTag) entry));
     }
 }

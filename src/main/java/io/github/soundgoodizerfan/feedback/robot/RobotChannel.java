@@ -8,7 +8,7 @@ import io.github.soundgoodizerfan.feedback.instrument.Quantity;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * A robot's own senses and actions, named by a program card through {@link DataNodeRef#local}. An action is a switch the program holds
+ * A robot's own senses and actions, named by a program card as the signal {@link #signal()} or, for an action, by its ordinal on a card of kind {@link #KIND}. An action is a switch the program holds
  * on or off (the Controller is a switch, never a dial); a sense reads back as a boolean, or as a number. The ordinal is what a printed
  * card stores, so a program moves between robots of any form that carry the channel. A sense that needs a fitted sensor part reads 0 on
  * a robot without it (see {@link RobotSpec}).
@@ -98,11 +98,34 @@ public enum RobotChannel {
         return bool ? Quantity.STATE : this == CHARGE ? Quantity.CHARGE : Quantity.FIGURE;
     }
 
-    public DataNodeRef ref() {
-        return DataNodeRef.local(ordinal());
+    /** The kind every robot channel is: a robot is bound to its own program, always. */
+    public static final net.minecraft.resources.ResourceLocation KIND =
+            io.github.soundgoodizerfan.feedback.Feedback.id("data_kind/robot");
+
+    /** This channel as a signal id a Sensor card names: {@code feedback:robot/<name>}. */
+    public net.minecraft.resources.ResourceLocation signal() {
+        return io.github.soundgoodizerfan.feedback.Feedback.id("robot/" + name().toLowerCase(java.util.Locale.ROOT));
+    }
+
+    /** The channel a signal id names, or null when it is not a robot channel. */
+    @Nullable
+    public static RobotChannel ofSignal(net.minecraft.resources.ResourceLocation signal) {
+        if (!signal.getNamespace().equals(io.github.soundgoodizerfan.feedback.Feedback.MOD_ID) || !signal.getPath().startsWith("robot/"))
+            return null;
+        for (RobotChannel channel : ALL)
+            if (channel.name().toLowerCase(java.util.Locale.ROOT).equals(signal.getPath().substring(6)))
+                return channel;
+        return null;
     }
 
     private static final RobotChannel[] ALL = values();
+
+    /** Tells the program evaluator which robot signals are two-state; called once at start-up. */
+    public static void declareSignals() {
+        for (RobotChannel channel : ALL)
+            if (!channel.actuator && channel.bool)
+                io.github.soundgoodizerfan.feedback.control.data.Signals.declareBoolean(channel.signal());
+    }
 
     @Nullable
     public static RobotChannel of(int ordinal) {

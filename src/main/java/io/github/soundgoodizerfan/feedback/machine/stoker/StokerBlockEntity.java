@@ -119,16 +119,6 @@ public class StokerBlockEntity extends RotationNode implements Switchable, DataN
     }
 
     @Override
-    public boolean acceptsLinks() {
-        return false;
-    }
-
-    @Override
-    public Set<DataNodeRef> getNodeLinks() {
-        return Collections.emptySet();
-    }
-
-    @Override
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
         tag.put("Hopper", hopper.serializeNBT(registries));

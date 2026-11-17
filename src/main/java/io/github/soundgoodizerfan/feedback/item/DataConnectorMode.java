@@ -14,7 +14,9 @@ public enum DataConnectorMode {
     /** Select two linked nodes in turn to cut the wire between them. */
     UNLINK,
     /** Use on a node to cut every wire it carries. */
-    CLEAR;
+    CLEAR,
+    /** Select a Controller and one of its linked nodes in turn to set that link's color to the dye in the other hand (none clears it). */
+    PAINT;
 
     public static final Codec<DataConnectorMode> CODEC = Codec.INT.xmap(DataConnectorMode::of, DataConnectorMode::ordinal);
     public static final StreamCodec<ByteBuf, DataConnectorMode> STREAM_CODEC =

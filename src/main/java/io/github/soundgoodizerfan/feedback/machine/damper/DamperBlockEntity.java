@@ -30,9 +30,7 @@ import net.minecraft.world.level.block.state.BlockState;
  */
 public class DamperBlockEntity extends BlockEntity implements Switchable, DataNode {
 
-    private static final String LINKS = "Links";
 
-    private final Set<DataNodeRef> links = new HashSet<>();
 
     public DamperBlockEntity(BlockPos pos, BlockState state) {
         super(FBlockEntities.DAMPER.get(), pos, state);
@@ -56,12 +54,6 @@ public class DamperBlockEntity extends BlockEntity implements Switchable, DataNo
 
     // --- DataNode -----------------------------------------------------------------------------
 
-    /** Targeted by a card, never linked -- see {@link DataNode#acceptsLinks}. */
-    @Override
-    public boolean acceptsLinks() {
-        return false;
-    }
-
     @Override
     public BlockPos getNodePos() {
         return getBlockPos();
@@ -82,27 +74,15 @@ public class DamperBlockEntity extends BlockEntity implements Switchable, DataNo
         return this;
     }
 
-    @Override
-    public Set<DataNodeRef> getNodeLinks() {
-        return links;
-    }
-
     // --- persistence --------------------------------------------------------------------------
 
     @Override
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
-        ListTag list = new ListTag();
-        for (DataNodeRef ref : links)
-            list.add(ref.toTag());
-        tag.put(LINKS, list);
     }
 
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
-        links.clear();
-        for (Tag entry : tag.getList(LINKS, Tag.TAG_COMPOUND))
-            links.add(DataNodeRef.fromTag((CompoundTag) entry));
     }
 }

@@ -61,16 +61,12 @@ final class DiagramWindow extends DesktopWindow {
             page.turn(yaw, pitch);
     }
 
-    /** Positions of the Flight Sensors the running program reads, and those linked straight to the Computer. */
+    /** Positions of the Flight Sensors linked straight to the Computer. */
     private List<BlockPos> sensors() {
         List<BlockPos> out = new ArrayList<>();
         var level = Minecraft.getInstance().level;
         if (level == null)
             return out;
-        for (ProgramNode node : ctx.running().nodes())
-            if (node instanceof SensorNode s && s.target() != null && level.getBlockEntity(s.target().pos()) instanceof FlightSensorBlockEntity
-                    && !out.contains(s.target().pos()))
-                out.add(s.target().pos());
         ComputerBlockEntity computer = ctx.computer();
         if (computer != null)
             for (ComputerBlockEntity.Attached a : computer.attached())

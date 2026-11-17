@@ -50,7 +50,7 @@ A [circuit](Basic_Electronic_Circuit.md) is optional. **Right-click** with one t
 - **More accurate.** A quiet circuit lowers the odds of a jam, blade wear or scrap on stock the stick does not cover, and sometimes makes the cutter hold off from guessing at such stock at all. With none the odds are as described below.
 - **Longer links.** A circuit with gain lengthens a [Data Connector](Data_Connector.md#linking-nodes) link that ends at the cutter.
 - **Heater.** A circuit with a [tube](Vacuum_Tube.md) takes its heater's current from the cutter's line on top of the cutter's own, and runs slow and noisy until warm ([Warming up](Basic_Electronic_Circuit.md#warming-up)).
-- **Readable.** With a live circuit seated, a Sensor card for a [Controller](Controller.md) can read the cutter's **Progress** (how far through the cut), **Condition** (the head's) and **Output fill**. Link the card as for any block ([Programming](Programming.md#linking-cards-to-real-blocks)) and click its channel row to pick one.
+- **Readable.** With a live circuit seated, an Input card on a [Controller](Controller.md) can read the cutter's **Progress** (how far through the cut), **Condition** (the head's) and **Output fill**. Link the machine to the Controller with the [Data Connector](Data_Connector.md) and click the card's channel row to pick one (see [Programming](Programming.md#input-and-switch-cards)).
 
 ## How it cuts
 

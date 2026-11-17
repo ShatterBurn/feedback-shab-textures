@@ -47,8 +47,36 @@ public interface DataNode {
 
     BlockEntity getNodeOwner();
 
-    /** The other ends this node is linked to. Owned and persisted by the implementer. */
-    Set<DataNodeRef> getNodeLinks();
+    /** The other ends this node is linked to: held, saved and synced by {@link DataLinkStore}, never by the block. */
+    default Set<DataNodeRef> getNodeLinks() {
+        return DataLinkStore.linksOf(getNodeLevel(), getNodeRef());
+    }
+
+    /** Records that this node's links changed: saved, and sent to the players watching it. */
+    default void linksChanged() {
+        DataLinkStore.changed(getNodeLevel(), getNodeRef());
+    }
+
+    /**
+     * What this node is and offers: its kinds, the signals it reads, whether it can be driven. Override to
+     * declare directly; the default reads the block's {@code data_kind/} tags and the interfaces it implements.
+     */
+    default DataSpec dataSpec() {
+        return DataSpec.derive(this);
+    }
+
+    /** This node's reading of {@code signal} (on {@code channel}, for a node with several); by default what its interfaces offer. */
+    default float readSignal(net.minecraft.resources.ResourceLocation signal, int channel) {
+        return DataSpec.readDerived(this, signal, channel);
+    }
+
+    /**
+     * A card drives this node with a Boolean or a Float on {@code channel}. Returns 1 if it just switched on, -1 if it
+     * just switched off, 0 otherwise (the Computer's console prints the change).
+     */
+    default int writeSignal(int channel, Object value) {
+        return DataSpec.writeDerived(this, channel, value);
+    }
 
     default DataNodeRef getNodeRef() {
         return new DataNodeRef(getNodePos(), getNodeSide());
@@ -85,16 +113,8 @@ public interface DataNode {
         return 4;
     }
 
-    /**
-     * Whether this node holds links at all. A pure actuator (a clutch, a damper, a valve) is only
-     * ever <em>targeted</em> -- a card names it directly -- so a link to it would only burn a slot.
-     */
-    default boolean acceptsLinks() {
-        return true;
-    }
-
     default boolean canLinkTo(DataNode other) {
-        return this != other && acceptsLinks() && other.acceptsLinks() && isNodeValid() && other.isNodeValid()
+        return this != other && isNodeValid() && other.isNodeValid()
                 && getNodeLinks().size() < getMaxNodeLinks()
                 && other.getNodeLinks().size() < other.getMaxNodeLinks()
                 && !getNodeLinks().contains(other.getNodeRef());
@@ -107,14 +127,16 @@ public interface DataNode {
             return false;
         getNodeLinks().add(other.getNodeRef());
         other.getNodeLinks().add(this.getNodeRef());
-        getNodeOwner().setChanged();
-        other.getNodeOwner().setChanged();
+        linksChanged();
+        other.linksChanged();
         return true;
     }
 
     default void unlink(DataNodeRef ref) {
-        if (getNodeLinks().remove(ref))
-            getNodeOwner().setChanged();
+        if (getNodeLinks().remove(ref)) {
+            DataLinkStore.forgetColor(getNodeLevel(), getNodeRef(), ref);
+            linksChanged();
+        }
     }
 
     /** Forgets links whose far end is gone, so dead links stop counting against the cap.
@@ -122,7 +144,7 @@ public interface DataNode {
     default void pruneNodeLinks() {
         Level level = getNodeLevel();
         if (level != null && getNodeLinks().removeIf(ref -> level.isLoaded(ref.pos()) && resolve(level, ref).isEmpty()))
-            getNodeOwner().setChanged();
+            linksChanged();
     }
 
     /** This node is going away: take it off every loaded far end, then forget them all. */
@@ -132,7 +154,7 @@ public interface DataNode {
             for (DataNodeRef ref : getNodeLinks())
                 resolve(level, ref).ifPresent(other -> other.unlink(getNodeRef()));
         getNodeLinks().clear();
-        getNodeOwner().setChanged();
+        linksChanged();
     }
 
     /**

@@ -33,6 +33,11 @@ public class ElectricControllerBlockEntity extends ElectricNode implements Contr
     }
 
     @Override
+    public int getMaxNodeLinks() {
+        return core().maxLinks();
+    }
+
+    @Override
     public ControllerCore core() {
         return core;
     }

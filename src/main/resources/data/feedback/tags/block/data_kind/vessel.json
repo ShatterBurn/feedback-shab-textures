@@ -1,0 +1,16 @@
+{
+  "values": [
+    {
+      "id": "#feedback:data_kind/furnace",
+      "required": false
+    },
+    {
+      "id": "feedback:thermal_vessel",
+      "required": false
+    },
+    {
+      "id": "feedback:casting_basin",
+      "required": false
+    }
+  ]
+}

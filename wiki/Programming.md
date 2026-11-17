@@ -33,7 +33,7 @@ Right-click the Programmer. Put a blank Punch Card in its slot.
 
 | Card | In → Out | What it does |
 | --- | --- | --- |
-| **Input** | → number | The current reading of one linked sensor. Linked to a switchable block (clutch, valve, damper, breaker, engine) it reads **yes** while that block is on. Linked to a [Driver's Seat](Vehicles.md#the-drivers-seat) it reads one key, 0 to 1: click the card's second row and press the key (default **W**). |
+| **Input** | → number | The reading of what is linked to the [Controller](Controller.md#linked-nodes). See [Input and Switch cards](#input-and-switch-cards). |
 | **Greater Than** | number, number → yes/no | Yes if the left is bigger than the right. |
 | **Less Than** | number, number → yes/no | Yes if the left is smaller than the right. |
 | **Logic** | yes/no, yes/no → yes/no | **AND**: yes only if both are yes. **OR**: yes if either is yes. **NOT**: yes if its one input is no (the second input disappears). Click the middle to cycle AND, OR, NOT. |
@@ -41,7 +41,7 @@ Right-click the Programmer. Put a blank Punch Card in its slot.
 | **Delay** | number or yes/no → the same | Passes its input along after a wait. Click the middle to choose number or yes/no; click the length to step through 1 s, 5 s, 30 s, 2 min and 10 min; click *type a length* to enter any number of ticks from 20 (1 s) to 72000 (1 h). The length reads like `600 t (30 s)`. The length row has a second input pin: wire any number card (sensor, math, read, another Delay) into it and the length follows that number in ticks, rounded and held between 1 and 72000 each step; the length buttons are hidden and the row reads *ticks*. Typed and wired lengths need an **Escapement** fitted to the [Controller](Controller.md#memory-and-upgrades). |
 | **Read** | → number or yes/no | The current value of one variable. Click the card to step through your variables; its output is a number or yes/no to match. |
 | **Write** | number or yes/no, yes/no → | Stores its first input in one variable on the moment its second input (the *when*) turns yes. Click the card to pick the variable; the first pin follows that variable's kind. |
-| **Switch** | yes/no or number → | Switches one linked block: on for yes, off for no. Works on clutches, valves, dampers, engines and breakers. A number only moves a vehicle part, such as an engine's throttle. |
+| **Switch** | yes/no or number → | Drives every linked block of one kind: on for yes, off for no. A number only moves a vehicle part, such as an engine's throttle. |
 
 The second input of *Greater Than* / *Less Than* can be left unwired and given a **number** instead. That's how you write "temperature less than 1380".
 
@@ -69,21 +69,32 @@ A program may loop back on itself only through a *Delay*, since a Delay's output
 - **Middle or right-drag**: pan. **Scroll**: zoom. **Home**: fit everything in view.
 - **Ctrl+Z / Ctrl+C / Ctrl+V**, **Del**: undo, copy, paste, delete.
 
-## Linking cards to real blocks
+## Input and Switch cards
 
-*Input* and *Switch* cards have to be pointed at something in the world:
+A card names no block. It describes what it wants, and the [Controller](Controller.md#linked-nodes) the card runs on finds it among the nodes linked to it with the [Data Connector](Data_Connector.md). Click a row of the card to choose from a list or to cycle.
 
-1. Right-click the sensor or block with a **[Data Connector](Data_Connector.md)**.
-2. Open the Programmer and click the card's **link** button. It changes from *unlinked* to *linked*.
+An **Input** card has these rows:
 
-A [Robot](Robots.md) carries its own channels for cards to link to. A [Radio Mast](Radio_Mast.md) paired with a robot, or another [Controller](Controller.md#reading-another-controllers-variables), offers its channels on the card's channel row: click it to pick one. A [Power Cutter](Power_Cutter.md#circuit) or [Auto Engineer](Auto_Engineer.md#circuit) with a circuit seated offers Progress, Condition and Output fill the same way.
+- **Signal**: what to read. A list of quantities such as temperature, current, speed or on or off, and a robot's senses.
+- **Kind**: a preferred kind of block, or *any kind*. The kinds are Furnace, Vessel, Heater, Clutch, Valve or damper, Engine, Driver seat, Lathe, Breaker or fuse, Electromagnet, Lamp, Mast, Redstone emitter, Controller and Robot.
+- **Color**: the color of the link, or *any color*. It tells apart several blocks of one kind, for example two furnaces linked with different dyes.
+- **Reduction**: how several matches combine: *average of matches* (the default), *lowest of matches* or *highest of matches*.
+- **Input**: for a [Driver's Seat](Vehicles.md#the-drivers-seat), which key to read, 0 to 1 (default **W**). Click the row and press the key.
+
+A kind is a preference for an Input card. When no linked node of that kind offers the signal, any linked node that does offer it answers, so one program works with a crucible or an arc hearth. A card for *On or off* reads yes while the block is on.
+
+A **Switch** card has a **Kind**, an optional **Color** and, for blocks with several inputs, a **Channel** row. It drives every linked node that matches. It never falls back: if no node of that kind (and color) is linked, it does nothing.
+
+When nothing matches, an Input card reads 0.
+
+A [Robot](Robots.md) carries its own channels. A [Radio Mast](Radio_Mast.md) paired with a robot, or another [Controller](Controller.md#reading-another-controllers-variables), offers its channels on the card's channel row: click it to pick one. A [Power Cutter](Power_Cutter.md#circuit) or [Auto Engineer](Auto_Engineer.md#circuit) with a circuit seated offers Progress, Condition and Output fill the same way.
 
 ## Printing
 
 Press **Print**. The program is checked first, and you'll be told if:
 
 - a wire leads nowhere or an input has no wire,
-- a sensor or switch card isn't linked,
+- an Input card has no signal, or a Switch card has no kind,
 - the program loops back on itself with no *Delay* in the loop,
 - a wire connects the wrong kind of signal (a yes/no into a number input),
 - two sensors being compared don't measure the same thing (temperature against current, say),
@@ -111,9 +122,9 @@ Switching to Text prints the program in a standard form. Typing recompiles it on
 
 - **Errors** stop **Apply**: a name that is not declared, a wire of the wrong kind, a loop with no Delay, a number where a card must stand, a limit passed.
 - **Warnings** never stop it: an unwired operand, a division by a literal zero, a variable never used, written but never read or read but never written, a value nothing uses.
-- An unlinked card or an unwired input does not stop **Apply** either; it is reported when you print, as on the canvas.
+- A card with no signal or kind, or an unwired input, does not stop **Apply** either; it is reported when you print, as on the canvas.
 
-**Apply**, leaving the Text view or closing the window takes a text that compiles as one undo step and prints it again in the standard form. A text that does not compile never changes the program: it is dropped when you leave. A printed medium's text is read-only. **Tab** completes the word at the caret from what the text declares (statement words, card names, links, quantities, variables, the two kinds); **Ctrl+Space** opens the list.
+**Apply**, leaving the Text view or closing the window takes a text that compiles as one undo step and prints it again in the standard form. A text that does not compile never changes the program: it is dropped when you leave. A printed medium's text is read-only. **Tab** completes the word at the caret from what the text declares (statement words, card names, signals, kinds, colors, variables, the two kinds); **Ctrl+Space** opens the list.
 
 Names such as `s1` or `c2` are not kept: after Apply the program is the cards, and the text prints them again under names that follow their kind and order.
 
@@ -124,21 +135,20 @@ One statement per line (a semicolon also ends one). `--` starts a comment. Words
 | Line | Meaning |
 | --- | --- |
 | `var armed: boolean` | Declare a variable, `number` or `boolean`. |
-| `link l1 = @x y z [side]` | A name for a block in the world, by position and face. |
-| `s1 = sensor(l1, temperature)` | An Input card reading a quantity of a linked sensor. |
+| `s1 = sensor(temperature, furnace, red, avg)` | An Input card: the signal, then optionally a kind (a word), a link color (a dye name), a reduction (`avg`, `min`, `max`) and a channel (a number), in any order. `sensor(temperature)` reads any linked node that offers it. |
 | `c2 = s1 > 400` | A comparison (`>` or `<`); a bare number on the right is the card's typed number. |
 | `g4 = c2 and g10` | A logic card: `and`, `or`, `not`. |
 | `m6 = s1 + 10` | A Math card: `+ - * /`, `min(a, b)`, `max(a, b)`. |
 | `d5 = delay(c2, 5s)` | A Delay; units are `t` (ticks), `s`, `m` and `h`. |
 | `r3 = read(armed)` | A Read card. |
-| `a7 = actuate(g4, l1)` | A Switch card driving a linked block. |
+| `a7 = actuate(g4, clutch, blue)` | A Switch card: the value, then a kind, and optionally a link color and a channel. |
 | `w8 = write(armed, g4, d5)` | A Write card: the variable, the value and the *when*. |
 
-Linking another sensor or block to a card still happens on the node canvas with the [Data Connector](Data_Connector.md): a position typed into the text that no sensor was linked to gives an unlinked card, nothing more. The program limits (cards and variables) are the same as on the canvas.
+Linking a sensor or block to the Controller happens in the world with the [Data Connector](Data_Connector.md); the text only says what a card asks for. The program limits (cards and variables) are the same as on the canvas.
 
 ## Function Cards
 
-A **Function Card** (a Punch Card and a piece of paper) saves a part of a program. Select cards in the editor, hold a blank Function Card and press **Save fn**: the selected cards go onto it, with any wire that led outside the selection cut. Hold a saved Function Card and press **Stamp**: its cards appear at the cursor as ordinary cards, inputs unwired, with the variables they use declared. Sensor and switch cards come back unlinked. A stamped function is just cards, so it counts against the Controller's card limit like any others.
+A **Function Card** (a Punch Card and a piece of paper) saves a part of a program. Select cards in the editor, hold a blank Function Card and press **Save fn**: the selected cards go onto it, with any wire that led outside the selection cut. Hold a saved Function Card and press **Stamp**: its cards appear at the cursor as ordinary cards, inputs unwired, with the variables they use declared. Input and Switch cards keep what they ask for. A stamped function is just cards, so it counts against the Controller's card limit like any others.
 
 **Close the Programmer only after printing.** Unprinted edits are lost when you close it.
 

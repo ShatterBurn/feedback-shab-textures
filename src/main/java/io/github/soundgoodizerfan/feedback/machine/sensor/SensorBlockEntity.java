@@ -28,7 +28,6 @@ public class SensorBlockEntity extends BlockEntity implements DataNode, ChannelS
     /** Ticks a tell-tale stays high after the state beside it changes. */
     public static final int PULSE_TICKS = 10;
 
-    private final Set<DataNodeRef> links = new HashSet<>();
     private BlockState seen;
     private int pulse;
 
@@ -83,17 +82,6 @@ public class SensorBlockEntity extends BlockEntity implements DataNode, ChannelS
     @Override
     public BlockEntity getNodeOwner() {
         return this;
-    }
-
-    /** Targeted by a card, never linked. */
-    @Override
-    public boolean acceptsLinks() {
-        return false;
-    }
-
-    @Override
-    public Set<DataNodeRef> getNodeLinks() {
-        return links;
     }
 
     @Override

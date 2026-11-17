@@ -42,7 +42,7 @@ public class ComputerBlock extends Block implements EntityBlock {
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
         if (player.isShiftKeyDown())
-            return ControllerHands.take(level, pos, player);
+            return openDriveWay(level, pos, player) ? InteractionResult.sidedSuccess(level.isClientSide) : InteractionResult.PASS;
         if (!(level.getBlockEntity(pos) instanceof ComputerBlockEntity computer))
             return InteractionResult.PASS;
         if (!level.isClientSide)
@@ -50,10 +50,37 @@ public class ComputerBlock extends Block implements EntityBlock {
         return InteractionResult.sidedSuccess(level.isClientSide);
     }
 
+    /** Sneak-use: the physical bays, the running slot and the inventory as an ordinary slot menu. */
+    private static boolean openDriveWay(Level level, BlockPos pos, Player player) {
+        if (!(level.getBlockEntity(pos) instanceof ComputerBlockEntity computer))
+            return false;
+        if (!level.isClientSide)
+            player.openMenu(new net.minecraft.world.SimpleMenuProvider((id, inventory, p) ->
+                    new ComputerDriveMenu(id, inventory, pos, computer), net.minecraft.network.chat.Component.translatable("gui.feedback.computer.drive_way")), pos);
+        return true;
+    }
+
+    /** A player's break drops the Computer with its disk id (not in creative): only then does the disk travel as an item. */
+    @Override
+    public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+        if (!player.isCreative() && level.getBlockEntity(pos) instanceof ComputerBlockEntity computer)
+            computer.markCarried();
+        return super.playerWillDestroy(level, pos, state, player);
+    }
+
+    @Override
+    public void onBlockExploded(BlockState state, Level level, BlockPos pos, net.minecraft.world.level.Explosion explosion) {
+        if (level.getBlockEntity(pos) instanceof ComputerBlockEntity computer)
+            computer.markCarried();
+        super.onBlockExploded(state, level, pos, explosion);
+    }
+
     @Override
     protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState next, boolean moved) {
         if (!state.is(next.getBlock())) {
             if (level.getBlockEntity(pos) instanceof ComputerBlockEntity computer) {
+                if (ComputerFiles.isTransient(computer.programmer().getItem(0)))
+                    computer.programmer().removeItemNoUpdate(0);
                 Containers.dropContents(level, pos, computer.programmer());
                 Containers.dropContents(level, pos, computer.bays());
             }

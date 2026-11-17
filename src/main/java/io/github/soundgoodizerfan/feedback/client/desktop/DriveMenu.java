@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.github.soundgoodizerfan.feedback.control.computer.ComputerActionPayload;
+import io.github.soundgoodizerfan.feedback.control.computer.ComputerFileActionPayload;
 import io.github.soundgoodizerfan.feedback.control.computer.ComputerApps;
 import io.github.soundgoodizerfan.feedback.control.computer.ComputerBays;
 
@@ -26,7 +27,7 @@ final class DriveMenu {
 
     /** What can be done with the medium in {@code drive}; empty when the bay is empty. */
     static List<ContextMenu.Item> of(ComputerContext ctx, Desktop desktop, int drive) {
-        ItemStack medium = ctx.menu().getSlot(drive).getItem();
+        ItemStack medium = ctx.menu().volume(drive);
         if (medium.isEmpty())
             return List.of();
         boolean running = drive == RUN, app = ComputerApps.isApp(medium);
@@ -45,9 +46,13 @@ final class DriveMenu {
         if (!app)
             items.add(new ContextMenu.Item(Component.translatable(running ? "gui.feedback.computer.stop" : "gui.feedback.computer.run"),
                     () -> ctx.send(running ? ComputerActionPayload.STOP : ComputerActionPayload.RUN, drive), !editing));
+        // an app disk is installed by saving it to the internal disk; a program is kept there the same way
+        if (!running)
+            items.add(new ContextMenu.Item(Component.translatable(app ? "gui.feedback.computer.install" : "gui.feedback.computer.save_internal"),
+                    () -> ctx.sendFile(ComputerFileActionPayload.SAVE, 0, drive), !editing));
         if (!running && !app)
             items.add(new ContextMenu.Item(Component.translatable("gui.feedback.computer.copy"),
-                    () -> ctx.send(ComputerActionPayload.COPY, drive), ctx.installed("library") && !editing));
+                    () -> ctx.send(ComputerActionPayload.COPY, drive), !editing));
         if (!running) {
             items.add(new ContextMenu.Item(Component.translatable("gui.feedback.computer.eject"),
                     () -> ctx.send(ComputerActionPayload.EJECT, drive), !editing));

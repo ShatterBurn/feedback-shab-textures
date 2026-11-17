@@ -349,6 +349,13 @@ public class FDataComponents {
                     .networkSynchronized(ProgramGraph.STREAM_CODEC)
                     .build());
 
+    /** The internal disk a Computer carries as an item: only the id, never the files ({@code control/computer/ComputerStore}). */
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<java.util.UUID>> COMPUTER_DISK =
+            COMPONENTS.register("computer_disk", () -> DataComponentType.<java.util.UUID>builder()
+                    .persistent(net.minecraft.core.UUIDUtil.CODEC)
+                    .networkSynchronized(net.minecraft.core.UUIDUtil.STREAM_CODEC)
+                    .build());
+
     /**
      * An app on a medium (a Floppy Disk): the id of a Computer app that runs while the disk sits in one of its drive bays
      * ({@code control/computer/ComputerApps}). A disk with an app is not a program medium.

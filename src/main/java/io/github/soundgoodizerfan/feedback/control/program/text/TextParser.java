@@ -6,25 +6,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import io.github.soundgoodizerfan.feedback.control.data.DataNodeRef;
 import io.github.soundgoodizerfan.feedback.control.program.ValueType;
 import io.github.soundgoodizerfan.feedback.control.program.text.TextAst.*;
 import io.github.soundgoodizerfan.feedback.control.program.text.TextLexer.Kind;
 import io.github.soundgoodizerfan.feedback.control.program.text.TextLexer.Token;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 
 /**
- * Recursive descent over the tokens: statements are {@code var name: type}, {@code link name = @x y z side}, {@code name = expression} and a bare
+ * Recursive descent over the tokens: statements are {@code var name: type}, {@code name = expression} and a bare
  * {@code actuate(...)} or {@code write(...)}. Precedence, loosest first: {@code or}, {@code and}, {@code not}, {@code > <}, {@code + -},
  * {@code * /}. A statement that does not parse is reported at its token and skipped to the next line, so the rest still gets its own errors.
  */
 public final class TextParser {
 
     /** Words the language owns, compared case-insensitively. */
-    public static final List<String> KEYWORDS = List.of("var", "link", "sensor", "actuate", "write", "read", "delay", "min", "max",
-            "and", "or", "not", "as", "unlinked", "unwired", "number", "boolean", "local", "voxel");
+    public static final List<String> KEYWORDS = List.of("var", "sensor", "actuate", "write", "read", "delay", "min", "max",
+            "and", "or", "not", "as", "unwired", "number", "boolean");
 
     public record Result(List<Stmt> stmts, List<Diag> diags) {
     }
@@ -130,15 +127,6 @@ public final class TextParser {
             expectSym(":");
             Token type = expectIdent("number or boolean");
             return new VarDecl(name.text(), valueType(type), first);
-        }
-        if (first.word("link")) {
-            next();
-            Token name = expectIdent("a link name");
-            expectSym("=");
-            Expr target = primary();
-            if (!(target instanceof Ref) && !(target instanceof Unlinked))
-                throw new Fail(target.at(), "expected", "@x y z or unlinked");
-            return new LinkDecl(name.text(), target, first);
         }
         if (first.kind() == Kind.IDENT && peek2().sym("=") && !isKeyword(first.text())) {
             next();
@@ -254,16 +242,12 @@ public final class TextParser {
                     depth--;
                     return inner;
                 }
-                if (t.sym("@"))
-                    return ref();
                 throw new Fail(t, "unexpected_token", t.text());
             }
             case IDENT -> {
                 next();
                 if (t.word("unwired"))
                     return new Unwired(t);
-                if (t.word("unlinked"))
-                    return new Unlinked(t);
                 if (peek().sym("("))
                     return call(t);
                 return new Name(t.text(), t);
@@ -330,25 +314,4 @@ public final class TextParser {
         return neg ? -v : v;
     }
 
-    private Expr ref() {
-        Token at = next();
-        if (peek().word("local")) {
-            next();
-            return new Ref(DataNodeRef.local(integer()), at);
-        }
-        int x = integer(), y = integer(), z = integer();
-        Direction side = null;
-        if (peek().kind() == Kind.IDENT && !peek().word("voxel")) {
-            Token s = next();
-            side = Direction.byName(s.text().toLowerCase(Locale.ROOT));
-            if (side == null)
-                throw new Fail(s, "bad_side", s.text());
-        }
-        int voxel = -1;
-        if (peek().word("voxel")) {
-            next();
-            voxel = integer();
-        }
-        return new Ref(new DataNodeRef(new BlockPos(x, y, z), side, voxel), at);
-    }
 }

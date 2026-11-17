@@ -20,6 +20,9 @@ interface ComputerContext {
     /** Sends a {@link io.github.soundgoodizerfan.feedback.control.computer.ComputerActionPayload} action for {@code drive}. */
     void send(int action, int drive);
 
+    /** Sends a {@link io.github.soundgoodizerfan.feedback.control.computer.ComputerFileActionPayload} op: a file on the internal disk (by {@code index}) or a bay ({@code drive}). */
+    void sendFile(int op, int index, int drive);
+
     /** The program in the RUN slot, or empty. */
     ProgramGraph running();
 

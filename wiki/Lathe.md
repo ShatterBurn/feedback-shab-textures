@@ -52,7 +52,7 @@ The bit's **edge hardness** decides what it cuts: everything softer than the edg
 
 ## The lathe is also a sensor
 
-The lathe reports **how much it has cut off the piece in it**. Link it with a [Data Connector](Data_Connector.md) and read it in a [Controller](Controller.md) program, then compare it and flip a [Clutch](Clutch.md) to stop the lathe at exactly the right point. It's one of the cleanest automatic-stop setups in the game.
+The lathe reports **how much it has cut off the piece in it**. Link it to the Controller with a [Data Connector](Data_Connector.md) and read it in a [Controller](Controller.md) program, then compare it and flip a [Clutch](Clutch.md) to stop the lathe at exactly the right point. It's one of the cleanest automatic-stop setups in the game.
 
 [Calipers](Instruments.md#calipers) in your inventory show the same progress in Jade.
 

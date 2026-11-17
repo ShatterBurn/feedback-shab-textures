@@ -1,0 +1,32 @@
+{
+  "values": [
+    {
+      "id": "feedback:heating_coil",
+      "required": false
+    },
+    {
+      "id": "feedback:arc_head",
+      "required": false
+    },
+    {
+      "id": "feedback:induction_coil",
+      "required": false
+    },
+    {
+      "id": "feedback:induction_stove",
+      "required": false
+    },
+    {
+      "id": "feedback:preheat_coil",
+      "required": false
+    },
+    {
+      "id": "feedback:kiln_zone",
+      "required": false
+    },
+    {
+      "id": "feedback:stoker",
+      "required": false
+    }
+  ]
+}

@@ -41,12 +41,10 @@ import net.minecraft.world.level.block.entity.BlockEntity;
  */
 public class TemperatureSensorFitting implements SensorFitting {
 
-    private static final String LINKS = "Links";
 
     private final BlockEntity holder;
     private final ThermalBody thermal;
     private final Direction side;
-    private final Set<DataNodeRef> links = new HashSet<>();
 
     public TemperatureSensorFitting(BlockEntity holder, ThermalBody thermal, Direction side) {
         this.holder = holder;
@@ -116,23 +114,11 @@ public class TemperatureSensorFitting implements SensorFitting {
         return holder;
     }
 
-    @Override
-    public Set<DataNodeRef> getNodeLinks() {
-        return links;
-    }
-
     // --- persistence --------------------------------------------------------------------------
 
     public void writeNbt(CompoundTag tag) {
-        ListTag list = new ListTag();
-        for (DataNodeRef ref : links)
-            list.add(ref.toTag());
-        tag.put(LINKS, list);
     }
 
     public void readNbt(CompoundTag tag) {
-        links.clear();
-        for (Tag entry : tag.getList(LINKS, Tag.TAG_COMPOUND))
-            links.add(DataNodeRef.fromTag((CompoundTag) entry));
     }
 }

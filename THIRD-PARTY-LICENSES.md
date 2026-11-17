@@ -26,7 +26,8 @@ departs from all three of these deliberately.
 | **MrCrayfish's Furniture Mod: Refurbished** | MIT | **Yes** | Permissive, same as Create. Preserve the notice, state the origin |
 | **PneumaticCraft: Repressurized** | GPL-3.0 | **Yes** | Same licence as this project, code and assets both — the most direct route read all session. Assets still never used, per this project's own universal-no rule, not because the licence would forbid it |
 | **RetroSFM** | MIT | **Yes** | Permissive, same as Create. Preserve the notice, state the origin |
-| **Super Factory Manager** | MPL-2.0 | **Yes** | No per-file "Incompatible With Secondary Licenses" notice found, so combinable under GPL-3.0 per MPL §3.3/§10.4's default. Design taken for the program text form (2026-11-17): pipeline shape, tolerant lexer, grammar-driven completion, canonical pretty-printer; no code copied — see below |
+| **Super Factory Manager** | MPL-2.0 | **Yes** | No per-file "Incompatible With Secondary Licenses" notice found, so combinable under GPL-3.0 per MPL §3.3/§10.4's default. Design taken for the program text form and for data binding (2026-11-17): pipeline shape, tolerant lexer, grammar-driven completion, canonical pretty-printer; a program naming a request that a separate binding resolves; no code copied — see below |
+| **CC: Tweaked** | MPL-2.0 | **Yes** | Design only (2026-11-17), for a Computer's internal disk: an id-keyed external store with only the id in the block, the id carried on the item, lazy allocation, one shared media abstraction. No code copied and its source was not read for this change (the design is as the computer-storage spec recorded it); see below |
 | **PowerGrid** | Apache-2.0 (`architectury-1.21.1/dev`, commit `0938be0`) | **Yes** | Permissive and GPL-3.0-compatible one way. Preserve the notice, state the origin if code is ever copied. Read for vacuum tubes (2026-11-16); design only, nothing copied. Assets never |
 | **Silent Gear** | MIT | **Yes** | Permissive. Preserve the notice, state the origin. Read for modular items; design taken. **Textures copied as placeholders (2026-10-21, user ruling)** -- the repo's MIT licence covers them; see *Textures* below |
 | **Tinkers' Construct** | MIT | **Yes** | Permissive. Only a 1.20.1 source exists, so any port is to 1.21 data components. Read for modular items; design taken, nothing copied |
@@ -519,6 +520,15 @@ and declared variables, reading the text only; a canonical pretty-printer so the
 an error unless it passes through a delay). **Rejected:** imperative `if/else` and sequential IO, resource-id, tag and label routing (the text
 never names an item or a block), the `every` trigger (time is a delay card), path-simulation linting (2^n), config-tunable caps (caps stay the
 fitted upgrades' `ControllerLimits`), and every asset. The comments at the code sites are `TextLexer`, `TextCompiler` and `TextCompletion`.
+
+**Read a third time for data binding (`control/data`, `control/controller`, `control/program`, 2026-11-17), branch `1.21.1`, commit `46cd99155`. Design only, no code or assets copied.**
+**Taken:** a program names what it asks for and a separate binding resolves it, so the same program runs against whatever is bound (`LabelPositionHolder`,
+`LabelAccess`: here the Controller's links and `DataRequest`); a binding tool with an active tag, toggle and pick-cycle (`LabelGunActions`: here the Data Connector's
+paint mode, with the dye in the other hand as the active color); lints for a request that matches nothing. **Rejected:** free-text string labels (a kind is a
+block tag and a color one of sixteen dyes), position maps and disk push/pull snapshots (links live in `DataLinkStore`, keyed by node and kept live), capability
+probing as what a block is (a data block declares its signals and kinds), a silent unordered union of matches (a Sensor card combines matches with a stated
+`Reduction`; an actuator drives every match and never falls back), slot and side qualifiers, round-robin as a default, and every asset. The code sites are
+`DataRequest`, `DataSpec` and `ControllerCore`.
 
 ## PowerGrid (vacuum tubes, 2026-11-16)
 
@@ -1229,3 +1239,13 @@ Drawn in pxl for the same pass (original art, no licence row needed): `item/part
 Stand-in art pass part 3 (2026-11-13), from `malcolmriley/unused-textures` (CC BY 4.0, Malcolm Riley). Luminance-only copies (stretched to 40..255, alpha kept) that `client/ModularClient` tints per material: `item/modular/grey/part_electronic_dualcoil_0.png` (`items/part_electronic_dualcoil_0.png`, the machine winding) and `part_electronic_chip_2.png` (`items/part_electronic_chip_2.png`, the suit module). Reactor rods: `item/fuel_rod.png` is an unmodified copy of `items/part_metal_alloy_rod.png`, `item/breeder_rod.png` of `items/part_metal_steel_rod.png`, and `item/enriched_fuel_rod.png` is `part_metal_alloy_rod.png` recoloured to a green hue. The grey copper-ingot placeholder `vanilla_copper_ingot.png` is deleted.
 
 Jet and freewheel art pass (2026-11-16), from `malcolmriley/unused-textures` (CC BY 4.0, Malcolm Riley). `textures/block/jet_intake.png` and `jet_intake.png.mcmeta` (jet intake end, animated fan) are unmodified copies of `blocks/industrial_metal_duct_fan.png` and its mcmeta; `textures/block/jet_exhaust.png` (jet nozzle end) is an unmodified copy of `blocks/industrial_metal_duct_intake.png`; `textures/block/freewheel_housing.png` (freewheel housing) is an unmodified copy of `blocks/device_gearbox_clutch_off.png`. Luminance-only copies (stretched to 40..255, alpha kept) that `client/ModularClient` tints per material: `item/modular/grey/part_jet_compressor.png` (`items/part_metal_alloy_bearing.png`, stacked compressor stages) and `part_jet_nozzle.png` (`items/part_metal_alloy_flange.png`, the flared nozzle).
+
+## CC: Tweaked
+
+MPL-2.0. Design only, no code or assets copied (`control/computer/ComputerStore`, `ComputerFile`, `ComputerMedia`, 2026-11-17).
+The design is the one `docs/specs/computer_storage_spec.md` recorded; CC: Tweaked's source was not read when it was built here.
+
+- **Taken:** a computer's files live in an external store keyed by an id, the block and its item carry only the id, the id is allocated
+  lazily on first use, one media abstraction (contents, capacity, a default per item), and the store is cleaned of computers that are gone.
+- **Rejected:** an integer counter and an `ids.json`, directory-backed mounts, byte capacity and config capacity (capacity is a count of
+  files, with a per-item override), alias-on-duplicate ids (a duplicate forks to a new id with a copy), Lua filesystem mounting, and the id in tooltips.

@@ -39,7 +39,6 @@ public class DriverSeatBlockEntity extends BlockEntity implements DataNode, Chan
 
     private final IntOpenHashSet held = new IntOpenHashSet();
     private final Int2FloatOpenHashMap levels = new Int2FloatOpenHashMap();
-    private final Set<DataNodeRef> links = new HashSet<>();
 
     public DriverSeatBlockEntity(BlockPos pos, BlockState state) {
         super(FVehicles.DRIVER_SEAT_ENTITY.get(), pos, state);
@@ -97,11 +96,6 @@ public class DriverSeatBlockEntity extends BlockEntity implements DataNode, Chan
     // --- DataNode -----------------------------------------------------------------------------
 
     @Override
-    public boolean acceptsLinks() {
-        return false;
-    }
-
-    @Override
     public BlockPos getNodePos() {
         return worldPosition;
     }
@@ -122,8 +116,4 @@ public class DriverSeatBlockEntity extends BlockEntity implements DataNode, Chan
         return this;
     }
 
-    @Override
-    public Set<DataNodeRef> getNodeLinks() {
-        return links;
-    }
 }

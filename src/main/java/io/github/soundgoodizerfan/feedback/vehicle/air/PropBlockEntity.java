@@ -124,11 +124,6 @@ public class PropBlockEntity extends RotationNode implements BlockEntitySubLevel
     }
 
     @Override
-    public boolean acceptsLinks() {
-        return false;
-    }
-
-    @Override
     public BlockPos getNodePos() {
         return worldPosition;
     }

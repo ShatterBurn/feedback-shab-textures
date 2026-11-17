@@ -133,7 +133,7 @@ public final class DataWires {
     }
 
     /** A link with no recorded wire counts as the poor grade: nothing joins for free. */
-    private static Grade gradeOf(Level level, DataNodeRef a, DataNodeRef b) {
+    static Grade gradeOf(Level level, DataNodeRef a, DataNodeRef b) {
         if (level.getServer() == null)
             return Grade.POOR;
         return Book.get(level.getServer()).get(key(level, a, b));
@@ -203,6 +203,42 @@ public final class DataWires {
         return Optional.ofNullable(found);
     }
 
+    /**
+     * Every node a path of links (or a live Endernet pair) leads to from {@code from}, nearest first, without paying for any
+     * crossing: the set a Controller binds. {@link #reach} still decides, per reading, whether a path carries.
+     */
+    public static java.util.List<DataNode> reachable(DataNode from) {
+        Level level = from.getNodeLevel();
+        java.util.List<DataNode> found = new java.util.ArrayList<>();
+        if (level == null)
+            return found;
+        Set<DataNodeRef> seen = new HashSet<>();
+        ArrayDeque<DataNodeRef> frontier = new ArrayDeque<>();
+        seen.add(from.getNodeRef());
+        frontier.add(from.getNodeRef());
+        for (int hop = 0; hop < MAX_HOPS && !frontier.isEmpty(); hop++) {
+            ArrayDeque<DataNodeRef> next = new ArrayDeque<>();
+            for (DataNodeRef at : frontier) {
+                DataNode node = DataNode.resolveOrNull(level, at);
+                if (node == null)
+                    continue;
+                Set<DataNodeRef> outs = new HashSet<>(node.getNodeLinks());
+                var crossing = io.github.soundgoodizerfan.feedback.control.endernet.Endernet.peek(node);
+                if (crossing != null)
+                    outs.add(crossing.to().getNodeRef());
+                for (DataNodeRef other : outs)
+                    if (seen.add(other)) {
+                        DataNode far = DataNode.resolveOrNull(level, other);
+                        if (far != null)
+                            found.add(far);
+                        next.add(other);
+                    }
+            }
+            frontier = next;
+        }
+        return found;
+    }
+
     private static boolean quenched(Level level, DataNode node, DataNodeRef other, long now) {
         String k = key(level, node.getNodeRef(), other);
         Long until = QUENCHED_UNTIL.get(k);
@@ -212,8 +248,10 @@ public final class DataWires {
             QUENCHED_UNTIL.remove(k);
         }
         DataNode far = DataNode.resolveOrNull(level, other);
-        int load = Math.max(node.getNodeLinks().size(), far == null ? 0 : far.getNodeLinks().size());
-        if (load > ControlTuning.WIRE_CRITICAL_LINKS) {
+        // An end quenches its line when it is carrying all it can: more than the critical count, and at its own cap (a Controller takes more).
+        boolean overloaded = node.getNodeLinks().size() > Math.max(ControlTuning.WIRE_CRITICAL_LINKS, node.getMaxNodeLinks() - 1)
+                || far != null && far.getNodeLinks().size() > Math.max(ControlTuning.WIRE_CRITICAL_LINKS, far.getMaxNodeLinks() - 1);
+        if (overloaded) {
             QUENCHED_UNTIL.put(k, now + ControlTuning.WIRE_QUENCH_TICKS);
             return true;
         }

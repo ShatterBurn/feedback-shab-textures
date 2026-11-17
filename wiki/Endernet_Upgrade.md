@@ -16,7 +16,7 @@ Put one bonded [Data Port](Data_Port.md) and one metal plate in the crafting gri
 
 ## Reading across the pair
 
-Link a sensor or machine to the far Data Port with the [Data Connector](Data_Connector.md#linking-nodes), and a Sensor card in the controller's program can read it. A Computer shows the pair and what is linked beyond it in the Network app, and can flip what switches there ([Network](Electric_Controller.md#disk-apps)).
+Link a sensor or machine to the far Data Port with the [Data Connector](Data_Connector.md#linking-nodes), and an Input card in the controller's program can read it. A Computer shows the pair and what is linked beyond it in the Network app, and can flip what switches there ([Network](Electric_Controller.md#disk-apps)).
 
 ## Channel and address
 
@@ -27,10 +27,10 @@ A fitted upgrade on a Computer has a **channel**, from 1 up to the number its ci
 The Network app lists up to 12 other addressed Computers on your channel in the same dimension, each with its address and distance. From it you send:
 
 - **A message** of up to 120 characters.
-- **A file**: a program from one of your drive bays, up to 64 nodes long. It lands as a copy on a blank Floppy Disk or USB Drive (see [Media](Programming.md#media)) in a bay of the receiving Computer.
+- **A file**: a program from one of your drive bays, up to 64 nodes long. It lands as a copy on the receiving Computer's [internal disk](Electric_Controller.md#internal-disk) when there is room.
 
 A packet costs one signal for every 16 bytes, at least one. The signals use the channel's allowance, and the sender's pair partner [Data Port](Data_Port.md) pays teleportant and bandwidth for them over the distance. A Computer with no address neither sends nor is listed.
 
-A packet is **lost** when the channel is saturated, the port cannot pay, the far inbox is full (16 mails), or a file finds no blank medium. The sender's console says which. Nothing arrives altered, and what was paid stays paid.
+A packet is **lost** when the channel is saturated, the port cannot pay, the far inbox is full (16 mails), or a file finds no room on the internal disk. The sender's console says which. Nothing arrives altered, and what was paid stays paid.
 
 Every other Computer on the channel overhears: it receives the text of a message, marked as overheard, and notes a file's size. Mail is kept in the inbox; mail addressed to the Computer also lands in its console.

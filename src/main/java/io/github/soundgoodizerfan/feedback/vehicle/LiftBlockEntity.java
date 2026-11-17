@@ -120,11 +120,10 @@ public class LiftBlockEntity extends BlockEntity {
         Map<BlockPos, BlockPos> moves = new HashMap<>();
         for (BlockPos p : blocks)
             moves.put(p.immutable(), p.offset(delta));
+        if (level instanceof net.minecraft.server.level.ServerLevel serverLevel)
+            io.github.soundgoodizerfan.feedback.control.data.DataLinkStore.moved(serverLevel, moves);
         for (BlockPos p : blocks) {
             var moved = level.getBlockEntity(p.offset(delta));
-            // A controller among them: its cards keep naming the same parts at their new positions.
-            if (moved instanceof io.github.soundgoodizerfan.feedback.control.controller.ControllerHost host)
-                host.core().retarget(moves);
             if (moved instanceof MicroCellBlockEntity cell) {
                 cell.moved(delta);
                 cell.retarget(moves);
@@ -228,6 +227,8 @@ public class LiftBlockEntity extends BlockEntity {
         for (Lowering plan : plans)
             for (BlockPos p : plan.blocks)
                 back.put(p.immutable(), plan.transform.apply(p));
+        if (level instanceof net.minecraft.server.level.ServerLevel serverLevel)
+            io.github.soundgoodizerfan.feedback.control.data.DataLinkStore.moved(serverLevel, back);
         for (Lowering plan : plans) {
             io.github.soundgoodizerfan.feedback.machine.bearing.BlockMoves.enter();
             try {
@@ -237,8 +238,6 @@ public class LiftBlockEntity extends BlockEntity {
             }
             for (BlockPos p : plan.blocks) {
                 var put = level.getBlockEntity(plan.transform.apply(p));
-                if (put instanceof io.github.soundgoodizerfan.feedback.control.controller.ControllerHost host)
-                    host.core().retarget(back);
                 // Belts follow what went back with them, too.
                 if (put instanceof MicroCellBlockEntity cell)
                     cell.retarget(back);

@@ -163,7 +163,7 @@ A thermometer you bolt onto a vessel so it reads all the time, and so a [Control
 
 Right-click a face of a [Crucible](Crucible.md) or an **Improved Furnace** with it. It attaches to that side; one sensor per face. It does not attach to the sealed [furnaces](Furnaces.md) (Furnace, Smoker, Crude Blast Furnace, Kiln, Annealing Furnace): they have no opening for it. Being unwatchable is the price of a sealed furnace.
 
-Link it to a program with a [Data Connector](Data_Connector.md) and an *Input* card on the [Programmer](Programming.md), then compare the reading with *Greater Than* / *Less Than*. It reads in steps of **10 Tu**, fine enough to hold steel's 60 Tu window.
+Link it to the Controller with a [Data Connector](Data_Connector.md) and read it with an *Input* card of signal *Temperature* on the [Programmer](Programming.md), then compare the reading with *Greater Than* / *Less Than*. It reads in steps of **10 Tu**, fine enough to hold steel's 60 Tu window.
 
 - **Bellows thermostat**: *Input → Less Than (window bottom) → Switch* on the bellows' shaft.
 - **Two-sided control**: one comparison runs the bellows, another opens a [Damper](Damper.md) when it is too hot.
@@ -253,7 +253,7 @@ W N
 
 Right-click the face of a cable you want it on. You can put one on each of the six faces. Breaking the cable drops the sensor. It fits on cable only, not directly on sources or machines.
 
-To use it: right-click the sensor with a [Data Connector](Data_Connector.md), link it into a program on the [Programmer](Programming.md) with an *Input* card, then compare it with *Greater Than* / *Less Than*. It reads in steps of **0.5 A**, coarser than the hand-held Galvanometer.
+To use it: link the sensor to the Controller with a [Data Connector](Data_Connector.md), read it on the [Programmer](Programming.md) with an *Input* card of signal *Current*, then compare it with *Greater Than* / *Less Than*. It reads in steps of **0.5 A**, coarser than the hand-held Galvanometer.
 
 - Watch a cable close to its 4 A limit, and open a [Breaker](Breaker.md) (or flip a [Clutch](Clutch.md) on whatever drives the load) when the current climbs too high.
 - Detect when a machine at the end of a line starts or stops drawing.
@@ -372,7 +372,7 @@ Place it on the vehicle. Its front is the way it faces; pitch and roll are measu
 
 **Right-click** opens the [Contraption Diagram](#contraption-diagram).
 
-To use it, point a Data Connector at it and link an *Input* card on the [Programmer](Programming.md) to it. The card reads the sensor's current reading and carries its kind, so the program cannot compare altitude with speed. Link the card again after changing what the sensor reads. A card that points at it remembers it as an offset from the vehicle, so the program still works after the vehicle is lifted or put back.
+To use it, link it to the Controller with a Data Connector and read it with an *Input* card on the [Programmer](Programming.md) whose signal is what the sensor reads, such as *Altitude* or *Airspeed*. The card carries that kind of reading, so the program cannot compare altitude with speed. Lifting the vehicle with the Lift keeps its wiring and link colors.
 
 ### Contraption Diagram
 
@@ -385,7 +385,7 @@ An arrow marks every force on the vehicle, starting where it acts and colored by
 - **Center of mass** marks the vehicle's center of mass.
 - **Whole assembly** draws every body joined to this one by hinges and joints, and adds their forces, instead of the body alone.
 
-The [Computer](Electric_Controller.md#built-in-apps)'s **Diagram** app shows the same page for a Flight Sensor an Input card of the running program is linked to.
+The [Computer](Electric_Controller.md#built-in-apps)'s **Diagram** app shows the same page for a Flight Sensor linked to the Computer.
 
 ## Fitting a circuit
 

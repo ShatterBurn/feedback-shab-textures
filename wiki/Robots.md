@@ -102,7 +102,7 @@ An [Endernet Upgrade](Endernet_Upgrade.md) **used on the robot** fits it. While 
 
 ## Programming a robot
 
-A robot has its own channels. Point a card at them with the [Data Connector](Data_Connector.md): right-click the robot to open a **Channels** screen that lists every action (**Do**) and sense (**Sense**) channel; one click selects a channel. Then press **link** on the card in the Programmer, as for any other block ([Linking cards to real blocks](Programming.md#linking-cards-to-real-blocks)).
+A robot's own program asks for its senses with an *Input* card, whose signal list holds them, and for its actions with a *Switch* card of kind *Robot*. Nothing needs linking: the cards read and drive the robot that carries the program. A Controller elsewhere reaches the robot through a [Radio Mast](Radio_Mast.md) or an [endernet leash](#endernet-leash).
 
 Switches (a *Switch* card turns them on and off):
 

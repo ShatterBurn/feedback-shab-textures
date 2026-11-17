@@ -13,7 +13,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 
 /**
- * The Link Map app: a plan view with the Computer at the middle and every block the running program is linked to around it, inputs as
+ * The Link Map app: a plan view with the Computer at the middle and every block linked to it around it, inputs as
  * squares, outputs as diamonds. A block in an unloaded chunk is drawn hollow (a data link never loads one); a card with no link is
  * listed in the warning colour. Hover a mark for its block, position and distance.
  */
@@ -49,27 +49,19 @@ final class LinkMapWindow extends DesktopWindow {
         ui.fill(cx, 1, 1, h - 2, grid);
 
         int far = 8, unlinked = 0;
-        for (ProgramNode node : ctx.running().nodes()) {
-            DataNodeRef ref = ref(node);
-            if (ref != null) {
-                BlockPos p = ref.pos();
-                far = Math.max(far, Math.max(Math.abs(p.getX() - origin.getX()), Math.abs(p.getZ() - origin.getZ())));
-            } else if ((node instanceof SensorNode || node instanceof ActuatorNode) && !robotOwn(node)) {
-                unlinked++;
-            }
+        for (DataNodeRef ref : refs()) {
+            BlockPos p = ref.pos();
+            far = Math.max(far, Math.max(Math.abs(p.getX() - origin.getX()), Math.abs(p.getZ() - origin.getZ())));
         }
         float scale = (Math.min(w, h) / 2f - 10) / far;
         ui.fill(cx - 2, cy - 2, 5, 5, skin.accent());
         String hover = null;
-        for (ProgramNode node : ctx.running().nodes()) {
-            DataNodeRef ref = ref(node);
-            if (ref == null)
-                continue;
+        for (DataNodeRef ref : refs()) {
             BlockPos p = ref.pos();
             int x = cx + Math.round((p.getX() - origin.getX()) * scale), y = cy + Math.round((p.getZ() - origin.getZ()) * scale);
             boolean loaded = level != null && level.isLoaded(p);
             int colour = loaded ? skin.ink() : skin.dim();
-            if (node instanceof SensorNode) {
+            if (!writes(ref)) {
                 if (loaded)
                     ui.fill(x - 2, y - 2, 5, 5, colour);
                 else {
@@ -93,14 +85,16 @@ final class LinkMapWindow extends DesktopWindow {
         ui.clipped(0, h + 2, w, line, hover != null ? skin.ink() : skin.warn());
     }
 
-    /** The world block a card names; null for an unlinked card and for a robot's own channel (no place on the map). */
-    private static DataNodeRef ref(ProgramNode node) {
-        DataNodeRef target = node instanceof SensorNode s ? s.target() : node instanceof ActuatorNode a ? a.target() : null;
-        return target != null && target.isLocal() ? null : target;
+    /** Every data node linked straight to the Computer. */
+    private java.util.List<DataNodeRef> refs() {
+        var computer = ctx.computer();
+        return computer == null ? java.util.List.of() : java.util.List.copyOf(computer.getNodeLinks());
     }
 
-    private static boolean robotOwn(ProgramNode node) {
-        DataNodeRef target = node instanceof SensorNode s ? s.target() : node instanceof ActuatorNode a ? a.target() : null;
-        return target != null && target.isLocal();
+    /** Whether the node at {@code ref} can be driven (drawn as an output). */
+    private static boolean writes(DataNodeRef ref) {
+        var level = Minecraft.getInstance().level;
+        var node = level == null ? null : io.github.soundgoodizerfan.feedback.control.data.DataNode.resolveOrNull(level, ref);
+        return node != null && node.dataSpec().writes();
     }
 }

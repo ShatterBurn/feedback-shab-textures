@@ -210,17 +210,6 @@ public class ValveBlockEntity extends BlockEntity implements Blown, Switchable, 
         return this;
     }
 
-    /** Targeted by a card, never linked -- see {@link DataNode#acceptsLinks}. */
-    @Override
-    public boolean acceptsLinks() {
-        return false;
-    }
-
-    @Override
-    public Set<DataNodeRef> getNodeLinks() {
-        return Collections.emptySet();
-    }
-
     @Override
     protected void saveAdditional(net.minecraft.nbt.CompoundTag tag, net.minecraft.core.HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);

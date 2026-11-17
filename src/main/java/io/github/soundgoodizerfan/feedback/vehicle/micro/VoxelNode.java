@@ -28,7 +28,6 @@ public final class VoxelNode implements DataNode, Analog, io.github.soundgoodize
 
     private final MicroCellBlockEntity cell;
     private final int index;
-    private final Set<DataNodeRef> links = new HashSet<>();
 
     VoxelNode(MicroCellBlockEntity cell, int index) {
         this.cell = cell;
@@ -127,16 +126,6 @@ public final class VoxelNode implements DataNode, Analog, io.github.soundgoodize
     @Override
     public BlockEntity getNodeOwner() {
         return cell;
-    }
-
-    @Override
-    public Set<DataNodeRef> getNodeLinks() {
-        return links;
-    }
-
-    @Override
-    public boolean acceptsLinks() {
-        return false;
     }
 
     @Override

@@ -51,7 +51,7 @@ public record ToolScrollPayload(int direction) implements CustomPacketPayload {
                 // A half-made link means something else in the new mode.
                 io.github.soundgoodizerfan.feedback.control.data.DataLinkManager.get().clear(player);
                 AimPayloads.linkDone(player);
-                AimPayloads.modes(player, stack.getHoverName(), AimPayloads.keys("feedback.data_connector.mode.", "link", "unlink", "clear"),
+                AimPayloads.modes(player, stack.getHoverName(), AimPayloads.keys("feedback.data_connector.mode.", "link", "unlink", "clear", "paint"),
                         mode.ordinal(), Component.empty());
                 return;
             }

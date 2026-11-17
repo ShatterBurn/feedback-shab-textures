@@ -14,7 +14,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import io.github.soundgoodizerfan.feedback.control.ControlTuning;
-import io.github.soundgoodizerfan.feedback.control.data.DataNodeRef;
+import io.github.soundgoodizerfan.feedback.control.data.DataRequest;
+import io.github.soundgoodizerfan.feedback.control.data.Reduction;
+import io.github.soundgoodizerfan.feedback.control.data.Signals;
+import net.minecraft.resources.ResourceLocation;
 import io.github.soundgoodizerfan.feedback.control.program.ActuatorNode;
 import io.github.soundgoodizerfan.feedback.control.program.ComparatorNode;
 import io.github.soundgoodizerfan.feedback.control.program.ControllerLimits;
@@ -30,7 +33,6 @@ import io.github.soundgoodizerfan.feedback.control.program.ValueType;
 import io.github.soundgoodizerfan.feedback.control.program.WriteNode;
 import io.github.soundgoodizerfan.feedback.control.program.text.TextAst.*;
 import io.github.soundgoodizerfan.feedback.control.program.text.TextLexer.Token;
-import io.github.soundgoodizerfan.feedback.instrument.Quantity;
 
 /**
  * The compile pipeline of a program text: tolerant lexer, typed syntax tree, lowering to a {@link ProgramGraph}, then the graph's own checks
@@ -42,7 +44,7 @@ import io.github.soundgoodizerfan.feedback.instrument.Quantity;
  * wire fanning out, and a cycle is an error unless it passes through a delay. Types are inferred from the producers (a delay takes its input's;
  * {@code as number} or {@code as boolean} says it where nothing feeds it). A number literal stands only where the card has a literal default
  * (the right side of a comparison or arithmetic) or is a delay's length; anywhere else it is an error. The text never names an item or a
- * block: a sensor or actuator names its {@link DataNodeRef} as the graph does, and the server still checks every reference it did not grant.
+ * block: a sensor or actuator names a signal, a kind, a color and a reduction (never a block), exactly as the card holds them.
  *
  * <p>Design from Super Factory Manager (MPL-2.0, design only, no code copied): taken, the pipeline shape (tolerant lexer, typed tree, lowering,
  * the graph's own error check, then lints with line and column), grammar-driven completion ({@link TextCompletion}) and a canonical
@@ -63,7 +65,6 @@ public final class TextCompiler {
     private final ControllerLimits limits;
     private final List<Diag> diags = new ArrayList<>();
     private final Map<String, VarDecl> vars = new LinkedHashMap<>();
-    private final Map<String, LinkDecl> links = new HashMap<>();
     private final Map<String, Assign> named = new LinkedHashMap<>();
     private final Map<String, Integer> idOf = new HashMap<>();
     private final Map<Integer, Token> where = new HashMap<>();
@@ -97,17 +98,11 @@ public final class TextCompiler {
                     else
                         vars.put(v.name(), v);
                 }
-                case LinkDecl l -> {
-                    if (links.containsKey(l.name()) || named.containsKey(l.name()))
-                        err(l.at(), Diag.TEXT + "duplicate_name", l.name());
-                    else
-                        links.put(l.name(), l);
-                }
                 case Assign a -> {
                     if (a.name() != null) {
                         if (TextParser.isKeyword(a.name()))
                             err(a.at(), Diag.TEXT + "reserved_name", a.name());
-                        else if (named.containsKey(a.name()) || links.containsKey(a.name()))
+                        else if (named.containsKey(a.name()))
                             err(a.at(), Diag.TEXT + "duplicate_name", a.name());
                         else
                             named.put(a.name(), a);
@@ -232,7 +227,7 @@ public final class TextCompiler {
             case Name n -> {
                 Integer id = idOf.get(n.name());
                 if (id == null) {
-                    err(n.at(), links.containsKey(n.name()) ? Diag.TEXT + "link_here" : Diag.TEXT + "unknown_name", n.name());
+                    err(n.at(), Diag.TEXT + "unknown_name", n.name());
                     return ProgramNode.UNWIRED;
                 }
                 consumed.add(id);
@@ -328,29 +323,24 @@ public final class TextCompiler {
         List<Expr> a = c.args();
         switch (c.fn()) {
             case "sensor" -> {
-                if (a.isEmpty() || a.size() > 3) {
-                    err(c.at(), Diag.TEXT + "bad_arg_count", c.fn());
-                    return false;
+                ResourceLocation signal = null;
+                int from = 0;
+                if (!a.isEmpty()) {
+                    from = 1;
+                    signal = signalOf(a.get(0));
                 }
-                DataNodeRef target = target(a.get(0));
-                Quantity q = null;
-                if (a.size() > 1) {
-                    if (a.get(1) instanceof Name qn)
-                        q = quantity(qn);
-                    else
-                        err(a.get(1).at(), Diag.TEXT + "bad_quantity", null);
-                }
-                int channel = a.size() > 2 ? whole(a.get(2)) : 0;
-                nodes.add(new SensorNode(id, target, q, channel));
+                Extras x = extras(a.subList(from, a.size()), true);
+                nodes.add(new SensorNode(id, signal, x.kind, x.color, x.reduction, x.channel));
                 return true;
             }
             case "actuate" -> {
-                if (a.size() < 2 || a.size() > 3) {
+                if (a.isEmpty()) {
                     err(c.at(), Diag.TEXT + "bad_arg_count", c.fn());
                     return false;
                 }
                 int in = value(a.get(0));
-                nodes.add(new ActuatorNode(id, in, target(a.get(1)), a.size() > 2 ? whole(a.get(2)) : 0));
+                Extras x = extras(a.subList(1, a.size()), false);
+                nodes.add(new ActuatorNode(id, in, x.kind, x.color, x.channel));
                 return true;
             }
             case "read" -> {
@@ -420,36 +410,60 @@ public final class TextCompiler {
         }
     }
 
-    @javax.annotation.Nullable
-    private DataNodeRef target(Expr e) {
-        switch (e) {
-            case Unlinked u -> {
-                return null;
-            }
-            case Ref r -> {
-                return r.ref();
-            }
-            case Name n -> {
-                LinkDecl l = links.get(n.name());
-                if (l == null) {
-                    err(n.at(), Diag.TEXT + "unknown_link", n.name());
-                    return null;
-                }
-                return l.target() instanceof Ref r ? r.ref() : null;
-            }
-            default -> {
-                err(e.at(), Diag.TEXT + "expected", "a link");
-                return null;
-            }
-        }
+    /** What follows a card's first argument: a kind, a color, a reduction (readings only) and a channel, told apart by what each word is. */
+    private record Extras(@javax.annotation.Nullable ResourceLocation kind, int color, Reduction reduction, int channel) {
     }
 
-    private Quantity quantity(Name n) {
-        for (Quantity q : Quantity.values())
-            if (q.getSerializedName().equalsIgnoreCase(n.name()))
-                return q;
-        err(n.at(), Diag.TEXT + "bad_quantity", n.name());
-        return null;
+    private Extras extras(List<Expr> rest, boolean sensor) {
+        ResourceLocation kind = null;
+        int color = DataRequest.ANY, channel = 0;
+        Reduction reduction = Reduction.AVERAGE;
+        boolean haveKind = false, haveColor = false, haveReduction = false, haveChannel = false;
+        for (Expr e : rest) {
+            if (e instanceof Num) {
+                if (haveChannel)
+                    err(e.at(), Diag.TEXT + "bad_arg", null);
+                channel = whole(e);
+                haveChannel = true;
+                continue;
+            }
+            String word = e instanceof Name n ? n.name() : e instanceof Str s ? s.text() : null;
+            if (word == null) {
+                err(e.at(), Diag.TEXT + "expected", "a kind, color or reduction");
+                continue;
+            }
+            int dye = TextWords.colorOf(word);
+            Reduction red = sensor ? TextWords.reductionOf(word) : null;
+            if (dye >= 0) {
+                if (haveColor)
+                    err(e.at(), Diag.TEXT + "bad_arg", word);
+                color = dye;
+                haveColor = true;
+            } else if (red != null) {
+                if (haveReduction)
+                    err(e.at(), Diag.TEXT + "bad_arg", word);
+                reduction = red;
+                haveReduction = true;
+            } else {
+                ResourceLocation id = TextWords.kindOf(word);
+                if (id == null || haveKind)
+                    err(e.at(), Diag.TEXT + "bad_arg", word);
+                else {
+                    kind = id;
+                    haveKind = true;
+                }
+            }
+        }
+        return new Extras(kind, color, reduction, channel);
+    }
+
+    @javax.annotation.Nullable
+    private ResourceLocation signalOf(Expr e) {
+        String word = e instanceof Name n ? n.name() : e instanceof Str s ? s.text() : null;
+        ResourceLocation id = word == null ? null : TextWords.signalOf(word);
+        if (id == null)
+            err(e.at(), Diag.TEXT + "bad_signal", word);
+        return id;
     }
 
     private int whole(Expr e) {
@@ -505,8 +519,7 @@ public final class TextCompiler {
                 case "min", "max" -> ValueType.NUMBER;
                 case "read" -> c.args().size() == 1 && c.args().get(0) instanceof Name v && vars.containsKey(v.name()) ? vars.get(v.name()).type()
                         : c.args().size() == 1 && c.args().get(0) instanceof Str s && vars.containsKey(s.text()) ? vars.get(s.text()).type() : null;
-                case "sensor" -> c.args().size() > 1 && c.args().get(1) instanceof Name q && q.name().equalsIgnoreCase(Quantity.STATE.getSerializedName())
-                        ? ValueType.BOOLEAN : ValueType.NUMBER;
+                case "sensor" -> !c.args().isEmpty() && boolSignal(c.args().get(0)) ? ValueType.BOOLEAN : ValueType.NUMBER;
                 case "delay" -> c.as() != null ? c.as() : c.args().isEmpty() ? null : typeOf(c.args().get(0));
                 default -> null;
             };
@@ -514,12 +527,18 @@ public final class TextCompiler {
         };
     }
 
+    private static boolean boolSignal(Expr e) {
+        String word = e instanceof Name n ? n.name() : e instanceof Str s ? s.text() : null;
+        ResourceLocation id = word == null ? null : TextWords.signalOf(word);
+        return id != null && Signals.isBoolean(id);
+    }
+
     private ValueType typeOfNode(ProgramNode n) {
         return switch (n) {
             case ComparatorNode x -> ValueType.BOOLEAN;
             case LogicNode x -> ValueType.BOOLEAN;
             case MathNode x -> ValueType.NUMBER;
-            case SensorNode x -> x.quantity() == Quantity.STATE ? ValueType.BOOLEAN : ValueType.NUMBER;
+            case SensorNode x -> x.isState() ? ValueType.BOOLEAN : ValueType.NUMBER;
             case DelayNode x -> x.type();
             case ReadNode x -> vars.containsKey(x.variable()) ? vars.get(x.variable()).type() : null;
             default -> null;

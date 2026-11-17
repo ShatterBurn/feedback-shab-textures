@@ -55,9 +55,7 @@ import net.minecraft.world.level.block.state.BlockState;
  */
 public class LatheBlockEntity extends HeadedShopMachineBlockEntity implements SensorFitting {
 
-    private static final String LINKS = "Links";
 
-    private final Set<DataNodeRef> links = new HashSet<>();
     /** Wu turned off the piece now chucked -- what the sensor reads. Unlike the workpiece's own
      * WORK it does not reset when a stage completes, so done and not-started read differently. */
     private float turnedWu;
@@ -171,30 +169,18 @@ public class LatheBlockEntity extends HeadedShopMachineBlockEntity implements Se
         return this;
     }
 
-    @Override
-    public Set<DataNodeRef> getNodeLinks() {
-        return links;
-    }
-
     // --- persistence --------------------------------------------------------------------------
 
     @Override
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
         tag.putFloat("TurnedWu", turnedWu);
-        ListTag list = new ListTag();
-        for (DataNodeRef ref : links)
-            list.add(ref.toTag());
-        tag.put(LINKS, list);
     }
 
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
         turnedWu = tag.getFloat("TurnedWu");
-        links.clear();
-        for (Tag entry : tag.getList(LINKS, Tag.TAG_COMPOUND))
-            links.add(DataNodeRef.fromTag((CompoundTag) entry));
     }
 
 }

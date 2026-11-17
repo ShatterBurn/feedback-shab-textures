@@ -63,7 +63,6 @@ public class JetBlockEntity extends RotationNode implements BlockEntitySubLevelA
     private final FigureStore figures = new FigureStore();
     /** The engine's weight on the vehicle: the bench's mass figure, carried. */
     private final io.github.soundgoodizerfan.feedback.vehicle.CarriedMass carried = new io.github.soundgoodizerfan.feedback.vehicle.CarriedMass();
-    private final Set<DataNodeRef> links = new HashSet<>();
 
     private boolean hand;
     private float card, reheatCard;
@@ -148,11 +147,6 @@ public class JetBlockEntity extends RotationNode implements BlockEntitySubLevelA
     }
 
     @Override
-    public boolean acceptsLinks() {
-        return false;
-    }
-
-    @Override
     public BlockPos getNodePos() {
         return worldPosition;
     }
@@ -171,11 +165,6 @@ public class JetBlockEntity extends RotationNode implements BlockEntitySubLevelA
     @Override
     public BlockEntity getNodeOwner() {
         return this;
-    }
-
-    @Override
-    public Set<DataNodeRef> getNodeLinks() {
-        return links;
     }
 
     // --- the server tick --------------------------------------------------------------------------

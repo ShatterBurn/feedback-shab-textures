@@ -74,7 +74,6 @@ public class FlightSensorBlockEntity extends BlockEntity implements SensorFittin
     private Mode mode = Mode.ALTITUDE;
     /** The body's speed as of the last physics step; written there, read on the server tick. */
     private volatile double speed, climb;
-    private final Set<DataNodeRef> links = new HashSet<>();
 
     public FlightSensorBlockEntity(BlockPos pos, BlockState state) {
         super(FVehicles.FLIGHT_SENSOR_ENTITY.get(), pos, state);
@@ -209,11 +208,6 @@ public class FlightSensorBlockEntity extends BlockEntity implements SensorFittin
     @Override
     public BlockEntity getNodeOwner() {
         return this;
-    }
-
-    @Override
-    public Set<DataNodeRef> getNodeLinks() {
-        return links;
     }
 
     @Override

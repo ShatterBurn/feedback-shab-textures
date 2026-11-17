@@ -47,7 +47,7 @@ public final class DataLinkManager {
     }
 
     /** Called server-side when a player right-clicks a data node with the connector. */
-    public void onNodeInteract(Player player, DataNode node, DataConnectorMode mode) {
+    public void onNodeInteract(Player player, DataNode node, DataConnectorMode mode, net.minecraft.world.InteractionHand hand) {
         if (mode == DataConnectorMode.CLEAR) {
             pending.remove(player.getUUID());
             tell(player, io.github.soundgoodizerfan.feedback.net.DataSelectionPayload.cleared());
@@ -61,7 +61,7 @@ public final class DataLinkManager {
         UUID id = player.getUUID();
         Level level = node.getNodeLevel();
         DataNodeRef previous = Optional.ofNullable(pending.remove(id))
-                .filter(p -> p.dimension() == level.dimension()).map(Pending::ref).filter(r -> !r.isLocal()).orElse(null);
+                .filter(p -> p.dimension() == level.dimension()).map(Pending::ref).orElse(null);
 
         if (previous == null || previous.equals(node.getNodeRef())) {
             pending.put(id, new Pending(level.dimension(), node.getNodeRef()));
@@ -88,6 +88,12 @@ public final class DataLinkManager {
                     ? "feedback.data_connector.unlinked" : "feedback.data_connector.not_linked"), true);
             return;
         }
+        if (mode == DataConnectorMode.PAINT) {
+            boolean painted = a.getNodeLinks().contains(node.getNodeRef()) && colour(a, node, colorIn(player, hand));
+            player.displayClientMessage(Component.translatable(painted
+                    ? "feedback.data_connector.painted" : "feedback.data_connector.not_painted"), true);
+            return;
+        }
         if (!a.canLinkTo(node)) {
             player.displayClientMessage(Component.translatable("feedback.data_connector.failed"), true);
             return;
@@ -100,15 +106,31 @@ public final class DataLinkManager {
             return;
         }
         boolean linked = a.linkTo(node);
-        if (linked)
+        if (linked) {
             DataWires.record(level, a.getNodeRef(), node.getNodeRef(), paid.grade());
+            colour(a, node, colorIn(player, hand));
+        }
         player.displayClientMessage(Component.translatable(linked
                 ? "feedback.data_connector.linked" : "feedback.data_connector.failed"), true);
     }
 
-    /** The player has selected one of a robot's own channels (see {@code robot/RobotChannel}), ready for a Programmer card's Link. */
-    public void selectLocal(Player player, DataNodeRef ref) {
-        pending.put(player.getUUID(), new Pending(player.level().dimension(), ref));
+    /** The color of the dye in the hand not holding the connector, which a link is made in; {@link DataRequest#ANY} with none. */
+    private static int colorIn(Player player, net.minecraft.world.InteractionHand hand) {
+        return player.getItemInHand(net.minecraft.world.InteractionHand.values()[1 - hand.ordinal()]).getItem() instanceof net.minecraft.world.item.DyeItem dye ? dye.getDyeColor().getId() : DataRequest.ANY;
+    }
+
+    /** Sets the link color on whichever end is a Controller or Computer; false when neither is. */
+    private static boolean colour(DataNode a, DataNode b, int color) {
+        boolean any = false;
+        if (a.getNodeOwner() instanceof io.github.soundgoodizerfan.feedback.control.controller.ControllerHost host) {
+            host.core().setColor(b.getNodeRef(), color);
+            any = true;
+        }
+        if (b.getNodeOwner() instanceof io.github.soundgoodizerfan.feedback.control.controller.ControllerHost host) {
+            host.core().setColor(a.getNodeRef(), color);
+            any = true;
+        }
+        return any;
     }
 
     /** Drops a player's half-made link -- called on logout so it can't outlive the session. */
@@ -127,12 +149,7 @@ public final class DataLinkManager {
             io.github.soundgoodizerfan.feedback.net.AimPayloads.linkFrom(player, null, player.level().getBlockState(payload.pos()).getBlock().getName());
     }
 
-    /**
-     * Pops whatever this player last selected with the connector, for a Programmer card's "Link"
-     * button -- reusing the same one-click selection {@link #onNodeInteract} already records,
-     * without ever completing a real {@code DataNode#linkTo} between two world blocks. A card's
-     * wiring lives on the printed program, not as a persistent link on either endpoint.
-     */
+    /** Takes the node this player last selected with the connector, for a use that pairs it with something other than a node (a mast and its robot). */
     public Optional<DataNodeRef> takePending(Player player) {
         Optional<DataNodeRef> found = peekPending(player);
         pending.remove(player.getUUID());
@@ -140,11 +157,7 @@ public final class DataLinkManager {
         return found;
     }
 
-    /**
-     * Reads a player's pending selection without consuming it -- lets a caller check whether it
-     * fits (e.g. a Sensor card checking for a {@code SensorFitting}) before deciding whether to
-     * {@link #takePending} it at all.
-     */
+    /** What this player has selected, without consuming it. */
     public Optional<DataNodeRef> peekPending(Player player) {
         return Optional.ofNullable(pending.get(player.getUUID()))
                 .filter(p -> p.dimension() == player.level().dimension()).map(Pending::ref);

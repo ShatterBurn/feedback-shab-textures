@@ -14,7 +14,6 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 import io.github.soundgoodizerfan.feedback.control.data.DataNodeRef;
-import io.github.soundgoodizerfan.feedback.instrument.Quantity;
 
 /**
  * Pure graph functions -- no Minecraft world access beyond the {@link DataNodeRef}s a caller
@@ -78,10 +77,10 @@ public final class ProgramEvaluator {
         return true;
     }
 
-    /** Where an actuator card's value goes: its target, its channel, and a Boolean or a Float. */
+    /** Where an actuator card's value goes: the card (its kind, color and channel pick the blocks) and a Boolean or a Float. */
     @FunctionalInterface
     public interface ActuatorWriter {
-        void write(@org.jetbrains.annotations.Nullable DataNodeRef target, int channel, Object value);
+        void write(ActuatorNode card, Object value);
     }
 
     /**
@@ -225,7 +224,7 @@ public final class ProgramEvaluator {
                 if (p < 0)
                     continue;
                 Object value = switch (nodes[p]) {
-                    case SensorNode n -> n.quantity() == Quantity.STATE
+                    case SensorNode n -> n.isState()
                             ? (Object) (sensorReader.read(n, sensorIndex[p]) > 0.5f)
                             : (Object) sensorReader.read(n, sensorIndex[p]);
                     case ComparatorNode n -> {
@@ -242,7 +241,7 @@ public final class ProgramEvaluator {
                             n.rightInput() == ProgramNode.UNWIRED ? n.literalDefault() : asFloat(value(right[p])));
                     case ActuatorNode n -> {
                         Object in = value(left[p]);
-                        actuatorWriter.write(n.target(), n.channel(), in instanceof Float ? in : (Object) asBoolean(in));
+                        actuatorWriter.write(n, in instanceof Float ? in : (Object) asBoolean(in));
                         yield null;
                     }
                     case DelayNode n -> coerce(state.delayed(n, n.countWired()

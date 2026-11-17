@@ -19,8 +19,8 @@ import net.minecraft.world.item.ItemStack;
 
 /**
  * The Files app: the drives as a list, the way a file manager shows its volumes. Click a row to pick a drive (the Drive window follows),
- * double-click to open it, right-click for its menu. With the Library disk in, a program can be dragged onto another drive's row to copy
- * it onto a blank Floppy or USB drive, and onto the trash to erase it (asked first); without it, Copy and drag are off.
+ * double-click to open it, right-click for its menu. A program can be dragged onto another drive's row to copy it onto a blank Floppy or
+ * USB drive, and onto the trash to erase it (asked first).
  */
 final class FilesWindow extends DesktopWindow {
 
@@ -91,11 +91,11 @@ final class FilesWindow extends DesktopWindow {
         return lx >= cw - TRASH_W && lx < cw && ly >= 0 && ly < TRASH_H;
     }
 
-    /** A program that can be dragged: written on a medium in a bay, with the Library disk in. */
+    /** A program that can be dragged: written on a medium in a bay. */
     private boolean draggable(int drive) {
-        if (drive < 0 || drive >= RUN || !ctx.installed("library"))
+        if (drive < 0 || drive >= RUN)
             return false;
-        ItemStack stack = ctx.menu().getSlot(drive).getItem();
+        ItemStack stack = ctx.menu().volume(drive);
         return !stack.isEmpty() && !ComputerApps.isApp(stack) && !graphOf(stack).nodes().isEmpty();
     }
 
@@ -109,7 +109,7 @@ final class FilesWindow extends DesktopWindow {
         int rowW = cw - TRASH_W - 4;
 
         for (int i = 0; i <= RUN; i++) {
-            ItemStack stack = ctx.menu().getSlot(i).getItem();
+            ItemStack stack = ctx.menu().volume(i);
             int y = i * ROW;
             boolean target = dragging && i == overRow && i < RUN && i != dragFrom;
             ui.plaque(0, y, rowW, ROW - 1);
@@ -142,10 +142,9 @@ final class FilesWindow extends DesktopWindow {
 
         int below = (RUN + 1) * ROW + 4;
         if (ch - 18 - below >= 20)
-            ui.wrapped(0, below, cw, Component.translatable(ctx.installed("library") ? "gui.feedback.computer.files.hint"
-                    : "gui.feedback.computer.files.hint_plain"), skin.dim(), ch - 18);
+            ui.wrapped(0, below, cw, Component.translatable("gui.feedback.computer.files.hint"), skin.dim(), ch - 18);
 
-        ItemStack picked = ctx.menu().getSlot(sel).getItem();
+        ItemStack picked = ctx.menu().volume(sel);
         boolean has = !picked.isEmpty(), app = ComputerApps.isApp(picked);
         open.active = has;
         edit.active = has && sel != RUN && !app && !editing;
@@ -154,7 +153,7 @@ final class FilesWindow extends DesktopWindow {
         eject.active = has && sel != RUN && !editing;
 
         if (dragging && dragFrom >= 0)
-            ui.item(ctx.menu().getSlot(dragFrom).getItem(), (int) dragX - 8, (int) dragY - 8);
+            ui.item(ctx.menu().volume(dragFrom), (int) dragX - 8, (int) dragY - 8);
     }
 
     @Override
@@ -164,7 +163,7 @@ final class FilesWindow extends DesktopWindow {
             return false;
         ctx.showDrive(row);
         long now = System.currentTimeMillis();
-        if (row == lastRow && now - lastClick < DOUBLE_CLICK_MS && !ctx.menu().getSlot(row).getItem().isEmpty()) {
+        if (row == lastRow && now - lastClick < DOUBLE_CLICK_MS && !ctx.menu().volume(row).isEmpty()) {
             lastRow = -1;
             desktop().open("drive");
             return true;

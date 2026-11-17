@@ -56,14 +56,4 @@ public class RedstoneEmitterBlockEntity extends BlockEntity implements Switchabl
         return this;
     }
 
-    /** Targeted by a card, never linked. */
-    @Override
-    public boolean acceptsLinks() {
-        return false;
-    }
-
-    @Override
-    public Set<DataNodeRef> getNodeLinks() {
-        return Collections.emptySet();
-    }
 }
