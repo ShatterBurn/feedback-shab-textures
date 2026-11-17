@@ -193,7 +193,7 @@ public class ControllerCore implements Container, Fittable {
         return null;
     }
 
-    /** Sets the cards this host's program may hold from {@code cap} instead of the Card Racks (a robot's brain decides). */
+    /** Sets the cards this host's program may hold from {@code cap} instead of the Card Racks (a robot's brain decides); a negative answer leaves the Card Racks in charge. */
     public ControllerCore cardCap(java.util.function.IntSupplier cap) {
         cardCap = cap;
         return this;
@@ -288,6 +288,12 @@ public class ControllerCore implements Container, Fittable {
         setChanged();
     }
 
+    /** What a circuit seated here makes of the program size on a vehicle: the base and a share per element (the autopilot's brain). */
+    public int vehicleCards() {
+        return Math.min(ControllerLimits.MAX.nodes(), ControlTuning.VEHICLE_CARDS_BASE
+                + ControlTuning.VEHICLE_CARDS_PER_ELEMENT * Math.max(0, circuitSlot ? Circuit.of(circuit).elements() : 0));
+    }
+
     /** The gain of the held circuit at its warmth: 0 with none or a host with no slot. */
     public float gain() {
         return circuitSlot ? Circuit.of(circuit, level()).gain() : 0f;
@@ -379,7 +385,8 @@ public class ControllerCore implements Container, Fittable {
                 escapement = true;
         }
         ControllerLimits base = ControllerLimits.of(drums, racks, escapement, circuitSlot && without != CIRCUIT_OUT ? Circuit.of(circuit).memory() : 0);
-        return cardCap == null ? base : new ControllerLimits(cardCap.getAsInt(), base.variables(), base.typedDelays());
+        int cap = cardCap == null ? -1 : cardCap.getAsInt();
+        return cap < 0 ? base : new ControllerLimits(cap, base.variables(), base.typedDelays());
     }
 
     private static final UpgradeFitting CIRCUIT_OUT = new EscapementFitting();

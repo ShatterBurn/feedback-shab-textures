@@ -22,7 +22,7 @@ import net.minecraft.world.level.block.state.BlockState;
  */
 public class ElectricControllerBlockEntity extends ElectricNode implements ControllerHost, io.github.soundgoodizerfan.feedback.control.endernet.Endernet.End {
 
-    private final ControllerCore core = new ControllerCore(this, this::powered, stack -> stack.is(FTags.PUNCH_CARDS)).withCircuitSlot(true).withEndernet();
+    private final ControllerCore core = new ControllerCore(this, this::powered, stack -> stack.is(FTags.PUNCH_CARDS)).withCircuitSlot(true).withEndernet().cardCap(this::vehicleCap);
 
     public ElectricControllerBlockEntity(BlockPos pos, BlockState state) {
         this(FBlockEntities.ELECTRIC_CONTROLLER.get(), pos, state);
@@ -55,6 +55,15 @@ public class ElectricControllerBlockEntity extends ElectricNode implements Contr
     @Override
     public VoltageBand ratedBand() {
         return VoltageBand.MV;
+    }
+
+    /** Whether this block rides in a vehicle (a Sable body): then it is an autopilot host and its circuit sets the program size. */
+    private boolean riding() {
+        return level != null && dev.ryanhcode.sable.companion.SableCompanion.INSTANCE.getContaining(this) != null;
+    }
+
+    private int vehicleCap() {
+        return riding() ? core.vehicleCards() : -1;
     }
 
     // --- endernet: an upgrade makes this an end of a pair -------------------------------------

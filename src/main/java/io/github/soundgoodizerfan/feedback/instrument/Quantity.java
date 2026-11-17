@@ -116,7 +116,9 @@ public enum Quantity implements StringRepresentable {
     /** Density of the air at a body, 1 at the surface ordinary air: a flight sensor reads it. Appended, never inserted. */
     AIR_DENSITY("air_density"),
     /** A force on a body, in Fu (kN): a flight sensor's Contraption Diagram resolves it. Appended, never inserted. */
-    FORCE("force");
+    FORCE("force"),
+    /** Where a body is east or south of the world's origin, in blocks, to a coarse step: a flight sensor reads it. Appended, never inserted. */
+    POSITION("position");
 
     private final String key;
 

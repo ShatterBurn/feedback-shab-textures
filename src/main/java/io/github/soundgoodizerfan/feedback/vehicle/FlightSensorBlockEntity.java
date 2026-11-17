@@ -35,7 +35,7 @@ import net.minecraft.world.phys.Vec3;
  * {@link SensorFitting} (a node of its own, not mounted on a holder), so the card machinery that
  * links, reads and quantises fittings serves it unchanged. One reading at a time, a discrete
  * choice stepped by use; each has the quantity a comparator checks it against, so altitude is never
- * compared with speed (modes: altitude, airspeed, pitch, roll, vertical speed, air density). Readings come from the body's pose and the speed the physics step last
+ * compared with speed (modes: altitude, airspeed, pitch, roll, vertical speed, air density, heading, and position east and south). Readings come from the body's pose and the speed the physics step last
  * saw; there is no wind, so airspeed is speed over the ground.
  * <p>
  * It resolves like any instrument: quantised to its own resolution, a bad sensor costing
@@ -47,7 +47,11 @@ public class FlightSensorBlockEntity extends BlockEntity implements SensorFittin
     public enum Mode implements StringRepresentable {
         ALTITUDE("altitude", Quantity.ALTITUDE), AIRSPEED("airspeed", Quantity.AIRSPEED),
         PITCH("pitch", Quantity.ATTITUDE), ROLL("roll", Quantity.ATTITUDE),
-        VERTICAL_SPEED("vertical_speed", Quantity.VERTICAL_SPEED), AIR_DENSITY("air_density", Quantity.AIR_DENSITY);
+        VERTICAL_SPEED("vertical_speed", Quantity.VERTICAL_SPEED), AIR_DENSITY("air_density", Quantity.AIR_DENSITY),
+        /** Degrees round from south (clockwise seen from above) the front points; the vehicle's heading. */
+        HEADING("heading", Quantity.ATTITUDE),
+        /** Blocks east and south of the world's origin, to {@code FLIGHT_POSITION_RESOLUTION}: where a program remembers a waypoint. */
+        EAST("east", Quantity.POSITION), SOUTH("south", Quantity.POSITION);
 
         private final String key;
         private final Quantity quantity;
@@ -115,6 +119,14 @@ public class FlightSensorBlockEntity extends BlockEntity implements SensorFittin
             case VERTICAL_SPEED -> (float) climb;
             case AIR_DENSITY -> level == null ? 0f : AirDensityTable.at(level, at.y);
             case PITCH -> (float) Math.toDegrees(Math.asin(Math.clamp(front.y, -1, 1)));
+            case HEADING -> {
+                if (front.x * front.x + front.z * front.z < 1e-6)
+                    yield 0f;
+                float deg = (float) Math.toDegrees(Math.atan2(-front.x, front.z));
+                yield deg < 0f ? deg + 360f : deg;
+            }
+            case EAST -> (float) at.x;
+            case SOUTH -> (float) at.z;
             // Roll: how far the sensor's up has tipped sideways of the vertical plane through its front.
             case ROLL -> {
                 Vector3d side = front.cross(new Vector3d(0, 1, 0), new Vector3d());
@@ -137,6 +149,7 @@ public class FlightSensorBlockEntity extends BlockEntity implements SensorFittin
             case AIRSPEED -> VehicleTuning.FLIGHT_AIRSPEED_RESOLUTION;
             case VERTICAL_SPEED -> VehicleTuning.FLIGHT_CLIMB_RESOLUTION;
             case AIR_DENSITY -> VehicleTuning.FLIGHT_DENSITY_RESOLUTION;
+            case POSITION -> VehicleTuning.FLIGHT_POSITION_RESOLUTION;
             case FORCE -> VehicleTuning.FLIGHT_FORCE_RESOLUTION;
             default -> VehicleTuning.FLIGHT_ATTITUDE_RESOLUTION;
         };

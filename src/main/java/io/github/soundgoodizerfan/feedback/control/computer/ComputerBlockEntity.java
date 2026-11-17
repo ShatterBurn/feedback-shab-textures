@@ -40,7 +40,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public class ComputerBlockEntity extends ElectricNode implements ControllerHost, ProgrammerProvider, net.minecraft.world.MenuProvider,
         io.github.soundgoodizerfan.feedback.control.endernet.Endernet.End {
 
-    private final ControllerCore core = new ControllerCore(this, this::powered, stack -> stack.is(FTags.PUNCH_CARDS) && !ComputerApps.isApp(stack)).withCircuitSlot(true).withEndernet();
+    private final ControllerCore core = new ControllerCore(this, this::powered, stack -> stack.is(FTags.PUNCH_CARDS) && !ComputerApps.isApp(stack)).withCircuitSlot(true).withEndernet().cardCap(this::vehicleCap);
     private final EmbeddedProgrammer programmer = new EmbeddedProgrammer(this);
     private final ComputerBays bays = new ComputerBays(this::setChanged);
     /** The bay the medium in the editor came from, or -1. */
@@ -256,6 +256,15 @@ public class ComputerBlockEntity extends ElectricNode implements ControllerHost,
 
     public void watch(int delta) {
         watchers = Math.max(0, watchers + delta);
+    }
+
+    /** Whether this block rides in a vehicle (a Sable body): then it is an autopilot host and its circuit sets the program size. */
+    private boolean riding() {
+        return level != null && dev.ryanhcode.sable.companion.SableCompanion.INSTANCE.getContaining(this) != null;
+    }
+
+    private int vehicleCap() {
+        return riding() ? core.vehicleCards() : -1;
     }
 
     // --- endernet: the Network app ------------------------------------------------------------------------------

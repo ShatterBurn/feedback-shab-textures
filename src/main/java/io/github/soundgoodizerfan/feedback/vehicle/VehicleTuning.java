@@ -269,7 +269,7 @@ public final class VehicleTuning {
 
     /** Placeholder. The flight sensor's resolutions: altitude in blocks, airspeed in blocks per second, attitude in degrees. */
     public static final float FLIGHT_ALTITUDE_RESOLUTION = 1f, FLIGHT_AIRSPEED_RESOLUTION = 0.5f, FLIGHT_ATTITUDE_RESOLUTION = 2f,
-            FLIGHT_CLIMB_RESOLUTION = 0.5f, FLIGHT_DENSITY_RESOLUTION = 0.05f;
+            FLIGHT_CLIMB_RESOLUTION = 0.5f, FLIGHT_DENSITY_RESOLUTION = 0.05f, FLIGHT_POSITION_RESOLUTION = 4f;
 
     /** Placeholder. The flight sensor's diagram resolutions: a force in Fu (kN), a body's mass in Mu. */
     public static final float FLIGHT_FORCE_RESOLUTION = 0.5f, FLIGHT_MASS_RESOLUTION = 10f;

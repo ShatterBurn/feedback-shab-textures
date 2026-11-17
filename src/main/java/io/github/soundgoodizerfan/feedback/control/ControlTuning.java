@@ -101,6 +101,13 @@ public final class ControlTuning {
 
     public static final int CIRCUIT_HEAT_EVERY_TICKS = 5;
 
+    /**
+     * Placeholder. A Controller or Computer riding in a vehicle (a Sable body) is an autopilot host: its program holds {@code VEHICLE_CARDS_BASE} cards
+     * with no circuit and {@code VEHICLE_CARDS_PER_ELEMENT} more for each element on the circuit seated in it, as a robot's brain does, never over the
+     * Controller ceiling; a Card Rack adds nothing there.
+     */
+    public static final int VEHICLE_CARDS_BASE = 6, VEHICLE_CARDS_PER_ELEMENT = 5;
+
     // --- endernet, layer 1 (entangled pairs); placeholders ---
 
     /** Amps (at MV) a Data Port, and an endernet upgrade on an Electric Controller or Computer, draw while bonded: standing power at each end. */
