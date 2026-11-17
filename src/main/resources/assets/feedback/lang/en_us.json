@@ -10150,5 +10150,6 @@
   "feedback.kind.feedback.mast": "Mast",
   "feedback.kind.feedback.emitter": "Redstone emitter",
   "feedback.kind.feedback.controller": "Controller",
-  "feedback.kind.feedback.robot": "Robot"
+  "feedback.kind.feedback.robot": "Robot",
+  "feedback.kind.feedback.voxel": "Micro voxel"
 }
