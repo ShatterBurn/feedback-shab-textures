@@ -45,11 +45,11 @@ Right-click the Programmer. Put a blank Punch Card in its slot.
 
 The second input of *Greater Than* / *Less Than* can be left unwired and given a **number** instead. That's how you write "temperature less than 1380".
 
-A program can have up to **16** cards, more with Card Racks fitted to the Controller (see [Controller](Controller.md#memory-and-upgrades)).
+A program can have up to **16** cards, more with Card Racks fitted to the Controller (see [Controller](Controller.md#memory-and-upgrades)). A [robot's](Robots.md#program-size) program and the program of a Controller [riding in a vehicle](Vehicles.md#autopilot) are sized by their circuit instead.
 
 ## Variables
 
-The panel at the top right of the canvas declares the program's **variables**: named values a program can store with *Write* and read back with *Read*. Type a name (up to 12 letters, digits, spaces, `_` or `-`), pick **number** or **yes/no**, press **+**. A bare Controller holds 4 variables; Memory Drums add more (the panel shows how many you have declared out of the most any Controller can hold).
+The panel at the top right of the canvas declares the program's **variables**: named values a program can store with *Write* and read back with *Read*. Type a name (up to 12 letters, digits, spaces, `_` or `-`), pick **number** or **yes/no**, press **+**. A bare Controller holds 4 variables; Memory Drums add more, and so does a [Lattice](Lattice.md) on the Controller's circuit (the panel shows how many you have declared out of the most any Controller can hold).
 
 - Click a variable's name to rename it; Read and Write cards that use it follow.
 - Click its kind to switch between number and yes/no; wires the new kind refuses are cut.
@@ -87,7 +87,7 @@ Press **Print**. The program is checked first, and you'll be told if:
 - the program loops back on itself with no *Delay* in the loop,
 - a wire connects the wrong kind of signal (a yes/no into a number input),
 - two sensors being compared don't measure the same thing (temperature against current, say),
-- there are more than 40 cards or 16 variables (the most any [Controller](Controller.md#memory-and-upgrades) can hold), or
+- there are more than 40 cards or 24 variables (the most any [Controller](Controller.md#memory-and-upgrades) can hold), or
 - a Read or Write card names a variable that isn't declared, or a Delay length is out of range.
 
 Print does not know which Controller the card will go in. A Controller refuses to take a card that needs more cards or variables than it has room for, or a typed or wired Delay length without an Escapement fitted, and says why.
@@ -102,6 +102,39 @@ A mechanical Controller and Programmer take the Punch Card only. The [Electric C
 - **Circuit Board**: written once. Made from a Punch Card and two copper wires.
 - **Floppy Disk**: made from a Circuit Board and an iron plate. Put a printed disk in the Programmer and press **Erase**: the program comes back into the editor, the disk is blank, and Print writes the new program onto the same disk.
 - **USB Drive**: a Floppy Disk, a copper wire and a silicon ingot. Rewritten the same way as a Floppy Disk.
+
+## Text form
+
+The [Computer's](Electric_Controller.md#computer) Editor window shows a program a second way, as text. The **Text** button switches to it and **Nodes** back. The text is the same program: nothing is stored twice, and the cards and positions on the node canvas are kept.
+
+Switching to Text prints the program in a standard form. Typing recompiles it on every edit. Findings are listed with their **line and column** and underlined in the text:
+
+- **Errors** stop **Apply**: a name that is not declared, a wire of the wrong kind, a loop with no Delay, a number where a card must stand, a limit passed.
+- **Warnings** never stop it: an unwired operand, a division by a literal zero, a variable never used, written but never read or read but never written, a value nothing uses.
+- An unlinked card or an unwired input does not stop **Apply** either; it is reported when you print, as on the canvas.
+
+**Apply**, leaving the Text view or closing the window takes a text that compiles as one undo step and prints it again in the standard form. A text that does not compile never changes the program: it is dropped when you leave. A printed medium's text is read-only. **Tab** completes the word at the caret from what the text declares (statement words, card names, links, quantities, variables, the two kinds); **Ctrl+Space** opens the list.
+
+Names such as `s1` or `c2` are not kept: after Apply the program is the cards, and the text prints them again under names that follow their kind and order.
+
+### Syntax
+
+One statement per line (a semicolon also ends one). `--` starts a comment. Words are not case sensitive.
+
+| Line | Meaning |
+| --- | --- |
+| `var armed: boolean` | Declare a variable, `number` or `boolean`. |
+| `link l1 = @x y z [side]` | A name for a block in the world, by position and face. |
+| `s1 = sensor(l1, temperature)` | An Input card reading a quantity of a linked sensor. |
+| `c2 = s1 > 400` | A comparison (`>` or `<`); a bare number on the right is the card's typed number. |
+| `g4 = c2 and g10` | A logic card: `and`, `or`, `not`. |
+| `m6 = s1 + 10` | A Math card: `+ - * /`, `min(a, b)`, `max(a, b)`. |
+| `d5 = delay(c2, 5s)` | A Delay; units are `t` (ticks), `s`, `m` and `h`. |
+| `r3 = read(armed)` | A Read card. |
+| `a7 = actuate(g4, l1)` | A Switch card driving a linked block. |
+| `w8 = write(armed, g4, d5)` | A Write card: the variable, the value and the *when*. |
+
+Linking another sensor or block to a card still happens on the node canvas with the [Data Connector](Data_Connector.md): a position typed into the text that no sensor was linked to gives an unlinked card, nothing more. The program limits (cards and variables) are the same as on the canvas.
 
 ## Function Cards
 

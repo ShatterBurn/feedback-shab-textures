@@ -14,6 +14,8 @@ Right-click with a medium to put it in; right-click with an empty hand to take i
 
 A [circuit](Basic_Electronic_Circuit.md) is optional. **Right-click with a circuit** to seat it; an empty hand takes out the medium first, then the circuit. The slot works as the mechanical [Controller's](Controller.md#circuit-slot): with no circuit the program steps about 4 times a second, a fast circuit takes it up to 20, and a circuit's noise makes sensor readings wobble.
 
+A circuit with a [Resonator](Resonator.md) steadies the clock and the readings. A circuit with a [Lattice](Lattice.md) adds up to 8 program variables, learns repeated readings and, unless its lattice [holds](Lattice.md#power-loss), forgets the extra variables after a long time without power. A program that uses the extra variables does not run without the circuit, so the circuit stays in while it does. A circuit with gain lengthens a [Data Connector](Data_Connector.md#linking-nodes) link that ends at the controller. The Computer's slot works the same way.
+
 A powered Electric Controller warms a circuit with a [tube](Vacuum_Tube.md) with its heater, and the heater's current is added to what the controller wants from the line. See [Warming up](Basic_Electronic_Circuit.md#warming-up).
 
 ## Endernet upgrade
@@ -34,7 +36,7 @@ Right-click it to open the desktop, a fixed panel drawn as a terminal. The color
 
 Down the left are **drive bays A to D** and a **RUN** slot, shown as icons with a label under each; the selected one is highlighted. Your hotbar floats as a dock along the bottom of the desktop: drag program media (Punch Card, Circuit Board, Floppy Disk, USB Drive) from it onto the icons, and off again. Click an icon's label to open its **Drive** window, which shows a memory bar for the medium:
 
-- **Edit** opens the medium in an **Editor** window on the desktop. It holds the same node editor as the [Programmer](Programming.md): cards, wires, the variables panel, **Print**, **Erase**, **Stamp** and **Save fn**. Closing the Editor window saves the edit and returns the medium to its drive.
+- **Edit** opens the medium in an **Editor** window on the desktop. It holds the same node editor as the [Programmer](Programming.md): cards, wires, the variables panel, **Print**, **Erase**, **Stamp** and **Save fn**. Closing the Editor window saves the edit and returns the medium to its drive. The Editor also has a **Text** view that shows the same program as written text; see [Text form](Programming.md#text-form).
 - **Run** moves the medium to the RUN slot, where it runs while the Computer is powered (the Controller's limits and upgrades apply). **Stop** puts it back in a free bay.
 - **Eject** takes it into your inventory.
 
@@ -77,6 +79,7 @@ Each app disk is shapeless: one blank Floppy Disk plus one item.
 | Redstone Lamp | Power App Disk |
 | Note Block | Arcade App Disk |
 | Paper + Blue Dye | Blueprint App Disk |
+| Ender Pearl or Synthetic Pearl | Network App Disk |
 
 #### Built-in apps
 
@@ -98,7 +101,7 @@ Each app disk is shapeless: one blank Floppy Disk plus one item.
 - **Power**: whether the Computer is powered, the band of its line, its current and what it wants (read to the precision of the instrument you carry), the band it is rated for, a bar showing how much of a rated packet arrives, and a half-minute trace of the packet.
 - **Arcade**: Snake (arrows or WASD, space to start) and Minesweeper (click to dig, right-click to flag; 14 mines on a 14x8 field). The best Snake length and the fastest cleared field are kept on the block.
 - **Blueprint**: the [Blueprint Table](Blueprint_Table.md)'s drafting board in a window, in the desktop's colors: draw designs from the types, pick parts, materials and shapes, read the predicted figures, compare and pin up to three drafts, and run the test rig. The type selector, edge selector and search stay with the window, and the board takes the window's size, showing more types when the window is wide. It cannot print onto paper and has no sample slot: carry a material item on the cursor from the hotbar dock and click a part to paint it. The window scrolls with Ctrl plus the wheel, or by dragging the strip down its right edge.
-- **Network**: the Computer's [Endernet Upgrade](Endernet_Upgrade.md) and the far side of its pair. The top shows the pair (a short tail of its id), its state (*carrying*, *far end away* or *not powered*) and the far end's distance and compass side. Below, a list of what is linked to the far [Data Port](Data_Port.md), each row with its kind (machine, computer, robot or port) and, for something that switches, its state (on or off) and a **Flip** button that toggles it. The list refreshes about once a second and scrolls. Flip works only while the pair is carrying. Without an upgrade the window says so.
+- **Network**: the Computer's [Endernet Upgrade](Endernet_Upgrade.md) and the far side of its pair. The top shows the pair (a short tail of its id), its state (*carrying*, *far end away* or *not powered*) and the far end's distance and compass side. The count of channels the Computer's circuit can separate is shown as well ([Resonator](Resonator.md)). Below, a list of what is linked to the far [Data Port](Data_Port.md), each row with its kind (machine, computer, robot or port) and, for something that switches, its state (on or off) and a **Flip** button that toggles it. The list refreshes about once a second and scrolls. Flip works only while the pair is carrying. Without an upgrade the window says so.
 
 ### Settings
 

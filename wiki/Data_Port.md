@@ -15,6 +15,13 @@ Put one Ender Pearl or [Synthetic Pearl](Synthetic_Pearl.md), two metal plates a
 - Use a [Chunk Anchor](Ender_Port.md#chunk-anchor) on a port to keep its chunk loaded, so the pair works while nobody is near. An end in an unloaded chunk pauses the pair.
 - A [Tuned Eye](Tuned_Eye.md) tuned to a port reads the distance, direction and height of the other end.
 
+## Circuit
+
+Right-click a port with a [circuit](Basic_Electronic_Circuit.md) to seat it; sneak and right-click with an empty hand takes it out. The port works without one.
+
+- **Bandwidth.** A circuit with a [Resonator](Resonator.md) raises the signals a minute the port carries, in proportion to the resonator's bandwidth. The far end has no say: the port pays.
+- **Reach.** A circuit with gain lengthens a data link made to the port with the [Data Connector](Data_Connector.md#linking-nodes). A port has no heater, so a [tube](Vacuum_Tube.md) in the circuit gives gain only while something else keeps it warm; a cold tube gives none.
+
 ## Endernet
 
 A bonded pair is an **endernet** link. It is the one place data crosses a gap with no wire: the pair counts as a single hop of the best grade, so a reading that crosses it comes out as exact as the wire on either side allows. The rules:

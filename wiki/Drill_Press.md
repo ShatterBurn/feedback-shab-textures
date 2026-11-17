@@ -51,6 +51,10 @@ Hammering is about **force**. Cutting is about the **tool being harder than the 
 
 Each push removes strength ÷ hardness in work. A drilled steel plate (about 13 Wu) is about 5 fast pushes or 13 slow ones.
 
+## Circuit
+
+A [circuit](Basic_Electronic_Circuit.md) is optional; the press works without one. **Right-click the press with a circuit** to seat it. Taking it out with an empty hand gives the bit first, then the circuit. A quiet circuit lowers the chance that a fast push binds the bit; a noisy one helps little. The press has no heater, so a tube in the circuit runs cold.
+
 ## Wear
 
 Pushing when the bit can't cut (metal too hard, or nothing left) wears the **bit**, not the press. See [Machine Heads](Machine_Heads.md#wear).

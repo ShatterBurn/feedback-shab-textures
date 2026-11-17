@@ -44,6 +44,10 @@ Steel wire is only possible on fast, so you have to accept losing the odd piece.
 
 The drawer is a **30 Su** load.
 
+## Circuit
+
+A [circuit](Basic_Electronic_Circuit.md) is optional; the drawer works without one. **Right-click the drawer with a circuit** to seat it. Taking it out with an empty hand gives the die first, then the circuit. A quiet circuit lowers the chance that a fast draw snaps the wire; a noisy one helps little. The drawer has no heater, so a tube in the circuit runs cold.
+
 ## Wear
 
 A draw that can't move the metal goes into the **die** instead and wears it ([Machine Heads](Machine_Heads.md#wear)). That happens when the metal is too hard for the setting, when the piece is cold-worked to its limit and needs an anneal ([Work hardening](Metalworking.md#work-hardening)), or there's nothing left to draw (fine wire is as far as it goes). Correct use never wears the die.

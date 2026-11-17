@@ -109,6 +109,7 @@ While you hold a gun, the bottom-right corner shows:
 - **Spare** rounds of the right size you're carrying, loose or in magazines.
 - **Barrel**: *cool*, *warm*, *hot* or ***SMOKING***.
 - Your **fire mode**.
+- With a [fire control](Gun_Parts.md#fire-control) circuit, a card with **Range**, **Lead** and **Drop** to what the crosshair is on.
 - A flash in the pan, a cook-off or a chain fire blinks on the ammo card.
 - *RELOADING*, *EMPTY*, *NO MAGAZINE* or *SPENT* when one of those applies.
 

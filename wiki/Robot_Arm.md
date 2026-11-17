@@ -19,7 +19,7 @@ It faces the way you looked when you placed it.
 - **Right-click with a Punch Card** to load a program.
 - **Sneak and right-click with a Punch Card** to take the loaded program back out into your inventory.
 - **Right-click with a [Data Connector](Data_Connector.md)** to open its Channels screen, as on a robot, and pick a channel, then link a card in the [Programmer](Programming.md).
-- **Right-click with a circuit** to seat it as the arm's brain. It gives the arm dexterity as on a [robot](Robots.md#the-brain); an arm with no circuit is clumsy. A circuit already seated comes back to you.
+- **Right-click with a circuit** to seat it as the arm's brain. It gives the arm dexterity and sets its program size as on a [robot](Robots.md#the-brain); an arm with no circuit is clumsy and runs a short program. A circuit already seated comes back to you.
 - **Right-click with any other item** to put it in its cargo.
 - **Sneak and right-click with an empty hand** to take the last stack out.
 

@@ -15,7 +15,7 @@ A **Robot** is made from three parts ([Composed Parts](Composed_Parts.md)), each
 C is a Robot Chassis, D is a Robot Drive, T is a Robot Tool Head.
 
 - **Robot Chassis**: the frame. It carries the drive, the battery and the program, and sets how much the robot weighs.
-- **Robot Drive**: what moves it. A lighter robot on the same drive moves faster. It comes in three kinds, see [Drives](#drives).
+- **Robot Drive**: what moves it. A lighter robot on the same drive moves faster. It comes in four kinds, see [Drives](#drives).
 - **Robot Tool Head**: the working end. Its material decides what the robot can dig and how fast.
 
 Three optional parts go below the tool head in the column, in this order: a **Robot Sensor**, a **Robot Chunk Loader** and a **Robot Radio** (see [Sensors and the chunk loader](#sensors-and-the-chunk-loader) and [The radio](#the-radio)). A robot may carry one of each, and may leave any out.
@@ -52,11 +52,12 @@ Use a [Tether Cable](Tether_Reel.md) on a robot to tie it to a reel. A robot set
 
 - **Wheels**: roll over flat ground and climb a slab.
 - **Legs**: step up a full block, and are slower than wheels.
-- **Rotor**: lifts the robot off the ground if it is light enough, and is slower than wheels. It draws power steadily to hover. A robot too heavy for its rotor stays on the ground.
+- **Rotor**: lifts the robot off the ground if it is light enough, and is slower than wheels. It draws power steadily to hover. A robot too heavy for its rotor stays on the ground. When the power dies the robot falls.
+- **Gas cell**: floats on a gas cell, slower than a rotor but lifting far more. It holds its height with no power, and when the power dies the robot stays where it is.
 
 ## Appearance
 
-A robot looks like the parts it is built from, whether it stands in the world, sits in a slot, lies dropped or is held in a hand. The chassis is the body. The drive sits under it: wheels, jointed legs, or a spinning rotor on skids. The tool head rides on top with its jaw at the front. Each part takes the color of its own material, so a robot with a steel chassis and a copper tool head shows both.
+A robot looks like the parts it is built from, whether it stands in the world, sits in a slot, lies dropped or is held in a hand. The chassis is the body. The drive sits under it: wheels, jointed legs, a spinning rotor on skids or a gas cell. The tool head rides on top with its jaw at the front. Each part takes the color of its own material, so a robot with a steel chassis and a copper tool head shows both.
 
 A sensor shows by its kind: a probe is a thin rod reaching ahead of the head, a rangefinder is a pair of eyes, an inertial unit is a flat plate. A chunk loader is a hopper on the back. A radio is a mast topped with a ball.
 
@@ -78,7 +79,26 @@ A **Robot Radio** is the robot's end of a link to a [Radio Mast](Radio_Mast.md).
 
 ## The brain
 
-A live [circuit](Basic_Electronic_Circuit.md) seated in a robot when it is assembled at the [Engineering Table](Engineering_Table.md) is its brain. It gives the robot **dexterity**: a faster, quieter circuit is better, and a cold joint halves it. Dexterity decides how steadily the hand lands when the robot uses a held item (see *Use held item ahead* below). A robot with no circuit is clumsy; nothing is refused.
+A live [circuit](Basic_Electronic_Circuit.md) seated in a robot when it is assembled at the [Engineering Table](Engineering_Table.md) is its brain. A robot with no circuit still works, only worse; nothing is refused. A [Robot Arm](Robot_Arm.md) takes a circuit by hand and uses it the same way.
+
+- **Dexterity.** A faster, quieter circuit is better, and a cold joint halves it. Dexterity decides how steadily the hand lands when the robot uses a held item (see *Use held item ahead* below).
+- **Heater.** A circuit with a [tube](Vacuum_Tube.md) draws its heater's current from the robot's battery, which is how a robot keeps it warm; a cold tube gives less speed and gain.
+
+### Program size
+
+A robot with no brain runs a program of **6 cards**. Each element on its circuit adds **5**, up to 40. A Punch Card that needs more cards than the brain allows is refused, and the robot says why.
+
+### Senses
+
+Gain stretches the reach of a rangefinder and of the beacon sense. The readings *Distance ahead* and *Hardness ahead* wobble with the brain's noise; a quiet circuit reads steadily and a robot with no brain reads as noisily as a circuit can.
+
+### Remembered places
+
+A [Lattice](Lattice.md) on the circuit gives the robot **places**: as many as the lattice has memory, up to 8. Turn *Remember this place* on and the robot stores where it is, by its own dead reckoning (see [Position](#position)), in the chosen place; *Choose next place* steps to the next place. Cards read the chosen place against where the robot stands: *East of* and *South of the chosen place*, *Blocks to the chosen place* and *At the chosen place*. A robot with no lattice remembers none.
+
+### Endernet leash
+
+An [Endernet Upgrade](Endernet_Upgrade.md) **used on the robot** fits it. While the robot's brain is live and its battery has charge, the robot is **leashed** to the [Data Port](Data_Port.md) that holds the other end of the bond: a [Controller](Controller.md) whose cards are linked to that port reads the robot's senses and drives its actions from any distance, the way a [Radio Mast](Radio_Mast.md) would. The leash drains the robot's battery steadily, and each signal that crosses spends [Liquid Teleportant](Liquid_Teleportant.md) and bandwidth from the port. The port offers the robot's first senses and actions: 6 of each, times the channels the circuit's [Resonator](Resonator.md) can separate. The [Network app](Electric_Controller.md#disk-apps) lists the port as a robot, and its **Flip** holds the robot's first action. With no live brain, no battery charge, an unloaded robot or an unpowered port there is no leash.
 
 ## Programming a robot
 
@@ -99,8 +119,10 @@ Switches (a *Switch* card turns them on and off):
 | Take from container ahead | Takes the first stack the container in front lets out |
 | Switch machine ahead | Holds a switchable machine in front engaged while on, released while off |
 | Use held item ahead | Uses the first stack of cargo on the block in front, as a hand does, through that block's own use |
-| Climb | Rises while on; only a rotor robot light enough to fly answers |
+| Climb | Rises while on; only a flying robot (a rotor light enough to fly, or a gas cell) answers |
 | Descend | Sinks while on |
+| Remember this place | Stores where the robot is in the chosen place, as it comes on |
+| Choose next place | Steps the chosen place to the next one, as it comes on |
 
 Readings (an *Input* card reads them):
 
@@ -119,6 +141,11 @@ Readings (an *Input* card reads them):
 | Position east | Blocks east of where it was set down, by dead reckoning |
 | Position south | Blocks south of where it was set down, by dead reckoning |
 | Height above start | Blocks above the block it was set down on |
+| East of the chosen place | Blocks east of the chosen place, from where the robot stands |
+| South of the chosen place | Blocks south of the chosen place |
+| Blocks to the chosen place | Distance to the chosen place |
+| At the chosen place | Whether the robot is within a block or so of it |
+| Places remembered | How many places its brain can hold |
 
 ### Using the held item
 

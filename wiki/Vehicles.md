@@ -146,6 +146,14 @@ A card that points at a part of a vehicle (an engine, a seat, a joint voxel) fol
 
 Link a *Switch* card to a [Rotary Bearing](Rotary_Bearing.md#roles) voxel and a number sets its angle: a steering bearing turns the front wheels, a control surface deflects for roll, pitch or yaw. A piston takes a level and a wheel's bearing takes the brake.
 
+## Autopilot
+
+An autopilot is a program you write, running on an [Electric Controller](Electric_Controller.md) or a [Computer](Electric_Controller.md#computer) that sits in the vehicle. Link its Input cards to the [Flight Sensor](Instruments.md#flight-sensor) and its Switch cards to the engines, bearings and surfaces, as for the Driver's Seat; write it in cards or in the Computer's [text view](Programming.md#text-form). Nothing is stabilized for you: holding a heading or a height is a program.
+
+- **Program size.** A Controller riding in a vehicle runs a program of **6 cards** with no circuit, and **5 more for each element on its [circuit](Basic_Electronic_Circuit.md)**, up to 40. Card Racks do not count on a vehicle; a Controller on the ground keeps them.
+- **The circuit does the rest.** Its speed sets how often the program steps and its noise how much readings wobble; a [Resonator](Resonator.md) steadies both. A circuit with a [tube](Vacuum_Tube.md) draws its heater from the vehicle's own line.
+- **Waypoints.** A [Lattice](Lattice.md) adds variables. Write the Flight Sensor's *position east* and *position south* readings into two variables when a trigger turns yes, and compare the readings against them to know where you have been.
+
 ## Shove and carry
 
 With the Brute skill [Shove](Skills.md#brute) slotted to a cast key, you put your hands on a vehicle body and keep the key down. What your hands do depends on the **mass ratio**: the body's mass over yours plus your worn armor's.

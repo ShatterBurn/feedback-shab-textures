@@ -46,6 +46,16 @@ The press's **fuse** slot takes a **Fuse** made at the part bench. Each kind set
 
 A shell with no fuse bursts on its first hit.
 
+## Fuse control
+
+A finished, live [circuit](Basic_Electronic_Circuit.md) clipped onto the launcher is its **fuse control**. Without one the round keeps the fuse it was pressed with. With one, **sneak and press the fire-mode key** (**V**) to step what fuses the round, shown on the HUD as *Fuse*:
+
+- **round**: the round's own fuse.
+- **proximity**: the round bursts when a body or block comes near its path. The sensing radius widens with the circuit's gain and wavers with its noise.
+- **short count** and **long count**: the round bursts after a count of steps of the circuit's clock, so a slow circuit gives a long fuse. The count is held between about a third of a second and 8 seconds.
+
+A launcher has no heater, so a [tube](Vacuum_Tube.md) in the circuit reads cold.
+
 ## Attunements
 
 The seat takes **Spring** (stores more energy for the same size) and its mirror **Snap** (a spring is cocked in less time); see [the gun table](Enchanting_Table.md#on-a-gun). **Ward**, **Mend** and **Tithe** work on the parts as on any gun.

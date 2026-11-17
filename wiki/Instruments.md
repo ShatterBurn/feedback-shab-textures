@@ -223,6 +223,8 @@ Reading a live cable is free and safe while it is insulated, and nothing has to 
 - Check whether adding another [Galvanic Cell](Galvanic_Cell.md) helped.
 - Work out why a magnet is weak: low amps means not enough supply, while full amps on a weak magnet means the packets are too small (a long run, or a line in a lower band than the magnet is rated for). Check the band with an [Electroscope](#electroscope).
 
+A trickle under **0.2 A** is **too faint to read** (the card says it needs a circuit with gain). A circuit with gain, fitted as [below](#fitting-a-circuit), brings the faintest readable current down; a tube that has not warmed gives none.
+
 A circuit can narrow the step ([below](#fitting-a-circuit)).
 
 ## Hydrometer
@@ -285,11 +287,15 @@ W is Copper Wire, P is a Wrought Iron Plate and C is Ceramic.
 
 **Right-click in the air with a [Trace Board](Trace_Board.md) in your other hand** to read its traces, substrate and joints.
 
+**Right-click in the air with a [circuit](Basic_Electronic_Circuit.md) in your other hand** to read its figures: speed, noise, joints, and where it has them **gain** (a tube), **stability**, **channels** and **bandwidth** (a [Resonator](Resonator.md)), and **memory**, **adaptation** and whether it holds (a [Lattice](Lattice.md)).
+
 ## Geiger Counter
 
 Listens for [radiation](Radiation.md). Hold it and it clicks: a few clicks a second with nothing near, more the stronger the field. It reads the field at you **before** your armor, so it tells you why to put lead on, not how much got through.
 
 Glass tubing on top, redstone in the middle with a wrought iron plate either side, copper wire under it.
+
+A field under **0.3 Ru** is **too faint to read**: the counter gives no figure and says so.
 
 Carry one and instruments read radiation as a figure in Ru. Hold it and the same figure shows on your hand card. The figure comes from counting the clicks of the last five seconds, so it jitters the way a real counter does, and a weak source can read as nothing for a moment. Listen as much as you look.
 
@@ -348,7 +354,7 @@ A thin cut sees fine detail and not far. A thick cut sees far and coarsely. Pick
 
 ## Flight Sensor
 
-A block that reads how its vehicle is flying and hands the figure to a [Controller](Controller.md), so an autopilot is only cards.
+A block that reads how its vehicle is flying and hands the figure to a [Controller](Controller.md), so an [autopilot](Vehicles.md#autopilot) is only cards.
 
 Place it on the vehicle. Its front is the way it faces; pitch and roll are measured about that. **Sneak-right-click** steps what it reads; a strip under the crosshair lists the readings with the current one lit:
 
@@ -360,6 +366,9 @@ Place it on the vehicle. Its front is the way it faces; pitch and roll are measu
 | **Roll** | Tilt to either side of the front, in degrees, to the nearest two. |
 | **Vertical speed** | How fast the vehicle climbs, in blocks per second (negative when it sinks). |
 | **Air density** | The [air](Vehicles.md#air-density) around it as a share of surface density: less the higher it climbs. |
+| **Heading** | The way the front points, in degrees round from south. |
+| **Position east** | Blocks east of the world's origin, in steps of 4 blocks. |
+| **Position south** | Blocks south of the world's origin, in steps of 4 blocks. |
 
 **Right-click** opens the [Contraption Diagram](#contraption-diagram).
 

@@ -104,6 +104,19 @@ Blueprints come from:
 
 A module's casing, plating and wiring take [attunements](Enchanting_Table.md#on-a-suit-module) like armor.
 
+### The circuit in a module
+
+A module's controller is a [circuit](Basic_Electronic_Circuit.md), read at the warmth it has.
+
+- **Gain** widens the Scan pulse's reach and the thermal view's range; the more gain, the less each point adds.
+- **Noise** makes a scan miss some creatures and smears the distance a shared scan reports. A quiet circuit misses few.
+- **Heater.** A circuit with a [tube](Vacuum_Tube.md) draws its heater's current from the suit's battery every moment the suit is powered, which is how the suit keeps it warm. An unpowered suit stops the scan and the heater together; a cold tube gives no gain.
+- Without a circuit the thermal view works at its base range and there is no Scan.
+
+### Sharing a scan
+
+Use an [Endernet Upgrade](Endernet_Upgrade.md) in the air while wearing the suit to bond the suit to its [Data Port](Data_Port.md). Each scan posts what it found to the port at the other end, which offers it to a [Controller](Controller.md) as sense channels: **creatures**, **hostile**, **nearest** (blocks) and **reach** (blocks). Each reading spends [Liquid Teleportant](Liquid_Teleportant.md) and bandwidth from the port, more for a greater distance, and works in one dimension only. A reading goes stale after a short while without a new scan. A robot leashed to the same port takes precedence.
+
 ## Weight and heat
 
 The suit's mass slows you like heavy armor; strength cancels the slowdown.

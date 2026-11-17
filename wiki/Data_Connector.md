@@ -40,6 +40,8 @@ Each link costs fine wire from your inventory, one piece per block of distance. 
 
 A link uses copper wire when it reaches and you have enough, otherwise redstone-chromium. A path is as good as its worst wire. A live [endernet](Data_Port.md#endernet) pair counts as one hop of the best grade, so a path can cross any distance through it.
 
+**Longer links.** A link that ends at a block holding a [circuit](Basic_Electronic_Circuit.md) with gain reaches further: each point of gain adds the wire's plain reach again, and the better of the two ends counts. The blocks that take a circuit are the [Controller](Controller.md#circuit-slot), [Electric Controller](Electric_Controller.md#circuit-slot), [Computer](Electric_Controller.md#circuit-slot), [Data Port](Data_Port.md#circuit), [Power Cutter](Power_Cutter.md#circuit), [Auto Engineer](Auto_Engineer.md#circuit) and [Electrolytic Cell](Electrolytic_Cell.md#circuit). Gain comes from a [Vacuum Tube](Vacuum_Tube.md) on the board and reads at its warmth, so a cold tube gives none. The wire still costs one piece per block, and the grade and quenching rules are unchanged.
+
 Redstone-chromium wire quenches: if either end of a good line carries more than 3 links, the line goes dark for 10 seconds and then recovers undamaged. A reader with no working path reads 0.
 
 The mechanical [Controller](Controller.md) and the blocks it switches ([Valve](Valve.md), [Clutch](Clutch.md) and the like) are not linked this way and need no wire.

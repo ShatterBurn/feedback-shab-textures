@@ -27,6 +27,11 @@ A [circuit](Basic_Electronic_Circuit.md) is optional. **Right-click the Controll
 
 - **Pace.** A Controller with no circuit steps its program about **4 times a second**. A fast circuit raises that, up to **20 a second**; a slow, cold or dead one stays near the bottom.
 - **Reading.** A circuit's noise makes the numbers a Sensor card reads wobble by a few percent; a quiet circuit reads steadily, and with none the reading is as noisy as a circuit can be. A yes/no reading never wobbles.
+- **Steadiness.** A [Resonator](Resonator.md) on the circuit makes the clock step evenly and cuts the wobble of readings further.
+- **Extra variables.** A [Lattice](Lattice.md) on the circuit adds program variables on top of the Memory Drums, up to 8 more. A program that uses them does not run without the circuit, so the circuit stays in while it does.
+- **Learned readings.** A lattice also holds a reading that stays close to the last one, so noise does not show, and lets a real change through at once.
+- **Forgetting.** After a long time with the shaft stopped, the extra variables go back to zero or false unless the lattice [holds](Lattice.md#power-loss). The variables of Memory Drums are kept.
+- **Longer links.** A circuit with gain lengthens a [Data Connector](Data_Connector.md#linking-nodes) link that ends at the Controller.
 
 The Controller has no power of its own to heat a [tubed](Vacuum_Tube.md) circuit; see [Warming up](Basic_Electronic_Circuit.md#warming-up).
 

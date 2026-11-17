@@ -156,6 +156,17 @@ These four are shaped at a bench from raw stock, and the material decides what t
 
 Add a fitting to a finished gun on the [Fit tab](Engineering_Table.md#fit-tab) of the Engineering Table. A gun takes one fitting to a slot, so to swap a suppressor for a brake, take the gun apart or swap the part in place with another of its own kind on the Repair tab.
 
+### Fire control
+
+A finished, live [circuit](Basic_Electronic_Circuit.md) clipped onto the receiver is a **fire control** fitting. The gun shoots as built without one.
+
+- **Spread.** A quiet circuit tightens the group by up to 45%; a noisy one tightens it less, and a dead circuit not at all.
+- **The range card.** While the gun is held, a card on the [HUD](Guns.md#the-hud) shows **Range**, **Lead** and **Drop** to what the crosshair is on, in meters, or *No target in range*. Lead is how far ahead of a moving target to aim and drop how far below the line of sight the shot falls; neither counts drag. A noisy circuit gives coarser figures.
+- **Rangefinder.** It reaches 64 blocks, longer with the circuit's gain.
+- **Heater.** A gun has no heater, so a [tube](Vacuum_Tube.md) in the circuit reads cold: slower and noisier, never refused.
+
+A [Launcher](Launcher.md#fuse-control) takes a circuit for its fuse.
+
 ## The chamber
 
 How much pressure a chamber holds is the barrel metal's **yield strength** times the barrel's **wall**, divided by **half the bore**:
