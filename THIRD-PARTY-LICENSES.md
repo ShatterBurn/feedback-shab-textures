@@ -26,7 +26,7 @@ departs from all three of these deliberately.
 | **MrCrayfish's Furniture Mod: Refurbished** | MIT | **Yes** | Permissive, same as Create. Preserve the notice, state the origin |
 | **PneumaticCraft: Repressurized** | GPL-3.0 | **Yes** | Same licence as this project, code and assets both — the most direct route read all session. Assets still never used, per this project's own universal-no rule, not because the licence would forbid it |
 | **RetroSFM** | MIT | **Yes** | Permissive, same as Create. Preserve the notice, state the origin |
-| **Super Factory Manager** | MPL-2.0 | **Yes** | No per-file "Incompatible With Secondary Licenses" notice found, so combinable under GPL-3.0 per MPL §3.3/§10.4's default. Design taken for the program text form (2026-11-17): pipeline shape, tolerant lexer, grammar-driven completion, canonical pretty-printer; no code copied — see below |
+| **Super Factory Manager** | MPL-2.0 | **Yes** | No per-file "Incompatible With Secondary Licenses" notice found, so combinable under GPL-3.0 per MPL §3.3/§10.4's default. Design taken for the program text form and for data binding (2026-11-17): pipeline shape, tolerant lexer, grammar-driven completion, canonical pretty-printer; a program naming a request that a separate binding resolves; no code copied — see below |
 | **PowerGrid** | Apache-2.0 (`architectury-1.21.1/dev`, commit `0938be0`) | **Yes** | Permissive and GPL-3.0-compatible one way. Preserve the notice, state the origin if code is ever copied. Read for vacuum tubes (2026-11-16); design only, nothing copied. Assets never |
 | **Silent Gear** | MIT | **Yes** | Permissive. Preserve the notice, state the origin. Read for modular items; design taken. **Textures copied as placeholders (2026-10-21, user ruling)** -- the repo's MIT licence covers them; see *Textures* below |
 | **Tinkers' Construct** | MIT | **Yes** | Permissive. Only a 1.20.1 source exists, so any port is to 1.21 data components. Read for modular items; design taken, nothing copied |
@@ -519,6 +519,15 @@ and declared variables, reading the text only; a canonical pretty-printer so the
 an error unless it passes through a delay). **Rejected:** imperative `if/else` and sequential IO, resource-id, tag and label routing (the text
 never names an item or a block), the `every` trigger (time is a delay card), path-simulation linting (2^n), config-tunable caps (caps stay the
 fitted upgrades' `ControllerLimits`), and every asset. The comments at the code sites are `TextLexer`, `TextCompiler` and `TextCompletion`.
+
+**Read a third time for data binding (`control/data`, `control/controller`, `control/program`, 2026-11-17), branch `1.21.1`, commit `46cd99155`. Design only, no code or assets copied.**
+**Taken:** a program names what it asks for and a separate binding resolves it, so the same program runs against whatever is bound (`LabelPositionHolder`,
+`LabelAccess`: here the Controller's links and `DataRequest`); a binding tool with an active tag, toggle and pick-cycle (`LabelGunActions`: here the Data Connector's
+paint mode, with the dye in the other hand as the active color); lints for a request that matches nothing. **Rejected:** free-text string labels (a kind is a
+block tag and a color one of sixteen dyes), position maps and disk push/pull snapshots (links live in `DataLinkStore`, keyed by node and kept live), capability
+probing as what a block is (a data block declares its signals and kinds), a silent unordered union of matches (a Sensor card combines matches with a stated
+`Reduction`; an actuator drives every match and never falls back), slot and side qualifiers, round-robin as a default, and every asset. The code sites are
+`DataRequest`, `DataSpec` and `ControllerCore`.
 
 ## PowerGrid (vacuum tubes, 2026-11-16)
 
