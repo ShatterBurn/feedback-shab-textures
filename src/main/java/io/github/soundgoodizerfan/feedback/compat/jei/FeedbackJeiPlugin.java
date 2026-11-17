@@ -143,6 +143,8 @@ public class FeedbackJeiPlugin implements IModPlugin {
         ElectronicsCrafting.register(registration);
         registration.getCraftingCategory().addExtension(io.github.soundgoodizerfan.feedback.machine.ender.EnderPairRecipe.class, new EnderPairCraftingExtension());
         registration.getCraftingCategory().addExtension(io.github.soundgoodizerfan.feedback.machine.tube.CarrierDyeRecipe.class, new CarrierDyeCraftingExtension());
+        registration.getCraftingCategory().addExtension(io.github.soundgoodizerfan.feedback.machine.ender.DataPairRecipe.class, new EndernetCraftingExtensions.Pair());
+        registration.getCraftingCategory().addExtension(io.github.soundgoodizerfan.feedback.machine.ender.EndernetUpgradeRecipe.class, new EndernetCraftingExtensions.Upgrade());
         CodeRecipeExamples.register(registration);
     }
 
@@ -527,6 +529,8 @@ public class FeedbackJeiPlugin implements IModPlugin {
         info(registration, FItems.POD.get(), "pod");
         info(registration, FItems.CREATIVE_AIR.get(), "creative_air");
         info(registration, FItems.ENDER_PORT.get(), "ender_port");
+        info(registration, FItems.DATA_PORT.get(), "data_port");
+        info(registration, FItems.ENDERNET_UPGRADE.get(), "endernet_upgrade");
         info(registration, FItems.ENDER_ANCHOR.get(), "ender_anchor");
         info(registration, io.github.soundgoodizerfan.feedback.registry.FBlocks.GAS_TURBINE.get().asItem(), "gas_turbine");
         info(registration, FModular.HEAT_EXCHANGER.get(), "heat_exchanger");

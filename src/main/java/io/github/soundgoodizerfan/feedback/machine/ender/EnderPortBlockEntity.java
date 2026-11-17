@@ -49,7 +49,7 @@ import net.neoforged.neoforge.items.IItemHandler;
  * Only an anchor upgrade keeps the port's chunk forced; otherwise a pair pauses while an end is unloaded,
  * because the live-ports registry holds only ports whose chunk is loaded.
  */
-public class EnderPortBlockEntity extends BlockEntity {
+public class EnderPortBlockEntity extends BlockEntity implements PairEnd {
 
     public static final String PAIR_KEY = "Pair";
     public static final TagKey<Fluid> TELEPORTANT = TagKey.create(Registries.FLUID, Feedback.id("teleportant"));
@@ -246,6 +246,7 @@ public class EnderPortBlockEntity extends BlockEntity {
     }
 
     /** The id this port is bonded under, or null. */
+    @Override
     @Nullable
     public UUID pairId() {
         return pair;

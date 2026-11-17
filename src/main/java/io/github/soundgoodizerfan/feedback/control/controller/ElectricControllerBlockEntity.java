@@ -20,9 +20,9 @@ import net.minecraft.world.level.block.state.BlockState;
  * evaluates while the line delivers at least half of what it wants, and takes every program medium: Punch Card, Circuit Board, Floppy
  * Disk and USB Drive.
  */
-public class ElectricControllerBlockEntity extends ElectricNode implements ControllerHost {
+public class ElectricControllerBlockEntity extends ElectricNode implements ControllerHost, io.github.soundgoodizerfan.feedback.control.endernet.Endernet.End {
 
-    private final ControllerCore core = new ControllerCore(this, this::powered, stack -> stack.is(FTags.PUNCH_CARDS)).withCircuitSlot(true);
+    private final ControllerCore core = new ControllerCore(this, this::powered, stack -> stack.is(FTags.PUNCH_CARDS)).withCircuitSlot(true).withEndernet();
 
     public ElectricControllerBlockEntity(BlockPos pos, BlockState state) {
         this(FBlockEntities.ELECTRIC_CONTROLLER.get(), pos, state);
@@ -48,12 +48,43 @@ public class ElectricControllerBlockEntity extends ElectricNode implements Contr
 
     @Override
     public float wantedAmps() {
-        return ControlTuning.CONTROLLER_ELECTRIC_AMPS + core.heaterAmps(ElectricRules.packetEu(ratedBand()));
+        return ControlTuning.CONTROLLER_ELECTRIC_AMPS + core.heaterAmps(ElectricRules.packetEu(ratedBand()))
+                + (core.endernetPair() == null ? 0f : ControlTuning.ENDERNET_UPGRADE_AMPS);
     }
 
     @Override
     public VoltageBand ratedBand() {
         return VoltageBand.MV;
+    }
+
+    // --- endernet: an upgrade makes this an end of a pair -------------------------------------
+
+    @Override
+    public java.util.UUID pairId() {
+        return core.endernetPair();
+    }
+
+    @Override
+    public boolean live() {
+        return core.endernetPair() != null && !isRemoved() && powered();
+    }
+
+    @Override
+    public void tickServer() {
+        io.github.soundgoodizerfan.feedback.control.endernet.Endernet.sync(this);
+        ControllerHost.super.tickServer();
+    }
+
+    @Override
+    public void onChunkUnloaded() {
+        super.onChunkUnloaded();
+        io.github.soundgoodizerfan.feedback.control.endernet.Endernet.leave(this);
+    }
+
+    @Override
+    public void setRemoved() {
+        io.github.soundgoodizerfan.feedback.control.endernet.Endernet.leave(this);
+        super.setRemoved();
     }
 
     /** The card goes to the client with the chunk and when it changes, so the Programmer can name this controller's variables to another card. */

@@ -101,6 +101,26 @@ public final class ControlTuning {
 
     public static final int CIRCUIT_HEAT_EVERY_TICKS = 5;
 
+    // --- endernet, layer 1 (entangled pairs); placeholders ---
+
+    /** Amps (at MV) a Data Port, and an endernet upgrade on an Electric Controller or Computer, draw while bonded: standing power at each end. */
+    public static final float ENDERNET_PORT_AMPS = 0.1f, ENDERNET_UPGRADE_AMPS = 0.1f;
+
+    /** What a Data Port carries: signals (one path search that crosses the pair) a minute of bandwidth, and teleportant mB a signal at no distance (scaled by the pair's distance as ender ports are). */
+    public static final float ENDERNET_SIGNALS_PER_MIN = 3600f, ENDERNET_MB_PER_SIGNAL = 0.01f;
+
+    /** mB of teleportant a Data Port's tank holds. */
+    public static final int ENDERNET_PORT_TANK_MB = 500;
+
+    /**
+     * How many named channels an endernet upgrade offers (layer 2, not built). A plain constant for now: circuit figures (selectivity and
+     * bandwidth) will feed it.
+     */
+    public static final int ENDERNET_CHANNELS = 1;
+
+    /** The Network app: hops walked past the far end and entries listed, and how often (ticks) a watching Computer re-lists. */
+    public static final int NETWORK_MAX_HOPS = 6, NETWORK_MAX_ENTRIES = 24, NETWORK_REFRESH_TICKS = 20;
+
     /** Invented. Amps an Electric Controller and a Computer want from the line. */
     public static final float CONTROLLER_ELECTRIC_AMPS = 0.3f, COMPUTER_AMPS = 0.6f;
 

@@ -37,9 +37,10 @@ import net.minecraft.world.level.block.state.BlockState;
  * Floppy Disk or USB Drive, erased and written again. Move the finished medium from one to the other. Powered as an electrical sink; the
  * Programmer works without power, the Controller only runs while the line delivers.
  */
-public class ComputerBlockEntity extends ElectricNode implements ControllerHost, ProgrammerProvider, net.minecraft.world.MenuProvider {
+public class ComputerBlockEntity extends ElectricNode implements ControllerHost, ProgrammerProvider, net.minecraft.world.MenuProvider,
+        io.github.soundgoodizerfan.feedback.control.endernet.Endernet.End {
 
-    private final ControllerCore core = new ControllerCore(this, this::powered, stack -> stack.is(FTags.PUNCH_CARDS) && !ComputerApps.isApp(stack)).withCircuitSlot(true);
+    private final ControllerCore core = new ControllerCore(this, this::powered, stack -> stack.is(FTags.PUNCH_CARDS) && !ComputerApps.isApp(stack)).withCircuitSlot(true).withEndernet();
     private final EmbeddedProgrammer programmer = new EmbeddedProgrammer(this);
     private final ComputerBays bays = new ComputerBays(this::setChanged);
     /** The bay the medium in the editor came from, or -1. */
@@ -257,8 +258,89 @@ public class ComputerBlockEntity extends ElectricNode implements ControllerHost,
         watchers = Math.max(0, watchers + delta);
     }
 
+    // --- endernet: the Network app ------------------------------------------------------------------------------
+
+    /** What the Network app shows: the pair's state, and the nodes on its far side as of the last refresh (server list, mirrored to the client in the update tag). */
+    public record NetState(int pair, int distance, int dx, int dz, String pairTail, java.util.List<io.github.soundgoodizerfan.feedback.control.endernet.Endernet.Entry> entries) {
+        public static final NetState NONE = new NetState(0, 0, 0, 0, "", java.util.List.of());
+    }
+
+    private NetState netState = NetState.NONE;
+
+    public NetState net() {
+        return netState;
+    }
+
+    @Override
+    @Nullable
+    public java.util.UUID pairId() {
+        return core.endernetPair();
+    }
+
+    @Override
+    public boolean live() {
+        return core.endernetPair() != null && !isRemoved() && powered();
+    }
+
+    private void refreshNet() {
+        java.util.UUID pair = core.endernetPair();
+        if (pair == null) {
+            netState = NetState.NONE;
+            return;
+        }
+        String tail = pair.toString().substring(0, 8);
+        var far = io.github.soundgoodizerfan.feedback.control.endernet.Endernet.partner(this).orElse(null);
+        if (far == null) {
+            // dark (unpowered here), or the far end is away: the book still knows where it stands
+            var end = io.github.soundgoodizerfan.feedback.machine.ender.PairBook.get(level.getServer()).partner(pair, level.dimension(), worldPosition);
+            int dx = end == null ? 0 : end.pos().getX() - worldPosition.getX(), dz = end == null ? 0 : end.pos().getZ() - worldPosition.getZ();
+            netState = new NetState(powered() ? 2 : 1, end == null ? 0 : (int) Math.sqrt(end.pos().distSqr(worldPosition)), dx, dz, tail, java.util.List.of());
+            return;
+        }
+        var list = io.github.soundgoodizerfan.feedback.control.endernet.Endernet.reachable(this);
+        BlockPos at = far.getNodePos();
+        netState = new NetState(3, (int) Math.sqrt(at.distSqr(worldPosition)), at.getX() - worldPosition.getX(), at.getZ() - worldPosition.getZ(), tail, list);
+    }
+
+    /** The click's key: the row in the low byte, a hash of the row's place above it, so a list that changed under the click is refused. */
+    public static int farKey(int index, BlockPos at) {
+        return (index & 0xFF) | ((at.hashCode() & 0x7FFFFF) << 8);
+    }
+
+    /**
+     * The desktop flips the switch of the {@code index}th entry of the list this Computer last sent. The server holds the list and checks it
+     * again (the entry must still be reachable through a live pair, and a switch): a player names a row, never a position.
+     */
+    public void flipFar(int key, ServerPlayer player) {
+        int index = key & 0xFF;
+        if (core.endernetPair() == null || !live() || index >= netState.entries().size())
+            return;
+        var entry = netState.entries().get(index);
+        if (farKey(index, entry.ref().pos()) != key)
+            return;
+        if (io.github.soundgoodizerfan.feedback.control.endernet.Endernet.flip(this, entry.ref())) {
+            log("far_switch", entry.blockKey());
+            refreshNet();
+            setChanged();
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+        }
+    }
+
+    @Override
+    public void onChunkUnloaded() {
+        super.onChunkUnloaded();
+        io.github.soundgoodizerfan.feedback.control.endernet.Endernet.leave(this);
+    }
+
+    @Override
+    public void setRemoved() {
+        io.github.soundgoodizerfan.feedback.control.endernet.Endernet.leave(this);
+        super.setRemoved();
+    }
+
     @Override
     public void tickServer() {
+        io.github.soundgoodizerfan.feedback.control.endernet.Endernet.sync(this);
         core.tickServer();
         if (level != null && level.getGameTime() % 20 == 0) {
             boolean now = powered();
@@ -274,6 +356,8 @@ public class ComputerBlockEntity extends ElectricNode implements ControllerHost,
             bandSeen = getBand();
             ampsSeen = getAmps();
             wantedSeen = getWantedAmps();
+            if (level.getGameTime() % io.github.soundgoodizerfan.feedback.control.ControlTuning.NETWORK_REFRESH_TICKS == 0)
+                refreshNet();
             level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
         }
     }
@@ -387,7 +471,8 @@ public class ComputerBlockEntity extends ElectricNode implements ControllerHost,
 
     @Override
     public float wantedAmps() {
-        return ControlTuning.COMPUTER_AMPS + core.heaterAmps(io.github.soundgoodizerfan.feedback.core.electric.ElectricRules.packetEu(ratedBand()));
+        return ControlTuning.COMPUTER_AMPS + core.heaterAmps(io.github.soundgoodizerfan.feedback.core.electric.ElectricRules.packetEu(ratedBand()))
+                + (core.endernetPair() == null ? 0f : ControlTuning.ENDERNET_UPGRADE_AMPS);
     }
 
     @Override
@@ -406,6 +491,7 @@ public class ComputerBlockEntity extends ElectricNode implements ControllerHost,
             seen.add(net.minecraft.nbt.FloatTag.valueOf(r));
         tag.put("Readings", seen);
         tag.putBoolean("PoweredSeen", poweredSeen);
+        tag.put("Net", saveNet());
         tag.put("Settings", settings.save());
         tag.putString("Notes", notes);
         tag.putInt("SnakeBest", snakeBest);
@@ -455,6 +541,44 @@ public class ComputerBlockEntity extends ElectricNode implements ControllerHost,
             log.add(new LogEntry(line.getLong("T"), line.getString("K"), line.getString("A")));
         }
         programmer.loadEmbedded(tag.getCompound("Programmer"), registries);
+        netState = loadNet(tag.getCompound("Net"));
+    }
+
+    private CompoundTag saveNet() {
+        CompoundTag t = new CompoundTag();
+        t.putInt("Pair", netState.pair());
+        t.putInt("Dist", netState.distance());
+        t.putInt("Dx", netState.dx());
+        t.putInt("Dz", netState.dz());
+        t.putString("Tail", netState.pairTail());
+        netState.entries().forEach(e -> {
+            CompoundTag c = new CompoundTag();
+            c.put("Ref", e.ref().toTag());
+            c.putString("Key", e.blockKey());
+            c.putInt("Kind", e.kind().ordinal());
+            c.putBoolean("Sw", e.switchable());
+            c.putBoolean("On", e.engaged());
+            list(t).add(c);
+        });
+        return t;
+    }
+
+    private static net.minecraft.nbt.ListTag list(CompoundTag t) {
+        if (!t.contains("Entries"))
+            t.put("Entries", new net.minecraft.nbt.ListTag());
+        return t.getList("Entries", net.minecraft.nbt.Tag.TAG_COMPOUND);
+    }
+
+    private static NetState loadNet(CompoundTag t) {
+        java.util.List<io.github.soundgoodizerfan.feedback.control.endernet.Endernet.Entry> out = new java.util.ArrayList<>();
+        var kinds = io.github.soundgoodizerfan.feedback.control.endernet.Endernet.Entry.Kind.values();
+        for (net.minecraft.nbt.Tag tag : t.getList("Entries", net.minecraft.nbt.Tag.TAG_COMPOUND)) {
+            CompoundTag c = (CompoundTag) tag;
+            out.add(new io.github.soundgoodizerfan.feedback.control.endernet.Endernet.Entry(
+                    io.github.soundgoodizerfan.feedback.control.data.DataNodeRef.fromTag(c.getCompound("Ref")), c.getString("Key"),
+                    kinds[Math.max(0, Math.min(kinds.length - 1, c.getInt("Kind")))], c.getBoolean("Sw"), c.getBoolean("On")));
+        }
+        return new NetState(t.getInt("Pair"), t.getInt("Dist"), t.getInt("Dx"), t.getInt("Dz"), t.getString("Tail"), out);
     }
 
     @Override

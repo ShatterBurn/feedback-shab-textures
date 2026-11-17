@@ -653,6 +653,9 @@ public class FBlockEntities {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<io.github.soundgoodizerfan.feedback.machine.ender.EnderPortBlockEntity>> ENDER_PORT =
             BLOCK_ENTITIES.register("ender_port", () -> BlockEntityType.Builder
                     .of(io.github.soundgoodizerfan.feedback.machine.ender.EnderPortBlockEntity::new, FBlocks.ENDER_PORT.get()).build(null));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<io.github.soundgoodizerfan.feedback.machine.ender.DataPortBlockEntity>> DATA_PORT =
+            BLOCK_ENTITIES.register("data_port", () -> BlockEntityType.Builder
+                    .of(io.github.soundgoodizerfan.feedback.machine.ender.DataPortBlockEntity::new, FBlocks.DATA_PORT.get()).build(null));
 
     public static void register(IEventBus modBus) {
         BLOCK_ENTITIES.register(modBus);

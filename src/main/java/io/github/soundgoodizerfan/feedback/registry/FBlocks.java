@@ -1425,6 +1425,8 @@ public class FBlocks {
                     io.github.soundgoodizerfan.feedback.machine.tube.AirSourceBlockEntity::new));
     public static final DeferredBlock<io.github.soundgoodizerfan.feedback.machine.ender.EnderPortBlock> ENDER_PORT = BLOCKS.register("ender_port",
             () -> new io.github.soundgoodizerfan.feedback.machine.ender.EnderPortBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_PURPLE).strength(4.0f).sound(SoundType.METAL)));
+    public static final DeferredBlock<io.github.soundgoodizerfan.feedback.machine.ender.DataPortBlock> DATA_PORT = BLOCKS.register("data_port",
+            () -> new io.github.soundgoodizerfan.feedback.machine.ender.DataPortBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_PURPLE).strength(4.0f).sound(SoundType.METAL)));
 
     private FBlocks() {
     }

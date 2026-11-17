@@ -133,6 +133,7 @@ public class FCapabilities {
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, FBlockEntities.TUBE_STATION.get(), (station, side) -> station.getHandler());
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, FBlockEntities.ENDER_PORT.get(), (port, side) -> port.getItemHandler());
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, FBlockEntities.ENDER_PORT.get(), (port, side) -> port.getFluidHandler());
+        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, FBlockEntities.DATA_PORT.get(), (port, side) -> port.getFluidHandler());
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, FBlockEntities.PIPE.get(),
                 (pipe, side) -> pipe.getHandler());
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, FBlockEntities.CREATIVE_FLUID.get(),

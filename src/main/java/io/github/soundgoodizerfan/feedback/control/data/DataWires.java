@@ -145,27 +145,46 @@ public final class DataWires {
         frontier.add(start);
         seen.add(start);
         Grade found = null;
+        // The pair crossing the path to each node used (if any), so a path that crosses is charged once when it is the one found.
+        Map<DataNodeRef, io.github.soundgoodizerfan.feedback.control.endernet.Endernet.Crossing> via = new HashMap<>();
+        io.github.soundgoodizerfan.feedback.control.endernet.Endernet.Crossing foundVia = null;
         for (int hop = 0; hop < MAX_HOPS && !frontier.isEmpty() && found != Grade.GOOD; hop++) {
             ArrayDeque<DataNodeRef> next = new ArrayDeque<>();
             for (DataNodeRef at : frontier) {
                 DataNode node = DataNode.resolveOrNull(level, at);
                 if (node == null)
                     continue;
-                for (DataNodeRef other : Set.copyOf(node.getNodeLinks())) {
-                    Grade wire = gradeOf(level, at, other);
-                    if (wire == Grade.GOOD && quenched(level, node, other, now))
+                // A live endernet pair is one more hop, of the best grade (control/endernet); it is paid for once, if the path found uses it.
+                Set<DataNodeRef> outs = new HashSet<>(node.getNodeLinks());
+                var crossing = io.github.soundgoodizerfan.feedback.control.endernet.Endernet.peek(node);
+                DataNodeRef crossRef = crossing == null ? null : crossing.to().getNodeRef();
+                if (crossRef != null)
+                    outs.add(crossRef);
+                for (DataNodeRef other : outs) {
+                    boolean cross = other.equals(crossRef);
+                    Grade wire = cross ? Grade.GOOD : gradeOf(level, at, other);
+                    if (wire == Grade.GOOD && !cross && quenched(level, node, other, now))
                         continue;
                     Grade here = worse(best.get(at), wire);
-                    if (other.equals(target))
+                    var through = cross ? crossing : via.get(at);
+                    if (other.equals(target)) {
+                        Grade was = found;
                         found = found == null ? here : better(found, here);
+                        if (was == null || found != was)
+                            foundVia = through;
+                    }
                     if (seen.add(other)) {
                         best.put(other, here);
+                        if (through != null)
+                            via.put(other, through);
                         next.add(other);
                     }
                 }
             }
             frontier = next;
         }
+        if (found != null && foundVia != null && !foundVia.pay())
+            return Optional.empty();
         return Optional.ofNullable(found);
     }
 

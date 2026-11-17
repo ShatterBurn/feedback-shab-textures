@@ -90,6 +90,7 @@ public class ComputerScreen extends SkinnedScreen<ComputerMenu> implements Compu
         desktop.register(new DesktopApp("power", Component.translatable("gui.feedback.computer.power"), Glyph.POWER, true, () -> new PowerWindow(this), () -> installed("power")));
         desktop.register(new DesktopApp("arcade", Component.translatable("gui.feedback.computer.arcade"), Glyph.GAME, true, () -> new ArcadeWindow(this), () -> installed("arcade")));
         desktop.register(new DesktopApp("blueprint", Component.translatable("gui.feedback.computer.blueprint"), Glyph.BLUEPRINT, true, () -> new BlueprintWindow(this), () -> installed("blueprint")));
+        desktop.register(new DesktopApp("network", Component.translatable("gui.feedback.computer.network"), Glyph.NETWORK, true, () -> new NetworkWindow(this), () -> installed("network")));
         desktop.tray(new Desktop.Tray() {
             @Override
             public int width() {

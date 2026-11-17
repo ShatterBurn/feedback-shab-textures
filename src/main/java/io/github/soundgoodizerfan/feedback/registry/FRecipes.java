@@ -178,6 +178,16 @@ public class FRecipes {
             ENDER_PAIR = SERIALIZERS.register("ender_pair",
                     () -> new SimpleCraftingRecipeSerializer<>(io.github.soundgoodizerfan.feedback.machine.ender.EnderPairRecipe::new));
 
+    /** One pearl, two metal plates and a fine wire -> a bonded pair of Data Ports. */
+    public static final DeferredHolder<RecipeSerializer<?>, SimpleCraftingRecipeSerializer<io.github.soundgoodizerfan.feedback.machine.ender.DataPairRecipe>>
+            DATA_PAIR = SERIALIZERS.register("data_pair",
+                    () -> new SimpleCraftingRecipeSerializer<>(io.github.soundgoodizerfan.feedback.machine.ender.DataPairRecipe::new));
+
+    /** A bonded Data Port and a metal plate -> an endernet upgrade bearing that port's pair id. */
+    public static final DeferredHolder<RecipeSerializer<?>, SimpleCraftingRecipeSerializer<io.github.soundgoodizerfan.feedback.machine.ender.EndernetUpgradeRecipe>>
+            ENDERNET_UPGRADE = SERIALIZERS.register("endernet_upgrade",
+                    () -> new SimpleCraftingRecipeSerializer<>(io.github.soundgoodizerfan.feedback.machine.ender.EndernetUpgradeRecipe::new));
+
     /** A carrier and a dye -> the carrier addressed in that colour. */
     public static final DeferredHolder<RecipeSerializer<?>, SimpleCraftingRecipeSerializer<io.github.soundgoodizerfan.feedback.machine.tube.CarrierDyeRecipe>>
             CARRIER_DYE = SERIALIZERS.register("carrier_dye",

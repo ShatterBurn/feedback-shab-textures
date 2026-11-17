@@ -21,7 +21,7 @@ import net.minecraft.world.item.ItemStack;
 public final class ComputerApps {
 
     /** Every app that needs a disk, in the order the creative tab lists them. */
-    public static final List<String> DISK_APPS = List.of("scope", "linkmap", "notes", "converter", "calc", "library", "power", "arcade", "blueprint");
+    public static final List<String> DISK_APPS = List.of("scope", "linkmap", "notes", "converter", "calc", "library", "power", "arcade", "blueprint", "network");
 
     private ComputerApps() {
     }

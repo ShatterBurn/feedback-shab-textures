@@ -815,6 +815,11 @@ public class FItems {
     public static final DeferredItem<BlockItem> VACUUM_PUMP = ITEMS.registerSimpleBlockItem(FBlocks.VACUUM_PUMP);
     public static final DeferredItem<BlockItem> CREATIVE_AIR = ITEMS.registerSimpleBlockItem(FBlocks.CREATIVE_AIR);
     public static final DeferredItem<BlockItem> ENDER_PORT = ITEMS.registerSimpleBlockItem(FBlocks.ENDER_PORT);
+    /** One end of an entangled data pair (endernet layer 1). */
+    public static final DeferredItem<BlockItem> DATA_PORT = ITEMS.registerSimpleBlockItem(FBlocks.DATA_PORT);
+    /** An endernet upgrade for an Electric Controller or Computer, bonded under the pair id it carries. See {@code fitting.upgrade.EndernetFitting}. */
+    public static final DeferredItem<Item> ENDERNET_UPGRADE =
+            ITEMS.register("endernet_upgrade", () -> new io.github.soundgoodizerfan.feedback.item.EndernetUpgradeItem(new Item.Properties().stacksTo(1)));
     public static final DeferredItem<Item> ENDER_ANCHOR = ITEMS.register("ender_anchor", () -> new Item(new Item.Properties().stacksTo(16)));
     public static final DeferredItem<Item> CARRIER = ITEMS.register("carrier", () -> new io.github.soundgoodizerfan.feedback.machine.tube.CarrierItem(
             new Item.Properties().stacksTo(16), io.github.soundgoodizerfan.feedback.machine.tube.CarrierItem.Kind.CAPSULE));

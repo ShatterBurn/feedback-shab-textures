@@ -4,7 +4,7 @@ package io.github.soundgoodizerfan.feedback.item;
 
 import java.util.UUID;
 
-import io.github.soundgoodizerfan.feedback.machine.ender.EnderPortBlockEntity;
+import io.github.soundgoodizerfan.feedback.machine.ender.PairEnd;
 import io.github.soundgoodizerfan.feedback.machine.ender.PairBook;
 
 import net.minecraft.core.BlockPos;
@@ -40,7 +40,7 @@ public class TunedEyeItem extends Item {
     @Override
     public InteractionResult useOn(UseOnContext context) {
         Level level = context.getLevel();
-        if (!(level.getBlockEntity(context.getClickedPos()) instanceof EnderPortBlockEntity port) || port.pairId() == null)
+        if (!(level.getBlockEntity(context.getClickedPos()) instanceof PairEnd port) || port.pairId() == null)
             return InteractionResult.PASS;
         if (!level.isClientSide) {
             CompoundTag tag = new CompoundTag();

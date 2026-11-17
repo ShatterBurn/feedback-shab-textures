@@ -16,7 +16,7 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 public record ComputerActionPayload(BlockPos pos, int action, int drive) implements CustomPacketPayload {
 
     /** {@code COPY_TO} carries {@code source + 8 * target} in {@code drive}; {@code ERASE} wipes the program on the drive. */
-    public static final int RUN = 0, STOP = 1, EDIT = 2, EJECT = 3, CLOSE_EDITOR = 4, COPY = 5, COPY_TO = 6, ERASE = 7;
+    public static final int RUN = 0, STOP = 1, EDIT = 2, EJECT = 3, CLOSE_EDITOR = 4, COPY = 5, COPY_TO = 6, ERASE = 7, FAR_FLIP = 8;
 
     public static final Type<ComputerActionPayload> TYPE = new Type<>(Feedback.id("computer_action"));
 
@@ -46,6 +46,7 @@ public record ComputerActionPayload(BlockPos pos, int action, int drive) impleme
                 case COPY -> computer.copy(payload.drive(), player);
                 case COPY_TO -> computer.copyTo(payload.drive() & 7, payload.drive() >> 3, player);
                 case ERASE -> computer.erase(payload.drive(), player);
+                case FAR_FLIP -> computer.flipFar(payload.drive(), player);
                 default -> { }
             }
         });

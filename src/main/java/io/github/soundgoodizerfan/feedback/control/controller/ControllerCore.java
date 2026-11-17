@@ -62,12 +62,13 @@ public class ControllerCore implements Container, Fittable {
     private static final String RACKS = "Racks";
     private static final String ESCAPEMENT = "Escapement";
     private static final String CIRCUIT = "Circuit";
+    private static final String ENDERNET = "Endernet";
 
     private ItemStack card = ItemStack.EMPTY;
 
     /** The circuit in this host's circuit slot (a host that has one: {@link #withCircuitSlot}). It sets the clock rate and the read noise; none still runs, slower and noisier. */
     private ItemStack circuit = ItemStack.EMPTY;
-    private boolean circuitSlot, circuitHeater;
+    private boolean circuitSlot, circuitHeater, endernetCapable;
     /** Steps owed: a tick adds the clock rate over twenty and a step is taken at one. Not persisted. */
     private float stepCredit;
 
@@ -169,6 +170,21 @@ public class ControllerCore implements Container, Fittable {
         circuitSlot = true;
         circuitHeater = heater;
         return this;
+    }
+
+    /** Lets this host take an endernet upgrade (an electric host: both ends of a pair need power). */
+    public ControllerCore withEndernet() {
+        endernetCapable = true;
+        return this;
+    }
+
+    /** The pair id of the fitted endernet upgrade, or null for none. */
+    @Nullable
+    public java.util.UUID endernetPair() {
+        for (UpgradeFitting u : upgrades)
+            if (u instanceof io.github.soundgoodizerfan.feedback.fitting.upgrade.EndernetFitting e)
+                return e.pair();
+        return null;
     }
 
     public boolean hasCircuitSlot() {
@@ -699,6 +715,8 @@ public class ControllerCore implements Container, Fittable {
             return same < ControlTuning.MEMORY_DRUM_MAX;
         if (upgrade instanceof CardRackFitting)
             return same < ControlTuning.CARD_RACK_MAX;
+        if (upgrade instanceof io.github.soundgoodizerfan.feedback.fitting.upgrade.EndernetFitting)
+            return endernetCapable && same < 1;
         return upgrade instanceof EscapementFitting && same < 1;
     }
 
@@ -753,6 +771,9 @@ public class ControllerCore implements Container, Fittable {
         tag.putInt(DRUMS, (int) upgrades.stream().filter(MemoryDrumFitting.class::isInstance).count());
         tag.putInt(RACKS, (int) upgrades.stream().filter(CardRackFitting.class::isInstance).count());
         tag.putBoolean(ESCAPEMENT, upgrades.stream().anyMatch(EscapementFitting.class::isInstance));
+        java.util.UUID pair = endernetPair();
+        if (pair != null)
+            tag.putUUID(ENDERNET, pair);
     }
 
     public void load(CompoundTag tag, HolderLookup.Provider registries) {
@@ -774,6 +795,8 @@ public class ControllerCore implements Container, Fittable {
             upgrades.add(new CardRackFitting());
         if (tag.getBoolean(ESCAPEMENT))
             upgrades.add(new EscapementFitting());
+        if (endernetCapable && tag.hasUUID(ENDERNET))
+            upgrades.add(new io.github.soundgoodizerfan.feedback.fitting.upgrade.EndernetFitting(tag.getUUID(ENDERNET)));
         lastGraph = ProgramGraph.EMPTY;
         delays.clear();
         delayTicks.clear();

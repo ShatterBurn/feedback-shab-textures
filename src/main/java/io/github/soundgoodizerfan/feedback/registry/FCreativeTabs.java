@@ -139,7 +139,7 @@ public class FCreativeTabs {
     private static final List<DeferredItem<?>> CONTROLLERS = of(FItems.TIMER, FItems.CONTROLLER, FItems.PROGRAMMER,
             FItems.ELECTRIC_CONTROLLER, FItems.ELECTRIC_PROGRAMMER, FItems.COMPUTER, FItems.PUNCH_CARD,
             FItems.CIRCUIT_BOARD, FItems.FLOPPY_DISK, FItems.USB_DRIVE, FItems.FUNCTION_CARD, FItems.MEMORY_DRUM,
-            FItems.CARD_RACK, FItems.DATA_STICK, FItems.DATA_CONNECTOR);
+            FItems.CARD_RACK, FItems.ENDERNET_UPGRADE, FItems.DATA_STICK, FItems.DATA_CONNECTOR);
 
     /** Vehicle bodies: lift, gas cells (cloth to membrane), valves and tanks, seat, thrust, ground contact. */
     private static final List<DeferredItem<?>> VEHICLE_PARTS = of(FVehicles.LIFT_ITEM, FVehicles.GAS_CELL_CLOTH_ITEM,
@@ -193,7 +193,7 @@ public class FCreativeTabs {
     private static final List<DeferredItem<?>> TUBES = of(FItems.TUBE, FItems.LINED_TUBE, FItems.WIDE_TUBE,
             FItems.EVACUATED_TUBE, FItems.TUBE_JUNCTION, FItems.PROGRAMMED_JUNCTION, FItems.TUBE_STATION,
             FItems.SORTING_STATION, FModular.LINEAR_MOTOR, FItems.CARRIER, FItems.MAGNETIC_CARRIER, FItems.POD,
-            FItems.ENDER_PORT, FItems.ENDER_ANCHOR);
+            FItems.ENDER_PORT, FItems.DATA_PORT, FItems.ENDER_ANCHOR);
 
     /** Cultures, taps and relays: the biological and mystical machines. */
     private static final List<DeferredItem<?>> CULTURES = of(FItems.CULTURE_DISH, FItems.CULTURE_SEED,
