@@ -55,11 +55,11 @@ Right-click works as a fill or pour only while the crosshair is on a fluid sourc
 - **Use it on a fluid source block** in the world: the tank draws the fluid in, as a bucket does.
 - **Use it on a block that holds fluid** (a tank, a vessel): the caster is a hose and takes the fluid. If the block is under pressure, the caster takes that pressure with it, up to its own gauge reading.
 - **Sneak and use it** on such a block to pour the tank back in.
-- **In an inventory**, drop a fluid item onto the caster as you would an item into a bundle: pick the item up on the cursor and right-click the caster in its slot, or pick the caster up and right-click the fluid item. A full item (a bucket, for example) fills the tank and comes back empty. An empty item takes fluid from the tank, but only if it accepts that amount: a bucket needs 1000 mB. Only a single item works, not a stack.
+- **In an inventory**, drop a fluid item onto the caster as you would an item into a bundle: pick the item up on the cursor and right-click the caster in its slot, or pick the caster up and right-click the fluid item. A full item (a bucket, for example) fills the tank and comes back empty. An empty item takes fluid from the tank, but only if it accepts that amount: a bucket needs 1000 mB. Only a single item works, not a stack. A potion bottle pours its 250 mB in and leaves a glass bottle; a glass bottle takes 250 mB of potion out as a potion bottle.
 - A [pipe](Pipe.md) or a placed tank fills and drains the caster as it would any fluid container.
 - **Press the unload key** (default `U`) while holding the caster to let the whole tank out at your feet. The tank pressure drops to zero, with a splash and the bucket-empty sound. The fluid lands like a stream that stopped there: a container block under you takes it in, a cauldron fills a level (water), farmland under you is watered (water); otherwise it is gone.
 
-The tooltip names what the tank holds and how many mB, and says when it is under pressure. The fluid keeps its temperature in the tank.
+The tooltip names what the tank holds and how many mB, and says when it is under pressure. A potion in the tank is named by its effect and how fresh it is. The fluid keeps its temperature in the tank.
 
 ## Using it
 
@@ -87,6 +87,7 @@ Every effect is read from the fluid's own properties, not its name.
 - **Water** puts out burning bodies and fires, douses lit blocks, waters farmland and fills a cauldron a level at a time. Creatures that hate water are hurt.
 - A **corrosive** fluid bites the armor of what it hits.
 - A heavy, fast flow **shoves** what it hits, like a fire hose.
+- A **potion** gives its effect to each body in the stream, and acts where it lands; see [Sprayed from a fluid caster](Thrown_and_Imbued_Potions.md#sprayed-from-a-fluid-caster).
 - A **container** the stream lands on (a tank or other fluid block) takes the fluid in.
 - An **atomiser** leaves a vapor cloud where the stream lands or runs out; a fluid that burns makes a cloud a flame can set off. See [Hazards](Hazards.md).
 
