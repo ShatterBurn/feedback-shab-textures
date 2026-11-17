@@ -50,6 +50,14 @@ public interface DataNode {
     /** The other ends this node is linked to. Owned and persisted by the implementer. */
     Set<DataNodeRef> getNodeLinks();
 
+    /**
+     * What this node is and offers: its kinds, the signals it reads, whether it can be driven. Override to
+     * declare directly; the default reads the block's {@code data_kind/} tags and the interfaces it implements.
+     */
+    default DataSpec dataSpec() {
+        return DataSpec.derive(this);
+    }
+
     default DataNodeRef getNodeRef() {
         return new DataNodeRef(getNodePos(), getNodeSide());
     }
