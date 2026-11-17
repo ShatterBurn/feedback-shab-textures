@@ -79,6 +79,7 @@ public class ComputerScreen extends SkinnedScreen<ComputerMenu> implements Compu
         desktop = new Desktop(look);
         desktop.register(new DesktopApp("drive", Component.translatable("gui.feedback.computer.drives"), Glyph.DRIVE, false, () -> new DriveWindow(this)));
         desktop.register(new DesktopApp("files", Component.translatable("gui.feedback.computer.files"), Glyph.FILES, true, () -> new FilesWindow(this)));
+        desktop.register(new DesktopApp("internal", Component.translatable("gui.feedback.computer.internal"), Glyph.FILES, true, () -> new InternalWindow(this)));
         desktop.register(new DesktopApp("monitor", Component.translatable("gui.feedback.computer.monitor"), Glyph.MONITOR, true, () -> new MonitorWindow(this)));
         desktop.register(new DesktopApp("diagram", Component.translatable("gui.feedback.computer.diagram"), Glyph.DIAGRAM, true, () -> new DiagramWindow(this)));
         desktop.register(new DesktopApp("links", Component.translatable("gui.feedback.computer.links"), Glyph.LINKS, true, () -> new LinksWindow(this)));
@@ -90,7 +91,6 @@ public class ComputerScreen extends SkinnedScreen<ComputerMenu> implements Compu
         desktop.register(new DesktopApp("notes", Component.translatable("gui.feedback.computer.notes"), Glyph.NOTES, true, () -> new NotesWindow(this), () -> installed("notes")));
         desktop.register(new DesktopApp("converter", Component.translatable("gui.feedback.computer.converter"), Glyph.CONVERT, true, () -> new ConverterWindow(this), () -> installed("converter")));
         desktop.register(new DesktopApp("calc", Component.translatable("gui.feedback.computer.calculator"), Glyph.CALC, true, () -> new CalculatorWindow(this), () -> installed("calc")));
-        desktop.register(new DesktopApp("library", Component.translatable("gui.feedback.computer.library"), Glyph.LIBRARY, true, () -> new LibraryWindow(this), () -> installed("library")));
         desktop.register(new DesktopApp("power", Component.translatable("gui.feedback.computer.power"), Glyph.POWER, true, () -> new PowerWindow(this), () -> installed("power")));
         desktop.register(new DesktopApp("arcade", Component.translatable("gui.feedback.computer.arcade"), Glyph.GAME, true, () -> new ArcadeWindow(this), () -> installed("arcade")));
         desktop.register(new DesktopApp("blueprint", Component.translatable("gui.feedback.computer.blueprint"), Glyph.BLUEPRINT, true, () -> new BlueprintWindow(this), () -> installed("blueprint")));
@@ -109,6 +109,12 @@ public class ComputerScreen extends SkinnedScreen<ComputerMenu> implements Compu
     }
 
     @Override
+    public void sendFile(int op, int index, int drive) {
+        net.neoforged.neoforge.network.PacketDistributor.sendToServer(
+                new io.github.soundgoodizerfan.feedback.control.computer.ComputerFileActionPayload(menu.getPos(), op, index, drive));
+    }
+
+    @Override
     public void toast(Component text) {
         desktop.toast(text);
     }
@@ -116,6 +122,11 @@ public class ComputerScreen extends SkinnedScreen<ComputerMenu> implements Compu
     /** Whether a disk with this app is in a bay, as the menu's slots show it. */
     @Override
     public boolean installed(String id) {
+        ComputerBlockEntity computer = menu.getComputer();
+        if (computer != null)
+            for (ComputerBlockEntity.FileInfo f : computer.internalFiles())
+                if (f.kind() == io.github.soundgoodizerfan.feedback.control.computer.ComputerFile.Kind.APP && f.name().equals(id))
+                    return true;
         for (int i = 0; i < ComputerBays.SIZE; i++)
             if (id.equals(ComputerApps.idOf(menu.getSlot(i).getItem())))
                 return true;

@@ -107,6 +107,12 @@ public class ProgrammerBlockEntity extends BlockEntity implements Container, Men
         loadAdditional(tag, registries);
     }
 
+    /** Forgets the working copy and its layout: the next medium opened here starts from what it holds. */
+    public void resetWorking() {
+        working = ProgramGraph.EMPTY;
+        positions.clear();
+    }
+
     public boolean isPrinted() {
         return !card.getOrDefault(FDataComponents.PROGRAM_GRAPH, ProgramGraph.EMPTY).nodes().isEmpty();
     }
@@ -248,11 +254,6 @@ public class ProgrammerBlockEntity extends BlockEntity implements Container, Men
     @Override
     public boolean canPlaceItem(int slot, ItemStack stack) {
         return card.isEmpty() && takes(stack);
-    }
-
-    private void resetWorking() {
-        working = ProgramGraph.EMPTY;
-        positions.clear();
     }
 
     @Override

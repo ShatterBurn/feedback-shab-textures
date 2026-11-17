@@ -113,6 +113,15 @@ public final class ComputerStore extends SavedData {
         return true;
     }
 
+    public boolean replace(UUID id, int index, ComputerFile file) {
+        Entry entry = entries.get(id);
+        if (entry == null || index < 0 || index >= entry.files.size() || !file.fits())
+            return false;
+        entry.files.set(index, file);
+        setDirty();
+        return true;
+    }
+
     public boolean remove(UUID id, int index) {
         Entry entry = entries.get(id);
         if (entry == null || index < 0 || index >= entry.files.size())
