@@ -3,6 +3,7 @@
 package io.github.soundgoodizerfan.feedback.machine.cutter;
 
 import io.github.soundgoodizerfan.feedback.item.DataStickItem;
+import io.github.soundgoodizerfan.feedback.machine.CircuitSlot;
 import io.github.soundgoodizerfan.feedback.registry.FBlockEntities;
 
 import org.jetbrains.annotations.Nullable;
@@ -43,6 +44,8 @@ public class PowerCutterBlock extends Block implements EntityBlock {
         if (!level.isClientSide) {
             if (head)
                 give(player, cutter.seatHead(stack));
+            else if (CircuitSlot.accepts(stack))
+                give(player, cutter.seatCircuit(stack));
             else if (stick)
                 give(player, cutter.seatStick(stack));
             else if (!stack.isEmpty()) {
@@ -62,7 +65,8 @@ public class PowerCutterBlock extends Block implements EntityBlock {
             if (cutter.clearJam())
                 return InteractionResult.sidedSuccess(false);
             ItemStack out = cutter.takeOutput(64, false);
-            give(player, !out.isEmpty() ? out : player.isShiftKeyDown() ? cutter.removeHead() : cutter.removeStick());
+            give(player, !out.isEmpty() ? out : player.isShiftKeyDown() ? cutter.removeHead()
+                    : !cutter.getStick().isEmpty() ? cutter.removeStick() : cutter.removeCircuit());
         }
         return InteractionResult.sidedSuccess(level.isClientSide);
     }
@@ -79,6 +83,7 @@ public class PowerCutterBlock extends Block implements EntityBlock {
         if (!state.is(newState.getBlock()) && level.getBlockEntity(pos) instanceof PowerCutterBlockEntity cutter) {
             Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), cutter.getHead().get());
             Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), cutter.getStick());
+            Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), cutter.getCircuit());
             Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), cutter.getInput());
             Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), cutter.getOutput());
         }

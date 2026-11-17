@@ -44,6 +44,8 @@ public class AutoEngineerBlock extends Block implements EntityBlock {
         if (!level.isClientSide) {
             if (stack.getItem() instanceof DataStickItem)
                 give(player, engineer.seatStick(stack));
+            else if (io.github.soundgoodizerfan.feedback.machine.CircuitSlot.accepts(stack))
+                give(player, engineer.seatCircuit(stack));
             else if (ToolAbilities.isTool(stack)) {
                 if (!engineer.seatTool(stack))
                     stackInto(engineer, stack, player);
@@ -73,7 +75,8 @@ public class AutoEngineerBlock extends Block implements EntityBlock {
             return InteractionResult.PASS;
         if (!level.isClientSide) {
             ItemStack out = player.isShiftKeyDown() ? engineer.takeLoose() : engineer.takeOutput(64, false);
-            give(player, !out.isEmpty() ? out : player.isShiftKeyDown() ? ItemStack.EMPTY : engineer.removeStick());
+            give(player, !out.isEmpty() ? out : player.isShiftKeyDown() ? ItemStack.EMPTY
+                    : !engineer.getStick().isEmpty() ? engineer.removeStick() : engineer.removeCircuit());
         }
         return InteractionResult.sidedSuccess(level.isClientSide);
     }
@@ -89,6 +92,7 @@ public class AutoEngineerBlock extends Block implements EntityBlock {
     protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean moved) {
         if (!state.is(newState.getBlock()) && level.getBlockEntity(pos) instanceof AutoEngineerBlockEntity engineer) {
             Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), engineer.getStick());
+            Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), engineer.getCircuit());
             Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), engineer.getOutput());
             for (var list : java.util.List.of(engineer.getBay(), engineer.getTools(), engineer.getFasteners()))
                 for (ItemStack s : list)

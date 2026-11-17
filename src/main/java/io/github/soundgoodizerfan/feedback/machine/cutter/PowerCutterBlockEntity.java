@@ -9,6 +9,9 @@ import java.util.Optional;
 import io.github.soundgoodizerfan.feedback.core.electric.ElectricNode;
 import io.github.soundgoodizerfan.feedback.core.electric.ElectricRules;
 import io.github.soundgoodizerfan.feedback.core.unit.VoltageBand;
+import io.github.soundgoodizerfan.feedback.control.ChannelSource;
+import io.github.soundgoodizerfan.feedback.control.RemoteChannels;
+import io.github.soundgoodizerfan.feedback.machine.CircuitSlot;
 import io.github.soundgoodizerfan.feedback.machine.HeadSlot;
 import io.github.soundgoodizerfan.feedback.machine.Headed;
 import io.github.soundgoodizerfan.feedback.machine.Wearing;
@@ -41,8 +44,14 @@ import net.minecraft.world.level.block.state.BlockState;
  * Stock harder than the head's material, running with the output full, or a supply past its EHV rating each cost the head condition;
  * a correct cut never does. A worn head cuts slower (condition scales the rate) and never breaks or stops. It does nothing without
  * input, and does not tick work when idle.
+ *
+ * <h2>The circuit slot</h2>
+ * A circuit in the slot ({@link CircuitSlot}) is optional: with none the cutter keeps its old pace and old odds. Its speed (read at its
+ * warmth) makes the cutter play faster; its noise scales down the jam, blade-wear and scrap odds for input the stick does not cover and now and
+ * then holds off guessing. A tubed circuit's heater draws from the cutter's line. Fitted, the cutter is also a data source: a Sensor card
+ * reads its cut progress, head condition and output fill.
  */
-public class PowerCutterBlockEntity extends ElectricNode implements Headed, Wearing {
+public class PowerCutterBlockEntity extends ElectricNode implements Headed, Wearing, ChannelSource, RemoteChannels {
 
     private final HeadSlot head = new HeadSlot();
     private ItemStack stick = ItemStack.EMPTY;
@@ -52,6 +61,7 @@ public class PowerCutterBlockEntity extends ElectricNode implements Headed, Wear
     private float rate;
     private float over;
     private boolean jammed;
+    private final CircuitSlot circuit = new CircuitSlot();
 
     public PowerCutterBlockEntity(BlockPos pos, BlockState state) {
         super(FBlockEntities.POWER_CUTTER.get(), pos, state);
@@ -66,7 +76,7 @@ public class PowerCutterBlockEntity extends ElectricNode implements Headed, Wear
 
     @Override
     public float wantedAmps() {
-        return working() ? MachineTuning.CUTTER_AMPS : 0f;
+        return (working() ? MachineTuning.CUTTER_AMPS : 0f) + circuit.heaterAmps(ElectricRules.packetEu(VoltageBand.EHV));
     }
 
     @Override
@@ -79,6 +89,7 @@ public class PowerCutterBlockEntity extends ElectricNode implements Headed, Wear
         super.onResolved(band, eu, amps, wanted, blocked);
         rate = working() ? ElectricRules.rate(eu, amps, wanted, VoltageBand.EHV) : 0f;
         over = ElectricRules.overVoltage(band, eu, VoltageBand.EHV);
+        circuit.supply(ElectricRules.rate(eu, amps, wanted, VoltageBand.EHV));
     }
 
     private boolean working() {
@@ -101,9 +112,11 @@ public class PowerCutterBlockEntity extends ElectricNode implements Headed, Wear
     // --- the tick -----------------------------------------------------------------------------
 
     public void tickServer() {
+        if (level instanceof ServerLevel && level.getGameTime() % io.github.soundgoodizerfan.feedback.control.ControlTuning.CIRCUIT_HEAT_EVERY_TICKS == 0)
+            circuit.heat(level, io.github.soundgoodizerfan.feedback.control.ControlTuning.CIRCUIT_HEAT_EVERY_TICKS);
         if (!(level instanceof ServerLevel server) || !working() || rate <= 0f)
             return;
-        progress += rate * head.condition() * io.github.soundgoodizerfan.feedback.modular.attunement.EdgeKinds.headBlow(head.get());
+        progress += rate * head.condition() * io.github.soundgoodizerfan.feedback.modular.attunement.EdgeKinds.headBlow(head.get()) * circuit.pace(server);
         if (progress < MachineTuning.CUTTER_TICKS_PER_CUT)
             return;
         progress -= MachineTuning.CUTTER_TICKS_PER_CUT;
@@ -138,15 +151,19 @@ public class PowerCutterBlockEntity extends ElectricNode implements Headed, Wear
         boolean covered = told.isPresent();
         CutterCuts.Cut chosen = told.orElseGet(() -> CutterCuts.seeded(server, legal, what, headItem.type()));
         if (!covered) {
-            float roll = server.getRandom().nextFloat() * (MachineTuning.CUTTER_SEEDED_ODDS + MachineTuning.CUTTER_JAM_ODDS
-                    + MachineTuning.CUTTER_BLADE_WEAR_ODDS + MachineTuning.CUTTER_SCRAP_ODDS);
+            // A quiet circuit holds off guessing now and then (this cycle is spent, the input stays), and cuts the bad odds.
+            if (circuit.declines(server, server.getRandom()))
+                return;
+            float bad = circuit.oddsFactor(server);
+            float roll = server.getRandom().nextFloat() * (MachineTuning.CUTTER_SEEDED_ODDS + bad * (MachineTuning.CUTTER_JAM_ODDS
+                    + MachineTuning.CUTTER_BLADE_WEAR_ODDS + MachineTuning.CUTTER_SCRAP_ODDS));
             if ((roll -= MachineTuning.CUTTER_SEEDED_ODDS) >= 0f) {
-                if ((roll -= MachineTuning.CUTTER_JAM_ODDS) < 0f) {
+                if ((roll -= MachineTuning.CUTTER_JAM_ODDS * bad) < 0f) {
                     jammed = true;
                     sync();
                     return;
                 }
-                if ((roll -= MachineTuning.CUTTER_BLADE_WEAR_ODDS) < 0f) {
+                if ((roll -= MachineTuning.CUTTER_BLADE_WEAR_ODDS * bad) < 0f) {
                     wear(MachineTuning.CUTTER_BLADE_WEAR_UNITS);
                     consume(1);
                     return;
@@ -217,6 +234,46 @@ public class PowerCutterBlockEntity extends ElectricNode implements Headed, Wear
         ItemStack taken = head.take();
         sync();
         return taken;
+    }
+
+    public ItemStack getCircuit() {
+        return circuit.get();
+    }
+
+    /** Seats one circuit of {@code stack}; the one it replaces comes back. */
+    public ItemStack seatCircuit(ItemStack stack) {
+        ItemStack old = circuit.seat(stack);
+        sync();
+        return old;
+    }
+
+    public ItemStack removeCircuit() {
+        ItemStack old = circuit.take();
+        sync();
+        return old;
+    }
+
+    // --- data: a fitted circuit lets a Controller read the cutter ------------------------------
+
+    /** Channel 0: how far through the cut; 1: head condition; 2: how full the output is. */
+    @Override
+    public float read(int channel) {
+        return switch (channel) {
+            case 0 -> Math.min(1f, progress / MachineTuning.CUTTER_TICKS_PER_CUT);
+            case 1 -> head.condition();
+            case 2 -> output.isEmpty() ? 0f : output.getCount() / (float) output.getMaxStackSize();
+            default -> 0f;
+        };
+    }
+
+    @Override
+    public boolean offersChannels() {
+        return level != null && !circuit.isEmpty() && circuit.read(level).live();
+    }
+
+    @Override
+    public String[] senseKeys() {
+        return new String[] {"feedback.machine.sense.progress", "feedback.machine.sense.condition", "feedback.machine.sense.output"};
     }
 
     public ItemStack getStick() {
@@ -301,6 +358,7 @@ public class PowerCutterBlockEntity extends ElectricNode implements Headed, Wear
     protected void saveAdditional(net.minecraft.nbt.CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
         head.save(tag, registries);
+        circuit.save(tag, registries);
         tag.put("Stick", stick.saveOptional(registries));
         tag.put("Input", input.saveOptional(registries));
         tag.put("Output", output.saveOptional(registries));
@@ -312,6 +370,7 @@ public class PowerCutterBlockEntity extends ElectricNode implements Headed, Wear
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
         head.load(tag, registries);
+        circuit.load(tag, registries);
         stick = ItemStack.parseOptional(registries, tag.getCompound("Stick"));
         input = ItemStack.parseOptional(registries, tag.getCompound("Input"));
         output = ItemStack.parseOptional(registries, tag.getCompound("Output"));

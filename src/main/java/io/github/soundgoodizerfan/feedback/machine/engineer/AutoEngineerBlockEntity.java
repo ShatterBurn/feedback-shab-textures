@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.machine.engineer;
 
+import io.github.soundgoodizerfan.feedback.machine.CircuitSlot;
 import io.github.soundgoodizerfan.feedback.machine.MachineTuning;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -63,8 +64,15 @@ import net.minecraft.world.level.block.state.BlockState;
  * <h2>Wear is misuse only</h2>
  * Stock harder than the machine takes, a full output (retried every 20 ticks, wearing once per blocked episode), scrapping and a supply past the EHV rating each
  * cost condition; a worn machine only works slower, down to a floor.
+ *
+ * <h2>The circuit slot</h2>
+ * A circuit ({@link CircuitSlot}) is optional: with none the machine keeps its old pace and accuracy. Its speed (read at its warmth) makes
+ * assemblies come faster; its noise is how often the machine holds off improvising or scrapping parts the stick does not cover (it waits, as for a
+ * missing tool), so a quiet circuit makes fewer improvised or scrapped results. A tubed circuit's heater draws from the machine's line. Fitted, the
+ * machine is a data source: a Sensor card reads its assembly progress, condition and output fill.
  */
-public class AutoEngineerBlockEntity extends ElectricNode implements Wearing {
+public class AutoEngineerBlockEntity extends ElectricNode implements Wearing,
+        io.github.soundgoodizerfan.feedback.control.ChannelSource, io.github.soundgoodizerfan.feedback.control.RemoteChannels {
 
     /** Parts bay slots (the grid it lays parts on is the table's 3x3), tool slots and fastener stock slots. */
     public static final int BAY = 9, TOOLS = 4, FASTENERS = 3;
@@ -75,6 +83,7 @@ public class AutoEngineerBlockEntity extends ElectricNode implements Wearing {
     private final NonNullList<ItemStack> fasteners = NonNullList.withSize(FASTENERS, ItemStack.EMPTY);
     private ItemStack output = ItemStack.EMPTY;
     private float condition = 1f;
+    private final CircuitSlot circuit = new CircuitSlot();
     private float progress;
     private float rate;
     private float over;
@@ -106,7 +115,7 @@ public class AutoEngineerBlockEntity extends ElectricNode implements Wearing {
 
     @Override
     public float wantedAmps() {
-        return working() ? MachineTuning.ENGINEER_AMPS : 0f;
+        return (working() ? MachineTuning.ENGINEER_AMPS : 0f) + circuit.heaterAmps(ElectricRules.packetEu(VoltageBand.EHV));
     }
 
     @Override
@@ -119,6 +128,7 @@ public class AutoEngineerBlockEntity extends ElectricNode implements Wearing {
         super.onResolved(band, eu, amps, wanted, blocked);
         rate = working() ? ElectricRules.rate(eu, amps, wanted, VoltageBand.EHV) : 0f;
         over = ElectricRules.overVoltage(band, eu, VoltageBand.EHV);
+        circuit.supply(ElectricRules.rate(eu, amps, wanted, VoltageBand.EHV));
     }
 
     private boolean working() {
@@ -131,12 +141,14 @@ public class AutoEngineerBlockEntity extends ElectricNode implements Wearing {
     // --- the tick -----------------------------------------------------------------------------
 
     public void tickServer() {
+        if (level instanceof ServerLevel && level.getGameTime() % io.github.soundgoodizerfan.feedback.control.ControlTuning.CIRCUIT_HEAT_EVERY_TICKS == 0)
+            circuit.heat(level, io.github.soundgoodizerfan.feedback.control.ControlTuning.CIRCUIT_HEAT_EVERY_TICKS);
         if (!(level instanceof ServerLevel server) || !working() || rate <= 0f)
             return;
         if (blocked && !dirty && ++wait < RETRY)
             return;
         wait = 0;
-        progress += rate * condition;
+        progress += rate * condition * circuit.pace(server);
         if (progress < MachineTuning.ENGINEER_TICKS_PER_ASSEMBLY)
             return;
         progress -= MachineTuning.ENGINEER_TICKS_PER_ASSEMBLY;
@@ -169,6 +181,11 @@ public class AutoEngineerBlockEntity extends ElectricNode implements Wearing {
                     block(false); // waiting on a tool, a fastener or the output
                 return;
             }
+        }
+        // A quiet circuit holds off guessing at parts the stick does not cover: the machine waits, spending nothing.
+        if (circuit.declines(server, server.getRandom())) {
+            block(false);
+            return;
         }
         improvise(server, materials);
     }
@@ -459,6 +476,46 @@ public class AutoEngineerBlockEntity extends ElectricNode implements Wearing {
         return out;
     }
 
+    public ItemStack getCircuit() {
+        return circuit.get();
+    }
+
+    /** Seats one circuit of {@code stack}; the one it replaces comes back. */
+    public ItemStack seatCircuit(ItemStack stack) {
+        ItemStack old = circuit.seat(stack);
+        sync();
+        return old;
+    }
+
+    public ItemStack removeCircuit() {
+        ItemStack old = circuit.take();
+        sync();
+        return old;
+    }
+
+    // --- data: a fitted circuit lets a Controller read the machine --------------------------------
+
+    /** Channel 0: how far through the assembly; 1: machine condition; 2: how full the output is. */
+    @Override
+    public float read(int channel) {
+        return switch (channel) {
+            case 0 -> Math.min(1f, progress / MachineTuning.ENGINEER_TICKS_PER_ASSEMBLY);
+            case 1 -> condition;
+            case 2 -> output.isEmpty() ? 0f : output.getCount() / (float) output.getMaxStackSize();
+            default -> 0f;
+        };
+    }
+
+    @Override
+    public boolean offersChannels() {
+        return level != null && !circuit.isEmpty() && circuit.read(level).live();
+    }
+
+    @Override
+    public String[] senseKeys() {
+        return new String[] {"feedback.machine.sense.progress", "feedback.machine.sense.condition", "feedback.machine.sense.output"};
+    }
+
     // --- Wearing ------------------------------------------------------------------------------
 
     @Override
@@ -483,6 +540,7 @@ public class AutoEngineerBlockEntity extends ElectricNode implements Wearing {
     @Override
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
+        circuit.save(tag, registries);
         tag.put("Stick", stick.saveOptional(registries));
         tag.put("Output", output.saveOptional(registries));
         CompoundTag b = new CompoundTag(), t = new CompoundTag(), f = new CompoundTag();
@@ -499,6 +557,7 @@ public class AutoEngineerBlockEntity extends ElectricNode implements Wearing {
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
+        circuit.load(tag, registries);
         stick = ItemStack.parseOptional(registries, tag.getCompound("Stick"));
         output = ItemStack.parseOptional(registries, tag.getCompound("Output"));
         bay.clear();

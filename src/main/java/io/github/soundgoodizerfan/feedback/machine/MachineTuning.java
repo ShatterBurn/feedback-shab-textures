@@ -548,6 +548,13 @@ public final class MachineTuning {
     /** Placeholder. Current the Power Cutter asks for while it has a head and a piece to cut: about 1 kW at EHV (384 V), 2.6 A. */
     public static final float CUTTER_AMPS = 2.6f;
 
+    /**
+     * Placeholder. A circuit in a data-stick machine (Power Cutter, Auto Engineer): playback runs {@code 1 + PACE_GAIN x speed} times as fast,
+     * and the odds of a bad outcome on input the stick does not cover scale by {@code 1 - ACCURACY_CUT x (1 - noise)} (with a hold-off that
+     * often per cycle). No circuit changes nothing.
+     */
+    public static final float CIRCUIT_PACE_GAIN = 1f, CIRCUIT_ACCURACY_CUT = 0.6f;
+
     /** Placeholder. Cuts per second at full power with a sound head (spec: about two). */
     public static final float CUTTER_CUTS_PER_SECOND = 2f;
 
