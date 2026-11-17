@@ -1,0 +1,12 @@
+{
+  "values": [
+    {
+      "id": "feedback:breaker",
+      "required": false
+    },
+    {
+      "id": "feedback:fuse",
+      "required": false
+    }
+  ]
+}

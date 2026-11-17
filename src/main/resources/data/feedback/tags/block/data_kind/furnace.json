@@ -1,0 +1,12 @@
+{
+  "values": [
+    {
+      "id": "feedback:crucible",
+      "required": false
+    },
+    {
+      "id": "feedback:arc_hearth",
+      "required": false
+    }
+  ]
+}

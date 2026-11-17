@@ -1,0 +1,16 @@
+{
+  "values": [
+    {
+      "id": "feedback:controller",
+      "required": false
+    },
+    {
+      "id": "feedback:electric_controller",
+      "required": false
+    },
+    {
+      "id": "feedback:computer",
+      "required": false
+    }
+  ]
+}

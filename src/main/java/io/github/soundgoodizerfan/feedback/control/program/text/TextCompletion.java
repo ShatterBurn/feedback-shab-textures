@@ -14,9 +14,9 @@ import io.github.soundgoodizerfan.feedback.instrument.Quantity;
 
 /**
  * Grammar-driven completion: what may stand at the caret, from the tokens before it on the statement and the names the whole text declares.
- * A statement's first word offers its keywords and the names so far; after {@code sensor(} the link names, then the quantities; after
+ * A statement's first word offers its keywords and the names so far; after {@code sensor(} the quantities, then the kinds, colors and reductions; after
  * {@code read(} and {@code write(} the declared variables; after {@code var x:} or {@code as} the two types; elsewhere the names of the
- * cards and the functions and operators of a value. It reads the text only, never the world, so it offers no item or block.
+ * cards and the functions and operators of a value. It reads the text and the kind tags, never the world, so it offers no block.
  *
  * <p>Design from Super Factory Manager (MPL-2.0, design only): grammar-driven completion of keywords, port names and declared names.
  */
@@ -57,23 +57,25 @@ public final class TextCompletion {
         Set<String> out = new LinkedHashSet<>();
         Token last = before.isEmpty() ? null : before.get(before.size() - 1);
         if (before.isEmpty()) {
-            out.addAll(List.of("var", "link", "actuate", "write"));
-            out.addAll(names(all, false));
+            out.addAll(List.of("var", "actuate", "write"));
+            out.addAll(names(all));
         } else if (last.word("as") || last.sym(":") && before.size() >= 2 && before.get(0).word("var")) {
             out.addAll(List.of("number", "boolean"));
-        } else if (last.sym("=") && before.get(0).word("link")) {
-            out.add("unlinked");
         } else {
             String fn = openCall(before);
             int arg = argIndex(before);
             if (fn == null) {
                 out.addAll(operands(all));
-            } else if (fn.equals("sensor") && arg == 0 || fn.equals("actuate") && arg == 1) {
-                out.addAll(names(all, true));
-                out.add("unlinked");
-            } else if (fn.equals("sensor") && arg == 1) {
+            } else if (fn.equals("sensor") && arg == 0) {
                 for (Quantity q : Quantity.values())
                     out.add(q.getSerializedName());
+            } else if (fn.equals("sensor") && arg >= 1 || fn.equals("actuate") && arg >= 1) {
+                for (var kind : io.github.soundgoodizerfan.feedback.control.data.DataSpec.allKinds())
+                    out.add(TextWords.kind(kind));
+                for (net.minecraft.world.item.DyeColor dye : net.minecraft.world.item.DyeColor.values())
+                    out.add(dye.getName());
+                if (fn.equals("sensor"))
+                    out.addAll(List.of("avg", "min", "max"));
             } else if (fn.equals("read") && arg == 0 || fn.equals("write") && arg == 0) {
                 out.addAll(variables(all));
             } else {
@@ -88,7 +90,7 @@ public final class TextCompletion {
     }
 
     private static List<String> operands(List<Token> all) {
-        List<String> out = new ArrayList<>(names(all, false));
+        List<String> out = new ArrayList<>(names(all));
         out.addAll(List.of("sensor", "read", "delay", "min", "max", "not", "and", "or", "unwired"));
         return out;
     }
@@ -126,8 +128,8 @@ public final class TextCompletion {
         return commas;
     }
 
-    /** The names a text declares: its cards (or, with {@code links}, its link aliases), by scanning {@code name =} at statement starts. */
-    private static List<String> names(List<Token> all, boolean links) {
+    /** The names a text declares: its cards, by scanning {@code name =} at statement starts. */
+    private static List<String> names(List<Token> all) {
         List<String> out = new ArrayList<>();
         boolean start = true;
         for (int i = 0; i < all.size(); i++) {
@@ -136,10 +138,7 @@ public final class TextCompletion {
                 start = true;
                 continue;
             }
-            if (start && t.word("link") && i + 1 < all.size() && all.get(i + 1).kind() == Kind.IDENT) {
-                if (links)
-                    out.add(all.get(i + 1).text());
-            } else if (start && !links && t.kind() == Kind.IDENT && i + 1 < all.size() && all.get(i + 1).sym("=") && !TextParser.isKeyword(t.text()))
+            if (start && t.kind() == Kind.IDENT && i + 1 < all.size() && all.get(i + 1).sym("=") && !TextParser.isKeyword(t.text()))
                 out.add(t.text());
             start = false;
         }

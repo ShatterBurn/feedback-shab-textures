@@ -1,0 +1,12 @@
+{
+  "values": [
+    {
+      "id": "feedback:valve",
+      "required": false
+    },
+    {
+      "id": "feedback:damper",
+      "required": false
+    }
+  ]
+}
