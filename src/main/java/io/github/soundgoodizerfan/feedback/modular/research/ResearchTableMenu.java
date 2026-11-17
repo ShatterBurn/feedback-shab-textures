@@ -329,8 +329,8 @@ public class ResearchTableMenu extends AbstractContainerMenu {
     }
 
     /**
-     * An app's research ends in a disk or in nothing: a chain that reached its goal in an honest time writes the app onto the blank and uses up
-     * what the app is about; a run that did not leaves the blank and the subject alone (the experience is gone either way).
+     * An app's research ends in a disk or in nothing: a chain that reached its goal in an honest time writes the app onto the blank; what the app is
+     * about is only studied, never used up, and a run that did not leaves the blank alone (the experience is gone either way).
      */
     private void writeApp(ServerPlayer server, boolean learned) {
         if (!server.getAbilities().instabuild)
@@ -340,7 +340,6 @@ public class ResearchTableMenu extends AbstractContainerMenu {
             return;
         }
         String app = Researching.app(sentIndex);
-        table.getItem(ResearchTableBlockEntity.SUBJECT).shrink(1);
         table.setItem(ResearchTableBlockEntity.BLANK_DISK, ComputerApps.disk(app));
         HudReadoutPayload.send(server, Component.translatable("message.feedback.research.app", Component.translatable("item.feedback.app." + app)), 60);
         note.set(NOTE_APP_WRITTEN);

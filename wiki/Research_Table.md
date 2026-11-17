@@ -53,7 +53,7 @@ The **reagent** is an optional brewed potion.
 
 The Apps tab lists every app a [Computer](Electric_Controller.md#apps) can run from a disk. An app has a slot for a **disk**, a blank [Floppy Disk](Programming.md#media) with no program and no app on it, and a slot for **About**, the thing the app is about: a spyglass for Scope, a compass for Link Map, a book for Notes, a clock for Converter, redstone for Calculator, a bookshelf for Library, a redstone lamp for Power, a note block for Arcade, paper for Blueprint, and an Ender Pearl or Synthetic Pearl for Network.
 
-Reaching the goal in an honest time writes the app onto the disk and uses up one About item. A failed run costs the 40 experience points only; the disk and the item stay.
+Reaching the goal in an honest time writes the app onto the disk. The About item is only studied and stays in its slot. A failed run costs the 40 experience points only; the disk stays blank.
 
 ### Blank Rite
 

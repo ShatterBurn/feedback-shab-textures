@@ -24,6 +24,14 @@ public class EmbeddedProgrammer extends ProgrammerBlockEntity {
     }
 
     @Override
+    protected java.util.Optional<io.github.soundgoodizerfan.feedback.control.data.DataNodeRef> attachedRef(int index) {
+        if (!(host instanceof io.github.soundgoodizerfan.feedback.control.computer.ComputerBlockEntity c))
+            return java.util.Optional.empty();
+        var list = c.attached();
+        return index >= 0 && index < list.size() ? java.util.Optional.of(list.get(index).ref()) : java.util.Optional.empty();
+    }
+
+    @Override
     public boolean stillValid(Player player) {
         return Container.stillValidBlockEntity(host, player);
     }

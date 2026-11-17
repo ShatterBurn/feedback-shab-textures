@@ -66,6 +66,28 @@ final class EditorWindow extends DesktopWindow {
             }
 
             @Override
+            public boolean offerAttached(java.util.function.IntConsumer pick) {
+                var computer = ctx.computer();
+                if (computer == null || computer.attached().isEmpty() || computer.programmer() == null)
+                    return false;
+                var items = new java.util.ArrayList<ContextMenu.Item>();
+                items.add(new ContextMenu.Item(net.minecraft.network.chat.Component.translatable("gui.feedback.computer.pick_selected"), () -> pick.accept(-1)));
+                var level = net.minecraft.client.Minecraft.getInstance().level;
+                int i = 0;
+                for (var a : computer.attached()) {
+                    int index = i++;
+                    net.minecraft.network.chat.Component block = level == null ? net.minecraft.network.chat.Component.empty()
+                            : level.getBlockState(a.ref().pos()).getBlock().getName();
+                    String figure = a.quantity() == io.github.soundgoodizerfan.feedback.instrument.Quantity.STATE ? (a.value() > 0.5f ? "on" : "off")
+                            : io.github.soundgoodizerfan.feedback.client.tooltip.Readout.figure(a.quantity(), a.value());
+                    items.add(new ContextMenu.Item(net.minecraft.network.chat.Component.empty().append(block)
+                            .append(" " + a.quantity().getSerializedName() + " " + figure), () -> pick.accept(index)));
+                }
+                desktop().openMenuAtPointer(items);
+                return true;
+            }
+
+            @Override
             public ItemStack medium() {
                 ProgrammerBlockEntity p = programmer();
                 return p == null ? ItemStack.EMPTY : p.getItem(0);

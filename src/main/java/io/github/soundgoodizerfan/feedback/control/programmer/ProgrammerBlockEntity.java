@@ -202,16 +202,21 @@ public class ProgrammerBlockEntity extends BlockEntity implements Container, Men
         return node instanceof ActuatorNode a ? new ActuatorNode(a.id(), a.input(), null) : new SensorNode(node.id(), null, null);
     }
 
+    /** The {@code index}th sensor linked straight to the host Computer, for a card to pick; empty here (a Programmer block has no host). */
+    protected Optional<DataNodeRef> attachedRef(int index) {
+        return Optional.empty();
+    }
+
     /**
      * Consumes this player's pending Data Connector selection for card {@code nodeId} and answers
      * with a {@link ProgrammerLinkedPayload}. The card itself may exist only in the screen's local
      * copy so far, so nothing here touches {@link #working} -- the screen patches its copy and the
      * link reaches the server with the next commit, re-checked there by {@link #recheckLink}.
      */
-    public void link(int nodeId, boolean actuator, boolean quiet, int token, ServerPlayer player) {
+    public void link(int nodeId, boolean actuator, boolean quiet, int token, int pick, ServerPlayer player) {
         if (level == null || isPrinted() || !stillValid(player))
             return;
-        Optional<DataNodeRef> pending = DataLinkManager.get().peekPending(player);
+        Optional<DataNodeRef> pending = pick >= 0 ? (actuator ? Optional.empty() : attachedRef(pick)) : DataLinkManager.get().peekPending(player);
         if (pending.isEmpty()) {
             if (!quiet)
                 player.displayClientMessage(Component.translatable("feedback.programmer.nothing_selected"), true);
@@ -226,7 +231,8 @@ public class ProgrammerBlockEntity extends BlockEntity implements Container, Men
                         ? "feedback.programmer.not_switchable" : "feedback.programmer.not_a_sensor"), true);
             return;
         }
-        DataLinkManager.get().takePending(player);
+        if (pick < 0)
+            DataLinkManager.get().takePending(player);
         granted.add(stored);
         PacketDistributor.sendToPlayer(player, new ProgrammerLinkedPayload(worldPosition, nodeId, stored,
                 linked instanceof SensorNode s ? Optional.ofNullable(s.quantity()) : Optional.empty(),

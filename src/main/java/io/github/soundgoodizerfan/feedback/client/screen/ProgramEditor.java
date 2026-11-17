@@ -257,6 +257,14 @@ public final class ProgramEditor {
 
         /** The medium being edited (the programmer's slot), or empty. */
         ItemStack medium();
+
+        /**
+         * Offers the sensors linked straight to the Computer as a menu to pick a Sensor card's target from (index into its list, or -1 for the
+         * Data Connector's selection). Returns false, opening nothing, where there are none.
+         */
+        default boolean offerAttached(java.util.function.IntConsumer pick) {
+            return false;
+        }
     }
 
     private final Source src;
@@ -955,9 +963,13 @@ public final class ProgramEditor {
     private int nextLinkToken;
 
     private void requestLink(ProgramNode node, boolean quiet) {
+        requestLink(node, quiet, -1);
+    }
+
+    private void requestLink(ProgramNode node, boolean quiet, int pick) {
         int token = ++nextLinkToken;
         pendingLinks.put(node.id(), token);
-        PacketDistributor.sendToServer(new ProgrammerLinkPayload(src.pos(), node.id(), node instanceof ActuatorNode, quiet, token));
+        PacketDistributor.sendToServer(new ProgrammerLinkPayload(src.pos(), node.id(), node instanceof ActuatorNode, quiet, token, pick));
     }
 
     public void applyLink(ProgrammerLinkedPayload payload) {
@@ -982,6 +994,12 @@ public final class ProgramEditor {
     }
 
     /** What a click (not a drag) at canvas-local {@code lx, ly} on {@code node} does, or null if that spot is only a drag handle. */
+    /** A Sensor card's Link: a menu of the Computer's attached sensors when it has any, else the pending selection at once. */
+    private void linkSensor(SensorNode n) {
+        if (!src.offerAttached(pick -> requestLink(n, false, pick)))
+            requestLink(n, false);
+    }
+
     @Nullable
     private Runnable controlAt(ProgramNode node, double lx, double ly) {
         int row = ly < HEADER_H ? -1 : (int) ((ly - HEADER_H) / ROW_H);
@@ -992,7 +1010,7 @@ public final class ProgramEditor {
     @Nullable
     private Runnable controlAt0(ProgramNode node, int row, double lx) {
         return switch (node) {
-            case SensorNode n -> row == 0 ? () -> requestLink(n, false) : null;
+            case SensorNode n -> row == 0 ? () -> linkSensor(n) : null;
             case ActuatorNode n -> row == 0 && lx > 6 ? () -> requestLink(n, false) : null;
             case ComparatorNode n -> row == 0 && Math.abs(lx - NODE_W / 2.0) <= 9 ? () -> toggleOp(n)
                     : row == 1 && lx > 6 && n.rightInput() == ProgramNode.UNWIRED ? () -> openLiteralBox(n) : null;

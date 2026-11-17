@@ -15,9 +15,10 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
  * Client -> server: link card {@code nodeId} to this player's pending Data Connector selection.
  * The one edit that can't happen on the client's local copy, since the selection and the world
  * it resolves against are server-side; the answer comes back as {@link ProgrammerLinkedPayload}.
+ * {@code pick} is -1 for the pending Data Connector selection, or the index of one of the Computer's attached sensors ({@link ProgrammerBlockEntity#attachedRef}).
  * {@code quiet} is the auto-link on placing a card -- nothing pending is not worth a message there.
  */
-public record ProgrammerLinkPayload(BlockPos pos, int nodeId, boolean actuator, boolean quiet, int token)
+public record ProgrammerLinkPayload(BlockPos pos, int nodeId, boolean actuator, boolean quiet, int token, int pick)
         implements CustomPacketPayload {
 
     public static final Type<ProgrammerLinkPayload> TYPE = new Type<>(Feedback.id("programmer_link"));
@@ -29,6 +30,7 @@ public record ProgrammerLinkPayload(BlockPos pos, int nodeId, boolean actuator, 
                     ByteBufCodecs.BOOL, ProgrammerLinkPayload::actuator,
                     ByteBufCodecs.BOOL, ProgrammerLinkPayload::quiet,
                     ByteBufCodecs.VAR_INT, ProgrammerLinkPayload::token,
+                    ByteBufCodecs.VAR_INT, ProgrammerLinkPayload::pick,
                     ProgrammerLinkPayload::new);
 
     @Override
@@ -42,7 +44,7 @@ public record ProgrammerLinkPayload(BlockPos pos, int nodeId, boolean actuator, 
             if (context.player() instanceof ServerPlayer player
                     && player.containerMenu instanceof ProgrammerAccess menu && menu.getPos().equals(payload.pos())
                     && menu.getProgrammer() != null)
-                menu.getProgrammer().link(payload.nodeId(), payload.actuator(), payload.quiet(), payload.token(), player);
+                menu.getProgrammer().link(payload.nodeId(), payload.actuator(), payload.quiet(), payload.token(), payload.pick(), player);
         });
     }
 }
