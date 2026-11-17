@@ -58,12 +58,35 @@ public record PotionState(Optional<ResourceLocation> effect, int amplifier, int 
      * the surroundings then and now. Never mutates; a stamp of 0 has had no time pass.
      */
     public float potencyNow(Level level) {
-        long now = level.getGameTime();
+        return potencyAt(level.getGameTime(), AmbientTable.at(level).value());
+    }
+
+    /** The potency on game tick {@code now} with {@code ambientTu} around it: the same fade as {@link #potencyNow}, without a level. */
+    public float potencyAt(long now, float ambientTu) {
         if (stamp <= 0L || now <= stamp)
             return potency;
         float ambient = ThermalTuning.AMBIENT_TU.value();
-        float heat = Mth.clamp((envTu + AmbientTable.at(level).value()) * 0.5f / ambient, 0f, 3f);
+        float heat = Mth.clamp((envTu + ambientTu) * 0.5f / ambient, 0f, 3f);
         return potency * (float) Math.pow(0.5, (now - stamp) * heat / PotionTuning.HALF_LIFE_TICKS);
+    }
+
+    /** Whether two states are the same brew (effect, level, length, solvent and a dud's tint), so they can share a tank whatever their potency. */
+    public boolean sameBrew(PotionState o) {
+        return effect.equals(o.effect) && amplifier == o.amplifier && duration == o.duration && solvent.equals(o.solvent) && tint == o.tint;
+    }
+
+    /**
+     * {@code amountA} mB of this and {@code amountB} mB of {@code o} run together: both settled to the later stamp (each fading by its own
+     * surroundings; the later one's stands for the air round both), then the amount-weighted mean of potency, taste and temperature. Only
+     * the same brew merges ({@link #sameBrew}); callers check first. No level needed, so a tank's fill can do it.
+     */
+    public PotionState merge(int amountA, PotionState o, int amountB) {
+        long now = Math.max(stamp, o.stamp);
+        float ambient = o == this || o.stamp >= stamp ? o.envTu : envTu;
+        float pa = potencyAt(now, ambient), pb = o.potencyAt(now, ambient);
+        float total = Math.max(1, amountA + amountB), wa = amountA / total, wb = amountB / total;
+        List<Float> mixed = List.of(taste.get(0) * wa + o.taste.get(0) * wb, taste.get(1) * wa + o.taste.get(1) * wb, taste.get(2) * wa + o.taste.get(2) * wb);
+        return new PotionState(effect, amplifier, duration, pa * wa + pb * wb, solvent, mixed, now, envTu * wa + o.envTu * wb, tint);
     }
 
     /** The level it gives now: potency scales the fresh level down, and under {@link PotionTuning#MIN_POTENCY} it gives nothing (-1). */

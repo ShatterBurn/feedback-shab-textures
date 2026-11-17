@@ -39,6 +39,8 @@ import io.github.soundgoodizerfan.feedback.core.hazard.Vapour;
 import io.github.soundgoodizerfan.feedback.core.thermal.FluidHeat;
 import io.github.soundgoodizerfan.feedback.net.CasterStreamPayload;
 import io.github.soundgoodizerfan.feedback.process.Material;
+import io.github.soundgoodizerfan.feedback.potion.PotionFluids;
+import io.github.soundgoodizerfan.feedback.potion.PotionSpray;
 import io.github.soundgoodizerfan.feedback.process.MaterialTable;
 
 /**
@@ -142,24 +144,38 @@ public final class FluidStream {
                     break;
                 }
         float share = inCone.isEmpty() ? 0f : (float) flowMb / inCone.size();
-        for (LivingEntity target : inCone)
-            hit(level, shooter, target, dir, fluid, share, speed, density, tu, water, burnable && lit, corrosive);
+        // A potion is carried in water: it wets what it hits as water does (but is no plain water: no cauldron, no farmland).
+        boolean potion = PotionFluids.is(fluid);
+        boolean wet = water || potion && PotionSpray.wet(fluid);
+        for (LivingEntity target : inCone) {
+            hit(level, shooter, target, dir, fluid, share, speed, density, tu, wet, burnable && lit, corrosive);
+            if (potion)
+                PotionSpray.body(level, shooter, target, fluid, Math.max(1, Math.round(share)));
+        }
 
         // Where it lands.
         if (blocked) {
             BlockPos at = block.getBlockPos();
             Direction face = block.getDirection();
-            landed(level, shooter, fluid, flowMb, tu, water, burnable && lit, at, face);
-            if (atomiser) {
+            landed(level, shooter, fluid, flowMb, tu, water, wet, burnable && lit, at, face);
+            if (potion) {
+                Vec3 spot = Vec3.atCenterOf(at.relative(face));
+                PotionSpray.landing(level, shooter, spot, fluid, flowMb);
+                if (atomiser)
+                    PotionSpray.mist(level, spot, fluid, flowMb);
+            } else if (atomiser) {
                 BlockPos mist = at.relative(face);
                 Vapour.source(level, mist, Vapour.potency(fluid), CasterTuning.MIST_LINGER_TICKS, Vapour.burnTicks(fluid), false);
             }
         } else if (atomiser) {
             // A mist that hits nothing hangs where it runs out.
-            Vapour.source(level, BlockPos.containing(end), Vapour.potency(fluid), CasterTuning.MIST_LINGER_TICKS, Vapour.burnTicks(fluid), false);
+            if (potion)
+                PotionSpray.mist(level, end, fluid, flowMb);
+            else
+                Vapour.source(level, BlockPos.containing(end), Vapour.potency(fluid), CasterTuning.MIST_LINGER_TICKS, Vapour.burnTicks(fluid), false);
         }
 
-        int rgb = m != null && m.color().isPresent() ? m.color().get() : water ? 0x3F76E4 : 0xC8D8FF;
+        int rgb = potion ? PotionSpray.colour(fluid) : m != null && m.color().isPresent() ? m.color().get() : water ? 0x3F76E4 : 0xC8D8FF;
         CasterStreamPayload.send(level, start, dir, length, spreadDeg, rgb, burnable && lit ? CasterStreamPayload.BURNING
                 : atomiser ? CasterStreamPayload.MIST : CasterStreamPayload.LIQUID, flowMb, pilot ? flameReach : 0f);
         return new Result(burnable && lit, pilot, ignitionAt, length);
@@ -231,7 +247,7 @@ public final class FluidStream {
     }
 
     /** What the stream does where it stops on a block: a container takes it in, water douses and moistens, a flame lights a fire. */
-    private static void landed(ServerLevel level, LivingEntity shooter, FluidStack fluid, int flowMb, float tu, boolean water, boolean burning,
+    private static void landed(ServerLevel level, LivingEntity shooter, FluidStack fluid, int flowMb, float tu, boolean water, boolean wet, boolean burning,
                                BlockPos at, Direction face) {
         BlockState state = level.getBlockState(at);
         // A container takes the fluid in: the only thing that does.
@@ -251,10 +267,13 @@ public final class FluidStream {
             }
         }
         if (water) {
-            // Wet ground: farmland (or the farmland a crop stands on) is watered; a lit fire box or a fire is put out.
+            // Wet ground: farmland (or the farmland a crop stands on) is watered.
             BlockPos farm = state.getBlock() instanceof FarmBlock ? at : level.getBlockState(at.below()).getBlock() instanceof FarmBlock ? at.below() : null;
             if (farm != null && level.getBlockState(farm).hasProperty(FarmBlock.MOISTURE))
                 level.setBlockAndUpdate(farm, level.getBlockState(farm).setValue(FarmBlock.MOISTURE, FarmBlock.MAX_MOISTURE));
+        }
+        if (wet) {
+            // Anything wet puts out a lit fire box or a fire.
             if (state.hasProperty(BlockStateProperties.LIT) && state.getValue(BlockStateProperties.LIT))
                 level.setBlockAndUpdate(at, state.setValue(BlockStateProperties.LIT, false));
             BlockPos beside = at.relative(face);
@@ -275,7 +294,7 @@ public final class FluidStream {
     public static void pour(ServerLevel level, LivingEntity holder, FluidStack fluid) {
         if (fluid.isEmpty())
             return;
-        landed(level, holder, fluid, fluid.getAmount(), FluidHeat.of(fluid).value(), fluid.is(FluidTags.WATER), false,
+        landed(level, holder, fluid, fluid.getAmount(), FluidHeat.of(fluid).value(), fluid.is(FluidTags.WATER), fluid.is(FluidTags.WATER), false,
                 holder.blockPosition().below(), Direction.UP);
     }
 

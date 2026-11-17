@@ -51,9 +51,14 @@ public class FCapabilities {
         event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> {
             var f = io.github.soundgoodizerfan.feedback.modular.item.ModularStacks.figures(stack);
             int capacity = f == null ? 0 : (int) f.get(io.github.soundgoodizerfan.feedback.modular.bake.ModularFigures.Fig.CASTER_CAPACITY);
-            return new net.neoforged.neoforge.fluids.capability.templates.FluidHandlerItemStack(
-                    FDataComponents.CASTER_CONTENT, stack, capacity);
+            // A tank that lets two potions of one brew run together at different stamps; anything else follows the stock rule.
+            return new io.github.soundgoodizerfan.feedback.potion.PotionFluids.MergingTank(FDataComponents.CASTER_CONTENT, stack, capacity);
         }, FModular.CASTER.get());
+        // A potion bottle is one bottle of potion fluid (it drains and is left a glass bottle); an empty glass bottle fills with one.
+        event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new io.github.soundgoodizerfan.feedback.potion.PotionFluids.Full(stack),
+                FItems.POTION.get());
+        event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new io.github.soundgoodizerfan.feedback.potion.PotionFluids.Empty(stack),
+                net.minecraft.world.item.Items.GLASS_BOTTLE);
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, FBlockEntities.LEAD_CHEST.get(),
                 (chest, side) -> new net.neoforged.neoforge.items.wrapper.InvWrapper(chest));
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, FBlockEntities.POWER_CUTTER.get(),

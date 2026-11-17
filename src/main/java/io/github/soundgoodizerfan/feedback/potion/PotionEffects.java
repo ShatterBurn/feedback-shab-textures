@@ -53,39 +53,62 @@ public final class PotionEffects {
     public static void splash(ServerLevel level, net.minecraft.world.entity.Entity owner, net.minecraft.world.phys.Vec3 at, float reach,
             ResourceLocation id, int amplifier, int duration) {
         int base = Math.max(20, Math.round(duration * PotionTuning.THROW_DURATION));
-        if (is(id, FEffects.GREEN_THUMB))
-            GreenThumb.pour(level, BlockPos.containing(at), amplifier);
-        else if (is(id, FEffects.STATIC_GROUND))
-            StaticGround.ground(level, at, reach, base);
-        else if (is(id, FEffects.QUENCH))
-            Quench.douse(level, at, amplifier);
-        else if (is(id, FEffects.FINE_PALATE) || is(id, FEffects.ASSAY))
-            reveal(level, owner, at, reach, is(id, FEffects.ASSAY));
+        place(level, owner, at, reach, id, amplifier, base);
         for (LivingEntity body : level.getEntitiesOfClass(LivingEntity.class, new net.minecraft.world.phys.AABB(at, at).inflate(reach))) {
             float near = 1f - (float) Math.sqrt(body.distanceToSqr(at)) / reach;
             if (near <= 0f)
                 continue;
-            int ticks = Math.max(20, Math.round(base * near));
-            boolean player = body instanceof net.minecraft.world.entity.player.Player;
-            if (is(id, FEffects.GREEN_THUMB) || is(id, FEffects.STATIC_GROUND))
-                continue; // place effects, no status on the body
-            else if (is(id, FEffects.QUENCH))
-                body.clearFire();
-            else if (is(id, FEffects.ANTIVENOM)) {
-                body.removeEffect(net.minecraft.world.effect.MobEffects.POISON);
-                apply(id, body, amplifier, ticks);
-            } else if (is(id, FEffects.SECOND_WIND)) {
-                // Only a player has stamina: an instant refill, no wind to repay.
-                if (body instanceof net.minecraft.server.level.ServerPlayer sp)
-                    Stamina.gain(sp, Stamina.MAX * PotionTuning.SECOND_WIND_REFILL * (amplifier + 1) * near);
-            } else if (is(id, FEffects.SLIPSTREAM) && !player)
-                body.addEffect(new MobEffectInstance(net.minecraft.world.effect.MobEffects.MOVEMENT_SLOWDOWN,
-                        PotionTuning.SLIPSTREAM_STUMBLE * (amplifier + 1), 0));
-            else if (is(id, FEffects.SPRINGHEEL))
-                Springheel.launch(body, amplifier);
-            else if (player || !(is(id, FEffects.STEADY_HAND) || is(id, FEffects.FINE_PALATE) || is(id, FEffects.ASSAY)))
-                apply(id, body, amplifier, ticks);
+            touch(body, id, amplifier, Math.max(20, Math.round(base * near)), near);
         }
+    }
+
+    /** What an effect does to a place rather than a body: crops grow, a hot block cools, ground is held, laced food shows itself. */
+    public static void place(ServerLevel level, net.minecraft.world.entity.Entity owner, net.minecraft.world.phys.Vec3 at, float reach,
+            ResourceLocation id, int amplifier, int ticks) {
+        if (is(id, FEffects.GREEN_THUMB))
+            GreenThumb.pour(level, BlockPos.containing(at), amplifier);
+        else if (is(id, FEffects.STATIC_GROUND))
+            StaticGround.ground(level, at, reach, ticks);
+        else if (is(id, FEffects.QUENCH))
+            Quench.douse(level, at, amplifier);
+        else if (is(id, FEffects.FINE_PALATE) || is(id, FEffects.ASSAY))
+            reveal(level, owner, at, reach, is(id, FEffects.ASSAY));
+    }
+
+    /** Whether an effect acts only on the place it lands, leaving no status on a body. */
+    public static boolean placeOnly(ResourceLocation id) {
+        return is(id, FEffects.GREEN_THUMB) || is(id, FEffects.STATIC_GROUND);
+    }
+
+    /** Whether an effect is a single act on a body (a refill, a launch, a stumble, a cure) rather than a status that runs for a length. */
+    public static boolean oneShot(ResourceLocation id) {
+        return is(id, FEffects.QUENCH) || is(id, FEffects.SECOND_WIND) || is(id, FEffects.SPRINGHEEL) || is(id, FEffects.SLIPSTREAM);
+    }
+
+    /**
+     * The thrown share on one body: {@code ticks} of the status (or the one act the effect is), {@code near} (0..1) the share of a full
+     * dose it gets. Mobs have no stamina, no gun and no palate, so effects that only a player can use skip them.
+     */
+    public static void touch(LivingEntity body, ResourceLocation id, int amplifier, int ticks, float near) {
+        boolean player = body instanceof net.minecraft.world.entity.player.Player;
+        if (placeOnly(id))
+            return; // place effects, no status on the body
+        else if (is(id, FEffects.QUENCH))
+            body.clearFire();
+        else if (is(id, FEffects.ANTIVENOM)) {
+            body.removeEffect(net.minecraft.world.effect.MobEffects.POISON);
+            apply(id, body, amplifier, ticks);
+        } else if (is(id, FEffects.SECOND_WIND)) {
+            // Only a player has stamina: an instant refill, no wind to repay.
+            if (body instanceof net.minecraft.server.level.ServerPlayer sp)
+                Stamina.gain(sp, Stamina.MAX * PotionTuning.SECOND_WIND_REFILL * (amplifier + 1) * near);
+        } else if (is(id, FEffects.SLIPSTREAM) && !player)
+            body.addEffect(new MobEffectInstance(net.minecraft.world.effect.MobEffects.MOVEMENT_SLOWDOWN,
+                    PotionTuning.SLIPSTREAM_STUMBLE * (amplifier + 1), 0));
+        else if (is(id, FEffects.SPRINGHEEL))
+            Springheel.launch(body, amplifier);
+        else if (player || !(is(id, FEffects.STEADY_HAND) || is(id, FEffects.FINE_PALATE) || is(id, FEffects.ASSAY)))
+            apply(id, body, amplifier, ticks);
     }
 
     private static boolean is(ResourceLocation id, net.neoforged.neoforge.registries.DeferredHolder<net.minecraft.world.effect.MobEffect, net.minecraft.world.effect.MobEffect> e) {
