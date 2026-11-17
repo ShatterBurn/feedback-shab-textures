@@ -30,7 +30,6 @@ public class BeltHeadRenderer implements BlockEntityRenderer<BeltHeadBlockEntity
 
     @Override
     public void render(BeltHeadBlockEntity head, float partialTick, PoseStack pose, MultiBufferSource buffers, int light, int overlay) {
-        DataNodeRenderer.drawNodes(head);
         Direction facing = head.getBlockState().getValue(io.github.soundgoodizerfan.feedback.logistics.belt.BeltHeadBlock.FACING);
         pose.pushPose();
         pose.translate(0.5, 0, 0.5);

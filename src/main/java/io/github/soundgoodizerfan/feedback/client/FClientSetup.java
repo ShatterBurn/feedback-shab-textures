@@ -33,7 +33,6 @@ import io.github.soundgoodizerfan.feedback.client.minigame.EnchantScreen;
 import io.github.soundgoodizerfan.feedback.client.minigame.StandScreen;
 import io.github.soundgoodizerfan.feedback.client.render.BeltHeadRenderer;
 import io.github.soundgoodizerfan.feedback.client.render.BeltModuleRenderer;
-import io.github.soundgoodizerfan.feedback.client.render.DataNodeRenderer;
 import io.github.soundgoodizerfan.feedback.client.render.GlowRenderer;
 import io.github.soundgoodizerfan.feedback.client.render.MechanicalHammerRenderer;
 import io.github.soundgoodizerfan.feedback.client.render.PivotMastRenderer;
@@ -126,25 +125,11 @@ public class FClientSetup {
         event.registerBlockEntityRenderer(FBlockEntities.DRILL_PRESS.get(), WorkpieceRenderer::new);
         event.registerBlockEntityRenderer(FBlockEntities.GRINDING_WHEEL.get(), WorkpieceRenderer::new);
 
-        // Every data node and fitting holder without a renderer of its own; the rest call
-        // DataNodeRenderer.drawNodes from theirs.
         event.registerBlockEntityRenderer(FBlockEntities.SKILLET.get(), SkilletRenderer::new);
         event.registerBlockEntityRenderer(FBlockEntities.STOCKPOT.get(), StockpotRenderer::new);
         event.registerBlockEntityRenderer(FBlockEntities.CRUCIBLE.get(), GlowRenderer::new);
         event.registerBlockEntityRenderer(FBlockEntities.THERMAL_VESSEL.get(), GlowRenderer::new);
         event.registerBlockEntityRenderer(FBlockEntities.CASTING_BASIN.get(), GlowRenderer::new);
-        event.registerBlockEntityRenderer(FBlockEntities.DAMPER.get(), DataNodeRenderer::new);
-        event.registerBlockEntityRenderer(FBlockEntities.VALVE.get(), DataNodeRenderer::new);
-        event.registerBlockEntityRenderer(FBlockEntities.CABLE.get(), DataNodeRenderer::new);
-        event.registerBlockEntityRenderer(FBlockEntities.ELECTROMAGNET.get(), DataNodeRenderer::new);
-        event.registerBlockEntityRenderer(FBlockEntities.DYNAMOTOR.get(), DataNodeRenderer::new);
-        event.registerBlockEntityRenderer(FBlockEntities.COIL.get(), DataNodeRenderer::new);
-        event.registerBlockEntityRenderer(FBlockEntities.BREAKER.get(), DataNodeRenderer::new);
-        event.registerBlockEntityRenderer(FBlockEntities.FUSE.get(), DataNodeRenderer::new);
-        event.registerBlockEntityRenderer(FBlockEntities.LEYDEN_JAR.get(), DataNodeRenderer::new);
-        event.registerBlockEntityRenderer(FBlockEntities.ELECTROLYTIC_CELL.get(), DataNodeRenderer::new);
-        event.registerBlockEntityRenderer(FBlockEntities.GALVANIC_CELL.get(), DataNodeRenderer::new);
-        event.registerBlockEntityRenderer(FBlockEntities.ELECTROSTATIC_GENERATOR.get(), DataNodeRenderer::new);
         event.registerBlockEntityRenderer(io.github.soundgoodizerfan.feedback.registry.FLogistics.BELT_ENTITY.get(), BeltModuleRenderer::new);
         event.registerBlockEntityRenderer(io.github.soundgoodizerfan.feedback.registry.FLogistics.HEAD_ENTITY.get(), BeltHeadRenderer::new);
         event.registerBlockEntityRenderer(io.github.soundgoodizerfan.feedback.registry.FAutomation.PIVOT_ENTITY.get(), PivotMastRenderer::new);

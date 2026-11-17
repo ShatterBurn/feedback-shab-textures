@@ -7,7 +7,6 @@ import io.github.soundgoodizerfan.feedback.Feedback;
 import io.github.soundgoodizerfan.feedback.control.data.DataNode;
 import io.github.soundgoodizerfan.feedback.control.data.DataNodeRef;
 import io.github.soundgoodizerfan.feedback.fitting.Fittable;
-import io.github.soundgoodizerfan.feedback.item.DataConnectorItem;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Direction;
@@ -54,7 +53,7 @@ public final class DataSelection {
     /** Queues this frame's wire, if the connector is in hand with a node selected. */
     static void queueWire(Minecraft mc, float partial) {
         DataNodeRef ref = selected;
-        if (ref == null || mc.player == null || mc.level == null || !(mc.player.getMainHandItem().getItem() instanceof DataConnectorItem))
+        if (ref == null || mc.player == null || mc.level == null || !DataNodeRenderer.holding(mc.player))
             return;
         Vec3 from = Vec3.atLowerCornerOf(ref.pos()).add(DataNode.boxFor(ref.side()).getCenter());
         Vec3 eye = mc.player.getEyePosition(partial);

@@ -43,7 +43,6 @@ public class GlowRenderer<T extends BlockEntity> implements BlockEntityRenderer<
 
     @Override
     public void render(T entity, float partialTick, PoseStack pose, MultiBufferSource buffers, int light, int overlay) {
-        DataNodeRenderer.drawNodes(entity);
         BlockPos at = entity.getBlockPos();
         var state = entity.getBlockState();
         float target = state.hasProperty(Incandescence.GLOW) ? state.getValue(Incandescence.GLOW) : 0;

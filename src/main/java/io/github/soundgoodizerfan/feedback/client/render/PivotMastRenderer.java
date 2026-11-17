@@ -35,7 +35,6 @@ public class PivotMastRenderer implements BlockEntityRenderer<PivotMastBlockEnti
 
     @Override
     public void render(PivotMastBlockEntity mast, float partialTick, PoseStack pose, MultiBufferSource buffers, int light, int overlay) {
-        DataNodeRenderer.drawNodes(mast);
         int len = mast.armLength();
         if (len == 0)
             return;

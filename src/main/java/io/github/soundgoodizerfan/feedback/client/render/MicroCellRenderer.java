@@ -115,7 +115,7 @@ public class MicroCellRenderer implements BlockEntityRenderer<MicroCellBlockEnti
         }
         // With a Data Connector in hand, the voxels a card can set are outlined in the cell's own space, so they ride the body.
         var player = Minecraft.getInstance().player;
-        if (player != null && player.getMainHandItem().getItem() instanceof io.github.soundgoodizerfan.feedback.item.DataConnectorItem) {
+        if (player != null && DataNodeRenderer.holding(player)) {
             VertexConsumer lines = buffers.getBuffer(RenderType.lines());
             for (int i = 0; i < MicroCellBlockEntity.VOXELS; i++)
                 if (io.github.soundgoodizerfan.feedback.vehicle.micro.VoxelNode.settable(cell.get(i))) {

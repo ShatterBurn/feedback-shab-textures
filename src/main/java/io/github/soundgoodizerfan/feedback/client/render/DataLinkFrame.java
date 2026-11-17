@@ -31,6 +31,7 @@ public class DataLinkFrame {
         if (mc.player == null || mc.level == null)
             return;
 
+        DataNodeRenderer.queue(mc, event.getPartialTick().getGameTimeDeltaPartialTick(true));
         DataSelection.queueWire(mc, event.getPartialTick().getGameTimeDeltaPartialTick(true));
         AimHud.queueLinkLine(mc, event.getPartialTick().getGameTimeDeltaPartialTick(true));
         PoseStack stack = event.getPoseStack();

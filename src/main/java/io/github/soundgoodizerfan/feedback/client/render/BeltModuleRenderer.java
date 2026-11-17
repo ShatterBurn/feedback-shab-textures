@@ -30,7 +30,6 @@ public class BeltModuleRenderer implements BlockEntityRenderer<BeltBlockEntity> 
 
     @Override
     public void render(BeltBlockEntity belt, float partialTick, PoseStack pose, MultiBufferSource buffers, int light, int overlay) {
-        DataNodeRenderer.drawNodes(belt);
         if (belt.spec().cleat())
             drawCleats(belt, partialTick, pose, buffers, light);
         drawModule(belt, partialTick, pose, buffers, light);
