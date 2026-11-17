@@ -30,6 +30,8 @@ A [Programmer](Programming.md) that takes every medium. Crafted from a Programme
 
 An Electric Programmer and an Electric Controller in one block, with a desktop. Crafted from an Electric Controller, an Electric Programmer and a Silicon Ingot.
 
+It looks like a 1990s desktop PC: a beige case with drive slots and lamps, a CRT monitor with a blinking cursor, and a keyboard and mouse on the desk in front. The screen faces you when you place it.
+
 The Computer has the same [circuit slot](#circuit-slot) and takes an [Endernet Upgrade](#endernet-upgrade). **Right-click with a circuit** seats it.
 
 Right-click it to open the desktop, a fixed panel drawn as a terminal. The colors, wallpaper and screen effects are set in the **Settings** window and are the same for everyone who opens this Computer.
