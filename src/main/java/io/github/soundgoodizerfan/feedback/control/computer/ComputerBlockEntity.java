@@ -212,6 +212,11 @@ public class ComputerBlockEntity extends ElectricNode implements ControllerHost,
     }
 
     @Override
+    public int getMaxNodeLinks() {
+        return core().maxLinks();
+    }
+
+    @Override
     public ControllerCore core() {
         return core;
     }
@@ -240,24 +245,18 @@ public class ComputerBlockEntity extends ElectricNode implements ControllerHost,
         if (level == null || !powered())
             return java.util.List.of();
         java.util.List<Attached> out = new java.util.ArrayList<>();
-        for (var ref : getNodeLinks()) {
+        for (var hit : core.bindings()) {
             if (out.size() >= ControlTuning.ATTACHED_MAX)
                 break;
-            var node = io.github.soundgoodizerfan.feedback.control.data.DataNode.resolveOrNull(level, ref);
-            io.github.soundgoodizerfan.feedback.instrument.Quantity q = null;
-            int channel = 0;
-            if (node instanceof io.github.soundgoodizerfan.feedback.control.ChannelSource source && source.offersChannels()) {
-                q = io.github.soundgoodizerfan.feedback.instrument.Quantity.CONTROL;
-                channel = source.defaultChannel();
-            } else if (node instanceof io.github.soundgoodizerfan.feedback.fitting.SensorFitting fitting) {
-                for (var quantity : io.github.soundgoodizerfan.feedback.instrument.Quantity.values())
-                    if (fitting.canRead(quantity)) {
-                        q = quantity;
-                        break;
-                    }
+            for (var signal : hit.spec().reads()) {
+                var q = io.github.soundgoodizerfan.feedback.control.data.Signals.quantity(signal);
+                if (q == null)
+                    continue;
+                int channel = hit.node() instanceof io.github.soundgoodizerfan.feedback.control.ChannelSource source ? source.defaultChannel() : 0;
+                float value = core.readOne(hit.node(), signal, channel);
+                if (!Float.isNaN(value))
+                    out.add(new Attached(hit.ref(), q, channel, value));
             }
-            if (q != null)
-                out.add(new Attached(ref, q, channel, core.readAttached(ref, channel)));
         }
         out.sort(java.util.Comparator.comparing(Attached::ref));
         return out;

@@ -120,6 +120,8 @@ public class LiftBlockEntity extends BlockEntity {
         Map<BlockPos, BlockPos> moves = new HashMap<>();
         for (BlockPos p : blocks)
             moves.put(p.immutable(), p.offset(delta));
+        if (level instanceof net.minecraft.server.level.ServerLevel serverLevel)
+            io.github.soundgoodizerfan.feedback.control.data.DataLinkStore.moved(serverLevel, moves);
         for (BlockPos p : blocks) {
             var moved = level.getBlockEntity(p.offset(delta));
             // A controller among them: its cards keep naming the same parts at their new positions.
@@ -228,6 +230,8 @@ public class LiftBlockEntity extends BlockEntity {
         for (Lowering plan : plans)
             for (BlockPos p : plan.blocks)
                 back.put(p.immutable(), plan.transform.apply(p));
+        if (level instanceof net.minecraft.server.level.ServerLevel serverLevel)
+            io.github.soundgoodizerfan.feedback.control.data.DataLinkStore.moved(serverLevel, back);
         for (Lowering plan : plans) {
             io.github.soundgoodizerfan.feedback.machine.bearing.BlockMoves.enter();
             try {

@@ -81,4 +81,35 @@ public record DataSpec(Set<ResourceLocation> kinds, Set<ResourceLocation> reads,
         });
         return kinds;
     }
+
+    /** A reading by what the node's interfaces offer: a switch reads back its state, a channel source its channel, a fitting its figure. */
+    static float readDerived(DataNode node, ResourceLocation signal, int channel) {
+        if (Signals.STATE.equals(signal))
+            return node instanceof Switchable sw && sw.isEngaged() ? 1f : 0f;
+        if (Signals.CONTROL.equals(signal) && node instanceof ChannelSource source && source.offersChannels())
+            return source.read(channel);
+        return node instanceof SensorFitting fitting ? fitting.readRaw() : 0f;
+    }
+
+    /**
+     * A Boolean switches a {@link Switchable} (or pulses a {@link Steppable} channel); a Float sets an {@link Analog} part's
+     * channel. A number reaching a plain switch moves nothing: a factory controller is a switch, never a dial (philosophy 14).
+     */
+    static int writeDerived(DataNode node, int channel, Object value) {
+        if (value instanceof Boolean pulse && channel > 0 && node instanceof Steppable stepper) {
+            stepper.pulse(channel, pulse);
+            return 0;
+        }
+        if (value instanceof Float amount && node instanceof Analog analog) {
+            analog.setLevel(channel, amount);
+        } else if (value instanceof Boolean on) {
+            if (node instanceof Switchable sw) {
+                boolean was = sw.isEngaged();
+                sw.setEngaged(on);
+                return was == on ? 0 : on ? 1 : -1;
+            } else if (node instanceof Analog analog)
+                analog.setLevel(channel, on ? 1 : 0);
+        }
+        return 0;
+    }
 }

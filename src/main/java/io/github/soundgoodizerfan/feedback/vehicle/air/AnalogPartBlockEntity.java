@@ -25,15 +25,9 @@ import net.minecraft.world.level.block.state.BlockState;
  */
 public abstract class AnalogPartBlockEntity extends BlockEntity implements Analog, DataNode, VehiclePart {
 
-    private final Set<DataNodeRef> links = new HashSet<>();
 
     protected AnalogPartBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
-    }
-
-    @Override
-    public boolean acceptsLinks() {
-        return false;
     }
 
     @Override
@@ -57,8 +51,4 @@ public abstract class AnalogPartBlockEntity extends BlockEntity implements Analo
         return this;
     }
 
-    @Override
-    public Set<DataNodeRef> getNodeLinks() {
-        return links;
-    }
 }

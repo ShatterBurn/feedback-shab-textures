@@ -19,7 +19,14 @@ public final class Signals {
     public static final ResourceLocation STATE = of(Quantity.STATE);
     public static final ResourceLocation CONTROL = of(Quantity.CONTROL);
 
+    private static final java.util.Set<ResourceLocation> BOOLEANS = new java.util.concurrent.CopyOnWriteArraySet<>(java.util.List.of(STATE));
+
     private Signals() {
+    }
+
+    /** Declares a signal two-state: a program reads it as a boolean. Done once at start-up by whatever offers it. */
+    public static void declareBoolean(ResourceLocation signal) {
+        BOOLEANS.add(signal);
     }
 
     public static ResourceLocation of(Quantity quantity) {
@@ -39,6 +46,6 @@ public final class Signals {
 
     /** Two-state signals read as a boolean in a program; every other signal is a number. */
     public static boolean isBoolean(ResourceLocation signal) {
-        return STATE.equals(signal);
+        return BOOLEANS.contains(signal);
     }
 }

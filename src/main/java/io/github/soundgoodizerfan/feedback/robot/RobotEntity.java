@@ -524,8 +524,7 @@ public class RobotEntity extends Entity implements ControllerCore.Locals, RobotW
                 player.displayClientMessage(Component.translatable(mast.link(this) ? "robot.feedback.mast_linked" : "robot.feedback.mast_no_radio"), true);
                 return InteractionResult.CONSUME;
             }
-            RobotWorker.openChannels(player);
-            return InteractionResult.CONSUME;
+            return InteractionResult.PASS;
         }
         if (held.getItem() instanceof TetherCableItem) {
             BlockPos reel = TetherCableItem.reel(held);

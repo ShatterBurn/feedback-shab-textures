@@ -240,16 +240,6 @@ public class KilnZoneBlockEntity extends RotationNode implements Switchable, Dat
     }
 
     @Override
-    public boolean acceptsLinks() {
-        return false;
-    }
-
-    @Override
-    public Set<DataNodeRef> getNodeLinks() {
-        return Collections.emptySet();
-    }
-
-    @Override
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
         for (int i = 0; i < 4; i++) {

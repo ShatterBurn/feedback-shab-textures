@@ -203,6 +203,42 @@ public final class DataWires {
         return Optional.ofNullable(found);
     }
 
+    /**
+     * Every node a path of links (or a live Endernet pair) leads to from {@code from}, nearest first, without paying for any
+     * crossing: the set a Controller binds. {@link #reach} still decides, per reading, whether a path carries.
+     */
+    public static java.util.List<DataNode> reachable(DataNode from) {
+        Level level = from.getNodeLevel();
+        java.util.List<DataNode> found = new java.util.ArrayList<>();
+        if (level == null)
+            return found;
+        Set<DataNodeRef> seen = new HashSet<>();
+        ArrayDeque<DataNodeRef> frontier = new ArrayDeque<>();
+        seen.add(from.getNodeRef());
+        frontier.add(from.getNodeRef());
+        for (int hop = 0; hop < MAX_HOPS && !frontier.isEmpty(); hop++) {
+            ArrayDeque<DataNodeRef> next = new ArrayDeque<>();
+            for (DataNodeRef at : frontier) {
+                DataNode node = DataNode.resolveOrNull(level, at);
+                if (node == null)
+                    continue;
+                Set<DataNodeRef> outs = new HashSet<>(node.getNodeLinks());
+                var crossing = io.github.soundgoodizerfan.feedback.control.endernet.Endernet.peek(node);
+                if (crossing != null)
+                    outs.add(crossing.to().getNodeRef());
+                for (DataNodeRef other : outs)
+                    if (seen.add(other)) {
+                        DataNode far = DataNode.resolveOrNull(level, other);
+                        if (far != null)
+                            found.add(far);
+                        next.add(other);
+                    }
+            }
+            frontier = next;
+        }
+        return found;
+    }
+
     private static boolean quenched(Level level, DataNode node, DataNodeRef other, long now) {
         String k = key(level, node.getNodeRef(), other);
         Long until = QUENCHED_UNTIL.get(k);

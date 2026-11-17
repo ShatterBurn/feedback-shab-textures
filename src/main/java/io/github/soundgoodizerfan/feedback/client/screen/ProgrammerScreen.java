@@ -3,7 +3,6 @@
 package io.github.soundgoodizerfan.feedback.client.screen;
 
 import io.github.soundgoodizerfan.feedback.control.programmer.ProgrammerBlockEntity;
-import io.github.soundgoodizerfan.feedback.control.programmer.ProgrammerLinkedPayload;
 import io.github.soundgoodizerfan.feedback.control.programmer.ProgrammerMenu;
 import io.github.soundgoodizerfan.feedback.client.gui.GuiSkin;
 import io.github.soundgoodizerfan.feedback.client.gui.SkinnedScreen;
@@ -53,10 +52,6 @@ public class ProgrammerScreen extends SkinnedScreen<ProgrammerMenu> {
         super.init();
         editor.build();
         editor.viewport(0, STRIP_H, width, height - STRIP_H);
-    }
-
-    public void applyLink(ProgrammerLinkedPayload payload) {
-        editor.applyLink(payload);
     }
 
     /** Commit before closing, not in {@link #removed}: the server only takes a commit from a player whose menu is still this one. */

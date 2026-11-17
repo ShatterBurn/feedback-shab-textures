@@ -11,7 +11,6 @@ import java.util.Set;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
-import io.github.soundgoodizerfan.feedback.instrument.Quantity;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -69,8 +68,8 @@ public record ProgramGraph(List<ProgramNode> nodes, List<ProgramVariable> variab
             ids.add(node.id());
 
         for (ProgramNode node : nodes)
-            if (node instanceof SensorNode n && n.target() == null
-                    || node instanceof ActuatorNode a && a.target() == null)
+            if (node instanceof SensorNode n && n.signal() == null
+                    || node instanceof ActuatorNode a && a.kind() == null)
                 return Optional.of("unlinked_card");
 
         for (ProgramNode node : nodes)
@@ -161,8 +160,8 @@ public record ProgramGraph(List<ProgramNode> nodes, List<ProgramVariable> variab
                 return Optional.of("type_mismatch");
             int otherId = slot == 0 ? comparator.rightInput() : comparator.leftInput();
             if (from instanceof SensorNode fromSensor && find(otherId).orElse(null) instanceof SensorNode other
-                    && other.quantity() != null && fromSensor.quantity() != null
-                    && other.quantity() != fromSensor.quantity())
+                    && other.signal() != null && fromSensor.signal() != null
+                    && !other.signal().equals(fromSensor.signal()))
                 return Optional.of("quantity_mismatch");
             return Optional.empty();
         }
@@ -184,14 +183,14 @@ public record ProgramGraph(List<ProgramNode> nodes, List<ProgramVariable> variab
     }
 
     private boolean isNumber(ProgramNode node) {
-        return node instanceof MathNode || node instanceof SensorNode s && s.quantity() != Quantity.STATE
+        return node instanceof MathNode || node instanceof SensorNode s && !s.isState()
                 || node instanceof DelayNode d && d.type() == ValueType.NUMBER
                 || node instanceof ReadNode r && variableType(r.variable()).orElse(null) == ValueType.NUMBER;
     }
 
     private boolean isBoolean(ProgramNode node) {
         return node instanceof ComparatorNode || node instanceof LogicNode
-                || node instanceof SensorNode s && s.quantity() == Quantity.STATE
+                || node instanceof SensorNode s && s.isState()
                 || node instanceof DelayNode d && d.type() == ValueType.BOOLEAN
                 || node instanceof ReadNode r && variableType(r.variable()).orElse(null) == ValueType.BOOLEAN;
     }

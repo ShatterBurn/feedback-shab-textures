@@ -48,6 +48,7 @@ public final class DataSelection {
     @SubscribeEvent
     private static void onLogout(ClientPlayerNetworkEvent.LoggingOut event) {
         selected = null;
+        io.github.soundgoodizerfan.feedback.control.data.DataLinkStore.clearClient();
     }
 
     /** Queues this frame's wire, if the connector is in hand with a node selected. */

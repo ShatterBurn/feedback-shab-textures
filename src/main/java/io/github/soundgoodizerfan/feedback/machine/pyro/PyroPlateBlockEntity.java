@@ -45,7 +45,6 @@ public class PyroPlateBlockEntity extends BlockEntity implements SensorFitting {
     private final float[] last = {Float.NaN, Float.NaN, Float.NaN, Float.NaN, Float.NaN, Float.NaN};
     private float rate;
     private int sinceSample;
-    private final Set<DataNodeRef> links = new HashSet<>();
 
     public PyroPlateBlockEntity(BlockPos pos, BlockState state) {
         super(FBlockEntities.PYRO_PLATE.get(), pos, state);
@@ -145,11 +144,6 @@ public class PyroPlateBlockEntity extends BlockEntity implements SensorFitting {
     @Override
     public BlockEntity getNodeOwner() {
         return this;
-    }
-
-    @Override
-    public Set<DataNodeRef> getNodeLinks() {
-        return links;
     }
 
     // --- persistence ------------------------------------------------------------------------------

@@ -4,7 +4,6 @@ package io.github.soundgoodizerfan.feedback.control.program.text;
 
 import java.util.List;
 
-import io.github.soundgoodizerfan.feedback.control.data.DataNodeRef;
 import io.github.soundgoodizerfan.feedback.control.program.ValueType;
 import io.github.soundgoodizerfan.feedback.control.program.text.TextLexer.Token;
 
@@ -25,14 +24,14 @@ public final class TextAst {
         }
     }
 
-    public sealed interface Expr permits Num, Name, Str, Unwired, Unlinked, Ref, Bin, Not, Call {
+    public sealed interface Expr permits Num, Name, Str, Unwired, Bin, Not, Call {
         Token at();
     }
 
     public record Num(float value, Unit unit, Token at) implements Expr {
     }
 
-    /** A program-local name: another statement's value, or a link alias. */
+    /** A program-local name: another statement's value, or a word in a sensor or actuator's arguments. */
     public record Name(String name, Token at) implements Expr {
     }
 
@@ -42,14 +41,6 @@ public final class TextAst {
 
     /** An input left without a wire. */
     public record Unwired(Token at) implements Expr {
-    }
-
-    /** A sensor or actuator with no target yet. */
-    public record Unlinked(Token at) implements Expr {
-    }
-
-    /** {@code @x y z [side] [voxel n]} or {@code @local n}: a node reference, the form the graph itself holds. */
-    public record Ref(DataNodeRef ref, Token at) implements Expr {
     }
 
     /** {@code op} is one of {@code > < + - * / and or}. */
@@ -63,14 +54,11 @@ public final class TextAst {
     public record Call(String fn, List<Expr> args, ValueType as, Token at) implements Expr {
     }
 
-    public sealed interface Stmt permits VarDecl, LinkDecl, Assign {
+    public sealed interface Stmt permits VarDecl, Assign {
         Token at();
     }
 
     public record VarDecl(String name, ValueType type, Token at) implements Stmt {
-    }
-
-    public record LinkDecl(String name, Expr target, Token at) implements Stmt {
     }
 
     /** {@code name = expr}, or a bare {@code expr} (an actuator or a write) with a null name. */

@@ -12,7 +12,13 @@ import java.util.Optional;
 import io.github.soundgoodizerfan.feedback.control.Analog;
 import io.github.soundgoodizerfan.feedback.control.ChannelSource;
 import io.github.soundgoodizerfan.feedback.control.Switchable;
+import io.github.soundgoodizerfan.feedback.control.data.DataLinkStore;
 import io.github.soundgoodizerfan.feedback.control.data.DataNode;
+import io.github.soundgoodizerfan.feedback.control.data.DataRequest;
+import io.github.soundgoodizerfan.feedback.control.data.DataWires;
+import io.github.soundgoodizerfan.feedback.control.data.Signals;
+import io.github.soundgoodizerfan.feedback.control.program.ActuatorNode;
+import io.github.soundgoodizerfan.feedback.robot.RobotChannel;
 import io.github.soundgoodizerfan.feedback.control.data.DataNodeRef;
 import io.github.soundgoodizerfan.feedback.control.program.ControllerLimits;
 import io.github.soundgoodizerfan.feedback.control.program.DelayNode;
@@ -63,6 +69,7 @@ public class ControllerCore implements Container, Fittable {
     private static final String ESCAPEMENT = "Escapement";
     private static final String CIRCUIT = "Circuit";
     private static final String ENDERNET = "Endernet";
+    private static final String COLORS = "Colors";
 
     private ItemStack card = ItemStack.EMPTY;
 
@@ -513,7 +520,7 @@ public class ControllerCore implements Container, Fittable {
     public void events(java.util.function.BiConsumer<String, String> events) {
         this.events = events;
     }
-    private static final ProgramEvaluator.ActuatorWriter NO_WRITE = (target, channel, value) -> { };
+    private static final ProgramEvaluator.ActuatorWriter NO_WRITE = (card, value) -> { };
 
     private boolean needsPriming(ProgramGraph graph) {
         for (ProgramNode node : graph.nodes())
@@ -587,66 +594,121 @@ public class ControllerCore implements Container, Fittable {
                 : lastGraph.find(nodeId).map(n -> n instanceof DelayNode d ? d.ticks() : 0).orElse(0);
     }
 
-    /** One reading of {@code ref} as a Sensor card would take it (wire reach, poor-wire rounding, read noise); for the Computer's attached sensors. */
-    public float readAttached(DataNodeRef ref, int channel) {
-        return readSensor(new SensorNode(0, ref, null, channel));
+    // --- binding --------------------------------------------------------------------------------
+
+    /** Link color of each node bound to this host, set with the connector when it is linked; absent means uncolored. Persisted. */
+    private final Map<DataNodeRef, Integer> colors = new HashMap<>();
+    /** The data nodes this host reaches by links, as the resolver sees them; rebuilt when any link changes or every {@link #REBIND_TICKS}. */
+    private List<DataRequest.Candidate> bound = List.of();
+    /** Each card's matches among {@link #bound}, by card id; cleared with it. */
+    private final Map<Integer, List<DataRequest.Candidate>> matched = new HashMap<>();
+    private int boundEpoch = -1;
+    private long boundAt = Long.MIN_VALUE;
+    private float[] scratch = new float[8];
+
+    private static final int REBIND_TICKS = 40;
+
+    public int colorOf(DataNodeRef ref) {
+        return colors.getOrDefault(ref, DataRequest.ANY);
+    }
+
+    /** Sets the link color of a node bound here ({@link DataRequest#ANY} clears it). */
+    public void setColor(DataNodeRef ref, int color) {
+        boolean changed = color == DataRequest.ANY ? colors.remove(ref) != null : !Integer.valueOf(color).equals(colors.put(ref, color));
+        if (changed) {
+            boundEpoch = -1;
+            setChanged();
+        }
+    }
+
+    /** How many nodes may link to this host: a base, and more for each Card Rack fitted. */
+    public int maxLinks() {
+        return ControlTuning.CONTROLLER_BASE_LINKS + ControlTuning.CARD_RACK_LINKS * (int) upgrades.stream().filter(CardRackFitting.class::isInstance).count();
+    }
+
+    /** The nodes this host is bound to, each with its link color and what it declares. */
+    public List<DataRequest.Candidate> bindings() {
+        Level level = level();
+        if (level == null || !(host instanceof DataNode self))
+            return List.of();
+        long now = level.getGameTime();
+        if (boundEpoch != DataLinkStore.epoch() || now - boundAt >= REBIND_TICKS) {
+            List<DataRequest.Candidate> found = new ArrayList<>();
+            for (DataNode node : DataWires.reachable(self)) {
+                DataNodeRef ref = node.getNodeRef();
+                found.add(new DataRequest.Candidate(node, ref, colorOf(ref), node.dataSpec()));
+            }
+            bound = found;
+            matched.clear();
+            boundEpoch = DataLinkStore.epoch();
+            boundAt = now;
+        }
+        return bound;
+    }
+
+    private List<DataRequest.Candidate> matches(int cardId, DataRequest request) {
+        List<DataRequest.Candidate> all = bindings();
+        return matched.computeIfAbsent(cardId, id -> request.match(all));
     }
 
     private float readSensor(SensorNode sensor) {
-        DataNodeRef ref = sensor.target() == null || level() == null ? null
-                : sensor.target();
-        if (level() == null || ref == null)
+        if (level() == null || sensor.signal() == null)
             return 0f;
-        if (ref.isLocal())
-            return locals == null ? 0f : locals.read(ref.local(), sensor.channel());
-        DataNode node = DataNode.resolveOrNull(level(), ref);
-        // An electric host reads only down a wire: no path of links, no reading; poor wire rounds it.
-        if (node != null && node.acceptsLinks() && host instanceof DataNode self) {
-            var wire = io.github.soundgoodizerfan.feedback.control.data.DataWires.reach(self, node);
-            if (wire.isEmpty())
-                return 0f;
-            return io.github.soundgoodizerfan.feedback.control.data.DataWires.deliver(readNode(node, sensor), wire.get());
+        if (locals != null) {
+            RobotChannel channel = RobotChannel.ofSignal(sensor.signal());
+            if (channel != null)
+                return locals.read(channel.ordinal(), sensor.channel());
         }
-        return readNode(node, sensor);
-    }
-
-    private float readNode(DataNode node, SensorNode sensor) {
-        if (node instanceof ChannelSource source && source.offersChannels())
-            return jitter(source.read(sensor.channel()));
-        // An actuator's own state, read back: 1 engaged, 0 not. ProgramEvaluator turns it into a boolean.
-        if (node instanceof Switchable sw)
-            return sw.isEngaged() ? 1f : 0f;
-        return node instanceof SensorFitting fitting ? jitter(fitting.readRaw()) : 0f;
+        List<DataRequest.Candidate> hits = matches(sensor.id(), sensor.request());
+        if (hits.isEmpty())
+            return 0f;
+        if (scratch.length < hits.size())
+            scratch = new float[hits.size()];
+        int count = 0;
+        for (DataRequest.Candidate hit : hits) {
+            float reading = readOne(hit.node(), sensor.signal(), sensor.channel());
+            if (!Float.isNaN(reading))
+                scratch[count++] = reading;
+        }
+        return sensor.reduction().combine(scratch, count);
     }
 
     /**
-     * A Boolean switches a {@link Switchable}; a Float sets an {@link Analog} part's channel. A
-     * number reaching a plain switch moves nothing -- a factory controller is a switch, never a
-     * dial (philosophy 14) -- and a Boolean reaching a part that is only analog sets it full or off.
+     * One node's reading of {@code signal} as a Sensor card would take it: read noise, and (on an electric host) only down a
+     * wire, no path of links no reading, poor wire rounding it. NaN when nothing arrives. Also what the Computer's attached list uses.
      */
-    private void writeActuator(@Nullable DataNodeRef ref, int channel, Object value) {
-        if (level() == null || ref == null)
+    public float readOne(DataNode node, net.minecraft.resources.ResourceLocation signal, int channel) {
+        if (!node.isNodeValid())
+            return Float.NaN;
+        float reading = node.readSignal(signal, channel);
+        if (!Signals.isBoolean(signal))
+            reading = jitter(reading);
+        if (host instanceof DataNode self) {
+            var wire = DataWires.reach(self, node);
+            if (wire.isEmpty())
+                return Float.NaN;
+            reading = DataWires.deliver(reading, wire.get());
+        }
+        return reading;
+    }
+
+    /** Drives every node the card's kind and color mean: a Boolean switches, a Float sets an analog channel. */
+    private void writeActuator(ActuatorNode card, Object value) {
+        if (level() == null)
             return;
-        if (ref.isLocal()) {
-            if (locals != null && value instanceof Boolean on)
-                locals.write(ref.local(), on);
+        if (locals != null && RobotChannel.KIND.equals(card.kind())) {
+            if (value instanceof Boolean on)
+                locals.write(card.channel(), on);
             return;
         }
-        DataNode target = DataNode.resolve(level(), ref).orElse(null);
-        if (value instanceof Boolean pulse && channel > 0 && target instanceof io.github.soundgoodizerfan.feedback.control.Steppable stepper) {
-            stepper.pulse(channel, pulse);
+        if (card.kind() == null)
             return;
-        }
-        if (value instanceof Float amount && target instanceof Analog analog)
-            analog.setLevel(channel, amount);
-        else if (value instanceof Boolean on) {
-            if (target instanceof Switchable sw) {
-                boolean was = sw.isEngaged();
-                sw.setEngaged(on);
-                if (was != on)
-                    events.accept(on ? "switch_on" : "switch_off", level().getBlockState(ref.pos()).getBlock().getDescriptionId());
-            } else if (target instanceof Analog analog)
-                analog.setLevel(channel, on ? 1 : 0);
+        for (DataRequest.Candidate hit : matches(card.id(), card.request())) {
+            if (!hit.node().isNodeValid())
+                continue;
+            int switched = hit.node().writeSignal(card.channel(), value);
+            if (switched != 0)
+                events.accept(switched > 0 ? "switch_on" : "switch_off", level().getBlockState(hit.ref().pos()).getBlock().getDescriptionId());
         }
     }
 
@@ -761,32 +823,17 @@ public class ControllerCore implements Container, Fittable {
         variables.putAll(kept);
     }
 
-    /**
-     * The Lift carried blocks to new positions: every card target at a position in {@code moves} follows
-     * it, so a controller riding in a vehicle keeps naming the same parts after it is lifted or lowered.
-     */
+    /** The Lift carried blocks to new positions: the link colors of moved nodes follow them. */
     public void retarget(Map<net.minecraft.core.BlockPos, net.minecraft.core.BlockPos> moves) {
-        ProgramGraph graph = card.get(FDataComponents.PROGRAM_GRAPH);
-        if (graph == null)
-            return;
-        List<io.github.soundgoodizerfan.feedback.control.program.ProgramNode> out = new ArrayList<>();
-        boolean changed = false;
-        for (var n : graph.nodes()) {
-            if (n instanceof io.github.soundgoodizerfan.feedback.control.program.SensorNode s && s.target() != null && !s.target().isLocal() && moves.containsKey(s.target().pos())) {
-                n = new io.github.soundgoodizerfan.feedback.control.program.SensorNode(s.id(),
-                        new DataNodeRef(moves.get(s.target().pos()), s.target().side(), s.target().voxel()), s.quantity(), s.channel());
-                changed = true;
-            } else if (n instanceof io.github.soundgoodizerfan.feedback.control.program.ActuatorNode a && a.target() != null && !a.target().isLocal() && moves.containsKey(a.target().pos())) {
-                n = new io.github.soundgoodizerfan.feedback.control.program.ActuatorNode(a.id(), a.input(),
-                        new DataNodeRef(moves.get(a.target().pos()), a.target().side(), a.target().voxel()), a.channel());
-                changed = true;
-            }
-            out.add(n);
-        }
-        if (changed) {
-            card.set(FDataComponents.PROGRAM_GRAPH, graph.withNodes(out));
-            cardChanged();
-        }
+        Map<DataNodeRef, Integer> moved = new HashMap<>();
+        colors.forEach((ref, color) -> {
+            net.minecraft.core.BlockPos to = moves.get(ref.pos());
+            moved.put(to == null ? ref : new DataNodeRef(to, ref.side(), ref.voxel(), ref.local()), color);
+        });
+        colors.clear();
+        colors.putAll(moved);
+        boundEpoch = -1;
+        setChanged();
     }
 
     /** Saves, and forgets the cached graph so a new card is evaluated on its first turning tick. */
@@ -888,6 +935,13 @@ public class ControllerCore implements Container, Fittable {
             list.add(entry);
         });
         tag.put(VARIABLES, list);
+        ListTag colored = new ListTag();
+        colors.forEach((ref, color) -> {
+            CompoundTag entry = ref.toTag();
+            entry.putInt("C", color);
+            colored.add(entry);
+        });
+        tag.put(COLORS, colored);
         tag.putInt(DRUMS, (int) upgrades.stream().filter(MemoryDrumFitting.class::isInstance).count());
         tag.putInt(RACKS, (int) upgrades.stream().filter(CardRackFitting.class::isInstance).count());
         tag.putBoolean(ESCAPEMENT, upgrades.stream().anyMatch(EscapementFitting.class::isInstance));
@@ -911,6 +965,10 @@ public class ControllerCore implements Container, Fittable {
             CompoundTag entry = (CompoundTag) t;
             variables.put(entry.getString("N"), entry.contains("F") ? (Object) entry.getFloat("F") : (Object) entry.getBoolean("B"));
         }
+        colors.clear();
+        for (Tag t : tag.getList(COLORS, Tag.TAG_COMPOUND))
+            colors.put(DataNodeRef.fromTag((CompoundTag) t), ((CompoundTag) t).getInt("C"));
+        boundEpoch = -1;
         upgrades.clear();
         for (int i = 0; i < Math.min(tag.getInt(DRUMS), ControlTuning.MEMORY_DRUM_MAX); i++)
             upgrades.add(new MemoryDrumFitting());

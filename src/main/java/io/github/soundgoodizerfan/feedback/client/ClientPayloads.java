@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.client;
 
-import io.github.soundgoodizerfan.feedback.control.programmer.ProgrammerLinkedPayload;
 import io.github.soundgoodizerfan.feedback.client.bench.EngineeringTableScreen;
 import io.github.soundgoodizerfan.feedback.client.combat.CameraTurn;
 import io.github.soundgoodizerfan.feedback.client.desktop.ComputerScreen;
@@ -15,14 +14,6 @@ import net.minecraft.client.Minecraft;
 public final class ClientPayloads {
 
     private ClientPayloads() {
-    }
-
-    /** Routes a link reply to the open Programmer screen, or the Computer's editor window, if it is still that one's. */
-    public static void programmerLinked(ProgrammerLinkedPayload payload) {
-        if (Minecraft.getInstance().screen instanceof ProgrammerScreen screen && screen.getMenu().getPos().equals(payload.pos()))
-            screen.applyLink(payload);
-        else if (Minecraft.getInstance().screen instanceof ComputerScreen desktop && desktop.getMenu().getPos().equals(payload.pos()))
-            desktop.applyLink(payload);
     }
 
     /** The Engineering Table asked for a hand-work game: open its screen over the table screen it belongs to. */

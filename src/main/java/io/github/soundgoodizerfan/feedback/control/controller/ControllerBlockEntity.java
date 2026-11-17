@@ -19,7 +19,7 @@ import net.minecraft.world.level.block.state.BlockState;
  * no switching: a dead shaft freezes outputs, variables and delay clocks alike). Takes the Punch Card only; the other media need an
  * electric host.
  */
-public class ControllerBlockEntity extends RotationNode implements ControllerHost {
+public class ControllerBlockEntity extends RotationNode implements ControllerHost, io.github.soundgoodizerfan.feedback.control.data.DataNode {
 
     private final ControllerCore core = new ControllerCore(this, this::powered, stack -> stack.is(FTags.MECHANICAL_CARDS)).withCircuitSlot(false);
 
@@ -29,6 +29,34 @@ public class ControllerBlockEntity extends RotationNode implements ControllerHos
 
     protected ControllerBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
+    }
+
+    // --- DataNode -----------------------------------------------------------------------------
+
+    @Override
+    public BlockPos getNodePos() {
+        return getBlockPos();
+    }
+
+    @Override
+    @org.jetbrains.annotations.Nullable
+    public net.minecraft.core.Direction getNodeSide() {
+        return null;
+    }
+
+    @Override
+    public net.minecraft.world.level.Level getNodeLevel() {
+        return level;
+    }
+
+    @Override
+    public net.minecraft.world.level.block.entity.BlockEntity getNodeOwner() {
+        return this;
+    }
+
+    @Override
+    public int getMaxNodeLinks() {
+        return core.maxLinks();
     }
 
     @Override

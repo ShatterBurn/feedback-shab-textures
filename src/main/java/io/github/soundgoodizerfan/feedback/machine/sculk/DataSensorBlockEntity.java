@@ -41,9 +41,7 @@ import net.minecraft.world.phys.Vec3;
 public class DataSensorBlockEntity extends BlockEntity
         implements DataNode, ChannelSource, GameEventListener.Provider<DataSensorBlockEntity.Ear> {
 
-    private static final String LINKS = "Links";
 
-    private final Set<DataNodeRef> links = new HashSet<>();
     private final Ear ear = new Ear();
     private int frequency;
     private long heardAt = Long.MIN_VALUE / 2;
@@ -116,25 +114,13 @@ public class DataSensorBlockEntity extends BlockEntity
     }
 
     @Override
-    public Set<DataNodeRef> getNodeLinks() {
-        return links;
-    }
-
-    @Override
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
-        ListTag list = new ListTag();
-        for (DataNodeRef ref : links)
-            list.add(ref.toTag());
-        tag.put(LINKS, list);
     }
 
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
-        links.clear();
-        for (Tag entry : tag.getList(LINKS, Tag.TAG_COMPOUND))
-            links.add(DataNodeRef.fromTag((CompoundTag) entry));
     }
 
     @Override

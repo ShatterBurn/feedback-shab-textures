@@ -75,14 +75,6 @@ public class ProgrammerBlockEntity extends BlockEntity implements Container, Men
      */
     private final Map<Integer, NodePos> positions = new HashMap<>();
 
-    /**
-     * Every target {@link #link} has handed out. A commit may only name these or targets already
-     * on {@link #working} -- otherwise a modified client could write any position in the world
-     * onto a card and drive or read a machine nobody linked. Not persisted: a link not committed
-     * before a reload is simply lost.
-     */
-    private final Set<DataNodeRef> granted = new HashSet<>();
-
     public ProgrammerBlockEntity(BlockPos pos, BlockState state) {
         super(FBlockEntities.PROGRAMMER.get(), pos, state);
     }
@@ -132,9 +124,8 @@ public class ProgrammerBlockEntity extends BlockEntity implements Container, Men
     /**
      * Replaces the working copy with what a {@code ProgrammerScreen} edited locally, then prints
      * if asked. The client is not trusted: {@link ProgramGraph#findEditError} refuses a graph whose
-     * wiring could never have been drawn, and every link is re-resolved against the world where
-     * its chunk is loaded, so a card can't claim a target of the wrong kind or a made-up quantity.
-     * Last commit wins if two players edit the same Programmer at once.
+     * wiring could never have been drawn. A card names a signal, a kind and a color, never a block, so
+     * a made-up one only ever matches nothing. Last commit wins if two players edit the same Programmer at once.
      */
     public void commit(ProgramGraph graph, Map<Integer, NodePos> newPositions, boolean print, Player player) {
         if (level == null || level.isClientSide || !stillValid(player))
@@ -149,25 +140,7 @@ public class ProgrammerBlockEntity extends BlockEntity implements Container, Men
             return;
         }
 
-        Set<DataNodeRef> trusted = new HashSet<>(granted);
-        for (ProgramNode node : working.nodes()) {
-            DataNodeRef ref = targetOf(node);
-            if (ref != null)
-                trusted.add(ref);
-        }
-        ProgramGraph rebuilt = new ProgramGraph(graph.nodes().stream().map(node -> recheckLink(node, trusted)).toList(), graph.variables());
-        // A replaced sensor can change a wire's type or quantity; the rebuilt graph must still be drawable.
-        Optional<String> rebuiltError = rebuilt.findEditError(ControllerLimits.MAX);
-        if (rebuiltError.isPresent()) {
-            io.github.soundgoodizerfan.feedback.net.AimPayloads.screen(player, Component.translatable("feedback.programmer.error." + rebuiltError.get()));
-            return;
-        }
-        working = rebuilt;
-        // The client still shows what it sent; tell the player rather than let it disagree silently.
-        long dropped = graph.nodes().stream().filter(n -> targetOf(n) != null).count()
-                - working.nodes().stream().filter(n -> targetOf(n) != null).count();
-        if (dropped > 0)
-            io.github.soundgoodizerfan.feedback.net.AimPayloads.screen(player, Component.translatable("feedback.programmer.links_dropped", dropped));
+        working = graph;
         positions.clear();
         newPositions.forEach((id, pos) -> {
             if (working.find(id).isPresent())
@@ -176,116 +149,6 @@ public class ProgrammerBlockEntity extends BlockEntity implements Container, Men
         if (print)
             print(player);
         sync();
-    }
-
-    @Nullable
-    private static DataNodeRef targetOf(ProgramNode node) {
-        return node instanceof SensorNode s ? s.target() : node instanceof ActuatorNode a ? a.target() : null;
-    }
-
-    /**
-     * A link the server never handed out, or whose loaded target no longer fits, is dropped; a
-     * trusted one whose target is unloaded is kept as sent, since there's nothing to check it against.
-     */
-    private ProgramNode recheckLink(ProgramNode node, Set<DataNodeRef> trusted) {
-        DataNodeRef ref = targetOf(node);
-        if (ref == null || level == null)
-            return node;
-        if (trusted.contains(ref) || ref.isLocal()) {
-            // A target in an unloaded chunk is kept as sent: there is nothing to check it against.
-            if (!ref.isLocal() && !level.isLoaded(ref.pos()))
-                return node;
-            ProgramNode linked = resolveLink(node, ref, ref);
-            if (linked != null)
-                return linked;
-        }
-        return node instanceof ActuatorNode a ? new ActuatorNode(a.id(), a.input(), null) : new SensorNode(node.id(), null, null);
-    }
-
-    /** The {@code index}th sensor linked straight to the host Computer, for a card to pick; empty here (a Programmer block has no host). */
-    protected Optional<DataNodeRef> attachedRef(int index) {
-        return Optional.empty();
-    }
-
-    /**
-     * Consumes this player's pending Data Connector selection for card {@code nodeId} and answers
-     * with a {@link ProgrammerLinkedPayload}. The card itself may exist only in the screen's local
-     * copy so far, so nothing here touches {@link #working} -- the screen patches its copy and the
-     * link reaches the server with the next commit, re-checked there by {@link #recheckLink}.
-     */
-    public void link(int nodeId, boolean actuator, boolean quiet, int token, int pick, ServerPlayer player) {
-        if (level == null || isPrinted() || !stillValid(player))
-            return;
-        Optional<DataNodeRef> pending = pick >= 0 ? (actuator ? Optional.empty() : attachedRef(pick)) : DataLinkManager.get().peekPending(player);
-        if (pending.isEmpty()) {
-            if (!quiet)
-                player.displayClientMessage(Component.translatable("feedback.programmer.nothing_selected"), true);
-            return;
-        }
-        ProgramNode probe = actuator ? new ActuatorNode(nodeId, ProgramNode.UNWIRED, null) : new SensorNode(nodeId, null, null);
-        DataNodeRef stored = pending.get();
-        ProgramNode linked = resolveLink(probe, pending.get(), stored);
-        if (linked == null) {
-            if (!quiet)
-                player.displayClientMessage(Component.translatable(actuator
-                        ? "feedback.programmer.not_switchable" : "feedback.programmer.not_a_sensor"), true);
-            return;
-        }
-        if (pick < 0)
-            DataLinkManager.get().takePending(player);
-        granted.add(stored);
-        PacketDistributor.sendToPlayer(player, new ProgrammerLinkedPayload(worldPosition, nodeId, stored,
-                linked instanceof SensorNode s ? Optional.ofNullable(s.quantity()) : Optional.empty(),
-                linked instanceof SensorNode s ? s.channel() : ((ActuatorNode) linked).channel(), token));
-    }
-
-    /**
-     * Whether {@code look}, the target as it stands in the world, fits {@code node}'s target type,
-     * and what to set on the node if so -- shared by {@link #link} and {@link #recheckLink}.
-     * {@code ref} is what the node stores for it (the same, unless framed). Returns {@code null}
-     * without side effects if it doesn't fit; the caller decides whether to consume the pending selection.
-     */
-    @Nullable
-    private ProgramNode resolveLink(ProgramNode node, DataNodeRef look, DataNodeRef ref) {
-        if (level == null)
-            return null;
-        if (look.isLocal()) {
-            // a robot's own channel: an action is a switch, a sense a boolean state or a number
-            var channel = io.github.soundgoodizerfan.feedback.robot.RobotChannel.of(look.local());
-            if (channel == null)
-                return null;
-            if (node instanceof SensorNode sensor)
-                return channel.actuator() ? null : new SensorNode(sensor.id(), ref, channel.quantity());
-            if (node instanceof ActuatorNode actuator)
-                return channel.actuator() ? new ActuatorNode(actuator.id(), actuator.input(), ref, 0) : null;
-            return null;
-        }
-        Optional<DataNode> resolved = DataNode.resolve(level, look);
-        if (node instanceof SensorNode sensor) {
-            // An actuator reads back as its own on/off state -- what a deadband needs (philosophy 14).
-            if (resolved.orElse(null) instanceof ChannelSource source && source.offersChannels())
-                return new SensorNode(sensor.id(), ref, Quantity.CONTROL,
-                        sensor.target() != null && sensor.target().equals(ref) ? sensor.channel() : source.defaultChannel());
-            if (resolved.filter(Switchable.class::isInstance).isPresent())
-                return new SensorNode(sensor.id(), ref, Quantity.STATE);
-            return resolved.filter(SensorFitting.class::isInstance).map(SensorFitting.class::cast)
-                    .<ProgramNode>map(fitting -> new SensorNode(sensor.id(), ref, resolveQuantity(fitting)))
-                    .orElse(null);
-        }
-        if (node instanceof ActuatorNode actuator)
-            return resolved.filter(d -> d instanceof Switchable || d instanceof Analog).isPresent()
-                    ? new ActuatorNode(actuator.id(), actuator.input(), ref,
-                            ref.equals(actuator.target()) ? actuator.channel() : 0) : null;
-        return null;
-    }
-
-    /** The one {@link Quantity} a linked fitting reads -- every fitting so far reads exactly one. */
-    @Nullable
-    private static Quantity resolveQuantity(SensorFitting fitting) {
-        for (Quantity quantity : Quantity.values())
-            if (fitting.canRead(quantity))
-                return quantity;
-        return null;
     }
 
     /**

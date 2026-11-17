@@ -62,6 +62,12 @@ public final class ControlTuning {
      */
     public static final int CONTROLLER_MAX_NODES = 16;
 
+    /** Data nodes a bare Controller binds. Invented; each Card Rack adds {@link #CARD_RACK_LINKS}. */
+    public static final int CONTROLLER_BASE_LINKS = 8;
+
+    /** Data nodes one Card Rack lets a Controller bind. Invented. */
+    public static final int CARD_RACK_LINKS = 4;
+
     /** Variables a bare Controller can declare. Invented; a Memory Drum adds {@link #MEMORY_DRUM_VARIABLES}. */
     public static final int CONTROLLER_BASE_VARIABLES = 4;
 

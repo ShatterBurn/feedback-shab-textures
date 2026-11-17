@@ -452,16 +452,6 @@ public class PivotMastBlockEntity extends RotationNode implements Switchable, Da
         return this;
     }
 
-    @Override
-    public boolean acceptsLinks() {
-        return false;
-    }
-
-    @Override
-    public Set<DataNodeRef> getNodeLinks() {
-        return Collections.emptySet();
-    }
-
     // --- persistence --------------------------------------------------------------------------
 
     @Override

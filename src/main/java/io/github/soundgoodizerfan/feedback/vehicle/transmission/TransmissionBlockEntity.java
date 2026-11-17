@@ -69,7 +69,6 @@ public class TransmissionBlockEntity extends BlockEntity implements Analog, Data
     private float clutch;
     /** What was last published, so an unchanged state costs nothing. */
     private float published = Float.NaN;
-    private final Set<DataNodeRef> links = new HashSet<>();
 
     public TransmissionBlockEntity(BlockPos pos, BlockState state) {
         super(FVehicles.TRANSMISSION_ENTITY.get(), pos, state);
@@ -223,11 +222,6 @@ public class TransmissionBlockEntity extends BlockEntity implements Analog, Data
     // --- DataNode -------------------------------------------------------------------------------
 
     @Override
-    public boolean acceptsLinks() {
-        return false;
-    }
-
-    @Override
     public BlockPos getNodePos() {
         return worldPosition;
     }
@@ -246,11 +240,6 @@ public class TransmissionBlockEntity extends BlockEntity implements Analog, Data
     @Override
     public BlockEntity getNodeOwner() {
         return this;
-    }
-
-    @Override
-    public Set<DataNodeRef> getNodeLinks() {
-        return links;
     }
 
     // --- persistence ----------------------------------------------------------------------------

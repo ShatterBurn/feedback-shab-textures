@@ -98,8 +98,24 @@ public enum RobotChannel {
         return bool ? Quantity.STATE : this == CHARGE ? Quantity.CHARGE : Quantity.FIGURE;
     }
 
-    public DataNodeRef ref() {
-        return DataNodeRef.local(ordinal());
+    /** The kind every robot channel is: a robot is bound to its own program, always. */
+    public static final net.minecraft.resources.ResourceLocation KIND =
+            io.github.soundgoodizerfan.feedback.Feedback.id("data_kind/robot");
+
+    /** This channel as a signal id a Sensor card names: {@code feedback:robot/<name>}. */
+    public net.minecraft.resources.ResourceLocation signal() {
+        return io.github.soundgoodizerfan.feedback.Feedback.id("robot/" + name().toLowerCase(java.util.Locale.ROOT));
+    }
+
+    /** The channel a signal id names, or null when it is not a robot channel. */
+    @Nullable
+    public static RobotChannel ofSignal(net.minecraft.resources.ResourceLocation signal) {
+        if (!signal.getNamespace().equals(io.github.soundgoodizerfan.feedback.Feedback.MOD_ID) || !signal.getPath().startsWith("robot/"))
+            return null;
+        for (RobotChannel channel : ALL)
+            if (channel.name().toLowerCase(java.util.Locale.ROOT).equals(signal.getPath().substring(6)))
+                return channel;
+        return null;
     }
 
     private static final RobotChannel[] ALL = values();

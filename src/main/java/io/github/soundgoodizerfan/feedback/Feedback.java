@@ -21,8 +21,6 @@ import org.slf4j.Logger;
 import io.github.soundgoodizerfan.feedback.control.data.DataLinkManager;
 import io.github.soundgoodizerfan.feedback.machine.pulley.BeltLinkManager;
 import io.github.soundgoodizerfan.feedback.control.programmer.ProgrammerCommitPayload;
-import io.github.soundgoodizerfan.feedback.control.programmer.ProgrammerLinkPayload;
-import io.github.soundgoodizerfan.feedback.control.programmer.ProgrammerLinkedPayload;
 import io.github.soundgoodizerfan.feedback.net.DeformationSyncPayload;
 import io.github.soundgoodizerfan.feedback.net.MaterialSyncPayload;
 import io.github.soundgoodizerfan.feedback.net.RemovalSyncPayload;
@@ -177,6 +175,9 @@ public class Feedback {
                 .playToClient(io.github.soundgoodizerfan.feedback.net.DataSelectionPayload.TYPE,
                         io.github.soundgoodizerfan.feedback.net.DataSelectionPayload.STREAM_CODEC,
                         io.github.soundgoodizerfan.feedback.net.DataSelectionPayload::handle)
+                .playToClient(io.github.soundgoodizerfan.feedback.net.DataLinksPayload.TYPE,
+                        io.github.soundgoodizerfan.feedback.net.DataLinksPayload.STREAM_CODEC,
+                        io.github.soundgoodizerfan.feedback.net.DataLinksPayload::handle)
                 .playToClient(io.github.soundgoodizerfan.feedback.net.SoundingPayload.TYPE,
                         io.github.soundgoodizerfan.feedback.net.SoundingPayload.STREAM_CODEC,
                         io.github.soundgoodizerfan.feedback.net.SoundingPayload::handle)
@@ -273,8 +274,6 @@ public class Feedback {
                 .playToServer(io.github.soundgoodizerfan.feedback.control.computer.ComputerNetPayload.TYPE,
                         io.github.soundgoodizerfan.feedback.control.computer.ComputerNetPayload.STREAM_CODEC,
                         io.github.soundgoodizerfan.feedback.control.computer.ComputerNetPayload::handle)
-                .playToServer(ProgrammerLinkPayload.TYPE, ProgrammerLinkPayload.STREAM_CODEC,
-                        ProgrammerLinkPayload::handle)
                 .playToServer(io.github.soundgoodizerfan.feedback.net.MortarPutPayload.TYPE,
                         io.github.soundgoodizerfan.feedback.net.MortarPutPayload.STREAM_CODEC,
                         io.github.soundgoodizerfan.feedback.net.MortarPutPayload::handle)
@@ -397,12 +396,6 @@ public class Feedback {
                 .playToClient(io.github.soundgoodizerfan.feedback.net.MinigameOpenPayload.TYPE,
                         io.github.soundgoodizerfan.feedback.net.MinigameOpenPayload.STREAM_CODEC,
                         io.github.soundgoodizerfan.feedback.net.MinigameOpenPayload::handle)
-                .playToClient(io.github.soundgoodizerfan.feedback.net.RobotChannelsPayload.TYPE,
-                        io.github.soundgoodizerfan.feedback.net.RobotChannelsPayload.STREAM_CODEC,
-                        io.github.soundgoodizerfan.feedback.net.RobotChannelsPayload::handle)
-                .playToServer(io.github.soundgoodizerfan.feedback.net.RobotChannelPickPayload.TYPE,
-                        io.github.soundgoodizerfan.feedback.net.RobotChannelPickPayload.STREAM_CODEC,
-                        io.github.soundgoodizerfan.feedback.net.RobotChannelPickPayload::handle)
                 .playToClient(io.github.soundgoodizerfan.feedback.net.ResearchOpenPayload.TYPE,
                         io.github.soundgoodizerfan.feedback.net.ResearchOpenPayload.STREAM_CODEC,
                         io.github.soundgoodizerfan.feedback.net.ResearchOpenPayload::handle)
@@ -474,9 +467,7 @@ public class Feedback {
                         io.github.soundgoodizerfan.feedback.combat.skill.SkillBuyPayload::handle)
                 .playToClient(io.github.soundgoodizerfan.feedback.combat.cast.CastPayloads.Turn.TYPE,
                         io.github.soundgoodizerfan.feedback.combat.cast.CastPayloads.Turn.STREAM_CODEC,
-                        io.github.soundgoodizerfan.feedback.combat.cast.CastPayloads.Turn::handle)
-                .playToClient(ProgrammerLinkedPayload.TYPE, ProgrammerLinkedPayload.STREAM_CODEC,
-                        ProgrammerLinkedPayload::handle);
+                        io.github.soundgoodizerfan.feedback.combat.cast.CastPayloads.Turn::handle);
     }
 
     /**

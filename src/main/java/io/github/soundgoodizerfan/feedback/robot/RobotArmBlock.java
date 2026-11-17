@@ -57,11 +57,11 @@ public class RobotArmBlock extends Block implements EntityBlock {
                                               InteractionHand hand, BlockHitResult hit) {
         if (stack.isEmpty() || !(level.getBlockEntity(pos) instanceof RobotArmBlockEntity arm))
             return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        if (stack.getItem() instanceof DataConnectorItem)
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         if (level.isClientSide)
             return ItemInteractionResult.SUCCESS;
-        if (stack.getItem() instanceof DataConnectorItem) {
-            RobotWorker.openChannels(player);
-        } else if (io.github.soundgoodizerfan.feedback.process.Circuit.of(stack).elements() > 0 && stack.getCount() == 1) {
+        if (io.github.soundgoodizerfan.feedback.process.Circuit.of(stack).elements() > 0 && stack.getCount() == 1) {
             ItemStack old = arm.brain();
             arm.setBrain(stack.copyWithCount(1));
             if (!player.getAbilities().instabuild)

@@ -9,7 +9,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import io.github.soundgoodizerfan.feedback.control.data.DataNodeRef;
+import io.github.soundgoodizerfan.feedback.control.data.Reduction;
 import io.github.soundgoodizerfan.feedback.control.program.ActuatorNode;
 import io.github.soundgoodizerfan.feedback.control.program.ComparatorNode;
 import io.github.soundgoodizerfan.feedback.control.program.DelayNode;
@@ -41,22 +41,11 @@ public final class TextPrinter {
         StringBuilder out = new StringBuilder();
         for (ProgramVariable v : graph.variables())
             out.append("var ").append(word(v.name())).append(": ").append(v.type().getSerializedName()).append('\n');
-        Map<DataNodeRef, String> links = new LinkedHashMap<>();
-        for (ProgramNode n : graph.nodes()) {
-            DataNodeRef t = target(n);
-            if (t != null && !t.isLocal() && !links.containsKey(t))
-                links.put(t, "l" + (links.size() + 1));
-        }
-        links.forEach((ref, name) -> out.append("link ").append(name).append(" = ").append(ref(ref)).append('\n'));
-        if (!graph.variables().isEmpty() || !links.isEmpty())
+        if (!graph.variables().isEmpty())
             out.append('\n');
         for (ProgramNode n : graph.nodes())
-            out.append(name(n)).append(" = ").append(expr(graph, n, links)).append('\n');
+            out.append(name(n)).append(" = ").append(expr(graph, n)).append('\n');
         return out.toString();
-    }
-
-    private static DataNodeRef target(ProgramNode n) {
-        return n instanceof SensorNode s ? s.target() : n instanceof ActuatorNode a ? a.target() : null;
     }
 
     /** The name a card prints under: its kind and its id. */
@@ -81,17 +70,6 @@ public final class TextPrinter {
         return PLAIN.matcher(variable).matches() && !TextParser.isKeyword(variable) ? variable : "\"" + variable + "\"";
     }
 
-    private static String ref(DataNodeRef r) {
-        if (r.isLocal())
-            return "@local " + r.local();
-        StringBuilder s = new StringBuilder("@").append(r.pos().getX()).append(' ').append(r.pos().getY()).append(' ').append(r.pos().getZ());
-        if (r.side() != null)
-            s.append(' ').append(r.side().getName());
-        if (r.isVoxel())
-            s.append(" voxel ").append(r.voxel());
-        return s.toString();
-    }
-
     private static String operand(ProgramGraph g, int id) {
         return g.find(id).map(TextPrinter::name).orElse("unwired");
     }
@@ -112,17 +90,18 @@ public final class TextPrinter {
         return ticks + "t";
     }
 
-    private static String target(DataNodeRef t, Map<DataNodeRef, String> links) {
-        return t == null ? "unlinked" : t.isLocal() ? ref(t) : links.get(t);
-    }
-
-    private static String expr(ProgramGraph g, ProgramNode node, Map<DataNodeRef, String> links) {
+    private static String expr(ProgramGraph g, ProgramNode node) {
         return switch (node) {
             case SensorNode s -> {
                 List<String> args = new ArrayList<>();
-                args.add(target(s.target(), links));
-                if (s.quantity() != null || s.channel() != 0)
-                    args.add(s.quantity() == null ? "unlinked" : s.quantity().getSerializedName());
+                if (s.signal() != null)
+                    args.add(word(TextWords.signal(s.signal())));
+                if (s.kind() != null)
+                    args.add(word(TextWords.kind(s.kind())));
+                if (s.color() >= 0)
+                    args.add(TextWords.color(s.color()));
+                if (s.reduction() != Reduction.AVERAGE)
+                    args.add(TextWords.reduction(s.reduction()));
                 if (s.channel() != 0)
                     args.add(String.valueOf(s.channel()));
                 yield "sensor(" + String.join(", ", args) + ")";
@@ -145,7 +124,8 @@ public final class TextPrinter {
             case DelayNode d -> "delay(" + operand(g, d.input()) + ", " + (d.countWired() ? operand(g, d.ticksInput()) : duration(d.ticks())) + ")"
                     + (g.find(d.input()).isEmpty() ? " as " + d.type().getSerializedName() : "");
             case ReadNode r -> "read(" + word(r.variable()) + ")";
-            case ActuatorNode a -> "actuate(" + operand(g, a.input()) + ", " + target(a.target(), links) + (a.channel() != 0 ? ", " + a.channel() : "") + ")";
+            case ActuatorNode a -> "actuate(" + operand(g, a.input()) + (a.kind() != null ? ", " + word(TextWords.kind(a.kind())) : "")
+                    + (a.color() >= 0 ? ", " + TextWords.color(a.color()) : "") + (a.channel() != 0 ? ", " + a.channel() : "") + ")";
             case WriteNode w -> "write(" + word(w.variable()) + ", " + operand(g, w.valueInput()) + ", " + operand(g, w.triggerInput()) + ")";
         };
     }
