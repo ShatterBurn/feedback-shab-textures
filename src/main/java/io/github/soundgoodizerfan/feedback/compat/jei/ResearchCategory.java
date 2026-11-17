@@ -139,7 +139,7 @@ public class ResearchCategory implements IRecipeCategory<ResearchCategory.Card> 
     public void setRecipe(IRecipeLayoutBuilder builder, Card card, IFocusGroup focuses) {
         if (card.app() != null) {
             builder.addSlot(RecipeIngredientRole.INPUT, 1, 18).setStandardSlotBackground().addItemStack(new ItemStack(io.github.soundgoodizerfan.feedback.registry.FItems.FLOPPY_DISK.get()));
-            var subject = builder.addSlot(RecipeIngredientRole.INPUT, 51, 18).setStandardSlotBackground();
+            var subject = builder.addSlot(RecipeIngredientRole.CATALYST, 51, 18).setStandardSlotBackground();
             for (ItemStack s : subjects(card.subject()))
                 subject.addItemStack(s);
             builder.addOutputSlot(143, 18).setOutputSlotBackground().addItemStack(io.github.soundgoodizerfan.feedback.control.computer.ComputerApps.disk(card.app()));
