@@ -16,7 +16,10 @@ import java.util.Map;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.ParticleStatus;
+import com.mojang.blaze3d.platform.NativeImage;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.renderer.texture.DynamicTexture;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.util.Mth;
@@ -60,7 +63,7 @@ public final class StreamFx {
     /** Most live droplets of all streams: a hard ceiling over the per-stream and crowd caps. */
     private static final int MAX_TOTAL = 1200;
 
-    private static final byte DROP = 0, PUFF = 1, FLAME = 2, SOOT = 3, FOG = 4, MOTE = 5, FROST = 6, HALO = 7;
+    private static final byte DROP = 0, PUFF = 1, FLAME = 2, SOOT = 3, FOG = 4, MOTE = 5, FROST = 6, HALO = 7, EMBER = 8;
 
     /** One caster's stream: the last two states, so it is drawn between them. */
     private static final class Ribbon {
@@ -91,6 +94,26 @@ public final class StreamFx {
     private static final ArrayDeque<Drop> FREE = new ArrayDeque<>();
     /** Live droplets that are not the player's own. */
     private static int others;
+
+    /** A soft white disc (solid core, feathered rim), made once at runtime so no art file is needed: every droplet is this, tinted. */
+    private static ResourceLocation disc;
+
+    private static ResourceLocation disc(Minecraft mc) {
+        if (disc == null) {
+            NativeImage img = new NativeImage(NativeImage.Format.RGBA, 32, 32, false);
+            for (int y = 0; y < 32; y++)
+                for (int x = 0; x < 32; x++) {
+                    float dx = (x + 0.5f) / 16f - 1f, dy = (y + 0.5f) / 16f - 1f;
+                    float rad = (float) Math.sqrt(dx * dx + dy * dy);
+                    float t = Mth.clamp((1f - rad) / 0.45f, 0f, 1f);
+                    int a = Math.round(t * t * (3f - 2f * t) * 255f);
+                    img.setPixelRGBA(x, y, a << 24 | 0xFFFFFF);
+                }
+            disc = Feedback.id("stream_disc");
+            mc.getTextureManager().register(disc, new DynamicTexture(img));
+        }
+        return disc;
+    }
 
     private StreamFx() {
     }
@@ -246,7 +269,7 @@ public final class StreamFx {
                 case FLAME -> {
                     drag = FLAME_DRAG;
                     lift = 0.012f;
-                    grow = d.age < d.life / 3 ? 1.08f : 0.95f;
+                    grow = d.age < d.life / 3 ? 1.05f : 0.93f;
                 }
                 case SOOT -> {
                     drag = 0.92f;
@@ -261,6 +284,10 @@ public final class StreamFx {
                 case MOTE -> {
                     drag = 0.95f;
                     lift = 0.004f;
+                }
+                case EMBER -> {
+                    drag = 0.98f;
+                    lift = -0.02f;
                 }
                 case FROST -> {
                     drag = 0.95f;
@@ -336,7 +363,8 @@ public final class StreamFx {
             // A drop flies at the exit speed and is gone when it has covered the stream's reach; gravity bends its path.
             int life = Mth.clamp(Math.round(length / (speed * 0.95f)), 3, 40);
             float size = Mth.lerp(Math.min(p.spread() / 20f, 1f), 0.07f, 0.03f) * (1f + thick * 1.6f) * (1f + 0.05f * Math.min(body, 8f));
-            int drops = Math.min(cap, Math.round((1 + body * 0.6f) * scale));
+            // A burning stream is fire, not liquid: its fuel is consumed, so no drops of it fly (embers do, below).
+            int drops = burning ? 0 : Math.min(cap, Math.round((1 + body * 0.6f) * scale));
             for (int i = 0; i < drops; i++) {
                 double u = random.nextDouble();
                 Vec3 vel = dir.scale(speed * (0.9 + random.nextDouble() * 0.15)).add(across(across1, across2, random, speed * (tan + 0.02)));
@@ -350,8 +378,16 @@ public final class StreamFx {
                 for (int i = 0; i < flames; i++) {
                     double u = random.nextDouble();
                     Vec3 vel = dir.scale(fv * (0.7 + random.nextDouble() * 0.3)).add(across(across1, across2, random, fv * tan * 0.5));
-                    spawn(FLAME, start.x + vel.x * u, start.y + vel.y * u, start.z + vel.z * u, vel, 0.1f + random.nextFloat() * 0.1f, flife, 1f, 1f, 1f,
+                    spawn(FLAME, start.x + vel.x * u, start.y + vel.y * u, start.z + vel.z * u, vel, 0.06f + random.nextFloat() * 0.07f, flife, 1f, 1f, 1f,
                             mine, hot, false);
+                }
+                // A few embers thrown on an arc.
+                int embers = Math.min(2, cap);
+                for (int i = 0; i < embers; i++) {
+                    if (random.nextFloat() > scale)
+                        continue;
+                    Vec3 vel = dir.scale(speed * (0.5 + random.nextDouble() * 0.4)).add(across(across1, across2, random, speed * (tan + 0.05)));
+                    spawn(EMBER, start.x, start.y, start.z, vel, 0.02f + random.nextFloat() * 0.015f, 10 + random.nextInt(8), 1f, 1f, 1f, mine, hot, false);
                 }
                 // Soot off the flame's edge: a cooler fuel leaves more.
                 float soot = (1.2f - hot) * scale * (status == ParticleStatus.ALL ? 1f : 0.5f);
@@ -377,7 +413,7 @@ public final class StreamFx {
         }
 
         // The valve has just opened: a puff of drops thrown wide at the nozzle.
-        if (opening && !mist) {
+        if (opening && !mist && !burning) {
             int burst = Math.round(Math.min(10, cap * 1.7f) * scale);
             for (int i = 0; i < burst; i++) {
                 Vec3 vel = dir.scale(0.25 + random.nextDouble() * 0.3).add(across(across1, across2, random, 0.25));
@@ -405,7 +441,7 @@ public final class StreamFx {
                         (random.nextDouble() - 0.5) * 0.2);
                 if (mist)
                     spawn(PUFF, at.x, at.y, at.z, vel.scale(0.5), 0.1f + random.nextFloat() * 0.1f, 8 + random.nextInt(6), r, g, b, mine, 0f, false);
-                else
+                else if (!burning)
                     spawn(DROP, at.x, at.y, at.z, vel, 0.03f + random.nextFloat() * 0.03f, 6 + random.nextInt(6), r, g, b, mine, 0f, false);
             }
             if (burning)
@@ -435,6 +471,7 @@ public final class StreamFx {
         PoseStack pose = event.getPoseStack();
         MultiBufferSource.BufferSource buffers = mc.renderBuffers().bufferSource();
         VertexConsumer vc = buffers.getBuffer(RenderType.debugQuads());
+        RenderType soft = RenderType.text(disc(mc));
         pose.pushPose();
         pose.translate(-cam.x, -cam.y, -cam.z);
         Matrix4f m = pose.last().pose();
@@ -468,9 +505,11 @@ public final class StreamFx {
             strip(m, vc, r, start, dir, length, drawn, life, cam, time, firstPerson && own, burning);
         }
         Vector3f left = camera.getLeftVector(), up = camera.getUpVector();
-        for (Drop d : DROPS)
-            blot(m, vc, d, left, up, partial);
         buffers.endBatch(RenderType.debugQuads());
+        VertexConsumer sc = buffers.getBuffer(soft);
+        for (Drop d : DROPS)
+            blot(m, sc, d, left, up, partial);
+        buffers.endBatch(soft);
         pose.popPose();
     }
 
@@ -589,7 +628,7 @@ public final class StreamFx {
         vc.addVertex(m, (float) d.x, (float) d.y, (float) d.z).setColor(r1, g1, b1, aFar);
     }
 
-    /** One droplet as a camera-facing square, tinted and faded by its kind. */
+    /** One droplet as a camera-facing soft disc, tinted and faded by its kind; a fast drop is stretched along its motion into a streak. */
     private static void blot(Matrix4f m, VertexConsumer vc, Drop d, Vector3f left, Vector3f up, float partial) {
         float f = (d.age + partial) / d.life;
         float r = d.r, g = d.g, b = d.b, a;
@@ -604,23 +643,41 @@ public final class StreamFx {
                 }
             }
             case PUFF -> a = 0.35f * (1f - f);
-            case FLAME, HALO -> {
-                int c = ramp(d.type == HALO ? 0.2f : f, d.hot);
+            case FLAME, HALO, EMBER -> {
+                int c = ramp(d.type == HALO ? 0.2f : d.type == EMBER ? 0.15f + 0.4f * f : f, d.hot);
                 r = (c >> 16 & 255) / 255f;
                 g = (c >> 8 & 255) / 255f;
                 b = (c & 255) / 255f;
-                a = d.type == HALO ? 0.35f : 0.8f * (1f - f * f);
+                a = d.type == HALO ? 0.35f : d.type == EMBER ? 0.95f * (1f - f) : 0.6f * (1f - f * f);
             }
-            case SOOT -> a = 0.45f * (1f - f);
+            case SOOT -> a = 0.4f * (1f - f);
             case FOG -> a = 0.3f * (1f - f) * Math.min(1f, f * 6f);
             case MOTE -> a = 0.9f * (0.5f + 0.5f * (float) Math.sin((d.age + partial) * 1.7f + d.x * 13f)) * (1f - f);
             default -> a = 0.8f * (1f - f);
         }
         float x = Mth.lerp(partial, d.ox, d.x), y = Mth.lerp(partial, d.oy, d.y), z = Mth.lerp(partial, d.oz, d.z);
-        float lx = left.x * d.size, ly = left.y * d.size, lz = left.z * d.size, ux = up.x * d.size, uy = up.y * d.size, uz = up.z * d.size;
-        vc.addVertex(m, x + lx + ux, y + ly + uy, z + lz + uz).setColor(r, g, b, a);
-        vc.addVertex(m, x - lx + ux, y - ly + uy, z - lz + uz).setColor(r, g, b, a);
-        vc.addVertex(m, x - lx - ux, y - ly - uy, z - lz - uz).setColor(r, g, b, a);
-        vc.addVertex(m, x + lx - ux, y + ly - uy, z + lz - uz).setColor(r, g, b, a);
+        // Half-extents along two screen axes: round by default; a drop or ember with speed is long along its screen-space motion.
+        float ax = left.x, ay = left.y, az = left.z, bx = up.x, by = up.y, bz = up.z, la = d.size, lb = d.size;
+        if (d.type == DROP || d.type == EMBER) {
+            float sx = d.vx * left.x + d.vy * left.y + d.vz * left.z, sy = d.vx * up.x + d.vy * up.y + d.vz * up.z;
+            float len = (float) Math.sqrt(sx * sx + sy * sy);
+            if (len > 1e-3f) {
+                sx /= len;
+                sy /= len;
+                ax = left.x * sx + up.x * sy;
+                ay = left.y * sx + up.y * sy;
+                az = left.z * sx + up.z * sy;
+                bx = -left.x * sy + up.x * sx;
+                by = -left.y * sy + up.y * sx;
+                bz = -left.z * sy + up.z * sx;
+                la = d.size * (1f + Math.min(len * 5f, 3f));
+                lb = d.size * 0.7f;
+            }
+        }
+        float px = ax * la, py = ay * la, pz = az * la, qx = bx * lb, qy = by * lb, qz = bz * lb;
+        vc.addVertex(m, x + px + qx, y + py + qy, z + pz + qz).setColor(r, g, b, a).setUv(1f, 0f).setLight(0xF000F0);
+        vc.addVertex(m, x - px + qx, y - py + qy, z - pz + qz).setColor(r, g, b, a).setUv(0f, 0f).setLight(0xF000F0);
+        vc.addVertex(m, x - px - qx, y - py - qy, z - pz - qz).setColor(r, g, b, a).setUv(0f, 1f).setLight(0xF000F0);
+        vc.addVertex(m, x + px - qx, y + py - qy, z + pz - qz).setColor(r, g, b, a).setUv(1f, 1f).setLight(0xF000F0);
     }
 }
