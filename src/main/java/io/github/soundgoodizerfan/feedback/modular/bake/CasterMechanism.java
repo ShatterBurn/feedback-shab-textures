@@ -63,14 +63,15 @@ public final class CasterMechanism implements GunMechanism {
     private record Prepared(CasterSpec spec, FluidStack fluid, float pressure, float speed, int flowMb, GunFigures figures, float eu) {
     }
 
-    private static Prepared prepare(ItemStack gun, long now) {
+    /** {@code predicting}: the client asking whether a pull would throw anything; a motor is taken at its full head then, since the run-up starts with the pull the server gets. */
+    private static Prepared prepare(ItemStack gun, long now, boolean predicting) {
         CasterSpec spec = ModularCaster.spec(gun).orElse(null);
         if (spec == null || ModularStacks.broken(gun))
             return null;
         FluidStack fluid = ModularCaster.content(gun);
         if (fluid.isEmpty())
             return null;
-        float pressure = spec.electric() ? motorHead(spec, gun, now)
+        float pressure = spec.electric() ? motorHead(spec, gun, now, predicting)
                 : spec.pump() ? (now < ModularCaster.primeUntil(gun) ? spec.pumpPu() : 0f) : ModularCaster.pressure(gun);
         Material m = FluidStream.materialOf(fluid).orElse(null);
         float speed = spec.speed(pressure, m == null ? 1f : (float) m.density().muPerMb());
@@ -90,11 +91,11 @@ public final class CasterMechanism implements GunMechanism {
     }
 
     /** An electric pump's head now: its full head scaled by how far the motor has run up, nothing without a charged cell. */
-    private static float motorHead(CasterSpec spec, ItemStack gun, long now) {
+    private static float motorHead(CasterSpec spec, ItemStack gun, long now, boolean predicting) {
         ItemStack cell = ModularElectricGun.cell(gun);
         if (cell.isEmpty() || !BatteryStack.is(cell) || !BatteryStack.ready(BatteryStack.state(cell)) || BatteryStack.charge(BatteryStack.state(cell)) <= 0f)
             return 0f;
-        return spec.pumpPu() * ModularCaster.spin(gun, now);
+        return spec.pumpPu() * (predicting ? 1f : ModularCaster.spin(gun, now));
     }
 
     @Override
@@ -108,10 +109,10 @@ public final class CasterMechanism implements GunMechanism {
         if (drive != null && drive.electric()) {
             // The motor runs up from the first pull; one with nothing to move wears (and costs no charge).
             ModularCaster.touchSpin(gun, level.getGameTime());
-            if (ModularCaster.content(gun).isEmpty() && motorHead(drive, gun, level.getGameTime()) > 0f)
+            if (ModularCaster.content(gun).isEmpty() && motorHead(drive, gun, level.getGameTime(), true) > 0f)
                 GunCondition.misuse(gun, CasterTuning.WEAR_DRY_MOTOR);
         }
-        Prepared p = prepare(gun, level.getGameTime());
+        Prepared p = prepare(gun, level.getGameTime(), false);
         if (p == null)
             return false;
         if (!GunShots.accept(shooter, p.figures(), nowMs, hand))
@@ -191,7 +192,7 @@ public final class CasterMechanism implements GunMechanism {
 
     @Override
     public GunFigures predict(Player player, ItemStack gun, Level level, Map<ResourceLocation, Material> materials, int hand) {
-        Prepared p = prepare(gun, level.getGameTime());
+        Prepared p = prepare(gun, level.getGameTime(), true);
         return p == null ? null : p.figures();
     }
 
