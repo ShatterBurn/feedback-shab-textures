@@ -22,6 +22,10 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
@@ -41,6 +45,40 @@ public class ComputerBlock extends Block implements EntityBlock {
     public ComputerBlock(Properties properties) {
         super(properties);
         registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH));
+    }
+
+    /**
+     * The boxes of models/block/computer.json (front on north), as {x1, y1, z1, x2, y2, z2} in sixteenths: case, stand, monitor frame,
+     * body, shoulder, tube, keyboard with its cable, mouse. The bezel opening is filled; keep in step with scripts/computer_model.py.
+     */
+    private static final int[][] BOXES = {
+            {1, 0, 6, 15, 3, 15}, {4, 3, 7, 12, 4, 13}, {6, 4, 9, 10, 5, 12},
+            {2, 5, 6, 14, 15, 8}, {3, 5, 8, 13, 14, 11}, {4, 6, 11, 12, 14, 13}, {5, 7, 13, 11, 13, 15},
+            {6, 0, 1, 15, 1, 5}, {10, 0, 5, 11, 1, 6}, {2, 0, 2, 5, 2, 6}};
+
+    private static final java.util.Map<Direction, VoxelShape> SHAPES = new java.util.EnumMap<>(Direction.class);
+
+    static {
+        for (Direction d : Direction.Plane.HORIZONTAL) {
+            VoxelShape shape = Shapes.empty();
+            for (int[] b : BOXES) {
+                // blockstate y rotation is clockwise from above: north -> east maps (x, z) to (16 - z, x)
+                int x1 = b[0], z1 = b[2], x2 = b[3], z2 = b[5];
+                int[] r = switch (d) {
+                    case EAST -> new int[]{16 - z2, x1, 16 - z1, x2};
+                    case SOUTH -> new int[]{16 - x2, 16 - z2, 16 - x1, 16 - z1};
+                    case WEST -> new int[]{z1, 16 - x2, z2, 16 - x1};
+                    default -> new int[]{x1, z1, x2, z2};
+                };
+                shape = Shapes.or(shape, Block.box(r[0], b[1], r[1], r[2], b[4], r[3]));
+            }
+            SHAPES.put(d, shape);
+        }
+    }
+
+    @Override
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        return SHAPES.get(state.getValue(FACING));
     }
 
     @Override
