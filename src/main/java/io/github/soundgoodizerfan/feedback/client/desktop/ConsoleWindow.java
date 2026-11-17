@@ -51,7 +51,7 @@ final class ConsoleWindow extends DesktopWindow {
         int top = y, width = scroll.innerWidth() - 36;
         for (ComputerBlockEntity.LogEntry e : entries) {
             ui.text(4, y, ComputerScreen.clockText(e.time()), skin.dim());
-            y += ui.wrapped(36, y, width, text(e), e.key().equals("power_off") || e.key().equals("refused") ? skin.warn() : skin.ink()) * Ui.LINE;
+            y += ui.wrapped(36, y, width, text(e), e.key().equals("power_off") || e.key().equals("refused") || e.key().startsWith("net_lost") || e.key().startsWith("net_no_") || e.key().equals("net_too_big") || e.key().equals("net_empty") ? skin.warn() : skin.ink()) * Ui.LINE;
         }
         scroll.end(ui, y - top + 4);
     }

@@ -63,10 +63,14 @@ public class DataPortBlock extends Block implements EntityBlock {
             }
             return InteractionResult.sidedSuccess(level.isClientSide);
         }
-        if (!level.isClientSide && level.getBlockEntity(pos) instanceof DataPortBlockEntity port)
+        if (!level.isClientSide && level.getBlockEntity(pos) instanceof DataPortBlockEntity port) {
+            // each plain click steps the port's bus channel (off, then 1 up to what its circuit separates) and reads it back
+            port.tune();
             io.github.soundgoodizerfan.feedback.net.AimPayloads.report(player, pos, Component.translatable("message.feedback.data_port",
                     port.teleportantMb(), port.anchored() ? Component.translatable("message.feedback.ender_port.anchored")
-                            : Component.translatable("message.feedback.ender_port.free"), Component.translatable(port.stateKey())));
+                            : Component.translatable("message.feedback.ender_port.free"), Component.translatable(port.stateKey()),
+                    port.tuned() == 0 ? Component.translatable("message.feedback.data_port.bus_off") : Component.translatable("message.feedback.data_port.bus", port.tuned(), port.channels())));
+        }
         return InteractionResult.sidedSuccess(level.isClientSide);
     }
 

@@ -32,7 +32,7 @@ public class EndernetFitting implements UpgradeFitting {
         return pair;
     }
 
-    /** Named channels the upgrade offers (layer 2, not built): a plain constant until circuit figures feed it. */
+    /** Channels the upgrade offers before the host's circuit adds any: one. The host tunes among what its circuit separates ({@code ControllerCore.endernetChannels}). */
     public int channels() {
         return ControlTuning.ENDERNET_CHANNELS;
     }

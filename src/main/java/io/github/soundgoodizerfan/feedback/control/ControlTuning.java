@@ -120,10 +120,17 @@ public final class ControlTuning {
     public static final int ENDERNET_PORT_TANK_MB = 500;
 
     /**
-     * How many named channels an endernet upgrade offers (layer 2, not built). A plain constant for now: circuit figures (selectivity and
-     * bandwidth) will feed it.
+     * Endernet layers 2 and 3 (placeholders). A channel is a number the player tunes: 1 with no circuit, more for the selectivity of a resonator
+     * on the host's or port's circuit, never over {@code ENDERNET_MAX_CHANNELS}. A channel's bandwidth is one cap shared by everything on it:
+     * {@code ENDERNET_CHANNEL_SIGNALS_PER_MIN} signals a minute. An address is a number from 1 to {@code ENDERNET_ADDRESS_MAX} (0 is none).
+     * A packet costs one signal per {@code PACKET_BYTES_PER_SIGNAL} bytes (at least one), each paid as any crossing is. A message is cut to
+     * {@code MESSAGE_MAX} characters and a file may hold {@code FILE_MAX_NODES} nodes ({@code FILE_BYTES_PER_NODE} bytes each). An inbox holds
+     * {@code INBOX_MAX} mails: a packet to a full one is lost. The directory lists {@code DIRECTORY_MAX} addresses. A bus slot value holds
+     * {@code BUS_STALE_TICKS} and is rewritten when it is half that old.
      */
-    public static final int ENDERNET_CHANNELS = 1;
+    public static final int ENDERNET_CHANNELS = 1, ENDERNET_MAX_CHANNELS = 16, ENDERNET_ADDRESS_MAX = 99, BUS_SLOTS = 4, BUS_STALE_TICKS = 1200,
+            PACKET_BYTES_PER_SIGNAL = 16, MESSAGE_MAX = 120, FILE_MAX_NODES = 64, FILE_BYTES_PER_NODE = 16, INBOX_MAX = 16, DIRECTORY_MAX = 12;
+    public static final float ENDERNET_CHANNEL_SIGNALS_PER_MIN = 1200f;
 
     /** The Network app: hops walked past the far end and entries listed, and how often (ticks) a watching Computer re-lists. */
     public static final int NETWORK_MAX_HOPS = 6, NETWORK_MAX_ENTRIES = 24, NETWORK_REFRESH_TICKS = 20;

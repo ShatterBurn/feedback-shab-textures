@@ -33,8 +33,8 @@ import net.minecraft.world.level.Level;
  * ({@link End#pay}). A pair with no port at either end carries nothing. Both ends must be in one dimension. Nothing is destroyed and
  * nothing refused with a message: a dry or saturated pair is dark until it recovers.
  *
- * <p>Pair ids, never names, bind the ends. Layers 2 (channel bus) and 3 (addressable packets) are not built; an upgrade's
- * {@link ControlTuning#ENDERNET_CHANNELS channel count} is a plain constant until circuit figures feed it.
+ * <p>Pair ids, never names, bind the ends. Layer 2 is the channel bus ({@link EndernetBand}: tuned channel numbers, one shared bandwidth cap per
+ * channel, signal slots a Data Port writes and hears) and layer 3 the addressable packets ({@link Packets}: messages and files between Computers).
  */
 public final class Endernet {
 
@@ -85,6 +85,16 @@ public final class Endernet {
             if (LIVE.get(have).isEmpty())
                 LIVE.remove(have);
         }
+    }
+
+    /** Every registered end in {@code level} (the packet layer's address book); a snapshot. */
+    public static List<End> live(Level level) {
+        List<End> out = new ArrayList<>();
+        for (Set<End> ends : LIVE.values())
+            for (End e : ends)
+                if (e.getNodeLevel() == level && !e.getNodeOwner().isRemoved())
+                    out.add(e);
+        return out;
     }
 
     /** The other live end of {@code end}'s pair in the same level, or empty. */

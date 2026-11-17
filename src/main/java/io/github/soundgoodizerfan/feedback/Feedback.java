@@ -270,6 +270,9 @@ public class Feedback {
                 .playToServer(io.github.soundgoodizerfan.feedback.control.computer.ComputerDataPayload.TYPE,
                         io.github.soundgoodizerfan.feedback.control.computer.ComputerDataPayload.STREAM_CODEC,
                         io.github.soundgoodizerfan.feedback.control.computer.ComputerDataPayload::handle)
+                .playToServer(io.github.soundgoodizerfan.feedback.control.computer.ComputerNetPayload.TYPE,
+                        io.github.soundgoodizerfan.feedback.control.computer.ComputerNetPayload.STREAM_CODEC,
+                        io.github.soundgoodizerfan.feedback.control.computer.ComputerNetPayload::handle)
                 .playToServer(ProgrammerLinkPayload.TYPE, ProgrammerLinkPayload.STREAM_CODEC,
                         ProgrammerLinkPayload::handle)
                 .playToServer(io.github.soundgoodizerfan.feedback.net.MortarPutPayload.TYPE,

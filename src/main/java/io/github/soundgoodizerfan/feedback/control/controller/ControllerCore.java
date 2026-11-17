@@ -299,9 +299,32 @@ public class ControllerCore implements Container, Fittable {
         return circuitSlot ? Circuit.of(circuit, level()).gain() : 0f;
     }
 
-    /** Named channels the fitted endernet upgrade separates: the constant, or what a resonator on the circuit can separate if more. */
+    /** Channels the fitted endernet upgrade can be tuned to: one with no circuit, more for what a resonator on the circuit separates, never over the cap. */
     public int endernetChannels() {
-        return Math.max(ControlTuning.ENDERNET_CHANNELS, circuitSlot ? Circuit.of(circuit).selectivity() : 0);
+        return Math.min(ControlTuning.ENDERNET_MAX_CHANNELS, Math.max(ControlTuning.ENDERNET_CHANNELS, circuitSlot ? Circuit.of(circuit).selectivity() : 0));
+    }
+
+    private int tunedChannel = 1, tunedAddress;
+
+    /** The channel the endernet upgrade is tuned to, 1 to {@link #endernetChannels}. */
+    public int endernetChannel() {
+        return Math.max(1, Math.min(tunedChannel, endernetChannels()));
+    }
+
+    /** The upgrade's address, 0 for none. */
+    public int endernetAddress() {
+        return tunedAddress;
+    }
+
+    /** Steps the tuned channel by {@code delta}, wrapping within the channels the circuit allows. */
+    public void tuneChannel(int delta) {
+        int n = endernetChannels();
+        tunedChannel = Math.floorMod(endernetChannel() - 1 + Integer.signum(delta), n) + 1;
+    }
+
+    /** Steps the address by {@code delta}, wrapping between 0 (none) and {@link ControlTuning#ENDERNET_ADDRESS_MAX}. */
+    public void tuneAddress(int delta) {
+        tunedAddress = Math.floorMod(tunedAddress + Integer.signum(delta), ControlTuning.ENDERNET_ADDRESS_MAX + 1);
     }
 
     /** A quantity read through this host's circuit: jittered by its noise; a two-state or zero reading carries none. */
@@ -864,8 +887,11 @@ public class ControllerCore implements Container, Fittable {
         tag.putInt(RACKS, (int) upgrades.stream().filter(CardRackFitting.class::isInstance).count());
         tag.putBoolean(ESCAPEMENT, upgrades.stream().anyMatch(EscapementFitting.class::isInstance));
         java.util.UUID pair = endernetPair();
-        if (pair != null)
+        if (pair != null) {
             tag.putUUID(ENDERNET, pair);
+            tag.putInt(ENDERNET + "Channel", tunedChannel);
+            tag.putInt(ENDERNET + "Address", tunedAddress);
+        }
     }
 
     public void load(CompoundTag tag, HolderLookup.Provider registries) {
@@ -887,8 +913,11 @@ public class ControllerCore implements Container, Fittable {
             upgrades.add(new CardRackFitting());
         if (tag.getBoolean(ESCAPEMENT))
             upgrades.add(new EscapementFitting());
-        if (endernetCapable && tag.hasUUID(ENDERNET))
+        if (endernetCapable && tag.hasUUID(ENDERNET)) {
             upgrades.add(new io.github.soundgoodizerfan.feedback.fitting.upgrade.EndernetFitting(tag.getUUID(ENDERNET)));
+            tunedChannel = Math.max(1, tag.getInt(ENDERNET + "Channel"));
+            tunedAddress = Math.max(0, Math.min(ControlTuning.ENDERNET_ADDRESS_MAX, tag.getInt(ENDERNET + "Address")));
+        }
         lastGraph = ProgramGraph.EMPTY;
         delays.clear();
         delayTicks.clear();

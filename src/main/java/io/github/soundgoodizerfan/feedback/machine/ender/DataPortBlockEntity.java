@@ -46,6 +46,8 @@ public class DataPortBlockEntity extends ElectricNode implements Endernet.End, P
     /** Teleportant owed in fractions of a mB. */
     private float owed;
     private boolean unloaded;
+    /** The bus channel this port is tuned to, 0 for off (layer 2, {@link io.github.soundgoodizerfan.feedback.control.endernet.EndernetBand}). */
+    private int tuned;
     private final io.github.soundgoodizerfan.feedback.machine.CircuitSlot circuit = new io.github.soundgoodizerfan.feedback.machine.CircuitSlot();
 
     private final FluidTank tank = new FluidTank(ControlTuning.ENDERNET_PORT_TANK_MB, fs -> fs.is(EnderPortBlockEntity.TELEPORTANT)) {
@@ -171,13 +173,47 @@ public class DataPortBlockEntity extends ElectricNode implements Endernet.End, P
         return s != null && s.dimension() == level.dimension() ? s : null;
     }
 
+    // --- the channel bus (layer 2) ---------------------------------------------------------------------
+
+    /** Channels this port can be tuned to: one with no circuit, more for the selectivity of a resonator on the circuit seated in it, never over the cap. */
+    public int channels() {
+        return Math.min(ControlTuning.ENDERNET_MAX_CHANNELS, Math.max(ControlTuning.ENDERNET_CHANNELS,
+                io.github.soundgoodizerfan.feedback.process.Circuit.of(circuit.get()).selectivity()));
+    }
+
+    public int tuned() {
+        return Math.min(tuned, channels());
+    }
+
+    /** Steps the tuning: off, then channel 1 up to {@link #channels}, then off again. */
+    public void tune() {
+        tuned = (tuned() + 1) % (channels() + 1);
+        setChanged();
+    }
+
+    /** Whether this port is on a bus: tuned, live, and with no robot or suit on the pair (those take its channels first). */
+    private boolean busLive() {
+        return tuned() > 0 && live() && leashed() == null && suitScan() == null;
+    }
+
+    /** Pays for one signal on the bus: the channel's shared bandwidth, then teleportant and this port's bandwidth over {@code blocks}. */
+    private boolean busPay(float blocks) {
+        return io.github.soundgoodizerfan.feedback.control.endernet.EndernetBand.take(level, tuned(), 1f) && pay(blocks);
+    }
+
     @Override
     public float read(int channel) {
         var r = leashed();
         if (r == null) {
             var scan = suitScan();
+            if (scan == null) {
+                if (!busLive())
+                    return 0f;
+                var posted = io.github.soundgoodizerfan.feedback.control.endernet.EndernetBand.read(level, tuned(), channel);
+                return posted == null || !busPay((float) posted.from().distanceTo(net.minecraft.world.phys.Vec3.atCenterOf(worldPosition))) ? 0f : posted.value();
+            }
             int length = io.github.soundgoodizerfan.feedback.suit.SuitScan.CHANNELS.length;
-            if (scan == null || channel < 0 || channel >= length
+            if (channel < 0 || channel >= length
                     || !pay((float) scan.at().distanceTo(net.minecraft.world.phys.Vec3.atCenterOf(worldPosition))))
                 return 0f;
             return scan.channel(channel);
@@ -188,7 +224,7 @@ public class DataPortBlockEntity extends ElectricNode implements Endernet.End, P
 
     @Override
     public boolean offersChannels() {
-        return leashed() != null || suitScan() != null;
+        return leashed() != null || suitScan() != null || busLive();
     }
 
     @Override
@@ -199,6 +235,8 @@ public class DataPortBlockEntity extends ElectricNode implements Endernet.End, P
                 keys[i] = "suit.feedback.scan." + keys[i];
             return keys;
         }
+        if (leashed() == null && busLive())
+            return busKeys();
         var senses = io.github.soundgoodizerfan.feedback.robot.RobotMastBlockEntity.SENSES;
         String[] keys = new String[senses.length];
         for (int i = 0; i < keys.length; i++)
@@ -206,8 +244,17 @@ public class DataPortBlockEntity extends ElectricNode implements Endernet.End, P
         return keys;
     }
 
+    private static String[] busKeys() {
+        String[] keys = new String[ControlTuning.BUS_SLOTS];
+        for (int i = 0; i < keys.length; i++)
+            keys[i] = "endernet.feedback.bus.slot." + i;
+        return keys;
+    }
+
     @Override
     public String[] channelKeys() {
+        if (leashed() == null && busLive())
+            return busKeys();
         var actions = io.github.soundgoodizerfan.feedback.robot.RobotMastBlockEntity.ACTIONS;
         String[] keys = new String[actions.length];
         for (int i = 0; i < keys.length; i++)
@@ -223,6 +270,10 @@ public class DataPortBlockEntity extends ElectricNode implements Endernet.End, P
 
     @Override
     public boolean isEngaged() {
+        if (leashed() == null && busLive()) {
+            var posted = io.github.soundgoodizerfan.feedback.control.endernet.EndernetBand.read(level, tuned(), 0);
+            return posted != null && posted.value() != 0f;
+        }
         var r = leashed();
         return r != null && r.read(io.github.soundgoodizerfan.feedback.robot.RobotMastBlockEntity.ACTIONS[0].ordinal(), 0) != 0f;
     }
@@ -233,6 +284,16 @@ public class DataPortBlockEntity extends ElectricNode implements Endernet.End, P
     }
 
     private void hold(int channel, boolean on) {
+        if (leashed() == null && busLive()) {
+            // a slot is rewritten when its value changes or it is half stale: one signal then, not one a tick
+            var now = io.github.soundgoodizerfan.feedback.control.endernet.EndernetBand.read(level, tuned(), channel);
+            float value = on ? 1f : 0f;
+            boolean fresh = now != null && level.getGameTime() - now.tick() < ControlTuning.BUS_STALE_TICKS / 2;
+            if (channel >= 0 && channel < ControlTuning.BUS_SLOTS && (!fresh || now.value() != value) && busPay(0f))
+                io.github.soundgoodizerfan.feedback.control.endernet.EndernetBand.post(level, tuned(), channel, value,
+                        net.minecraft.world.phys.Vec3.atCenterOf(worldPosition));
+            return;
+        }
         var actions = io.github.soundgoodizerfan.feedback.robot.RobotMastBlockEntity.ACTIONS;
         var r = leashed();
         // out of the leash's reach or unpaid, the action is let go: the robot hears nothing
@@ -332,6 +393,7 @@ public class DataPortBlockEntity extends ElectricNode implements Endernet.End, P
             tag.putUUID(EnderPortBlockEntity.PAIR_KEY, pair);
         circuit.save(tag, registries);
         tag.putBoolean("Anchored", anchored);
+        tag.putInt("Tuned", tuned);
         tag.putFloat("Allowance", allowance);
         tag.putLong("At", allowanceAt);
         tag.putFloat("Owed", owed);
@@ -344,6 +406,7 @@ public class DataPortBlockEntity extends ElectricNode implements Endernet.End, P
         pair = tag.hasUUID(EnderPortBlockEntity.PAIR_KEY) ? tag.getUUID(EnderPortBlockEntity.PAIR_KEY) : null;
         circuit.load(tag, registries);
         anchored = tag.getBoolean("Anchored");
+        tuned = Math.max(0, tag.getInt("Tuned"));
         allowance = tag.contains("Allowance") ? tag.getFloat("Allowance") : ControlTuning.ENDERNET_SIGNALS_PER_MIN;
         allowanceAt = tag.getLong("At");
         owed = tag.getFloat("Owed");

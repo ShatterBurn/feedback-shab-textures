@@ -38,7 +38,7 @@ import net.minecraft.world.level.block.state.BlockState;
  * Programmer works without power, the Controller only runs while the line delivers.
  */
 public class ComputerBlockEntity extends ElectricNode implements ControllerHost, ProgrammerProvider, net.minecraft.world.MenuProvider,
-        io.github.soundgoodizerfan.feedback.control.endernet.Endernet.End {
+        io.github.soundgoodizerfan.feedback.control.endernet.Packets.Node {
 
     private final ControllerCore core = new ControllerCore(this, this::powered, stack -> stack.is(FTags.PUNCH_CARDS) && !ComputerApps.isApp(stack)).withCircuitSlot(true).withEndernet().cardCap(this::vehicleCap);
     private final EmbeddedProgrammer programmer = new EmbeddedProgrammer(this);
@@ -293,6 +293,7 @@ public class ComputerBlockEntity extends ElectricNode implements ControllerHost,
 
     private void refreshNet() {
         java.util.UUID pair = core.endernetPair();
+        directory = pair == null ? java.util.List.of() : io.github.soundgoodizerfan.feedback.control.endernet.Packets.directory(this);
         if (pair == null) {
             netState = NetState.NONE;
             return;
@@ -309,6 +310,89 @@ public class ComputerBlockEntity extends ElectricNode implements ControllerHost,
         var list = io.github.soundgoodizerfan.feedback.control.endernet.Endernet.reachable(this);
         BlockPos at = far.getNodePos();
         netState = new NetState(3, (int) Math.sqrt(at.distSqr(worldPosition)), at.getX() - worldPosition.getX(), at.getZ() - worldPosition.getZ(), tail, core.endernetChannels(), list);
+    }
+
+    // --- endernet layers 2 and 3: tuning, the directory, the inbox ---------------------------------------------
+
+    /** Network app actions (server side). The client names a row and the row's key, never a place; the text is cleaned and cut here. */
+    public static final int NET_TUNE_CHANNEL = 0, NET_TUNE_ADDRESS = 1, NET_SEND_MESSAGE = 2, NET_SEND_FILE = 3, NET_CLEAR_INBOX = 4;
+
+    private final java.util.ArrayList<io.github.soundgoodizerfan.feedback.control.endernet.Packets.Mail> inbox = new java.util.ArrayList<>();
+    private java.util.List<io.github.soundgoodizerfan.feedback.control.endernet.Packets.Row> directory = java.util.List.of();
+
+    public java.util.List<io.github.soundgoodizerfan.feedback.control.endernet.Packets.Mail> inbox() {
+        return inbox;
+    }
+
+    public java.util.List<io.github.soundgoodizerfan.feedback.control.endernet.Packets.Row> directory() {
+        return directory;
+    }
+
+    @Override
+    public int channel() {
+        return core.endernetChannel();
+    }
+
+    @Override
+    public int address() {
+        return core.endernetPair() == null ? 0 : core.endernetAddress();
+    }
+
+    @Override
+    public boolean deliver(io.github.soundgoodizerfan.feedback.control.endernet.Packets.Mail mail) {
+        if (inbox.size() >= ControlTuning.INBOX_MAX)
+            return false;
+        inbox.add(mail);
+        if (!mail.overheard())
+            log(mail.file() ? "net_file_mail" : "net_mail", mail.file() ? "#" + mail.from() + " (" + mail.text() + ")" : "#" + mail.from() + ": " + mail.text());
+        setChanged();
+        if (level != null)
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+        return true;
+    }
+
+    @Override
+    public boolean land(io.github.soundgoodizerfan.feedback.control.program.ProgramGraph program) {
+        for (int i = 0; i < ComputerBays.SIZE; i++)
+            if (blank(bays.getItem(i))) {
+                ItemStack medium = bays.getItem(i);
+                medium.set(io.github.soundgoodizerfan.feedback.registry.FDataComponents.PROGRAM_GRAPH, program);
+                medium.set(net.minecraft.core.component.DataComponents.MAX_STACK_SIZE, 1);
+                bays.setChanged();
+                log("net_file", String.valueOf((char) ('A' + i)));
+                return true;
+            }
+        return false;
+    }
+
+    @Override
+    public void note(String key, String arg) {
+        log(key, arg);
+    }
+
+    /** One Network app action. Needs the Network disk and a live upgrade; every figure is checked and clamped here. */
+    public void netAction(int op, int a, int b, int c, String text, ServerPlayer player) {
+        if (!hasApp("network") || core.endernetPair() == null)
+            return;
+        switch (op) {
+            case NET_TUNE_CHANNEL -> core.tuneChannel(a);
+            case NET_TUNE_ADDRESS -> core.tuneAddress(a);
+            case NET_CLEAR_INBOX -> inbox.clear();
+            case NET_SEND_MESSAGE -> report(io.github.soundgoodizerfan.feedback.control.endernet.Packets.sendMessage(this, a, b, text));
+            case NET_SEND_FILE -> {
+                var graph = copyable(c) ? bays.getItem(c).getOrDefault(io.github.soundgoodizerfan.feedback.registry.FDataComponents.PROGRAM_GRAPH,
+                        io.github.soundgoodizerfan.feedback.control.program.ProgramGraph.EMPTY) : null;
+                report(io.github.soundgoodizerfan.feedback.control.endernet.Packets.sendFile(this, a, b, graph));
+            }
+            default -> { }
+        }
+        refreshNet();
+        setChanged();
+        level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+    }
+
+    private void report(io.github.soundgoodizerfan.feedback.control.endernet.Packets.Result r) {
+        log(r.key(), "");
     }
 
     /** The click's key: the row in the low byte, a hash of the row's place above it, so a list that changed under the click is refused. */
@@ -501,6 +585,27 @@ public class ComputerBlockEntity extends ElectricNode implements ControllerHost,
         tag.put("Readings", seen);
         tag.putBoolean("PoweredSeen", poweredSeen);
         tag.put("Net", saveNet());
+        net.minecraft.nbt.ListTag mail = new net.minecraft.nbt.ListTag();
+        for (var m : inbox) {
+            CompoundTag c = new CompoundTag();
+            c.putLong("T", m.time());
+            c.putInt("F", m.from());
+            c.putInt("To", m.to());
+            c.putBoolean("O", m.overheard());
+            c.putBoolean("File", m.file());
+            c.putString("X", m.text());
+            mail.add(c);
+        }
+        tag.put("Inbox", mail);
+        net.minecraft.nbt.ListTag dir = new net.minecraft.nbt.ListTag();
+        for (var r : directory) {
+            CompoundTag c = new CompoundTag();
+            c.putInt("A", r.address());
+            c.putInt("D", r.distance());
+            c.putLong("P", r.pos().asLong());
+            dir.add(c);
+        }
+        tag.put("Directory", dir);
         tag.put("Settings", settings.save());
         tag.putString("Notes", notes);
         tag.putInt("SnakeBest", snakeBest);
@@ -551,6 +656,20 @@ public class ComputerBlockEntity extends ElectricNode implements ControllerHost,
         }
         programmer.loadEmbedded(tag.getCompound("Programmer"), registries);
         netState = loadNet(tag.getCompound("Net"));
+        inbox.clear();
+        for (net.minecraft.nbt.Tag t : tag.getList("Inbox", net.minecraft.nbt.Tag.TAG_COMPOUND)) {
+            CompoundTag c = (CompoundTag) t;
+            if (inbox.size() < ControlTuning.INBOX_MAX)
+                inbox.add(new io.github.soundgoodizerfan.feedback.control.endernet.Packets.Mail(c.getLong("T"), c.getInt("F"), c.getInt("To"),
+                        c.getBoolean("O"), c.getBoolean("File"), c.getString("X")));
+        }
+        java.util.List<io.github.soundgoodizerfan.feedback.control.endernet.Packets.Row> rows = new java.util.ArrayList<>();
+        for (net.minecraft.nbt.Tag t : tag.getList("Directory", net.minecraft.nbt.Tag.TAG_COMPOUND)) {
+            CompoundTag c = (CompoundTag) t;
+            if (rows.size() < ControlTuning.DIRECTORY_MAX)
+                rows.add(new io.github.soundgoodizerfan.feedback.control.endernet.Packets.Row(c.getInt("A"), c.getInt("D"), BlockPos.of(c.getLong("P"))));
+        }
+        directory = rows;
     }
 
     private CompoundTag saveNet() {
