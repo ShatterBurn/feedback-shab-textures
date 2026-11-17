@@ -48,7 +48,7 @@ final class LinkMapWindow extends DesktopWindow {
         ui.fill(1, cy, w - 2, 1, grid);
         ui.fill(cx, 1, 1, h - 2, grid);
 
-        int far = 8, unlinked = 0;
+        int far = 8;
         for (DataNodeRef ref : refs()) {
             BlockPos p = ref.pos();
             far = Math.max(far, Math.max(Math.abs(p.getX() - origin.getX()), Math.abs(p.getZ() - origin.getZ())));
@@ -81,7 +81,7 @@ final class LinkMapWindow extends DesktopWindow {
             }
         }
         ui.text(4, 3, Component.translatable("gui.feedback.computer.linkmap_key"), skin.dim());
-        String line = hover != null ? hover : unlinked > 0 ? Component.translatable("gui.feedback.computer.linkmap_unlinked", unlinked).getString() : "";
+        String line = hover != null ? hover : "";
         ui.clipped(0, h + 2, w, line, hover != null ? skin.ink() : skin.warn());
     }
 
