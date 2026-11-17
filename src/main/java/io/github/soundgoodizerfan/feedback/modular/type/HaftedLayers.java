@@ -259,18 +259,10 @@ public final class HaftedLayers {
         part(out, sprites, plan, "R", "spring", 0);
         part(out, sprites, plan, "W", "ratchet", 0);
         part(out, sprites, plan, "P", "pommel", 0);
-        // A blade is drawn along the haft, so its base lies where the guard crosses: the guard goes over it. Across-haft heads sit over the guard.
-        boolean guardOver = ALONG.contains(plan.frontKind());
-        if (!guardOver)
-            part(out, sprites, plan, "G", "guard", steps);
-        // The binding is the join: under an across-haft head, but over a blade's base, which starts where the binding ends and never hides it.
-        if (!guardOver)
-            part(out, sprites, plan, "B", "binding", steps);
+        // Handle, then head, then binding, then guard: the binding sits between the head and the guard, and the guard is above the head.
         out.addAll(heads);
-        if (guardOver) {
-            part(out, sprites, plan, "B", "binding", steps);
-            part(out, sprites, plan, "G", "guard", steps);
-        }
+        part(out, sprites, plan, "B", "binding", steps);
+        part(out, sprites, plan, "G", "guard", steps);
         if (!any)
             return List.of();
         if (plan.parts().containsKey("Z"))
