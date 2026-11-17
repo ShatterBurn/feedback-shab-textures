@@ -73,6 +73,16 @@ public final class StreamFx {
 
     // ---------------------------------------------------------------- state
 
+    /** A world joined is after any resource reload: the sprite averages are read again. */
+    @SubscribeEvent
+    public static void onJoin(net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent.LoggingIn event) {
+        FluidTint.clear();
+    }
+
+    private static int rgb(CasterStreamPayload p) {
+        return p.rgb() >= 0 ? p.rgb() : FluidTint.of(p.fluid(), 0xC8D8FF);
+    }
+
     public static void draw(CasterStreamPayload p) {
         Minecraft mc = Minecraft.getInstance();
         ClientLevel level = mc.level;
@@ -113,7 +123,7 @@ public final class StreamFx {
         ribbon.dir = dir;
         ribbon.length = p.length();
         ribbon.spread = p.spread();
-        ribbon.rgb = p.rgb();
+        ribbon.rgb = rgb(p);
         ribbon.flow = p.flowMb();
         ribbon.kind = p.kind();
         ribbon.owner = key;
@@ -254,7 +264,8 @@ public final class StreamFx {
         Vec3 start = new Vec3(p.x(), p.y(), p.z());
         Vec3 dir = new Vec3(p.dx(), p.dy(), p.dz());
         float length = p.length();
-        float r = (p.rgb() >> 16 & 255) / 255f, g = (p.rgb() >> 8 & 255) / 255f, b = (p.rgb() & 255) / 255f;
+        int c = rgb(p);
+        float r = (c >> 16 & 255) / 255f, g = (c >> 8 & 255) / 255f, b = (c & 255) / 255f;
         double tan = Math.tan(Math.toRadians(p.spread()));
         boolean mist = p.kind() == CasterStreamPayload.MIST;
         // Fewer particles when the player has asked for fewer.

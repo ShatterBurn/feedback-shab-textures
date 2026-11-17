@@ -702,12 +702,15 @@ public final class Desktop {
         if (button == 1) {
             List<ContextMenu.Item> items = my < win.y + DesktopWindow.TITLE ? windowMenu(win)
                     : win.contextItems(mx - contentX(win), my - contentY(win));
-            openMenu((int) mx, (int) my, items);
-            return true;
+            // a window with no menu of its own gets the click (the Editor's node and canvas menus are its own)
+            if (!items.isEmpty()) {
+                openMenu((int) mx, (int) my, items);
+                return true;
+            }
         }
         if (button != 0 && my < win.y + DesktopWindow.TITLE)
             return true;
-        if (win.resizable && !win.maximised && !win.fullscreen && win.snap == SNAP_NONE && (mx >= win.x + win.w - 5 || my >= win.y + win.h - 5)) {
+        if (button == 0 && win.resizable && !win.maximised && !win.fullscreen && win.snap == SNAP_NONE && (mx >= win.x + win.w - 5 || my >= win.y + win.h - 5)) {
             resizing = win;
             resizeX = mx >= win.x + win.w - 5;
             resizeY = my >= win.y + win.h - 5;

@@ -104,7 +104,7 @@ Every effect is read from the fluid's own figures (temperature, flash point, thi
 - **Hot** fluid (over **55 Tu**) scalds what it hits; the hotter and heavier the flow, the more. At **250 Tu** or over (lava, molten metal) it also sets the target alight.
 - **Cold** fluid (**0 Tu** or under) chills what it hits, building frost faster the colder it is. Well under 0 Tu it freezes flesh outright.
 - A fluid that **burns** (it has a flash point it is at or over) lights from an open flame in the stream's path: fire, lava, a burning body, or you alight. A lit stream sets bodies alight for as long as it burns, from 3 to 15 seconds, longer and harder the hotter its flame, and starts fires where it lands.
-- An **oxidiser** such as oxygen thrown at a burning target feeds the fire.
+- An **oxidiser** (oxygen, air, liquid oxygen, liquid air) does not burn itself and leaves no vapor a flame sets off. A flame in its path (the pilot flame, a fire, a burning wielder) makes the stream flare: bodies in it take fire damage and are set alight for longer, and bodies already alight flare too. The more oxygen the fluid carries, the stronger the flare; argon or other inert filler in it dilutes the flare.
 - **Water** puts out burning bodies and fires, douses lit blocks, waters farmland and fills a cauldron a level at a time. Creatures that hate water are hurt.
 - A **thick** fluid (viscosity 5 or more) clings to what it hits and slows it; the thicker, the slower.
 - An **acid or a base** burns flesh as chemical burn and bites the armor of what it hits. How hard depends on the fluid's **corrosivity**, its pH distance from neutral (see [Materials](Materials.md#heat-and-other-figures)). Hydrofluoric acid is a weaker acid than most but very toxic.
@@ -112,6 +112,7 @@ Every effect is read from the fluid's own figures (temperature, flash point, thi
 - A **radioactive** fluid (uranyl sulfate, thorium hydroxide) withers what it hits and outlines it with a glow.
 - A **spatially unstable** fluid hops whatever stands near it from place to place.
 - A heavy, fast flow **shoves** what it hits, like a fire hose. A fast, dense stream also **cuts**.
+- A stream of a fluid with no color of its own takes the average color of the fluid's texture.
 - A **potion** gives its effect to each body in the stream, and acts where it lands; see [Sprayed from a fluid caster](Thrown_and_Imbued_Potions.md#sprayed-from-a-fluid-caster).
 - A **container** the stream lands on (a tank or other fluid block) takes the fluid in.
 - An **atomiser** leaves a vapor cloud where the stream lands or runs out; a fluid that burns makes a cloud a flame can set off. See [Hazards](Hazards.md).
@@ -124,7 +125,9 @@ Nothing places a fluid block in the world.
 
 ### Pilot
 
-The pilot is lit only while the valve is open, the tank's fluid burns and the muzzle is not under water; closing the valve puts it out. While lit it draws a trickle from the tank, more through a wider orifice, and shows as fire particles at the nozzle. It counts as an open flame in the stream's path, so a burning stream, a body set alight, fires and a vapor cloud going off all follow as above.
+Press the **Gun option** key (unbound until you set it) with a piloted caster in hand to turn the pilot flame off or on; the action bar reads *Pilot flame: lit* or *Pilot flame: out*. With the pilot out there is no flame at the nozzle and no trickle drawn from the tank.
+
+The pilot is lit only while the valve is open, the tank's fluid burns or is an oxidiser, and the muzzle is not under water; closing the valve puts it out. While lit it draws a trickle from the tank, more through a wider orifice, and shows as fire particles at the nozzle. It counts as an open flame in the stream's path, so a burning stream, a body set alight, fires and a vapor cloud going off all follow as above.
 
 Its tip also lights a campfire or a candle, starts a fire beside a flammable block where the game's fire spread allows it, and sets off a flammable block the tip is inside, about four times a second.
 

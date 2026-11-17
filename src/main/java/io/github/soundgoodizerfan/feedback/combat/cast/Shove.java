@@ -57,15 +57,26 @@ final class Shove {
         if (p.isPassenger())
             return false;
         var hit = p.level().clip(new ClipContext(eye, eye.add(p.getLookAngle().scale(ShoveTuning.REACH)), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, p));
-        if (hit.getType() != HitResult.Type.BLOCK || p.level().getBlockState(hit.getBlockPos()).is(UNSHOVABLE))
-            return false;
+        if (hit.getType() != HitResult.Type.BLOCK)
+            return refuse(p, "none");
+        if (p.level().getBlockState(hit.getBlockPos()).is(UNSHOVABLE))
+            return refuse(p, "unshovable");
         Vec3 local = hit.getLocation();
-        if (!(SableCompanion.INSTANCE.getContaining(p.level(), local) instanceof ServerSubLevel body)
-                || body.getMassTracker().getMass() < ShoveTuning.MIN_MASS || standingOn(p, body))
-            return false;
+        if (!(SableCompanion.INSTANCE.getContaining(p.level(), local) instanceof ServerSubLevel body))
+            return refuse(p, "fixed");
+        if (body.getMassTracker().getMass() < ShoveTuning.MIN_MASS)
+            return refuse(p, "light");
+        if (standingOn(p, body))
+            return refuse(p, "standing");
         GRIPS.put(p.getUUID(), local);
         CastFx.sound(p.serverLevel(), body.logicalPose().transformPosition(local), SoundEvents.ANVIL_PLACE, 0.5f, 0.7f);
         return true;
+    }
+
+    /** Nothing taken hold of: says why on the action bar, so a key that does nothing is never silent. */
+    private static boolean refuse(ServerPlayer p, String why) {
+        p.displayClientMessage(net.minecraft.network.chat.Component.translatable("message.feedback.shove." + why), true);
+        return false;
     }
 
     private static boolean standingOn(ServerPlayer p, ServerSubLevel body) {

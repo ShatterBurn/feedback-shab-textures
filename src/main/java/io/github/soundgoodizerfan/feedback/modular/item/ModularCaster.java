@@ -115,6 +115,18 @@ public class ModularCaster extends GunItem {
         return gun.getOrDefault(FDataComponents.CASTER_PRESSURE.get(), 0f);
     }
 
+    /** Whether the pilot flame is lit (a caster with a pilot lights it unless its wielder has switched it off). */
+    public static boolean pilotOn(ItemStack gun) {
+        return !gun.getOrDefault(FDataComponents.CASTER_PILOT_OFF.get(), false);
+    }
+
+    public static void setPilot(ItemStack gun, boolean on) {
+        if (on)
+            gun.remove(FDataComponents.CASTER_PILOT_OFF.get());
+        else
+            gun.set(FDataComponents.CASTER_PILOT_OFF.get(), true);
+    }
+
     public static void setPressure(ItemStack gun, float pu) {
         if (pu <= 0.01f)
             gun.remove(FDataComponents.CASTER_PRESSURE.get());

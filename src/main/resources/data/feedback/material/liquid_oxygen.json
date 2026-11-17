@@ -11,6 +11,10 @@
     "latent_heat_vaporisation": 213,
     "conductivity": 3.74e-05
   },
+  "combustion": {
+    "oxygen_balance": 5,
+    "oxygen_fraction": 1
+  },
   "molten": {
     "viscosity": 0.2,
     "shear_thickening": 0

@@ -92,7 +92,7 @@ Each effect sits at a fixed place on the map, given as a direction from the cent
 | Fire | east-south-east | Drunk, sets the drinker alight. Thrown, a quick burst of heat: creatures in reach are scalded and set alight, and flammable blocks beside the burst catch fire. |
 | Frost | west-south-west | Slowness, drunk or thrown. |
 | Glowing | east-south-east | Glowing for about three minutes. |
-| Green thumb | east | Crops, stems and saplings within five blocks grow much faster, a weaker bonemeal that works on its own and at range; you tire and hunger faster while it lasts. |
+| Green thumb | east | Crops, stems and saplings within five blocks grow much faster, a weaker bonemeal that works on its own and at range, and a grass block in reach sometimes spreads short grass and flowers as bone meal does; you tire and hunger faster while it lasts. |
 | Haste | north-north-west | Everything you do with your hands runs faster: guns cycle and reload quicker, swings and hand tools too, and digging speeds up; mining fatigue follows when it ends. |
 | Health Boost | east | Health Boost up to level II for about three minutes. |
 | Heat ward | south-south-east | Fire resistance; frost builds half again as fast in powder snow and freezing hurts half again as much. |

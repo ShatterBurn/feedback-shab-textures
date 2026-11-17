@@ -92,6 +92,8 @@ public final class GreenThumb {
                     if (!level.shouldTickBlocksAt(pos)) // loaded and ticking only; never loads a chunk
                         continue;
                     BlockState state = level.getBlockState(pos);
+                    if (bonemeal(level, pos, state, strength))
+                        continue;
                     if (!growable(state))
                         continue;
                     int n = (int) expected + (level.random.nextFloat() < expected - (int) expected ? 1 : 0);
@@ -102,6 +104,19 @@ public final class GreenThumb {
                             break;
                     }
                 }
+    }
+
+    /**
+     * Bone meal on plain grass: a grass block (dirt-tagged, and bone-mealable) with room above it spreads short grass and flowers as vanilla
+     * bone meal does, by the block's own call. Chance per pass is {@link PotionTuning#GREEN_THUMB_GRASS_CHANCE} times the strength.
+     */
+    private static boolean bonemeal(ServerLevel level, BlockPos pos, BlockState state, float strength) {
+        if (!state.is(BlockTags.DIRT) || !(state.getBlock() instanceof net.minecraft.world.level.block.BonemealableBlock b))
+            return false;
+        if (level.random.nextFloat() < strength * PotionTuning.GREEN_THUMB_GRASS_CHANCE && b.isValidBonemealTarget(level, pos, state)
+                && b.isBonemealSuccess(level, level.random, pos, state))
+            b.performBonemeal(level, level.random, pos, state);
+        return true;
     }
 
     /** A crop, stem or sapling that has not finished growing. By tag or class, never by id. */

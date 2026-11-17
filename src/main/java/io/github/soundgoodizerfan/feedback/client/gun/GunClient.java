@@ -85,6 +85,8 @@ public final class GunClient {
 
     /** Swap magazines. Registered by {@code FClientSetup}. */
     public static final KeyMapping RELOAD = new KeyMapping("key.feedback.reload", InputConstants.KEY_R, "key.categories.feedback");
+    /** The one key every weapon's own switch hangs on ({@code GunMechanism#options}); unbound until the player picks a key. */
+    public static final KeyMapping OPTION = new KeyMapping("key.feedback.gun_option", InputConstants.UNKNOWN.getValue(), "key.categories.feedback");
     public static final KeyMapping FIRE_MODE = new KeyMapping("key.feedback.fire_mode", InputConstants.KEY_V, "key.categories.feedback");
     public static final KeyMapping UNLOAD = new KeyMapping("key.feedback.unload", InputConstants.KEY_U, "key.categories.feedback");
 
@@ -324,6 +326,11 @@ public final class GunClient {
                 MAIN.burstLeft = 0;
                 OFF.burstLeft = 0;
             }
+        }
+        while (OPTION.consumeClick()) {
+            var target = keyOff ? offItem : held;
+            if ((canAct || (offGunHeld && ready)) && target.getItem() instanceof GunItem g && !g.mechanism().switches(target).isEmpty())
+                PacketDistributor.sendToServer(new io.github.soundgoodizerfan.feedback.net.GunOptionPayload(keyOff, 0));
         }
         while (UNLOAD.consumeClick()) {
             if (canAct || (offGunHeld && ready))

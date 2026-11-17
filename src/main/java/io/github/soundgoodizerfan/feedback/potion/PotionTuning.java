@@ -168,7 +168,7 @@ public final class PotionTuning {
      * pass per level (4.0 is one food point; sprinting costs about 0.56 a second, this about 0.25).
      */
     public static final int GREEN_THUMB_EVERY = 40, GREEN_THUMB_RADIUS = 5, GREEN_THUMB_MAX_RADIUS = 8;
-    public static final float GREEN_THUMB_TICKS = 1.5f, GREEN_THUMB_EXHAUSTION = 0.5f;
+    public static final float GREEN_THUMB_TICKS = 1.5f, GREEN_THUMB_GRASS_CHANCE = 0.04f, GREEN_THUMB_EXHAUSTION = 0.5f;
     /**
      * Stoneskin (mineral and resin cause), [OPEN] until played. Incoming damage is multiplied by DAMAGE minus DAMAGE_PER_LEVEL per level above
      * the first, never under DAMAGE_FLOOR; beside vanilla resistance it is held no lower than WITH_RESISTANCE so the two cannot stack toward
@@ -197,6 +197,14 @@ public final class PotionTuning {
      */
     /** Invented. The mB of a spray that carries a bottle's whole effect: sprayed potion is taken up through the skin and the air at a fifth of the drinking dose, so a stream does not have to deliver a bottle to count. */
     public static final int SPRAY_DOSE_MB = 50;
+    /**
+     * Invented. A caster's stream of the two violent potions is paid by the tick, not by the bottle. Explosion: every SPRAY_BLAST_MB sprayed
+     * is one tiny blast where it lands (a chance of mB over this, at most one a tick), at a fraction of a thrown flask's power, so the
+     * stream is a rattle of small bursts. Fire: every SPRAY_FIRE_MB sprayed is one tick's full flame, so a fire caster at a flamethrower's
+     * flow lights about 0.7 as much as the flamethrower burns for the same tank: a little worse in cost for output, as it should be.
+     */
+    public static final int SPRAY_BLAST_MB = 4, SPRAY_FIRE_MB = 8;
+    public static final float SPRAY_BLAST_POWER = 0.6f, SPRAY_BLAST_POWER_PER_LEVEL = 0.3f;
     public static final float SPRAY_PLACE_REACH = 1.5f, MIST_YIELD = 0.5f, MIST_RADIUS = 2f;
     public static final int MIST_TICKS = 100, MIST_EVERY = 10, MIST_DOSE_MB = 8, MIST_MAX_CLOUDS = 24;
 

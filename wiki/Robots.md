@@ -63,7 +63,7 @@ A sensor shows by its kind: a probe is a thin rod reaching ahead of the head, a 
 
 ## Sensors and the chunk loader
 
-A **Robot Sensor** comes in three kinds. Each gates the channels listed for it; without it those channels read zero.
+A **Robot Sensor** comes in three kinds; the probe is the basic one. Each gates the channels listed for it; without it those channels read zero.
 
 - **Probe**: reads *Hardness ahead*.
 - **Rangefinder**: reads *Distance ahead*, the blocks to the first solid thing in front, up to a short reach.

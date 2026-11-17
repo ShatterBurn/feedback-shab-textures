@@ -157,8 +157,9 @@ public final class ModularClient {
             return 0xFFFFFFFF;
         List<String> order = type.order();
         // A role with no sprite layer (layer 9) is not drawn, so a layer past the drawn roles (a nocked arrow) stays untinted.
-        ModularDesign.Part part = layer < order.size() && type.roles().get(order.get(layer)).layer() < 9
-                ? design.part(order.get(layer)) : null;
+        // A hafted tool's model (HaftedModel) tints by the role's place in the order, and its binding, tip, edge guard and spring have no layer number, so they are tinted all the same.
+        boolean drawn = type.family() == ModularType.Family.HAFTED || (layer < order.size() && type.roles().get(order.get(layer)).layer() < 9);
+        ModularDesign.Part part = layer < order.size() && drawn ? design.part(order.get(layer)) : null;
         return part == null ? 0xFFFFFFFF : 0xFF000000 | MaterialColors.of(part.material());
     }
 }

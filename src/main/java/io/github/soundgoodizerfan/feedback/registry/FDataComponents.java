@@ -325,6 +325,13 @@ public class FDataComponents {
     /** The gauge pressure of a fluid caster's tank, Pu: state on the stack, never a stat. */
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Float>> CASTER_PRESSURE = bedLoss("caster_pressure");
 
+    /** A fluid caster's pilot flame switched off by its wielder: state on the stack (absent means lit). */
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Boolean>> CASTER_PILOT_OFF =
+            COMPONENTS.register("caster_pilot_off", () -> DataComponentType.<Boolean>builder()
+                    .persistent(Codec.BOOL)
+                    .networkSynchronized(ByteBufCodecs.BOOL)
+                    .build());
+
     /** What a copper bucket holds -- see {@code CopperBucketItem}. */
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<SimpleFluidContent>> BUCKET_CONTENT =
             COMPONENTS.register("bucket_content", () -> DataComponentType.<SimpleFluidContent>builder()

@@ -38,6 +38,15 @@ public interface GunMechanism {
      */
     boolean trigger(ServerLevel level, Player shooter, ItemStack gun, float yaw, float pitch, long nowMs, boolean aimed, InteractionHand hand);
 
+    /** The switches this weapon offers on the "Gun option" key, in the order the key steps them; none by default. */
+    default List<GunSwitch> switches(ItemStack gun) {
+        return List.of();
+    }
+
+    /** Sets option {@code id} to {@code on}; an id this weapon does not offer is ignored. */
+    default void setSwitch(ItemStack gun, String id, boolean on) {
+    }
+
     /** A mob's pull; a mechanism with no way for a mob to feed it returns false. */
     boolean triggerMob(ServerLevel level, LivingEntity mob, ItemStack gun, long nowGameTick, float yaw, float pitch);
 

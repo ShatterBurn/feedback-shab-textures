@@ -104,6 +104,19 @@ public final class CasterMechanism implements GunMechanism {
     }
 
     @Override
+    public java.util.List<io.github.soundgoodizerfan.feedback.weapon.GunSwitch> switches(ItemStack gun) {
+        CasterSpec spec = ModularCaster.spec(gun).orElse(null);
+        return spec != null && spec.piloted() ? java.util.List.of(new io.github.soundgoodizerfan.feedback.weapon.GunSwitch("pilot", ModularCaster.pilotOn(gun)))
+                : java.util.List.of();
+    }
+
+    @Override
+    public void setSwitch(ItemStack gun, String id, boolean on) {
+        if ("pilot".equals(id))
+            ModularCaster.setPilot(gun, on);
+    }
+
+    @Override
     public boolean trigger(ServerLevel level, Player shooter, ItemStack gun, float yaw, float pitch, long nowMs, boolean aimed, InteractionHand hand) {
         CasterSpec drive = ModularCaster.spec(gun).orElse(null);
         if (drive != null && drive.electric()) {
@@ -136,7 +149,7 @@ public final class CasterMechanism implements GunMechanism {
         }
         FluidStack streamed = before.copyWithAmount(p.flowMb());
         FluidStream.Result r = FluidStream.cast(level, shooter, yaw, pitch, streamed, p.flowMb(), p.speed(), p.spec().reach(p.speed()),
-                p.spec().spreadDeg(), p.spec().atomiser(), p.spec().pilotReach());
+                p.spec().spreadDeg(), p.spec().atomiser(), ModularCaster.pilotOn(gun) ? p.spec().pilotReach() : 0f);
         // The pilot burns a little of the tank's fluid while lit, and a fluid hotter than its metal takes wears it.
         if (r.pilotLit()) {
             if (level.random.nextFloat() < p.spec().pilotBleed()) {

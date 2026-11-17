@@ -77,10 +77,21 @@ public final class FluidStream {
         return materials.get(BuiltInRegistries.FLUID.getKey(fluid.getFluid()));
     }
 
-    /** Whether {@code fluid} burns as it flows: it states a combustion and is at or over its flash point. */
+    /** Whether a combustion is a fuel: it states how hot or how long it burns. An oxidiser (oxygen, air) states neither and is no fuel. */
+    private static boolean isFuel(Material.Combustion c) {
+        return c.flameTemperature().isPresent() || c.burnTicks().isPresent();
+    }
+
+    /** Whether {@code fluid} feeds a fire without being fuel: it carries oxygen (its {@code oxygen_fraction}) and burns itself not at all. */
+    public static boolean oxidiser(FluidStack fluid) {
+        Material m = material(fluid);
+        return m != null && m.combustion().map(c -> !isFuel(c) && c.oxygenFraction() > 0f).orElse(false);
+    }
+
+    /** Whether {@code fluid} burns as it flows: it is a fuel and is at or over its flash point. */
     public static boolean burnable(FluidStack fluid) {
         Material m = material(fluid);
-        if (m == null || m.combustion().isEmpty())
+        if (m == null || m.combustion().isEmpty() || !isFuel(m.combustion().get()))
             return false;
         return m.combustion().get().flashPoint().map(f -> FluidHeat.of(fluid).value() >= f.value()).orElse(true);
     }
@@ -111,6 +122,9 @@ public final class FluidStream {
         float density = m == null ? 1f : (float) m.density().muPerMb();
         boolean water = fluid.is(FluidTags.WATER);
         boolean burnable = burnable(fluid);
+        // An oxidiser is no fuel, but a flame in its path (the pilot's, a fire's) flares on it and what stands in the stream burns harder.
+        boolean oxidiser = oxidiser(fluid);
+        boolean flames = burnable || oxidiser;
         // A potion is carried in water: it wets what it hits as water does (but is no plain water: no cauldron, no farmland).
         boolean potion = PotionFluids.is(fluid);
         boolean wet = water || potion && PotionSpray.wet(fluid);
@@ -119,13 +133,13 @@ public final class FluidStream {
         // An open flame in the path (or the wielder alight) lights a fluid that burns; the nearest sets how far from the muzzle it is.
         float ignitionAt = Float.MAX_VALUE;
         // The pilot burns the tank's own fluid at the nozzle: out when the muzzle is under water, nothing to burn when the fluid does not.
-        boolean pilot = burnable && flameReach > 0f && !level.getFluidState(BlockPos.containing(start)).is(FluidTags.WATER);
+        boolean pilot = flames && flameReach > 0f && !level.getFluidState(BlockPos.containing(start)).is(FluidTags.WATER);
         if (pilot) {
             ignitionAt = Math.min(flameReach, length);
             if (level.getGameTime() % CasterTuning.PILOT_LIGHT_INTERVAL_TICKS == 0)
                 lightTip(level, shooter, dir.scale(ignitionAt).add(start));
         }
-        if (burnable) {
+        if (flames) {
             if (shooter.isOnFire())
                 ignitionAt = Math.min(ignitionAt, 0.4f);
             for (int d = 1; d <= (int) length + 1 && ignitionAt > d; d++) {
@@ -143,7 +157,7 @@ public final class FluidStream {
         List<LivingEntity> inCone = level.getEntitiesOfClass(LivingEntity.class, box, e -> e != shooter && e.isAlive() && !e.isSpectator()
                 && inside(start, dir, length, tan, e));
         boolean lit = ignitionAt < Float.MAX_VALUE;
-        if (burnable && !lit)
+        if (flames && !lit)
             for (LivingEntity e : inCone)
                 if (e.isOnFire()) {
                     lit = true;
@@ -151,7 +165,7 @@ public final class FluidStream {
                 }
         float share = inCone.isEmpty() ? 0f : (float) flowMb / inCone.size();
         for (LivingEntity target : inCone) {
-            hit(level, shooter, target, dir, share, speed, f, burnable && lit);
+            hit(level, shooter, target, dir, share, speed, f, burnable && lit, oxidiser && lit);
             if (potion)
                 PotionSpray.body(level, shooter, target, fluid, Math.max(1, Math.round(share)));
         }
@@ -184,9 +198,10 @@ public final class FluidStream {
                 Vapour.source(level, BlockPos.containing(end), Vapour.potency(fluid), CasterTuning.MIST_LINGER_TICKS, Vapour.burnTicks(fluid), false);
         }
 
-        int rgb = potion ? PotionSpray.colour(fluid) : m != null && m.color().isPresent() ? m.color().get() : water ? 0x3F76E4 : 0xC8D8FF;
+        int rgb = potion ? PotionSpray.colour(fluid) : m != null && m.color().isPresent() ? m.color().get() : -1; // none of its own: the client averages the fluid's sprite
         CasterStreamPayload.send(level, start, dir, length, spreadDeg, rgb, burnable && lit ? CasterStreamPayload.BURNING
-                : atomiser || f.gas() ? CasterStreamPayload.MIST : CasterStreamPayload.LIQUID, flowMb, pilot ? flameReach : 0f);
+                : atomiser || f.gas() ? CasterStreamPayload.MIST : CasterStreamPayload.LIQUID, flowMb, pilot ? flameReach : 0f,
+                net.minecraft.core.registries.BuiltInRegistries.FLUID.getKey(fluid.getFluid()));
         return new Result(burnable && lit, pilot, ignitionAt, length);
     }
 
@@ -257,7 +272,7 @@ public final class FluidStream {
             int fume = m.perks().getOrDefault(Material.Perk.TOXIC, 0);
             if (fume == 0 && tox >= CasterTuning.GAS_CLOUD_MIN_TOXICITY)
                 fume = Math.min(CasterTuning.GAS_CLOUD_MAX, Math.round(tox));
-            return new Figures(tu, density, water, gas, c.isPresent(), burn, flame, oxygen, m.molten().viscosity().orElse(0f), tox,
+            return new Figures(tu, density, water, gas, c.map(FluidStream::isFuel).orElse(false), burn, flame, oxygen, m.molten().viscosity().orElse(0f), tox,
                     m.corrosivity().orElse(0f), m.radioactivity().map(r -> r.value()).orElse(0f), m.traits().contains(Material.Trait.SPATIAL), fume);
         }
     }
@@ -272,7 +287,7 @@ public final class FluidStream {
 
     /** What a stream does to one body: each effect is a figure of the fluid. */
     private static void hit(ServerLevel level, LivingEntity shooter, LivingEntity target, Vec3 dir, float share, float speed, Figures f,
-                            boolean burning) {
+                            boolean burning, boolean flared) {
         float tu = f.tu();
         if (f.water()) {
             target.clearFire();
@@ -297,8 +312,8 @@ public final class FluidStream {
                 target.hurt(Hazards.source(level, Hazards.HOT_CONTACT, shooter),
                         Math.min(CasterTuning.FLAME_MAX, (f.flameTu() - CasterTuning.FLAME_BASE_TU) * share * CasterTuning.FLAME_PER_TU_MB));
         }
-        // An oxidiser on a body already alight feeds the fire.
-        if (f.oxygen() > 0f && target.isOnFire()) {
+        // An oxidiser on a body already alight, or one in a stream a flame stands in, feeds the fire.
+        if (f.oxygen() > 0f && (target.isOnFire() || flared)) {
             target.hurt(Hazards.source(level, Hazards.HOT_CONTACT, shooter), Math.min(CasterTuning.FLARE_MAX, f.oxygen() * share * CasterTuning.FLARE_PER_MB));
             target.setRemainingFireTicks(Math.min(CasterTuning.FLARE_FIRE_MAX_TICKS, target.getRemainingFireTicks() + CasterTuning.FLARE_FIRE_TICKS));
         }

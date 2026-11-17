@@ -12,7 +12,7 @@ Where a potion is not listed here, thrown it gives its drunk effect to every bod
 
 | Potion | Thrown |
 |---|---|
-| Green thumb | One large growth pulse where the bottle lands, then five lighter sprinkle passes over the following moments. No hunger cost. |
+| Green thumb | One large growth pulse where the bottle lands, then five lighter sprinkle passes over the following moments. No hunger cost. Grass blocks in reach sometimes take bone meal, spreading short grass and flowers. |
 | Quench | Hot machines and hot dropped items within reach cool quickly, fire blocks go out, and burning bodies within five blocks are doused. |
 | Static ground | Leaves a zone of held ground for the length of the potion: anyone standing in it takes only the ward fraction of electric shock damage. |
 | Antivenom | The effect, and any poison on a body in reach is cured. Works on mobs. |
@@ -33,7 +33,7 @@ Two potions of one brew (same effect, level and length, in the same solvent) run
 
 Sprayed, each body in the stream gets the potion's effect for the share of the bottle's length that lands on it: 50 mB, a fifth of a bottle, is the full length. It adds to the time the body has left and never stacks levels. The stream takes the potion's tint.
 
-- The **fire** potion sets bodies alight and lights a fire where it lands. The **explosion** potion detonates at the landing point about once per 50 mB sprayed.
+- The **fire** potion sets bodies alight and lights one flame where it lands for about every 8 mB sprayed, a little less fire than a flamethrower gives for the same tank. The flames it lights stay lit. The **explosion** potion sets off a tiny blast at the landing point for about every 4 mB sprayed, a rattle of small bursts rather than a few big ones.
 - Green thumb, quench, static ground and the laced-food reveal act where the stream lands, as thrown.
 - Second wind, springheel, slipstream and quench fire about once per 50 mB sprayed.
 - A potion carried in water wets what it hits: it puts out fire and hurts creatures that hate water, but never fills a cauldron or waters farmland.

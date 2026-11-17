@@ -40,10 +40,13 @@ public final class PotionSpray {
         return live(level, fluid) != null;
     }
 
-    /** Whether the potion is carried in water, so it wets what it hits as water does (and puts out a body on fire, and hurts what hates it). */
+    /**
+     * Whether the potion is carried in water, so it wets what it hits as water does (and puts out a body on fire, and hurts what hates it).
+     * One whose own effect sets things alight does not douse: it would put out the flames it makes.
+     */
     public static boolean wet(FluidStack fluid) {
         PotionState state = PotionFluids.state(fluid);
-        return state != null && "water".equals(state.solvent());
+        return state != null && "water".equals(state.solvent()) && !state.effect().map(PotionEffects.IGNITE::equals).orElse(false);
     }
 
     /** The stream's colour (24-bit RGB): a dud's own tint, else the effect's colour, else a pale draught. */
@@ -67,7 +70,7 @@ public final class PotionSpray {
         if (PotionEffects.EXPLOSION.equals(id) || PotionEffects.placeOnly(id))
             return; // acts where it lands
         if (PotionEffects.IGNITE.equals(id)) {
-            body.igniteForSeconds(Math.max(1f, state.duration() / FTuning.TICKS_PER_SECOND * (1 + amplifier) * share));
+            body.igniteForSeconds(Math.max(1f, state.duration() / FTuning.TICKS_PER_SECOND * (1 + amplifier) * Math.min(1f, mb / (float) PotionTuning.SPRAY_FIRE_MB)));
             return;
         }
         if (PotionEffects.oneShot(id)) {
@@ -88,13 +91,14 @@ public final class PotionSpray {
         PotionState state = live(level, fluid);
         if (state == null || mb <= 0)
             return;
-        float share = Math.min(1f, mb / (float) PotionTuning.SPRAY_DOSE_MB);
-        if (level.random.nextFloat() >= share)
+        var id = state.effect().get();
+        int cost = PotionEffects.EXPLOSION.equals(id) ? PotionTuning.SPRAY_BLAST_MB : PotionEffects.IGNITE.equals(id) ? PotionTuning.SPRAY_FIRE_MB : PotionTuning.SPRAY_DOSE_MB;
+        if (level.random.nextFloat() >= Math.min(1f, mb / (float) cost))
             return;
         int amplifier = state.amplifierNow(level);
-        var id = state.effect().get();
         if (PotionEffects.EXPLOSION.equals(id))
-            PotionEffects.explode(level, owner, at, amplifier);
+            level.explode(owner, at.x, at.y, at.z, PotionTuning.SPRAY_BLAST_POWER + PotionTuning.SPRAY_BLAST_POWER_PER_LEVEL * amplifier,
+                    net.minecraft.world.level.Level.ExplosionInteraction.TNT);
         else if (PotionEffects.IGNITE.equals(id)) {
             BlockPos fire = BlockPos.containing(at);
             if (level.getGameRules().getBoolean(GameRules.RULE_DOFIRETICK) && BaseFireBlock.canBePlacedAt(level, fire, Direction.UP))

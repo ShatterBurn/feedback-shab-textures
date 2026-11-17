@@ -18,7 +18,7 @@ import net.minecraft.world.item.ItemStack;
  * @param mass    Mu, from the baked figures.
  * @param speed   blocks per tick.
  * @param headSt  yield strength of the tool head's material; 0 for a head that states none.
- * @param sensor  the sensor part's variant ({@link #PROBE}, {@link #RANGEFINDER}, {@link #INERTIAL}), or empty for none.
+ * @param sensor  the sensor part's variant ({@link #PROBE}, {@link #RANGEFINDER}, {@link #INERTIAL}; the probe is the base shape, so a part with no recorded variant is one), or empty for none.
  * @param drive   the drive part's variant ({@link #WHEELS}, {@link #LEGS}, {@link #ROTOR}).
  * @param loader  whether a chunk-loading part is fitted.
  * @param radio   whether a radio part is fitted.
@@ -58,7 +58,7 @@ public record RobotSpec(float mass, float speed, float headSt, String sensor, St
         float st = m == null ? 0f : m.mechanical().yieldStrength().map(s -> s.value()).orElse(0f);
         ModularDesign.Part sensor = design.part("S");
         ModularDesign.Part brain = design.part("K");
-        return new RobotSpec(mass, speed, st, sensor == null || sensor.variant() == null ? "" : sensor.variant(), drive,
+        return new RobotSpec(mass, speed, st, sensor == null ? "" : sensor.variant() == null || sensor.variant().isEmpty() ? PROBE : sensor.variant(), drive,
                 design.part("L") != null, design.part("R") != null, brain == null ? 0f : dexterity(brain.sub()),
                 brain == null ? io.github.soundgoodizerfan.feedback.process.Circuit.NONE : io.github.soundgoodizerfan.feedback.process.Circuit.of(brain.sub()));
     }

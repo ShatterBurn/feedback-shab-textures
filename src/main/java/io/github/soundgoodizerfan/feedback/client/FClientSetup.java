@@ -194,6 +194,7 @@ public class FClientSetup {
         event.register(GunClient.RELOAD);
         event.register(GunClient.FIRE_MODE);
         event.register(GunClient.UNLOAD);
+        event.register(GunClient.OPTION);
         event.register(OffhandStrikeClient.KEY);
         event.register(OffhandStrikeClient.BARE_TOGGLE);
         event.register(PackKey.KEY);
