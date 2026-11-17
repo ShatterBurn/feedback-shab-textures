@@ -1159,6 +1159,16 @@
       "litres": 0.02,
       "layer": 7,
       "mount": "scope_mount"
+    },
+    "h": {
+      "name": "fire_control",
+      "forms": [
+        "circuit"
+      ],
+      "litres": 0.02,
+      "layer": 8,
+      "trait": "gun_fire_control",
+      "mount": "receiver"
     }
   },
   "patterns": [

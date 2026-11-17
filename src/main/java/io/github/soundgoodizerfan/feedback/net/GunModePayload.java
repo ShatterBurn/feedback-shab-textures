@@ -5,6 +5,7 @@ package io.github.soundgoodizerfan.feedback.net;
 import io.github.soundgoodizerfan.feedback.Feedback;
 import io.github.soundgoodizerfan.feedback.registry.FWeapons;
 import io.github.soundgoodizerfan.feedback.weapon.GunItem;
+import io.github.soundgoodizerfan.feedback.weapon.SmartFuse;
 import io.github.soundgoodizerfan.feedback.weapon.GunSpec;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -26,6 +27,12 @@ public record GunModePayload(boolean offHand) implements CustomPacketPayload {
     public static void handle(GunModePayload payload, IPayloadContext context) {
         context.enqueueWork(() -> {
             var stack = payload.offHand() ? context.player().getOffhandItem() : context.player().getMainHandItem();
+            // Sneaking, the key switches a launcher's fuse control between its fuse modes instead of its fire mode.
+            if (context.player().isShiftKeyDown() && stack.getItem() instanceof GunItem && SmartFuse.fitted(stack, context.player().level())) {
+                context.player().displayClientMessage(net.minecraft.network.chat.Component.translatable("message.feedback.fuse_mode",
+                        net.minecraft.network.chat.Component.translatable(SmartFuse.next(stack).langKey())), true);
+                return;
+            }
             if (stack.getItem() instanceof GunItem gun && gun.mechanism().built(stack))
                 stack.set(FWeapons.FIRE_MODE.get(), gun.mechanism().next(stack, GunItem.mode(stack)));
         });

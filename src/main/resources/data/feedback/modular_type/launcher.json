@@ -193,6 +193,15 @@
           }
         ]
       }
+    },
+    "F": {
+      "name": "fuse_control",
+      "forms": [
+        "circuit"
+      ],
+      "litres": 0.02,
+      "layer": 4,
+      "mount": "receiver"
     }
   },
   "patterns": [

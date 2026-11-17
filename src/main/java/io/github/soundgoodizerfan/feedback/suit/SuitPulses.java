@@ -51,7 +51,7 @@ final class SuitPulses {
     }
 
     /** Fires {@code a} at the wearer's feet with the module's {@code power}. */
-    static void fire(ServerPlayer p, Ability a, float power) {
+    static void fire(ServerPlayer p, Ability a, float power, float[] mods) {
         var level = p.serverLevel();
         switch (a) {
             case SHOCK -> {
@@ -69,12 +69,7 @@ final class SuitPulses {
                 level.sendParticles(net.minecraft.core.particles.ParticleTypes.EXPLOSION, p.getX(), p.getY() + 0.2, p.getZ(), 1, 0, 0, 0, 0);
                 level.playSound(null, p.blockPosition(), SoundEvents.GENERIC_EXPLODE.value(), SoundSource.PLAYERS, 0.8f, 1.4f);
             }
-            case SCAN -> {
-                double r = SuitTuning.SCAN_RADIUS * (0.5 + 0.5 * power);
-                for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, p.getBoundingBox().inflate(r), x -> target(p, x)))
-                    e.addEffect(new MobEffectInstance(MobEffects.GLOWING, SuitTuning.SCAN_GLOW_TICKS, 0, true, false, false));
-                level.playSound(null, p.blockPosition(), SoundEvents.BEACON_ACTIVATE, SoundSource.PLAYERS, 0.7f, 1.8f);
-            }
+            case SCAN -> SuitScan.fire(p, power, mods);
             case BURST -> {
                 float density = Math.min(1f, io.github.soundgoodizerfan.feedback.vehicle.AirDensityTable.at(level, p.getY()) / SuitTuning.REF_AIR_DENSITY);
                 Vec3 look = p.getLookAngle();

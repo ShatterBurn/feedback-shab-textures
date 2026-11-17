@@ -68,6 +68,14 @@ public final class SuitTuning {
     /** Ticks a scanned thing glows and a jammed mob stays slowed and blind. */
     public static final int SCAN_GLOW_TICKS = 160, EMP_TICKS = 140;
 
+    /**
+     * The circuit held in an optic module (placeholders). Its gain widens a scan's reach and the thermal lens's range by up to {@code CIRCUIT_REACH}
+     * (saturating, {@code gain / (gain + 1)}); its noise makes a scan miss each thing with chance {@code SCAN_MISS x noise} and smears the
+     * distance a shared scan reports by {@code SCAN_JITTER x noise}. A scan shared over the endernet stays on the port for {@code SCAN_SHARE_TICKS}.
+     */
+    public static final float CIRCUIT_REACH = 0.8f, SCAN_MISS = 0.6f, SCAN_JITTER = 0.5f;
+    public static final int SCAN_SHARE_TICKS = 1200;
+
     // --- sync -----------------------------------------------------------------------------------
     /** Ticks between writing the battery's drain and the suit's state back to the stacks (every change would resend the slot). */
     public static final int WRITE_TICKS = 20;

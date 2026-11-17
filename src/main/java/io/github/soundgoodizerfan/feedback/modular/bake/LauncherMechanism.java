@@ -37,6 +37,7 @@ import io.github.soundgoodizerfan.feedback.weapon.GunMechanism;
 import io.github.soundgoodizerfan.feedback.weapon.GunShots;
 import io.github.soundgoodizerfan.feedback.weapon.GunSound;
 import io.github.soundgoodizerfan.feedback.weapon.GunStance;
+import io.github.soundgoodizerfan.feedback.weapon.SmartFuse;
 import io.github.soundgoodizerfan.feedback.weapon.GunTuning;
 
 /**
@@ -162,9 +163,16 @@ public final class LauncherMechanism implements GunMechanism {
         GunFigures figures = p.figures().withSpread(GunStance.of(shooter, aimed) * p.round().shape().spread()
                 * io.github.soundgoodizerfan.feedback.modular.attunement.MomentumKinds.braceSpread(shooter, gun));
         GunShots.fire(level, shooter, figures, yaw, pitch, p.round().tracer(materials), p.round().incendiary(materials), p.round().fuse().isPresent() ? 1 : p.round().pellets(),
-                p.round().hardness(materials), gun, p.round().blast(materials), false, GunShots.Flight.of(p.round(), materials));
+                p.round().hardness(materials), gun, p.round().blast(materials), false, smartFlight(p.round(), materials, gun, level, shooter));
         GunShots.bookShot(level, shooter, gun, figures, 0f, hand, aimed);
         return true;
+    }
+
+    /** The round's flight, its fuse replaced by the launcher's fuse control when one is fitted and switched to a mode ({@link SmartFuse}). */
+    private static GunShots.Flight smartFlight(Cartridge round, Map<ResourceLocation, Material> materials, ItemStack gun, ServerLevel level, Player shooter) {
+        GunShots.Flight flight = GunShots.Flight.of(round, materials);
+        var set = SmartFuse.of(gun, level, shooter.getRandom());
+        return set.fuse().map(f -> flight.withFuse(f, set.radius())).orElse(flight);
     }
 
     @Override

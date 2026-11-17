@@ -427,6 +427,17 @@ public final class GunTuning {
     public static final float GUN_ROCKET_GRAIN_KG = 0.0005f, GUN_ROCKET_BURN_PER_GRAIN = 10f, GUN_ROCKET_EXHAUST = 3f, GUN_ROCKET_EJECT_SPEED = 0.6f,
             GUN_PROXIMITY_RADIUS = 2.5f, GUN_PROXIMITY_REACH = 1.5f, GUN_CLUSTER_SPEED = 1.2f;
 
+    /**
+     * Fire control and the smart fuse (placeholders, tuned in play). A fire-control circuit cuts spread by {@code FIRE_CONTROL_CUT x (1 - noise)}, the stick
+     * machines' pattern ({@code CIRCUIT_ACCURACY_CUT}); its rangefinder reaches {@code FIRE_CONTROL_REACH} blocks, longer by {@code 1 + FIRE_CONTROL_GAIN x gain/(gain + 1)}
+     * ({@code FIRE_CONTROL_GAIN} the most a great gain adds); the readout steps in metres of {@code 1 + FIRE_CONTROL_STEP x noise}. A smart fuse's proximity radius is the
+     * round's own, times {@code 1 + FUSE_GAIN x gain/(gain + 1)}, jittered by {@code FUSE_JITTER x noise}; its timed modes count {@code FUSE_STEPS} (short) or
+     * {@code FUSE_STEPS_LONG} steps of the circuit's own clock, never under {@code FUSE_MIN_TICKS} nor over {@code FUSE_MAX_TICKS}.
+     */
+    public static final float FIRE_CONTROL_CUT = 0.45f, FIRE_CONTROL_REACH = 64f, FIRE_CONTROL_GAIN = 1.5f, FIRE_CONTROL_STEP = 6f,
+            FUSE_GAIN = 1.2f, FUSE_JITTER = 0.5f, FUSE_STEPS = 6f, FUSE_STEPS_LONG = 24f;
+    public static final int FUSE_MIN_TICKS = 6, FUSE_MAX_TICKS = 160;
+
     /** How early the server accepts a shot against the cycle, for network jitter. Timestamp sync replaces this (spec 7.1). */
     public static final int GUN_FIRE_TOLERANCE_MS = 100;
 

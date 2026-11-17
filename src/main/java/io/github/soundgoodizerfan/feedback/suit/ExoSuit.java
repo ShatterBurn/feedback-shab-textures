@@ -135,6 +135,8 @@ public final class ExoSuit {
                 }
             }
         }
+        if (mod != null)
+            SuitModules.circuit(mod, controller(List.of(head, chest, legs, feet)));
         float wiring = 0f;
         int held = 0;
         for (ItemStack s : List.of(head, chest, legs, feet)) {
@@ -150,6 +152,29 @@ public final class ExoSuit {
                     mask |= SuitModules.gives(id, sup[id]);
         return new Rig(head, chest, legs, feet, dc, dl, df, sense, loss(chest), loss(legs), loss(feet), anyGauge ? gauge : 0f, bay, mask, mod,
                 held == 0 ? 1f : wiring / held);
+    }
+
+    /**
+     * The best circuit held in a module of the worn pieces, read at its working figures (the pack pays a tubed one's heater, so it is as warm as
+     * it is built to be, the robot brain's rule), or {@code Circuit.NONE}. Found by the role it sits in, never by an id.
+     */
+    static io.github.soundgoodizerfan.feedback.process.Circuit controller(List<ItemStack> pieces) {
+        var best = io.github.soundgoodizerfan.feedback.process.Circuit.NONE;
+        for (ItemStack piece : pieces) {
+            var design = piece.isEmpty() ? null : ModularStacks.design(piece);
+            var type = design == null ? null : io.github.soundgoodizerfan.feedback.modular.type.ModularTypes.known(design.type());
+            if (type == null)
+                continue;
+            for (var part : design.parts()) {
+                var role = type.roles().get(part.role());
+                if (role == null || !role.name().equals("controller") || part.sub().isEmpty())
+                    continue;
+                var c = io.github.soundgoodizerfan.feedback.process.Circuit.of(part.sub());
+                if (c.live() && (!best.live() || c.gain() > best.gain()))
+                    best = c;
+            }
+        }
+        return best;
     }
 
     // --- the battery in the bay ----------------------------------------------------------------------

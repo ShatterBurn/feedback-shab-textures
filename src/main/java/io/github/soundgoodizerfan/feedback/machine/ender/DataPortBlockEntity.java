@@ -158,20 +158,47 @@ public class DataPortBlockEntity extends ElectricNode implements Endernet.End, P
         return pay((float) Math.sqrt(r.distanceToSqr(worldPosition.getX() + 0.5, worldPosition.getY() + 0.5, worldPosition.getZ() + 0.5)));
     }
 
+    /**
+     * The last scan a suit with an endernet upgrade bonded under this port's pair shared, or null: none is fresh, the suit scanned in another
+     * dimension (the same-dimension rule of every crossing), or the port is dark. The port then offers the scan as sense channels
+     * ({@link io.github.soundgoodizerfan.feedback.suit.SuitScan#CHANNELS}), each read paying the pair's costs over the distance the scan was taken at.
+     */
+    @Nullable
+    private io.github.soundgoodizerfan.feedback.suit.SuitScan.Reading suitScan() {
+        if (pair == null || level == null || !live())
+            return null;
+        var s = io.github.soundgoodizerfan.feedback.suit.SuitScan.get(pair, level.getGameTime());
+        return s != null && s.dimension() == level.dimension() ? s : null;
+    }
+
     @Override
     public float read(int channel) {
         var r = leashed();
+        if (r == null) {
+            var scan = suitScan();
+            int length = io.github.soundgoodizerfan.feedback.suit.SuitScan.CHANNELS.length;
+            if (scan == null || channel < 0 || channel >= length
+                    || !pay((float) scan.at().distanceTo(net.minecraft.world.phys.Vec3.atCenterOf(worldPosition))))
+                return 0f;
+            return scan.channel(channel);
+        }
         var senses = io.github.soundgoodizerfan.feedback.robot.RobotMastBlockEntity.SENSES;
-        return r == null || !carries(r, channel, senses.length) ? 0f : r.read(senses[channel].ordinal(), 0);
+        return !carries(r, channel, senses.length) ? 0f : r.read(senses[channel].ordinal(), 0);
     }
 
     @Override
     public boolean offersChannels() {
-        return leashed() != null;
+        return leashed() != null || suitScan() != null;
     }
 
     @Override
     public String[] senseKeys() {
+        if (leashed() == null && suitScan() != null) {
+            String[] keys = io.github.soundgoodizerfan.feedback.suit.SuitScan.CHANNELS.clone();
+            for (int i = 0; i < keys.length; i++)
+                keys[i] = "suit.feedback.scan." + keys[i];
+            return keys;
+        }
         var senses = io.github.soundgoodizerfan.feedback.robot.RobotMastBlockEntity.SENSES;
         String[] keys = new String[senses.length];
         for (int i = 0; i < keys.length; i++)

@@ -52,7 +52,35 @@ public final class SuitModules {
     public static final int COUNT = 11;
 
     /** A module array's length: powers, then tuned-axis shares. */
-    static final int SLOTS = 2 * COUNT;
+    static final int SLOTS = 2 * COUNT + 3;
+
+    /** Where the held circuit's figures sit in a module array, after the powers and shares: its gain, its noise and its heater's draw (Eu a tick). All 0 with no live circuit. */
+    private static final int GAIN = 2 * COUNT, NOISE = 2 * COUNT + 1, HEATER = 2 * COUNT + 2;
+
+    /** Writes the held circuit's figures into module array {@code m}. */
+    static void circuit(float[] m, io.github.soundgoodizerfan.feedback.process.Circuit c) {
+        if (m == null || !c.live())
+            return;
+        m[GAIN] = Math.max(0f, c.gain());
+        m[NOISE] = Math.min(1f, Math.max(0f, c.noise()));
+        m[HEATER] = c.heaterPower();
+    }
+
+    /** The multiplier on a reach (a scan's, the lens's) from the held circuit's gain: 1 with none, up to {@code 1 + CIRCUIT_REACH}. */
+    static float reachGain(float[] m) {
+        float g = m == null ? 0f : m[GAIN];
+        return 1f + SuitTuning.CIRCUIT_REACH * g / (g + 1f);
+    }
+
+    /** The held circuit's noise, 0 to 1 (a scan module always holds one: the optic's scan needs a controller). */
+    static float noise(float[] m) {
+        return m == null ? 1f : m[NOISE];
+    }
+
+    /** Eu a tick the held tubed circuit's heater draws from the pack while the suit runs. */
+    static float heater(float[] m) {
+        return m == null ? 0f : m[HEATER];
+    }
 
     /** The tuned-axis share (0 to 1) of module {@code id}: where its part's axis sits in its range, 0 for a module with none. */
     static float arg(float[] m, int id) {
@@ -122,7 +150,7 @@ public final class SuitModules {
             return 0f;
         return switch (a) {
             // a scan's flash reaches as far as the lens is long-focus
-            case SCAN -> m[id] * (SCAN_SHORT + SCAN_LONG * arg(m, id));
+            case SCAN -> m[id] * (SCAN_SHORT + SCAN_LONG * arg(m, id)) * reachGain(m);
             // thin fins vent best
             case VENT -> m[id] * (1f - 0.5f * arg(m, id));
             // a long core spreads the flux
@@ -291,7 +319,7 @@ public final class SuitModules {
 
     /** Multiplier on thermal sight's reach. */
     static float lens(float[] m) {
-        return sight(p(m, OPTIC), arg(m, OPTIC));
+        return sight(p(m, OPTIC), arg(m, OPTIC)) * (p(m, OPTIC) > 0f ? reachGain(m) : 1f);
     }
 
     /** Added to the pack's carry factor. */

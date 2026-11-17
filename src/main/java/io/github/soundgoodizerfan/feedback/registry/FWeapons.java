@@ -76,6 +76,13 @@ public class FWeapons {
                     .networkSynchronized(FireMode.STREAM_CODEC)
                     .build());
 
+    /** A fuse-control launcher's selected fuse mode ({@code SmartFuse.Mode} ordinal). Absent reads the round's own fuse. */
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> FUSE_MODE =
+            COMPONENTS.register("fuse_mode", () -> DataComponentType.<Integer>builder()
+                    .persistent(com.mojang.serialization.Codec.intRange(0, 8))
+                    .networkSynchronized(net.minecraft.network.codec.ByteBufCodecs.VAR_INT)
+                    .build());
+
     /** A magazine item's size band, and on a gun the size of the magazine in it (spec 12). Absent reads standard. */
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<MagazineSize>> MAGAZINE_SIZE =
             COMPONENTS.register("magazine_size", () -> DataComponentType.<MagazineSize>builder()

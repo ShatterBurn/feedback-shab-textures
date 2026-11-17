@@ -112,6 +112,7 @@ public final class ModularTraits {
         register("gun_obturator", new io.github.soundgoodizerfan.feedback.modular.trait.GunObturator());
         register("gun_buffer", new io.github.soundgoodizerfan.feedback.modular.trait.GunBuffer());
         register("gun_reticle", new io.github.soundgoodizerfan.feedback.modular.trait.GunReticle());
+        register("gun_fire_control", new io.github.soundgoodizerfan.feedback.modular.trait.GunFireControl());
         register("gun_sear", new io.github.soundgoodizerfan.feedback.modular.trait.GunSear());
         register("gun_bipod", new io.github.soundgoodizerfan.feedback.modular.trait.GunBipod());
         register("gun_braced", new io.github.soundgoodizerfan.feedback.modular.trait.GunBraced());
@@ -311,6 +312,9 @@ public final class ModularTraits {
             role.variant(part).ifPresent(v -> add(out, v.trait(), v.params()));
             if (type.family() == ModularType.Family.GUN)
                 io.github.soundgoodizerfan.feedback.weapon.GunOptions.ofForm(part.kind()).ifPresent(o -> add(out, o.trait(), o.params()));
+            // A circuit clipped into a gun's fitting role (fire control) gives its trait through the role: the part is a finished item, so no option is machined for it.
+            if (role.forms().contains("circuit") && !role.trait().isEmpty())
+                add(out, role.trait(), role.params());
             // A barrel with its jacket slot filled stores the barrel's vibration (the jacket material's damping).
             if (part.measures().slots().containsKey("jacket"))
                 add(out, "jacket_damping", Map.of());

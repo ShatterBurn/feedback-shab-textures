@@ -176,6 +176,10 @@ public final class SuitServer {
                 waste += SuitTuning.JET_AMPS * thrust * rig.lossChest();
             }
             drawn += SuitModules.tick(p, rig.mod()) * rig.wiring();
+            // a tubed circuit held in a module is kept at working warmth from the pack, as a robot's brain is
+            float heater = SuitModules.heater(rig.mod());
+            drawn += heater;
+            waste += heater * rig.lossChest();
         } else {
             r.dash = false;
             r.jet = false;
@@ -255,7 +259,7 @@ public final class SuitServer {
             p.serverLevel().sendParticles(net.minecraft.core.particles.ParticleTypes.CLOUD, p.getX(), p.getY() + 1, p.getZ(), 20, 0.3, 0.5, 0.3, 0.05);
             p.serverLevel().playSound(null, p.blockPosition(), net.minecraft.sounds.SoundEvents.FIRE_EXTINGUISH, net.minecraft.sounds.SoundSource.PLAYERS, 0.8f, 1f);
         } else {
-            SuitPulses.fire(p, a, power);
+            SuitPulses.fire(p, a, power, rig.mod());
         }
         r.cool[a.ordinal()] = SuitPulses.cooldown(a);
         r.pending += cost;
@@ -404,7 +408,7 @@ public final class SuitServer {
             ExoSuit.setBattery(chest, copy);
         }
         r.pending = 0f;
-        SuitState now = new SuitState(r.heat, r.toggles, r.cut);
+        SuitState now = ExoSuit.state(chest).withRun(r.heat, r.toggles, r.cut);
         if (!now.equals(chest.get(FDataComponents.SUIT.get())))
             chest.set(FDataComponents.SUIT.get(), now);
     }

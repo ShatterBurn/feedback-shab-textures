@@ -56,6 +56,27 @@ public class EndernetUpgradeItem extends Item {
         return InteractionResult.sidedSuccess(level.isClientSide);
     }
 
+    /**
+     * Used in the air by a wearer of a suit (a modular chestplate with a battery bay): fitted to the suit, bonding its scans under the pair. The Data
+     * Port at the other end then hands the last scan to a program as channels ({@code suit/SuitScan}). A suit holds one; a second replaces it.
+     */
+    @Override
+    public net.minecraft.world.InteractionResultHolder<ItemStack> use(Level level, Player player, net.minecraft.world.InteractionHand hand) {
+        ItemStack stack = player.getItemInHand(hand);
+        UUID pair = pairOf(stack);
+        ItemStack chest = player.getItemBySlot(net.minecraft.world.entity.EquipmentSlot.CHEST);
+        if (pair == null || !io.github.soundgoodizerfan.feedback.suit.ExoSuit.hasBay(chest))
+            return net.minecraft.world.InteractionResultHolder.pass(stack);
+        if (!level.isClientSide) {
+            chest.set(io.github.soundgoodizerfan.feedback.registry.FDataComponents.SUIT.get(),
+                    io.github.soundgoodizerfan.feedback.suit.ExoSuit.state(chest).withPair(pair));
+            player.displayClientMessage(Component.translatable("message.feedback.suit_endernet_fitted"), true);
+            if (!player.getAbilities().instabuild)
+                stack.shrink(1);
+        }
+        return net.minecraft.world.InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
+    }
+
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(Component.translatable(pairOf(stack) == null ? "tooltip.feedback.endernet_upgrade.unbonded" : "tooltip.feedback.endernet_upgrade.bonded")

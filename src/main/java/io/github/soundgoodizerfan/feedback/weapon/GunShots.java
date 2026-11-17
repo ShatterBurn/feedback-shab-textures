@@ -159,8 +159,14 @@ public final class GunShots {
     public record Flight(float drag, float damage, float ease, float glance, java.util.Map<io.github.soundgoodizerfan.feedback.process.Material.Perk, Integer> perks,
                          io.github.soundgoodizerfan.feedback.potion.PotionState vial,
                          java.util.Set<io.github.soundgoodizerfan.feedback.process.Material.Trait> traits,
-                         net.minecraft.resources.ResourceLocation seed, Cartridge.Fuse fuse, float motorKgPerTick, float exhaust, int burn, int pellets) {
-        public static final Flight PLAIN = new Flight(1f, 1f, 1f, 1f, java.util.Map.of(), null, java.util.Set.of(), null, null, 0f, 0f, 0, 1);
+                         net.minecraft.resources.ResourceLocation seed, Cartridge.Fuse fuse, float motorKgPerTick, float exhaust, int burn, int pellets,
+                         float proximity) {
+        public static final Flight PLAIN = new Flight(1f, 1f, 1f, 1f, java.util.Map.of(), null, java.util.Set.of(), null, null, 0f, 0f, 0, 1, 0f);
+
+        /** This flight with a launcher's fuse control setting: its fuse and, for a proximity one, the radius the circuit senses to (0 keeps the base radius). */
+        public Flight withFuse(Cartridge.Fuse set, float radius) {
+            return new Flight(drag, damage, ease, glance, perks, vial, traits, seed, set, motorKgPerTick, exhaust, burn, pellets, radius);
+        }
 
         /** The flight of {@code round} in {@code materials}. */
         public static Flight of(Cartridge round, java.util.Map<net.minecraft.resources.ResourceLocation, io.github.soundgoodizerfan.feedback.process.Material> materials) {
@@ -177,7 +183,7 @@ public final class GunShots {
             }
             return new Flight(round.drag(materials), round.shape().damage(), round.shape().ease(), round.shape().glance(),
                     round.payloadPerks(materials), round.vial().orElse(null), round.payloadTraits(materials), round.seed().orElse(null),
-                    round.fuse().orElse(null), kgPerTick, exhaust, burn, round.fuse().isPresent() && round.shot() ? round.pellets() : 1);
+                    round.fuse().orElse(null), kgPerTick, exhaust, burn, round.fuse().isPresent() && round.shot() ? round.pellets() : 1, 0f);
         }
     }
 
@@ -1143,7 +1149,7 @@ public final class GunShots {
     /** Whether a body or a block is within a proximity fuse's sense of the shot: a body within the radius of where it is going, or a block just ahead of it. */
     private static boolean near(ServerLevel level, Shot s) {
         Vec3 ahead = s.pos.add(s.velocity);
-        if (!level.getEntitiesOfClass(LivingEntity.class, new AABB(ahead, ahead).inflate(GunTuning.GUN_PROXIMITY_RADIUS),
+        if (!level.getEntitiesOfClass(LivingEntity.class, new AABB(ahead, ahead).inflate(s.flight.proximity() > 0f ? s.flight.proximity() : GunTuning.GUN_PROXIMITY_RADIUS),
                 e -> e != s.shooter && e.isAlive()).isEmpty())
             return true;
         Vec3 look = ahead.add(s.velocity.normalize().scale(GunTuning.GUN_PROXIMITY_REACH));
