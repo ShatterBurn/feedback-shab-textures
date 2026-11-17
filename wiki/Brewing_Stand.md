@@ -17,7 +17,7 @@ The Brewing Stand takes a bottle of water in each of three slots, an ingredient 
 
 ## What Feedback does
 
-Feedback **replaces** the Brewing Stand. A vanilla one found in the world, in a village or placed by a command turns into this one. Vanilla potion items and tipped arrows do not exist; potions are made and held the Feedback way.
+Feedback **replaces** the Brewing Stand. A vanilla one found in the world, in a village or placed by a command turns into this one. Potions are made and held the Feedback way. A vanilla potion, splash or lingering bottle that turns up in loot, a mob's hand, a villager's trade or your pockets becomes a Feedback potion bottle carrying the bottle's first effect at its level and length. Water, awkward and mundane bottles are left as they are. Tipped arrows do not exist.
 
 The stand is a pot of water over a heat source: a [Firebox](Firebox.md), a [Campfire](Campfire.md) or lava below it. The water pins at boiling, so the working range is room temperature to 100 Tu.
 

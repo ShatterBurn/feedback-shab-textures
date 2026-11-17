@@ -131,7 +131,7 @@ public record Material(St hardness, Tu minTemperature, Tu maxTemperature,
                        Map<ResourceLocation, Float> bears, Optional<Ru> radioactivity, Optional<Catalyst> catalyst,
                        Optional<Potion> potion, Optional<XpCapacity> xpStore,
                        Optional<Integer> luminance, boolean phosphor, Optional<Neutron> neutron, Optional<Integer> fastener,
-                       Optional<Float> toxicity) {
+                       Optional<Float> toxicity, Optional<Float> corrosivity) {
 
     /**
      * How a material meets neutrons in a reactor core (fission spec 2.5): {@code fissile} is what a rod of it gives per neutron
@@ -237,6 +237,8 @@ public record Material(St hardness, Tu minTemperature, Tu maxTemperature,
     public enum Trait implements StringRepresentable {
         /** Rolls into plate whatever its kind (sculk: a gun's sculk jacket); a {@link FormType}'s {@code traits} list names the forms such a trait opens. */
         ROLLABLE,
+        /** A stone worth cutting (ruby, garnet, jade): a {@link FormType}'s {@code traits} list opens the {@code gem} form to it, whatever its kind. */
+        GEMSTONE,
         ALLOY, FLAMMABLE, FIREPROOF, TRANSPARENT, LUMINOUS,
         /** Gives off light when hot enough to glow (every metal does; other materials opt in). */
         INCANDESCENT, FIBROUS, POROUS, STICKY,
@@ -709,12 +711,12 @@ public record Material(St hardness, Tu minTemperature, Tu maxTemperature,
             Combustion.CODEC.optionalFieldOf("combustion").forGetter(Material::combustion),
             // Sixteen is RecordCodecBuilder's ceiling, so the last keys ride as one group. The
             // JSON is unchanged: they stay plain top-level keys.
-            Tail.CODEC.forGetter(m -> new Tail(m.electrical(), m.composition(), m.enchantability(), m.color(), m.perks(), m.attunement(), m.food(), m.bears(), m.radioactivity(), m.catalyst(), m.potion(), m.xpStore(), m.neutron(), new Extras(m.luminance(), m.phosphor(), m.fastener(), m.toxicity())))
+            Tail.CODEC.forGetter(m -> new Tail(m.electrical(), m.composition(), m.enchantability(), m.color(), m.perks(), m.attunement(), m.food(), m.bears(), m.radioactivity(), m.catalyst(), m.potion(), m.xpStore(), m.neutron(), new Extras(m.luminance(), m.phosphor(), m.fastener(), m.toxicity(), m.corrosivity())))
     ).apply(instance, (hardness, min, max, forms, exclude, density, kind, traits, thermal, mechanical,
                        molten, separation, ampacity, corrosion, combustion, tail) -> new Material(
             hardness, min, max, forms, exclude, density, kind, traits, thermal, mechanical, molten,
             separation, ampacity, corrosion, combustion, tail.electrical(), tail.composition(),
-            tail.enchantability(), tail.color(), tail.perks(), tail.attunement(), tail.food().map(f -> f.heated(thermal.specificHeat())), tail.bears(), tail.radioactivity(), tail.catalyst(), tail.potion(), tail.xpStore(), tail.luminance(), tail.phosphor(), tail.neutron(), tail.fastener(), tail.toxicity())));
+            tail.enchantability(), tail.color(), tail.perks(), tail.attunement(), tail.food().map(f -> f.heated(thermal.specificHeat())), tail.bears(), tail.radioactivity(), tail.catalyst(), tail.potion(), tail.xpStore(), tail.luminance(), tail.phosphor(), tail.neutron(), tail.fastener(), tail.toxicity(), tail.corrosivity())));
 
     /**
      * The keys that did not fit the codec's sixteen.
@@ -736,6 +738,7 @@ public record Material(St hardness, Tu minTemperature, Tu maxTemperature,
         boolean phosphor() { return extras.phosphor(); }
         Optional<Integer> fastener() { return extras.fastener(); }
         Optional<Float> toxicity() { return extras.toxicity(); }
+        Optional<Float> corrosivity() { return extras.corrosivity(); }
 
         static final com.mojang.serialization.MapCodec<Tail> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
                 Electrical.CODEC.optionalFieldOf("electrical", Electrical.NONE).forGetter(Tail::electrical),
@@ -760,13 +763,18 @@ public record Material(St hardness, Tu minTemperature, Tu maxTemperature,
      *
      * @param toxicity how harmful it is swallowed: a log-compressed index of the real oral LD50 in mg/kg (author 2026-11-13);
      *                 0 is harmless to eat, higher is deadlier. The index and its constants are in {@code docs/material_figures.md}.
+     * @param corrosivity how hard it eats flesh and metal on contact: the distance of a working solution's pH from neutral (7), so
+     *                    0 is neutral and a strong acid or a strong base is about 7. Not how poisonous it is: hydrofluoric acid
+     *                    is a weak acid and a deadly poison. The index is in {@code docs/material_figures.md}.
      */
-    private record Extras(Optional<Integer> luminance, boolean phosphor, Optional<Integer> fastener, Optional<Float> toxicity) {
+    private record Extras(Optional<Integer> luminance, boolean phosphor, Optional<Integer> fastener, Optional<Float> toxicity,
+                          Optional<Float> corrosivity) {
         static final com.mojang.serialization.MapCodec<Extras> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
                 Codec.intRange(0, 15).optionalFieldOf("luminance").forGetter(Extras::luminance),
                 Codec.BOOL.optionalFieldOf("phosphor", false).forGetter(Extras::phosphor),
                 Codec.intRange(1, 5).optionalFieldOf("fastener").forGetter(Extras::fastener),
-                Codec.floatRange(0f, Float.MAX_VALUE).optionalFieldOf("toxicity").forGetter(Extras::toxicity)
+                Codec.floatRange(0f, Float.MAX_VALUE).optionalFieldOf("toxicity").forGetter(Extras::toxicity),
+                Codec.floatRange(0f, 14f).optionalFieldOf("corrosivity").forGetter(Extras::corrosivity)
         ).apply(instance, Extras::new));
     }
 

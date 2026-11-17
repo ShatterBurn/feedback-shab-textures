@@ -66,6 +66,8 @@ public final class ModularConvert {
 
     /** Whether the stack is a vanilla item that has a modular type to become. Cheap enough to ask every second. */
     public static boolean convertible(ItemStack stack) {
+        if (io.github.soundgoodizerfan.feedback.potion.VanillaPotions.convertible(stack))
+            return true;
         if (stack.isEmpty() || stack.getItem() instanceof Modular || ModularStacks.design(stack) != null)
             return false;
         // A vanilla enchanted book is a rite, when an attunement names something it holds.
@@ -121,6 +123,8 @@ public final class ModularConvert {
     public static ItemStack convert(ItemStack vanilla, long salt, boolean roll) {
         if (!convertible(vanilla))
             return vanilla;
+        if (io.github.soundgoodizerfan.feedback.potion.VanillaPotions.convertible(vanilla))
+            return io.github.soundgoodizerfan.feedback.potion.VanillaPotions.convert(vanilla);
         if (io.github.soundgoodizerfan.feedback.modular.attunement.Rites.convertibleBook(vanilla))
             return io.github.soundgoodizerfan.feedback.modular.attunement.Rites.fromBook(vanilla).orElse(vanilla);
         Material.Located located = locate(vanilla.getItem()).get();

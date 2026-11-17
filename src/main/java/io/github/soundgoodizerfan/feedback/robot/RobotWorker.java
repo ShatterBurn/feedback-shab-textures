@@ -320,11 +320,20 @@ public final class RobotWorker {
         }
     }
 
-    /** Each use of the Data Connector steps the player's selection to the next of a robot's channels, for a Programmer card's Link. */
-    public static void selectNext(Player player) {
-        var pending = DataLinkManager.get().peekPending(player);
-        int next = pending.filter(p -> p.isLocal()).map(p -> p.local() + 1).orElse(0) % RobotChannel.values().length;
-        DataLinkManager.get().selectLocal(player, RobotChannel.of(next).ref());
-        player.displayClientMessage(Component.translatable("robot.feedback.selected", Component.translatable(RobotChannel.of(next).langKey())), true);
+    /** A use of the Data Connector on a robot or arm opens the list of its channels; the player picks one and {@link #select} holds it for a Programmer card's Link. */
+    public static void openChannels(Player player) {
+        int held = DataLinkManager.get().peekPending(player).filter(p -> p.isLocal()).map(p -> p.local()).orElse(-1);
+        if (player instanceof net.minecraft.server.level.ServerPlayer sp)
+            net.neoforged.neoforge.network.PacketDistributor.sendToPlayer(sp, new io.github.soundgoodizerfan.feedback.net.RobotChannelsPayload(held));
+    }
+
+    /** The channel the player picked, selected as the connector's step used to: only while a Data Connector is in hand. */
+    public static void select(Player player, int channel) {
+        RobotChannel picked = RobotChannel.of(channel);
+        if (picked == null || !(player.getMainHandItem().getItem() instanceof io.github.soundgoodizerfan.feedback.item.DataConnectorItem
+                || player.getOffhandItem().getItem() instanceof io.github.soundgoodizerfan.feedback.item.DataConnectorItem))
+            return;
+        DataLinkManager.get().selectLocal(player, picked.ref());
+        player.displayClientMessage(Component.translatable("robot.feedback.selected", Component.translatable(picked.langKey())), true);
     }
 }

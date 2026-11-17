@@ -22,7 +22,7 @@ A pair that has carried something recently and then runs out of teleportant dest
 
 ## Finding the other end
 
-A [Tuned Eye](Tuned_Eye.md) tuned to a port reads the distance, direction and height of its partner.
+A [Tuned Eye](Tuned_Eye.md) tuned to a port reads the distance, direction and height of its partner. A [Data Port](Data_Port.md) is the same kind of bonded pair, made for data instead of items.
 
 ## Chunk Anchor
 

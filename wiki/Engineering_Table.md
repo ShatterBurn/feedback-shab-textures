@@ -52,11 +52,11 @@ Each page lists its own grid. The [Auto Engineer](Auto_Engineer.md) is crafted f
 
 ## Hand work
 
-Taking an assembled item can start a hand-work game. The item is only made when you finish it, and no result refuses the craft: a poor play makes a worse start, never nothing.
+Taking an assembled item can start a hand-work game. A build the plain [Crafting Table](Crafting_Table.md) makes as well (no school, no blueprint, no dish, no fasteners spent: a sword, bow, shield, armor or hafted tool) plays no game here; the games are for work the plain table cannot do, such as a spear, a dynamotor or a build that spends fasteners. The item is only made when you finish it, and no result refuses the craft: a poor play makes a worse start, never nothing.
 
 - **Torque.** Played for a type that spends fasteners, once per fastener. Hold the mouse to wind the gauge (about two seconds to the top) and let go inside the **green band**. Letting go short leaves the fastener loose; holding past the band strips the thread. A better fastener widens the band. A screwdriver with a [ratchet](Hand_Tools.md#screwdriver) keeps each pull partly wound and steadies the band, but a weak pawl stalls short of it.
 - **Rivet.** Played when the work takes rivets only, once per rivet. Hold the mouse to raise the hammer and let go to strike. A strike in the **green band** sets a tight domed head; lighter leaves the head loose, harder flattens it, and harder still splits it. Soft metal (lead, copper) forgives a wide band at a light blow; hard metal (steel, titanium) wants a harder blow in a narrower band. A better fastener widens the band.
-- **Fitting.** Played for swords, spears, shields, bows, dynamotors and armor. The bench plays a sequence of tool strokes (file, tap, turn, press), each lit on its tool with a sound; repeat it by clicking the tools or pressing 1 to 4. Harder stock makes a longer sequence, tougher stock slows the strokes down and forgives a slip. A wrong stroke ends the fitting where you got to; how far you got sets how well the assembly starts. It never stops you finishing.
+- **Fitting.** Played for spears and dynamotors. The bench plays a sequence of tool strokes (file, tap, turn, press), each lit on its tool with a sound; repeat it by clicking the tools or pressing 1 to 4. Harder stock makes a longer sequence, tougher stock slows the strokes down and forgives a slip. A wrong stroke ends the fitting where you got to; how far you got sets how well the assembly starts. It never stops you finishing.
 
 Press Esc to back out; the craft stays offered. A **blueprint** in the blueprint slot skips the game and counts as a small bonus.
 
@@ -67,7 +67,7 @@ Two figures are set when an item is assembled here, and both only fall short of 
 - **Fit** is how well the joints are made: a looser fit weakens the joints, and for a gun widens the spread.
 - **Head start** is the durability the item starts with.
 
-Three things move them. The **fasteners** (a complex type spends them): quality above the type's floor helps, below it hurts. The **hand work** (the better the torque, rivet or fitting game, the better the start). And the **fit to the drawing**.
+Three things move them. The **fasteners** (a complex type spends them): quality above the type's floor helps, below it hurts. The **hand work** (the better the torque, rivet or fitting game, the better the start; a build with no game starts as the parts allow). And the **fit to the drawing**.
 
 A [blueprint](Blueprint_Table.md#what-a-blueprint-is-for) is a drawn fit. Parts of a material inside the drawn properties fit clean; any other material still builds, and the item is marked **off the drawing**. Each part also has **axes** (a bore, a length). Hand-fitted parts may be off their mate by 20% of the axis range before the joint takes a fit flaw; parts built to a blueprint may be off the drawing by 5%. Past that the item takes a flaw: looser joints and, for a gun, a wider spread. Nothing is refused.
 
@@ -86,6 +86,8 @@ Put a modular item in the **Item** slot and stock in the **Part stock** slots. A
 On an [Engine](Engine.md), a swapped **spark plug** is a fresh one and clears the plug's wear; reworking any other part leaves the plug's wear as it is.
 
 The plain [Crafting Table](Crafting_Table.md) swaps a part too: lay one finished item of a type that needs no blueprint or treatise in the grid with replacement parts or stock, in any positions. The part of the same role is replaced (a role the item has empty takes the stock as an addition), the old part comes back in the grid (the wearing part short by its wear), and the item wears one point.
+
+The Crafting Table also **repairs** such an item: lay it in the grid with stock of the material its wearing part is made of, and durability comes back, a share for each cell of stock that depends on the material's properties. The item takes no wear for it.
 
 Repairing and a like-for-like swap need no treatise. A dish is not taken apart.
 

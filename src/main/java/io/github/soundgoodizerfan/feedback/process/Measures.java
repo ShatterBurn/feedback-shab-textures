@@ -29,11 +29,13 @@ import net.minecraft.resources.ResourceLocation;
  *                 (negative when it took on the mirror side).
  * @param state    live state of a food or workpiece part (a dish part's doneness, ingredient shares, cut; a bloom's scale
  *                 loss), by the names the system that wrote it defines. Not a measure of the part's geometry.
+ * @param aimed    what the maker set the part's axes to by hand, the same names as {@code axes}: a person remembers what they cut it to, never how it came out
+ *                 (the noise stays the as-built figure's). Set only by a bench; a machine's part has none and is read with an instrument.
  * @param slots    the materials of a composed part beyond its first slot (which is {@code MadeOf.material}), by slot name
  *                 ({@link io.github.soundgoodizerfan.feedback.modular.type.ModularType.PartSlot}): a scope's lens, a blade's edge. A slot left out is
  *                 made of the main material.
  */
-public record Measures(Map<String, Float> axes, float work, Map<String, Float> attuned, Map<String, Float> state, Map<String, Slot> slots) {
+public record Measures(Map<String, Float> axes, float work, Map<String, Float> attuned, Map<String, Float> state, Map<String, Slot> slots, Map<String, Float> aimed) {
 
     /** One extra slot's material and the form it went in as. */
     public record Slot(ResourceLocation material, String form) {
@@ -45,17 +47,18 @@ public record Measures(Map<String, Float> axes, float work, Map<String, Float> a
                 ResourceLocation.STREAM_CODEC, Slot::material, ByteBufCodecs.STRING_UTF8, Slot::form, Slot::new);
     }
 
-    public static final Measures NONE = new Measures(Map.of(), 1f, Map.of(), Map.of(), Map.of());
+    public static final Measures NONE = new Measures(Map.of(), 1f, Map.of(), Map.of(), Map.of(), Map.of());
 
     public Measures {
         axes = Map.copyOf(axes);
         attuned = Map.copyOf(attuned);
         state = Map.copyOf(state);
         slots = Map.copyOf(slots);
+        aimed = Map.copyOf(aimed);
     }
 
     public Measures(Map<String, Float> axes, float work, Map<String, Float> attuned, Map<String, Float> state) {
-        this(axes, work, attuned, state, Map.of());
+        this(axes, work, attuned, state, Map.of(), Map.of());
     }
 
     /** The material in slot {@code name}, if it is a slot beyond the first and was filled apart from the main one. */
@@ -64,7 +67,7 @@ public record Measures(Map<String, Float> axes, float work, Map<String, Float> a
     }
 
     public Measures withSlots(Map<String, Slot> slots) {
-        return new Measures(axes, work, attuned, state, slots);
+        return new Measures(axes, work, attuned, state, slots, aimed);
     }
 
     public static Measures ofAxes(Map<String, Float> axes) {
@@ -77,7 +80,7 @@ public record Measures(Map<String, Float> axes, float work, Map<String, Float> a
 
     /** True when nothing is set: the part is exactly as its drawing and material say. */
     public boolean isNone() {
-        return axes.isEmpty() && work == 1f && attuned.isEmpty() && state.isEmpty() && slots.isEmpty();
+        return axes.isEmpty() && work == 1f && attuned.isEmpty() && state.isEmpty() && slots.isEmpty() && aimed.isEmpty();
     }
 
     /** The as-built axis {@code name}, else {@code fallback}. */
@@ -91,35 +94,39 @@ public record Measures(Map<String, Float> axes, float work, Map<String, Float> a
     }
 
     public Measures withAxis(String name, float value) {
-        return new Measures(with(axes, name, value), work, attuned, state, slots);
+        return new Measures(with(axes, name, value), work, attuned, state, slots, aimed);
     }
 
     public Measures withAxes(Map<String, Float> axes) {
-        return new Measures(axes, work, attuned, state, slots);
+        return new Measures(axes, work, attuned, state, slots, aimed);
+    }
+
+    public Measures withAimed(Map<String, Float> aimed) {
+        return new Measures(axes, work, attuned, state, slots, aimed);
     }
 
     public Measures withWork(float work) {
-        return new Measures(axes, work, attuned, state, slots);
+        return new Measures(axes, work, attuned, state, slots, aimed);
     }
 
     public Measures withAttuned(String key, float level) {
-        return new Measures(axes, work, with(attuned, key, level), state, slots);
+        return new Measures(axes, work, with(attuned, key, level), state, slots, aimed);
     }
 
     public Measures withAttuned(Map<String, Float> attuned) {
-        return new Measures(axes, work, attuned, state, slots);
+        return new Measures(axes, work, attuned, state, slots, aimed);
     }
 
     public Measures withState(String name, float value) {
-        return new Measures(axes, work, attuned, with(state, name, value), slots);
+        return new Measures(axes, work, attuned, with(state, name, value), slots, aimed);
     }
 
     public Measures withState(Map<String, Float> state) {
-        return new Measures(axes, work, attuned, state, slots);
+        return new Measures(axes, work, attuned, state, slots, aimed);
     }
 
     public Measures withoutAttuned() {
-        return new Measures(axes, work, Map.of(), state, slots);
+        return new Measures(axes, work, Map.of(), state, slots, aimed);
     }
 
     private static Map<String, Float> with(Map<String, Float> in, String key, float value) {
@@ -137,7 +144,8 @@ public record Measures(Map<String, Float> axes, float work, Map<String, Float> a
             Codec.FLOAT.optionalFieldOf("work", 1f).forGetter(Measures::work),
             FLOATS.optionalFieldOf("attuned", Map.of()).forGetter(Measures::attuned),
             FLOATS.optionalFieldOf("state", Map.of()).forGetter(Measures::state),
-            Codec.unboundedMap(Codec.STRING, Slot.CODEC).optionalFieldOf("slots", Map.of()).forGetter(Measures::slots)
+            Codec.unboundedMap(Codec.STRING, Slot.CODEC).optionalFieldOf("slots", Map.of()).forGetter(Measures::slots),
+            FLOATS.optionalFieldOf("aimed", Map.of()).forGetter(Measures::aimed)
     ).apply(i, Measures::new));
 
     public static final StreamCodec<ByteBuf, Measures> STREAM_CODEC = StreamCodec.composite(
@@ -146,5 +154,6 @@ public record Measures(Map<String, Float> axes, float work, Map<String, Float> a
             FLOATS_STREAM, Measures::attuned,
             FLOATS_STREAM, Measures::state,
             ByteBufCodecs.map(HashMap::new, ByteBufCodecs.STRING_UTF8, Slot.STREAM), Measures::slots,
+            FLOATS_STREAM, Measures::aimed,
             Measures::new);
 }

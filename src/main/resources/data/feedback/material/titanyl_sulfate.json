@@ -24,6 +24,7 @@
     "shear_thickening": 0
   },
   "toxicity": 0.5,
+  "corrosivity": 6,
   "separation": {
     "reflectivity": 0.02
   },

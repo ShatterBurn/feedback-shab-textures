@@ -2,8 +2,7 @@
   "color": "#7a1f2b",
   "kind": "crystal",
   "traits": [
-    "transparent"
-  ],
+    "transparent", "gemstone"],
   "hardness": 120,
   "density": 4.1,
   "thermal": {

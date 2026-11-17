@@ -188,6 +188,19 @@ public class FeedbackJeiPlugin implements IModPlugin {
         registration.registerSubtypeInterpreter(FModular.VACUUM_TUBE.get(), component(io.github.soundgoodizerfan.feedback.registry.FDataComponents.TUBE.get()));
         registration.registerSubtypeInterpreter(FModular.RESONATOR.get(), component(io.github.soundgoodizerfan.feedback.registry.FDataComponents.ELEMENT.get()));
         registration.registerSubtypeInterpreter(FModular.LATTICE.get(), component(io.github.soundgoodizerfan.feedback.registry.FDataComponents.ELEMENT.get()));
+        // A bottle is told apart by its effect alone, never its stamp or potency.
+        registration.registerSubtypeInterpreter(FItems.POTION.get(), new mezz.jei.api.ingredients.subtypes.ISubtypeInterpreter<>() {
+            @Override
+            public Object getSubtypeData(ItemStack stack, mezz.jei.api.ingredients.subtypes.UidContext context) {
+                var state = stack.get(io.github.soundgoodizerfan.feedback.registry.FDataComponents.POTION_STATE.get());
+                return state == null ? "" : state.effect().map(Object::toString).orElse("dud");
+            }
+
+            @Override
+            public String getLegacyStringSubtypeInfo(ItemStack stack, mezz.jei.api.ingredients.subtypes.UidContext context) {
+                return String.valueOf(getSubtypeData(stack, context));
+            }
+        });
     }
 
     private static mezz.jei.api.ingredients.subtypes.ISubtypeInterpreter<ItemStack> component(
@@ -223,6 +236,7 @@ public class FeedbackJeiPlugin implements IModPlugin {
                 new DeformationCategory(registration.getJeiHelpers().getGuiHelper()),
                 new PressCategory(registration.getJeiHelpers().getGuiHelper()),
                 new RemovalCategory(registration.getJeiHelpers().getGuiHelper()),
+                new MinedCategory(registration.getJeiHelpers().getGuiHelper()),
                 new OreProcessingCategory(registration.getJeiHelpers().getGuiHelper()),
                 new SeparationCategory(registration.getJeiHelpers().getGuiHelper()),
                 new MixtureCategory(registration.getJeiHelpers().getGuiHelper()),
@@ -631,6 +645,8 @@ public class FeedbackJeiPlugin implements IModPlugin {
         recipes.hideRecipeCategory(RecipeTypes.SMELTING);
         recipes.hideRecipeCategory(RecipeTypes.BLASTING);
         recipes.hideRecipeCategory(RecipeTypes.SMOKING);
+        // Vanilla brewing is replaced by the brewing stand's map.
+        recipes.hideRecipeCategory(RecipeTypes.BREWING);
         // Vanilla items the mod removed (campfire, tools, ...) list nowhere; the tag is the list, so a pack can extend it.
         var hidden = new ArrayList<net.minecraft.world.item.ItemStack>();
         net.minecraft.core.registries.BuiltInRegistries.ITEM.getTagOrEmpty(net.minecraft.tags.TagKey.create(
@@ -646,6 +662,11 @@ public class FeedbackJeiPlugin implements IModPlugin {
         // Vanilla enchanted books, every enchantment and level JEI adds: rites replace them.
         jeiRuntime.getIngredientManager().getAllIngredients(mezz.jei.api.constants.VanillaTypes.ITEM_STACK).stream()
                 .filter(s -> s.is(net.minecraft.world.item.Items.ENCHANTED_BOOK)).forEach(hidden::add);
+        // Vanilla potions in every form and tipped arrows: our bottles replace them.
+        jeiRuntime.getIngredientManager().getAllIngredients(mezz.jei.api.constants.VanillaTypes.ITEM_STACK).stream()
+                .filter(s -> s.is(net.minecraft.world.item.Items.POTION) || s.is(net.minecraft.world.item.Items.SPLASH_POTION)
+                        || s.is(net.minecraft.world.item.Items.LINGERING_POTION) || s.is(net.minecraft.world.item.Items.TIPPED_ARROW))
+                .forEach(hidden::add);
         jeiRuntime.getIngredientManager().removeIngredientsAtRuntime(
                 mezz.jei.api.constants.VanillaTypes.ITEM_STACK, hidden);
         ClientDeformations.onChanged(FeedbackJeiPlugin::publish);
@@ -658,6 +679,7 @@ public class FeedbackJeiPlugin implements IModPlugin {
             show(MaterialStatsCategory.TYPE, MaterialStatsCategory.cards(materials));
             show(BrewingIngredientCategory.TYPE, BrewingIngredientCategory.cards(materials));
             show(SeparationCategory.TYPE, SeparationCategory.cards(materials));
+            show(MinedCategory.TYPE, MinedCategory.cards(materials));
             show(OreProcessingCategory.TYPE, OreProcessingCategory.cards(materials));
             show(FuelCategory.TYPE, FuelCategory.cards(materials));
             show(PotionShapeCategory.TYPE, PotionShapeCategory.cards(materials));

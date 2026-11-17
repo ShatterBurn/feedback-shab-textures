@@ -55,6 +55,15 @@ public final class PotionMap extends SimpleJsonResourceReloadListener {
         return out;
     }
 
+    /** Every effect node's figures, in id order: what a recipe browser may list (never where a node stands). */
+    public List<PotionFeature.Effect> effects() {
+        List<PotionFeature.Effect> out = new ArrayList<>();
+        for (var e : new TreeMap<>(features).entrySet())
+            if (e.getValue().kind() == PotionFeature.Kind.EFFECT)
+                out.add(e.getValue().effect().get());
+        return out;
+    }
+
     /** How far from the centre the base's wall stands: its {@code boundary} row, else the whole plane. */
     public float boundary(String base) {
         for (var e : on(base))

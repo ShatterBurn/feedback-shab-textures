@@ -38,7 +38,7 @@ Each link costs fine wire from your inventory, one piece per block of distance. 
 | Copper Fine Wire (poor grade) | up to 8 blocks | rounded to one significant figure |
 | Redstone-Chromium Fine Wire (good grade) | up to 32 blocks | exact |
 
-A link uses copper wire when it reaches and you have enough, otherwise redstone-chromium. A path is as good as its worst wire.
+A link uses copper wire when it reaches and you have enough, otherwise redstone-chromium. A path is as good as its worst wire. A live [endernet](Data_Port.md#endernet) pair counts as one hop of the best grade, so a path can cross any distance through it.
 
 Redstone-chromium wire quenches: if either end of a good line carries more than 3 links, the line goes dark for 10 seconds and then recovers undamaged. A reader with no working path reads 0.
 

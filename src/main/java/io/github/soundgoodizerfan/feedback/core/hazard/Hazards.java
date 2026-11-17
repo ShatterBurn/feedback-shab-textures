@@ -35,6 +35,7 @@ public final class Hazards {
 
     public static final ResourceKey<DamageType> HOT_CONTACT = key("hot_contact");
     public static final ResourceKey<DamageType> SCALD = key("scald");
+    public static final ResourceKey<DamageType> CHEMICAL_BURN = key("chemical_burn");
     public static final ResourceKey<DamageType> SHOCK = key("shock");
     public static final ResourceKey<DamageType> GUN_RECOIL = key("gun_recoil");
 

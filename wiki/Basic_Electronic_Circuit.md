@@ -4,10 +4,11 @@ A soldered board with parts on it. It is not a tier or a key: it carries **prope
 
 ## What it carries
 
-- **Switching elements**: how many parts on the board switch (crystals, [Relays](Relay.md), [Coherers](Redstone_Coherer.md)). A circuit with none is a **dead part**.
+- **Switching elements**: how many parts on the board switch (crystals, [Relays](Relay.md), [Coherers](Redstone_Coherer.md), [Vacuum Tubes](Vacuum_Tube.md)). A circuit with none is a **dead part**.
 - **Speed**: the fastest element. A rectifying crystal is fast (galena most), a relay's contacts slow, a coherer's grains slowest.
 - **Noise**: the elements' own, the traces' (printed is grainier than etched), and a cold joint's. A ringing quartz plate on the board steadies it. Noise never reaches zero.
 - **Joints**: good or cold, as graded by the [Solder](Materials.md#solders) rules.
+- **Gain** and a **heater**: only with a [Vacuum Tube](Vacuum_Tube.md) on the board. Gain is what the tubes add as amplifiers; the heater is the standing power they take to run.
 
 Read them with a [Component Tester](Instruments.md#component-tester): hold it with the circuit in the other hand.
 
@@ -26,14 +27,30 @@ The JEI page *Electronic circuit* shows these five steps on one card with each i
 ## Making one
 
 1. Make a [Trace Board](Trace_Board.md), **before pasting it**.
-2. In a crafting grid, put the board and **one part** to mount it. Up to 4 per board. A part is a **rectifying crystal** (galena, pyrite, quartz), a Relay, a Coherer, or a **quartz or amethyst plate** (the clock: it switches nothing, it steadies the rest).
+2. In a crafting grid, put the board and **one part** to mount it. Up to 4 per board. A part is a **rectifying crystal** (galena, pyrite, quartz), a Relay, a Coherer, a **sealed [Vacuum Tube](Vacuum_Tube.md)**, or a **quartz or amethyst plate** (the clock: it switches nothing, it steadies the rest). A tube still open to the air mounts as nothing.
 3. Paste the board with solder, then solder it with the [Soldering Iron](Soldering_Iron.md) or the [Reflow Oven](Reflow_Oven.md).
 
 A good joint gives a good circuit. A **cold joint** gives a noisy one. If the traces **lift** the circuit comes out dead, and the parts with it. Nothing refuses to run.
 
+## Warming up
+
+A circuit with a tube starts **cold**. Cold, it is slow and noisy; as its bulb warms it comes up to the figures it was built for. It is never refused: a cold circuit works, badly. Its tooltip says where it stands:
+
+- **Its tube is warm: it works at its best.**
+- **Its tube is warming: still slow and noisy.**
+- **Its tube is cold: slow and noisy until a heater warms it.**
+
+Hold Shift on the tooltip to see what each word means in how far the bulb has come toward its working heat. A [Component Tester](Instruments.md#component-tester) on a tubed circuit also reads its **gain**.
+
+A host that has power warms the circuit it holds with the tube's heater and pays for it: an [Electric Controller](Electric_Controller.md#circuit-slot), a [Computer](Electric_Controller.md#circuit-slot), a [Power Cutter](Power_Cutter.md#circuit) and an [Auto Engineer](Auto_Engineer.md#circuit) each draw the heater's current from their line on top of their own. Heat from a fire warms the circuit too. A host with no power, such as the mechanical [Controller](Controller.md#circuit-slot) or a Cat's Whisker Detector, leaves the circuit as warm as its surroundings make it. A heater never takes a board past what its traces stand, so a tube on a board with poor traces runs short of its best.
+
+[Instruments](Instruments.md#fitting-a-circuit) and a [robot's brain](Robots.md#the-brain) read a tubed circuit at the warmth it has: a cold one narrows an instrument's step less and gives a robot less dexterity.
+
 ## Using one
 
 Right-click a [Cat's Whisker Detector](Cats_Whisker_Detector.md) (it hears [sparks](Redstone_Coherer.md#what-a-spark-is) without a wire to them) with it to fit it on the contact: the hunt report gets quieter, it hears further, and it lets go sooner. Sneak-right-click with an empty hand takes it out (crystal first).
+
+A [Controller](Controller.md#circuit-slot), [Electric Controller](Electric_Controller.md#circuit-slot), [Computer](Electric_Controller.md#circuit-slot), [Power Cutter](Power_Cutter.md#circuit) and [Auto Engineer](Auto_Engineer.md#circuit) each take one in a circuit slot, and a [Robot](Robots.md#the-brain) or [Robot Arm](Robot_Arm.md) uses one as its brain.
 
 ## Overrun
 

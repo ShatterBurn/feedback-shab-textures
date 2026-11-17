@@ -109,6 +109,7 @@ Beyond the table, every material carries figures JEI's *Material Stats* page sho
 - **Hydrogen uptake and release temperature**: palladium, magnesium, titanium and titanium 6Al-4V soak up hydrogen and give it back when hot. See the [Hydride Bed](Hydride_Bed.md).
 - **Shock limit** (Tu): glass, ceramic, brick, concrete and obsidian crack when dipped into a bath whose temperature differs from the part's by more than this. See [Thermal shock](Heat.md#thermal-shock). Obsidian 50, mud brick 60, glass, optical glass, uranium glass, terracotta and concrete 100, ceramic and glazed ceramic 120, brick 150, borosilicate glass 170, alumina and nether brick 200, silica glass and quartz glass 1000.
 - **Toxicity**: how harmful it is swallowed, a log scale of the real lethal dose. 0 is harmless; each step is ten times deadlier.
+- **Corrosivity**: how hard an acid or a base burns flesh and eats metal on contact, its pH distance from neutral. 0 is neutral; a strong acid or a strong base is about 7. A [Fluid Caster](Fluid_Caster.md#what-the-stream-does) stream of it burns what it hits.
 - **Shear thickening**: how much thicker it gets the faster it is pushed. Soul oil has it: a [pump](Pump.md) turned fast on it moves less and labours.
 
 ## Other materials
@@ -164,7 +165,7 @@ A plank burns a quarter as long as a log ([Firebox](Firebox.md#fuels)). Each woo
 
 ## Gems
 
-**Ruby**, **Jade**, **Garnet** and **Tourmaline** are gems that bear themselves: their ore block drops the stone as a lump (*Raw Ruby*, *Raw Jade*, *Raw Garnet*, *Raw Tourmaline*). They have no ingot, and no ore stage (crushed, concentrate, tailings). Each is mined from its own vein ([Ore Deposits](Ore_Deposits.md#gems)).
+**Ruby**, **Jade**, **Garnet**, **Tourmaline** and **Beryl** are gems: their ore block drops the cut stone (*Ruby*, *Jade*, *Garnet*, *Tourmaline*, *Beryl*). They have no ingot, and no ore stage (crushed, concentrate, tailings). Each is mined from its own vein ([Ore Deposits](Ore_Deposits.md#gems)).
 
 - **Ruby** is a hard, transparent crystal (hardness 200). It stands 1400 Tu and **glows under an electric current**.
 - **Jade** is not a crystal but a tough mineral (hardness 65), the toughest of the four.
@@ -172,6 +173,8 @@ A plank burns a quarter as long as a log ([Firebox](Firebox.md#fuels)). Each woo
 - **Tourmaline** is transparent and **piezoelectric** (coupling 0.6): squeezed, it makes a voltage. It is also **pyroelectric** (coupling 1.0): a change of temperature makes a charge, which the [Pyroelectric Plate](Pyroelectric_Plate.md) senses. It is slightly toxic.
 
 Like other brittle stock they grind to dust in the [Rolling Mill](Rolling_Mill.md#grinding-to-dust).
+
+Ruby, Garnet, Tourmaline, Beryl and Jade each also come as a cut stone, an item named for the gem (*Ruby*, *Garnet*, *Tourmaline*, *Beryl*, *Jade*), dropped by their ores. A cut stone is ground to dust or worked into crystal plate like other gems.
 
 ## Spinel
 
@@ -504,6 +507,6 @@ Copper and gold come from vanilla's ores. Iron ore, raw iron and the iron minera
 
 Tin, zinc and lead are ores in the ground. **Silver** comes from **argentite**, which fills its own silver lode ([Ore Deposits](Ore_Deposits.md)) and shows up in a thin scatter through galena veins. Argentite gives silver by roasting and leaching ([Ore Processing](Ore_Processing.md)). Silver comes as ingots, nuggets and blocks.
 
-JEI's **Material Stats** page shows every figure a material has (kind, XP top level, XP capacity, XP conductance, XP leak, oxygen share, hardness, density, heat (including specific, melting and boiling heat), toxicity, shear thickening, strength, electrical, and for foods moisture, fat, fiber, germs and toxin in Qu, with its compounds and perks). Figures that are zero are left out, and hovering a row says what it means. Hardness, density, melting point, service temperature, thermal conductivity, toughness, yield, friction and flame temperature carry a word beside the figure (low, middling or high, against the range across all materials); holding Shift while hovering gives the edges. A material that skins gas cells also shows its permeability.
+JEI's **Material Stats** page shows every figure a material has (kind, XP top level, XP capacity, XP conductance, XP leak, oxygen share, hardness, density, heat (including specific, melting and boiling heat), toxicity, corrosivity, shear thickening, strength, electrical, and for foods moisture, fat, fiber, germs and toxin in Qu, with its compounds and perks). Figures that are zero are left out, and hovering a row says what it means. Hardness, density, melting point, service temperature, thermal conductivity, toughness, yield, friction and flame temperature carry a word beside the figure (low, middling or high, against the range across all materials); holding Shift while hovering gives the edges. A material that skins gas cells also shows its permeability.
 
 Some materials also carry a **[perk](Material_Perks.md)**: what they do to whatever a weapon made of them hits.

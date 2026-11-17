@@ -59,6 +59,38 @@ public final class CasterTuning {
     public static final float SHOVE_PER_MOMENTUM = 0.012f, SHOVE_MAX = 0.6f;
     /** Corrosive fluid wear on armour, durability a tick per mB of flow. */
     public static final float ARMOUR_BITE_PER_MB = 0.08f;
+    /** A stream at or over this (Tu) sets a body alight whatever it is made of: hot enough to light cloth and hair. Seconds it burns, and the cap a combustion's burn time is held to. */
+    public static final float HOT_IGNITE_TU = 250f, HOT_IGNITE_SECONDS = 4f;
+    /** Seconds a burning fuel keeps a body alight: its burn time, clamped to this range. */
+    public static final float BURN_SECONDS_MIN = 3f, BURN_SECONDS_MAX = 15f;
+    /** A fuel's flame hotter than this (Tu) burns a body worse: damage a tick per Tu over, per mB of flow, and its cap. */
+    public static final float FLAME_BASE_TU = 900f, FLAME_PER_TU_MB = 0.0012f, FLAME_MAX = 3f;
+    /** An oxidiser on a burning body flares the fire: damage a tick per unit of oxygen fraction per mB, its cap, and the fire ticks it adds (up to {@code FLARE_FIRE_MAX_TICKS}). */
+    public static final float FLARE_PER_MB = 0.02f, FLARE_MAX = 2f;
+    public static final int FLARE_FIRE_TICKS = 40, FLARE_FIRE_MAX_TICKS = 300;
+    /** Colder than this (Tu) a stream freezes flesh outright: damage a tick per Tu under, per mB, and its cap. Frost builds faster the colder: ticks per mB times one plus the Tu under 0 over {@code FREEZE_DEPTH_TU}, at most {@code FREEZE_DEPTH_MAX} times. */
+    public static final float FROSTBITE_TU = -60f, FROSTBITE_PER_TU_MB = 0.0008f, FROSTBITE_MAX = 3f;
+    public static final float FREEZE_DEPTH_TU = 100f, FREEZE_DEPTH_MAX = 4f;
+    /** A fluid thicker than this (Pa s) clings and drags: slowness for these ticks, one level more per ten-fold over it (to level 3). */
+    public static final float CLING_VISCOSITY = 5f;
+    public static final int CLING_TICKS = 40;
+    /** Chemical burn: damage a tick per pH unit off neutral per mB of flow, and its cap. */
+    public static final float CHEM_PER_PH_MB = 0.012f, CHEM_MAX = 4f;
+    /** pH distance of a strong acid or base: what {@code ARMOUR_BITE_PER_MB} is quoted at. */
+    public static final float CORROSIVITY_REF = 7f;
+    /** A fluid more toxic than this index poisons what it hits: ticks per index per mB of flow, its cap, and the index from which the poison is the stronger level. */
+    public static final float POISON_MIN_TOXICITY = 0.8f, POISON_TICKS_PER_TOX_MB = 8f, POISON_STRONG_TOXICITY = 2f;
+    public static final int POISON_MAX_TICKS = 300;
+    /** A radioactive fluid withers (and outlines) what it hits: wither ticks per Ru per mB, and its cap. */
+    public static final float RADIATION_TICKS_PER_RU_MB = 40f;
+    public static final int RADIATION_MAX_TICKS = 200, RADIATION_GLOW_TICKS = 100;
+    /** A spatially unstable stream hops what is near its target this often (ticks). */
+    public static final int SPATIAL_INTERVAL_TICKS = 10;
+    /** Dynamic pressure (density times speed squared, Pu) under which a stream only shoves; over it it cuts: damage a tick per Pu over, and its cap. */
+    public static final float CUT_MIN_Q = 2f, CUT_PER_Q = 0.8f, CUT_MAX = 4f;
+    /** A gas more toxic than this index leaves a lingering poison cloud where it runs out (strength the index rounded, at most {@code GAS_CLOUD_MAX}). */
+    public static final float GAS_CLOUD_MIN_TOXICITY = 1f;
+    public static final int GAS_CLOUD_MAX = 5;
     /** mB of water that raise a cauldron one level. */
     public static final float CAULDRON_MB_PER_LEVEL = 333f;
     /** Linger of a mist's vapour source, ticks. */

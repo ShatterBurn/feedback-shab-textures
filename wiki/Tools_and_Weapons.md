@@ -34,7 +34,7 @@ Every piece must be the same stock. **Stock** is ingots, gems, planks, cobblesto
 
 Lay the parts in the 3 by 3 grid of the [Crafting Table](Crafting_Table.md) or the Crafting tab of the [Engineering Table](Engineering_Table.md), in any positions, one item to a slot. The result appears when the parts make a tool. Each shaped part is **one item**; **handles** are sticks, rods or bone, one to a slot, as many as the handle is long; all of one part must be the same material. The grid works out what you are making from the parts.
 
-The Crafting Table assembles the tools below except the crossbow. The Engineering Table assembles all of them: it plays a hand-work game for swords, spears, shields and bows, and it judges how well the joints fit. See [Fit and head start](Engineering_Table.md#fit-and-head-start).
+The Crafting Table assembles the tools below except the crossbow. The Engineering Table assembles all of them: it plays a hand-work game only for work the Crafting Table cannot do (a spear, or a build that spends fasteners), and it judges how well the joints fit. See [Fit and head start](Engineering_Table.md#fit-and-head-start).
 
 | Item | Parts |
 | --- | --- |
@@ -49,6 +49,8 @@ You can add:
 - A hafted tool needs a **binding** (leather, string or wire) where head meets haft: a head alone, or a head and a handle, does not assemble. The binding's **wraps** axis (1 to 3) sets how many turns, for a stronger joint. It may also add a **guard**, a **pommel**, a weight behind the hand (its **weight** axis, 1 to 3: the light knob up to the heavy counterweight). A heavier pommel behind the hand brings the head round faster. A **tip**'s **thickness** is an axis too. The wrap on each of these is a fixed standard leather that is never picked ([Composed Parts](Composed_Parts.md)).
 - A **tip** part, below.
 - Armor and shields can take a **grip** or **lining**.
+
+A plain sword guard is drawn as a thin cross bar centered on the haft. The **crossguard** variant is a thick solid bar with quillons turned toward the blade, so a sword that can block looks different from a plain one: hold use to raise the blade and the bar catches part of a blow from the front, at a point of wear a blow.
 
 A tip, binding, guard, pommel, rim and crossbow prod are shaped at a bench first, like a head, so a stack of ingots is never ambiguous: the item says what it is. A tip, a pommel and the other optional extras are added to a finished tool on the Engineering Table's [Fit tab](Engineering_Table.md#fit-tab).
 

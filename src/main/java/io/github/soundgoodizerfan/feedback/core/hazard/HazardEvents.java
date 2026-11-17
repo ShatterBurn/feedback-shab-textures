@@ -44,7 +44,7 @@ public final class HazardEvents {
         if (!(event.getEntity() instanceof net.minecraft.server.level.ServerPlayer p) || event.getSource().getEntity() != null)
             return;
         var src = event.getSource();
-        if (src.is(Hazards.HOT_CONTACT) || src.is(Hazards.SCALD) || src.is(Hazards.SHOCK))
+        if (src.is(Hazards.HOT_CONTACT) || src.is(Hazards.SCALD) || src.is(Hazards.CHEMICAL_BURN) || src.is(Hazards.SHOCK))
             io.github.soundgoodizerfan.feedback.core.Awards.give(p, "progress/joke/own_goal");
     }
 

@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.client.tooltip;
 
-import io.github.soundgoodizerfan.feedback.core.FTuning;
 import java.util.Locale;
 
 import io.github.soundgoodizerfan.feedback.Feedback;
@@ -70,21 +69,17 @@ public class FoodTooltip {
             if (state == null)
                 return;
             FoodState now = Cooking.current(event.getItemStack(), entry, level, io.github.soundgoodizerfan.feedback.core.thermal.AmbientTable.at(level).value());
-            int spoil = Cooking.spoilage(now);
-            if (spoil > 0)
-                event.getToolTip().add(Component.translatable("tooltip.feedback.food.spoil." + spoil)
-                        .withStyle(spoil == 2 ? ChatFormatting.DARK_RED : ChatFormatting.GOLD));
-            event.getToolTip().add(Component.translatable(
-                    "tooltip.feedback.food." + Cooking.doneness(entry, now).name().toLowerCase(Locale.ROOT))
-                    .withStyle(ChatFormatting.GRAY));
+            // Spoilage, live germs and burn are what a nibble tells; the tooltip keeps only what the eye sees.
+            var doneness = Cooking.doneness(entry, now);
+            if (doneness != Cooking.Doneness.CHARRED)
+                event.getToolTip().add(Component.translatable(
+                        "tooltip.feedback.food." + doneness.name().toLowerCase(Locale.ROOT)).withStyle(ChatFormatting.GRAY));
             if (Cooking.frozen(event.getItemStack(), level))
                 event.getToolTip().add(Component.translatable("tooltip.feedback.food.frozen").withStyle(ChatFormatting.AQUA));
             if (now.smoke() > ClientTuning.SMOKE_SHOWN_AT)
                 event.getToolTip().add(Component.translatable("tooltip.feedback.food.smoked").withStyle(ChatFormatting.GRAY));
             if (now.salt() > 0f)
                 event.getToolTip().add(Component.translatable("tooltip.feedback.food.salted").withStyle(ChatFormatting.GRAY));
-            if (now.pathogen() > FTuning.FOOD_HAZARD_TOLERANCE)
-                event.getToolTip().add(Component.translatable("tooltip.feedback.food.pathogen").withStyle(ChatFormatting.RED));
         });
         event.getToolTip().addAll(readings(event.getItemStack(), level));
     }

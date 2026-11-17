@@ -151,6 +151,10 @@ public final class GunClient {
         // The use key is also the off-hand pistol's trigger, when it has one. Barehanded mode is no
         // exception to the cancel: vanilla still does nothing, and onFrame swings the gun itself.
         boolean mainGun = player.getMainHandItem().getItem() instanceof GunItem;
+        // A fluid caster aimed at a source or a fluid block lets the use key through: that click fills or pours it.
+        if (event.isUseItem() && mainGun && player.getMainHandItem().getItem() instanceof io.github.soundgoodizerfan.feedback.modular.item.ModularCaster
+                && io.github.soundgoodizerfan.feedback.modular.item.ModularCaster.fluidTarget(player.level(), player))
+            return;
         if ((event.isAttack() && mainGun) || (event.isUseItem() && (mainGun || GunItem.offHandFires(player)))) {
             event.setSwingHand(false);
             event.setCanceled(true);

@@ -665,6 +665,15 @@ public class PartBenchMenu extends AbstractContainerMenu {
         aim[a].set(Math.round(axes.get(a).getValue().clamp(value) * 10f));
     }
 
+    /** The part with what its maker set its axes to written on it: a person who cut it to a length knows the length, never how the cut came out. */
+    private ItemStack remembered(ItemStack part, PartBenchShaping.Option option) {
+        var made = part.get(FDataComponents.MADE_OF.get());
+        Map<String, Float> aim = aimed(option);
+        if (made != null && !aim.isEmpty() && !made.measures().axes().isEmpty())
+            part.set(FDataComponents.MADE_OF.get(), made.withMeasures(made.measures().withAimed(aim)));
+        return part;
+    }
+
     /** The as-built axes a part made now gets: the aim plus symmetric noise ({@link PartBenchShaping#spread}), seeded by the game time and the player. */
     private Map<String, Float> built(Level level, PartBenchShaping.Option option, float workRatio, int flaw) {
         net.minecraft.util.RandomSource random = net.minecraft.util.RandomSource.create(level.getGameTime() * 31L + player.getUUID().hashCode());
@@ -754,7 +763,7 @@ public class PartBenchMenu extends AbstractContainerMenu {
         if (materials.isEmpty() || types.isEmpty())
             return ItemStack.EMPTY;
         return switch (c) {
-            case STOCK -> option(level).map(o -> PartBenchShaping.make(station, o, stock(), extras(level), materials, level, aimScale(o), built(level, o, 1f, 0))).orElse(ItemStack.EMPTY);
+            case STOCK -> option(level).map(o -> remembered(PartBenchShaping.make(station, o, stock(), extras(level), materials, level, aimScale(o), built(level, o, 1f, 0)), o)).orElse(ItemStack.EMPTY);
             default -> ItemStack.EMPTY;
         };
     }
@@ -987,7 +996,8 @@ public class PartBenchMenu extends AbstractContainerMenu {
         Optional<PartBenchShaping.Stock> stock = PartBenchShaping.check(station, o, side(), materials, level, index == picked() ? aimScale(o) : 1f);
         if (stock.isEmpty())
             return;
-        Optional<ItemStack> part = PartBenchShaping.part(o, stock.get(), 0, 1f, index == picked() ? built(level, o, 1f, 0) : Map.of(), level);
+        Optional<ItemStack> part = PartBenchShaping.part(o, stock.get(), 0, 1f, index == picked() ? built(level, o, 1f, 0) : Map.of(), level)
+                .map(s -> index == picked() ? remembered(s, o) : s);
         if (part.isEmpty() || !attaches(part.get(), parts(), materials, assemblyTypes(level)))
             return;
         spend(PartBenchBlockEntity.STOCK, stock.get(), server);
@@ -1381,7 +1391,8 @@ public class PartBenchMenu extends AbstractContainerMenu {
     private void complete(ServerPlayer server, PartBenchShaping.Option option, PartBenchShaping.Stock stock,
                           ForgeRhythm.Result result, ForgeRhythm.Work work, int hammerPoints) {
         Level level = server.level();
-        Optional<ItemStack> part = PartBenchShaping.part(option, stock, result.flaw(), work.ratio(), built(level, option, work.ratio(), result.flaw()), level);
+        Optional<ItemStack> part = PartBenchShaping.part(option, stock, result.flaw(), work.ratio(), built(level, option, work.ratio(), result.flaw()), level)
+                .map(s -> remembered(s, option));
         if (part.isEmpty())
             return;
         spend(PartBenchBlockEntity.TOOL, stock, server);

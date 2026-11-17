@@ -38,6 +38,7 @@ public final class MaterialDescription {
             row(out, 0, "density", num(m.density().muPerMb()) + " Mu/mB");
         row(out, 0, "hardness", num(m.hardness().value()));
         m.toxicity().ifPresent(v -> row(out, 0, "toxicity", num(v)));
+        m.corrosivity().filter(v -> v > 0f).ifPresent(v -> row(out, 0, "corrosivity", num(v)));
         if (m.minTemperature().value() > 0)
             row(out, 0, "work_min", num(m.minTemperature().value()) + " Tu");
         if (m.maxTemperature().value() < Float.MAX_VALUE)

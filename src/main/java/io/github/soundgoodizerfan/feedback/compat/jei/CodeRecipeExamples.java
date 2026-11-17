@@ -297,6 +297,30 @@ final class CodeRecipeExamples {
             in.add(List.of(made));
             used.forEach(u -> in.add(List.of(u)));
             out.add(holder("modular_swap_" + id.getPath(), in, Math.min(3, in.size()), (in.size() + 2) / 3, List.of(result.get())));
+            break;
+        }
+        mend(id, type, made, old, role, materials, types, out);
+    }
+
+    /** The same table's repair: a worn item and stock of what its wearing part is made of, giving the item with its life put back. */
+    private static void mend(ResourceLocation id, io.github.soundgoodizerfan.feedback.modular.type.ModularType type, ItemStack made,
+                             io.github.soundgoodizerfan.feedback.modular.type.ModularDesign.Part old, io.github.soundgoodizerfan.feedback.modular.type.ModularType.Role role,
+                             Map<ResourceLocation, Material> materials, Map<ResourceLocation, io.github.soundgoodizerfan.feedback.modular.type.ModularType> types,
+                             List<RecipeHolder<CraftingRecipe>> out) {
+        if (!made.isDamageableItem())
+            return;
+        ItemStack worn = made.copy();
+        worn.setDamageValue(worn.getMaxDamage() / 2);
+        for (ItemStack choice : PartBenchToolCategory.stacks(role, old.count(), materials)) {
+            var m = choice.get(io.github.soundgoodizerfan.feedback.registry.FDataComponents.MADE_OF.get());
+            if (m != null ? !m.material().equals(old.material()) : materials.get(old.material()) == null)
+                continue;
+            ItemStack one = choice.copyWithCount(1);
+            var result = io.github.soundgoodizerfan.feedback.modular.item.ModularRework.rework(worn, List.of(one), materials, types,
+                    io.github.soundgoodizerfan.feedback.modular.item.ModularRework.Mode.MEND);
+            if (result.isEmpty())
+                continue;
+            out.add(holder("modular_mend_" + id.getPath(), List.of(List.of(worn), List.of(one)), 2, 1, List.of(result.get())));
             return;
         }
     }

@@ -82,7 +82,7 @@ A live [circuit](Basic_Electronic_Circuit.md) seated in a robot when it is assem
 
 ## Programming a robot
 
-A robot has its own channels. Point a card at them with the [Data Connector](Data_Connector.md): each right-click on the robot steps the selection to the next channel and the bar shows *"Selected"* and its name. Then press **link** on the card in the Programmer, as for any other block ([Linking cards to real blocks](Programming.md#linking-cards-to-real-blocks)).
+A robot has its own channels. Point a card at them with the [Data Connector](Data_Connector.md): right-click the robot to open a **Channels** screen that lists every action (**Do**) and sense (**Sense**) channel; one click selects a channel. Then press **link** on the card in the Programmer, as for any other block ([Linking cards to real blocks](Programming.md#linking-cards-to-real-blocks)).
 
 Switches (a *Switch* card turns them on and off):
 

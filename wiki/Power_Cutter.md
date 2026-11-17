@@ -37,10 +37,19 @@ T is a Tungsten Plate and C is Ceramic.
 ## Using it
 
 - It is an **EHV** sink: about **2.6 A**. See [Electricity](Electricity.md).
-- **Right-click** with a head or a data stick to seat it. **Right-click** empty-handed to take out the output, then the stick. **Sneak** and right-click to take the head.
+- **Right-click** with a head or a data stick to seat it. **Right-click** empty-handed to take out the output, then the stick, then the circuit. **Sneak** and right-click to take the head.
 - It has one head slot and one stick slot. A hopper feeds it and empties it: stock goes in, cut pieces come out.
 - It idles with no head, no stock or no power.
 - **Right-click empty-handed** on a jammed cutter clears the jam; the next empty-handed click takes the output.
+
+## Circuit
+
+A [circuit](Basic_Electronic_Circuit.md) is optional. **Right-click** with one to seat it (a circuit already seated comes back to you). **Right-click empty-handed** takes the output, then the stick, then the circuit.
+
+- **Faster.** A fast circuit makes the cutter play its cuts faster, up to about twice as fast. With none the pace is as given above.
+- **More accurate.** A quiet circuit lowers the odds of a jam, blade wear or scrap on stock the stick does not cover, and sometimes makes the cutter hold off from guessing at such stock at all. With none the odds are as described below.
+- **Heater.** A circuit with a [tube](Vacuum_Tube.md) takes its heater's current from the cutter's line on top of the cutter's own, and runs slow and noisy until warm ([Warming up](Basic_Electronic_Circuit.md#warming-up)).
+- **Readable.** With a live circuit seated, a Sensor card for a [Controller](Controller.md) can read the cutter's **Progress** (how far through the cut), **Condition** (the head's) and **Output fill**. Link the card as for any block ([Programming](Programming.md#linking-cards-to-real-blocks)) and click its channel row to pick one.
 
 ## How it cuts
 

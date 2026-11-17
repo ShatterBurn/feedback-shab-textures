@@ -20,9 +20,13 @@ public final class FluidHeat {
     private FluidHeat() {
     }
 
-    /** The stamp on {@code stack}, or the default ambient if it has none. */
+    /**
+     * The stamp on {@code stack}, or what an unstamped one is at: ambient, except a lava-tagged fluid, which comes out of the
+     * ground at the fire figure ({@link ThermalTuning#FIRE_TU_LAVA}); a bucket or a hose never stamps it.
+     */
     public static Tu of(FluidStack stack) {
-        return new Tu(stack.getOrDefault(FDataComponents.FLUID_TEMPERATURE.get(), ThermalTuning.AMBIENT_TU.value()));
+        float unstamped = stack.is(net.minecraft.tags.FluidTags.LAVA) ? ThermalTuning.FIRE_TU_LAVA.value() : ThermalTuning.AMBIENT_TU.value();
+        return new Tu(stack.getOrDefault(FDataComponents.FLUID_TEMPERATURE.get(), unstamped));
     }
 
     /** {@code stack} stamped at {@code tu} (a copy; rounded to a whole Tu). */

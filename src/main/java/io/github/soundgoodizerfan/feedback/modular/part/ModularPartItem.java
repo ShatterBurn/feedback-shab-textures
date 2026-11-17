@@ -53,6 +53,8 @@ public class ModularPartItem extends Item {
                     Component.translatable("material." + slot.material().getNamespace() + "." + slot.material().getPath()))
                     .withStyle(net.minecraft.ChatFormatting.GRAY)));
         if (made != null)
+            aimed(made, tooltip);
+        if (made != null)
             attuned(made, tooltip);
         if (made != null && made.measures().work() != 1f
                 && io.github.soundgoodizerfan.feedback.client.tooltip.Readout.exact(io.github.soundgoodizerfan.feedback.instrument.Quantity.FIGURE))
@@ -60,6 +62,25 @@ public class ModularPartItem extends Item {
                     io.github.soundgoodizerfan.feedback.client.tooltip.Readout.figure(
                             io.github.soundgoodizerfan.feedback.instrument.Quantity.FIGURE, made.measures().work() * 100f))
                     .withStyle(net.minecraft.ChatFormatting.GRAY));
+    }
+
+    /**
+     * What the maker cut it to, if a hand did: they remember the figure they set, never how the cut came out (that is the as-built axes, read
+     * with an instrument). A machined part has none. The unit and the figure's step come from the role's axis.
+     */
+    private void aimed(MadeOf made, java.util.List<Component> tooltip) {
+        made.measures().aimed().entrySet().stream().sorted(java.util.Map.Entry.comparingByKey()).forEach(e -> {
+            io.github.soundgoodizerfan.feedback.modular.type.ModularType.Axis axis = null;
+            for (var type : io.github.soundgoodizerfan.feedback.modular.type.ModularTypes.known().values())
+                for (var role : type.roles().values())
+                    if (axis == null && role.part().isPresent() && role.part().get().item().equals(BuiltInRegistries.ITEM.getKey(this)))
+                        axis = role.axes().get(e.getKey());
+            Component unit = axis == null || axis.unit().isEmpty() ? Component.empty()
+                    : Component.literal(" ").append(Component.translatableWithFallback("modular.feedback.unit." + axis.unit(), axis.unit()));
+            String figure = axis != null && axis.grain() < 1f ? String.format(java.util.Locale.ROOT, "%.2f", e.getValue()) : String.valueOf(Math.round(e.getValue()));
+            tooltip.add(Component.translatable("tooltip.feedback.part.aimed", Component.translatable("modular.feedback.axis." + e.getKey()), Component.literal(figure).append(unit))
+                    .withStyle(net.minecraft.ChatFormatting.GRAY));
+        });
     }
 
     /** The attunement lines of a part, shaped or raw stock the enchanting table stamped. */

@@ -493,6 +493,13 @@ public class FCreativeTabs {
                 out.accept(io.github.soundgoodizerfan.feedback.machine.stockpot.StockpotItem.of(id));
         });
         all(out, FOOD_ITEMS);
+        // One fresh bottle per effect node on the brewing map, at its base length and first level.
+        io.github.soundgoodizerfan.feedback.process.ClientTable.POTION_EFFECTS.get().forEach(e -> {
+            ItemStack bottle = new ItemStack(FItems.POTION.get());
+            bottle.set(FDataComponents.POTION_STATE.get(), new io.github.soundgoodizerfan.feedback.potion.PotionState(
+                    java.util.Optional.of(e.effect()), 0, e.baseDuration(), 1f, "water", List.of(0f, 0f, 0f), 0L, 20f, -1));
+            out.accept(bottle);
+        });
         FCrops.SEEDS.forEach(seed -> out.accept(seed.get()));
         all(out, CROPS);
     }

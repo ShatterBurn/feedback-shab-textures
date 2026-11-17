@@ -29,3 +29,7 @@ Most other parts carry a slot whose material is fixed: the lining of a boiler, v
 ## Axes in place of variants
 
 Counts and sizes are **axes**, set with a stepper on the Blueprint Table, rather than separate shapes: engine cylinders and compression, propeller blades and pitch, transmission gears, dynamotor size and turns, vial volume, backpack capacity, binding wraps, pommel weight, tip thickness, hand crank arm length, fuse delay, flywheel rim mass, shield rim width, beam lens count, battery cell size and cell count, knife length and width, the tines and barb of a spear head, and the one setting of each suit module attachment (see [Exosuit](Exosuit.md#upgrade-modules)). See [Armor](Armor.md#axes-aiming-and-names) for how aiming works.
+
+## How a part looks
+
+A part's icon, and the part held or lying on the ground, shows the layer it is on a tool, drawn without a haft. Head parts (axe, pickaxe, shovel, hoe, maul, sickle, cleaver, sword blade, spear, hammer, knife, file, screwdriver bits) show their head shape at the length they were made to, so a long or short head shows its measurements before it is put on a tool. The sword guard and the binding show their layer in their variant (crossguard, knuckle, wrapped and so on). Every part is tinted by its material.

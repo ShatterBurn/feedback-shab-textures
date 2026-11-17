@@ -19,7 +19,7 @@ Hold a blank Recipe Data Stick in your **off hand** while you take an Engineerin
 ## Using it
 
 - **Right-click** with a stick to seat it. **Right-click** with a hand tool to put it in one of the four tool slots, with a fastener to fill the fastener stock, and with anything else to fill the parts bay.
-- **Right-click** empty-handed to take the output, and then the stick. **Sneak** and right-click empty-handed to take back the tools, fasteners and parts.
+- **Right-click** empty-handed to take the output, then the stick, then the circuit. **Sneak** and right-click empty-handed to take back the tools, fasteners and parts.
 - A **hopper** can fill the bay and the fastener stock, and empty the output. The tool slots are filled by hand.
 
 It is an [EHV](Electricity.md#bands-and-amps) sink, about **2.6 A** while parts are in the bay. An assembly takes about 3 seconds.
@@ -33,6 +33,15 @@ It waits, spending nothing, when a tool is missing or broken, or the fastener st
 ### Stock the stick does not cover
 
 Parts that do not match the recording are not refused. The machine picks one thing the whole bay could legally form, the same thing every time in a world, and consumes the bay to make it. If nothing could be formed, it scraps one stack to nuggets of its material, with half the material lost. Stock with no material or no nugget is lost. This never wears the tools and spends no fasteners.
+
+## Circuit
+
+A [circuit](Basic_Electronic_Circuit.md) is optional. **Right-click** with one to seat it (a circuit already seated comes back to you). **Right-click empty-handed** takes the output, then the stick, then the circuit.
+
+- **Faster.** A fast circuit makes each assembly come sooner, up to about twice as fast. With none an assembly takes as long as given above.
+- **Fewer improvised or scrapped results.** A quiet circuit makes the machine sometimes hold off from guessing at parts the stick does not cover: it waits instead of improvising or scrapping them.
+- **Heater.** A circuit with a [tube](Vacuum_Tube.md) takes its heater's current from the machine's line on top of the machine's own, and runs slow and noisy until warm ([Warming up](Basic_Electronic_Circuit.md#warming-up)).
+- **Readable.** With a live circuit seated, a Sensor card for a [Controller](Controller.md) can read **Progress** (how far through the assembly), **Condition** (the machine's) and **Output fill**. Link the card as for any block ([Programming](Programming.md#linking-cards-to-real-blocks)) and click its channel row to pick one.
 
 ## Wear
 

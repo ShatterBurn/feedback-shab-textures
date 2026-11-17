@@ -60,7 +60,7 @@ public class RobotArmBlock extends Block implements EntityBlock {
         if (level.isClientSide)
             return ItemInteractionResult.SUCCESS;
         if (stack.getItem() instanceof DataConnectorItem) {
-            RobotWorker.selectNext(player);
+            RobotWorker.openChannels(player);
         } else if (io.github.soundgoodizerfan.feedback.process.Circuit.of(stack).elements() > 0 && stack.getCount() == 1) {
             ItemStack old = arm.brain();
             arm.setBrain(stack.copyWithCount(1));

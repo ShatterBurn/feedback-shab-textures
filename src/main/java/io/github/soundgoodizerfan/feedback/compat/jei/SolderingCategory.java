@@ -40,11 +40,16 @@ public class SolderingCategory implements IRecipeCategory<SolderingCategory.Card
 
     static final RecipeType<Card> TYPE = RecipeType.create("feedback", "soldering", Card.class);
 
-    /** One solder alloy and the boards it joins. {@code lowestSubstrateTu} is the lowest service temperature of any substrate loaded. */
-    public record Card(ItemStack solder, ItemStack pasted, ItemStack joined, ItemStack circuit, float liquidus, float window,
-                       float lowestSubstrateTu) {}
+    /** One substrate's board before and after the joint: what the cycling board slots show together. */
+    public record Variant(ItemStack pasted, ItemStack joined, ItemStack circuit) {}
 
-    private static final int WIDTH = 168, HEIGHT = 104 + ReachCard.HEIGHT;
+    /** One fine wire an etched trace can be drawn in. */
+    public record Wire(ResourceLocation id, ItemStack stack) {}
+
+    /** One solder alloy, the boards it joins (one variant per substrate loaded) and the wires an etched trace takes. */
+    public record Card(ItemStack solder, List<Variant> variants, List<Wire> wires, float liquidus, float window) {}
+
+    private static final int WIDTH = 168, HEIGHT = 124 + ReachCard.HEIGHT;
     private static final int TITLE_COLOUR = 0xFF3F3F3F, LABEL_COLOUR = 0xFF7A7A7A, VALUE_COLOUR = 0xFF262626;
 
     private final IDrawable icon;
@@ -53,33 +58,37 @@ public class SolderingCategory implements IRecipeCategory<SolderingCategory.Card
         this.icon = guiHelper.createDrawableItemStack(new ItemStack(FItems.SOLDERING_IRON.get()));
     }
 
-    /** One card per solder alloy that has a melting point, on a printed board over the first substrate loaded. */
+    /** One card per solder alloy that has a melting point; its board slots cycle every substrate loaded, its wire slot every fine wire. */
     static List<Card> cards(Map<ResourceLocation, Material> materials) {
-        ResourceLocation substrate = null, paste = null;
-        float lowest = Float.MAX_VALUE;
+        List<ResourceLocation> substrates = new ArrayList<>();
+        List<Wire> wires = new ArrayList<>();
+        ResourceLocation paste = null;
         for (var e : materials.entrySet()) {
             Material m = e.getValue();
-            if (m.item(e.getKey(), "substrate").isPresent()) {
-                substrate = substrate == null ? e.getKey() : substrate;
-                lowest = Math.min(lowest, m.thermal().serviceTemperature().map(t -> t.value()).orElse(Float.MAX_VALUE));
-            }
+            if (m.item(e.getKey(), "substrate").isPresent())
+                substrates.add(e.getKey());
+            if (m.item(e.getKey(), "fine_wire").isPresent())
+                m.stack(e.getKey(), "fine_wire").ifPresent(w -> wires.add(new Wire(e.getKey(), w)));
             if (paste == null && m.traits().contains(Material.Trait.PASTE))
                 paste = e.getKey();
         }
         List<Card> out = new ArrayList<>();
-        if (substrate == null || paste == null)
+        if (substrates.isEmpty() || paste == null)
             return out;
         for (var e : materials.entrySet()) {
             Optional<Soldering.Alloy> alloy = Soldering.alloy(e.getValue());
             Optional<ItemStack> ingot = e.getValue().stack(e.getKey(), "ingot");
             if (alloy.isEmpty() || ingot.isEmpty())
                 continue;
-            Board pasted = new Board(Board.Trace.PRINTED, paste, substrate, Optional.of(e.getKey()), Board.Joint.NONE, List.of());
-            // A board with a part mounted comes out of the same joint as a circuit.
-            ItemStack circuit = Soldering.finish(board(pasted.mounted(new Board.Part(Board.Kind.RELAY, 1f))), materials,
-                    alloy.get().liquidus() + alloy.get().window() / 2f, ProcessTuning.SOLDER_DWELL_TICKS);
-            out.add(new Card(ingot.get(), board(pasted), board(pasted.withJoint(Board.Joint.GOOD)), circuit,
-                    alloy.get().liquidus(), alloy.get().window(), lowest));
+            List<Variant> variants = new ArrayList<>();
+            for (ResourceLocation substrate : substrates) {
+                Board pasted = new Board(Board.Trace.PRINTED, paste, substrate, Optional.of(e.getKey()), Board.Joint.NONE, List.of());
+                // A board with a part mounted comes out of the same joint as a circuit.
+                ItemStack circuit = Soldering.finish(board(pasted.mounted(new Board.Part(Board.Kind.RELAY, 1f))), materials,
+                        alloy.get().liquidus() + alloy.get().window() / 2f, ProcessTuning.SOLDER_DWELL_TICKS);
+                variants.add(new Variant(board(pasted), board(pasted.withJoint(Board.Joint.GOOD)), circuit));
+            }
+            out.add(new Card(ingot.get(), variants, wires, alloy.get().liquidus(), alloy.get().window()));
         }
         return out;
     }
@@ -117,10 +126,16 @@ public class SolderingCategory implements IRecipeCategory<SolderingCategory.Card
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, Card card, IFocusGroup focuses) {
-        builder.addSlot(RecipeIngredientRole.INPUT, 1, 14).setStandardSlotBackground().addItemStack(card.pasted());
-        builder.addSlot(RecipeIngredientRole.INPUT, 1, 34).setStandardSlotBackground().addItemStack(card.solder());
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 1, 62).setOutputSlotBackground().addItemStack(card.joined());
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 1, 82).setOutputSlotBackground().addItemStack(card.circuit());
+        builder.addSlot(RecipeIngredientRole.INPUT, 1, 14).setSlotName("pasted").setStandardSlotBackground()
+                .addItemStacks(card.variants().stream().map(Variant::pasted).toList());
+        builder.addSlot(RecipeIngredientRole.INPUT, 1, 32).setStandardSlotBackground().addItemStack(card.solder());
+        if (!card.wires().isEmpty())
+            builder.addSlot(RecipeIngredientRole.INPUT, 1, 50).setSlotName("wire").setStandardSlotBackground()
+                    .addItemStacks(card.wires().stream().map(Wire::stack).toList());
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 1, 78).setOutputSlotBackground()
+                .addItemStacks(card.variants().stream().map(Variant::joined).toList());
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 1, 96).setOutputSlotBackground()
+                .addItemStacks(card.variants().stream().map(Variant::circuit).toList());
     }
 
     @Override
@@ -130,11 +145,27 @@ public class SolderingCategory implements IRecipeCategory<SolderingCategory.Card
         row(graphics, font, 14, "feedback.jei.soldering.liquidus", tu(card.liquidus()));
         row(graphics, font, 26, "feedback.jei.soldering.window", tu(card.liquidus()) + " - " + tu(card.liquidus() + card.window()));
         row(graphics, font, 38, "feedback.jei.soldering.dwell", ProcessTuning.SOLDER_DWELL_TICKS + " t (" + ProcessTuning.SOLDER_DWELL_TICKS / 20 + " s)");
-        row(graphics, font, 50, "feedback.jei.soldering.lift_printed", tu(ProcessTuning.PRINTED_TRACE_LIMIT_TU));
-        if (card.lowestSubstrateTu() < Float.MAX_VALUE)
-            row(graphics, font, 62, "feedback.jei.soldering.lift_substrate", tu(card.lowestSubstrateTu()));
-        graphics.drawString(font, Component.translatable("feedback.jei.soldering.note"), 1, 94, LABEL_COLOUR, false);
-        ReachCard.draw(graphics, WIDTH, 104, io.github.soundgoodizerfan.feedback.instrument.Quantity.TEMPERATURE, LABEL_COLOUR, VALUE_COLOUR);
+        // The limits belong to the substrate and wire the cycling slots show now (Soldering.limit, the one the joint is graded against).
+        var materials = io.github.soundgoodizerfan.feedback.process.ClientMaterials.get();
+        Board shown = slots.findSlotByName("pasted").flatMap(s -> s.getDisplayedItemStack())
+                .map(st -> st.get(FDataComponents.BOARD.get())).orElse(null);
+        if (shown == null)
+            return;
+        row(graphics, font, 50, "feedback.jei.soldering.lift_printed", tu(Soldering.limit(shown, materials)));
+        Optional<ItemStack> wire = slots.findSlotByName("wire").flatMap(s -> s.getDisplayedItemStack());
+        if (wire.isPresent()) {
+            for (Wire w : card.wires())
+                if (ItemStack.isSameItemSameComponents(w.stack(), wire.get())) {
+                    Board etched = new Board(Board.Trace.ETCHED, w.id(), shown.substrate(), Optional.empty(), Board.Joint.NONE, List.of());
+                    row(graphics, font, 62, "feedback.jei.soldering.lift_etched", tu(Soldering.limit(etched, materials)));
+                }
+        }
+        Material substrate = materials.get(shown.substrate());
+        if (substrate != null)
+            substrate.thermal().serviceTemperature()
+                    .ifPresent(t -> row(graphics, font, 74, "feedback.jei.soldering.lift_substrate", tu(t.value())));
+        graphics.drawString(font, Component.translatable("feedback.jei.soldering.note"), 1, 114, LABEL_COLOUR, false);
+        ReachCard.draw(graphics, WIDTH, 124, io.github.soundgoodizerfan.feedback.instrument.Quantity.TEMPERATURE, LABEL_COLOUR, VALUE_COLOUR);
     }
 
     private static void row(GuiGraphics graphics, Font font, int y, String key, String value) {

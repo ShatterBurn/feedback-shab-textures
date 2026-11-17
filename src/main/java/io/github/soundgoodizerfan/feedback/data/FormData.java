@@ -111,7 +111,10 @@ public final class FormData {
         protected void generate() {
             FormItems.all().stream().filter(g -> g.block() != null).forEach(g -> {
                 Block block = g.block().get();
-                var lump = FormItems.materials().get(g.material()).item(g.material(), "lump");
+                var material = FormItems.materials().get(g.material());
+                // A cut stone is what a gem's ore gives up (a gemstone has one); everything else gives its raw lump.
+                var lump = material.traits().contains(Material.Trait.GEMSTONE) && material.item(g.material(), "gem").isPresent()
+                        ? material.item(g.material(), "gem") : material.item(g.material(), "lump");
                 if (g.form().equals("loose_rock"))
                     add(block, looseRockDrops(block, g.material()));
                 else if (g.form().endsWith("ore") && lump.isPresent())
@@ -129,7 +132,7 @@ public final class FormData {
          */
         private net.minecraft.world.level.storage.loot.LootTable.Builder looseRockDrops(Block block, ResourceLocation id) {
             Material material = FormItems.materials().get(id);
-            var raw = java.util.stream.Stream.of("raw", "lump", "gem").map(f -> material.item(id, f))
+            var raw = java.util.stream.Stream.of("gem", "raw", "lump").map(f -> material.item(id, f))
                     .flatMap(Optional::stream).findFirst();
             var metalId = material.bears().entrySet().stream()
                     .max(Map.Entry.comparingByValue()).map(Map.Entry::getKey).orElse(id);

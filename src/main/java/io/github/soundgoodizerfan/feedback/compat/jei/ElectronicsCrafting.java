@@ -199,14 +199,13 @@ public final class ElectronicsCrafting {
         if (!crystals.isEmpty() && !backings.isEmpty())
             out.add(holder("mass_probe", new Example(List.of(crystals, backings), 2, 1, probes)));
 
-        // Boards. The substrate is the first one loaded; the lists cycle the thing that varies.
-        ResourceLocation substrate = null;
-        List<ResourceLocation> wires = new ArrayList<>(), pastes = new ArrayList<>(), solders = new ArrayList<>();
+        // Boards: one set of cards per substrate loaded; the lists cycle the thing that varies (wire, paste, part, solder).
+        List<ResourceLocation> substrates = new ArrayList<>(), wires = new ArrayList<>(), pastes = new ArrayList<>(), solders = new ArrayList<>();
         for (var e : materials.entrySet()) {
             Material m = e.getValue();
             ResourceLocation id = e.getKey();
-            if (substrate == null && m.item(id, "substrate").isPresent())
-                substrate = id;
+            if (m.item(id, "substrate").isPresent())
+                substrates.add(id);
             if (m.item(id, "fine_wire").isPresent())
                 wires.add(id);
             if (m.traits().contains(Material.Trait.PASTE) && m.item(id, "dust").isPresent())
@@ -214,31 +213,10 @@ public final class ElectronicsCrafting {
             if (m.traits().contains(Material.Trait.SOLDER) && m.item(id, "ingot").isPresent())
                 solders.add(id);
         }
-        if (substrate == null)
-            return out;
-        ItemStack base = of(materials, substrate, "substrate");
-        List<ItemStack> wireStacks = new ArrayList<>(), wireBoards = new ArrayList<>();
-        for (ResourceLocation w : wires) {
-            wireStacks.add(of(materials, w, "fine_wire"));
-            wireBoards.add(board(new Board(Board.Trace.ETCHED, w, substrate, Optional.empty(), Board.Joint.NONE, List.of())));
-        }
-        if (!wires.isEmpty())
-            out.add(holder("board_etched", new Example(List.of(List.of(base), wireStacks, wireStacks), 3, 1, wireBoards)));
-        List<ItemStack> pasteStacks = new ArrayList<>(), pasteBoards = new ArrayList<>();
-        for (ResourceLocation p : pastes) {
-            pasteStacks.add(of(materials, p, "dust"));
-            pasteBoards.add(board(new Board(Board.Trace.PRINTED, p, substrate, Optional.empty(), Board.Joint.NONE, List.of())));
-        }
-        if (!pastes.isEmpty())
-            out.add(holder("board_printed", new Example(List.of(List.of(base), pasteStacks), 2, 1, pasteBoards)));
-
-        Board bare = !wires.isEmpty()
-                ? new Board(Board.Trace.ETCHED, wires.get(0), substrate, Optional.empty(), Board.Joint.NONE, List.of())
-                : !pastes.isEmpty() ? new Board(Board.Trace.PRINTED, pastes.get(0), substrate, Optional.empty(), Board.Joint.NONE, List.of()) : null;
-        if (bare == null)
-            return out;
-        // Mount: one part on an unpasted board (up to ItemTuning.CIRCUIT_MAX_PARTS of them, one per craft).
-        List<ItemStack> parts = new ArrayList<>(), mounted = new ArrayList<>();
+        List<ItemStack> wireStacks = new ArrayList<>(), pasteStacks = new ArrayList<>(), solderStacks = new ArrayList<>();
+        wires.forEach(w -> wireStacks.add(of(materials, w, "fine_wire")));
+        pastes.forEach(p -> pasteStacks.add(of(materials, p, "dust")));
+        solders.forEach(sd -> solderStacks.add(of(materials, sd, "ingot")));
         List<ItemStack> candidates = new ArrayList<>(List.of(new ItemStack(FItems.RELAY.get()), new ItemStack(FItems.COHERER.get()),
                 new ItemStack(FItems.GALENA.get()), new ItemStack(FItems.PYRITE.get())));
         // A sealed tube (an example: a triode at a good vacuum; the real ones come from a vacuum dryer).
@@ -262,23 +240,42 @@ public final class ElectronicsCrafting {
             if (plate != null)
                 candidates.add(plate);
         });
-        for (ItemStack part : candidates) {
-            Board.Part kind = Circuit.part(part, Material.find(materials, part).orElse(null));
-            if (kind != null) {
-                parts.add(part);
-                mounted.add(board(bare.mounted(kind)));
+        for (ResourceLocation substrate : substrates) {
+            ItemStack base = of(materials, substrate, "substrate");
+            String tag = substrates.size() > 1 ? "_" + substrate.getPath() : "";
+            List<ItemStack> wireBoards = new ArrayList<>(), pasteBoards = new ArrayList<>();
+            for (ResourceLocation w : wires)
+                wireBoards.add(board(new Board(Board.Trace.ETCHED, w, substrate, Optional.empty(), Board.Joint.NONE, List.of())));
+            for (ResourceLocation p : pastes)
+                pasteBoards.add(board(new Board(Board.Trace.PRINTED, p, substrate, Optional.empty(), Board.Joint.NONE, List.of())));
+            if (!wires.isEmpty())
+                out.add(holder("board_etched" + tag, new Example(List.of(List.of(base), wireStacks, wireStacks), 3, 1, wireBoards)));
+            if (!pastes.isEmpty())
+                out.add(holder("board_printed" + tag, new Example(List.of(List.of(base), pasteStacks), 2, 1, pasteBoards)));
+
+            Board bare = !wires.isEmpty()
+                    ? new Board(Board.Trace.ETCHED, wires.get(0), substrate, Optional.empty(), Board.Joint.NONE, List.of())
+                    : !pastes.isEmpty() ? new Board(Board.Trace.PRINTED, pastes.get(0), substrate, Optional.empty(), Board.Joint.NONE, List.of()) : null;
+            if (bare == null)
+                continue;
+            // Mount: one part on an unpasted board (up to ItemTuning.CIRCUIT_MAX_PARTS of them, one per craft).
+            List<ItemStack> parts = new ArrayList<>(), mounted = new ArrayList<>();
+            for (ItemStack part : candidates) {
+                Board.Part kind = Circuit.part(part, Material.find(materials, part).orElse(null));
+                if (kind != null) {
+                    parts.add(part);
+                    mounted.add(board(bare.mounted(kind)));
+                }
             }
+            if (!parts.isEmpty())
+                out.add(holder("board_mount" + tag, new Example(List.of(List.of(board(bare)), parts), 2, 1, mounted)));
+            // Paste: a board and a solder ingot.
+            List<ItemStack> pasted = new ArrayList<>();
+            for (ResourceLocation sd : solders)
+                pasted.add(board(bare.pasted(sd)));
+            if (!solders.isEmpty())
+                out.add(holder("board_paste" + tag, new Example(List.of(List.of(board(bare)), solderStacks), 2, 1, pasted)));
         }
-        if (!parts.isEmpty())
-            out.add(holder("board_mount", new Example(List.of(List.of(board(bare)), parts), 2, 1, mounted)));
-        // Paste: a board and a solder ingot.
-        List<ItemStack> solderStacks = new ArrayList<>(), pasted = new ArrayList<>();
-        for (ResourceLocation s : solders) {
-            solderStacks.add(of(materials, s, "ingot"));
-            pasted.add(board(bare.pasted(s)));
-        }
-        if (!solders.isEmpty())
-            out.add(holder("board_paste", new Example(List.of(List.of(board(bare)), solderStacks), 2, 1, pasted)));
         return out;
     }
 }

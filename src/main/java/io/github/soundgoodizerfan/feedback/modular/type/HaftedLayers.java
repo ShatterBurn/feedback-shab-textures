@@ -72,13 +72,18 @@ public final class HaftedLayers {
      * thickness), so the same sprites draw it as when each was a variant.
      */
     private static String artVariant(String role, Part p) {
-        if (!p.variant().isEmpty())
-            return p.variant();
+        return artVariant(role, p.variant(), p.measures());
+    }
+
+    /** The art variant of an addon part: its own variant, else the one its measures read as (wraps, weight, thickness). */
+    public static String artVariant(String role, String variant, io.github.soundgoodizerfan.feedback.process.Measures m) {
+        if (!variant.isEmpty())
+            return variant;
         return switch (role) {
-            case "B" -> switch (Math.round(p.axis("wraps", 1f))) { case 2 -> "wrapped"; case 3 -> "double"; default -> ""; };
-            case "P" -> switch (Math.round(p.axis("weight", 1f))) { case 2 -> "ball"; case 3 -> "counterweight"; default -> ""; };
-            case "T" -> p.axis("thickness", 1f) < ModularTuning.TIP_ART_NEEDLE_BELOW ? "needle"
-                    : p.axis("thickness", 1f) > ModularTuning.TIP_ART_CAPPED_ABOVE ? "capped" : "";
+            case "B" -> switch (Math.round(m.axis("wraps", 1f))) { case 2 -> "wrapped"; case 3 -> "double"; default -> ""; };
+            case "P" -> switch (Math.round(m.axis("weight", 1f))) { case 2 -> "ball"; case 3 -> "counterweight"; default -> ""; };
+            case "T" -> m.axis("thickness", 1f) < ModularTuning.TIP_ART_NEEDLE_BELOW ? "needle"
+                    : m.axis("thickness", 1f) > ModularTuning.TIP_ART_CAPPED_ABOVE ? "capped" : "";
             default -> "";
         };
     }
@@ -313,9 +318,11 @@ public final class HaftedLayers {
         int dirX = 1, dirY = ALONG.contains(kind) ? -1 : 1;
         int[] seat = SEAT.getOrDefault(kind, new int[] {0, 0});
         int sx = mirrored ? -seat[0] : seat[0], sy = mirrored ? -seat[1] : seat[1];
+        boolean oddToBack = dirY == -1 || oddSliceToBack(sprites, use, r, steps, sx, sy, side);
         for (int k = face.edge(); k >= 0; k--) {
-            // The back end steps out by half the extra slices, the front by the rest; the slices fill between.
-            int a = (k + 1) / 2, c = k / 2;
+            // The back end steps out by half the extra slices, the front by the rest; the slices fill between. A head across the haft
+            // gives its odd slice to the end that keeps it nearest the haft's line, so it grows about the rod and not off to one side.
+            int a = oddToBack ? (k + 1) / 2 : k / 2, c = oddToBack ? k / 2 : (k + 1) / 2;
             List<Placement> cut = new ArrayList<>();
             cut.add(new Placement(use + "_back" + r, face.letter(), steps - a * dirX + sx, -steps - a * dirY + sy, side));
             for (int j = -a; j <= c; j++)
@@ -327,6 +334,25 @@ public final class HaftedLayers {
             }
         }
         return 0;
+    }
+
+    /**
+     * Whether a head lying across the haft, at its unextended length, sits at or beyond the haft's line ({@code x + y = 15}) on its front
+     * side, so an odd extra slice (a whole step of two) belongs at the back end to bring it back; the other way round, at the front.
+     */
+    private static boolean oddSliceToBack(Sprites sprites, String use, String r, int steps, int sx, int sy, int side) {
+        List<Placement> base = List.of(new Placement(use + "_back" + r, "F", steps + sx, -steps + sy, side),
+                new Placement(use + "_mid" + r, "F", steps + sx, -steps + sy, side),
+                new Placement(use + "_front" + r, "F", steps + sx, -steps + sy, side));
+        int lo = Integer.MAX_VALUE, hi = Integer.MIN_VALUE;
+        for (Placement p : base)
+            for (int y = 0; y < SIZE; y++)
+                for (int x = 0; x < SIZE; x++)
+                    if (sprites.lum(p.file(), x, y) >= 0) {
+                        lo = Math.min(lo, x + p.dx() + y + p.dy());
+                        hi = Math.max(hi, x + p.dx() + y + p.dy());
+                    }
+        return lo > hi || lo + hi >= 2 * (SIZE - 1);
     }
 
     /** The least and greatest {@code x - y} of the layers' opaque texels: how far down and up the haft (which runs along {@code x - y}) they reach. */
@@ -355,17 +381,62 @@ public final class HaftedLayers {
 
     /** Extra middle slices the head's edge axis asks for: none at the default, {@link #MAX_EDGE_STEPS} at the top of the range. */
     static int edgeSteps(Part face, ModularType.Role role) {
-        for (Map.Entry<String, ModularType.Axis> e : role.axesFor(face).entrySet()) {
+        return edgeSteps(face.measures(), role.axesFor(face));
+    }
+
+    /** As above, from a head's measures and the axes it is measured by (a head part on its own has no role to ask). */
+    public static int edgeSteps(io.github.soundgoodizerfan.feedback.process.Measures measures, Map<String, ModularType.Axis> axes) {
+        for (Map.Entry<String, ModularType.Axis> e : axes.entrySet()) {
             if (!e.getKey().equals("edge_length") && !e.getKey().equals("length"))
                 continue;
             ModularType.Axis axis = e.getValue();
-            float value = face.measures().axis(e.getKey(), axis.def());
+            float value = measures.axis(e.getKey(), axis.def());
             float span = axis.max() - axis.def();
             if (span <= 0 || value <= axis.def())
                 return 0;
             return Math.min(MAX_EDGE_STEPS, Math.round(MAX_EDGE_STEPS * (value - axis.def()) / span));
         }
         return 0;
+    }
+
+    /**
+     * A head part drawn alone, as it sits on a tool at the reference pose with no haft under it: what a head part's icon shows, so the part
+     * looks like what it will be. {@code full} keeps every edge slice (the part held or lying in the world), else the head is shortened to fit
+     * the canvas. Empty when the kind's layer files are missing.
+     */
+    public static List<Placement> headAlone(String kind, String variant, int edge, Sprites sprites, boolean full) {
+        List<Placement> out = new ArrayList<>();
+        if (head(out, sprites, new Face("H", kind, variant, edge), 0, false, 0, !full) < 0)
+            return List.of();
+        return centred(out, sprites);
+    }
+
+    /** The layers moved by whole texels so their bounding box sits in the middle of the canvas: a part has no tool around it to place it. */
+    private static List<Placement> centred(List<Placement> layers, Sprites sprites) {
+        int x0 = Integer.MAX_VALUE, y0 = Integer.MAX_VALUE, x1 = Integer.MIN_VALUE, y1 = Integer.MIN_VALUE;
+        for (Placement p : layers) {
+            int[] b = sprites.bounds(p.file());
+            if (b == null)
+                continue;
+            x0 = Math.min(x0, b[0] + p.dx());
+            y0 = Math.min(y0, b[1] + p.dy());
+            x1 = Math.max(x1, b[2] + p.dx());
+            y1 = Math.max(y1, b[3] + p.dy());
+        }
+        if (x1 < x0)
+            return List.of();
+        int mx = (SIZE - 1 - (x0 + x1)) / 2, my = (SIZE - 1 - (y0 + y1)) / 2;
+        List<Placement> out = new ArrayList<>(layers.size());
+        for (Placement p : layers)
+            out.add(new Placement(p.file(), p.role(), p.dx() + mx, p.dy() + my, p.side()));
+        return List.copyOf(out);
+    }
+
+    /** A guard, binding or pommel part drawn alone at its place on a tool at the reference pose; empty when it has no layer file. */
+    public static List<Placement> addonAlone(String role, String name, String variant, Sprites sprites) {
+        List<Placement> out = new ArrayList<>();
+        part(out, sprites, new Plan("stick", 1, List.of(), Map.of(role, variant), null), role, name, 0);
+        return centred(out, sprites);
     }
 
     /** Whether every layer, shifted, keeps all its opaque texels on the canvas (the tip and the edge guard are drawn on the head, so they always do). */

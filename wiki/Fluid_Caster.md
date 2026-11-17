@@ -79,17 +79,26 @@ A denser fluid leaves slower at the same pressure. A wide bore empties the tank 
 
 ## What the stream does
 
-Every effect is read from the fluid's own properties, not its name.
+Every effect is read from the fluid's own figures (temperature, flash point, thickness, toxicity, corrosivity, radioactivity), not its name. A fluid can do several things at once.
 
-- **Hot** fluid (over **55 Tu**) scalds what it hits; the hotter and heavier the flow, the more.
-- **Cold** fluid (**0 Tu** or under) chills what it hits, building frost.
-- A fluid that **burns** (it has a flash point it is at or over) lights from an open flame in the stream's path: fire, lava, a burning body, or you alight. A lit stream sets bodies alight and starts fires where it lands.
+- **Hot** fluid (over **55 Tu**) scalds what it hits; the hotter and heavier the flow, the more. At **250 Tu** or over (lava, molten metal) it also sets the target alight.
+- **Cold** fluid (**0 Tu** or under) chills what it hits, building frost faster the colder it is. Well under 0 Tu it freezes flesh outright.
+- A fluid that **burns** (it has a flash point it is at or over) lights from an open flame in the stream's path: fire, lava, a burning body, or you alight. A lit stream sets bodies alight for as long as it burns, from 3 to 15 seconds, longer and harder the hotter its flame, and starts fires where it lands.
+- An **oxidiser** such as oxygen thrown at a burning target feeds the fire.
 - **Water** puts out burning bodies and fires, douses lit blocks, waters farmland and fills a cauldron a level at a time. Creatures that hate water are hurt.
-- A **corrosive** fluid bites the armor of what it hits.
-- A heavy, fast flow **shoves** what it hits, like a fire hose.
+- A **thick** fluid (viscosity 5 or more) clings to what it hits and slows it; the thicker, the slower.
+- An **acid or a base** burns flesh as chemical burn and bites the armor of what it hits. How hard depends on the fluid's **corrosivity**, its pH distance from neutral (see [Materials](Materials.md#heat-and-other-figures)). Hydrofluoric acid is a weaker acid than most but very toxic.
+- A **toxic** fluid (toxicity 0.8 or more) poisons what it hits, longer the more toxic.
+- A **radioactive** fluid (uranyl sulfate, thorium hydroxide) withers what it hits and outlines it with a glow.
+- A **spatially unstable** fluid hops whatever stands near it from place to place.
+- A heavy, fast flow **shoves** what it hits, like a fire hose. A fast, dense stream also **cuts**.
 - A **potion** gives its effect to each body in the stream, and acts where it lands; see [Sprayed from a fluid caster](Thrown_and_Imbued_Potions.md#sprayed-from-a-fluid-caster).
 - A **container** the stream lands on (a tank or other fluid block) takes the fluid in.
 - An **atomiser** leaves a vapor cloud where the stream lands or runs out; a fluid that burns makes a cloud a flame can set off. See [Hazards](Hazards.md).
+
+### Gases
+
+A fluid hotter than its boiling point leaves the nozzle as a gas. It makes no ribbon and does not shove. A toxic gas leaves a lingering poison cloud where it goes; a gas that burns leaves a vapor that a flame sets off. See [Fume clouds](Hazards.md#fume-clouds).
 
 Nothing places a fluid block in the world.
 

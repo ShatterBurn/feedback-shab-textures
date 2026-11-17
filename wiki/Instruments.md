@@ -61,6 +61,8 @@ P is a Copper Plate and N is an Iron Nugget. Craft it at the [Engineering Table]
 
 **Work in progress.** Without calipers, a half-worked item tells you what it **needs** as a number (*"Needs 14 Wu"*) but only roughly how far it has got: *Barely marked*, *Taking shape*, *Visibly worked*, *Nearly there*. Carry calipers anywhere in your inventory and that changes to an exact figure, like *"Calipers: 9 / 14 Wu"*, on the item's tooltip and in Jade, on whatever is sitting in a hammer, press, mill, drawer, drill, lathe or grinder. You do not need calipers to make a plate; the words are enough to avoid ruining one. You need them to **aim** at something that only lasts a blow or two, like copper foil, and hit it every time.
 
+**Part dimensions.** A part shaped by hand shows what its maker aimed each measurement at (*"Length cut to 15 cm"*); calipers show where the cut actually landed. See the [Smithing Table](Smithing_Table.md#what-feedback-does).
+
 **Machine wear.** **Right-click a machine** with the calipers to measure its condition, e.g. *"Calipers: 85% condition"*, in steps of 5%. The machine has to be stopped; on a running machine you get *"Stop the machine before measuring it."* Without calipers, Jade still warns when a machine is worn (*Head is marked / battered / spent*), just not by how much. See [Metalworking](Metalworking.md) for what work, hardness and wear mean.
 
 **Gun barrel.** With calipers in your inventory, a [Gun Barrel](Gun_Parts.md#the-barrel)'s tooltip shows its **bore**, **wall** and **length**, to 0.1 mm. Without them it says *"A bored barrel. Calipers would say how wide."*
@@ -133,7 +135,7 @@ Shapeless: Paper and a Beetroot.
 
 Carry it anywhere in your inventory. A food or dish's tooltip, and the held-item card (key H), gain a line like *"Test strip: Toxin: 0.050 Qu/mB"*. It reads in quarter steps of a full dose, so it tells a trace from a lot and no more.
 
-It reads toxin only. Heat does not clear a toxin, and your senses do not show one until it is deep in the food, so this is how you check a dish before you eat it. A live organism (cooking cures it) already shows on the tooltip; the strip does not read it. You can also [bite](Food.md#reading-what-you-made) the food and find out the hard way.
+It reads toxin only. Heat does not clear a toxin, and your senses do not show one until it is deep in the food, so this is how you check a dish before you eat it. A live organism (cooking cures it) the strip does not read; the bite tells you. You can also [bite](Food.md#reading-what-you-made) the food and find out the hard way.
 
 ## Thermometer
 

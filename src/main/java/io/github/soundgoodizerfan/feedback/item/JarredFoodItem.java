@@ -5,7 +5,6 @@ package io.github.soundgoodizerfan.feedback.item;
 import io.github.soundgoodizerfan.feedback.core.FTuning;
 import java.util.List;
 
-import io.github.soundgoodizerfan.feedback.process.Cooking;
 import io.github.soundgoodizerfan.feedback.registry.FDataComponents;
 
 import net.minecraft.ChatFormatting;
@@ -37,15 +36,6 @@ public class JarredFoodItem extends Item {
         else if (context.level() != null) {
             if (can.sterile() > 0f)
                 tooltip.add(Component.translatable("tooltip.feedback.jar.sterilising").withStyle(ChatFormatting.GRAY));
-            // An unsealed jar is just food in glass, so it says how it is keeping.
-            var level = context.level();
-            Cooking.findPerishable(level, can.food()).ifPresent(entry -> {
-                int spoil = Cooking.spoilage(Cooking.current(can.food(), entry, level,
-                        io.github.soundgoodizerfan.feedback.core.thermal.AmbientTable.at(level).value()));
-                if (spoil > 0)
-                    tooltip.add(Component.translatable("tooltip.feedback.food.spoil." + spoil)
-                            .withStyle(spoil == 2 ? ChatFormatting.DARK_RED : ChatFormatting.GOLD));
-            });
         }
         if (can.mush() >= FTuning.CANNING_MUSH_SHOWN_AT)
             tooltip.add(Component.translatable("tooltip.feedback.jar.mushy").withStyle(ChatFormatting.GOLD));

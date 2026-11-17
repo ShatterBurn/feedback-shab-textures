@@ -203,7 +203,9 @@ public final class EngineeringAssembly {
         if (!supply.complete())
             return new Plan(NO_FASTENERS, ItemStack.EMPTY, Plan.NONE.take());
         // The type's own game, else torque for a type that spends fasteners; a blueprint in the slot skips it.
-        String game = EngineeringMinigames.forType(type, supply.wanted());
+        // What the plain crafting table builds with no knowledge, tool or fastener is built here without a game: the game is for work the plain table cannot do.
+        boolean plainTable = !type.blueprint() && gate.isEmpty() && type.family() != ModularType.Family.DISH && supply.wanted() <= 0;
+        String game = plainTable ? "" : EngineeringMinigames.forType(type, supply.wanted());
         int pieces = 0;
         for (String r : found.get().role())
             if (r != null)

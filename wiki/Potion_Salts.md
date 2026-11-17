@@ -16,6 +16,12 @@ Running correctly costs nothing and the machine does not wear. Two mistakes cost
 - **Scorching.** Above **110 Tu** the contents scorch: every tick spent hotter takes a little of the potion's strength, more the hotter it is, up to four fifths of it. The loss is fixed in the salts.
 - **Cracking.** Above **200 Tu** under vacuum the bottle can crack and is lost.
 
+### Sealing a vacuum tube
+
+The same chamber evacuates and seals an open [Vacuum Tube](Vacuum_Tube.md). Use the tube on the dryer, and with the chamber warm and thin enough for the same 10 seconds it comes out sealed; an empty hand takes it. A dryer that already holds something, or a tube that is already sealed, is not taken.
+
+How good the seal is depends on how deep the pump pulled, how hot the chamber baked the envelope and how tight the glass is. Hotter and deeper is better, up to the glass's own limit. A shallow, cool seal leaves gas in. A chamber past what the glass stands slumps it and seals no vacuum. Nothing is destroyed and the tube is never refused for a poor seal.
+
 ## Reconstituting
 
 Use the salts on a water source. One portion is spent and a potion bottle comes back with about 70% of the salts' strength, a little more or less each time. Its effect and level are unchanged; as a bottle it fades again. Keeping a potion in salts trades strength for time.

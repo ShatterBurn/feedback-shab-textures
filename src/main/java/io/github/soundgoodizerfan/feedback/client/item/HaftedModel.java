@@ -62,12 +62,17 @@ public final class HaftedModel {
             event.getModels().put(key, new Layered(base));
     }
 
-    private static final class Layered extends BakedModelWrapper<BakedModel> {
+    static final class Layered extends BakedModelWrapper<BakedModel> {
         private final ItemOverrides overrides;
 
         Layered(BakedModel base) {
             super(base);
             this.overrides = new Resolver(base);
+        }
+
+        Layered(BakedModel base, ItemOverrides overrides) {
+            super(base);
+            this.overrides = overrides;
         }
 
         @Override
@@ -80,7 +85,7 @@ public final class HaftedModel {
      * The tool at two sizes: the icon that fits its slot in a screen, and the full-length tool everywhere in the world (in hand, on the
      * ground, in a frame), where a longer haft or blade takes up more space at the same texel size.
      */
-    private static final class BySize extends BakedModelWrapper<BakedModel> {
+    static final class BySize extends BakedModelWrapper<BakedModel> {
         private final BakedModel held;
 
         BySize(BakedModel slot, BakedModel held) {
@@ -94,12 +99,12 @@ public final class HaftedModel {
         }
     }
 
-    private static final class Resolver extends ItemOverrides {
-        private final BakedModel base;
+    static class Resolver extends ItemOverrides {
+        final BakedModel base;
         private final Map<String, TextureAtlasSprite> sprites = new HashMap<>();
         private final Map<String, int[]> bounds = new HashMap<>();
-        private final Map<List<HaftedLayers.Placement>, BakedModel> built = new HashMap<>();
-        private final Map<List<BakedModel>, BakedModel> bySize = new HashMap<>();
+        final Map<List<HaftedLayers.Placement>, BakedModel> built = new HashMap<>();
+        final Map<List<BakedModel>, BakedModel> bySize = new HashMap<>();
         // The finished model per design, so a hotbar of tools costs one hash lookup each per frame, not a re-plan and re-flatten. Empty = no layer files, use the whole-tool fallback.
         private final Map<ModularDesign, java.util.Optional<BakedModel>> byDesign = new HashMap<>();
 
@@ -112,7 +117,7 @@ public final class HaftedModel {
                     .getSprite(Feedback.id("item/hafted/" + f)));
         }
 
-        private final HaftedLayers.Sprites known = new HaftedLayers.Sprites() {
+        final HaftedLayers.Sprites known = new HaftedLayers.Sprites() {
             @Override
             public boolean has(String file) {
                 return !sprite(file).contents().name().equals(MissingTextureAtlasSprite.getLocation());
@@ -166,9 +171,14 @@ public final class HaftedModel {
 
         private static final int PAD = HaftedLayers.PAD, GRID = HaftedLayers.GRID;
 
-        private BakedModel bake(List<HaftedLayers.Placement> layers, ModularType type) {
-            SimpleBakedModel.Builder out = new SimpleBakedModel.Builder(false, false, false, base.getTransforms(), ItemOverrides.EMPTY);
+        BakedModel bake(List<HaftedLayers.Placement> layers, ModularType type) {
             List<String> order = type.order();
+            return bake(layers, role -> Math.max(0, order.indexOf(role)));
+        }
+
+        /** The layers as one model; {@code tintOf} gives a role's tint index. */
+        BakedModel bake(List<HaftedLayers.Placement> layers, java.util.function.ToIntFunction<String> tintOf) {
+            SimpleBakedModel.Builder out = new SimpleBakedModel.Builder(false, false, false, base.getTransforms(), ItemOverrides.EMPTY);
             // The flattened tool is HaftedLayers' (the offline sheet draws the same list): one texel per canvas position.
             List<HaftedLayers.Texel> texels = HaftedLayers.flatten(layers, known);
             int n = GRID;
@@ -178,7 +188,7 @@ public final class HaftedModel {
             List<BlockElement> elements = new ArrayList<>();
             for (HaftedLayers.Texel t : texels) {
                 int x = t.x() + PAD, y = t.y() + PAD, cx = t.x(), cy = t.y();
-                int tint = Math.max(0, order.indexOf(t.role()));
+                int tint = tintOf.applyAsInt(t.role());
                 String tex = Feedback.id("item/hafted/" + t.file()).toString();
                 // UV of this texel in its own sprite, pulled in a hair so nearest sampling never picks up the neighbour.
                 float u0 = t.ux() + 0.01f, v0 = t.uy() + 0.01f, u1 = u0 + 0.98f, v1 = v0 + 0.98f;

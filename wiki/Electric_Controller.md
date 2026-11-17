@@ -10,6 +10,16 @@ Controller + Circuit Board + Copper Wire, in any arrangement.
 
 Right-click with a medium to put it in; right-click with an empty hand to take it out. It reads a sensor only through a path of linked nodes made with the [Data Connector](Data_Connector.md#linking-nodes); with no path the reading is 0, and the wire's grade sets how exact the reading is. It evaluates only while the line delivers at least half of the current it wants; with less the outputs, variables and delay clocks hold, as a mechanical Controller's do on a dead shaft.
 
+## Circuit slot
+
+A [circuit](Basic_Electronic_Circuit.md) is optional. **Right-click with a circuit** to seat it; an empty hand takes out the medium first, then the circuit. The slot works as the mechanical [Controller's](Controller.md#circuit-slot): with no circuit the program steps about 4 times a second, a fast circuit takes it up to 20, and a circuit's noise makes sensor readings wobble.
+
+A powered Electric Controller warms a circuit with a [tube](Vacuum_Tube.md) with its heater, and the heater's current is added to what the controller wants from the line. See [Warming up](Basic_Electronic_Circuit.md#warming-up).
+
+## Endernet upgrade
+
+An [Endernet Upgrade](Endernet_Upgrade.md) makes an Electric Controller one end of an [endernet](Data_Port.md#endernet) pair, so that it reads what is linked to the pair's [Data Port](Data_Port.md) as though linked to itself. Use the upgrade on the controller to fit it. One fits per controller, it draws a small standing current while fitted, and a [Crowbar](Crowbar.md) takes it off.
+
 ## Electric Programmer
 
 A [Programmer](Programming.md) that takes every medium. Crafted from a Programmer, a Circuit Board and Copper Wire. **Erase** works on a printed Floppy Disk or USB Drive (see [Media](Programming.md#media)). It needs no power.
@@ -17,6 +27,8 @@ A [Programmer](Programming.md) that takes every medium. Crafted from a Programme
 ## Computer
 
 An Electric Programmer and an Electric Controller in one block, with a desktop. Crafted from an Electric Controller, an Electric Programmer and a Silicon Ingot.
+
+The Computer has the same [circuit slot](#circuit-slot) and takes an [Endernet Upgrade](#endernet-upgrade). **Right-click with a circuit** seats it; **sneak** and right-click with an empty hand takes out the running medium, then the circuit.
 
 Right-click it to open the desktop, a fixed panel drawn as a terminal. The colors, wallpaper and screen effects are set in the **Settings** window and are the same for everyone who opens this Computer.
 
@@ -71,7 +83,7 @@ Each app disk is shapeless: one blank Floppy Disk plus one item.
 - **Monitor**: the running program's variables and the last reading of each of its sensor cards.
 - **Links**: the blocks the running program's cards are linked to, with their positions.
 - **Diagram**: the [Contraption Diagram](Instruments.md#contraption-diagram) of the vehicle a Flight Sensor is on, for a sensor an Input card of the running program is linked to. **Next sensor** steps between linked sensors; the angle, merge and assembly controls are the same as on the sensor's own screen.
-- **Console**: a log of what the Computer did, newest at the bottom: programs started and stopped, things its program switched on and off, power lost and back, media ejected, edited or copied, and media it refused.
+- **Console**: a log of what the Computer did, newest at the bottom: programs started and stopped, things its program switched on and off, switches you flipped over an endernet pair (*flipped over the pair*), power lost and back, media ejected, edited or copied, and media it refused.
 - **Files**: in the Menu. Lists drives A to D and RUN with what each holds. Click a row to pick it, double-click to open its Drive window. The buttons are **Open**, **Edit**, **Run** (**Stop** for the running medium) and **Eject**. With the Library app disk in a bay, drag a written program onto another drive row to copy it onto a blank Floppy Disk or USB Drive (the same rule as the Library's Copy), or onto the **Trash** box to erase it: it asks first, and the medium is left blank and reusable. Erase needs no Library disk. Without the Library disk, dragging and Copy are unavailable.
 - **Settings**: see below.
 
@@ -86,6 +98,7 @@ Each app disk is shapeless: one blank Floppy Disk plus one item.
 - **Power**: whether the Computer is powered, the band of its line, its current and what it wants (read to the precision of the instrument you carry), the band it is rated for, a bar showing how much of a rated packet arrives, and a half-minute trace of the packet.
 - **Arcade**: Snake (arrows or WASD, space to start) and Minesweeper (click to dig, right-click to flag; 14 mines on a 14x8 field). The best Snake length and the fastest cleared field are kept on the block.
 - **Blueprint**: the [Blueprint Table](Blueprint_Table.md)'s drafting board in a window, in the desktop's colors: draw designs from the types, pick parts, materials and shapes, read the predicted figures, compare and pin up to three drafts, and run the test rig. The type selector, edge selector and search stay with the window, and the board takes the window's size, showing more types when the window is wide. It cannot print onto paper and has no sample slot: carry a material item on the cursor from the hotbar dock and click a part to paint it. The window scrolls with Ctrl plus the wheel, or by dragging the strip down its right edge.
+- **Network**: the Computer's [Endernet Upgrade](Endernet_Upgrade.md) and the far side of its pair. The top shows the pair (a short tail of its id), its state (*carrying*, *far end away* or *not powered*) and the far end's distance and compass side. Below, a list of what is linked to the far [Data Port](Data_Port.md), each row with its kind (machine, computer, robot or port) and, for something that switches, its state (on or off) and a **Flip** button that toggles it. The list refreshes about once a second and scrolls. Flip works only while the pair is carrying. Without an upgrade the window says so.
 
 ### Settings
 

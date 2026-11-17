@@ -21,6 +21,15 @@ P is a [Copper Plate](Mechanical_Hammer.md), C is a Redstone Comparator and S is
 
 If the shaft stops, the controller stops making decisions, and everything it controls **stays as it was last set**.
 
+## Circuit slot
+
+A [circuit](Basic_Electronic_Circuit.md) is optional. **Right-click the Controller with a circuit** to seat it; an empty hand takes out the card first, then the circuit.
+
+- **Pace.** A Controller with no circuit steps its program about **4 times a second**. A fast circuit raises that, up to **20 a second**; a slow, cold or dead one stays near the bottom.
+- **Reading.** A circuit's noise makes the numbers a Sensor card reads wobble by a few percent; a quiet circuit reads steadily, and with none the reading is as noisy as a circuit can be. A yes/no reading never wobbles.
+
+The Controller has no power of its own to heat a [tubed](Vacuum_Tube.md) circuit; see [Warming up](Basic_Electronic_Circuit.md#warming-up).
+
 ## What it can read
 
 Anything you can link as a sensor:

@@ -58,7 +58,7 @@ A vein near enough to the surface sends up a sign: up to three, scattered over i
 
 ## Gems
 
-Four gems grow in veins of their own, each marked by a loose rock. Mined, the ore block drops the raw stone (*Raw Jade*, *Raw Garnet*, *Raw Tourmaline*, *Raw Ruby*) ([Materials](Materials.md#gems)).
+Gems grow in veins of their own, each marked by a loose rock. Mined, the ore block drops the cut stone (*Jade*, *Garnet*, *Tourmaline*, *Ruby*, *Beryl*) ([Materials](Materials.md#gems)).
 
 - **Jade** in the Overworld between y 32 and 160.
 - **Garnet** in the Overworld between y -32 and 48, the widest of the four veins.

@@ -221,6 +221,9 @@ public class Feedback {
                 .playToClient(io.github.soundgoodizerfan.feedback.net.WorldgenSyncPayload.TYPE,
                         io.github.soundgoodizerfan.feedback.net.WorldgenSyncPayload.STREAM_CODEC,
                         io.github.soundgoodizerfan.feedback.net.WorldgenSyncPayload::handle)
+                .playToClient(io.github.soundgoodizerfan.feedback.net.PotionEffectSyncPayload.TYPE,
+                        io.github.soundgoodizerfan.feedback.net.PotionEffectSyncPayload.STREAM_CODEC,
+                        io.github.soundgoodizerfan.feedback.net.PotionEffectSyncPayload::handle)
                 .playToClient(ThermalProcessSyncPayload.TYPE, ThermalProcessSyncPayload.STREAM_CODEC,
                         ThermalProcessSyncPayload::handle)
                 .playToClient(io.github.soundgoodizerfan.feedback.net.GunOptionSyncPayload.TYPE,
@@ -391,6 +394,12 @@ public class Feedback {
                 .playToClient(io.github.soundgoodizerfan.feedback.net.MinigameOpenPayload.TYPE,
                         io.github.soundgoodizerfan.feedback.net.MinigameOpenPayload.STREAM_CODEC,
                         io.github.soundgoodizerfan.feedback.net.MinigameOpenPayload::handle)
+                .playToClient(io.github.soundgoodizerfan.feedback.net.RobotChannelsPayload.TYPE,
+                        io.github.soundgoodizerfan.feedback.net.RobotChannelsPayload.STREAM_CODEC,
+                        io.github.soundgoodizerfan.feedback.net.RobotChannelsPayload::handle)
+                .playToServer(io.github.soundgoodizerfan.feedback.net.RobotChannelPickPayload.TYPE,
+                        io.github.soundgoodizerfan.feedback.net.RobotChannelPickPayload.STREAM_CODEC,
+                        io.github.soundgoodizerfan.feedback.net.RobotChannelPickPayload::handle)
                 .playToClient(io.github.soundgoodizerfan.feedback.net.ResearchOpenPayload.TYPE,
                         io.github.soundgoodizerfan.feedback.net.ResearchOpenPayload.STREAM_CODEC,
                         io.github.soundgoodizerfan.feedback.net.ResearchOpenPayload::handle)
@@ -497,6 +506,8 @@ public class Feedback {
         send(event, new io.github.soundgoodizerfan.feedback.net.WorldgenSyncPayload(
                 io.github.soundgoodizerfan.feedback.worldgen.OreVeinTable.get().entries(),
                 io.github.soundgoodizerfan.feedback.geology.BasinTable.get().entries()));
+        send(event, new io.github.soundgoodizerfan.feedback.net.PotionEffectSyncPayload(
+                io.github.soundgoodizerfan.feedback.potion.PotionMap.get().effects()));
         send(event, new io.github.soundgoodizerfan.feedback.combat.skill.SkillTreeSyncPayload(
                 io.github.soundgoodizerfan.feedback.combat.skill.SkillTrees.get().trees()));
     }

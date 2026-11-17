@@ -2,8 +2,7 @@
   "color": "#9fd3d8",
   "kind": "crystal",
   "traits": [
-    "transparent"
-  ],
+    "transparent", "gemstone"],
   "exclude": [
     "ingot"
   ],

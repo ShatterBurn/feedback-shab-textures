@@ -29,8 +29,8 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 
 /**
- * Part swap in the plain crafting table: one finished modular item of a simple type (no blueprint, no school) and replacement parts or
- * stock, positions ignored. The stock goes through {@link ModularRework} (a swap of a filled role, else an add to an empty one), the
+ * Repair and part swap in the plain crafting table: one finished modular item of a simple type (no blueprint, no school) and replacement parts or
+ * stock, positions ignored. The stock goes through {@link ModularRework} (a mend by what the wearing part is made of, else a swap of a filled role, else an add to an empty one), the
  * old part comes back in the grid (a worn wearing part short by its wear) and the item wears a point.
  * Prior art: Silent Gear's {@code GearPartSwapRecipe} (MIT), design only: one shapeless recipe, one item plus parts, the old part
  * returned in the new part's slot. Rejected there: per-type max-per-item slot choice, the destroy-swapped-parts toggle, repair and
@@ -78,11 +78,14 @@ public class ModularSwapRecipe extends CustomRecipe {
         return Optional.of(new Grid(toolSlot, input.getItem(toolSlot).copyWithCount(1), slots, stock));
     }
 
-    /** The reworked item, a swap first and then an add, with the wear of one point. */
+    /** The reworked item: a mend (stock of what the wearing part is made of), else a swap, else an add. A swap or add wears the item a point; a mend does not. */
     private static Optional<ItemStack> make(Grid g) {
         var types = simple();
         var materials = MaterialIngredient.materialsNow();
-        Optional<ItemStack> out = ModularRework.rework(g.tool(), g.stock(), materials, types, ModularRework.Mode.SWAP);
+        Optional<ItemStack> out = ModularRework.rework(g.tool(), g.stock(), materials, types, ModularRework.Mode.MEND);
+        if (out.isPresent())
+            return out;
+        out = ModularRework.rework(g.tool(), g.stock(), materials, types, ModularRework.Mode.SWAP);
         if (out.isEmpty())
             out = ModularRework.rework(g.tool(), g.stock(), materials, types, ModularRework.Mode.ADD);
         out.ifPresent(s -> {
