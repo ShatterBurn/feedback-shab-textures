@@ -8,8 +8,6 @@ import io.github.soundgoodizerfan.feedback.registry.FSounds;
 import io.github.soundgoodizerfan.feedback.control.programmer.NodePos;
 import io.github.soundgoodizerfan.feedback.control.programmer.ProgrammerBlockEntity;
 import io.github.soundgoodizerfan.feedback.control.programmer.ProgrammerCommitPayload;
-import io.github.soundgoodizerfan.feedback.control.programmer.ProgrammerLinkPayload;
-import io.github.soundgoodizerfan.feedback.control.programmer.ProgrammerLinkedPayload;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
@@ -25,6 +23,11 @@ import org.lwjgl.glfw.GLFW;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import io.github.soundgoodizerfan.feedback.control.Analog;
+import io.github.soundgoodizerfan.feedback.control.data.DataSpec;
+import io.github.soundgoodizerfan.feedback.control.data.Reduction;
+import io.github.soundgoodizerfan.feedback.control.data.Signals;
+import io.github.soundgoodizerfan.feedback.robot.RobotChannel;
+import net.minecraft.resources.ResourceLocation;
 import io.github.soundgoodizerfan.feedback.control.program.ActuatorNode;
 import io.github.soundgoodizerfan.feedback.control.program.MathNode;
 import io.github.soundgoodizerfan.feedback.control.program.DelayNode;
@@ -149,7 +152,7 @@ public final class ProgramEditor {
 
         ProgramNode create(int id, String variable) {
             return switch (this) {
-                case SENSOR -> new SensorNode(id, null, null);
+                case SENSOR -> new SensorNode(id, null);
                 case GREATER -> new ComparatorNode(id, ComparatorNode.Compare.GREATER, ProgramNode.UNWIRED, ProgramNode.UNWIRED, 0f);
                 case LESS -> new ComparatorNode(id, ComparatorNode.Compare.LESS, ProgramNode.UNWIRED, ProgramNode.UNWIRED, 0f);
                 case LOGIC -> new LogicNode(id, LogicNode.Gate.AND, ProgramNode.UNWIRED, ProgramNode.UNWIRED);
@@ -157,7 +160,7 @@ public final class ProgramEditor {
                 case DELAY -> new DelayNode(id, ProgramNode.UNWIRED, ValueType.NUMBER, ControlTuning.DELAY_NAMED_TICKS[0]);
                 case READ -> new ReadNode(id, variable);
                 case WRITE -> new WriteNode(id, variable, ProgramNode.UNWIRED, ProgramNode.UNWIRED);
-                case ACTUATOR -> new ActuatorNode(id, ProgramNode.UNWIRED, null);
+                case ACTUATOR -> new ActuatorNode(id, ProgramNode.UNWIRED);
             };
         }
 
@@ -258,13 +261,6 @@ public final class ProgramEditor {
         /** The medium being edited (the programmer's slot), or empty. */
         ItemStack medium();
 
-        /**
-         * Offers the sensors linked straight to the Computer as a menu to pick a Sensor card's target from (index into its list, or -1 for the
-         * Data Connector's selection). Returns false, opening nothing, where there are none.
-         */
-        default boolean offerAttached(java.util.function.IntConsumer pick) {
-            return false;
-        }
     }
 
     private final Source src;
@@ -416,8 +412,8 @@ public final class ProgramEditor {
     private static int nodeHeight(ProgramNode node) {
         // A seat's key and an analog part's input get a row of their own.
         int rows = node instanceof DelayNode ? 3
-                : node instanceof SensorNode s && s.quantity() == Quantity.CONTROL
-                || node instanceof ActuatorNode a && a.target() != null ? 2 : node.ports().size();
+                : node instanceof SensorNode s ? Signals.CONTROL.equals(s.signal()) ? 5 : 4
+                : node instanceof ActuatorNode ? 3 : node.ports().size();
         return HEADER_H + Math.max(1, rows) * ROW_H + NODE_PAD;
     }
 
@@ -785,7 +781,6 @@ public final class ProgramEditor {
         graph = graph.withNodes(graph.nodes().stream().filter(n -> !selection.contains(n.id())).toList());
         unwireFrom(selection);
         selection.forEach(positions::remove);
-        selection.forEach(pendingLinks::remove);
         selection.clear();
         closeLiteralBox();
     }
@@ -950,40 +945,6 @@ public final class ProgramEditor {
         selection.add(node.id());
         GuiSkin.play(FSounds.UI_TOGGLE.get(), 1.2f);
 
-        // The ordinary order is select in the world, then place the card -- so placing tries the link at once.
-        if (node instanceof SensorNode || node instanceof ActuatorNode)
-            requestLink(node, true);
-    }
-
-    /**
-     * The latest request per card. Node ids are reused, so a reply is applied only if it answers
-     * the newest request for that id -- a late reply to a deleted card must not land on its successor.
-     */
-    private final Map<Integer, Integer> pendingLinks = new HashMap<>();
-    private int nextLinkToken;
-
-    private void requestLink(ProgramNode node, boolean quiet) {
-        requestLink(node, quiet, -1);
-    }
-
-    private void requestLink(ProgramNode node, boolean quiet, int pick) {
-        int token = ++nextLinkToken;
-        pendingLinks.put(node.id(), token);
-        PacketDistributor.sendToServer(new ProgrammerLinkPayload(src.pos(), node.id(), node instanceof ActuatorNode, quiet, token, pick));
-    }
-
-    public void applyLink(ProgrammerLinkedPayload payload) {
-        if (!Integer.valueOf(payload.token()).equals(pendingLinks.get(payload.nodeId())))
-            return;
-        pendingLinks.remove(payload.nodeId());
-        ProgramNode node = graph.find(payload.nodeId()).orElse(null);
-        if (node == null || isPrinted())
-            return;
-        pushUndo();
-        replaceNode(node instanceof ActuatorNode a
-                ? new ActuatorNode(a.id(), a.input(), payload.target(), payload.channel())
-                : new SensorNode(node.id(), payload.target(), payload.quantity().orElse(null), payload.channel()));
-        pruneBadWires();
     }
 
     private void toggleOp(ComparatorNode n) {
@@ -994,12 +955,6 @@ public final class ProgramEditor {
     }
 
     /** What a click (not a drag) at canvas-local {@code lx, ly} on {@code node} does, or null if that spot is only a drag handle. */
-    /** A Sensor card's Link: a menu of the Computer's attached sensors when it has any, else the pending selection at once. */
-    private void linkSensor(SensorNode n) {
-        if (!src.offerAttached(pick -> requestLink(n, false, pick)))
-            requestLink(n, false);
-    }
-
     @Nullable
     private Runnable controlAt(ProgramNode node, double lx, double ly) {
         int row = ly < HEADER_H ? -1 : (int) ((ly - HEADER_H) / ROW_H);
@@ -1010,8 +965,20 @@ public final class ProgramEditor {
     @Nullable
     private Runnable controlAt0(ProgramNode node, int row, double lx) {
         return switch (node) {
-            case SensorNode n -> row == 0 ? () -> linkSensor(n) : null;
-            case ActuatorNode n -> row == 0 && lx > 6 ? () -> requestLink(n, false) : null;
+            case SensorNode n -> lx <= 6 ? null : switch (row) {
+                case 0 -> () -> openPopup(signalChoices(n));
+                case 1 -> () -> openPopup(kindChoices(kind -> replace(n.withKind(kind)), n.kind()));
+                case 2 -> () -> openPopup(colorChoices(color -> replace(n.withColor(color))));
+                case 3 -> () -> replace(n.withReduction(Reduction.values()[(n.reduction().ordinal() + 1) % Reduction.values().length]));
+                default -> null;
+            };
+            case ActuatorNode n -> lx <= 6 ? null : switch (row) {
+                case 0 -> () -> openPopup(kindChoices(kind -> replace(n.withKind(kind)), n.kind()));
+                case 1 -> () -> openPopup(colorChoices(color -> replace(n.withColor(color))));
+                case 2 -> RobotChannel.KIND.equals(n.kind()) ? () -> openPopup(robotActionChoices(n))
+                        : () -> replace(n.withChannel((n.channel() + 1) % ACTUATOR_INPUTS));
+                default -> null;
+            };
             case ComparatorNode n -> row == 0 && Math.abs(lx - NODE_W / 2.0) <= 9 ? () -> toggleOp(n)
                     : row == 1 && lx > 6 && n.rightInput() == ProgramNode.UNWIRED ? () -> openLiteralBox(n) : null;
             case LogicNode n -> row == 0 && Math.abs(lx - NODE_W / 2.0) <= 12 ? () -> cycleOp(n) : null;
@@ -1025,47 +992,144 @@ public final class ProgramEditor {
         };
     }
 
-    /** The second row of a seat's Sensor card (which key) and an analog Actuator card (which input). */
+    /** The fifth row of a seat's Sensor card: which key it reads. */
     @Nullable
     private Runnable extraControl(ProgramNode node, int row) {
-        if (row != 1)
-            return null;
-        if (node instanceof SensorNode s && s.quantity() == Quantity.CONTROL) {
-            if (senseKeys(s).length > 0)
-                return () -> {
-                    pushUndo();
-                    replaceNode(s.withChannel((s.channel() + 1) % senseKeys(s).length));
-                };
+        if (row == 4 && node instanceof SensorNode s && Signals.CONTROL.equals(s.signal()))
             return () -> awaitingKey = s.id();
-        }
-        if (node instanceof ActuatorNode a && channelKeys(a).length > 1)
-            return () -> {
-                pushUndo();
-                replaceNode(a.withChannel((a.channel() + 1) % channelKeys(a).length));
-            };
         return null;
     }
 
     /** A Sensor card waiting for the next key pressed to read it from its seat; -1 for none. */
     private int awaitingKey = -1;
 
-    /** The named sense channels of the node a Sensor card reads (a robot behind a radio mast, another Controller's variables), or none. */
-    private static String[] senseKeys(SensorNode node) {
-        var level = Minecraft.getInstance().level;
-        if (node.target() == null || node.target().isLocal() || level == null)
-            return new String[0];
-        return level.getBlockEntity(node.target().pos()) instanceof io.github.soundgoodizerfan.feedback.control.RemoteChannels remote
-                ? remote.senseKeys() : new String[0];
+    /** Inputs an analog actuator card cycles through; a part says what each does. */
+    private static final int ACTUATOR_INPUTS = 6;
+
+    /** Replaces a card with an edited copy as one undo step, cutting any wire its new signal makes untypeable. */
+    private void replace(ProgramNode edited) {
+        pushUndo();
+        replaceNode(edited);
+        pruneBadWires();
     }
 
-    /** The inputs of the analog part an actuator card names, looked up in the client's own world. */
-    private static String[] channelKeys(ActuatorNode node) {
-        var level = Minecraft.getInstance().level;
-        if (node.target() == null || node.target().isLocal() || level == null)
-            return new String[0];
-        var be = level.getBlockEntity(node.target().pos());
-        return be instanceof Analog analog ? analog.channelKeys()
-                : be instanceof io.github.soundgoodizerfan.feedback.control.Steppable stepper ? stepper.channelKeys() : new String[0];
+    // --- picking from a list --------------------------------------------------------------------
+
+    private record Choice(Component label, int swatch, Runnable action) {
+    }
+
+    @Nullable
+    private List<Choice> popup;
+    private int popupX, popupY, popupScroll;
+    private static final int POPUP_W = 124, POPUP_ROW = 11, POPUP_ROWS = 10;
+
+    private void openPopup(List<Choice> choices) {
+        popup = choices;
+        popupScroll = 0;
+        popupX = (int) Math.max(vx, Math.min(mouseX, vx + vw - POPUP_W - 2));
+        popupY = (int) Math.max(vy, Math.min(mouseY, vy + vh - Math.min(choices.size(), POPUP_ROWS) * POPUP_ROW - 2));
+    }
+
+    private static String idKey(ResourceLocation id) {
+        return id.getNamespace() + "." + id.getPath().replace(DataSpec.KIND_PREFIX, "").replace('/', '.');
+    }
+
+    private static Component signalName(@Nullable ResourceLocation id) {
+        RobotChannel channel = id == null ? null : RobotChannel.ofSignal(id);
+        if (channel != null)
+            return Component.translatable(channel.langKey());
+        return id == null ? Component.translatable("feedback.programmer.pick")
+                : Component.translatableWithFallback("feedback.signal." + idKey(id), id.getPath());
+    }
+
+    private static Component kindName(@Nullable ResourceLocation id) {
+        return id == null ? Component.translatable("feedback.programmer.any_kind")
+                : Component.translatableWithFallback("feedback.kind." + idKey(id), id.getPath().replace(DataSpec.KIND_PREFIX, ""));
+    }
+
+    private static Component colorName(int color) {
+        return color < 0 ? Component.translatable("feedback.programmer.any_color")
+                : Component.translatable("color.minecraft." + net.minecraft.world.item.DyeColor.byId(color).getName());
+    }
+
+    private static int swatchOf(int color) {
+        return color < 0 ? 0 : 0xFF000000 | net.minecraft.world.item.DyeColor.byId(color).getTextureDiffuseColor();
+    }
+
+    /** Every signal a Sensor card can ask for: each quantity, and the robot's own senses. */
+    private List<Choice> signalChoices(SensorNode n) {
+        List<Choice> out = new ArrayList<>();
+        for (Quantity q : Quantity.values()) {
+            ResourceLocation id = Signals.of(q);
+            out.add(new Choice(signalName(id), 0, () -> replace(n.withSignal(id))));
+        }
+        for (RobotChannel channel : RobotChannel.values())
+            if (!channel.actuator())
+                out.add(new Choice(signalName(channel.signal()), 0, () -> replace(n.withSignal(channel.signal()))));
+        return out;
+    }
+
+    /** "any kind", then every kind the tags declare, then the robot's own. */
+    private static List<Choice> kindChoices(java.util.function.Consumer<ResourceLocation> pick, @Nullable ResourceLocation current) {
+        List<Choice> out = new ArrayList<>();
+        out.add(new Choice(kindName(null), 0, () -> pick.accept(null)));
+        java.util.Set<ResourceLocation> kinds = new java.util.TreeSet<>(DataSpec.allKinds());
+        kinds.add(RobotChannel.KIND);
+        for (ResourceLocation kind : kinds)
+            out.add(new Choice(kindName(kind), 0, () -> pick.accept(kind)));
+        return out;
+    }
+
+    private static List<Choice> colorChoices(java.util.function.IntConsumer pick) {
+        List<Choice> out = new ArrayList<>();
+        out.add(new Choice(colorName(-1), 0, () -> pick.accept(-1)));
+        for (net.minecraft.world.item.DyeColor dye : net.minecraft.world.item.DyeColor.values())
+            out.add(new Choice(colorName(dye.getId()), swatchOf(dye.getId()), () -> pick.accept(dye.getId())));
+        return out;
+    }
+
+    /** A robot's actions, picked for an actuator card whose kind is the robot. */
+    private List<Choice> robotActionChoices(ActuatorNode n) {
+        List<Choice> out = new ArrayList<>();
+        for (RobotChannel channel : RobotChannel.values())
+            if (channel.actuator())
+                out.add(new Choice(Component.translatable(channel.langKey()), 0, () -> replace(n.withChannel(channel.ordinal()))));
+        return out;
+    }
+
+    private boolean clickPopup(double mx, double my, int button) {
+        List<Choice> list = popup;
+        popup = null;
+        int rows = Math.min(list.size(), POPUP_ROWS);
+        if (button == GLFW.GLFW_MOUSE_BUTTON_LEFT && mx >= popupX && mx < popupX + POPUP_W && my >= popupY && my < popupY + rows * POPUP_ROW) {
+            int index = popupScroll + (int) ((my - popupY) / POPUP_ROW);
+            if (index < list.size()) {
+                GuiSkin.play(FSounds.UI_TOGGLE.get(), 1.2f);
+                list.get(index).action().run();
+            }
+        }
+        return true;
+    }
+
+    private void renderPopup(GuiGraphics graphics, int mx, int my) {
+        if (popup == null)
+            return;
+        int rows = Math.min(popup.size(), POPUP_ROWS);
+        graphics.fill(popupX - 1, popupY - 1, popupX + POPUP_W + 1, popupY + rows * POPUP_ROW + 1, COLOR_NODE_BORDER);
+        graphics.fill(popupX, popupY, popupX + POPUP_W, popupY + rows * POPUP_ROW, COLOR_NODE_BODY);
+        for (int i = 0; i < rows; i++) {
+            Choice choice = popup.get(popupScroll + i);
+            int y = popupY + i * POPUP_ROW;
+            boolean hover = mx >= popupX && mx < popupX + POPUP_W && my >= y && my < y + POPUP_ROW;
+            if (hover)
+                graphics.fill(popupX, y, popupX + POPUP_W, y + POPUP_ROW, COLOR_SELECTED);
+            int x = popupX + 3;
+            if (choice.swatch() != 0) {
+                graphics.fill(x, y + 2, x + 7, y + 9, choice.swatch());
+                x += 10;
+            }
+            graphics.drawString(font, choice.label(), x, y + 2, COLOR_TEXT, false);
+        }
     }
 
     private void cycleOp(LogicNode n) {
@@ -1300,6 +1364,8 @@ public final class ProgramEditor {
     // --- input ------------------------------------------------------------------------------
 
     public boolean mouseClicked(double mx, double my, int button) {
+        if (popup != null)
+            return clickPopup(mx, my, button);
         if (paletteOpen) {
             int index = (int) Math.floor((my - paletteY - PALETTE_HEADER_H) / PALETTE_ROW_H);
             List<Kind> kinds = paletteKinds();
@@ -1488,6 +1554,10 @@ public final class ProgramEditor {
     }
 
     public boolean mouseScrolled(double mx, double my, double scrollY) {
+        if (popup != null) {
+            popupScroll = Mth.clamp(popupScroll - (int) Math.signum(scrollY), 0, Math.max(0, popup.size() - POPUP_ROWS));
+            return true;
+        }
         if (my < vy + TOOL_H || scrollY == 0)
             return false;
         double focusX = toCanvasX(mx), focusY = toCanvasY(my);
@@ -1596,6 +1666,7 @@ public final class ProgramEditor {
         renderHud(graphics, mx, my);
         renderPalette(graphics, mx, my);
         renderCanvasTooltip(graphics, mx, my);
+        renderPopup(graphics, mx, my);
         graphics.pose().popPose();
     }
 
@@ -1698,24 +1769,21 @@ public final class ProgramEditor {
 
         switch (node) {
             case SensorNode n -> {
-                graphics.drawString(font, linkText(n.target()), 8, rowTextY(0), COLOR_MUTED, false);
-                if (n.quantity() == Quantity.CONTROL) {
-                    String[] senses = senseKeys(n);
-                    if (senses.length > 0)
-                        graphics.drawString(font, Component.translatable(senses[Math.floorMod(n.channel(), senses.length)]), 8, rowTextY(1),
-                                COLOR_TEXT, false);
-                    else
-                        graphics.drawString(font, awaitingKey == n.id() ? Component.translatable("feedback.programmer.press_key")
-                                : Component.translatable("feedback.programmer.key",
-                                InputConstants.Type.KEYSYM.getOrCreate(n.channel()).getDisplayName()), 8, rowTextY(1), COLOR_TEXT, false);
-                }
+                graphics.drawString(font, signalName(n.signal()), 8, rowTextY(0), n.signal() == null ? COLOR_MUTED : COLOR_TEXT, false);
+                renderRequestRows(graphics, n.kind(), n.color(), 1);
+                graphics.drawString(font, Component.translatable("feedback.programmer.reduction." + n.reduction().getSerializedName()),
+                        8, rowTextY(3), COLOR_MUTED, false);
+                if (Signals.CONTROL.equals(n.signal()))
+                    graphics.drawString(font, awaitingKey == n.id() ? Component.translatable("feedback.programmer.press_key")
+                            : Component.translatable("feedback.programmer.key",
+                            InputConstants.Type.KEYSYM.getOrCreate(n.channel()).getDisplayName()), 8, rowTextY(4), COLOR_TEXT, false);
             }
             case ActuatorNode n -> {
-                graphics.drawString(font, linkText(n.target()), 8, rowTextY(0), COLOR_MUTED, false);
-                String[] channels = channelKeys(n);
-                if (channels.length > 0)
-                    graphics.drawString(font, Component.translatable(channels[Math.floorMod(n.channel(), channels.length)]),
-                            8, rowTextY(1), channels.length > 1 ? COLOR_TEXT : COLOR_MUTED, false);
+                graphics.drawString(font, kindName(n.kind()), 8, rowTextY(0), n.kind() == null ? COLOR_MUTED : COLOR_TEXT, false);
+                renderColorRow(graphics, n.color(), 1);
+                RobotChannel action = RobotChannel.KIND.equals(n.kind()) ? RobotChannel.of(n.channel()) : null;
+                graphics.drawString(font, action != null ? Component.translatable(action.langKey())
+                        : Component.translatable("feedback.programmer.input", n.channel() + 1), 8, rowTextY(2), COLOR_MUTED, false);
             }
             case MathNode n -> {
                 graphics.drawString(font, "A", 8, rowTextY(0), COLOR_MUTED, false);
@@ -1808,13 +1876,19 @@ public final class ProgramEditor {
                 : g.wireError(other, wireFrom.slot(), node).isEmpty();
     }
 
-    private static Component linkText(@Nullable io.github.soundgoodizerfan.feedback.control.data.DataNodeRef target) {
-        if (target != null && target.isLocal()) {
-            var channel = io.github.soundgoodizerfan.feedback.robot.RobotChannel.of(target.local());
-            if (channel != null)
-                return Component.translatable(channel.langKey());
+    /** The kind row and the color row of a request card, starting at row {@code first}. */
+    private void renderRequestRows(GuiGraphics graphics, @Nullable ResourceLocation kind, int color, int first) {
+        graphics.drawString(font, kindName(kind), 8, rowTextY(first), kind == null ? COLOR_MUTED : COLOR_TEXT, false);
+        renderColorRow(graphics, color, first + 1);
+    }
+
+    private void renderColorRow(GuiGraphics graphics, int color, int row) {
+        int x = 8;
+        if (color >= 0) {
+            graphics.fill(x, rowTextY(row), x + 7, rowTextY(row) + 8, swatchOf(color));
+            x += 10;
         }
-        return Component.translatable(target != null ? "feedback.programmer.linked" : "feedback.programmer.unlinked");
+        graphics.drawString(font, colorName(color), x, rowTextY(row), color < 0 ? COLOR_MUTED : COLOR_TEXT, false);
     }
 
     /** Distinct per {@link Quantity} so a wire's colour names what it carries, not just Number-vs-Boolean. */
@@ -1845,7 +1919,7 @@ public final class ProgramEditor {
 
     private static int outputColor(ProgramGraph g, ProgramNode node) {
         return switch (node) {
-            case SensorNode s -> quantityColor(s.quantity());
+            case SensorNode s -> quantityColor(s.signal() == null ? null : Signals.quantity(s.signal()));
             case MathNode ignored -> COLOR_NUMBER_UNKNOWN;
             case DelayNode d -> typeColor(d.type());
             case ReadNode r -> typeColor(g.variableType(r.variable()).orElse(null));
@@ -1900,8 +1974,8 @@ public final class ProgramEditor {
     @Nullable
     private static Quantity inputQuantity(ProgramGraph g, ComparatorNode n) {
         for (int id : n.ports())
-            if (g.find(id).orElse(null) instanceof SensorNode s && s.quantity() != null)
-                return s.quantity();
+            if (g.find(id).orElse(null) instanceof SensorNode s && s.signal() != null && Signals.quantity(s.signal()) != null)
+                return Signals.quantity(s.signal());
         return null;
     }
 
@@ -1944,10 +2018,10 @@ public final class ProgramEditor {
         if (index < 0)
             return;
         ProgramNode node = graph.nodes().get(index);
-        boolean unlinked = node instanceof SensorNode s && s.target() == null
-                || node instanceof ActuatorNode a && a.target() == null;
+        boolean unlinked = node instanceof SensorNode s && s.signal() == null
+                || node instanceof ActuatorNode a && a.kind() == null;
         NodePos pos = posOf(graph, index);
         if (unlinked && controlAt(node, toCanvasX(mx) - pos.x(), toCanvasY(my) - pos.y()) != null)
-            graphics.renderTooltip(font, Component.translatable("feedback.programmer.link_hint"), mx, my);
+            graphics.renderTooltip(font, Component.translatable("feedback.programmer.pick_hint"), mx, my);
     }
 }

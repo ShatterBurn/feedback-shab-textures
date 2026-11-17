@@ -15,7 +15,6 @@ import io.github.soundgoodizerfan.feedback.control.program.ControllerLimits;
 import io.github.soundgoodizerfan.feedback.control.program.ProgramGraph;
 import io.github.soundgoodizerfan.feedback.control.program.ProgramNode;
 import io.github.soundgoodizerfan.feedback.control.program.SensorNode;
-import io.github.soundgoodizerfan.feedback.control.programmer.ProgrammerLinkedPayload;
 import io.github.soundgoodizerfan.feedback.instrument.Quantity;
 import io.github.soundgoodizerfan.feedback.registry.FDataComponents;
 import io.github.soundgoodizerfan.feedback.client.gui.GuiSkin;
@@ -264,12 +263,6 @@ public class ComputerScreen extends SkinnedScreen<ComputerMenu> implements Compu
         NotesWindow notes = desktop.window("notes");
         notes.flush();
         super.onClose();
-    }
-
-    /** The editor's link reply, routed here from the network handler. */
-    public void applyLink(ProgrammerLinkedPayload payload) {
-        EditorWindow editor = desktop.window("editor");
-        editor.applyLink(payload);
     }
 
     // --- drawing --------------------------------------------------------------------------------

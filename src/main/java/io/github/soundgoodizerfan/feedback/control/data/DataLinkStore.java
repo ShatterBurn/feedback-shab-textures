@@ -29,10 +29,12 @@ import net.neoforged.neoforge.network.PacketDistributor;
  */
 public final class DataLinkStore extends SavedData {
 
-    private static final String NAME = "feedback_data_links", LINKS = "Links", NODE = "Node", TO = "To";
+    private static final String NAME = "feedback_data_links", LINKS = "Links", NODE = "Node", TO = "To", COLORS = "Colors", COLOR = "C";
 
     private final Map<DataNodeRef, Set<DataNodeRef>> links = new HashMap<>();
     private final Map<Long, Set<DataNodeRef>> byChunk = new HashMap<>();
+    /** Link colors: a Controller's ref, then each node bound to it and the color it was given. */
+    private final Map<DataNodeRef, Map<DataNodeRef, Integer>> colors = new HashMap<>();
 
     /** The client's mirror, filled by {@link DataLinksPayload}; one level at a time on a client. */
     private static final DataLinkStore CLIENT = new DataLinkStore();
@@ -70,7 +72,7 @@ public final class DataLinkStore extends SavedData {
         DataLinkStore store = of(server);
         store.setDirty();
         PacketDistributor.sendToPlayersTrackingChunk(server, new ChunkPos(ref.pos()),
-                DataLinksPayload.of(List.of(ref), store.links));
+                DataLinksPayload.of(List.of(ref), store.links, store.colors));
     }
 
     /** Sends a player every link in a chunk it has just started to watch. */
@@ -78,7 +80,7 @@ public final class DataLinkStore extends SavedData {
         DataLinkStore store = of(level);
         Set<DataNodeRef> refs = store.byChunk.get(chunk.toLong());
         if (refs != null && !refs.isEmpty())
-            PacketDistributor.sendToPlayer(player, DataLinksPayload.of(new ArrayList<>(refs), store.links));
+            PacketDistributor.sendToPlayer(player, DataLinksPayload.of(new ArrayList<>(refs), store.links, store.colors));
     }
 
     /**
@@ -97,8 +99,18 @@ public final class DataLinkStore extends SavedData {
             any |= !key.equals(entry.getKey()) || !to.equals(entry.getValue());
             moved.put(key, to);
         }
+        Map<DataNodeRef, Map<DataNodeRef, Integer>> recoloured = new HashMap<>();
+        for (Map.Entry<DataNodeRef, Map<DataNodeRef, Integer>> entry : store.colors.entrySet()) {
+            Map<DataNodeRef, Integer> tints = new HashMap<>();
+            entry.getValue().forEach((n, c) -> tints.put(follow(n, moves), c));
+            DataNodeRef key = follow(entry.getKey(), moves);
+            any |= !key.equals(entry.getKey());
+            recoloured.put(key, tints);
+        }
         if (!any)
             return;
+        store.colors.clear();
+        store.colors.putAll(recoloured);
         store.links.clear();
         store.links.putAll(moved);
         store.byChunk.clear();
@@ -113,18 +125,58 @@ public final class DataLinkStore extends SavedData {
         return to == null ? ref : new DataNodeRef(to, ref.side(), ref.voxel(), ref.local());
     }
 
+    /** The color {@code controller} gave its link to {@code node}, or -1 for none. */
+    public static int colorOf(Level level, DataNodeRef controller, DataNodeRef node) {
+        if (level == null)
+            return -1;
+        Map<DataNodeRef, Integer> mine = (level instanceof ServerLevel server ? of(server) : CLIENT).colors.get(controller);
+        return mine == null ? -1 : mine.getOrDefault(node, -1);
+    }
+
+    /** Sets (or, with -1, clears) the color {@code controller} gives its link to {@code node}; sent to the players watching. */
+    public static void setColor(Level level, DataNodeRef controller, DataNodeRef node, int color) {
+        if (!(level instanceof ServerLevel server))
+            return;
+        DataLinkStore store = of(server);
+        Map<DataNodeRef, Integer> mine = store.colors.computeIfAbsent(controller, c -> new HashMap<>());
+        boolean differs = color < 0 ? mine.remove(node) != null : !Integer.valueOf(color).equals(mine.put(node, color));
+        if (mine.isEmpty())
+            store.colors.remove(controller);
+        if (differs)
+            changed(level, controller);
+    }
+
+    /** Client: the color some Controller gave its link to {@code node} (for tinting the node), or -1. */
+    public static int tintOf(DataNodeRef node) {
+        for (Map<DataNodeRef, Integer> tints : CLIENT.colors.values()) {
+            Integer color = tints.get(node);
+            if (color != null)
+                return color;
+        }
+        return -1;
+    }
+
     /** Client: a node's links as the server last said. */
     public static void receive(DataLinksPayload payload) {
         epoch++;
-        for (DataLinksPayload.Entry entry : payload.entries())
+        for (DataLinksPayload.Entry entry : payload.entries()) {
             if (entry.links().isEmpty())
                 CLIENT.links.remove(entry.node());
             else
                 CLIENT.links.put(entry.node(), new HashSet<>(entry.links()));
+            if (entry.tints().isEmpty())
+                CLIENT.colors.remove(entry.node());
+            else {
+                Map<DataNodeRef, Integer> tints = new HashMap<>();
+                entry.tints().forEach(t -> tints.put(t.node(), t.color()));
+                CLIENT.colors.put(entry.node(), tints);
+            }
+        }
     }
 
     public static void clearClient() {
         CLIENT.links.clear();
+        CLIENT.colors.clear();
         epoch++;
     }
 
@@ -148,6 +200,16 @@ public final class DataLinkStore extends SavedData {
             list.add(one);
         }
         tag.put(LINKS, list);
+        ListTag tinted = new ListTag();
+        for (Map.Entry<DataNodeRef, Map<DataNodeRef, Integer>> entry : colors.entrySet())
+            for (Map.Entry<DataNodeRef, Integer> tint : entry.getValue().entrySet()) {
+                CompoundTag one = new CompoundTag();
+                one.put(NODE, entry.getKey().toTag());
+                one.put(TO, tint.getKey().toTag());
+                one.putInt(COLOR, tint.getValue());
+                tinted.add(one);
+            }
+        tag.put(COLORS, tinted);
         return tag;
     }
 
@@ -161,6 +223,11 @@ public final class DataLinkStore extends SavedData {
                 to.add(DataNodeRef.fromTag((CompoundTag) other));
             store.links.put(node, to);
             store.byChunk.computeIfAbsent(new ChunkPos(node.pos()).toLong(), c -> new HashSet<>()).add(node);
+        }
+        for (Tag t : tag.getList(COLORS, Tag.TAG_COMPOUND)) {
+            CompoundTag one = (CompoundTag) t;
+            store.colors.computeIfAbsent(DataNodeRef.fromTag(one.getCompound(NODE)), c -> new HashMap<>())
+                    .put(DataNodeRef.fromTag(one.getCompound(TO)), one.getInt(COLOR));
         }
         return store;
     }

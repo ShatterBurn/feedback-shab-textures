@@ -12,7 +12,7 @@ import io.github.soundgoodizerfan.feedback.client.gui.GuiSkin;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 
-/** The Links app: the blocks the running program's sensor and actuator cards are linked to, with their positions. */
+/** The Links app: the blocks linked to the Computer, with their positions and link colors. */
 final class LinksWindow extends DesktopWindow {
 
     private final ComputerContext ctx;
@@ -37,39 +37,26 @@ final class LinksWindow extends DesktopWindow {
     protected void render(Ui ui, int mx, int my) {
         GuiSkin skin = ui.skin();
         ProgramGraph graph = ctx.running();
-        boolean any = false;
-        for (ProgramNode node : graph.nodes())
-            any |= node instanceof SensorNode || node instanceof ActuatorNode;
-        if (!any) {
+        var computer = ctx.computer();
+        java.util.List<DataNodeRef> refs = computer == null ? java.util.List.of() : new java.util.ArrayList<>(computer.getNodeLinks());
+        refs.sort(java.util.Comparator.naturalOrder());
+        if (refs.isEmpty()) {
             ui.wrapped(0, 0, ui.w(), Component.translatable("gui.feedback.computer.no_links"), skin.dim());
             return;
         }
         int y = scroll.begin(ui, 0, 0, ui.w(), ui.h());
         int top = y;
         int width = scroll.innerWidth() - 4;
-        for (ProgramNode node : graph.nodes()) {
-            DataNodeRef ref;
-            String kind;
-            if (node instanceof SensorNode s) {
-                ref = s.target();
-                kind = "in";
-            } else if (node instanceof ActuatorNode a) {
-                ref = a.target();
-                kind = "out";
-            } else {
-                continue;
-            }
-            String where = "unlinked";
-            var level = Minecraft.getInstance().level;
-            if (ref != null && ref.isLocal()) {
-                var channel = io.github.soundgoodizerfan.feedback.robot.RobotChannel.of(ref.local());
-                where = channel == null ? "robot" : net.minecraft.network.chat.Component.translatable(channel.langKey()).getString();
-            } else if (ref != null && level != null) {
-                var pos = ref.pos();
-                where = level.getBlockState(pos).getBlock().getName().getString() + " " + pos.getX() + "," + pos.getY() + "," + pos.getZ();
-            }
+        var level = Minecraft.getInstance().level;
+        for (DataNodeRef ref : refs) {
+            var node = level == null ? null : io.github.soundgoodizerfan.feedback.control.data.DataNode.resolveOrNull(level, ref);
+            String kind = node != null && node.dataSpec().writes() ? "out" : "in";
+            int color = io.github.soundgoodizerfan.feedback.control.data.DataLinkStore.colorOf(level, computer.getNodeRef(), ref);
+            String where = level == null ? "?" : level.getBlockState(ref.pos()).getBlock().getName().getString()
+                    + " " + ref.pos().getX() + "," + ref.pos().getY() + "," + ref.pos().getZ()
+                    + (color >= 0 ? " (" + net.minecraft.network.chat.Component.translatable("color.minecraft." + net.minecraft.world.item.DyeColor.byId(color).getName()).getString() + ")" : "");
             ui.text(4, y, kind, skin.dim());
-            ui.clipped(24, y, width - 20, where, ref == null ? skin.warn() : skin.ink());
+            ui.clipped(24, y, width - 20, where, skin.ink());
             y += Ui.LINE;
         }
         scroll.end(ui, y - top + 4);

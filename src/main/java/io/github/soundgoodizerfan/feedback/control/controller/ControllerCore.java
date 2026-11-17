@@ -69,7 +69,6 @@ public class ControllerCore implements Container, Fittable {
     private static final String ESCAPEMENT = "Escapement";
     private static final String CIRCUIT = "Circuit";
     private static final String ENDERNET = "Endernet";
-    private static final String COLORS = "Colors";
 
     private ItemStack card = ItemStack.EMPTY;
 
@@ -596,8 +595,6 @@ public class ControllerCore implements Container, Fittable {
 
     // --- binding --------------------------------------------------------------------------------
 
-    /** Link color of each node bound to this host, set with the connector when it is linked; absent means uncolored. Persisted. */
-    private final Map<DataNodeRef, Integer> colors = new HashMap<>();
     /** The data nodes this host reaches by links, as the resolver sees them; rebuilt when any link changes or every {@link #REBIND_TICKS}. */
     private List<DataRequest.Candidate> bound = List.of();
     /** Each card's matches among {@link #bound}, by card id; cleared with it. */
@@ -608,17 +605,15 @@ public class ControllerCore implements Container, Fittable {
 
     private static final int REBIND_TICKS = 40;
 
+    /** The color this host gave its link to {@code ref}, or {@link DataRequest#ANY}; kept in {@link DataLinkStore} so clients see it too. */
     public int colorOf(DataNodeRef ref) {
-        return colors.getOrDefault(ref, DataRequest.ANY);
+        return host instanceof DataNode self ? DataLinkStore.colorOf(level(), self.getNodeRef(), ref) : DataRequest.ANY;
     }
 
     /** Sets the link color of a node bound here ({@link DataRequest#ANY} clears it). */
     public void setColor(DataNodeRef ref, int color) {
-        boolean changed = color == DataRequest.ANY ? colors.remove(ref) != null : !Integer.valueOf(color).equals(colors.put(ref, color));
-        if (changed) {
-            boundEpoch = -1;
-            setChanged();
-        }
+        if (host instanceof DataNode self)
+            DataLinkStore.setColor(level(), self.getNodeRef(), ref, color);
     }
 
     /** How many nodes may link to this host: a base, and more for each Card Rack fitted. */
@@ -823,19 +818,6 @@ public class ControllerCore implements Container, Fittable {
         variables.putAll(kept);
     }
 
-    /** The Lift carried blocks to new positions: the link colors of moved nodes follow them. */
-    public void retarget(Map<net.minecraft.core.BlockPos, net.minecraft.core.BlockPos> moves) {
-        Map<DataNodeRef, Integer> moved = new HashMap<>();
-        colors.forEach((ref, color) -> {
-            net.minecraft.core.BlockPos to = moves.get(ref.pos());
-            moved.put(to == null ? ref : new DataNodeRef(to, ref.side(), ref.voxel(), ref.local()), color);
-        });
-        colors.clear();
-        colors.putAll(moved);
-        boundEpoch = -1;
-        setChanged();
-    }
-
     /** Saves, and forgets the cached graph so a new card is evaluated on its first turning tick. */
     private void cardChanged() {
         lastGraph = ProgramGraph.EMPTY;
@@ -935,13 +917,6 @@ public class ControllerCore implements Container, Fittable {
             list.add(entry);
         });
         tag.put(VARIABLES, list);
-        ListTag colored = new ListTag();
-        colors.forEach((ref, color) -> {
-            CompoundTag entry = ref.toTag();
-            entry.putInt("C", color);
-            colored.add(entry);
-        });
-        tag.put(COLORS, colored);
         tag.putInt(DRUMS, (int) upgrades.stream().filter(MemoryDrumFitting.class::isInstance).count());
         tag.putInt(RACKS, (int) upgrades.stream().filter(CardRackFitting.class::isInstance).count());
         tag.putBoolean(ESCAPEMENT, upgrades.stream().anyMatch(EscapementFitting.class::isInstance));
@@ -965,9 +940,6 @@ public class ControllerCore implements Container, Fittable {
             CompoundTag entry = (CompoundTag) t;
             variables.put(entry.getString("N"), entry.contains("F") ? (Object) entry.getFloat("F") : (Object) entry.getBoolean("B"));
         }
-        colors.clear();
-        for (Tag t : tag.getList(COLORS, Tag.TAG_COMPOUND))
-            colors.put(DataNodeRef.fromTag((CompoundTag) t), ((CompoundTag) t).getInt("C"));
         boundEpoch = -1;
         upgrades.clear();
         for (int i = 0; i < Math.min(tag.getInt(DRUMS), ControlTuning.MEMORY_DRUM_MAX); i++)

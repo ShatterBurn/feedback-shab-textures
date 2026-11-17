@@ -63,6 +63,12 @@ public record SensorNode(int id, @Nullable ResourceLocation signal, @Nullable Re
         return new DataRequest(signal, kind, color, reduction);
     }
 
+    /** The built-in quantity this card's signal is, or null for a signal that is not one (a robot's sense). */
+    @Nullable
+    public io.github.soundgoodizerfan.feedback.instrument.Quantity quantity() {
+        return signal == null ? null : Signals.quantity(signal);
+    }
+
     /** Whether this card reads a two-state signal, so a program treats it as a boolean. */
     public boolean isState() {
         return signal != null && Signals.isBoolean(signal);
