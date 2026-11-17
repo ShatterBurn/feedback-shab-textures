@@ -85,7 +85,7 @@
         },
         {
           "type": "minecraft:item",
-          "name": "feedback:beryl_lump"
+          "name": "feedback:beryl_gem"
         }
       ],
       "rolls": 1.0

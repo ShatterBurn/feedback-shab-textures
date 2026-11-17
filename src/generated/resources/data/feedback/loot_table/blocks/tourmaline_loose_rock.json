@@ -53,7 +53,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "feedback:tourmaline_lump"
+          "name": "feedback:tourmaline_gem"
         },
         {
           "type": "minecraft:empty"

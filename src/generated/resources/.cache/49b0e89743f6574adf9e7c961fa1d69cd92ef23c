@@ -1,4 +1,4 @@
-// 1.21.1	2026-11-15T20:54:38.664864887	Item Models: feedback
+// 1.21.1	2026-11-17T06:03:02.818224208	Item Models: feedback
 65f5ba7f72e4fca87b13d4ce890377b47b0160dd assets/feedback/models/item/acacia_grip.json
 73e726da459876a2f12985c5cd3247f952c6eb88 assets/feedback/models/item/alnico_birdshot.json
 49daa5676c97ca3e81e097077fcde704793d52a1 assets/feedback/models/item/alnico_bullet.json
@@ -258,6 +258,7 @@ ecea29d296fea14e23e84fd85988b769c9a17560 assets/feedback/models/item/bell_metal_
 81225bf472e505bcf541f3821c502d4f0867aef4 assets/feedback/models/item/beryl_crushed.json
 21846dfdaf5a3ea62826b14b823c76e6d9131271 assets/feedback/models/item/beryl_crystal_plate.json
 94405843f6403f879bec90012bcb581772bbbf76 assets/feedback/models/item/beryl_dust.json
+9f5da4f33f7e27f88158709198a610f79e88bf1a assets/feedback/models/item/beryl_gem.json
 4f96027194ff062abb5eae2aa87a9780c1e9891d assets/feedback/models/item/beryl_lump.json
 4e4db6418bc86b3bc438ce254a661b2411f75280 assets/feedback/models/item/beryl_tailings.json
 73e726da459876a2f12985c5cd3247f952c6eb88 assets/feedback/models/item/beryllium_birdshot.json
@@ -900,6 +901,7 @@ ecea29d296fea14e23e84fd85988b769c9a17560 assets/feedback/models/item/gallium_riv
 33ed87063800ba653a5a68113520f6e8f1a1ac99 assets/feedback/models/item/garnet_calcine.json
 21846dfdaf5a3ea62826b14b823c76e6d9131271 assets/feedback/models/item/garnet_crystal_plate.json
 94405843f6403f879bec90012bcb581772bbbf76 assets/feedback/models/item/garnet_dust.json
+9f5da4f33f7e27f88158709198a610f79e88bf1a assets/feedback/models/item/garnet_gem.json
 4f96027194ff062abb5eae2aa87a9780c1e9891d assets/feedback/models/item/garnet_lump.json
 94405843f6403f879bec90012bcb581772bbbf76 assets/feedback/models/item/glass_dust.json
 94405843f6403f879bec90012bcb581772bbbf76 assets/feedback/models/item/glazed_ceramic_dust.json
@@ -1099,6 +1101,7 @@ ecea29d296fea14e23e84fd85988b769c9a17560 assets/feedback/models/item/iron_rivet.
 45b92b867fd674f9299593d0fc5b99feac2976b0 assets/feedback/models/item/iron_wire.json
 33ed87063800ba653a5a68113520f6e8f1a1ac99 assets/feedback/models/item/jade_calcine.json
 94405843f6403f879bec90012bcb581772bbbf76 assets/feedback/models/item/jade_dust.json
+9f5da4f33f7e27f88158709198a610f79e88bf1a assets/feedback/models/item/jade_gem.json
 4f96027194ff062abb5eae2aa87a9780c1e9891d assets/feedback/models/item/jade_lump.json
 65f5ba7f72e4fca87b13d4ce890377b47b0160dd assets/feedback/models/item/jungle_grip.json
 94405843f6403f879bec90012bcb581772bbbf76 assets/feedback/models/item/lapis_dust.json
@@ -1757,6 +1760,7 @@ cb609a2e9db394377824ac848138172c5bccbe29 assets/feedback/models/item/rotten_fles
 33ed87063800ba653a5a68113520f6e8f1a1ac99 assets/feedback/models/item/ruby_calcine.json
 21846dfdaf5a3ea62826b14b823c76e6d9131271 assets/feedback/models/item/ruby_crystal_plate.json
 94405843f6403f879bec90012bcb581772bbbf76 assets/feedback/models/item/ruby_dust.json
+9f5da4f33f7e27f88158709198a610f79e88bf1a assets/feedback/models/item/ruby_gem.json
 4f96027194ff062abb5eae2aa87a9780c1e9891d assets/feedback/models/item/ruby_lump.json
 cb609a2e9db394377824ac848138172c5bccbe29 assets/feedback/models/item/salmon_rod.json
 94405843f6403f879bec90012bcb581772bbbf76 assets/feedback/models/item/salt_dust.json
@@ -2214,6 +2218,7 @@ ecea29d296fea14e23e84fd85988b769c9a17560 assets/feedback/models/item/titanium_ri
 33ed87063800ba653a5a68113520f6e8f1a1ac99 assets/feedback/models/item/tourmaline_calcine.json
 21846dfdaf5a3ea62826b14b823c76e6d9131271 assets/feedback/models/item/tourmaline_crystal_plate.json
 94405843f6403f879bec90012bcb581772bbbf76 assets/feedback/models/item/tourmaline_dust.json
+9f5da4f33f7e27f88158709198a610f79e88bf1a assets/feedback/models/item/tourmaline_gem.json
 4f96027194ff062abb5eae2aa87a9780c1e9891d assets/feedback/models/item/tourmaline_lump.json
 cb609a2e9db394377824ac848138172c5bccbe29 assets/feedback/models/item/tropical_fish_rod.json
 94405843f6403f879bec90012bcb581772bbbf76 assets/feedback/models/item/tuff_dust.json

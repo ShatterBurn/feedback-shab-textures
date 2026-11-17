@@ -53,7 +53,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "feedback:jade_lump"
+          "name": "feedback:jade_gem"
         },
         {
           "type": "minecraft:empty"

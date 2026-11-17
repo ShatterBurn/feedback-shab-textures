@@ -72,6 +72,7 @@
     "feedback:cupronickel_pipe",
     "feedback:damper",
     "feedback:dark_cell",
+    "feedback:data_port",
     "feedback:data_sensor",
     "feedback:demolition_charge",
     "feedback:depot",

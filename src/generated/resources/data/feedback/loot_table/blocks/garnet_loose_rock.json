@@ -53,7 +53,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "feedback:garnet_lump"
+          "name": "feedback:garnet_gem"
         },
         {
           "type": "minecraft:empty"
