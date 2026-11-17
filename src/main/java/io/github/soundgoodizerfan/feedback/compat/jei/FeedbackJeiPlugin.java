@@ -163,6 +163,16 @@ public class FeedbackJeiPlugin implements IModPlugin {
                                 screen.getGuiTop() + 14, io.github.soundgoodizerfan.feedback.modular.engineering.EngineeringTableMenu.POP_W + 4, 170));
                     }
                 });
+        // a Computer window made game-fullscreen covers the whole game window: JEI's lists keep off all of it, which leaves them no room, so they hide
+        registration.addGuiContainerHandler(io.github.soundgoodizerfan.feedback.client.desktop.ComputerScreen.class,
+                new mezz.jei.api.gui.handlers.IGuiContainerHandler<io.github.soundgoodizerfan.feedback.client.desktop.ComputerScreen>() {
+                    @Override
+                    public java.util.List<net.minecraft.client.renderer.Rect2i> getGuiExtraAreas(io.github.soundgoodizerfan.feedback.client.desktop.ComputerScreen screen) {
+                        if (!screen.windowFullscreen())
+                            return java.util.List.of();
+                        return java.util.List.of(new net.minecraft.client.renderer.Rect2i(0, 0, screen.width, screen.height));
+                    }
+                });
     }
 
     @Override

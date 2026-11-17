@@ -1,0 +1,88 @@
+{
+  "title": "Hurrying a seed along",
+  "concepts": {
+    "seed": {
+      "label": "Seed",
+      "traits": [
+        "kernel",
+        "earth"
+      ]
+    },
+    "soil": {
+      "label": "Soil",
+      "traits": [
+        "earth",
+        "wet"
+      ]
+    },
+    "water": {
+      "label": "Water",
+      "traits": [
+        "wet",
+        "sun"
+      ]
+    },
+    "warmth": {
+      "label": "Warmth",
+      "traits": [
+        "sun",
+        "green"
+      ]
+    },
+    "sprout": {
+      "label": "Sprout",
+      "traits": [
+        "green",
+        "time"
+      ]
+    },
+    "season": {
+      "label": "Season",
+      "traits": [
+        "time",
+        "life"
+      ]
+    },
+    "growth": {
+      "label": "Growth",
+      "traits": [
+        "life",
+        "burst"
+      ]
+    },
+    "spore": {
+      "label": "Spore",
+      "traits": [
+        "kernel",
+        "wet"
+      ]
+    },
+    "frost": {
+      "label": "Frost",
+      "traits": [
+        "burst",
+        "time"
+      ]
+    },
+    "weed": {
+      "label": "Weed",
+      "traits": [
+        "sun",
+        "life"
+      ]
+    }
+  },
+  "start": "seed",
+  "goal": "growth",
+  "replay": [
+    "A seed needs soil, water and warmth, and then it only needs time. The rite takes the time out.",
+    "The part makes living things do their season at once."
+  ],
+  "question": "What does a bloom rite hurry along?",
+  "options": [
+    "Natural growth",
+    "Metal fatigue",
+    "Water boiling"
+  ],
+  "answer": 0
+}

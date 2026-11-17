@@ -1,0 +1,88 @@
+{
+  "title": "Finding the wire in the rock",
+  "concepts": {
+    "compass": {
+      "label": "Compass",
+      "traits": [
+        "north",
+        "swing"
+      ]
+    },
+    "needle": {
+      "label": "Needle",
+      "traits": [
+        "swing",
+        "invisible"
+      ]
+    },
+    "field": {
+      "label": "Field",
+      "traits": [
+        "invisible",
+        "lean"
+      ]
+    },
+    "pull": {
+      "label": "Pull",
+      "traits": [
+        "lean",
+        "vein"
+      ]
+    },
+    "ore": {
+      "label": "Ore",
+      "traits": [
+        "vein",
+        "shine"
+      ]
+    },
+    "metal": {
+      "label": "Metal",
+      "traits": [
+        "shine",
+        "current"
+      ]
+    },
+    "conductor": {
+      "label": "Conductor",
+      "traits": [
+        "current",
+        "seek"
+      ]
+    },
+    "rod": {
+      "label": "Rod",
+      "traits": [
+        "north",
+        "invisible"
+      ]
+    },
+    "lodestone": {
+      "label": "Lodestone",
+      "traits": [
+        "seek",
+        "shine"
+      ]
+    },
+    "stone": {
+      "label": "Stone",
+      "traits": [
+        "lean",
+        "current"
+      ]
+    }
+  },
+  "start": "compass",
+  "goal": "conductor",
+  "replay": [
+    "A needle swings in a field it cannot see. Follow the pull to the vein and the shine of metal that carries a current.",
+    "The part leans toward conductive blocks."
+  ],
+  "question": "What does this dowse rite point toward?",
+  "options": [
+    "The nearest dense block",
+    "The nearest flammable block",
+    "The nearest conductive block"
+  ],
+  "answer": 2
+}

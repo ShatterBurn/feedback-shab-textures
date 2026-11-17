@@ -1,0 +1,88 @@
+{
+  "title": "Shrugging off wear",
+  "concepts": {
+    "rust": {
+      "label": "Rust",
+      "traits": [
+        "decay",
+        "rub"
+      ]
+    },
+    "wear": {
+      "label": "Wear",
+      "traits": [
+        "rub",
+        "thin"
+      ]
+    },
+    "layer": {
+      "label": "Layer",
+      "traits": [
+        "thin",
+        "paint"
+      ]
+    },
+    "coat": {
+      "label": "Coat",
+      "traits": [
+        "paint",
+        "guard"
+      ]
+    },
+    "shield": {
+      "label": "Shield",
+      "traits": [
+        "guard",
+        "under"
+      ]
+    },
+    "shelter": {
+      "label": "Shelter",
+      "traits": [
+        "under",
+        "protect"
+      ]
+    },
+    "ward": {
+      "label": "Ward",
+      "traits": [
+        "protect",
+        "hold"
+      ]
+    },
+    "patina": {
+      "label": "Patina",
+      "traits": [
+        "decay",
+        "thin"
+      ]
+    },
+    "oil": {
+      "label": "Oil",
+      "traits": [
+        "hold",
+        "under"
+      ]
+    },
+    "gap": {
+      "label": "Gap",
+      "traits": [
+        "paint",
+        "protect"
+      ]
+    }
+  },
+  "start": "rust",
+  "goal": "ward",
+  "replay": [
+    "Rust is wear that nothing stopped. A coat takes the rub in place of the part, and the layer under it is what stays whole.",
+    "The part shrugs off the wear of operation."
+  ],
+  "question": "What does a ward rite protect a part from?",
+  "options": [
+    "The wear of operation",
+    "Being stolen",
+    "Being seen"
+  ],
+  "answer": 0
+}

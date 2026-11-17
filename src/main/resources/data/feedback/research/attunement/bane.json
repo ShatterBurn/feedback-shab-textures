@@ -1,0 +1,88 @@
+{
+  "title": "Teaching a part to repel",
+  "concepts": {
+    "rot": {
+      "label": "Rot",
+      "traits": [
+        "decay",
+        "smell"
+      ]
+    },
+    "stench": {
+      "label": "Stench",
+      "traits": [
+        "smell",
+        "alarm"
+      ]
+    },
+    "warning": {
+      "label": "Warning",
+      "traits": [
+        "alarm",
+        "fear"
+      ]
+    },
+    "aversion": {
+      "label": "Aversion",
+      "traits": [
+        "fear",
+        "avoid"
+      ]
+    },
+    "barrier": {
+      "label": "Barrier",
+      "traits": [
+        "avoid",
+        "shape"
+      ]
+    },
+    "pattern": {
+      "label": "Pattern",
+      "traits": [
+        "shape",
+        "drive"
+      ]
+    },
+    "repulsion": {
+      "label": "Repulsion",
+      "traits": [
+        "drive",
+        "filth"
+      ]
+    },
+    "spoilage": {
+      "label": "Spoilage",
+      "traits": [
+        "decay",
+        "alarm"
+      ]
+    },
+    "fence": {
+      "label": "Fence",
+      "traits": [
+        "filth",
+        "shape"
+      ]
+    },
+    "hiss": {
+      "label": "Hiss",
+      "traits": [
+        "fear",
+        "drive"
+      ]
+    }
+  },
+  "start": "rot",
+  "goal": "repulsion",
+  "replay": [
+    "The stench of rot warns the creature off. Mark the warning as a pattern and the part turns it into a barrier the filthy cannot cross.",
+    "The part keeps the foul things away."
+  ],
+  "question": "What does a bane rite do to the creatures it is aimed at?",
+  "options": [
+    "Calls them closer",
+    "Drives them off",
+    "Feeds them"
+  ],
+  "answer": 1
+}

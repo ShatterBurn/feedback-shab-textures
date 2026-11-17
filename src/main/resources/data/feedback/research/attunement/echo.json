@@ -1,0 +1,88 @@
+{
+  "title": "Saying it twice",
+  "concepts": {
+    "shout": {
+      "label": "Shout",
+      "traits": [
+        "voice",
+        "rock"
+      ]
+    },
+    "cliff": {
+      "label": "Cliff",
+      "traits": [
+        "rock",
+        "back"
+      ]
+    },
+    "return": {
+      "label": "Return",
+      "traits": [
+        "back",
+        "wait"
+      ]
+    },
+    "delay": {
+      "label": "Delay",
+      "traits": [
+        "wait",
+        "shape"
+      ]
+    },
+    "pattern": {
+      "label": "Pattern",
+      "traits": [
+        "shape",
+        "again"
+      ]
+    },
+    "repetition": {
+      "label": "Repetition",
+      "traits": [
+        "again",
+        "sound"
+      ]
+    },
+    "echo": {
+      "label": "Echo",
+      "traits": [
+        "sound",
+        "double"
+      ]
+    },
+    "whisper": {
+      "label": "Whisper",
+      "traits": [
+        "voice",
+        "back"
+      ]
+    },
+    "bell": {
+      "label": "Bell",
+      "traits": [
+        "double",
+        "again"
+      ]
+    },
+    "drum": {
+      "label": "Drum",
+      "traits": [
+        "wait",
+        "sound"
+      ]
+    }
+  },
+  "start": "shout",
+  "goal": "echo",
+  "replay": [
+    "A shout hits a cliff and comes back a moment late with the same shape. The rite teaches the part to do the same with any act.",
+    "The part repeats an act a moment later."
+  ],
+  "question": "What does an echo rite do with an act?",
+  "options": [
+    "Undoes it",
+    "Repeats it a moment later",
+    "Makes it quieter"
+  ],
+  "answer": 1
+}

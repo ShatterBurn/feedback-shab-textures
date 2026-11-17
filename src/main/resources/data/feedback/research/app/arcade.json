@@ -1,0 +1,89 @@
+{
+  "title": "A game for the Computer",
+  "subject": "minecraft:note_block",
+  "concepts": {
+    "note": {
+      "label": "Note",
+      "traits": [
+        "sound",
+        "high"
+      ]
+    },
+    "pitch": {
+      "label": "Pitch",
+      "traits": [
+        "high",
+        "tempo"
+      ]
+    },
+    "beat": {
+      "label": "Beat",
+      "traits": [
+        "tempo",
+        "shape"
+      ]
+    },
+    "pattern": {
+      "label": "Pattern",
+      "traits": [
+        "shape",
+        "fun"
+      ]
+    },
+    "play": {
+      "label": "Play",
+      "traits": [
+        "fun",
+        "points"
+      ]
+    },
+    "score": {
+      "label": "Score",
+      "traits": [
+        "points",
+        "coin"
+      ]
+    },
+    "arcade": {
+      "label": "Arcade",
+      "traits": [
+        "coin",
+        "win"
+      ]
+    },
+    "chime": {
+      "label": "Chime",
+      "traits": [
+        "sound",
+        "tempo"
+      ]
+    },
+    "rest": {
+      "label": "Rest",
+      "traits": [
+        "win",
+        "points"
+      ]
+    },
+    "token": {
+      "label": "Token",
+      "traits": [
+        "shape",
+        "coin"
+      ]
+    }
+  },
+  "start": "note",
+  "goal": "arcade",
+  "replay": [
+    "A note has a pitch and a beat. A pattern of beats is something to play, and a play that counts points is a game.",
+    "The disk learns to play a game."
+  ],
+  "question": "What is on the Arcade disk?",
+  "options": [
+    "A recipe",
+    "A game",
+    "A map"
+  ],
+  "answer": 1
+}

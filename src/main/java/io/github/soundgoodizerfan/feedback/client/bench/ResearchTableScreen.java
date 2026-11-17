@@ -7,6 +7,7 @@ import java.util.List;
 
 import io.github.soundgoodizerfan.feedback.Feedback;
 import io.github.soundgoodizerfan.feedback.client.gui.GuiSkin;
+import io.github.soundgoodizerfan.feedback.control.computer.ComputerApps;
 import io.github.soundgoodizerfan.feedback.client.gui.GuiStyle;
 import io.github.soundgoodizerfan.feedback.client.gui.SkinnedScreen;
 import io.github.soundgoodizerfan.feedback.modular.attunement.Attunements;
@@ -35,7 +36,7 @@ import net.minecraft.world.item.Items;
 public class ResearchTableScreen extends SkinnedScreen<ResearchTableMenu> {
 
     private static final GuiSkin TREATISES = GuiSkin.CONSOLE, ATTUNEMENTS = GuiSkin.MYSTIC;
-    private static final int LIST_X = 10, LIST_Y = 28, LIST_W = 136, LIST_H = 142, ROW = 26, TAB_Y = 10, TAB_W = 66, PAGE_X = ResearchTableMenu.PAGE_X, PAGE_W = 138;
+    private static final int LIST_X = 10, LIST_Y = 28, LIST_W = 136, LIST_H = 142, ROW = 26, TAB_Y = 10, TAB_W = 50, TAB_GAP = 2, PAGE_X = ResearchTableMenu.PAGE_X, PAGE_W = 138;
 
     private int tabMode = -1, scroll, descIndex = -1, descMode = -1;
     private List<FormattedCharSequence> nameLines = List.of(), blurbLines = List.of(), hintLines = List.of();
@@ -44,7 +45,8 @@ public class ResearchTableScreen extends SkinnedScreen<ResearchTableMenu> {
     private int rowsShown;
     private ItemStack[] icons;
     private ItemStack book;
-    private Button treatises, attunements;
+    private Button treatises, attunements, apps;
+    private ItemStack[] appIcons;
 
     public ResearchTableScreen(ResearchTableMenu menu, Inventory inventory, Component title) {
         super(menu, inventory, title, GuiSkin.WOOD);
@@ -56,7 +58,7 @@ public class ResearchTableScreen extends SkinnedScreen<ResearchTableMenu> {
     }
 
     private GuiSkin listSkin() {
-        return menu.mode() == 0 ? TREATISES : ATTUNEMENTS;
+        return menu.mode() == 1 ? ATTUNEMENTS : TREATISES;
     }
 
     @Override
@@ -73,15 +75,22 @@ public class ResearchTableScreen extends SkinnedScreen<ResearchTableMenu> {
             removeWidget(treatises);
         if (attunements != null)
             removeWidget(attunements);
+        if (apps != null)
+            removeWidget(apps);
         tabMode = menu.mode();
         var a = Component.translatable("gui.feedback.research_table.tab.treatises");
         var b = Component.translatable("gui.feedback.research_table.tab.attunements");
+        var c = Component.translatable("gui.feedback.research_table.tab.apps");
+        int x1 = leftPos + LIST_X, x2 = x1 + TAB_W + TAB_GAP, x3 = x2 + TAB_W + TAB_GAP, w3 = LIST_W - 2 * (TAB_W + TAB_GAP);
         treatises = addRenderableWidget(tabMode == 0
-                ? GuiStyle.primary(TREATISES, a, x -> press(ResearchTableMenu.BTN_TREATISES), leftPos + LIST_X, topPos + TAB_Y, TAB_W, 14, null)
-                : GuiStyle.button(TREATISES, a, x -> press(ResearchTableMenu.BTN_TREATISES), leftPos + LIST_X, topPos + TAB_Y, TAB_W, 14));
+                ? GuiStyle.primary(TREATISES, a, x -> press(ResearchTableMenu.BTN_TREATISES), x1, topPos + TAB_Y, TAB_W, 14, null)
+                : GuiStyle.button(TREATISES, a, x -> press(ResearchTableMenu.BTN_TREATISES), x1, topPos + TAB_Y, TAB_W, 14));
         attunements = addRenderableWidget(tabMode == 1
-                ? GuiStyle.primary(ATTUNEMENTS, b, x -> press(ResearchTableMenu.BTN_ATTUNEMENTS), leftPos + LIST_X + LIST_W - TAB_W, topPos + TAB_Y, TAB_W, 14, null)
-                : GuiStyle.button(ATTUNEMENTS, b, x -> press(ResearchTableMenu.BTN_ATTUNEMENTS), leftPos + LIST_X + LIST_W - TAB_W, topPos + TAB_Y, TAB_W, 14));
+                ? GuiStyle.primary(ATTUNEMENTS, b, x -> press(ResearchTableMenu.BTN_ATTUNEMENTS), x2, topPos + TAB_Y, TAB_W, 14, null)
+                : GuiStyle.button(ATTUNEMENTS, b, x -> press(ResearchTableMenu.BTN_ATTUNEMENTS), x2, topPos + TAB_Y, TAB_W, 14));
+        apps = addRenderableWidget(tabMode == 2
+                ? GuiStyle.primary(TREATISES, c, x -> press(ResearchTableMenu.BTN_APPS), x3, topPos + TAB_Y, w3, 14, null)
+                : GuiStyle.button(TREATISES, c, x -> press(ResearchTableMenu.BTN_APPS), x3, topPos + TAB_Y, w3, 14));
     }
 
     @Override
@@ -93,7 +102,7 @@ public class ResearchTableScreen extends SkinnedScreen<ResearchTableMenu> {
 
     private void press(int id) {
         minecraft.gameMode.handleInventoryButtonClick(menu.containerId, id);
-        if (id == ResearchTableMenu.BTN_TREATISES || id == ResearchTableMenu.BTN_ATTUNEMENTS) {
+        if (id == ResearchTableMenu.BTN_TREATISES || id == ResearchTableMenu.BTN_ATTUNEMENTS || id == ResearchTableMenu.BTN_APPS) {
             scroll = 0;
             descIndex = -1;
         }
@@ -105,6 +114,9 @@ public class ResearchTableScreen extends SkinnedScreen<ResearchTableMenu> {
         if (menu.mode() == 0) {
             for (int[] v : Researching.volumes())
                 out.add(Component.translatable(School.values()[v[0]].itemKey(v[1])));
+        } else if (menu.mode() == 2) {
+            for (String app : ComputerApps.DISK_APPS)
+                out.add(Component.translatable("item.feedback.app." + app));
         } else
             for (var e : Researching.effects())
                 out.add(Component.translatable("attunement.feedback." + e.id().getPath()));
@@ -113,6 +125,14 @@ public class ResearchTableScreen extends SkinnedScreen<ResearchTableMenu> {
 
     /** The icon of the {@code i}-th entry: a volume's treatise, or a book for an attunement. */
     private ItemStack icon(int i) {
+        if (menu.mode() == 2) {
+            if (appIcons == null) {
+                appIcons = new ItemStack[ComputerApps.DISK_APPS.size()];
+                for (int k = 0; k < appIcons.length; k++)
+                    appIcons[k] = ComputerApps.disk(ComputerApps.DISK_APPS.get(k));
+            }
+            return appIcons[i];
+        }
         if (menu.mode() == 1) {
             if (book == null)
                 book = new ItemStack(Items.ENCHANTED_BOOK);
@@ -137,8 +157,8 @@ public class ResearchTableScreen extends SkinnedScreen<ResearchTableMenu> {
         nameLines = names.isEmpty() ? List.of() : f.split(Component.empty().append(names.get(Mth.clamp(menu.index(), 0, names.size() - 1))).withStyle(net.minecraft.ChatFormatting.BOLD), PAGE_W);
         blurbLines = f.split(blurb(), PAGE_W);
         hintLines = f.split(hint(), PAGE_W);
-        labelA = Component.translatable(menu.mode() == 0 ? "gui.feedback.research_table.blank" : "gui.feedback.research_table.offering");
-        labelB = Component.translatable(menu.mode() == 0 ? "gui.feedback.research_table.specimen" : "gui.feedback.research_table.reagent");
+        labelA = Component.translatable(menu.mode() == 1 ? "gui.feedback.research_table.offering" : menu.mode() == 2 ? "gui.feedback.research_table.disk" : "gui.feedback.research_table.blank");
+        labelB = Component.translatable(menu.mode() == 0 ? "gui.feedback.research_table.specimen" : menu.mode() == 1 ? "gui.feedback.research_table.reagent" : "gui.feedback.research_table.subject");
         labelC = Component.translatable("gui.feedback.research_table.blank");
     }
 
@@ -209,7 +229,7 @@ public class ResearchTableScreen extends SkinnedScreen<ResearchTableMenu> {
             g.drawString(font, labelC, ResearchTableMenu.RITE_X, ResearchTableMenu.SLOT_Y - 10, skin.dim(), false);
         int n = menu.note();
         if (n > 0) {
-            boolean good = n == ResearchTableMenu.NOTE_WRITTEN || n == ResearchTableMenu.NOTE_LEARNED;
+            boolean good = n == ResearchTableMenu.NOTE_WRITTEN || n == ResearchTableMenu.NOTE_LEARNED || n == ResearchTableMenu.NOTE_APP_WRITTEN;
             int ny = LIST_Y + LIST_H + 6;
             for (FormattedCharSequence line : font.split(Component.translatable("gui.feedback.research_table.note." + n), LIST_W)) {
                 g.drawString(font, line, LIST_X, ny, (good ? skin.accent() : skin.warn()) | 0xFF000000, false);
@@ -220,6 +240,8 @@ public class ResearchTableScreen extends SkinnedScreen<ResearchTableMenu> {
 
     /** Flavour: what the book is said to hold, then a silly line of what it has been used for. */
     private Component blurb() {
+        if (menu.mode() == 2)
+            return Component.translatable("gui.feedback.research_table.blurb.app." + Researching.app(menu.index()));
         if (menu.mode() == 1) {
             var list = Researching.effects();
             if (list.isEmpty())
@@ -232,6 +254,8 @@ public class ResearchTableScreen extends SkinnedScreen<ResearchTableMenu> {
 
     /** What the research asks for. */
     private Component hint() {
+        if (menu.mode() == 2)
+            return Component.translatable("gui.feedback.research_table.hint.app");
         if (menu.mode() == 1) {
             var list = Researching.effects();
             if (list.isEmpty())

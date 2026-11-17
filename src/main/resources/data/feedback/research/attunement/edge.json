@@ -1,0 +1,88 @@
+{
+  "title": "Thinning the hit",
+  "concepts": {
+    "blunt": {
+      "label": "Blunt",
+      "traits": [
+        "dull",
+        "hard"
+      ]
+    },
+    "stone": {
+      "label": "Stone",
+      "traits": [
+        "hard",
+        "abrade"
+      ]
+    },
+    "grinding": {
+      "label": "Grinding",
+      "traits": [
+        "abrade",
+        "angle"
+      ]
+    },
+    "bevel": {
+      "label": "Bevel",
+      "traits": [
+        "angle",
+        "narrow"
+      ]
+    },
+    "thin": {
+      "label": "Thin",
+      "traits": [
+        "narrow",
+        "cut"
+      ]
+    },
+    "sharp": {
+      "label": "Sharp",
+      "traits": [
+        "cut",
+        "strike"
+      ]
+    },
+    "edge": {
+      "label": "Edge",
+      "traits": [
+        "strike",
+        "force"
+      ]
+    },
+    "hammer": {
+      "label": "Hammer",
+      "traits": [
+        "dull",
+        "abrade"
+      ]
+    },
+    "whet": {
+      "label": "Whet",
+      "traits": [
+        "force",
+        "cut"
+      ]
+    },
+    "wedge": {
+      "label": "Wedge",
+      "traits": [
+        "angle",
+        "strike"
+      ]
+    }
+  },
+  "start": "blunt",
+  "goal": "edge",
+  "replay": [
+    "Grind a blunt stone at an angle and it gets thin. The thinner the bevel the more of the blow lands on one line.",
+    "The part makes whatever happens happen harder."
+  ],
+  "question": "What does an edge rite do to what the part does?",
+  "options": [
+    "Makes it hit more often",
+    "Makes it quieter",
+    "Makes it hit harder"
+  ],
+  "answer": 2
+}

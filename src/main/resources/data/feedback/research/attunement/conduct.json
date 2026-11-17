@@ -1,0 +1,88 @@
+{
+  "title": "Opening the way for current",
+  "concepts": {
+    "lightning": {
+      "label": "Lightning",
+      "traits": [
+        "storm",
+        "arc"
+      ]
+    },
+    "spark": {
+      "label": "Spark",
+      "traits": [
+        "arc",
+        "route"
+      ]
+    },
+    "path": {
+      "label": "Path",
+      "traits": [
+        "route",
+        "thread"
+      ]
+    },
+    "wire": {
+      "label": "Wire",
+      "traits": [
+        "thread",
+        "bright"
+      ]
+    },
+    "metal": {
+      "label": "Metal",
+      "traits": [
+        "bright",
+        "loss"
+      ]
+    },
+    "resistance": {
+      "label": "Resistance",
+      "traits": [
+        "loss",
+        "flow"
+      ]
+    },
+    "conduction": {
+      "label": "Conduction",
+      "traits": [
+        "flow",
+        "ease"
+      ]
+    },
+    "rubber": {
+      "label": "Rubber",
+      "traits": [
+        "storm",
+        "route"
+      ]
+    },
+    "rod": {
+      "label": "Rod",
+      "traits": [
+        "ease",
+        "loss"
+      ]
+    },
+    "glow": {
+      "label": "Glow",
+      "traits": [
+        "thread",
+        "flow"
+      ]
+    }
+  },
+  "start": "lightning",
+  "goal": "conduction",
+  "replay": [
+    "Lightning picks the easiest path. A thread of bright metal is easier than air, and the less resistance in the way the more current goes through.",
+    "The part lets electricity pass."
+  ],
+  "question": "What does a conduct rite do for current?",
+  "options": [
+    "Stores it for later",
+    "Turns it into light",
+    "Lets it pass with little loss"
+  ],
+  "answer": 2
+}

@@ -307,7 +307,7 @@ Any block that gives vanilla enchanting power around the table counts, as in van
 
 Ways to get a rite:
 
-- **Research it.** At the [Research Table](Research_Table.md#attunements), the Attunements tab lists every effect, and it can be done again and again. Give it an offering, an optional reagent potion and a [Blank Rite](Research_Table.md#blank-rite); the research board's quality becomes the rite's quality.
+- **Research it.** At the [Research Table](Research_Table.md#attunements), the Rites tab lists every effect, and it can be done again and again. Give it an offering, an optional reagent potion and a [Blank Rite](Research_Table.md#blank-rite); the research board's quality becomes the rite's quality.
 - **Buy one.** A cleric sells a rite a day (see [Villagers](Villagers.md#goods)).
 - **Find an enchanted book.** A vanilla enchanted book found anywhere converts to one rite, of the rarest effect by vanilla rarity (ties by highest level), at middling quality. Which enchantment gives which effect:
 

@@ -1,0 +1,88 @@
+{
+  "title": "Following the lodestone",
+  "concepts": {
+    "needle": {
+      "label": "Needle",
+      "traits": [
+        "swing",
+        "stone"
+      ]
+    },
+    "lodestone": {
+      "label": "Lodestone",
+      "traits": [
+        "stone",
+        "ferrous"
+      ]
+    },
+    "iron": {
+      "label": "Iron",
+      "traits": [
+        "ferrous",
+        "lean"
+      ]
+    },
+    "pull": {
+      "label": "Pull",
+      "traits": [
+        "lean",
+        "invisible"
+      ]
+    },
+    "field": {
+      "label": "Field",
+      "traits": [
+        "invisible",
+        "north"
+      ]
+    },
+    "pole": {
+      "label": "Pole",
+      "traits": [
+        "north",
+        "seek"
+      ]
+    },
+    "magnet": {
+      "label": "Magnet",
+      "traits": [
+        "seek",
+        "strong"
+      ]
+    },
+    "compass": {
+      "label": "Compass",
+      "traits": [
+        "swing",
+        "ferrous"
+      ]
+    },
+    "filings": {
+      "label": "Filings",
+      "traits": [
+        "strong",
+        "north"
+      ]
+    },
+    "copper": {
+      "label": "Copper",
+      "traits": [
+        "lean",
+        "seek"
+      ]
+    }
+  },
+  "start": "needle",
+  "goal": "magnet",
+  "replay": [
+    "A needle follows the pull of lodestone to iron and through the field to the pole.",
+    "The part leans toward magnetic blocks."
+  ],
+  "question": "What does this dowse rite point toward?",
+  "options": [
+    "The nearest dense block",
+    "The nearest hot block",
+    "The nearest magnetic block"
+  ],
+  "answer": 2
+}

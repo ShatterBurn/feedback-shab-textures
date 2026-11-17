@@ -1,0 +1,89 @@
+{
+  "title": "Watching the lamp",
+  "subject": "minecraft:redstone_lamp",
+  "concepts": {
+    "lamp": {
+      "label": "Lamp",
+      "traits": [
+        "lit",
+        "hot"
+      ]
+    },
+    "filament": {
+      "label": "Filament",
+      "traits": [
+        "hot",
+        "flow"
+      ]
+    },
+    "current": {
+      "label": "Current",
+      "traits": [
+        "flow",
+        "draw"
+      ]
+    },
+    "load": {
+      "label": "Load",
+      "traits": [
+        "draw",
+        "dial"
+      ]
+    },
+    "meter": {
+      "label": "Meter",
+      "traits": [
+        "dial",
+        "number"
+      ]
+    },
+    "reading": {
+      "label": "Reading",
+      "traits": [
+        "number",
+        "watch"
+      ]
+    },
+    "power": {
+      "label": "Power",
+      "traits": [
+        "watch",
+        "bright"
+      ]
+    },
+    "candle": {
+      "label": "Candle",
+      "traits": [
+        "lit",
+        "flow"
+      ]
+    },
+    "fuse": {
+      "label": "Fuse",
+      "traits": [
+        "bright",
+        "number"
+      ]
+    },
+    "gauge": {
+      "label": "Gauge",
+      "traits": [
+        "draw",
+        "watch"
+      ]
+    }
+  },
+  "start": "lamp",
+  "goal": "power",
+  "replay": [
+    "A lamp is lit by current through a filament. What it draws is a load, and a meter turns the load into a reading you can watch.",
+    "The disk learns to show how much power things draw."
+  ],
+  "question": "What does the Power app show?",
+  "options": [
+    "The Computer's temperature",
+    "Who is nearby",
+    "How much power is drawn and supplied"
+  ],
+  "answer": 2
+}

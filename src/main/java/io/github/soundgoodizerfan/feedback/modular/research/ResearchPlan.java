@@ -35,6 +35,8 @@ public final class ResearchPlan {
     public final List<String> replay = new ArrayList<>(), options = new ArrayList<>(), specimens = new ArrayList<>();
     public final int answer;
     public final Eureka eureka;
+    /** What an app's research is about, an item id or a {@code #tag} (the thing the app is the use of); empty for every other plan. */
+    public final String subject;
     private final String json;
 
     private ResearchPlan(String key, String json, JsonObject o) {
@@ -55,6 +57,7 @@ public final class ResearchPlan {
         }
         strings(o.getAsJsonArray("replay"), replay);
         strings(o.getAsJsonArray("options"), options);
+        subject = o.has("subject") ? o.get("subject").getAsString() : "";
         if (o.has("specimens"))
             strings(o.getAsJsonArray("specimens"), specimens);
         if (o.has("eureka")) {

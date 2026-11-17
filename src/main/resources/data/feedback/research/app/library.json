@@ -1,0 +1,89 @@
+{
+  "title": "Where the books are kept",
+  "subject": "minecraft:bookshelf",
+  "concepts": {
+    "shelf": {
+      "label": "Shelf",
+      "traits": [
+        "wood",
+        "edge"
+      ]
+    },
+    "spine": {
+      "label": "Spine",
+      "traits": [
+        "edge",
+        "name"
+      ]
+    },
+    "title": {
+      "label": "Title",
+      "traits": [
+        "name",
+        "lookup"
+      ]
+    },
+    "index": {
+      "label": "Index",
+      "traits": [
+        "lookup",
+        "order"
+      ]
+    },
+    "catalogue": {
+      "label": "Catalogue",
+      "traits": [
+        "order",
+        "many"
+      ]
+    },
+    "collection": {
+      "label": "Collection",
+      "traits": [
+        "many",
+        "borrow"
+      ]
+    },
+    "library": {
+      "label": "Library",
+      "traits": [
+        "borrow",
+        "read"
+      ]
+    },
+    "archive": {
+      "label": "Archive",
+      "traits": [
+        "wood",
+        "name"
+      ]
+    },
+    "dust": {
+      "label": "Dust",
+      "traits": [
+        "read",
+        "many"
+      ]
+    },
+    "scroll": {
+      "label": "Scroll",
+      "traits": [
+        "lookup",
+        "borrow"
+      ]
+    }
+  },
+  "start": "shelf",
+  "goal": "library",
+  "replay": [
+    "A shelf holds spines, and a spine carries a title. An index finds a title and a catalogue puts all the indexes in order.",
+    "The disk learns to list everything you have written and borrowed."
+  ],
+  "question": "What does the Library app list?",
+  "options": [
+    "The creatures nearby",
+    "The recipes in the world",
+    "The program and data held on the Computer's disks"
+  ],
+  "answer": 2
+}

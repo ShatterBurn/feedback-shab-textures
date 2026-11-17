@@ -1,0 +1,88 @@
+{
+  "title": "Squeezing out current",
+  "concepts": {
+    "footstep": {
+      "label": "Footstep",
+      "traits": [
+        "weight",
+        "press"
+      ]
+    },
+    "pressure": {
+      "label": "Pressure",
+      "traits": [
+        "press",
+        "lattice"
+      ]
+    },
+    "crystal": {
+      "label": "Crystal",
+      "traits": [
+        "lattice",
+        "squeezed"
+      ]
+    },
+    "strain": {
+      "label": "Strain",
+      "traits": [
+        "squeezed",
+        "pole"
+      ]
+    },
+    "charge": {
+      "label": "Charge",
+      "traits": [
+        "pole",
+        "jump"
+      ]
+    },
+    "spark": {
+      "label": "Spark",
+      "traits": [
+        "jump",
+        "flow"
+      ]
+    },
+    "current": {
+      "label": "Current",
+      "traits": [
+        "flow",
+        "electric"
+      ]
+    },
+    "quartz": {
+      "label": "Quartz",
+      "traits": [
+        "weight",
+        "lattice"
+      ]
+    },
+    "wire": {
+      "label": "Wire",
+      "traits": [
+        "electric",
+        "jump"
+      ]
+    },
+    "coil": {
+      "label": "Coil",
+      "traits": [
+        "squeezed",
+        "flow"
+      ]
+    }
+  },
+  "start": "footstep",
+  "goal": "current",
+  "replay": [
+    "A footstep presses a crystal. The lattice strains, the charge shifts and a spark jumps out.",
+    "The part makes current from impact."
+  ],
+  "question": "What does a piezo rite turn impact into?",
+  "options": [
+    "Light",
+    "Electric current",
+    "Heat in the mind"
+  ],
+  "answer": 1
+}

@@ -1,0 +1,88 @@
+{
+  "title": "Winding up",
+  "concepts": {
+    "bent": {
+      "label": "Bent",
+      "traits": [
+        "curved",
+        "stress"
+      ]
+    },
+    "strain": {
+      "label": "Strain",
+      "traits": [
+        "stress",
+        "wind"
+      ]
+    },
+    "coil": {
+      "label": "Coil",
+      "traits": [
+        "wind",
+        "tight"
+      ]
+    },
+    "tension": {
+      "label": "Tension",
+      "traits": [
+        "tight",
+        "keep"
+      ]
+    },
+    "hold": {
+      "label": "Hold",
+      "traits": [
+        "keep",
+        "let"
+      ]
+    },
+    "release": {
+      "label": "Release",
+      "traits": [
+        "let",
+        "sudden"
+      ]
+    },
+    "snap": {
+      "label": "Snap",
+      "traits": [
+        "sudden",
+        "whip"
+      ]
+    },
+    "rubber": {
+      "label": "Rubber",
+      "traits": [
+        "curved",
+        "wind"
+      ]
+    },
+    "lever": {
+      "label": "Lever",
+      "traits": [
+        "whip",
+        "let"
+      ]
+    },
+    "catch": {
+      "label": "Catch",
+      "traits": [
+        "tight",
+        "sudden"
+      ]
+    }
+  },
+  "start": "bent",
+  "goal": "snap",
+  "replay": [
+    "A bent bar stores its strain. Wind it into a coil, hold the tension, and it lets go when it is ready.",
+    "The part winds up and releases."
+  ],
+  "question": "What does a spring rite make a part do?",
+  "options": [
+    "Wind up forever",
+    "Cool down",
+    "Wind up and let go when ready"
+  ],
+  "answer": 2
+}

@@ -1,0 +1,89 @@
+{
+  "title": "A map of what is wired",
+  "subject": "minecraft:compass",
+  "concepts": {
+    "compass": {
+      "label": "Compass",
+      "traits": [
+        "north",
+        "bearing"
+      ]
+    },
+    "heading": {
+      "label": "Heading",
+      "traits": [
+        "bearing",
+        "course"
+      ]
+    },
+    "route": {
+      "label": "Route",
+      "traits": [
+        "course",
+        "meeting"
+      ]
+    },
+    "junction": {
+      "label": "Junction",
+      "traits": [
+        "meeting",
+        "nodes"
+      ]
+    },
+    "network": {
+      "label": "Network",
+      "traits": [
+        "nodes",
+        "drawn"
+      ]
+    },
+    "graph": {
+      "label": "Graph",
+      "traits": [
+        "drawn",
+        "paper"
+      ]
+    },
+    "link_map": {
+      "label": "Link Map",
+      "traits": [
+        "paper",
+        "find"
+      ]
+    },
+    "chart": {
+      "label": "Chart",
+      "traits": [
+        "north",
+        "course"
+      ]
+    },
+    "cable": {
+      "label": "Cable",
+      "traits": [
+        "find",
+        "drawn"
+      ]
+    },
+    "bridge": {
+      "label": "Bridge",
+      "traits": [
+        "meeting",
+        "paper"
+      ]
+    }
+  },
+  "start": "compass",
+  "goal": "link_map",
+  "replay": [
+    "A compass gives a heading and a heading gives a route. Where routes meet is a junction, and junctions joined up are a graph you can draw.",
+    "The disk learns to draw what is linked to what."
+  ],
+  "question": "What does the Link Map app draw?",
+  "options": [
+    "The weather",
+    "A player's inventory",
+    "What is linked to what"
+  ],
+  "answer": 2
+}

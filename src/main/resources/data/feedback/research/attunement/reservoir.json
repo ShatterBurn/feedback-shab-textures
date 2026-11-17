@@ -1,0 +1,88 @@
+{
+  "title": "Keeping some for later",
+  "concepts": {
+    "spill": {
+      "label": "Spill",
+      "traits": [
+        "waste",
+        "hold"
+      ]
+    },
+    "cup": {
+      "label": "Cup",
+      "traits": [
+        "hold",
+        "full"
+      ]
+    },
+    "tank": {
+      "label": "Tank",
+      "traits": [
+        "full",
+        "mark"
+      ]
+    },
+    "level": {
+      "label": "Level",
+      "traits": [
+        "mark",
+        "spare"
+      ]
+    },
+    "reserve": {
+      "label": "Reserve",
+      "traits": [
+        "spare",
+        "tap"
+      ]
+    },
+    "draw": {
+      "label": "Draw",
+      "traits": [
+        "tap",
+        "save"
+      ]
+    },
+    "store": {
+      "label": "Store",
+      "traits": [
+        "save",
+        "pour"
+      ]
+    },
+    "drain": {
+      "label": "Drain",
+      "traits": [
+        "waste",
+        "full"
+      ]
+    },
+    "barrel": {
+      "label": "Barrel",
+      "traits": [
+        "pour",
+        "tap"
+      ]
+    },
+    "sieve": {
+      "label": "Sieve",
+      "traits": [
+        "mark",
+        "save"
+      ]
+    }
+  },
+  "start": "spill",
+  "goal": "store",
+  "replay": [
+    "A spill is waste. A cup holds it, a tank holds more, and a mark on the side tells you what is left to draw.",
+    "The part holds experience for later."
+  ],
+  "question": "What does a reservoir rite hold?",
+  "options": [
+    "Experience for later",
+    "Water for drinking",
+    "Light for night"
+  ],
+  "answer": 0
+}

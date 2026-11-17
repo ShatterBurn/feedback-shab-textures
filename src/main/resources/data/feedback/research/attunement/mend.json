@@ -1,0 +1,88 @@
+{
+  "title": "Closing the crack",
+  "concepts": {
+    "crack": {
+      "label": "Crack",
+      "traits": [
+        "split",
+        "snap"
+      ]
+    },
+    "break": {
+      "label": "Break",
+      "traits": [
+        "snap",
+        "melt"
+      ]
+    },
+    "flow": {
+      "label": "Flow",
+      "traits": [
+        "melt",
+        "seal"
+      ]
+    },
+    "fill": {
+      "label": "Fill",
+      "traits": [
+        "seal",
+        "join"
+      ]
+    },
+    "weld": {
+      "label": "Weld",
+      "traits": [
+        "join",
+        "even"
+      ]
+    },
+    "smooth": {
+      "label": "Smooth",
+      "traits": [
+        "even",
+        "paid"
+      ]
+    },
+    "repair": {
+      "label": "Repair",
+      "traits": [
+        "paid",
+        "whole"
+      ]
+    },
+    "rust": {
+      "label": "Rust",
+      "traits": [
+        "split",
+        "melt"
+      ]
+    },
+    "solder": {
+      "label": "Solder",
+      "traits": [
+        "whole",
+        "even"
+      ]
+    },
+    "wedge": {
+      "label": "Wedge",
+      "traits": [
+        "seal",
+        "paid"
+      ]
+    }
+  },
+  "start": "crack",
+  "goal": "repair",
+  "replay": [
+    "A crack is a break that has not finished. Let something flow in, fill it and join it, and the part is whole again, paid for in experience.",
+    "The part uses stored experience to repair gear."
+  ],
+  "question": "What does a mend rite spend to repair?",
+  "options": [
+    "Stored heat",
+    "Stored water",
+    "Stored experience"
+  ],
+  "answer": 2
+}

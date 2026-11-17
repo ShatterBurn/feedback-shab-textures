@@ -1,0 +1,88 @@
+{
+  "title": "Drawing loose things in",
+  "concepts": {
+    "pocket": {
+      "label": "Pocket",
+      "traits": [
+        "coin",
+        "spilled"
+      ]
+    },
+    "loose": {
+      "label": "Loose",
+      "traits": [
+        "spilled",
+        "strewn"
+      ]
+    },
+    "scatter": {
+      "label": "Scatter",
+      "traits": [
+        "strewn",
+        "tug"
+      ]
+    },
+    "pull": {
+      "label": "Pull",
+      "traits": [
+        "tug",
+        "together"
+      ]
+    },
+    "gather": {
+      "label": "Gather",
+      "traits": [
+        "together",
+        "pile"
+      ]
+    },
+    "heap": {
+      "label": "Heap",
+      "traits": [
+        "pile",
+        "iron"
+      ]
+    },
+    "magnet": {
+      "label": "Magnet",
+      "traits": [
+        "iron",
+        "reach"
+      ]
+    },
+    "basket": {
+      "label": "Basket",
+      "traits": [
+        "coin",
+        "strewn"
+      ]
+    },
+    "sieve": {
+      "label": "Sieve",
+      "traits": [
+        "reach",
+        "pile"
+      ]
+    },
+    "vein": {
+      "label": "Vein",
+      "traits": [
+        "tug",
+        "iron"
+      ]
+    }
+  },
+  "start": "pocket",
+  "goal": "magnet",
+  "replay": [
+    "Loose things lie scattered. Give them a tug and they gather into a heap on their own.",
+    "The part pulls loose objects toward it."
+  ],
+  "question": "What does a lode rite pull on?",
+  "options": [
+    "The wearer's hair",
+    "Loose objects in the world",
+    "Distant stars"
+  ],
+  "answer": 1
+}

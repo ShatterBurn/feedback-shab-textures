@@ -1,0 +1,88 @@
+{
+  "title": "Teaching a part to warm",
+  "concepts": {
+    "cold": {
+      "label": "Cold",
+      "traits": [
+        "chill",
+        "motion"
+      ]
+    },
+    "friction": {
+      "label": "Friction",
+      "traits": [
+        "motion",
+        "hands"
+      ]
+    },
+    "rubbing": {
+      "label": "Rubbing",
+      "traits": [
+        "hands",
+        "comfort"
+      ]
+    },
+    "warmth": {
+      "label": "Warmth",
+      "traits": [
+        "comfort",
+        "red"
+      ]
+    },
+    "glow": {
+      "label": "Glow",
+      "traits": [
+        "red",
+        "clay"
+      ]
+    },
+    "kiln": {
+      "label": "Kiln",
+      "traits": [
+        "clay",
+        "fire"
+      ]
+    },
+    "furnace": {
+      "label": "Furnace",
+      "traits": [
+        "fire",
+        "burn"
+      ]
+    },
+    "ice": {
+      "label": "Ice",
+      "traits": [
+        "chill",
+        "hands"
+      ]
+    },
+    "ember": {
+      "label": "Ember",
+      "traits": [
+        "burn",
+        "clay"
+      ]
+    },
+    "wool": {
+      "label": "Wool",
+      "traits": [
+        "comfort",
+        "fire"
+      ]
+    }
+  },
+  "start": "cold",
+  "goal": "furnace",
+  "replay": [
+    "Cold hands rub together and make warmth. Keep it up and the warmth reddens into something a kiln could keep.",
+    "The part puts a little fire into whatever holds still."
+  ],
+  "question": "What does a heat rite put into a thing?",
+  "options": [
+    "A little fire",
+    "A little frost",
+    "A little weight"
+  ],
+  "answer": 0
+}

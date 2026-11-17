@@ -1,0 +1,88 @@
+{
+  "title": "Announcing itself",
+  "concepts": {
+    "strike": {
+      "label": "Strike",
+      "traits": [
+        "blow",
+        "solid"
+      ]
+    },
+    "metal": {
+      "label": "Metal",
+      "traits": [
+        "solid",
+        "shake"
+      ]
+    },
+    "vibration": {
+      "label": "Vibration",
+      "traits": [
+        "shake",
+        "note"
+      ]
+    },
+    "pitch": {
+      "label": "Pitch",
+      "traits": [
+        "note",
+        "clear"
+      ]
+    },
+    "tone": {
+      "label": "Tone",
+      "traits": [
+        "clear",
+        "loud"
+      ]
+    },
+    "peal": {
+      "label": "Peal",
+      "traits": [
+        "loud",
+        "sound"
+      ]
+    },
+    "bell": {
+      "label": "Bell",
+      "traits": [
+        "sound",
+        "alarm"
+      ]
+    },
+    "hum": {
+      "label": "Hum",
+      "traits": [
+        "blow",
+        "shake"
+      ]
+    },
+    "gong": {
+      "label": "Gong",
+      "traits": [
+        "alarm",
+        "loud"
+      ]
+    },
+    "clapper": {
+      "label": "Clapper",
+      "traits": [
+        "note",
+        "sound"
+      ]
+    }
+  },
+  "start": "strike",
+  "goal": "bell",
+  "replay": [
+    "Strike metal and it shakes. The shake has a pitch, and a clear one carries across a room as a peal.",
+    "The part announces itself with a vibration."
+  ],
+  "question": "What does a ring rite make a part do?",
+  "options": [
+    "Stay silent",
+    "Float",
+    "Announce itself with a vibration"
+  ],
+  "answer": 2
+}

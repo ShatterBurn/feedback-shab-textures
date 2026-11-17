@@ -1,0 +1,88 @@
+{
+  "title": "Finding the heavy block",
+  "concepts": {
+    "plumb": {
+      "label": "Plumb",
+      "traits": [
+        "line",
+        "sinking"
+      ]
+    },
+    "weight": {
+      "label": "Weight",
+      "traits": [
+        "sinking",
+        "down"
+      ]
+    },
+    "gravity": {
+      "label": "Gravity",
+      "traits": [
+        "down",
+        "tilt"
+      ]
+    },
+    "deflection": {
+      "label": "Deflection",
+      "traits": [
+        "tilt",
+        "bulk"
+      ]
+    },
+    "mass": {
+      "label": "Mass",
+      "traits": [
+        "bulk",
+        "packed"
+      ]
+    },
+    "density": {
+      "label": "Density",
+      "traits": [
+        "packed",
+        "seek"
+      ]
+    },
+    "heavy_stone": {
+      "label": "Heavy-stone",
+      "traits": [
+        "seek",
+        "weigh"
+      ]
+    },
+    "feather": {
+      "label": "Feather",
+      "traits": [
+        "line",
+        "down"
+      ]
+    },
+    "scale": {
+      "label": "Scale",
+      "traits": [
+        "weigh",
+        "packed"
+      ]
+    },
+    "hollow": {
+      "label": "Hollow",
+      "traits": [
+        "tilt",
+        "seek"
+      ]
+    }
+  },
+  "start": "plumb",
+  "goal": "heavy_stone",
+  "replay": [
+    "A plumb line hangs a little off true beside a great mass. Follow the tilt to the packed bulk that caused it.",
+    "The part leans toward dense blocks."
+  ],
+  "question": "What does this dowse rite point toward?",
+  "options": [
+    "The nearest magnetic block",
+    "The nearest dense block",
+    "The nearest hollow block"
+  ],
+  "answer": 1
+}

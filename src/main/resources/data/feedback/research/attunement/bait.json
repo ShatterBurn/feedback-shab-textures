@@ -1,0 +1,88 @@
+{
+  "title": "Calling the beasts",
+  "concepts": {
+    "hunger": {
+      "label": "Hunger",
+      "traits": [
+        "need",
+        "appetite"
+      ]
+    },
+    "scent": {
+      "label": "Scent",
+      "traits": [
+        "appetite",
+        "smell"
+      ]
+    },
+    "wind": {
+      "label": "Wind",
+      "traits": [
+        "smell",
+        "carried"
+      ]
+    },
+    "trail": {
+      "label": "Trail",
+      "traits": [
+        "carried",
+        "path"
+      ]
+    },
+    "pursuit": {
+      "label": "Pursuit",
+      "traits": [
+        "path",
+        "chase"
+      ]
+    },
+    "routine": {
+      "label": "Routine",
+      "traits": [
+        "chase",
+        "habit"
+      ]
+    },
+    "lure": {
+      "label": "Lure",
+      "traits": [
+        "habit",
+        "trap"
+      ]
+    },
+    "meal": {
+      "label": "Meal",
+      "traits": [
+        "need",
+        "smell"
+      ]
+    },
+    "net": {
+      "label": "Net",
+      "traits": [
+        "trap",
+        "chase"
+      ]
+    },
+    "herd": {
+      "label": "Herd",
+      "traits": [
+        "carried",
+        "habit"
+      ]
+    }
+  },
+  "start": "hunger",
+  "goal": "lure",
+  "replay": [
+    "You rub the part with something that smells of a meal. The wind takes the smell down the trail and the animals follow it home.",
+    "The part has learned to smell like dinner."
+  ],
+  "question": "What does a bait rite make the part do?",
+  "options": [
+    "Frighten animals away",
+    "Grow food",
+    "Smell like a meal to nearby animals"
+  ],
+  "answer": 2
+}

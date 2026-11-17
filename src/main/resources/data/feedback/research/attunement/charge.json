@@ -1,0 +1,88 @@
+{
+  "title": "A part that holds more",
+  "concepts": {
+    "jar": {
+      "label": "Jar",
+      "traits": [
+        "glass",
+        "pair"
+      ]
+    },
+    "plate": {
+      "label": "Plate",
+      "traits": [
+        "pair",
+        "gap"
+      ]
+    },
+    "field": {
+      "label": "Field",
+      "traits": [
+        "gap",
+        "stress"
+      ]
+    },
+    "strain": {
+      "label": "Strain",
+      "traits": [
+        "stress",
+        "edge"
+      ]
+    },
+    "limit": {
+      "label": "Limit",
+      "traits": [
+        "edge",
+        "slack"
+      ]
+    },
+    "margin": {
+      "label": "Margin",
+      "traits": [
+        "slack",
+        "stored"
+      ]
+    },
+    "reserve": {
+      "label": "Reserve",
+      "traits": [
+        "stored",
+        "hoard"
+      ]
+    },
+    "spark": {
+      "label": "Spark",
+      "traits": [
+        "glass",
+        "gap"
+      ]
+    },
+    "sponge": {
+      "label": "Sponge",
+      "traits": [
+        "hoard",
+        "slack"
+      ]
+    },
+    "wire": {
+      "label": "Wire",
+      "traits": [
+        "stress",
+        "stored"
+      ]
+    }
+  },
+  "start": "jar",
+  "goal": "reserve",
+  "replay": [
+    "Two plates and a gap hold a field. Push the field close to the limit and the margin you leave is the reserve.",
+    "The part keeps more energy than it should be able to."
+  ],
+  "question": "What does a charge rite let a part do?",
+  "options": [
+    "Hold more energy than it should",
+    "Run cooler",
+    "Weigh less"
+  ],
+  "answer": 0
+}

@@ -37,8 +37,11 @@ import net.minecraft.world.item.Items;
  */
 public class ResearchCategory implements IRecipeCategory<ResearchCategory.Card> {
 
-    /** One research: a volume ({@code school} set, {@code specimens} the type paths) or an attunement ({@code school} null). */
-    public record Card(School school, int volume, List<String> specimens, ResourceLocation effect, String grade, String property, boolean reagent) {
+    /**
+     * One research: a volume ({@code school} set, {@code specimens} the type paths), an attunement ({@code school} and {@code app} null) or an
+     * app ({@code app} set, {@code subject} an item id or {@code #tag}).
+     */
+    public record Card(School school, int volume, List<String> specimens, ResourceLocation effect, String grade, String property, boolean reagent, String app, String subject) {
     }
 
     static final RecipeType<Card> TYPE = RecipeType.create("feedback", "research", Card.class);
@@ -69,12 +72,15 @@ public class ResearchCategory implements IRecipeCategory<ResearchCategory.Card> 
                             specimens.add(id.getPath());
                     });
                 }
-                out.add(new Card(school, v, List.copyOf(specimens), null, "", "", false));
+                out.add(new Card(school, v, List.copyOf(specimens), null, "", "", false, null, ""));
             }
         for (var e : effects.values()) {
             String grade = e.target() < 0.35f ? "modest" : e.target() < 0.65f ? "good" : e.target() < 0.85f ? "fine" : "exceptional";
-            out.add(new Card(null, 0, List.of(), e.id(), grade, e.offering().orElse("hardness"), e.reagent().isPresent()));
+            out.add(new Card(null, 0, List.of(), e.id(), grade, e.offering().orElse("hardness"), e.reagent().isPresent(), null, ""));
         }
+        for (var e : first)
+            if (e.school().equals("app") && e.types().size() == 2)
+                out.add(new Card(null, 0, List.of(), null, "", "", false, e.types().get(0), e.types().get(1)));
         return out;
     }
 
@@ -113,8 +119,32 @@ public class ResearchCategory implements IRecipeCategory<ResearchCategory.Card> 
         return HEIGHT;
     }
 
+    /** The stacks an app's subject can be: the item named, or every item of the tag named. */
+    private static List<ItemStack> subjects(String subject) {
+        List<ItemStack> out = new ArrayList<>();
+        if (subject.startsWith("#")) {
+            ResourceLocation tag = ResourceLocation.tryParse(subject.substring(1));
+            if (tag != null)
+                BuiltInRegistries.ITEM.getTag(net.minecraft.tags.TagKey.create(net.minecraft.core.registries.Registries.ITEM, tag))
+                        .ifPresent(set -> set.forEach(h -> out.add(new ItemStack(h.value()))));
+        } else {
+            ResourceLocation id = ResourceLocation.tryParse(subject);
+            if (id != null && BuiltInRegistries.ITEM.containsKey(id))
+                out.add(new ItemStack(BuiltInRegistries.ITEM.get(id)));
+        }
+        return out;
+    }
+
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, Card card, IFocusGroup focuses) {
+        if (card.app() != null) {
+            builder.addSlot(RecipeIngredientRole.INPUT, 1, 18).setStandardSlotBackground().addItemStack(new ItemStack(io.github.soundgoodizerfan.feedback.registry.FItems.FLOPPY_DISK.get()));
+            var subject = builder.addSlot(RecipeIngredientRole.INPUT, 51, 18).setStandardSlotBackground();
+            for (ItemStack s : subjects(card.subject()))
+                subject.addItemStack(s);
+            builder.addOutputSlot(143, 18).setOutputSlotBackground().addItemStack(io.github.soundgoodizerfan.feedback.control.computer.ComputerApps.disk(card.app()));
+            return;
+        }
         if (card.school() == null) {
             builder.addSlot(RecipeIngredientRole.INPUT, 1, 18).setStandardSlotBackground().addItemStack(new ItemStack(FModular.BLANK_RITE.get()));
             builder.addOutputSlot(143, 18).setOutputSlotBackground().addItemStack(io.github.soundgoodizerfan.feedback.modular.attunement.Rites.of(card.effect(), 1f));
@@ -132,6 +162,13 @@ public class ResearchCategory implements IRecipeCategory<ResearchCategory.Card> 
     @Override
     public void draw(Card card, IRecipeSlotsView slots, GuiGraphics graphics, double mouseX, double mouseY) {
         Font font = Minecraft.getInstance().font;
+        if (card.app() != null) {
+            graphics.drawString(font, Component.translatable("item.feedback.app." + card.app()), 1, 1, TITLE_COLOUR, false);
+            graphics.drawString(font, Component.translatable("feedback.jei.research.disk"), 1, 40, LABEL_COLOUR, false);
+            graphics.drawString(font, Component.translatable("feedback.jei.research.subject"), 51, 40, LABEL_COLOUR, false);
+            graphics.drawString(font, Component.translatable("feedback.jei.research.cost"), 1, 61, LABEL_COLOUR, false);
+            return;
+        }
         if (card.school() == null) {
             graphics.drawString(font, Component.translatable("attunement.feedback." + card.effect().getPath()), 1, 1, TITLE_COLOUR, false);
             graphics.drawString(font, Component.translatable("feedback.jei.research.offering",

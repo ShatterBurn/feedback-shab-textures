@@ -1,0 +1,89 @@
+{
+  "title": "Changing one unit into another",
+  "subject": "minecraft:clock",
+  "concepts": {
+    "clock": {
+      "label": "Clock",
+      "traits": [
+        "face",
+        "beat"
+      ]
+    },
+    "tick": {
+      "label": "Tick",
+      "traits": [
+        "beat",
+        "number"
+      ]
+    },
+    "count": {
+      "label": "Count",
+      "traits": [
+        "number",
+        "divide"
+      ]
+    },
+    "ratio": {
+      "label": "Ratio",
+      "traits": [
+        "divide",
+        "size"
+      ]
+    },
+    "scale": {
+      "label": "Scale",
+      "traits": [
+        "size",
+        "swap"
+      ]
+    },
+    "conversion": {
+      "label": "Conversion",
+      "traits": [
+        "swap",
+        "tool"
+      ]
+    },
+    "converter": {
+      "label": "Converter",
+      "traits": [
+        "tool",
+        "ticks"
+      ]
+    },
+    "sundial": {
+      "label": "Sundial",
+      "traits": [
+        "face",
+        "number"
+      ]
+    },
+    "ruler": {
+      "label": "Ruler",
+      "traits": [
+        "ticks",
+        "swap"
+      ]
+    },
+    "ledger": {
+      "label": "Ledger",
+      "traits": [
+        "divide",
+        "tool"
+      ]
+    }
+  },
+  "start": "clock",
+  "goal": "converter",
+  "replay": [
+    "A clock counts ticks. A ratio is a count divided by another, and a ratio lets you change one scale into another.",
+    "The disk learns to change one unit into another."
+  ],
+  "question": "What does the Converter app do?",
+  "options": [
+    "Changes figures from one unit to another",
+    "Converts items into fuel",
+    "Converts a disk into a drive"
+  ],
+  "answer": 0
+}

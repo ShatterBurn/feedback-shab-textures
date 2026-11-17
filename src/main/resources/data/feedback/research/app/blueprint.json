@@ -1,0 +1,89 @@
+{
+  "title": "Drawing before building",
+  "subject": "minecraft:paper",
+  "concepts": {
+    "paper": {
+      "label": "Paper",
+      "traits": [
+        "sheet",
+        "pencil"
+      ]
+    },
+    "sketch": {
+      "label": "Sketch",
+      "traits": [
+        "pencil",
+        "edge"
+      ]
+    },
+    "outline": {
+      "label": "Outline",
+      "traits": [
+        "edge",
+        "scheme"
+      ]
+    },
+    "plan": {
+      "label": "Plan",
+      "traits": [
+        "scheme",
+        "size"
+      ]
+    },
+    "measurement": {
+      "label": "Measurement",
+      "traits": [
+        "size",
+        "ink"
+      ]
+    },
+    "drawing": {
+      "label": "Drawing",
+      "traits": [
+        "ink",
+        "build"
+      ]
+    },
+    "blueprint": {
+      "label": "Blueprint",
+      "traits": [
+        "build",
+        "blue"
+      ]
+    },
+    "pattern": {
+      "label": "Pattern",
+      "traits": [
+        "sheet",
+        "edge"
+      ]
+    },
+    "model": {
+      "label": "Model",
+      "traits": [
+        "blue",
+        "ink"
+      ]
+    },
+    "scrap": {
+      "label": "Scrap",
+      "traits": [
+        "scheme",
+        "build"
+      ]
+    }
+  },
+  "start": "paper",
+  "goal": "blueprint",
+  "replay": [
+    "A sheet takes a sketch, a sketch becomes an outline, and an outline with measurements becomes a plan you can build from.",
+    "The disk learns to hold a drawing of something you can build."
+  ],
+  "question": "What does the Blueprint app hold?",
+  "options": [
+    "Names of the players nearby",
+    "Drawings of what you can build",
+    "Recipes for food"
+  ],
+  "answer": 1
+}

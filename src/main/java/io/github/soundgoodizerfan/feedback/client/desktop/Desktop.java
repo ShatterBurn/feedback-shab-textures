@@ -319,6 +319,14 @@ public final class Desktop {
         stack.add(win);
     }
 
+    /** Whether a window on screen fills the whole game window (the overlays other mods draw, like JEI's lists, would sit over it). */
+    public boolean anyFullscreen() {
+        for (DesktopWindow win : stack)
+            if (win.fullscreen && shown(win))
+                return true;
+        return false;
+    }
+
     /** The topmost window that is on screen, or null. */
     public DesktopWindow focused() {
         for (int i = stack.size() - 1; i >= 0; i--)

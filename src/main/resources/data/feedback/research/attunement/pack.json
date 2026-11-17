@@ -1,0 +1,88 @@
+{
+  "title": "Strength in numbers",
+  "concepts": {
+    "alone": {
+      "label": "Alone",
+      "traits": [
+        "lone",
+        "hunt"
+      ]
+    },
+    "wolf": {
+      "label": "Wolf",
+      "traits": [
+        "hunt",
+        "call"
+      ]
+    },
+    "howl": {
+      "label": "Howl",
+      "traits": [
+        "call",
+        "reply"
+      ]
+    },
+    "answer": {
+      "label": "Answer",
+      "traits": [
+        "reply",
+        "together"
+      ]
+    },
+    "pack": {
+      "label": "Pack",
+      "traits": [
+        "together",
+        "tie"
+      ]
+    },
+    "bond": {
+      "label": "Bond",
+      "traits": [
+        "tie",
+        "kin"
+      ]
+    },
+    "friendship": {
+      "label": "Friendship",
+      "traits": [
+        "kin",
+        "share"
+      ]
+    },
+    "herd": {
+      "label": "Herd",
+      "traits": [
+        "lone",
+        "call"
+      ]
+    },
+    "echo": {
+      "label": "Echo",
+      "traits": [
+        "share",
+        "tie"
+      ]
+    },
+    "den": {
+      "label": "Den",
+      "traits": [
+        "reply",
+        "kin"
+      ]
+    }
+  },
+  "start": "alone",
+  "goal": "friendship",
+  "replay": [
+    "A lone wolf howls and others answer. Together they act as one, and the tie is stronger than any of them.",
+    "The part draws on the others around it."
+  ],
+  "question": "What does a pack rite draw on?",
+  "options": [
+    "The part's own weight",
+    "Others near the part",
+    "The sky"
+  ],
+  "answer": 1
+}

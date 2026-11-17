@@ -1,0 +1,88 @@
+{
+  "title": "Smelling smoke before the fire",
+  "concepts": {
+    "smoke": {
+      "label": "Smoke",
+      "traits": [
+        "sign",
+        "air"
+      ]
+    },
+    "draught": {
+      "label": "Draught",
+      "traits": [
+        "air",
+        "black"
+      ]
+    },
+    "char": {
+      "label": "Char",
+      "traits": [
+        "black",
+        "burnable"
+      ]
+    },
+    "fuel": {
+      "label": "Fuel",
+      "traits": [
+        "burnable",
+        "dry"
+      ]
+    },
+    "tinder": {
+      "label": "Tinder",
+      "traits": [
+        "dry",
+        "catch"
+      ]
+    },
+    "kindling": {
+      "label": "Kindling",
+      "traits": [
+        "catch",
+        "seek"
+      ]
+    },
+    "combustible": {
+      "label": "Combustible",
+      "traits": [
+        "seek",
+        "ignite"
+      ]
+    },
+    "ash": {
+      "label": "Ash",
+      "traits": [
+        "sign",
+        "black"
+      ]
+    },
+    "flint": {
+      "label": "Flint",
+      "traits": [
+        "ignite",
+        "catch"
+      ]
+    },
+    "dew": {
+      "label": "Dew",
+      "traits": [
+        "burnable",
+        "seek"
+      ]
+    }
+  },
+  "start": "smoke",
+  "goal": "combustible",
+  "replay": [
+    "Smoke tells you where something burned. The black and the draught lead you to what is dry enough to catch next.",
+    "The part leans toward what could burn."
+  ],
+  "question": "What does this dowse rite point toward?",
+  "options": [
+    "The nearest flammable block",
+    "The nearest wet block",
+    "The nearest conductive block"
+  ],
+  "answer": 0
+}

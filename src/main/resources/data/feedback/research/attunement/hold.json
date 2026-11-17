@@ -1,0 +1,88 @@
+{
+  "title": "Refusing to let go",
+  "concepts": {
+    "fist": {
+      "label": "Fist",
+      "traits": [
+        "close",
+        "tie"
+      ]
+    },
+    "knot": {
+      "label": "Knot",
+      "traits": [
+        "tie",
+        "pull"
+      ]
+    },
+    "tension": {
+      "label": "Tension",
+      "traits": [
+        "pull",
+        "rough"
+      ]
+    },
+    "friction": {
+      "label": "Friction",
+      "traits": [
+        "rough",
+        "hook"
+      ]
+    },
+    "clasp": {
+      "label": "Clasp",
+      "traits": [
+        "hook",
+        "catch"
+      ]
+    },
+    "latch": {
+      "label": "Latch",
+      "traits": [
+        "catch",
+        "shut"
+      ]
+    },
+    "lock": {
+      "label": "Lock",
+      "traits": [
+        "shut",
+        "keep"
+      ]
+    },
+    "rope": {
+      "label": "Rope",
+      "traits": [
+        "close",
+        "pull"
+      ]
+    },
+    "hinge": {
+      "label": "Hinge",
+      "traits": [
+        "keep",
+        "catch"
+      ]
+    },
+    "palm": {
+      "label": "Palm",
+      "traits": [
+        "rough",
+        "shut"
+      ]
+    }
+  },
+  "start": "fist",
+  "goal": "lock",
+  "replay": [
+    "A knot holds because of tension and friction. Give the same idea a clasp and a latch, and nothing it holds can get out.",
+    "The part does not let go of what it holds."
+  ],
+  "question": "What does a hold rite stop a part from doing?",
+  "options": [
+    "Heating up",
+    "Making noise",
+    "Letting go of what it holds"
+  ],
+  "answer": 2
+}

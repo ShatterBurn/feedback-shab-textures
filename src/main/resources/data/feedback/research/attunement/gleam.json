@@ -1,0 +1,88 @@
+{
+  "title": "Teaching metal to shine",
+  "concepts": {
+    "dark": {
+      "label": "Dark",
+      "traits": [
+        "night",
+        "red"
+      ]
+    },
+    "ember": {
+      "label": "Ember",
+      "traits": [
+        "red",
+        "bright"
+      ]
+    },
+    "glow": {
+      "label": "Glow",
+      "traits": [
+        "bright",
+        "hot"
+      ]
+    },
+    "heat": {
+      "label": "Heat",
+      "traits": [
+        "hot",
+        "spread"
+      ]
+    },
+    "radiance": {
+      "label": "Radiance",
+      "traits": [
+        "spread",
+        "tall"
+      ]
+    },
+    "beacon": {
+      "label": "Beacon",
+      "traits": [
+        "tall",
+        "lit"
+      ]
+    },
+    "lamp": {
+      "label": "Lamp",
+      "traits": [
+        "lit",
+        "shine"
+      ]
+    },
+    "candle": {
+      "label": "Candle",
+      "traits": [
+        "night",
+        "bright"
+      ]
+    },
+    "mirror": {
+      "label": "Mirror",
+      "traits": [
+        "shine",
+        "tall"
+      ]
+    },
+    "coal": {
+      "label": "Coal",
+      "traits": [
+        "hot",
+        "lit"
+      ]
+    }
+  },
+  "start": "dark",
+  "goal": "lamp",
+  "replay": [
+    "An ember glows red in the dark. Let the heat spread and the glow becomes a steady radiance you could read by.",
+    "The part gives off light."
+  ],
+  "question": "What does a gleam rite make the part do?",
+  "options": [
+    "Give off light",
+    "Absorb light",
+    "Hide in the dark"
+  ],
+  "answer": 0
+}

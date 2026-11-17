@@ -1,0 +1,88 @@
+{
+  "title": "Keeping the blow",
+  "concepts": {
+    "bruise": {
+      "label": "Bruise",
+      "traits": [
+        "hurt",
+        "stress"
+      ]
+    },
+    "strain": {
+      "label": "Strain",
+      "traits": [
+        "stress",
+        "bank"
+      ]
+    },
+    "stored": {
+      "label": "Stored",
+      "traits": [
+        "bank",
+        "soak"
+      ]
+    },
+    "damper": {
+      "label": "Damper",
+      "traits": [
+        "soak",
+        "delay"
+      ]
+    },
+    "slow": {
+      "label": "Slow",
+      "traits": [
+        "delay",
+        "spend"
+      ]
+    },
+    "release": {
+      "label": "Release",
+      "traits": [
+        "spend",
+        "answer"
+      ]
+    },
+    "retort": {
+      "label": "Retort",
+      "traits": [
+        "answer",
+        "return"
+      ]
+    },
+    "scar": {
+      "label": "Scar",
+      "traits": [
+        "hurt",
+        "bank"
+      ]
+    },
+    "spring": {
+      "label": "Spring",
+      "traits": [
+        "return",
+        "spend"
+      ]
+    },
+    "shield": {
+      "label": "Shield",
+      "traits": [
+        "soak",
+        "answer"
+      ]
+    }
+  },
+  "start": "bruise",
+  "goal": "retort",
+  "replay": [
+    "A blow does not vanish, it goes somewhere. Soak it in a damper, keep it banked, and spend it all at once later.",
+    "The part banks damage it takes and spends it."
+  ],
+  "question": "What does a grudge rite do with damage taken?",
+  "options": [
+    "Ignores it",
+    "Banks it to spend later",
+    "Repairs the part"
+  ],
+  "answer": 1
+}

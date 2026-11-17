@@ -1,0 +1,89 @@
+{
+  "title": "Writing it down",
+  "subject": "minecraft:book",
+  "concepts": {
+    "memory": {
+      "label": "Memory",
+      "traits": [
+        "mind",
+        "loss"
+      ]
+    },
+    "forgetting": {
+      "label": "Forgetting",
+      "traits": [
+        "loss",
+        "ink"
+      ]
+    },
+    "scribble": {
+      "label": "Scribble",
+      "traits": [
+        "ink",
+        "sheet"
+      ]
+    },
+    "page": {
+      "label": "Page",
+      "traits": [
+        "sheet",
+        "bound"
+      ]
+    },
+    "book": {
+      "label": "Book",
+      "traits": [
+        "bound",
+        "words"
+      ]
+    },
+    "text": {
+      "label": "Text",
+      "traits": [
+        "words",
+        "keep"
+      ]
+    },
+    "notes": {
+      "label": "Notes",
+      "traits": [
+        "keep",
+        "write"
+      ]
+    },
+    "quill": {
+      "label": "Quill",
+      "traits": [
+        "mind",
+        "ink"
+      ]
+    },
+    "diary": {
+      "label": "Diary",
+      "traits": [
+        "write",
+        "words"
+      ]
+    },
+    "blot": {
+      "label": "Blot",
+      "traits": [
+        "sheet",
+        "keep"
+      ]
+    }
+  },
+  "start": "memory",
+  "goal": "notes",
+  "replay": [
+    "Memory fades, so you scribble it. Pages bound into a book make a place for words that stays put.",
+    "The disk learns to keep words you write."
+  ],
+  "question": "What does the Notes app keep?",
+  "options": [
+    "Programs you run",
+    "Power you spend",
+    "Words you write"
+  ],
+  "answer": 2
+}

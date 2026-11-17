@@ -1,0 +1,88 @@
+{
+  "title": "Betting on the roll",
+  "concepts": {
+    "coin": {
+      "label": "Coin",
+      "traits": [
+        "flip",
+        "air"
+      ]
+    },
+    "toss": {
+      "label": "Toss",
+      "traits": [
+        "air",
+        "chance"
+      ]
+    },
+    "odds": {
+      "label": "Odds",
+      "traits": [
+        "chance",
+        "risk"
+      ]
+    },
+    "stake": {
+      "label": "Stake",
+      "traits": [
+        "risk",
+        "dare"
+      ]
+    },
+    "gamble": {
+      "label": "Gamble",
+      "traits": [
+        "dare",
+        "luck"
+      ]
+    },
+    "fortune": {
+      "label": "Fortune",
+      "traits": [
+        "luck",
+        "gain"
+      ]
+    },
+    "windfall": {
+      "label": "Windfall",
+      "traits": [
+        "gain",
+        "streak"
+      ]
+    },
+    "die": {
+      "label": "Die",
+      "traits": [
+        "flip",
+        "chance"
+      ]
+    },
+    "ledger": {
+      "label": "Ledger",
+      "traits": [
+        "streak",
+        "luck"
+      ]
+    },
+    "pawn": {
+      "label": "Pawn",
+      "traits": [
+        "risk",
+        "gain"
+      ]
+    }
+  },
+  "start": "coin",
+  "goal": "windfall",
+  "replay": [
+    "A coin is tossed in the air and the odds are even. Put a stake on it and a streak of fortune pays out, or it does not.",
+    "The part plays a game of chance."
+  ],
+  "question": "What does a wager rite play?",
+  "options": [
+    "A game of skill",
+    "A game of tag",
+    "A game of chance"
+  ],
+  "answer": 2
+}

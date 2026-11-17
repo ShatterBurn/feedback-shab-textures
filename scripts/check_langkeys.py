@@ -84,10 +84,13 @@ for f in sorted((R / "data/feedback/material").glob("*.json")):
 for f in sorted((R / "data/feedback/gun_option").glob("*.json")):
     want(f"gun.feedback.fitting.{f.stem}", "gun_option")
 for f in sorted((R / "data/feedback/research").glob("*.json")):
-    if f.stem == "attunement":
-        continue
     want(f"gui.feedback.research_table.blurb.{f.stem}", "research plan")
     want(f"item.feedback.treatise_{f.stem}", "research plan")
+for f in sorted((R / "data/feedback/research/app").glob("*.json")):
+    want(f"gui.feedback.research_table.blurb.app.{f.stem}", "app research plan")
+    want(f"item.feedback.app.{f.stem}", "app research plan")
+for f in sorted((R / "data/feedback/research/attunement").glob("*.json")):
+    want(f"gui.feedback.research_table.blurb.attuned.{f.stem}", "attunement research plan")
 # every registered item, block and mob effect has its name (registrations whose id is built in a loop end in "_" and are skipped; the delegates are never shown)
 RG = pathlib.Path("src/main/java/io/github/soundgoodizerfan/feedback/registry")
 for f in sorted(RG.glob("*.java")):

@@ -16,7 +16,7 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
 
-/** The research plans the server has loaded ({@code data/feedback/research}), by file name: {@code weapons_2}, {@code attunement}. */
+/** The research plans the server has loaded ({@code data/feedback/research}), by path: {@code weapons_2}, {@code attunement/bane}, {@code app/scope}. */
 public final class ResearchPlans extends SimpleJsonResourceReloadListener {
 
     private static final ResearchPlans INSTANCE = new ResearchPlans();
@@ -36,9 +36,25 @@ public final class ResearchPlans extends SimpleJsonResourceReloadListener {
         return plans.get(school.id() + "_" + volume);
     }
 
-    /** The plan every attunement is researched by, or null. */
-    public ResearchPlan attunement() {
-        return plans.get("attunement");
+    /** The plan the attunement {@code id} is researched by ({@code data/feedback/research/attunement/<id>.json}), or null. */
+    public ResearchPlan attunement(String id) {
+        return plans.get("attunement/" + id);
+    }
+
+    /** The plan the app {@code id} is researched by ({@code data/feedback/research/app/<id>.json}), or null. */
+    public ResearchPlan app(String id) {
+        return plans.get("app/" + id);
+    }
+
+    /** The apps' subjects for the client's recipe browser: school {@code app}, the app id and its subject in {@code types}. */
+    public java.util.List<io.github.soundgoodizerfan.feedback.net.ResearchSyncPayload.Entry> appSubjects() {
+        java.util.List<io.github.soundgoodizerfan.feedback.net.ResearchSyncPayload.Entry> out = new java.util.ArrayList<>();
+        for (String app : io.github.soundgoodizerfan.feedback.control.computer.ComputerApps.DISK_APPS) {
+            ResearchPlan plan = app(app);
+            if (plan != null && !plan.subject.isEmpty())
+                out.add(new io.github.soundgoodizerfan.feedback.net.ResearchSyncPayload.Entry("app", 0, java.util.List.of(app, plan.subject)));
+        }
+        return out;
     }
 
     /** The specimen types of every first volume's plan, for the client's recipe browser. */
@@ -46,7 +62,7 @@ public final class ResearchPlans extends SimpleJsonResourceReloadListener {
         java.util.List<io.github.soundgoodizerfan.feedback.net.ResearchSyncPayload.Entry> out = new java.util.ArrayList<>();
         for (var e : plans.entrySet()) {
             int cut = e.getKey().lastIndexOf('_');
-            if (cut < 0 || e.getValue().specimens.isEmpty())
+            if (cut < 0 || e.getKey().contains("/") || e.getValue().specimens.isEmpty())
                 continue;
             try {
                 out.add(new io.github.soundgoodizerfan.feedback.net.ResearchSyncPayload.Entry(e.getKey().substring(0, cut), Integer.parseInt(e.getKey().substring(cut + 1)), java.util.List.copyOf(e.getValue().specimens)));

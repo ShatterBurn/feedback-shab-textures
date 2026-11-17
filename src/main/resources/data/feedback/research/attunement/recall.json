@@ -1,0 +1,88 @@
+{
+  "title": "Coming back",
+  "concepts": {
+    "throw": {
+      "label": "Throw",
+      "traits": [
+        "release",
+        "flight"
+      ]
+    },
+    "arc": {
+      "label": "Arc",
+      "traits": [
+        "flight",
+        "top"
+      ]
+    },
+    "peak": {
+      "label": "Peak",
+      "traits": [
+        "top",
+        "bend"
+      ]
+    },
+    "turn": {
+      "label": "Turn",
+      "traits": [
+        "bend",
+        "home"
+      ]
+    },
+    "return": {
+      "label": "Return",
+      "traits": [
+        "home",
+        "catch"
+      ]
+    },
+    "hand": {
+      "label": "Hand",
+      "traits": [
+        "catch",
+        "sentiment"
+      ]
+    },
+    "boomerang": {
+      "label": "Boomerang",
+      "traits": [
+        "sentiment",
+        "curve"
+      ]
+    },
+    "stone": {
+      "label": "Stone",
+      "traits": [
+        "release",
+        "top"
+      ]
+    },
+    "kite": {
+      "label": "Kite",
+      "traits": [
+        "curve",
+        "catch"
+      ]
+    },
+    "tether": {
+      "label": "Tether",
+      "traits": [
+        "bend",
+        "sentiment"
+      ]
+    }
+  },
+  "start": "throw",
+  "goal": "boomerang",
+  "replay": [
+    "A throw rises, peaks, and turns. A curved shape lets it come back to the hand it left.",
+    "The part returns to its owner."
+  ],
+  "question": "What does a recall rite make the part do?",
+  "options": [
+    "Fly forever",
+    "Come back to its owner",
+    "Break on landing"
+  ],
+  "answer": 1
+}

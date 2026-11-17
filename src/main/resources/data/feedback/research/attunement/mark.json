@@ -1,0 +1,88 @@
+{
+  "title": "Making a person visible",
+  "concepts": {
+    "footprint": {
+      "label": "Footprint",
+      "traits": [
+        "ground",
+        "left"
+      ]
+    },
+    "trace": {
+      "label": "Trace",
+      "traits": [
+        "left",
+        "carry"
+      ]
+    },
+    "signal": {
+      "label": "Signal",
+      "traits": [
+        "carry",
+        "far"
+      ]
+    },
+    "beacon": {
+      "label": "Beacon",
+      "traits": [
+        "far",
+        "raised"
+      ]
+    },
+    "flag": {
+      "label": "Flag",
+      "traits": [
+        "raised",
+        "known"
+      ]
+    },
+    "name": {
+      "label": "Name",
+      "traits": [
+        "known",
+        "broadcast"
+      ]
+    },
+    "mark": {
+      "label": "Mark",
+      "traits": [
+        "broadcast",
+        "tag"
+      ]
+    },
+    "shadow": {
+      "label": "Shadow",
+      "traits": [
+        "ground",
+        "carry"
+      ]
+    },
+    "banner": {
+      "label": "Banner",
+      "traits": [
+        "tag",
+        "known"
+      ]
+    },
+    "whisper": {
+      "label": "Whisper",
+      "traits": [
+        "far",
+        "broadcast"
+      ]
+    }
+  },
+  "start": "footprint",
+  "goal": "mark",
+  "replay": [
+    "A footprint leaves a trace. Put the trace in a signal and the trace can be seen from far off, with a name on it.",
+    "The part broadcasts who it marks."
+  ],
+  "question": "What does a mark rite do to a person?",
+  "options": [
+    "Makes them visible from afar",
+    "Makes them invisible",
+    "Makes them stronger"
+  ],
+  "answer": 0
+}

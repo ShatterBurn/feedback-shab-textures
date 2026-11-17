@@ -7,6 +7,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.OptionalDouble;
 
+import io.github.soundgoodizerfan.feedback.control.computer.ComputerApps;
 import io.github.soundgoodizerfan.feedback.modular.attunement.Attunements;
 import io.github.soundgoodizerfan.feedback.modular.bake.ModularTuning;
 import io.github.soundgoodizerfan.feedback.modular.item.ModularStacks;
@@ -22,8 +23,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 /**
- * What the Research Table can research and what a run asks of the researcher. Two kinds of thing: a treatise volume and an attunement not yet
- * known. A volume wants as its specimen an item the volume before it taught how to build (a type gated by that volume), or for a first volume
+ * What the Research Table can research and what a run asks of the researcher. Three kinds of thing: a treatise volume, an attunement written
+ * onto a rite, and an app written onto a blank disk. A volume wants as its specimen an item the volume before it taught how to build (a type gated by that volume), or for a first volume
  * one of the plain things its plan names; it also wants that earlier treatise in hand. Either way the play is the research board
  * ({@code ResearchBoardScreen}) over the plan authored for it ({@link ResearchPlan}).
  */
@@ -54,15 +55,24 @@ public final class Researching {
         return out;
     }
 
-    /** How many things there are to pick between in {@code mode} (0 volumes, 1 attunements). */
+    /** How many things there are to pick between in {@code mode} (0 volumes, 1 attunements, 2 apps). */
     public static int count(int mode) {
-        return mode == 0 ? volumes().size() : effects().size();
+        return mode == 0 ? volumes().size() : mode == 1 ? effects().size() : ComputerApps.DISK_APPS.size();
+    }
+
+    /** The app the {@code index}-th entry of app mode names. */
+    public static String app(int index) {
+        return ComputerApps.DISK_APPS.get(Math.floorMod(index, ComputerApps.DISK_APPS.size()));
     }
 
     /** The plan for the {@code index}-th thing of {@code mode}, or null when there is none loaded. */
     public static ResearchPlan plan(int mode, int index) {
-        if (mode == 1)
-            return ResearchPlans.get().attunement();
+        if (mode == 1) {
+            var list = effects();
+            return list.isEmpty() ? null : ResearchPlans.get().attunement(list.get(Math.floorMod(index, list.size())).id().getPath());
+        }
+        if (mode == 2)
+            return ResearchPlans.get().app(app(index));
         int[] v = volume(index);
         return ResearchPlans.get().volume(School.values()[v[0]], v[1]);
     }
@@ -147,6 +157,30 @@ public final class Researching {
         return atLevel + Math.round(player.experienceProgress * player.getXpNeededForNextLevel());
     }
 
+    /** Whether {@code stack} is what the app's plan says the app is about: its subject item, or any item of its subject tag. */
+    public static boolean subjectFits(ResearchPlan plan, ItemStack stack) {
+        if (plan == null || stack.isEmpty() || plan.subject.isEmpty())
+            return false;
+        if (plan.subject.startsWith("#")) {
+            ResourceLocation tag = ResourceLocation.tryParse(plan.subject.substring(1));
+            return tag != null && stack.is(net.minecraft.tags.TagKey.create(net.minecraft.core.registries.Registries.ITEM, tag));
+        }
+        ResourceLocation id = ResourceLocation.tryParse(plan.subject);
+        return id != null && BuiltInRegistries.ITEM.getKey(stack.getItem()).equals(id);
+    }
+
+    /** Whether {@code stack} is a Floppy Disk with nothing on it: no app, no program. */
+    public static boolean blankDisk(ItemStack stack) {
+        return stack.is(io.github.soundgoodizerfan.feedback.registry.FItems.FLOPPY_DISK.get())
+                && !stack.has(io.github.soundgoodizerfan.feedback.registry.FDataComponents.APP.get())
+                && !stack.has(io.github.soundgoodizerfan.feedback.registry.FDataComponents.PROGRAM_GRAPH.get());
+    }
+
+    /** The ink an app's run starts with. */
+    public static int appInk() {
+        return ModularTuning.RESEARCH_BASE_INK + ModularTuning.RESEARCH_OFFER_INK;
+    }
+
     /** Whether {@code specimen} is what research of the {@code index}-th thing of {@code mode} takes. */
     public static boolean specimenFits(ItemStack specimen, int mode, int index) {
         var design = ModularStacks.design(specimen);
@@ -169,7 +203,7 @@ public final class Researching {
 
     /** Whether the earlier volume a volume builds on is in hand (a first volume and an attunement need none). */
     public static boolean builtOn(Player player, net.minecraft.world.inventory.ContainerLevelAccess access, int mode, int index) {
-        if (mode == 1)
+        if (mode >= 1)
             return true;
         int[] v = volume(index);
         return v[1] <= 1 || io.github.soundgoodizerfan.feedback.modular.treatise.Treatises.has(player, access, School.values()[v[0]], v[1] - 1);

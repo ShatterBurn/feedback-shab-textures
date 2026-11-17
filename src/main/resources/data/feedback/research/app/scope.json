@@ -1,0 +1,89 @@
+{
+  "title": "Seeing far on a screen",
+  "subject": "minecraft:spyglass",
+  "concepts": {
+    "distance": {
+      "label": "Distance",
+      "traits": [
+        "far",
+        "glass"
+      ]
+    },
+    "lens": {
+      "label": "Lens",
+      "traits": [
+        "glass",
+        "bent"
+      ]
+    },
+    "light": {
+      "label": "Light",
+      "traits": [
+        "bent",
+        "sharp"
+      ]
+    },
+    "focus": {
+      "label": "Focus",
+      "traits": [
+        "sharp",
+        "picture"
+      ]
+    },
+    "image": {
+      "label": "Image",
+      "traits": [
+        "picture",
+        "grid"
+      ]
+    },
+    "pixel": {
+      "label": "Pixel",
+      "traits": [
+        "grid",
+        "screen"
+      ]
+    },
+    "display": {
+      "label": "Display",
+      "traits": [
+        "screen",
+        "zoom"
+      ]
+    },
+    "horizon": {
+      "label": "Horizon",
+      "traits": [
+        "far",
+        "bent"
+      ]
+    },
+    "mirror": {
+      "label": "Mirror",
+      "traits": [
+        "zoom",
+        "grid"
+      ]
+    },
+    "dust": {
+      "label": "Dust",
+      "traits": [
+        "sharp",
+        "screen"
+      ]
+    }
+  },
+  "start": "distance",
+  "goal": "display",
+  "replay": [
+    "A lens bends light to a focus. The image behind the focus is a picture, and a picture made of a grid is something a screen can show.",
+    "The disk learns to show what is far away."
+  ],
+  "question": "What does the Scope app show?",
+  "options": [
+    "What the Computer's drives hold",
+    "What the scope sees at a distance",
+    "The time"
+  ],
+  "answer": 1
+}

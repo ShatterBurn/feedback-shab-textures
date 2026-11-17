@@ -1,0 +1,88 @@
+{
+  "title": "Giving it a shove",
+  "concepts": {
+    "still": {
+      "label": "Still",
+      "traits": [
+        "rest",
+        "coil"
+      ]
+    },
+    "spring": {
+      "label": "Spring",
+      "traits": [
+        "coil",
+        "snap"
+      ]
+    },
+    "release": {
+      "label": "Release",
+      "traits": [
+        "snap",
+        "drive"
+      ]
+    },
+    "thrust": {
+      "label": "Thrust",
+      "traits": [
+        "drive",
+        "equal"
+      ]
+    },
+    "reaction": {
+      "label": "Reaction",
+      "traits": [
+        "equal",
+        "back"
+      ]
+    },
+    "recoil": {
+      "label": "Recoil",
+      "traits": [
+        "back",
+        "shove"
+      ]
+    },
+    "push": {
+      "label": "Push",
+      "traits": [
+        "shove",
+        "sudden"
+      ]
+    },
+    "brake": {
+      "label": "Brake",
+      "traits": [
+        "rest",
+        "snap"
+      ]
+    },
+    "jet": {
+      "label": "Jet",
+      "traits": [
+        "sudden",
+        "back"
+      ]
+    },
+    "wall": {
+      "label": "Wall",
+      "traits": [
+        "drive",
+        "shove"
+      ]
+    }
+  },
+  "start": "still",
+  "goal": "push",
+  "replay": [
+    "A coiled spring at rest snaps all at once. Whatever it pushes pushes back the same, and the rest goes flying.",
+    "The part gives a thing a push."
+  ],
+  "question": "What does an impulse rite give a thing?",
+  "options": [
+    "A pull",
+    "A push",
+    "A glow"
+  ],
+  "answer": 1
+}

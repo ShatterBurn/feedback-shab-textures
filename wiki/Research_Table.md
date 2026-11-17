@@ -1,6 +1,6 @@
 # Research Table
 
-The Research Table is where what is not yet known is found out. It writes a [Blank Treatise](Treatise.md#blank-treatise) into a treatise volume, or writes a [Rite](Enchanting_Table.md#rites) for an attunement, by working out, on a board of linked concepts, how something you already have leads to the new idea.
+The Research Table is where what is not yet known is found out. It writes a [Blank Treatise](Treatise.md#blank-treatise) into a treatise volume, writes a [Rite](Enchanting_Table.md#rites) for an attunement, or writes an app onto a blank Floppy Disk, by working out, on a board of linked concepts, how something you already have leads to the new idea.
 
 ## Crafting
 
@@ -14,7 +14,7 @@ P is paper, W is any plank, L is a lectern.
 
 ## Using it
 
-The screen is an open book. The left page is a list with two tabs, **Treatises** and **Attunements**; each entry has a spinning icon. Click an entry to pick it. The right page shows the picked entry's two-line blurb, what it asks for, its slots and the **Research** button, which opens the research board and costs 40 experience points.
+The screen is an open book. The left page is a list with three tabs, **Treatises**, **Rites** and **Apps**; each entry has a spinning icon. Click an entry to pick it. The right page shows the picked entry's two-line blurb, what it asks for, its slots and the **Research** button, which opens the research board and costs 40 experience points.
 
 A volume has a slot for one Blank Treatise and a slot for one **specimen**. An attunement has a slot for an **offering**, a slot for a **reagent** and a slot for a **Blank Rite**. The text on the right page says what is missing.
 
@@ -45,9 +45,15 @@ A volume after the first takes an item built from the volume before it, and that
 
 ### Attunements
 
-The tab lists every attunement, and any of them can be researched again and again. Each attunement is about one material property: hardness, toughness, strength, weight, heat resistance, conduction or heat capacity. Its power sets a bar. The **offering** is any stock of a material, and it must rank at least that far up the property among all materials; the screen calls the bar modest, good, fine or exceptional. The further the offering is over the bar, the more ink it gives, up to 4 extra. **Mend** is about toughness and asks for an offering in the top tenth of materials by toughness.
+The Rites tab lists every attunement, and any of them can be researched again and again. Each attunement is about one material property: hardness, toughness, strength, weight, heat resistance, conduction or heat capacity. Its power sets a bar. The **offering** is any stock of a material, and it must rank at least that far up the property among all materials; the screen calls the bar modest, good, fine or exceptional. The further the offering is over the bar, the more ink it gives, up to 4 extra. **Mend** is about toughness and asks for an offering in the top tenth of materials by toughness.
 
 The **reagent** is an optional brewed potion.
+
+### Apps
+
+The Apps tab lists every app a [Computer](Electric_Controller.md#apps) can run from a disk. An app has a slot for a **disk**, a blank [Floppy Disk](Programming.md#media) with no program and no app on it, and a slot for **About**, the thing the app is about: a spyglass for Scope, a compass for Link Map, a book for Notes, a clock for Converter, redstone for Calculator, a bookshelf for Library, a redstone lamp for Power, a note block for Arcade, paper for Blueprint, and an Ender Pearl or Synthetic Pearl for Network.
+
+Reaching the goal in an honest time writes the app onto the disk and uses up one About item. A failed run costs the 40 experience points only; the disk and the item stay.
 
 ### Blank Rite
 
@@ -59,7 +65,7 @@ One offering is used up per run, and the potion with it. No specimen is worn.
 
 ## The research board
 
-Each volume has its own story and its own concepts. Attunements share one story, "Marking the unseen".
+Each volume, each attunement and each app has its own story, start and goal concepts, concepts and traits.
 
 The board is a hex board. The concept you already know sits at one end (the start) and the new idea at the other (the goal). Six hexes are rubble and cannot be used. Beside the board is a hand of concepts.
 

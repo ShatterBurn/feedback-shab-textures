@@ -46,7 +46,7 @@ Drive, Editor and every app open as windows. Drag a window by its title bar and 
 
 Drag a title bar to the left or right edge of the screen area to snap the window to that half, or to the top edge to maximize it. Dragging a maximized or snapped window away restores its size. Double-click a title bar to maximize or restore.
 
-**Fullscreen** makes the window fill the whole game screen, over the Computer's panel and dock; its own title bar stays. The fullscreen button, the **Fullscreen** entry of the right-click menu (**Leave fullscreen** while it is on) and the same menu's restore entry, maximize, a double-click on the title bar, dragging the title bar and snapping all bring the window back to its normal size.
+**Fullscreen** makes the window fill the whole game screen, over the Computer's panel and dock; its own title bar stays. JEI's item lists are hidden while it is on. The fullscreen button, the **Fullscreen** entry of the right-click menu (**Leave fullscreen** while it is on) and the same menu's restore entry, maximize, a double-click on the title bar, dragging the title bar and snapping all bring the window back to its normal size.
 
 With a window focused:
 
@@ -66,9 +66,9 @@ A bottom panel holds the **Menu** launcher, one task button per open window, and
 
 **Drive**, **Editor**, **Files**, **Settings**, **Monitor**, **Links**, **Diagram** and **Console** are built in. Every other app comes on an **app disk**, a Floppy Disk that carries the app. An app runs while its disk sits in one of the four drive bays. Pull the disk and the app disappears from the Menu and its window closes; the disk can go into another Computer and the app is there. An app disk is not a program medium: the Computer will not edit, run or copy onto it, and a [Programmer](Programming.md) will not take it. In a Drive window an app disk shows that it runs while in a drive, and in the Library it shows its app name. The creative tab lists each app disk.
 
-Each app disk is shapeless: one blank Floppy Disk plus one item.
+Each app disk is researched at the [Research Table](Research_Table.md#apps): a blank Floppy Disk (no app, no program) plus the thing the app is about, worked out on the research board.
 
-| Item | App disk |
+| About item | App disk |
 | --- | --- |
 | Spyglass | Scope App Disk |
 | Compass | Link Map App Disk |
@@ -78,7 +78,7 @@ Each app disk is shapeless: one blank Floppy Disk plus one item.
 | Bookshelf | Library App Disk |
 | Redstone Lamp | Power App Disk |
 | Note Block | Arcade App Disk |
-| Paper + Blue Dye | Blueprint App Disk |
+| Paper | Blueprint App Disk |
 | Ender Pearl or Synthetic Pearl | Network App Disk |
 
 #### Built-in apps

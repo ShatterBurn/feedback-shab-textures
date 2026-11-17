@@ -1,0 +1,88 @@
+{
+  "title": "Making a part stick",
+  "concepts": {
+    "dew": {
+      "label": "Dew",
+      "traits": [
+        "wet",
+        "thin"
+      ]
+    },
+    "film": {
+      "label": "Film",
+      "traits": [
+        "thin",
+        "flat"
+      ]
+    },
+    "surface": {
+      "label": "Surface",
+      "traits": [
+        "flat",
+        "touch"
+      ]
+    },
+    "contact": {
+      "label": "Contact",
+      "traits": [
+        "touch",
+        "snag"
+      ]
+    },
+    "hook": {
+      "label": "Hook",
+      "traits": [
+        "snag",
+        "friction"
+      ]
+    },
+    "grip": {
+      "label": "Grip",
+      "traits": [
+        "friction",
+        "stay"
+      ]
+    },
+    "hold_fast": {
+      "label": "Hold-fast",
+      "traits": [
+        "stay",
+        "stuck"
+      ]
+    },
+    "glue": {
+      "label": "Glue",
+      "traits": [
+        "wet",
+        "flat"
+      ]
+    },
+    "burr": {
+      "label": "Burr",
+      "traits": [
+        "stuck",
+        "friction"
+      ]
+    },
+    "slick": {
+      "label": "Slick",
+      "traits": [
+        "touch",
+        "stay"
+      ]
+    }
+  },
+  "start": "dew",
+  "goal": "hold_fast",
+  "replay": [
+    "A film of dew on a surface holds two things together by touch alone. Add a hook and a grip and the contact stops letting go.",
+    "The part clings to what it touches."
+  ],
+  "question": "What does a cling rite make a part do?",
+  "options": [
+    "Slide off what it touches",
+    "Stick to what it touches",
+    "Glow where it touches"
+  ],
+  "answer": 1
+}

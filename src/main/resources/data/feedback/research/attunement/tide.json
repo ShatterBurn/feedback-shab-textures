@@ -1,0 +1,88 @@
+{
+  "title": "Water in the part",
+  "concepts": {
+    "moon": {
+      "label": "Moon",
+      "traits": [
+        "night",
+        "tug"
+      ]
+    },
+    "pull": {
+      "label": "Pull",
+      "traits": [
+        "tug",
+        "rise"
+      ]
+    },
+    "swell": {
+      "label": "Swell",
+      "traits": [
+        "rise",
+        "bowl"
+      ]
+    },
+    "basin": {
+      "label": "Basin",
+      "traits": [
+        "bowl",
+        "current"
+      ]
+    },
+    "flow": {
+      "label": "Flow",
+      "traits": [
+        "current",
+        "height"
+      ]
+    },
+    "level": {
+      "label": "Level",
+      "traits": [
+        "height",
+        "sea"
+      ]
+    },
+    "tide": {
+      "label": "Tide",
+      "traits": [
+        "sea",
+        "wet"
+      ]
+    },
+    "rain": {
+      "label": "Rain",
+      "traits": [
+        "night",
+        "rise"
+      ]
+    },
+    "pump": {
+      "label": "Pump",
+      "traits": [
+        "wet",
+        "height"
+      ]
+    },
+    "cliff": {
+      "label": "Cliff",
+      "traits": [
+        "bowl",
+        "sea"
+      ]
+    }
+  },
+  "start": "moon",
+  "goal": "tide",
+  "replay": [
+    "The moon pulls and the water swells in the basin. The flow rises and falls, and the level follows.",
+    "The part carries water in it."
+  ],
+  "question": "What does a tide rite imbue a part with?",
+  "options": [
+    "Water",
+    "Fire",
+    "Wind"
+  ],
+  "answer": 0
+}

@@ -4,6 +4,7 @@ package io.github.soundgoodizerfan.feedback.modular.research;
 
 import java.util.List;
 
+import io.github.soundgoodizerfan.feedback.control.computer.ComputerApps;
 import io.github.soundgoodizerfan.feedback.modular.attunement.Rites;
 import io.github.soundgoodizerfan.feedback.modular.bake.ModularTuning;
 import io.github.soundgoodizerfan.feedback.modular.engineering.EngineeringAssembly;
@@ -33,8 +34,8 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 /**
- * The Research Table: a Blank Treatise and a specimen. the tabs choose between researching a treatise volume and an attunement not yet
- * known, a click on a listed entry picks it, {@link #BTN_RESEARCH} opens the research board. A volume takes as its specimen an item
+ * The Research Table: a Blank Treatise and a specimen. the tabs choose between researching a treatise volume, an attunement written onto a
+ * rite and an app written onto a blank disk (a Floppy Disk with nothing on it and the thing the app is about), a click on a listed entry picks it, {@link #BTN_RESEARCH} opens the research board. A volume takes as its specimen an item
  * the volume before it taught how to build (a first volume, one of the plain things its plan names) and wants that earlier treatise in hand.
  * The experience is spent whatever the score; the specimen is worn or comes apart by how hard the researcher pushed it; the blank becomes the
  * volume with the score as its notes' quality, or the attunement is learned.
@@ -42,9 +43,9 @@ import net.neoforged.neoforge.network.PacketDistributor;
 public class ResearchTableMenu extends AbstractContainerMenu {
 
     /** {@code BTN_TREATISES} and {@code BTN_ATTUNEMENTS} choose what is listed, {@code BTN_PICK + i} picks the i-th entry, {@code BTN_RESEARCH} opens the board. */
-    public static final int BTN_TREATISES = 1, BTN_ATTUNEMENTS = 2, BTN_RESEARCH = 3, BTN_PICK = 100;
+    public static final int BTN_TREATISES = 1, BTN_ATTUNEMENTS = 2, BTN_RESEARCH = 3, BTN_APPS = 4, BTN_PICK = 100;
     public static final int NOTE_NONE = 0, NOTE_NO_BLANK = 1, NOTE_NO_SPECIMEN = 2, NOTE_NO_XP = 3, NOTE_NOTHING = 4, NOTE_WRITTEN = 5, NOTE_LEARNED = 6,
-            NOTE_NO_EARLIER = 7, NOTE_NO_PLAN = 8, NOTE_NO_OFFERING = 9;
+            NOTE_NO_EARLIER = 7, NOTE_NO_PLAN = 8, NOTE_NO_OFFERING = 9, NOTE_NO_DISK = 10, NOTE_NO_SUBJECT = 11, NOTE_APP_WRITTEN = 12, NOTE_APP_FAILED = 13;
 
     public static final int W = 304, H = 298, PAGE_X = 156, BLANK_X = 160, SPECIMEN_X = 214, RITE_X = 268, SLOT_Y = 170, INV_X = 71, INV_Y = 212;
 
@@ -145,6 +146,29 @@ public class ResearchTableMenu extends AbstractContainerMenu {
                 return 1;
             }
         });
+        addSlot(new Slot(table, ResearchTableBlockEntity.BLANK_DISK, BLANK_X, SLOT_Y) {
+            @Override
+            public boolean isActive() {
+                return mode.get() == 2;
+            }
+
+            @Override
+            public boolean mayPlace(ItemStack s) {
+                return Researching.blankDisk(s);
+            }
+
+            @Override
+            public int getMaxStackSize() {
+                return 1;
+            }
+        });
+        // the client holds no plans, so any item may be set down; what the app is about is checked when the research starts
+        addSlot(new Slot(table, ResearchTableBlockEntity.SUBJECT, SPECIMEN_X, SLOT_Y) {
+            @Override
+            public boolean isActive() {
+                return mode.get() == 2;
+            }
+        });
         for (int row = 0; row < 3; row++)
             for (int column = 0; column < 9; column++)
                 addSlot(new Slot(inventory, column + row * 9 + 9, INV_X + column * 18, INV_Y + row * 18));
@@ -185,10 +209,14 @@ public class ResearchTableMenu extends AbstractContainerMenu {
             return NOTE_NO_BLANK;
         if (mode.get() == 1 && !table.getItem(ResearchTableBlockEntity.BLANK_RITE).is(FModular.BLANK_RITE.get()))
             return NOTE_NO_BLANK;
+        if (mode.get() == 2 && !Researching.blankDisk(table.getItem(ResearchTableBlockEntity.BLANK_DISK)))
+            return NOTE_NO_DISK;
         if (Researching.plan(mode.get(), index.get()) == null)
             return NOTE_NO_PLAN;
         if (!Researching.builtOn(server, access(), mode.get(), index.get()))
             return NOTE_NO_EARLIER;
+        if (mode.get() == 2 && !Researching.subjectFits(Researching.plan(2, index.get()), table.getItem(ResearchTableBlockEntity.SUBJECT)))
+            return NOTE_NO_SUBJECT;
         if (mode.get() == 0 && !Researching.specimenFits(table.getItem(ResearchTableBlockEntity.SPECIMEN), mode.get(), index.get()))
             return NOTE_NO_SPECIMEN;
         if (mode.get() == 1 && Researching.attunementInk(effect(server), table.getItem(ResearchTableBlockEntity.OFFERING),
@@ -203,8 +231,8 @@ public class ResearchTableMenu extends AbstractContainerMenu {
     public boolean clickMenuButton(Player p, int id) {
         if (!(p instanceof ServerPlayer server))
             return false;
-        if (id == BTN_TREATISES || id == BTN_ATTUNEMENTS) {
-            mode.set(id == BTN_ATTUNEMENTS ? 1 : 0);
+        if (id == BTN_TREATISES || id == BTN_ATTUNEMENTS || id == BTN_APPS) {
+            mode.set(id == BTN_APPS ? 2 : id == BTN_ATTUNEMENTS ? 1 : 0);
             index.set(0);
             note.set(0);
             return true;
@@ -232,7 +260,7 @@ public class ResearchTableMenu extends AbstractContainerMenu {
         sentMode = mode.get();
         sentIndex = index.get();
         sentPlan = plan;
-        sentInk = mode.get() == 1 ? Researching.attunementInk(effect(server), table.getItem(ResearchTableBlockEntity.OFFERING),
+        sentInk = mode.get() == 2 ? Researching.appInk() : mode.get() == 1 ? Researching.attunementInk(effect(server), table.getItem(ResearchTableBlockEntity.OFFERING),
                 table.getItem(ResearchTableBlockEntity.REAGENT), server.level())
                 : Researching.ink(server, table.getItem(ResearchTableBlockEntity.SPECIMEN), plan);
         sentSeed = (int) (now ^ containerId * 31L);
@@ -269,6 +297,12 @@ public class ResearchTableMenu extends AbstractContainerMenu {
             note.set(why);
             return;
         }
+        if (mode.get() == 2) {
+            writeApp(server, board.reached && elapsed >= ModularTuning.RESEARCH_MIN_TICKS);
+            table.setChanged();
+            broadcastChanges();
+            return;
+        }
         if (!server.getAbilities().instabuild)
             server.giveExperiencePoints(-ModularTuning.RESEARCH_XP);
         if (mode.get() == 0)
@@ -292,6 +326,24 @@ public class ResearchTableMenu extends AbstractContainerMenu {
         }
         table.setChanged();
         broadcastChanges();
+    }
+
+    /**
+     * An app's research ends in a disk or in nothing: a chain that reached its goal in an honest time writes the app onto the blank and uses up
+     * what the app is about; a run that did not leaves the blank and the subject alone (the experience is gone either way).
+     */
+    private void writeApp(ServerPlayer server, boolean learned) {
+        if (!server.getAbilities().instabuild)
+            server.giveExperiencePoints(-ModularTuning.RESEARCH_XP);
+        if (!learned) {
+            note.set(NOTE_APP_FAILED);
+            return;
+        }
+        String app = Researching.app(sentIndex);
+        table.getItem(ResearchTableBlockEntity.SUBJECT).shrink(1);
+        table.setItem(ResearchTableBlockEntity.BLANK_DISK, ComputerApps.disk(app));
+        HudReadoutPayload.send(server, Component.translatable("message.feedback.research.app", Component.translatable("item.feedback.app." + app)), 60);
+        note.set(NOTE_APP_WRITTEN);
     }
 
     /** Pushing the specimen hard wears it, and pushing it too hard takes it apart into its parts, which go to the researcher. */

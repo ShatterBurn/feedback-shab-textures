@@ -1,0 +1,88 @@
+{
+  "title": "Giving more",
+  "concepts": {
+    "harvest": {
+      "label": "Harvest",
+      "traits": [
+        "reap",
+        "bound"
+      ]
+    },
+    "sheaf": {
+      "label": "Sheaf",
+      "traits": [
+        "bound",
+        "share"
+      ]
+    },
+    "tithe": {
+      "label": "Tithe",
+      "traits": [
+        "share",
+        "spare"
+      ]
+    },
+    "surplus": {
+      "label": "Surplus",
+      "traits": [
+        "spare",
+        "kind"
+      ]
+    },
+    "generosity": {
+      "label": "Generosity",
+      "traits": [
+        "kind",
+        "give"
+      ]
+    },
+    "gift": {
+      "label": "Gift",
+      "traits": [
+        "give",
+        "plenty"
+      ]
+    },
+    "bounty": {
+      "label": "Bounty",
+      "traits": [
+        "plenty",
+        "more"
+      ]
+    },
+    "famine": {
+      "label": "Famine",
+      "traits": [
+        "reap",
+        "share"
+      ]
+    },
+    "barn": {
+      "label": "Barn",
+      "traits": [
+        "more",
+        "give"
+      ]
+    },
+    "seed": {
+      "label": "Seed",
+      "traits": [
+        "spare",
+        "plenty"
+      ]
+    }
+  },
+  "start": "harvest",
+  "goal": "bounty",
+  "replay": [
+    "A harvest is bound into sheaves. A tithe is the surplus given back and a generous hand always leaves more behind.",
+    "The part gives more than it takes."
+  ],
+  "question": "What does a yield rite make a part do?",
+  "options": [
+    "Give more",
+    "Take more",
+    "Give nothing"
+  ],
+  "answer": 0
+}

@@ -1,0 +1,88 @@
+{
+  "title": "An empty stomach",
+  "concepts": {
+    "empty": {
+      "label": "Empty",
+      "traits": [
+        "hollow",
+        "want"
+      ]
+    },
+    "craving": {
+      "label": "Craving",
+      "traits": [
+        "want",
+        "taste"
+      ]
+    },
+    "appetite": {
+      "label": "Appetite",
+      "traits": [
+        "taste",
+        "table"
+      ]
+    },
+    "feast": {
+      "label": "Feast",
+      "traits": [
+        "table",
+        "gut"
+      ]
+    },
+    "digestion": {
+      "label": "Digestion",
+      "traits": [
+        "gut",
+        "sated"
+      ]
+    },
+    "fullness": {
+      "label": "Fullness",
+      "traits": [
+        "sated",
+        "fed"
+      ]
+    },
+    "nourishment": {
+      "label": "Nourishment",
+      "traits": [
+        "fed",
+        "eat"
+      ]
+    },
+    "pantry": {
+      "label": "Pantry",
+      "traits": [
+        "hollow",
+        "taste"
+      ]
+    },
+    "thirst": {
+      "label": "Thirst",
+      "traits": [
+        "eat",
+        "sated"
+      ]
+    },
+    "crumb": {
+      "label": "Crumb",
+      "traits": [
+        "table",
+        "fed"
+      ]
+    }
+  },
+  "start": "empty",
+  "goal": "nourishment",
+  "replay": [
+    "Emptiness becomes craving, craving finds a feast, and digestion turns the feast into fullness. The rite skips the table.",
+    "The part fills the one who carries it."
+  ],
+  "question": "What does a hunger rite do for the one who carries it?",
+  "options": [
+    "Fills their stomach",
+    "Empties their stomach",
+    "Makes them sleep"
+  ],
+  "answer": 0
+}

@@ -1,0 +1,89 @@
+{
+  "title": "Talking over distance",
+  "subject": "#feedback:spatial_anchors",
+  "concepts": {
+    "anchor": {
+      "label": "Anchor",
+      "traits": [
+        "fixed",
+        "place"
+      ]
+    },
+    "position": {
+      "label": "Position",
+      "traits": [
+        "place",
+        "far"
+      ]
+    },
+    "distance": {
+      "label": "Distance",
+      "traits": [
+        "far",
+        "wave"
+      ]
+    },
+    "signal": {
+      "label": "Signal",
+      "traits": [
+        "wave",
+        "words"
+      ]
+    },
+    "message": {
+      "label": "Message",
+      "traits": [
+        "words",
+        "name"
+      ]
+    },
+    "address": {
+      "label": "Address",
+      "traits": [
+        "name",
+        "link"
+      ]
+    },
+    "network": {
+      "label": "Network",
+      "traits": [
+        "link",
+        "reach"
+      ]
+    },
+    "beacon": {
+      "label": "Beacon",
+      "traits": [
+        "fixed",
+        "far"
+      ]
+    },
+    "letter": {
+      "label": "Letter",
+      "traits": [
+        "reach",
+        "name"
+      ]
+    },
+    "echo": {
+      "label": "Echo",
+      "traits": [
+        "wave",
+        "link"
+      ]
+    }
+  },
+  "start": "anchor",
+  "goal": "network",
+  "replay": [
+    "An anchor fixes a place, and a place is a distance away from another. A signal across the distance carries a message to an address.",
+    "The disk learns to talk to other Computers."
+  ],
+  "question": "What does the Network app let a Computer do?",
+  "options": [
+    "Talk to other Computers",
+    "Move blocks",
+    "Brew potions"
+  ],
+  "answer": 0
+}

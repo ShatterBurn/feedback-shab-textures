@@ -67,6 +67,11 @@ public class ComputerScreen extends SkinnedScreen<ComputerMenu> implements Compu
     private ComputerBlockEntity.LogEntry lastLog;
     private boolean primed;
 
+    /** Whether an app window fills the whole game window. */
+    public boolean windowFullscreen() {
+        return desktop.anyFullscreen();
+    }
+
     public ComputerScreen(ComputerMenu menu, Inventory inventory, Component title) {
         super(menu, inventory, title, skinFor(settingsOf(menu)));
         local = lastSeen = settingsOf(menu);
