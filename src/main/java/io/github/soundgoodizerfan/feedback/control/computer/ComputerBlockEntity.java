@@ -261,8 +261,8 @@ public class ComputerBlockEntity extends ElectricNode implements ControllerHost,
     // --- endernet: the Network app ------------------------------------------------------------------------------
 
     /** What the Network app shows: the pair's state, and the nodes on its far side as of the last refresh (server list, mirrored to the client in the update tag). */
-    public record NetState(int pair, int distance, int dx, int dz, String pairTail, java.util.List<io.github.soundgoodizerfan.feedback.control.endernet.Endernet.Entry> entries) {
-        public static final NetState NONE = new NetState(0, 0, 0, 0, "", java.util.List.of());
+    public record NetState(int pair, int distance, int dx, int dz, String pairTail, int channels, java.util.List<io.github.soundgoodizerfan.feedback.control.endernet.Endernet.Entry> entries) {
+        public static final NetState NONE = new NetState(0, 0, 0, 0, "", 0, java.util.List.of());
     }
 
     private NetState netState = NetState.NONE;
@@ -294,12 +294,12 @@ public class ComputerBlockEntity extends ElectricNode implements ControllerHost,
             // dark (unpowered here), or the far end is away: the book still knows where it stands
             var end = io.github.soundgoodizerfan.feedback.machine.ender.PairBook.get(level.getServer()).partner(pair, level.dimension(), worldPosition);
             int dx = end == null ? 0 : end.pos().getX() - worldPosition.getX(), dz = end == null ? 0 : end.pos().getZ() - worldPosition.getZ();
-            netState = new NetState(powered() ? 2 : 1, end == null ? 0 : (int) Math.sqrt(end.pos().distSqr(worldPosition)), dx, dz, tail, java.util.List.of());
+            netState = new NetState(powered() ? 2 : 1, end == null ? 0 : (int) Math.sqrt(end.pos().distSqr(worldPosition)), dx, dz, tail, core.endernetChannels(), java.util.List.of());
             return;
         }
         var list = io.github.soundgoodizerfan.feedback.control.endernet.Endernet.reachable(this);
         BlockPos at = far.getNodePos();
-        netState = new NetState(3, (int) Math.sqrt(at.distSqr(worldPosition)), at.getX() - worldPosition.getX(), at.getZ() - worldPosition.getZ(), tail, list);
+        netState = new NetState(3, (int) Math.sqrt(at.distSqr(worldPosition)), at.getX() - worldPosition.getX(), at.getZ() - worldPosition.getZ(), tail, core.endernetChannels(), list);
     }
 
     /** The click's key: the row in the low byte, a hash of the row's place above it, so a list that changed under the click is refused. */
@@ -551,6 +551,7 @@ public class ComputerBlockEntity extends ElectricNode implements ControllerHost,
         t.putInt("Dx", netState.dx());
         t.putInt("Dz", netState.dz());
         t.putString("Tail", netState.pairTail());
+        t.putInt("Channels", netState.channels());
         netState.entries().forEach(e -> {
             CompoundTag c = new CompoundTag();
             c.put("Ref", e.ref().toTag());
@@ -578,7 +579,7 @@ public class ComputerBlockEntity extends ElectricNode implements ControllerHost,
                     io.github.soundgoodizerfan.feedback.control.data.DataNodeRef.fromTag(c.getCompound("Ref")), c.getString("Key"),
                     kinds[Math.max(0, Math.min(kinds.length - 1, c.getInt("Kind")))], c.getBoolean("Sw"), c.getBoolean("On")));
         }
-        return new NetState(t.getInt("Pair"), t.getInt("Dist"), t.getInt("Dx"), t.getInt("Dz"), t.getString("Tail"), out);
+        return new NetState(t.getInt("Pair"), t.getInt("Dist"), t.getInt("Dx"), t.getInt("Dz"), t.getString("Tail"), t.getInt("Channels"), out);
     }
 
     @Override

@@ -18,11 +18,17 @@ public record ControllerLimits(int nodes, int variables, boolean typedDelays) {
     public static final ControllerLimits BASE = of(0, 0, false);
 
     /** A Controller with every upgrade fitted: the ceiling no card can pass. */
-    public static final ControllerLimits MAX = of(ControlTuning.MEMORY_DRUM_MAX, ControlTuning.CARD_RACK_MAX, true);
+    public static final ControllerLimits MAX = of(ControlTuning.MEMORY_DRUM_MAX, ControlTuning.CARD_RACK_MAX, true,
+            io.github.soundgoodizerfan.feedback.process.ProcessTuning.CIRCUIT_MEMORY_MAX);
 
     public static ControllerLimits of(int drums, int racks, boolean escapement) {
+        return of(drums, racks, escapement, 0);
+    }
+
+    /** As above with {@code extraVariables} more, the memory a fitted circuit's sculk lattice gives on top of the Memory Drums. */
+    public static ControllerLimits of(int drums, int racks, boolean escapement, int extraVariables) {
         return new ControllerLimits(ControlTuning.CONTROLLER_MAX_NODES + racks * ControlTuning.CARD_RACK_NODES,
-                ControlTuning.CONTROLLER_BASE_VARIABLES + drums * ControlTuning.MEMORY_DRUM_VARIABLES, escapement);
+                ControlTuning.CONTROLLER_BASE_VARIABLES + drums * ControlTuning.MEMORY_DRUM_VARIABLES + extraVariables, escapement);
     }
 
     /** Why {@code graph} does not fit these limits (a {@code feedback.programmer.error} key), or empty. */

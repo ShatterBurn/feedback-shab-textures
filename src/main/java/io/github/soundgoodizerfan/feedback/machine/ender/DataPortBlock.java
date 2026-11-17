@@ -40,16 +40,41 @@ public class DataPortBlock extends Block implements EntityBlock {
             }
             return ItemInteractionResult.sidedSuccess(level.isClientSide);
         }
+        if (io.github.soundgoodizerfan.feedback.machine.CircuitSlot.accepts(stack) && level.getBlockEntity(pos) instanceof DataPortBlockEntity port) {
+            if (!level.isClientSide) {
+                ItemStack old = port.circuit().seat(stack);
+                port.setChanged();
+                if (!old.isEmpty() && !player.getInventory().add(old))
+                    player.drop(old, false);
+            }
+            return ItemInteractionResult.sidedSuccess(level.isClientSide);
+        }
         return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
+        if (player.isShiftKeyDown() && level.getBlockEntity(pos) instanceof DataPortBlockEntity taking && !taking.circuit().isEmpty()) {
+            if (!level.isClientSide) {
+                ItemStack out = taking.circuit().take();
+                taking.setChanged();
+                if (!player.getInventory().add(out))
+                    player.drop(out, false);
+            }
+            return InteractionResult.sidedSuccess(level.isClientSide);
+        }
         if (!level.isClientSide && level.getBlockEntity(pos) instanceof DataPortBlockEntity port)
             io.github.soundgoodizerfan.feedback.net.AimPayloads.report(player, pos, Component.translatable("message.feedback.data_port",
                     port.teleportantMb(), port.anchored() ? Component.translatable("message.feedback.ender_port.anchored")
                             : Component.translatable("message.feedback.ender_port.free"), Component.translatable(port.stateKey())));
         return InteractionResult.sidedSuccess(level.isClientSide);
+    }
+
+    @Override
+    protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean moved) {
+        if (!state.is(newState.getBlock()) && level.getBlockEntity(pos) instanceof DataPortBlockEntity port && !level.isClientSide)
+            net.minecraft.world.Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), port.circuit().take());
+        super.onRemove(state, level, pos, newState, moved);
     }
 
     @Nullable

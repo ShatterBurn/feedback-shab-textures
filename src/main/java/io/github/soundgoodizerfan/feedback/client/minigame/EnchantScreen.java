@@ -194,7 +194,7 @@ public class EnchantScreen extends SkinnedScreen<EnchantMenu> {
                     case DISH -> "meal";
                     case VESSEL -> "vessel";
                     case CHARGE -> "charge";
-                    case CELL, BELT, ENGINE, GEARBOX, PROPELLER, PRESSURE, BLOCK, TUBE, MACHINE, HEAD -> "machine";
+                    case CELL, BELT, ENGINE, GEARBOX, PROPELLER, PRESSURE, BLOCK, TUBE, ELEMENT, MACHINE, HEAD -> "machine";
                     default -> "held";
                 });
             });

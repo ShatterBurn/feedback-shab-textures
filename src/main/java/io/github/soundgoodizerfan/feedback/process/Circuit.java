@@ -69,7 +69,69 @@ import net.minecraft.world.level.Level;
  * the heat or off the current. Neither is wear by uptime.
  */
 public record Circuit(int elements, float speed, float noise, Board.Joint joint, float limitTu, float ratingAmps,
-                      float gain, float power, float warmTu, float warmRate, float clockRate) implements Testable {
+                      float gain, float power, float warmTu, float warmRate, float clockRate, Line line) implements Testable {
+
+    /**
+     * The figures of the amethyst and sculk lines, all zero on a board with neither: one record on the one item, the elements decide which are
+     * non-zero.
+     *
+     * @param stability   0-1, a resonator's: how steady a host's clock and sampling run (less step-timing jitter, less read noise).
+     * @param selectivity channels a resonator can separate, 0 with none; the endernet upgrade's {@code channels()} reads it.
+     * @param bandwidth   0-1, a resonator's: what a Data Port's link carries over its base bandwidth.
+     * @param memory      extra program variables a lattice holds on top of the Controller's Memory Drums, 0 to {@link ProcessTuning#CIRCUIT_MEMORY_MAX}.
+     * @param retention   0-1, a lattice's: at {@link ProcessTuning#LATTICE_HOLDS_AT} and over it holds its memory with the host unpowered; under it needs a standing supply.
+     * @param adaptation  0-1, a lattice's: how firmly a host holds a sensor reading it has seen repeat (it filters read noise).
+     */
+    public record Line(float stability, int selectivity, float bandwidth, int memory, float retention, float adaptation) {
+        public static final Line NONE = new Line(0f, 0, 0f, 0, 0f, 0f);
+
+        public static final Codec<Line> CODEC = RecordCodecBuilder.create(i -> i.group(
+                Codec.FLOAT.fieldOf("stability").forGetter(Line::stability),
+                Codec.INT.fieldOf("selectivity").forGetter(Line::selectivity),
+                Codec.FLOAT.fieldOf("bandwidth").forGetter(Line::bandwidth),
+                Codec.INT.fieldOf("memory").forGetter(Line::memory),
+                Codec.FLOAT.fieldOf("retention").forGetter(Line::retention),
+                Codec.FLOAT.fieldOf("adaptation").forGetter(Line::adaptation)).apply(i, Line::new));
+
+        /** Whether a lattice's memory survives the host losing power. */
+        public boolean holds() {
+            return memory > 0 && retention >= ProcessTuning.LATTICE_HOLDS_AT;
+        }
+
+        public boolean any() {
+            return !equals(NONE);
+        }
+    }
+
+    /** A circuit with no amethyst or sculk element on it. */
+    public Circuit(int elements, float speed, float noise, Board.Joint joint, float limitTu, float ratingAmps,
+                   float gain, float power, float warmTu, float warmRate, float clockRate) {
+        this(elements, speed, noise, joint, limitTu, ratingAmps, gain, power, warmTu, warmRate, clockRate, Line.NONE);
+    }
+
+    public float stability() {
+        return line.stability();
+    }
+
+    public int selectivity() {
+        return line.selectivity();
+    }
+
+    public float bandwidth() {
+        return line.bandwidth();
+    }
+
+    public int memory() {
+        return line.memory();
+    }
+
+    public float retention() {
+        return line.retention();
+    }
+
+    public float adaptation() {
+        return line.adaptation();
+    }
 
     /** No circuit at all: what a machine reads when none is fitted. */
     public static final Circuit NONE = new Circuit(0, 0f, 1f, Board.Joint.NONE, 0f, 0f, 0f, 0f, 0f, 0f, clockRateOf(0f));
@@ -85,7 +147,8 @@ public record Circuit(int elements, float speed, float noise, Board.Joint joint,
             Codec.FLOAT.fieldOf("power").forGetter(Circuit::power),
             Codec.FLOAT.fieldOf("warm_tu").forGetter(Circuit::warmTu),
             Codec.FLOAT.fieldOf("warm_rate").forGetter(Circuit::warmRate),
-            Codec.FLOAT.fieldOf("clock_rate").forGetter(Circuit::clockRate)).apply(i, Circuit::new));
+            Codec.FLOAT.fieldOf("clock_rate").forGetter(Circuit::clockRate),
+            Line.CODEC.optionalFieldOf("line", Line.NONE).forGetter(Circuit::line)).apply(i, Circuit::new));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, Circuit> STREAM_CODEC = ByteBufCodecs.fromCodecWithRegistries(CODEC);
 
@@ -131,7 +194,7 @@ public record Circuit(int elements, float speed, float noise, Board.Joint joint,
         float w = Math.max(0f, warmth);
         float slow = speed * (ProcessTuning.CIRCUIT_COLD_SPEED + (1f - ProcessTuning.CIRCUIT_COLD_SPEED) * w);
         float noisy = Math.min(1f, noise + (1f - w) * ProcessTuning.CIRCUIT_COLD_NOISE);
-        return new Circuit(elements, slow, noisy, joint, limitTu, ratingAmps, gain, power, warmTu, warmRate, clockRateOf(slow));
+        return new Circuit(elements, slow, noisy, joint, limitTu, ratingAmps, gain, power, warmTu, warmRate, clockRateOf(slow), line);
     }
 
     /**
@@ -170,7 +233,7 @@ public record Circuit(int elements, float speed, float noise, Board.Joint joint,
 
     /** One element fused by over-current; the last one makes it a dead part. */
     public Circuit fused() {
-        return elements <= 1 ? dead(joint) : new Circuit(elements - 1, speed, noise, joint, limitTu, ratingAmps, gain, power, warmTu, warmRate, clockRate);
+        return elements <= 1 ? dead(joint) : new Circuit(elements - 1, speed, noise, joint, limitTu, ratingAmps, gain, power, warmTu, warmRate, clockRate, line);
     }
 
     /**
@@ -190,6 +253,10 @@ public record Circuit(int elements, float speed, float noise, Board.Joint joint,
         Tube sealed = stack.get(FDataComponents.TUBE.get());
         if (sealed != null)
             return new Board.Part(Board.Kind.TUBE, sealed.vacuum(), java.util.Optional.of(sealed));
+        // A resonator or lattice carries the figures its build gave it.
+        Element element = stack.get(FDataComponents.ELEMENT.get());
+        if (element != null)
+            return new Board.Part(element.kind(), 1f, java.util.Optional.empty(), java.util.Optional.of(element.line()));
         if (stack.is(FTags.CIRCUIT_RELAYS))
             return new Board.Part(Board.Kind.RELAY, 1f);
         if (stack.is(FTags.CIRCUIT_COHERERS))
@@ -212,6 +279,8 @@ public record Circuit(int elements, float speed, float noise, Board.Joint joint,
     public static Circuit assemble(Board board, Board.Joint joint, Map<ResourceLocation, Material> materials, int defects) {
         int elements = 0;
         float speed = 0f, noise = 0f, steady = 0f, gain = 0f, power = 0f, warmTu = 0f, warmRate = Float.MAX_VALUE;
+        float stability = 0f, bandwidth = 0f, retention = -1f, adaptation = 0f;
+        int selectivity = 0, memory = 0;
         for (Board.Part p : board.parts()) {
             switch (p.kind()) {
                 case TUBE -> {
@@ -242,6 +311,19 @@ public record Circuit(int elements, float speed, float noise, Board.Joint joint,
                     noise += ProcessTuning.CIRCUIT_COHERER_NOISE;
                 }
                 case CLOCK -> steady = Math.max(steady, p.figure());
+                case RESONATOR, LATTICE -> {
+                    Line l = p.line().orElse(Line.NONE);
+                    elements++;
+                    noise += ProcessTuning.ELEMENT_NOISE;
+                    steady = Math.max(steady, l.stability());
+                    stability = Math.max(stability, l.stability());
+                    selectivity = Math.max(selectivity, l.selectivity());
+                    bandwidth = Math.max(bandwidth, l.bandwidth());
+                    memory += l.memory();
+                    if (l.memory() > 0)
+                        retention = retention < 0f ? l.retention() : Math.min(retention, l.retention());
+                    adaptation = Math.max(adaptation, l.adaptation());
+                }
             }
         }
         if (elements == 0)
@@ -253,7 +335,12 @@ public record Circuit(int elements, float speed, float noise, Board.Joint joint,
         noise *= 1f - ProcessTuning.CIRCUIT_CLOCK_STEADY * steady;
         float rating = board.trace() == Board.Trace.PRINTED ? ProcessTuning.PRINTED_RATING_AMPS : ProcessTuning.ETCHED_RATING_AMPS;
         return new Circuit(elements, speed, Math.max(ProcessTuning.CIRCUIT_NOISE_FLOOR, Math.min(1f, noise)), joint,
-                Soldering.limit(board, materials), rating, gain, power, warmTu, warmTu > 0f ? warmRate : 0f, clockRateOf(speed));
+                Soldering.limit(board, materials), rating, gain, power, warmTu, warmTu > 0f ? warmRate : 0f, clockRateOf(speed),
+                new Line(stability, selectivity, bandwidth, Math.min(ProcessTuning.CIRCUIT_MEMORY_MAX, memory), Math.max(0f, retention), adaptation));
+    }
+
+    private static String fmt(Instrument tester, float value) {
+        return io.github.soundgoodizerfan.feedback.instrument.Instruments.format(value, tester.resolution(io.github.soundgoodizerfan.feedback.instrument.Quantity.RESPONSE));
     }
 
     @Override
@@ -265,6 +352,16 @@ public record Circuit(int elements, float speed, float noise, Board.Joint joint,
         out.accept(Component.translatable("feedback.circuit.elements", elements));
         out.accept(Testable.response(tester, speed));
         out.accept(Testable.noise(tester, noise));
+        if (line.selectivity() > 0 || line.bandwidth() > 0f || line.stability() > 0f) {
+            out.accept(Component.translatable("feedback.test.stability", fmt(tester, line.stability())));
+            out.accept(Component.translatable("feedback.test.selectivity", fmt(tester, line.selectivity())));
+            out.accept(Component.translatable("feedback.test.bandwidth", fmt(tester, line.bandwidth())));
+        }
+        if (line.memory() > 0 || line.adaptation() > 0f) {
+            out.accept(Component.translatable("feedback.test.memory", fmt(tester, line.memory())));
+            out.accept(Component.translatable("feedback.test.adaptation", fmt(tester, line.adaptation())));
+            out.accept(Component.translatable(line.holds() ? "feedback.circuit.holds" : "feedback.circuit.needs_supply"));
+        }
         if (tubed()) {
             out.accept(Component.translatable("feedback.test.gain",
                     io.github.soundgoodizerfan.feedback.instrument.Instruments.format(gain, tester.resolution(io.github.soundgoodizerfan.feedback.instrument.Quantity.RESPONSE))));

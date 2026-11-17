@@ -1,0 +1,84 @@
+{
+  "family": "element",
+  "measures": {
+    "show": [
+      "mass"
+    ],
+    "roles": {
+      "L": [
+        "axis.cells",
+        "axis.mesh"
+      ]
+    }
+  },
+  "required": [
+    "L",
+    "F"
+  ],
+  "slot": "mainhand",
+  "wear_litres": 0.02,
+  "wear_role": "L",
+  "primary": "L",
+  "roles": {
+    "L": {
+      "name": "lattice_body",
+      "class": "working_face",
+      "forms": [
+        "lattice_body"
+      ],
+      "litres": 0.03125,
+      "layer": 0,
+      "axes": {
+        "cells": {
+          "min": 1,
+          "max": 8,
+          "default": 4,
+          "step": 1,
+          "scales": true
+        },
+        "mesh": {
+          "min": 0,
+          "max": 100,
+          "unit": "%",
+          "default": 50,
+          "step": 10
+        }
+      },
+      "part": {
+        "item": "feedback:lattice_body",
+        "cells": 2,
+        "stock": [
+          "vein",
+          "shard",
+          "block"
+        ]
+      }
+    },
+    "F": {
+      "name": "lattice_frame",
+      "class": "housing",
+      "forms": [
+        "lattice_frame"
+      ],
+      "litres": 0.015625,
+      "layer": 1,
+      "part": {
+        "item": "feedback:lattice_frame",
+        "cells": 1,
+        "stock": [
+          "plate",
+          "foil"
+        ]
+      }
+    }
+  },
+  "patterns": [
+    [
+      "LF"
+    ]
+  ],
+  "defaults": {
+    "L": "feedback:sculk",
+    "F": "feedback:glass"
+  }
+}

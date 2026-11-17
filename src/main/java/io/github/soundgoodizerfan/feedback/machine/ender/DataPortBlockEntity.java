@@ -44,6 +44,7 @@ public class DataPortBlockEntity extends ElectricNode implements Endernet.End, P
     /** Teleportant owed in fractions of a mB. */
     private float owed;
     private boolean unloaded;
+    private final io.github.soundgoodizerfan.feedback.machine.CircuitSlot circuit = new io.github.soundgoodizerfan.feedback.machine.CircuitSlot();
 
     private final FluidTank tank = new FluidTank(ControlTuning.ENDERNET_PORT_TANK_MB, fs -> fs.is(EnderPortBlockEntity.TELEPORTANT)) {
         @Override
@@ -91,7 +92,8 @@ public class DataPortBlockEntity extends ElectricNode implements Endernet.End, P
         if (level == null)
             return false;
         long now = level.getGameTime();
-        allowance = Math.min(ControlTuning.ENDERNET_SIGNALS_PER_MIN, allowance + ControlTuning.ENDERNET_SIGNALS_PER_MIN * (now - allowanceAt) / 1200f);
+        float cap = bandwidth();
+        allowance = Math.min(cap, allowance + cap * (now - allowanceAt) / 1200f);
         allowanceAt = now;
         if (allowance < 1f)
             return false;
@@ -107,6 +109,20 @@ public class DataPortBlockEntity extends ElectricNode implements Endernet.End, P
         owed = after;
         allowance -= 1f;
         return true;
+    }
+
+    /**
+     * Signals a minute this port carries: {@link ControlTuning#ENDERNET_SIGNALS_PER_MIN}, times {@code 1 + CIRCUIT_BANDWIDTH_GAIN x bandwidth} of
+     * the circuit seated in it (a resonator's figure). With none, the base.
+     */
+    public float bandwidth() {
+        return ControlTuning.ENDERNET_SIGNALS_PER_MIN
+                * (1f + io.github.soundgoodizerfan.feedback.process.ProcessTuning.CIRCUIT_BANDWIDTH_GAIN
+                        * io.github.soundgoodizerfan.feedback.process.Circuit.of(circuit.get()).bandwidth());
+    }
+
+    public io.github.soundgoodizerfan.feedback.machine.CircuitSlot circuit() {
+        return circuit;
     }
 
     public IFluidHandler getFluidHandler() {
@@ -197,6 +213,7 @@ public class DataPortBlockEntity extends ElectricNode implements Endernet.End, P
         super.saveAdditional(tag, registries);
         if (pair != null)
             tag.putUUID(EnderPortBlockEntity.PAIR_KEY, pair);
+        circuit.save(tag, registries);
         tag.putBoolean("Anchored", anchored);
         tag.putFloat("Allowance", allowance);
         tag.putLong("At", allowanceAt);
@@ -208,6 +225,7 @@ public class DataPortBlockEntity extends ElectricNode implements Endernet.End, P
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
         pair = tag.hasUUID(EnderPortBlockEntity.PAIR_KEY) ? tag.getUUID(EnderPortBlockEntity.PAIR_KEY) : null;
+        circuit.load(tag, registries);
         anchored = tag.getBoolean("Anchored");
         allowance = tag.contains("Allowance") ? tag.getFloat("Allowance") : ControlTuning.ENDERNET_SIGNALS_PER_MIN;
         allowanceAt = tag.getLong("At");

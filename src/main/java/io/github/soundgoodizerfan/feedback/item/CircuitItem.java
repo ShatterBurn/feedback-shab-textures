@@ -36,6 +36,10 @@ public class CircuitItem extends Item {
         Circuit c = Circuit.of(stack);
         tooltip.add(c.live() ? Component.translatable("feedback.circuit.elements", c.elements())
                 : Component.translatable("feedback.circuit.dead"));
+        if (c.live() && c.stability() > 0f)
+            tooltip.add(Component.translatable("tooltip.feedback.circuit.has_resonator").withStyle(net.minecraft.ChatFormatting.GRAY));
+        if (c.live() && c.memory() > 0)
+            tooltip.add(Component.translatable(c.line().holds() ? "tooltip.feedback.circuit.has_lattice_holds" : "tooltip.feedback.circuit.has_lattice").withStyle(net.minecraft.ChatFormatting.GRAY));
         if (c.live() && c.tubed()) {
             // A tubed circuit says how warm its bulb is: cold it is slow and noisy, warm it works at its best.
             net.minecraft.world.level.Level level = context.level();

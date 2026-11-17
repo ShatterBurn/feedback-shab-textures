@@ -104,8 +104,9 @@ final class NetworkWindow extends DesktopWindow {
         ui.row(0, 0, w, Component.translatable("gui.feedback.computer.network_pair").getString(), net.pairTail(), skin.ink());
         ui.row(0, 10, w, Component.translatable("gui.feedback.computer.network_state").getString(), Component.translatable(state).getString(),
                 net.pair() == 3 ? skin.accent() : skin.warn());
-        ui.row(0, 20, w, Component.translatable("gui.feedback.computer.network_far").getString(),
+        ui.row(0, 20, w / 2 - 4, Component.translatable("gui.feedback.computer.network_far").getString(),
                 net.distance() + " " + bearing(net.dx(), net.dz()), skin.ink());
+        ui.row(w / 2 + 4, 20, w / 2 - 4, Component.translatable("gui.feedback.computer.network_channels").getString(), String.valueOf(net.channels()), skin.ink());
         int listH = ROWS * ROW;
         ui.inset(0, TOP - 2, w, listH + 4);
         var entries = net.entries();

@@ -257,6 +257,7 @@ public final class ModularBake {
             case PRESSURE -> engineMetal(material) && material.mechanical().yieldStrength().isPresent();
             // a tube's envelope insulates and withstands heat, its cathode emits, its grid conducts, its plate sheds heat
             case TUBE -> TubeDesign.suits(roleKey, material);
+            case ELEMENT -> ElementDesign.suits(type.roles().get(roleKey).name(), material);
             case PROPELLER -> engineMetal(material) && (!roleKey.equals(PROP_BLADES) || material.mechanical().yieldStrength().isPresent());
             // a spring gun's barrel, piston and spring are metal (the spring states a yield strength); its receiver takes any material
             // a pulse gun's seat must conduct (its conductor sets the ceiling of a pulse); its barrel, receiver and grip take any material
@@ -1318,6 +1319,14 @@ public final class ModularBake {
                 else
                     for (Part p : design.parts())
                         total += mass(type.roles().get(p.role()), p, by.get(p.role()));
+                f.put(Fig.MASS, total);
+            }
+            case ELEMENT -> {
+                if (ElementDesign.of(design, type, materials).isEmpty())
+                    return Optional.empty();
+                float total = 0;
+                for (Part p : design.parts())
+                    total += mass(type.roles().get(p.role()), p, by.get(p.role()));
                 f.put(Fig.MASS, total);
             }
             case TUBE -> {

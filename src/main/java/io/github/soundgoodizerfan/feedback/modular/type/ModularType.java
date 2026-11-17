@@ -260,6 +260,8 @@ public record ModularType(Family family, Slot slot, List<Mine> mines, float stri
         ROBOT,
         /** A vacuum tube ({@code vacuum_tube}): envelope, cathode, plate and optional grids, evacuated and sealed by a vacuum dryer; its bake is {@link TubeDesign} and the sealed figures ride on the stack as a {@code Tube}. Mounted on a circuit board as an element. No wear and no tool figures. */
         TUBE,
+        /** A circuit element of the amethyst or sculk line ({@code resonator}, {@code lattice}): its bake is {@link ElementDesign} and its fixed figures ride on the stack as an {@code Element}. Mounted on a circuit board. No wear and no tool figures. */
+        ELEMENT,
         /** A fixed block made from parts (heat exchanger, gas tank, water wheel): its bake is {@link BlockFigures}, the named figures the placed block's {@link FigureStore} hands back. */
         BLOCK,
         MACHINE;

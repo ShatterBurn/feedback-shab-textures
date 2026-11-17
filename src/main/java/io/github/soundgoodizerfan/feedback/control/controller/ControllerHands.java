@@ -57,8 +57,12 @@ public final class ControllerHands {
             return InteractionResult.PASS;
         if (!level.isClientSide) {
             ItemStack taken = controller.removeItemNoUpdate(0);
-            if (taken.isEmpty())
-                taken = controller.core().takeCircuit();
+            if (taken.isEmpty() && !controller.core().circuit().isEmpty()) {
+                if (controller.core().canTakeCircuit())
+                    taken = controller.core().takeCircuit();
+                else
+                    player.displayClientMessage(Component.translatable("feedback.controller.circuit_needed"), true);
+            }
             if (!taken.isEmpty() && !player.getInventory().add(taken))
                 player.drop(taken, false);
         }

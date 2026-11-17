@@ -186,6 +186,8 @@ public class FeedbackJeiPlugin implements IModPlugin {
         registration.registerSubtypeInterpreter(FItems.TRACE_BOARD.get(), component(io.github.soundgoodizerfan.feedback.registry.FDataComponents.BOARD.get()));
         registration.registerSubtypeInterpreter(FItems.CIRCUIT.get(), component(io.github.soundgoodizerfan.feedback.registry.FDataComponents.CIRCUIT.get()));
         registration.registerSubtypeInterpreter(FModular.VACUUM_TUBE.get(), component(io.github.soundgoodizerfan.feedback.registry.FDataComponents.TUBE.get()));
+        registration.registerSubtypeInterpreter(FModular.RESONATOR.get(), component(io.github.soundgoodizerfan.feedback.registry.FDataComponents.ELEMENT.get()));
+        registration.registerSubtypeInterpreter(FModular.LATTICE.get(), component(io.github.soundgoodizerfan.feedback.registry.FDataComponents.ELEMENT.get()));
     }
 
     private static mezz.jei.api.ingredients.subtypes.ISubtypeInterpreter<ItemStack> component(
@@ -391,6 +393,8 @@ public class FeedbackJeiPlugin implements IModPlugin {
         info(registration, FItems.TRACE_BOARD.get(), "trace_board");
         info(registration, FItems.CIRCUIT.get(), "circuit");
         info(registration, FModular.VACUUM_TUBE.get(), "vacuum_tube");
+        info(registration, FModular.RESONATOR.get(), "resonator");
+        info(registration, FModular.LATTICE.get(), "lattice");
         info(registration, FItems.GALENA.get(), "galena");
         info(registration, FItems.PYRITE.get(), "pyrite");
         // Food: the crafting-grid recipes that read a food's state have no fixed output for JEI to show.

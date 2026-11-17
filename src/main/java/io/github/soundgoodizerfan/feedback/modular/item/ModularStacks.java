@@ -161,7 +161,7 @@ public final class ModularStacks {
                 && type.family() != ModularType.Family.ENGINE && type.family() != ModularType.Family.GEARBOX
                 && type.family() != ModularType.Family.PROPELLER && type.family() != ModularType.Family.SUIT_MODULE
                 && type.family() != ModularType.Family.PRESSURE && type.family() != ModularType.Family.BLOCK
-                && type.family() != ModularType.Family.TUBE) {
+                && type.family() != ModularType.Family.TUBE && type.family() != ModularType.Family.ELEMENT) {
             stack.set(DataComponents.MAX_DAMAGE, (int) baked.get().get(Fig.DURABILITY));
             stack.set(DataComponents.DAMAGE, Math.min(stack.getDamageValue(), stack.getMaxDamage() - 1));
         }
@@ -191,6 +191,13 @@ public final class ModularStacks {
         // A tube opened or rebuilt is no longer sealed: its figures were the old parts' and its vacuum is gone.
         if (type.family() == ModularType.Family.TUBE && (before == null || !before.equals(design)))
             stack.remove(FDataComponents.TUBE.get());
+        if (type.family() == ModularType.Family.ELEMENT) {
+            var element = io.github.soundgoodizerfan.feedback.modular.bake.ElementDesign.of(design, type, materials);
+            if (element.isPresent())
+                stack.set(FDataComponents.ELEMENT.get(), element.get());
+            else
+                stack.remove(FDataComponents.ELEMENT.get());
+        }
         if (type.family() == ModularType.Family.PRESSURE)
             ModularBake.tank(design, type, materials).ifPresent(v -> {
                 net.minecraft.nbt.CompoundTag tag = stack.getOrDefault(FDataComponents.PRESSURE_VESSEL.get(), new net.minecraft.nbt.CompoundTag()).copy();

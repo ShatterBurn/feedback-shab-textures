@@ -43,7 +43,11 @@ public record Board(Trace trace, ResourceLocation traceMaterial, ResourceLocatio
         /** A ringing piezo plate: switches nothing, steadies the rest. */
         CLOCK("clock"),
         /** A sealed vacuum tube: fast and quiet once its heater has warmed it, carries its own figures ({@link Part#tube}). */
-        TUBE("tube");
+        TUBE("tube"),
+        /** An amethyst resonator: switches nothing, sets a host's clock steadiness, channels and link bandwidth ({@link Part#line}). */
+        RESONATOR("resonator"),
+        /** A sculk lattice: switches nothing, holds extra variables and learns repeated readings ({@link Part#line}). */
+        LATTICE("lattice");
 
         public static final Codec<Kind> CODEC = StringRepresentable.fromEnum(Kind::values);
         private final String key;
@@ -62,15 +66,20 @@ public record Board(Trace trace, ResourceLocation traceMaterial, ResourceLocatio
      * One mounted part: its class and the material figure that sets how good it is (a crystal's
      * {@code rectifying}, a plate's {@code piezo_coupling}; 1 for the classes that have none). A tube carries its own figures.
      */
-    public record Part(Kind kind, float figure, Optional<Tube> tube) {
+    public record Part(Kind kind, float figure, Optional<Tube> tube, Optional<Circuit.Line> line) {
         public Part(Kind kind, float figure) {
-            this(kind, figure, Optional.empty());
+            this(kind, figure, Optional.empty(), Optional.empty());
+        }
+
+        public Part(Kind kind, float figure, Optional<Tube> tube) {
+            this(kind, figure, tube, Optional.empty());
         }
 
         public static final Codec<Part> CODEC = RecordCodecBuilder.create(i -> i.group(
                 Kind.CODEC.fieldOf("kind").forGetter(Part::kind),
                 Codec.FLOAT.fieldOf("figure").forGetter(Part::figure),
-                Tube.CODEC.optionalFieldOf("tube").forGetter(Part::tube)).apply(i, Part::new));
+                Tube.CODEC.optionalFieldOf("tube").forGetter(Part::tube),
+                Circuit.Line.CODEC.optionalFieldOf("line").forGetter(Part::line)).apply(i, Part::new));
     }
 
     /** How the traces were laid. */

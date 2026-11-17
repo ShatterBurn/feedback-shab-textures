@@ -413,6 +413,13 @@ public class FCreativeTabs {
                 if (io.github.soundgoodizerfan.feedback.modular.bake.TubeDesign.suits(part[1], m))
                     out.accept(madeOf(item, id, m.item(id, "tubing").isPresent() ? "tubing" : m.item(id, "wire").isPresent() ? "wire" : m.item(id, "plate").isPresent() ? "plate" : "ingot"));
             }));
+        // One of each resonator and lattice part per material its role can use (a piezo crystal, a conductor, a material that holds experience, an insulator).
+        for (String part : List.of("resonator_crystal", "resonator_electrode", "lattice_body", "lattice_frame"))
+            FModular.PARTS.stream().filter(p -> p.getId().getPath().equals(part)).findFirst().ifPresent(item -> forMaterials((id, m) -> {
+                if (io.github.soundgoodizerfan.feedback.modular.bake.ElementDesign.suits(part, m))
+                    out.accept(madeOf(item, id, m.item(id, "crystal_plate").isPresent() ? "crystal_plate" : m.item(id, "foil").isPresent() ? "foil"
+                            : m.item(id, "plate").isPresent() ? "plate" : m.item(id, "vein").isPresent() ? "vein" : "shard"));
+            }));
         // One electrode per material that can carry an arc.
         forMaterials((id, m) -> {
             if (m.electrodeLimit().isPresent())

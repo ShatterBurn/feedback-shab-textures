@@ -71,6 +71,9 @@ public class ControllerCore implements Container, Fittable {
     private boolean circuitSlot, circuitHeater, endernetCapable;
     /** Steps owed: a tick adds the clock rate over twenty and a step is taken at one. Not persisted. */
     private float stepCredit;
+    /** Ticks this host has stood without power, and what an adapting circuit has learned of each sensor's reading (not persisted). */
+    private int offTicks;
+    private float[] learned = new float[0];
 
     /** Fitted upgrades; stateless, so a count or flag per kind is the whole of their persistence. */
     private final List<UpgradeFitting> upgrades = new ArrayList<>();
@@ -207,6 +210,11 @@ public class ControllerCore implements Container, Fittable {
         setChanged();
     }
 
+    /** Whether the circuit can come out: refused while the program in the slot needs the variables its lattice holds. */
+    public boolean canTakeCircuit() {
+        return limits(CIRCUIT_OUT).exceededBy(card.getOrDefault(FDataComponents.PROGRAM_GRAPH, ProgramGraph.EMPTY)).isEmpty();
+    }
+
     public ItemStack takeCircuit() {
         ItemStack out = circuit;
         circuit = ItemStack.EMPTY;
@@ -228,7 +236,52 @@ public class ControllerCore implements Container, Fittable {
 
     /** What the sensor reads multiply by: noise of the circuit at its warmth now, or 1 for none. */
     private float readNoise() {
-        return Circuit.of(circuit, level()).noise();
+        Circuit c = Circuit.of(circuit, level());
+        return c.noise() * (1f - io.github.soundgoodizerfan.feedback.process.ProcessTuning.CIRCUIT_STABLE_SAMPLING * c.stability());
+    }
+
+    /**
+     * What an adapting circuit (a sculk lattice) makes of a reading: it remembers the last reading of each sensor and holds it while the new one
+     * stays within {@code CIRCUIT_ADAPT_BAND x adaptation x CONTROLLER_READ_JITTER} of it (relative), learning toward the new one
+     * {@code CIRCUIT_ADAPT_LEARN} a read, so noise the size of the read jitter is filtered and a real change passes at once. Two-state and
+     * zero readings pass. Deterministic: the same reads give the same output.
+     */
+    private float adapt(int i, float v) {
+        if (i >= learned.length)
+            return v;
+        float a = circuitSlot ? Circuit.of(circuit, level()).adaptation() : 0f;
+        float held = learned[i];
+        if (a <= 0f || v == 0f || v == 1f || held == 0f) {
+            learned[i] = v;
+            return v;
+        }
+        float band = io.github.soundgoodizerfan.feedback.process.ProcessTuning.CIRCUIT_ADAPT_BAND * a * ControlTuning.CONTROLLER_READ_JITTER * Math.abs(held);
+        if (Math.abs(v - held) <= band) {
+            learned[i] = held + (v - held) * io.github.soundgoodizerfan.feedback.process.ProcessTuning.CIRCUIT_ADAPT_LEARN;
+            return learned[i];
+        }
+        learned[i] = v;
+        return v;
+    }
+
+    /**
+     * Power returned after a long dark: a circuit whose lattice does not hold unpowered has lost the memory variables beyond what the Memory
+     * Drums hold (the later declared ones), which read zero or false again.
+     */
+    private void forgetUnheld() {
+        Circuit c = Circuit.of(circuit);
+        if (c.memory() <= 0 || c.line().holds())
+            return;
+        List<ProgramVariable> all = declared();
+        for (int k = limits(CIRCUIT_OUT).variables(); k < all.size(); k++)
+            variables.put(all.get(k).name(), all.get(k).type().zero());
+        dirty = true;
+        setChanged();
+    }
+
+    /** Named channels the fitted endernet upgrade separates: the constant, or what a resonator on the circuit can separate if more. */
+    public int endernetChannels() {
+        return Math.max(ControlTuning.ENDERNET_CHANNELS, circuitSlot ? Circuit.of(circuit).selectivity() : 0);
     }
 
     /** A quantity read through this host's circuit: jittered by its noise; a two-state or zero reading carries none. */
@@ -311,8 +364,10 @@ public class ControllerCore implements Container, Fittable {
             else if (u instanceof EscapementFitting)
                 escapement = true;
         }
-        return ControllerLimits.of(drums, racks, escapement);
+        return ControllerLimits.of(drums, racks, escapement, circuitSlot && without != CIRCUIT_OUT ? Circuit.of(circuit).memory() : 0);
     }
+
+    private static final UpgradeFitting CIRCUIT_OUT = new EscapementFitting();
 
     /** Why {@code stack} may not go in (an error key), or empty if it may. Blank cards always fit. */
     public Optional<String> refusalFor(ItemStack stack) {
@@ -320,8 +375,17 @@ public class ControllerCore implements Container, Fittable {
     }
 
     public void tickServer() {
-        if (level() == null || level().isClientSide || !powered.getAsBoolean())
+        if (level() == null || level().isClientSide)
+            return;
+        if (!powered.getAsBoolean()) {
+            offTicks++;
             return; // no motive force, no switching -- outputs, variables and delays hold
+        }
+        if (offTicks > 0) {
+            if (circuitSlot && offTicks > io.github.soundgoodizerfan.feedback.process.ProcessTuning.CIRCUIT_HOLD_GRACE_TICKS)
+                forgetUnheld();
+            offTicks = 0;
+        }
 
         clock++;
         if (circuitSlot) {
@@ -332,7 +396,12 @@ public class ControllerCore implements Container, Fittable {
                     Circuit.scorch(circuit, level());
             }
             // The clock: a step is taken when a tick brings the credit to one. At most one a tick, so a program never steps twice in a tick.
-            stepCredit = Math.min(1f, stepCredit + clockRate() / 20f);
+            // A circuit short of full speed accumulates fractions of a step; a steady (resonator) clock keeps them even, an unsteady one wanders.
+            float rate = clockRate();
+            float wobble = rate >= io.github.soundgoodizerfan.feedback.process.ProcessTuning.CIRCUIT_MAX_STEPS_PER_SECOND ? 0f
+                    : (level().random.nextFloat() * 2f - 1f) * io.github.soundgoodizerfan.feedback.process.ProcessTuning.CIRCUIT_CLOCK_JITTER
+                            * (1f - Circuit.of(circuit, level()).stability());
+            stepCredit = Math.min(1f, stepCredit + rate / 20f * (1f + wobble));
             if (stepCredit < 1f)
                 return;
             stepCredit -= 1f;
@@ -355,7 +424,7 @@ public class ControllerCore implements Container, Fittable {
 
         boolean moved = false;
         for (int i = 0; i < sensors.length; i++) {
-            float v = readSensor(sensors[i]);
+            float v = adapt(i, readSensor(sensors[i]));
             current[i] = v;
             if (Float.compare(v, last[i]) != 0)
                 moved = true;
@@ -387,6 +456,7 @@ public class ControllerCore implements Container, Fittable {
         plan = order.map(o -> new ProgramEvaluator.Plan(graph, o)).orElse(null);
         sensors = plan == null ? new SensorNode[0] : plan.sensors();
         current = new float[sensors.length];
+        learned = new float[sensors.length];
         last = new float[sensors.length];
     }
 

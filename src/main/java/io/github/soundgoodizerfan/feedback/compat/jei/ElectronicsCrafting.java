@@ -246,6 +246,17 @@ public final class ElectronicsCrafting {
         tube.set(FDataComponents.TUBE.get(), new io.github.soundgoodizerfan.feedback.process.Tube(
                 io.github.soundgoodizerfan.feedback.process.Tube.Kind.TRIODE, 0.9f, 1f, 0.8f, 0.1f, 0.5f, 200f, 0.7f));
         candidates.add(tube);
+        // A sample resonator and lattice (the real ones come from the part bench; their figures are from their parts).
+        for (var e : List.of(
+                new io.github.soundgoodizerfan.feedback.process.Element(Board.Kind.RESONATOR, io.github.soundgoodizerfan.feedback.process.Element.Character.BAND,
+                        new Circuit.Line(0.5f, 3, 0.5f, 0, 0f, 0f)),
+                new io.github.soundgoodizerfan.feedback.process.Element(Board.Kind.LATTICE, io.github.soundgoodizerfan.feedback.process.Element.Character.MIXED,
+                        new Circuit.Line(0f, 0, 0f, 3, 0.5f, 0.6f)))) {
+            ItemStack sample = new ItemStack(e.kind() == Board.Kind.RESONATOR ? io.github.soundgoodizerfan.feedback.registry.FModular.RESONATOR.get()
+                    : io.github.soundgoodizerfan.feedback.registry.FModular.LATTICE.get());
+            sample.set(FDataComponents.ELEMENT.get(), e);
+            candidates.add(sample);
+        }
         materials.forEach((id, m) -> {
             ItemStack plate = of(materials, id, "crystal_plate");
             if (plate != null)

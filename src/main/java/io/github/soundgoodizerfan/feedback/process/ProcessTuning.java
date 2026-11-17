@@ -350,6 +350,38 @@ public final class ProcessTuning {
     /** Placeholder. The most of a board's trace limit a heater warms it to: past it the traces would lift, so the heater stops there and the tube runs short of working warmth. */
     public static final float CIRCUIT_HEATER_LIMIT_SHARE = 0.9f;
 
+    // --- resonators and lattices (circuit elements of the amethyst and sculk lines); placeholders ---
+
+    /** A resonator: stability is {@code piezo x size / (size + STABLE_HALF_MM)}; channels are {@code 1 + round(piezo x cut x SELECT_MAX)}; bandwidth is {@code piezo x electrode coupling x (1 - NARROW x cut) x min(1, WIDE_MM / size)}. */
+    public static final float RESONATOR_STABLE_HALF_MM = 6f, RESONATOR_SELECT_MAX = 7f, RESONATOR_NARROW = 0.6f, RESONATOR_WIDE_MM = 8f;
+
+    /** A resonator's character by channels: at most the first is a clock crystal, at least the second a filter, else a band crystal. */
+    public static final int RESONATOR_CLOCK_MAX_CHANNELS = 2, RESONATOR_FILTER_MIN_CHANNELS = 5;
+
+    /** A lattice: memory is {@code round(cells x (MESH_FLOOR + (1 - MESH_FLOOR) x mesh) x capacitance / REF)}; adaptation is {@code (1 - FINE x mesh) x min(1, conductance / REF)}; retention is {@code (1 - leak / LEAK_REF) x WEIGHT + (1 - WEIGHT) x frame insulation share}. */
+    public static final float LATTICE_MESH_FLOOR = 0.4f, LATTICE_CAPACITANCE_REF = 250f, LATTICE_FINE = 0.7f, LATTICE_CONDUCTANCE_REF = 3f,
+            LATTICE_LEAK_REF = 0.1f, LATTICE_RETENTION_WEIGHT = 0.6f;
+
+    /** A lattice at or over this retention holds its memory with the host unpowered; under it the memory needs a standing supply. */
+    public static final float LATTICE_HOLDS_AT = 0.6f;
+
+    /** The most extra variables any circuit gives (what a lattice can add), and the noise a resonator or lattice element adds to its board's average. */
+    public static final int CIRCUIT_MEMORY_MAX = 8;
+
+    public static final float ELEMENT_NOISE = 0.1f;
+
+    /**
+     * Placeholder. How the figures reach a host. A Controller with a circuit: its step timing varies by {@code CLOCK_JITTER x (1 - stability)};
+     * a sensor quantity's read noise is cut by {@code STABLE_SAMPLING x stability}; an adapting circuit remembers each sensor's reading and holds
+     * it while a new one stays within {@code ADAPT_BAND x adaptation x read jitter} of it (learning it slowly, {@code ADAPT_LEARN} a read).
+     * A host's powered-off time over {@code HOLD_GRACE_TICKS} clears the memory variables of a circuit that does not hold unpowered. A Data Port's
+     * bandwidth is multiplied by {@code 1 + BANDWIDTH_GAIN x bandwidth}.
+     */
+    public static final float CIRCUIT_CLOCK_JITTER = 0.25f, CIRCUIT_STABLE_SAMPLING = 0.5f, CIRCUIT_ADAPT_BAND = 2f, CIRCUIT_ADAPT_LEARN = 0.1f,
+            CIRCUIT_BANDWIDTH_GAIN = 3f;
+
+    public static final int CIRCUIT_HOLD_GRACE_TICKS = 100;
+
     // --- vacuum tubes (spec: circuits, tube family). Design only taken from PowerGrid; see THIRD-PARTY-LICENSES.md ---
 
     /**

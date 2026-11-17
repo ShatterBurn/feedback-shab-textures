@@ -1,0 +1,84 @@
+{
+  "family": "element",
+  "measures": {
+    "show": [
+      "mass"
+    ],
+    "roles": {
+      "C": [
+        "axis.size",
+        "axis.cut"
+      ]
+    }
+  },
+  "required": [
+    "C",
+    "E"
+  ],
+  "slot": "mainhand",
+  "wear_litres": 0.02,
+  "wear_role": "C",
+  "primary": "C",
+  "roles": {
+    "C": {
+      "name": "resonator_crystal",
+      "class": "working_face",
+      "forms": [
+        "resonator_crystal"
+      ],
+      "litres": 0.03125,
+      "layer": 0,
+      "axes": {
+        "size": {
+          "min": 4,
+          "max": 20,
+          "unit": "mm",
+          "default": 10,
+          "step": 1,
+          "scales": true
+        },
+        "cut": {
+          "min": 0,
+          "max": 100,
+          "unit": "%",
+          "default": 50,
+          "step": 10
+        }
+      },
+      "part": {
+        "item": "feedback:resonator_crystal",
+        "cells": 2,
+        "stock": [
+          "crystal_plate",
+          "shard"
+        ]
+      }
+    },
+    "E": {
+      "name": "resonator_electrode",
+      "class": "housing",
+      "forms": [
+        "resonator_electrode"
+      ],
+      "litres": 0.0078125,
+      "layer": 1,
+      "part": {
+        "item": "feedback:resonator_electrode",
+        "cells": 1,
+        "stock": [
+          "foil",
+          "fine_wire"
+        ]
+      }
+    }
+  },
+  "patterns": [
+    [
+      "CE"
+    ]
+  ],
+  "defaults": {
+    "C": "feedback:amethyst",
+    "E": "feedback:copper"
+  }
+}

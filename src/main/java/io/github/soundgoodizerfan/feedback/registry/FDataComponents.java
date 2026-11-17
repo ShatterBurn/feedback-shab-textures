@@ -380,6 +380,13 @@ public class FDataComponents {
                     .networkSynchronized(io.github.soundgoodizerfan.feedback.process.Tube.STREAM_CODEC)
                     .build());
 
+    /** A finished amethyst resonator or sculk lattice's kind, character and figures. See {@code process/Element}. */
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<io.github.soundgoodizerfan.feedback.process.Element>> ELEMENT =
+            COMPONENTS.register("element", () -> DataComponentType.<io.github.soundgoodizerfan.feedback.process.Element>builder()
+                    .persistent(io.github.soundgoodizerfan.feedback.process.Element.CODEC)
+                    .networkSynchronized(io.github.soundgoodizerfan.feedback.process.Element.STREAM_CODEC)
+                    .build());
+
     /** How far a crystal plate is ground; absent is the first cut. See {@code process/Cut}. */
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<io.github.soundgoodizerfan.feedback.process.Cut>> CUT =
             COMPONENTS.register("cut", () -> DataComponentType.<io.github.soundgoodizerfan.feedback.process.Cut>builder()
