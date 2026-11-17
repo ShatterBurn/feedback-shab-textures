@@ -61,7 +61,7 @@ final class DriveWindow extends DesktopWindow {
     @Override
     protected void render(Ui ui, int mx, int my) {
         int d = ctx.drive();
-        ItemStack medium = ctx.menu().getSlot(d).getItem();
+        ItemStack medium = ctx.menu().volume(d);
         boolean editing = ctx.computer() != null && ctx.computer().editing();
         boolean has = !medium.isEmpty();
         boolean app = ComputerApps.isApp(medium);

@@ -27,7 +27,7 @@ final class DriveMenu {
 
     /** What can be done with the medium in {@code drive}; empty when the bay is empty. */
     static List<ContextMenu.Item> of(ComputerContext ctx, Desktop desktop, int drive) {
-        ItemStack medium = ctx.menu().getSlot(drive).getItem();
+        ItemStack medium = ctx.menu().volume(drive);
         if (medium.isEmpty())
             return List.of();
         boolean running = drive == RUN, app = ComputerApps.isApp(medium);

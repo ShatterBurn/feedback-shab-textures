@@ -35,6 +35,11 @@ public class FMenus {
             MENUS.register("computer",
                     () -> IMenuTypeExtension.create((id, inv, buf) -> new io.github.soundgoodizerfan.feedback.control.computer.ComputerMenu(id, inv, buf.readBlockPos())));
 
+    /** The Computer's physical drive way: bays, running slot and inventory (sneak-use); the desktop itself holds no slots. */
+    public static final DeferredHolder<MenuType<?>, MenuType<io.github.soundgoodizerfan.feedback.control.computer.ComputerDriveMenu>> COMPUTER_DRIVES =
+            MENUS.register("computer_drives",
+                    () -> IMenuTypeExtension.create((id, inv, buf) -> new io.github.soundgoodizerfan.feedback.control.computer.ComputerDriveMenu(id, inv, buf.readBlockPos())));
+
     /** Extended, not plain -- the client needs the Programmer's {@code BlockPos} to open at. */
     public static final DeferredHolder<MenuType<?>, MenuType<ProgrammerMenu>> PROGRAMMER =
             MENUS.register("programmer",

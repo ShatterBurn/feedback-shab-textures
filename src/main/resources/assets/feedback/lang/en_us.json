@@ -10162,5 +10162,6 @@
   "gui.feedback.computer.already_installed": "That app is already installed",
   "gui.feedback.computer.internal_full": "The internal disk is full",
   "gui.feedback.computer.file_too_big": "That file is too big to keep",
-  "gui.feedback.computer.delete": "Delete"
+  "gui.feedback.computer.delete": "Delete",
+  "gui.feedback.computer.drive_way": "Drive way"
 }

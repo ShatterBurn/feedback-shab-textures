@@ -17,9 +17,10 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
 /**
- * The Computer's desktop: the four drive bays and the running slot as desktop icons down the left, in the manner of a Plasma desktop, the player's hotbar as a dock along the bottom.
- * Everything else the desktop does (windows, monitor, links) is drawn by the screen from the block entity; what changes the world goes
- * through {@link ComputerActionPayload}.
+ * The Computer's desktop: no slots at all. The drives and the internal disk are icons down the left, in the manner of a Plasma desktop, and
+ * what is on them is read off the block entity the server keeps in step ({@link #volume}). Where a medium goes in and comes out is the
+ * physical drive way, {@link ComputerDriveMenu}. Everything the desktop does (windows, monitor, links) is drawn by the screen from the
+ * block entity; what changes the world goes through {@link ComputerActionPayload} and {@link ComputerFileActionPayload}.
  */
 public class ComputerMenu extends AbstractContainerMenu implements io.github.soundgoodizerfan.feedback.control.programmer.ProgrammerAccess {
 
@@ -35,33 +36,9 @@ public class ComputerMenu extends AbstractContainerMenu implements io.github.sou
     public static final int DOCK_X = (PANEL_W - 9 * 18) / 2 + 1, DOCK_Y = PANEL_H - BAR_H - BAR_GAP - 30;
     public static final int RUNNING = ComputerBays.SIZE;
 
-    /**
-     * A slot the screen can hide: the desktop's windows are drawn in the screen's background, under any slot item, so a slot a window
-     * covers is switched off (not drawn, not hovered, not clicked) for as long as it is covered. Set by the client screen only.
-     */
-    public static final class DeskSlot extends Slot {
-
-        private boolean hidden;
-
-        public DeskSlot(Container container, int index, int x, int y) {
-            super(container, index, x, y);
-        }
-
-        public void hide(boolean hidden) {
-            this.hidden = hidden;
-        }
-
-        @Override
-        public boolean isActive() {
-            return !hidden;
-        }
-    }
-
     private final BlockPos pos;
     @Nullable
     private final ComputerBlockEntity computer;
-    private final Container bays;
-    private final Container running;
     private final boolean iconsRight;
 
     public ComputerMenu(int id, Inventory inventory, BlockPos pos) {
@@ -73,19 +50,19 @@ public class ComputerMenu extends AbstractContainerMenu implements io.github.sou
         this.pos = pos;
         this.computer = computer;
         this.iconsRight = computer != null && computer.settings().iconsRight();
-        this.bays = computer != null ? computer.bays() : new SimpleContainer(ComputerBays.SIZE);
-        this.running = computer != null ? computer.core() : new SimpleContainer(1);
-        for (int i = 0; i < ComputerBays.SIZE; i++)
-            addSlot(new DeskSlot(bays, i, iconX(), ICON_Y + i * ICON_STEP));
-        addSlot(new DeskSlot(running, 0, iconX(), ICON_Y + ComputerBays.SIZE * ICON_STEP));
-        for (int column = 0; column < 9; column++)
-            addSlot(new DeskSlot(inventory, column, DOCK_X + column * 18, DOCK_Y));
         if (computer != null && !inventory.player.level().isClientSide) {
             // a medium left in the editor (a restart, a crash) goes home when the next desktop opens on an idle Computer
             if (computer.watching() == 0 && inventory.player instanceof net.minecraft.server.level.ServerPlayer server)
                 computer.closeEditor(server);
             computer.watch(1);
         }
+    }
+
+    /** The medium in drive {@code index} (0 to 3, or {@link #RUNNING}), as the block entity last said; empty for none. */
+    public ItemStack volume(int index) {
+        if (computer == null)
+            return ItemStack.EMPTY;
+        return index == RUNNING ? computer.core().getItem(0) : index >= 0 && index < ComputerBays.SIZE ? computer.bays().getItem(index) : ItemStack.EMPTY;
     }
 
     @Override
@@ -126,25 +103,6 @@ public class ComputerMenu extends AbstractContainerMenu implements io.github.sou
 
     @Override
     public ItemStack quickMoveStack(Player player, int index) {
-        Slot slot = slots.get(index);
-        if (slot == null || !slot.hasItem())
-            return ItemStack.EMPTY;
-        ItemStack held = slot.getItem();
-        ItemStack moved = held.copy();
-        int hotbar = ComputerBays.SIZE + 1;
-        if (index < hotbar) {
-            if (!moveItemStackTo(held, hotbar, slots.size(), true))
-                return ItemStack.EMPTY;
-        } else if (held.is(FTags.PUNCH_CARDS)) {
-            if (!moveItemStackTo(held, 0, ComputerBays.SIZE, false))
-                return ItemStack.EMPTY;
-        } else {
-            return ItemStack.EMPTY;
-        }
-        if (held.isEmpty())
-            slot.setByPlayer(ItemStack.EMPTY);
-        else
-            slot.setChanged();
-        return moved;
+        return ItemStack.EMPTY;
     }
 }

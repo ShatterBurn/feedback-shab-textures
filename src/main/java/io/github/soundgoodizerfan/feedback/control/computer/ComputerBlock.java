@@ -36,18 +36,30 @@ public class ComputerBlock extends Block implements EntityBlock {
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player,
             InteractionHand hand, BlockHitResult hit) {
+        if (player.isShiftKeyDown())
+            return openDriveWay(level, pos, player) ? ItemInteractionResult.sidedSuccess(level.isClientSide) : ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         return ControllerHands.insert(stack, level, pos, player);
     }
 
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
         if (player.isShiftKeyDown())
-            return ControllerHands.take(level, pos, player);
+            return openDriveWay(level, pos, player) ? InteractionResult.sidedSuccess(level.isClientSide) : InteractionResult.PASS;
         if (!(level.getBlockEntity(pos) instanceof ComputerBlockEntity computer))
             return InteractionResult.PASS;
         if (!level.isClientSide)
             player.openMenu(computer, pos);
         return InteractionResult.sidedSuccess(level.isClientSide);
+    }
+
+    /** Sneak-use: the physical bays, the running slot and the inventory as an ordinary slot menu. */
+    private static boolean openDriveWay(Level level, BlockPos pos, Player player) {
+        if (!(level.getBlockEntity(pos) instanceof ComputerBlockEntity computer))
+            return false;
+        if (!level.isClientSide)
+            player.openMenu(new net.minecraft.world.SimpleMenuProvider((id, inventory, p) ->
+                    new ComputerDriveMenu(id, inventory, pos, computer), net.minecraft.network.chat.Component.translatable("gui.feedback.computer.drive_way")), pos);
+        return true;
     }
 
     @Override

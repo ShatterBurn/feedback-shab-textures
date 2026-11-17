@@ -28,21 +28,22 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 /**
  * The Computer's desktop, laid out the way a Plasma desktop is, in phosphor. This class is the shell: the wallpaper, the drive icons, the
- * widgets on the wallpaper, the hotbar dock and the panel's tray. The windows and the panel's launcher and tasks belong to the
+ * widgets on the wallpaper and the panel's tray. The windows and the panel's launcher and tasks belong to the
  * {@link Desktop} compositor; each app (Drive, Monitor, Links, Editor, Settings) is a {@link io.github.soundgoodizerfan.feedback.client.desktop.DesktopWindow}.
  *
- * <p>The icons and the dock are real slots, which a screen always draws above its background, so windows keep to a work area that
- * excludes them. How it looks is the Computer's {@link ComputerSettings}: phosphor (the skin), wallpaper, CRT effects, which widgets show
+ * <p>The desktop holds no slots: the icons show what is on each drive and on the internal disk, and the physical bays are the drive way
+ * ({@link io.github.soundgoodizerfan.feedback.control.computer.ComputerDriveMenu}, sneak-use). How it looks is the Computer's {@link ComputerSettings}: phosphor (the skin), wallpaper, CRT effects, which widgets show
  * and which side the icons are on. A change shows at once here (the screen keeps its own copy until the server's arrives) and is sent to
  * the server, which keeps it on the block.
  */
 public class ComputerScreen extends SkinnedScreen<ComputerMenu> implements ComputerContext {
 
-    private static final int W = ComputerMenu.PANEL_W, H = ComputerMenu.PANEL_H, BAR = ComputerMenu.BAR_H, RUN = ComputerBays.SIZE;
+    private static final int W = ComputerMenu.PANEL_W, H = ComputerMenu.PANEL_H, BAR = ComputerMenu.BAR_H, RUN = ComputerBays.SIZE, INTERNAL = RUN + 1;
     private static final int DESK_TOP = 6, TRACE = 84, ICONS_W = 50;
     /** Where the desktop ends and the panel begins, relative to the screen. */
     private static final int BAR_Y = H - 4 - BAR, DESK_BOTTOM = BAR_Y - 3;
@@ -58,8 +59,6 @@ public class ComputerScreen extends SkinnedScreen<ComputerMenu> implements Compu
     private final float[] trace = new float[TRACE];
     private int traceAt, ticks;
     private int[] circuit;
-
-    private final Button[] driveLabels = new Button[ComputerBays.SIZE + 1];
 
     /** What the notices last saw: whether each bay held a medium, the newest console line, and whether the first look is done. */
     private final boolean[] bayFull = new boolean[ComputerBays.SIZE];
@@ -128,7 +127,7 @@ public class ComputerScreen extends SkinnedScreen<ComputerMenu> implements Compu
                 if (f.kind() == io.github.soundgoodizerfan.feedback.control.computer.ComputerFile.Kind.APP && f.name().equals(id))
                     return true;
         for (int i = 0; i < ComputerBays.SIZE; i++)
-            if (id.equals(ComputerApps.idOf(menu.getSlot(i).getItem())))
+            if (id.equals(ComputerApps.idOf(menu.volume(i))))
                 return true;
         return false;
     }
@@ -170,7 +169,7 @@ public class ComputerScreen extends SkinnedScreen<ComputerMenu> implements Compu
 
     @Override
     public ProgramGraph running() {
-        return menu.getSlot(RUN).getItem().getOrDefault(FDataComponents.PROGRAM_GRAPH, ProgramGraph.EMPTY);
+        return menu.volume(RUN).getOrDefault(FDataComponents.PROGRAM_GRAPH, ProgramGraph.EMPTY);
     }
 
     @Override
@@ -208,19 +207,10 @@ public class ComputerScreen extends SkinnedScreen<ComputerMenu> implements Compu
         super.init();
         look = skinFor(local);
         boolean right = menu.iconX() == ComputerMenu.ICON_X_RIGHT;
-        // the whole desktop: a window over an icon or the dock switches those slots off (see hideCovered)
         desktop.area(leftPos + 8, topPos + DESK_TOP + 2, W - 16, DESK_BOTTOM - DESK_TOP - 4);
         desktop.spawn(right ? 0 : ICONS_W - 8);
         desktop.bar(leftPos + 4, topPos + BAR_Y, W - 8, BAR);
         desktop.rebuild(look);
-        for (int i = 0; i <= RUN; i++) {
-            final int which = i;
-            String label = i == RUN ? "RUN" : String.valueOf((char) ('A' + i));
-            driveLabels[i] = addRenderableWidget(GuiStyle.button(look, Component.literal(label), b -> {
-                showDrive(which);
-                desktop.open("drive");
-            }, leftPos + menu.iconX() - 6, topPos + ComputerMenu.ICON_Y + i * ComputerMenu.ICON_STEP + 18, 28, 10));
-        }
     }
 
     @Override
@@ -252,10 +242,10 @@ public class ComputerScreen extends SkinnedScreen<ComputerMenu> implements Compu
      */
     private void notices(ComputerBlockEntity computer) {
         for (int i = 0; i < RUN; i++) {
-            boolean in = !menu.getSlot(i).getItem().isEmpty();
+            boolean in = !menu.volume(i).isEmpty();
             // only app disks: a program medium also comes back to its bay when a program stops or the editor closes, and the log says so
-            if (primed && in && !bayFull[i] && ComputerApps.isApp(menu.getSlot(i).getItem()))
-                desktop.toast(Component.translatable("gui.feedback.computer.toast.app", menu.getSlot(i).getItem().getHoverName()));
+            if (primed && in && !bayFull[i] && ComputerApps.isApp(menu.volume(i)))
+                desktop.toast(Component.translatable("gui.feedback.computer.toast.app", menu.volume(i).getHoverName()));
             bayFull[i] = in;
         }
         var entries = computer == null ? java.util.List.<ComputerBlockEntity.LogEntry>of() : computer.logEntries();
@@ -285,26 +275,11 @@ public class ComputerScreen extends SkinnedScreen<ComputerMenu> implements Compu
     @Override
     protected void renderBg(GuiGraphics g, float partial, int mx, int my) {
         applyEffects();
-        hideCovered();
         look.panel(g, leftPos, topPos, imageWidth, imageHeight);
         drawWallpaper(g);
         drawIcons(g, mx, my);
         drawWidgets(g);
-        drawDock(g);
         desktop.render(g, mx, my, partial);
-    }
-
-    /**
-     * The screen draws slot items and widgets after this background, over any window. So a slot or drive label a window (or menu, or
-     * toast) overlaps is switched off for the frame: not drawn, not hovered, not clicked.
-     */
-    private void hideCovered() {
-        for (var slot : menu.slots)
-            if (slot instanceof ComputerMenu.DeskSlot desk)
-                desk.hide(desktop.overlaps(leftPos + slot.x - 1, topPos + slot.y - 1, 18, 18));
-        for (Button label : driveLabels)
-            if (label != null)
-                label.visible = !desktop.overlaps(label.getX(), label.getY(), label.getWidth(), label.getHeight());
     }
 
     /** The wallpaper: a sunken screen, dressed as the settings say, with the system's name watermarked large across it. */
@@ -393,14 +368,51 @@ public class ComputerScreen extends SkinnedScreen<ComputerMenu> implements Compu
             g.fill(ax, ay, Math.max(cx, ax + 1), Math.max(cy, ay + 1), colour);
     }
 
-    /** The drive icons: a socket for the medium, a label under it, the open one lit like a picked desktop icon. */
+    /** Where icon {@code i} sits: the drives A to D, RUN, then the internal disk, down the left (or right) of the desktop. */
+    private int iconX() {
+        return leftPos + menu.iconX();
+    }
+
+    private int iconY(int i) {
+        return topPos + ComputerMenu.ICON_Y + i * ComputerMenu.ICON_STEP;
+    }
+
+    /** The icon under the pointer, or -1; a window or menu over it takes it first. */
+    private int iconAt(double mx, double my) {
+        if (desktop.covers((int) mx, (int) my))
+            return -1;
+        for (int i = 0; i <= INTERNAL; i++)
+            if (mx >= iconX() - 7 && mx < iconX() + 25 && my >= iconY(i) - 2 && my < iconY(i) + 28)
+                return i;
+        return -1;
+    }
+
+    /**
+     * The drive icons: a socket with what is in the drive, a label under it, the open one lit like a picked desktop icon. They are
+     * drawn into the background, under the windows, so a medium's item is skipped while something covers it.
+     */
     private void drawIcons(GuiGraphics g, int mx, int my) {
-        boolean driveOpen = desktop.window("drive").isOpen();
-        for (int i = 0; i <= RUN; i++) {
-            int x = leftPos + menu.iconX(), y = topPos + ComputerMenu.ICON_Y + i * ComputerMenu.ICON_STEP;
-            boolean hover = mx >= x - 7 && mx < x + 25 && my >= y - 2 && my < y + 28 && !desktop.covers(mx, my);
-            look.row(g, x - 7, y - 2, 30, 29, driveOpen && shown == i, hover);
+        boolean driveOpen = desktop.window("drive").isOpen(), internalOpen = desktop.window("internal").isOpen();
+        int over = iconAt(mx, my);
+        for (int i = 0; i <= INTERNAL; i++) {
+            int x = iconX(), y = iconY(i);
+            boolean lit = i == INTERNAL ? internalOpen : driveOpen && shown == i;
+            look.row(g, x - 7, y - 2, 30, 29, lit, over == i);
             look.slot(g, x, y);
+            boolean covered = desktop.overlaps(x - 1, y - 1, 18, 18);
+            if (i == INTERNAL) {
+                if (!covered)
+                    Glyph.FILES.draw(g, x + 4, y + 4, look.accent());
+            } else if (!covered) {
+                ItemStack medium = menu.volume(i);
+                if (!medium.isEmpty()) {
+                    g.renderItem(medium, x, y);
+                    g.renderItemDecorations(font, medium, x, y);
+                }
+            }
+            String label = i == INTERNAL ? "INT" : i == RUN ? "RUN" : String.valueOf((char) ('A' + i)) + ":";
+            if (!desktop.overlaps(x - 6, y + 18, 28, 10))
+                g.drawString(font, label, x + 8 - font.width(label) / 2, y + 19, lit ? look.accent() : look.dim(), false);
         }
     }
 
@@ -476,7 +488,7 @@ public class ComputerScreen extends SkinnedScreen<ComputerMenu> implements Compu
         for (int i = 0; i <= RUN; i++) {
             int row = my + 13 + i * 8;
             g.drawString(font, i == RUN ? "R" : String.valueOf((char) ('A' + i)), x + 4, row, look.ink(), false);
-            ProgramGraph graph = menu.getSlot(i).getItem().getOrDefault(FDataComponents.PROGRAM_GRAPH, ProgramGraph.EMPTY);
+            ProgramGraph graph = menu.volume(i).getOrDefault(FDataComponents.PROGRAM_GRAPH, ProgramGraph.EMPTY);
             look.bar(g, x + 16, row + 1, WIDGET_W - 22, 5, Math.min(1f, graph.nodes().size() / (float) limit), -1f);
         }
     }
@@ -493,13 +505,6 @@ public class ComputerScreen extends SkinnedScreen<ComputerMenu> implements Compu
         return null;
     }
 
-    /** The dock: the hotbar, floating over the wallpaper in a plate. */
-    private void drawDock(GuiGraphics g) {
-        look.plaque(g, leftPos + ComputerMenu.DOCK_X - 6, topPos + ComputerMenu.DOCK_Y - 5, 9 * 18 + 10, 28);
-        for (int c = 0; c < 9; c++)
-            look.slot(g, leftPos + ComputerMenu.DOCK_X + c * 18, topPos + ComputerMenu.DOCK_Y);
-    }
-
     /** The panel's tray: a lamp per bay and the running slot, the power lamp, the clock. */
     private void drawTray(GuiGraphics g, int x, int y, int w, int h) {
         int right = x + w;
@@ -512,7 +517,7 @@ public class ComputerScreen extends SkinnedScreen<ComputerMenu> implements Compu
         lamp -= 8;
         for (int i = RUN; i >= 0; i--) {
             lamp -= 8;
-            boolean in = !menu.getSlot(i).getItem().isEmpty();
+            boolean in = !menu.volume(i).isEmpty();
             int colour = in ? (i == RUN ? look.accent() : look.ink()) : fade(look.dim(), 0x70);
             g.fill(lamp, y + 7, lamp + 6, y + 13, colour);
         }
@@ -526,6 +531,16 @@ public class ComputerScreen extends SkinnedScreen<ComputerMenu> implements Compu
             return true;
         if (desktop.mouseClicked(mx, my, button))
             return true;
+        int icon = iconAt(mx, my);
+        if (button == 0 && icon >= 0) {
+            if (icon == INTERNAL)
+                desktop.open("internal");
+            else {
+                showDrive(icon);
+                desktop.open("drive");
+            }
+            return true;
+        }
         if (button == 1 && rightClick((int) mx, (int) my))
             return true;
         return super.mouseClicked(mx, my, button);
@@ -533,18 +548,21 @@ public class ComputerScreen extends SkinnedScreen<ComputerMenu> implements Compu
 
     /** A right-click on the wallpaper or a drive icon, which no window has taken: opens that thing's menu. Returns whether it did. */
     private boolean rightClick(int mx, int my) {
-        if (hoveredSlot != null && hoveredSlot.index <= RUN) {
-            var items = DriveMenu.of(this, desktop, hoveredSlot.index);
+        int icon = iconAt(mx, my);
+        if (icon == INTERNAL) {
+            desktop.openMenu(mx, my, java.util.List.of(new ContextMenu.Item(Component.translatable("gui.feedback.computer.open"), () -> desktop.open("internal"))));
+            return true;
+        }
+        if (icon >= 0) {
+            var items = DriveMenu.of(this, desktop, icon);
             if (items.isEmpty())
                 return false;
-            showDrive(hoveredSlot.index);
+            showDrive(icon);
             desktop.openMenu(mx, my, items);
             return true;
         }
-        boolean onDock = mx >= leftPos + ComputerMenu.DOCK_X - 6 && mx < leftPos + ComputerMenu.DOCK_X + 9 * 18 + 4
-                && my >= topPos + ComputerMenu.DOCK_Y - 5 && my < topPos + ComputerMenu.DOCK_Y + 23;
         boolean onWallpaper = mx >= leftPos + 6 && mx < leftPos + imageWidth - 6 && my >= topPos + DESK_TOP && my < topPos + DESK_BOTTOM;
-        if (hoveredSlot != null || onDock || !onWallpaper)
+        if (!onWallpaper)
             return false;
         ComputerSettings.Wallpaper[] papers = ComputerSettings.Wallpaper.values();
         desktop.openMenu(mx, my, java.util.List.of(
