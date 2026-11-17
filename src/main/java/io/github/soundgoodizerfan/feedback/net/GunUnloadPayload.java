@@ -10,7 +10,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
-/** The client asked to unload the held gun: its magazine back as a magazine, the chambered round loose. */
+/** The client asked to unload the held gun: its magazine back as a magazine, the chambered round loose; a caster lets out its tank. */
 public record GunUnloadPayload(boolean offHand) implements CustomPacketPayload {
 
     public static final Type<GunUnloadPayload> TYPE = new Type<>(Feedback.id("gun_unload"));
@@ -26,7 +26,9 @@ public record GunUnloadPayload(boolean offHand) implements CustomPacketPayload {
         context.enqueueWork(() -> {
             var player = context.player();
             var stack = payload.offHand() ? player.getOffhandItem() : player.getMainHandItem();
-            if (stack.getItem() instanceof GunItem && GunAmmo.count(stack) > 0)
+            if (stack.getItem() instanceof io.github.soundgoodizerfan.feedback.modular.item.ModularCaster && player instanceof net.minecraft.server.level.ServerPlayer sp)
+                io.github.soundgoodizerfan.feedback.modular.item.ModularCaster.dump(sp, stack); // a caster has no rounds: its tank is let out
+            else if (stack.getItem() instanceof GunItem && GunAmmo.count(stack) > 0)
                 GunAmmo.eject(player, stack);
         });
     }

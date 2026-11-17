@@ -125,6 +125,18 @@ public class ModularCaster extends GunItem {
         CustomData.update(DataComponents.CUSTOM_DATA, gun, tag -> tag.putLong(PRIME_UNTIL, tick));
     }
 
+    /** The unload key: the tank let out at the wielder's feet, the gauge falling with it. */
+    public static void dump(net.minecraft.server.level.ServerPlayer player, ItemStack gun) {
+        FluidStack held = content(gun);
+        if (held.isEmpty())
+            return;
+        io.github.soundgoodizerfan.feedback.weapon.FluidStream.pour(player.serverLevel(), player, held);
+        setContent(gun, FluidStack.EMPTY);
+        setPressure(gun, 0f);
+        player.level().playSound(null, player.blockPosition(), net.minecraft.sounds.SoundEvents.BUCKET_EMPTY, net.minecraft.sounds.SoundSource.PLAYERS, 0.9f, 1f);
+        player.serverLevel().sendParticles(net.minecraft.core.particles.ParticleTypes.SPLASH, player.getX(), player.getY() + 0.1, player.getZ(), 12, 0.25, 0.05, 0.25, 0.05);
+    }
+
     /** A motor's run-up, 0 to 1: how far up to its head it is, from the tick it last started from rest. */
     public static float spin(ItemStack gun, long now) {
         CustomData data = gun.get(DataComponents.CUSTOM_DATA);

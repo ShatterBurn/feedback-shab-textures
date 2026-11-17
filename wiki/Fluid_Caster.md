@@ -57,6 +57,7 @@ Right-click works as a fill or pour only while the crosshair is on a fluid sourc
 - **Sneak and use it** on such a block to pour the tank back in.
 - **In an inventory**, drop a fluid item onto the caster as you would an item into a bundle: pick the item up on the cursor and right-click the caster in its slot, or pick the caster up and right-click the fluid item. A full item (a bucket, for example) fills the tank and comes back empty. An empty item takes fluid from the tank, but only if it accepts that amount: a bucket needs 1000 mB. Only a single item works, not a stack.
 - A [pipe](Pipe.md) or a placed tank fills and drains the caster as it would any fluid container.
+- **Press the unload key** (default `U`) while holding the caster to let the whole tank out at your feet. The tank pressure drops to zero, with a splash and the bucket-empty sound. The fluid lands like a stream that stopped there: a container block under you takes it in, a cauldron fills a level (water), farmland under you is watered (water); otherwise it is gone.
 
 The tooltip names what the tank holds and how many mB, and says when it is under pressure. The fluid keeps its temperature in the tank.
 

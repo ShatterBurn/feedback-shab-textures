@@ -268,6 +268,17 @@ public final class FluidStream {
         }
     }
 
+    /**
+     * The whole tank let out at the carrier's feet, as a stream that landed there: a container below takes it, a cauldron fills, farmland is
+     * watered. Nothing places a fluid block.
+     */
+    public static void pour(ServerLevel level, LivingEntity holder, FluidStack fluid) {
+        if (fluid.isEmpty())
+            return;
+        landed(level, holder, fluid, fluid.getAmount(), FluidHeat.of(fluid).value(), fluid.is(FluidTags.WATER), false,
+                holder.blockPosition().below(), Direction.UP);
+    }
+
     /** What a fluid is, for a tooltip or a check: its material, or empty. */
     public static Optional<Material> materialOf(FluidStack fluid) {
         return Optional.ofNullable(material(fluid));
