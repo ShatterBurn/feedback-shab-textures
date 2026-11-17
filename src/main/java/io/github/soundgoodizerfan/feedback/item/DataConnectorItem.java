@@ -17,7 +17,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 /**
  * Links two {@link DataNode}s -- select one, then the other, no cable in the world at any point.
  *
- * <p>Shift-scroll cycles the mode ({@link DataConnectorMode}): link, unlink, clear.
+ * <p>Shift-scroll cycles the mode ({@link DataConnectorMode}): link, unlink, clear, paint.
  *
  * <h2>No node-precise raycasting needed, and that is an actual simplification</h2>
  * MrCrayfish's Furniture Mod: Refurbished (MIT) needs custom sub-block raytracing because several
@@ -54,7 +54,7 @@ public class DataConnectorItem extends Item {
 
         if (!level.isClientSide)
             DataLinkManager.get().onNodeInteract(player, target, context.getItemInHand().getOrDefault(
-                    io.github.soundgoodizerfan.feedback.registry.FDataComponents.DATA_CONNECTOR_MODE.get(), DataConnectorMode.LINK));
+                    io.github.soundgoodizerfan.feedback.registry.FDataComponents.DATA_CONNECTOR_MODE.get(), DataConnectorMode.LINK), context.getHand());
         return InteractionResult.sidedSuccess(level.isClientSide);
     }
 

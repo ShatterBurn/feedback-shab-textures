@@ -47,6 +47,7 @@ public final class DataNodeRenderer {
     private static final int RESCAN_TICKS = 10;
 
     private static final List<DataNode> nodes = new ArrayList<>();
+    private static final Set<DataNodeRef> scanned = new java.util.HashSet<>();
     private static long scannedAt = Long.MIN_VALUE;
     private static int scannedEpoch = -1;
 
@@ -74,6 +75,8 @@ public final class DataNodeRenderer {
         double time = (now + partial) / 20.0;
         Vec3 eye = mc.player.getEyePosition(partial);
         DeferredDataRenderer renderer = DeferredDataRenderer.get();
+        for (DataNode node : nodes)
+            scanned.add(node.getNodeRef());
         for (DataNode node : nodes) {
             if (!node.isNodeValid())
                 continue;
@@ -86,6 +89,7 @@ public final class DataNodeRenderer {
 
     private static void scan(Minecraft mc) {
         nodes.clear();
+        scanned.clear();
         ChunkPos at = mc.player.chunkPosition();
         int radius = (int) (RANGE / 16) + 1;
         for (int cx = at.x - radius; cx <= at.x + radius; cx++)
@@ -127,8 +131,8 @@ public final class DataNodeRenderer {
 
         Vec3 from = Vec3.atLowerCornerOf(pos).add(box.getCenter());
         for (DataNodeRef other : links) {
-            // Each link is stored on both ends; draw it from whichever end sorts first so it is queued once.
-            if (self.compareTo(other) >= 0)
+            // Each link is stored on both ends; draw it from whichever end sorts first, or from this end when the other is out of view.
+            if (self.compareTo(other) >= 0 && scanned.contains(other))
                 continue;
             Vec3 to = Vec3.atLowerCornerOf(other.pos()).add(DataNode.boxFor(other.side()).getCenter());
             int lineColour = tint >= 0 ? colour : tintOfEnd(other, colour);

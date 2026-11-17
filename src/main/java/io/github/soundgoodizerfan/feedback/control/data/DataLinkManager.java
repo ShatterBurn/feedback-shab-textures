@@ -47,7 +47,7 @@ public final class DataLinkManager {
     }
 
     /** Called server-side when a player right-clicks a data node with the connector. */
-    public void onNodeInteract(Player player, DataNode node, DataConnectorMode mode) {
+    public void onNodeInteract(Player player, DataNode node, DataConnectorMode mode, net.minecraft.world.InteractionHand hand) {
         if (mode == DataConnectorMode.CLEAR) {
             pending.remove(player.getUUID());
             tell(player, io.github.soundgoodizerfan.feedback.net.DataSelectionPayload.cleared());
@@ -89,7 +89,7 @@ public final class DataLinkManager {
             return;
         }
         if (mode == DataConnectorMode.PAINT) {
-            boolean painted = a.getNodeLinks().contains(node.getNodeRef()) && colour(a, node, colorIn(player));
+            boolean painted = a.getNodeLinks().contains(node.getNodeRef()) && colour(a, node, colorIn(player, hand));
             player.displayClientMessage(Component.translatable(painted
                     ? "feedback.data_connector.painted" : "feedback.data_connector.not_painted"), true);
             return;
@@ -108,15 +108,15 @@ public final class DataLinkManager {
         boolean linked = a.linkTo(node);
         if (linked) {
             DataWires.record(level, a.getNodeRef(), node.getNodeRef(), paid.grade());
-            colour(a, node, colorIn(player));
+            colour(a, node, colorIn(player, hand));
         }
         player.displayClientMessage(Component.translatable(linked
                 ? "feedback.data_connector.linked" : "feedback.data_connector.failed"), true);
     }
 
-    /** The color of the dye in the player's other hand, which a link is made in; {@link DataRequest#ANY} with none. */
-    private static int colorIn(Player player) {
-        return player.getOffhandItem().getItem() instanceof net.minecraft.world.item.DyeItem dye ? dye.getDyeColor().getId() : DataRequest.ANY;
+    /** The color of the dye in the hand not holding the connector, which a link is made in; {@link DataRequest#ANY} with none. */
+    private static int colorIn(Player player, net.minecraft.world.InteractionHand hand) {
+        return player.getItemInHand(net.minecraft.world.InteractionHand.values()[1 - hand.ordinal()]).getItem() instanceof net.minecraft.world.item.DyeItem dye ? dye.getDyeColor().getId() : DataRequest.ANY;
     }
 
     /** Sets the link color on whichever end is a Controller or Computer; false when neither is. */

@@ -75,12 +75,75 @@ public final class DataLinkStore extends SavedData {
                 DataLinksPayload.of(List.of(ref), store.links, store.colors));
     }
 
+    private int sweepCursor;
+
+    /**
+     * Forgets nodes whose block is gone: a node in a loaded chunk that no longer resolves loses its entry, its colors and its
+     * place in every far end's links, so a block placed there later starts with none of them. Looks at a slice of the entries
+     * each call; nothing here loads a chunk.
+     */
+    public static void sweep(ServerLevel level) {
+        DataLinkStore store = of(level);
+        List<DataNodeRef> keys = new ArrayList<>(store.links.keySet());
+        if (keys.isEmpty())
+            return;
+        int slice = Math.min(keys.size(), 64);
+        for (int i = 0; i < slice; i++) {
+            DataNodeRef key = keys.get(Math.floorMod(store.sweepCursor + i, keys.size()));
+            Set<DataNodeRef> mine = store.links.get(key);
+            if (mine == null)
+                continue;
+            if (!level.isLoaded(key.pos())) {
+                continue;
+            }
+            if (mine.isEmpty()) {
+                store.drop(key);
+                continue;
+            }
+            if (DataNode.resolveOrNull(level, key) != null)
+                continue;
+            for (DataNodeRef other : new ArrayList<>(mine)) {
+                Set<DataNodeRef> far = store.links.get(other);
+                if (far != null)
+                    far.remove(key);
+                forgetColor(level, key, other);
+                send(level, other, store);
+            }
+            store.drop(key);
+            store.setDirty();
+            send(level, key, store);
+            epoch++;
+        }
+        store.sweepCursor = Math.floorMod(store.sweepCursor + slice, Math.max(1, keys.size()));
+    }
+
+    private void drop(DataNodeRef key) {
+        links.remove(key);
+        colors.remove(key);
+        Set<DataNodeRef> chunk = byChunk.get(new ChunkPos(key.pos()).toLong());
+        if (chunk != null) {
+            chunk.remove(key);
+            if (chunk.isEmpty())
+                byChunk.remove(new ChunkPos(key.pos()).toLong());
+        }
+    }
+
+    private static void send(ServerLevel level, DataNodeRef ref, DataLinkStore store) {
+        PacketDistributor.sendToPlayersTrackingChunk(level, new ChunkPos(ref.pos()), DataLinksPayload.of(List.of(ref), store.links, store.colors));
+    }
+
     /** Sends a player every link in a chunk it has just started to watch. */
     public static void sendChunk(net.minecraft.server.level.ServerPlayer player, ServerLevel level, ChunkPos chunk) {
         DataLinkStore store = of(level);
         Set<DataNodeRef> refs = store.byChunk.get(chunk.toLong());
-        if (refs != null && !refs.isEmpty())
-            PacketDistributor.sendToPlayer(player, DataLinksPayload.of(new ArrayList<>(refs), store.links, store.colors));
+        if (refs == null)
+            return;
+        List<DataNodeRef> live = new ArrayList<>();
+        for (DataNodeRef ref : refs)
+            if (!store.links.getOrDefault(ref, NONE).isEmpty() || store.colors.containsKey(ref))
+                live.add(ref);
+        if (!live.isEmpty())
+            PacketDistributor.sendToPlayer(player, DataLinksPayload.of(live, store.links, store.colors));
     }
 
     /**
@@ -89,6 +152,14 @@ public final class DataLinkStore extends SavedData {
      */
     public static void moved(ServerLevel level, Map<net.minecraft.core.BlockPos, net.minecraft.core.BlockPos> moves) {
         DataLinkStore store = of(level);
+        // The wire between two nodes keeps its grade when either end is carried to a new position.
+        List<Object[]> wires = new ArrayList<>();
+        for (Map.Entry<DataNodeRef, Set<DataNodeRef>> entry : store.links.entrySet())
+            for (DataNodeRef other : entry.getValue())
+                if (entry.getKey().compareTo(other) < 0 && (moves.containsKey(entry.getKey().pos()) || moves.containsKey(other.pos())))
+                    wires.add(new Object[]{follow(entry.getKey(), moves), follow(other, moves), DataWires.gradeOf(level, entry.getKey(), other)});
+        java.util.Set<DataNodeRef> touched = new HashSet<>(store.links.keySet());
+        touched.addAll(store.colors.keySet());
         Map<DataNodeRef, Set<DataNodeRef>> moved = new HashMap<>();
         boolean any = false;
         for (Map.Entry<DataNodeRef, Set<DataNodeRef>> entry : store.links.entrySet()) {
@@ -118,6 +189,14 @@ public final class DataLinkStore extends SavedData {
             store.byChunk.computeIfAbsent(new ChunkPos(ref.pos()).toLong(), c -> new HashSet<>()).add(ref);
         store.setDirty();
         epoch++;
+        for (Object[] wire : wires)
+            DataWires.record(level, (DataNodeRef) wire[0], (DataNodeRef) wire[1], (DataWires.Grade) wire[2]);
+        // Clients drop every old ref and learn every new one.
+        java.util.Set<DataNodeRef> resend = new HashSet<>(touched);
+        resend.addAll(store.links.keySet());
+        resend.addAll(store.colors.keySet());
+        for (DataNodeRef ref : resend)
+            send(level, ref, store);
     }
 
     private static DataNodeRef follow(DataNodeRef ref, Map<net.minecraft.core.BlockPos, net.minecraft.core.BlockPos> moves) {
@@ -192,6 +271,13 @@ public final class DataLinkStore extends SavedData {
                 CLIENT.colors.put(entry.node(), tints);
             }
         }
+    }
+
+    /** Client: a chunk left view; its nodes' links go with it. */
+    public static void forgetClientChunk(ChunkPos chunk) {
+        CLIENT.links.keySet().removeIf(ref -> new ChunkPos(ref.pos()).equals(chunk));
+        CLIENT.colors.keySet().removeIf(ref -> new ChunkPos(ref.pos()).equals(chunk));
+        epoch++;
     }
 
     public static void clearClient() {

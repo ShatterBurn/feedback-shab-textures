@@ -123,10 +123,4 @@ public class DataSensorBlockEntity extends BlockEntity
         super.loadAdditional(tag, registries);
     }
 
-    @Override
-    public void setRemoved() {
-        if (level != null && !level.isClientSide)
-            unlinkAll();
-        super.setRemoved();
-    }
 }

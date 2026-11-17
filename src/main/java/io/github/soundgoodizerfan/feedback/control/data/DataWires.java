@@ -133,7 +133,7 @@ public final class DataWires {
     }
 
     /** A link with no recorded wire counts as the poor grade: nothing joins for free. */
-    private static Grade gradeOf(Level level, DataNodeRef a, DataNodeRef b) {
+    static Grade gradeOf(Level level, DataNodeRef a, DataNodeRef b) {
         if (level.getServer() == null)
             return Grade.POOR;
         return Book.get(level.getServer()).get(key(level, a, b));
@@ -248,8 +248,10 @@ public final class DataWires {
             QUENCHED_UNTIL.remove(k);
         }
         DataNode far = DataNode.resolveOrNull(level, other);
-        int load = Math.max(node.getNodeLinks().size(), far == null ? 0 : far.getNodeLinks().size());
-        if (load > ControlTuning.WIRE_CRITICAL_LINKS) {
+        // An end quenches its line when it is carrying all it can: more than the critical count, and at its own cap (a Controller takes more).
+        boolean overloaded = node.getNodeLinks().size() > Math.max(ControlTuning.WIRE_CRITICAL_LINKS, node.getMaxNodeLinks() - 1)
+                || far != null && far.getNodeLinks().size() > Math.max(ControlTuning.WIRE_CRITICAL_LINKS, far.getMaxNodeLinks() - 1);
+        if (overloaded) {
             QUENCHED_UNTIL.put(k, now + ControlTuning.WIRE_QUENCH_TICKS);
             return true;
         }

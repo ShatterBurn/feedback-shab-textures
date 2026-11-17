@@ -8,7 +8,7 @@ import io.github.soundgoodizerfan.feedback.instrument.Quantity;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * A robot's own senses and actions, named by a program card through {@link DataNodeRef#local}. An action is a switch the program holds
+ * A robot's own senses and actions, named by a program card as the signal {@link #signal()} or, for an action, by its ordinal on a card of kind {@link #KIND}. An action is a switch the program holds
  * on or off (the Controller is a switch, never a dial); a sense reads back as a boolean, or as a number. The ordinal is what a printed
  * card stores, so a program moves between robots of any form that carry the channel. A sense that needs a fitted sensor part reads 0 on
  * a robot without it (see {@link RobotSpec}).

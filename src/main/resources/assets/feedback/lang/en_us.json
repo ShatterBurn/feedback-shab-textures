@@ -10151,5 +10151,9 @@
   "feedback.kind.feedback.emitter": "Redstone emitter",
   "feedback.kind.feedback.controller": "Controller",
   "feedback.kind.feedback.robot": "Robot",
-  "feedback.kind.feedback.voxel": "Micro voxel"
+  "feedback.kind.feedback.voxel": "Micro voxel",
+  "feedback.kind.feedback.jet": "Jet",
+  "feedback.kind.feedback.propeller": "Propeller",
+  "feedback.kind.feedback.transmission": "Transmission",
+  "feedback.kind.feedback.ballast": "Ballast tank or vent"
 }
