@@ -516,6 +516,33 @@ public final class ProgramEditor {
             minecraft.player.displayClientMessage(Component.translatable("feedback.programmer.unsaved"), true);
     }
 
+    /** The graph the editor shows now: a printed card's own, else the working copy. The Computer's text view prints this. */
+    public ProgramGraph shownGraph() {
+        return shown();
+    }
+
+    /** Whether the medium is printed, so what is shown cannot be changed. */
+    public boolean readOnly() {
+        return isPrinted();
+    }
+
+    /**
+     * Takes a graph compiled from text as the working copy (one undo step): cards that keep their id keep their place, cards the text made are
+     * laid out tidily, cards it dropped lose theirs. The server still checks it on commit, as it checks every edit.
+     */
+    public void applyText(ProgramGraph compiled) {
+        if (isPrinted() || compiled.equals(graph))
+            return;
+        commitLiteral();
+        pushUndo();
+        graph = compiled;
+        positions.keySet().removeIf(id -> graph.find(id).isEmpty());
+        positions.putAll(io.github.soundgoodizerfan.feedback.control.program.text.TextLayout.place(graph, positions));
+        selection.removeIf(id -> graph.find(id).isEmpty());
+        closeLiteralBox();
+        endRename();
+    }
+
     /** Whether there is an unsent edit. */
     boolean dirty() {
         return dirty && !isPrinted();

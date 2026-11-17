@@ -25,7 +25,7 @@ departs from all three of these deliberately.
 | **MrCrayfish's Furniture Mod: Refurbished** | MIT | **Yes** | Permissive, same as Create. Preserve the notice, state the origin |
 | **PneumaticCraft: Repressurized** | GPL-3.0 | **Yes** | Same licence as this project, code and assets both — the most direct route read all session. Assets still never used, per this project's own universal-no rule, not because the licence would forbid it |
 | **RetroSFM** | MIT | **Yes** | Permissive, same as Create. Preserve the notice, state the origin |
-| **Super Factory Manager** | MPL-2.0 | **Yes** | No per-file "Incompatible With Secondary Licenses" notice found, so combinable under GPL-3.0 per MPL §3.3/§10.4's default. Read, nothing taken — see below |
+| **Super Factory Manager** | MPL-2.0 | **Yes** | No per-file "Incompatible With Secondary Licenses" notice found, so combinable under GPL-3.0 per MPL §3.3/§10.4's default. Design taken for the program text form (2026-11-17): pipeline shape, tolerant lexer, grammar-driven completion, canonical pretty-printer; no code copied — see below |
 | **PowerGrid** | Apache-2.0 (`architectury-1.21.1/dev`, commit `0938be0`) | **Yes** | Permissive and GPL-3.0-compatible one way. Preserve the notice, state the origin if code is ever copied. Read for vacuum tubes (2026-11-16); design only, nothing copied. Assets never |
 | **Silent Gear** | MIT | **Yes** | Permissive. Preserve the notice, state the origin. Read for modular items; design taken. **Textures copied as placeholders (2026-10-21, user ruling)** -- the repo's MIT licence covers them; see *Textures* below |
 | **Tinkers' Construct** | MIT | **Yes** | Permissive. Only a 1.20.1 source exists, so any port is to 1.21 data components. Read for modular items; design taken, nothing copied |
@@ -510,6 +510,15 @@ source read, so under MPL §10.4 the code remains available under GPL-3.0 as a S
 Licence — a real route, just not one walked, same as GregTech's linking-only route was never
 walked either.
 
+**Read again for the program text form (`control/program/text`, 2026-11-17), branch `1.21.1`, commit `46cd99155`. Design only, no code or assets copied.**
+**Taken:** the compile pipeline's shape (a tolerant lexer that never throws, a typed syntax tree, lowering to the graph, the graph's own
+edit-time and print-time checks, then lints, every finding with a line and column); grammar-driven completion of keywords, port and link names
+and declared variables, reading the text only; a canonical pretty-printer so the graph stays the source of truth and the text is a view
+(printing is idempotent); case-insensitive keywords and `--` comments; declarative single assignment (order irrelevant, types inferred, a cycle
+an error unless it passes through a delay). **Rejected:** imperative `if/else` and sequential IO, resource-id, tag and label routing (the text
+never names an item or a block), the `every` trigger (time is a delay card), path-simulation linting (2^n), config-tunable caps (caps stay the
+fitted upgrades' `ControllerLimits`), and every asset. The comments at the code sites are `TextLexer`, `TextCompiler` and `TextCompletion`.
+
 ## PowerGrid (vacuum tubes, 2026-11-16)
 
 Read at `architectury-1.21.1/dev`, commit `0938be0`, Apache-2.0, for the tube family of the circuit (`process/Tube`,
@@ -548,6 +557,8 @@ an opt-in costed chunk-loading upgrade (planned, not yet built). **Rejected:** i
 block filter widgets, loot-drop-match block validity, jump/label control flow, teleporting when
 stuck, owner-UUID gating, pressure as the only power, exact-coordinate navigation without drift,
 and a fake player per drone (one shared per level here).
+
+**Read a fourth time (`1.21` branch, `824ad514e`) for the Network app and the program text form (2026-11-17): read, nothing taken yet.** Its Remote layout (a versioned list of widgets, each bound to a node or channel address, with the server checking the sender) is noted as an idea for a later remote-control panel; nothing in the Network app or the text form uses it.
 
 **Read a second time, for `PressureVesselBlockEntity` (`TODO.md` §5e as of `50b93c6`) — user-directed rather than
 surveyed, since `Pu` had no prior implementation to weigh options against.** `IAirHandler`'s
