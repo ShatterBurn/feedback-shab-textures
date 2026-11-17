@@ -107,7 +107,7 @@ Crafting: 2 Iron Bars + Wrought Iron Plate.
 
 ### Belt Counter
 
-Counts what passes and reports to a linked [Controller](Controller.md) (see [Data Connector](Data_Connector.md)). Link it to a Sensor card: key **C** reads the count, any other key the rate. It controls nothing and reads nothing about the cargo.
+Counts what passes and reports to a linked [Controller](Controller.md) (see [Data Connector](Data_Connector.md)). Link it to the Controller and read it with an Input card: key **C** reads the count, any other key the rate. It controls nothing and reads nothing about the cargo.
 
 Crafting: 2 Copper Wire + Wrought Iron Plate.
 

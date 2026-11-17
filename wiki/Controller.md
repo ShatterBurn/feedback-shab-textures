@@ -17,7 +17,8 @@ P is a [Copper Plate](Mechanical_Hammer.md), C is a Redstone Comparator and S is
 
 1. Write a program onto a Punch Card at the [Programmer](Programming.md).
 2. **Right-click the Controller with the printed card** to put it in. Right-click with an empty hand to take it out.
-3. **Connect the Controller to a turning shaft.** It's mechanical, and it only thinks while it's being turned. It connects on any side and takes **2 Su**; even a [Hand Crank](Hand_Crank.md) (12 Su) is enough while you're turning it.
+3. **Link what it reads and switches** to the Controller with the [Data Connector](Data_Connector.md): select a sensor or switchable block, then use the connector on the Controller. The Controller is a data node itself, so the link is made with wire like any other.
+4. **Connect the Controller to a turning shaft.** It's mechanical, and it only thinks while it's being turned. It connects on any side and takes **2 Su**; even a [Hand Crank](Hand_Crank.md) (12 Su) is enough while you're turning it.
 
 If the shaft stops, the controller stops making decisions, and everything it controls **stays as it was last set**.
 
@@ -26,7 +27,7 @@ If the shaft stops, the controller stops making decisions, and everything it con
 A [circuit](Basic_Electronic_Circuit.md) is optional. **Right-click the Controller with a circuit** to seat it; an empty hand takes out the card first, then the circuit.
 
 - **Pace.** A Controller with no circuit steps its program about **4 times a second**. A fast circuit raises that, up to **20 a second**; a slow, cold or dead one stays near the bottom.
-- **Reading.** A circuit's noise makes the numbers a Sensor card reads wobble by a few percent; a quiet circuit reads steadily, and with none the reading is as noisy as a circuit can be. A yes/no reading never wobbles.
+- **Reading.** A circuit's noise makes the numbers an Input card reads wobble by a few percent; a quiet circuit reads steadily, and with none the reading is as noisy as a circuit can be. A yes/no reading never wobbles.
 - **Steadiness.** A [Resonator](Resonator.md) on the circuit makes the clock step evenly and cuts the wobble of readings further.
 - **Extra variables.** A [Lattice](Lattice.md) on the circuit adds program variables on top of the Memory Drums, up to 8 more. A program that uses them does not run without the circuit, so the circuit stays in while it does.
 - **Learned readings.** A lattice also holds a reading that stays close to the last one, so noise does not show, and lets a real change through at once.
@@ -37,7 +38,7 @@ The Controller has no power of its own to heat a [tubed](Vacuum_Tube.md) circuit
 
 ## What it can read
 
-Anything you can link as a sensor:
+An Input card reads any node linked to the Controller that offers the signal it asks for:
 
 - [Temperature Sensor](Instruments.md#temperature-sensor) on a crucible or Improved Furnace
 - [Current Sensor](Instruments.md#current-sensor) on a cable
@@ -49,7 +50,7 @@ Anything you can link as a sensor:
 
 ## What it can switch
 
-Anything that turns on and off:
+A *Switch* card drives every linked node of the kind it asks for. These turn on and off:
 
 - [Clutch](Clutch.md) and [Overspeed Trip](Overspeed_Trip.md)
 - [Valve](Valve.md)
@@ -60,6 +61,10 @@ Anything that turns on and off:
 - another Controller's variables, as 1/0 or true/false (see [Reading another Controller's variables](#reading-another-controllers-variables))
 
 A **true** signal switches the target **on**: clutch engaged, valve open, damper open, engine running, breaker closed. **False** switches it **off**.
+
+## Linked nodes
+
+A Controller binds **8** linked nodes, and **4** more for each [Card Rack](#memory-and-upgrades) fitted. A card never names a block. An *Input* card asks for a signal, such as temperature, and may prefer a kind of block and a link color; the Controller answers it from what is linked to it. How cards choose among the linked nodes is on [Programming](Programming.md#the-cards). Nothing matching reads 0, and a *Switch* card with nothing matching does nothing.
 
 ## It controls energy, not machines
 
@@ -77,14 +82,14 @@ The fix is a **band** (a deadband): turn on below the bottom, turn off above the
 
 > **on** if (temperature < 1360) **OR** (temperature < 1400 **AND** the bellows clutch is already on)
 
-Link an *Input* card to the clutch itself and it reads yes while the clutch is engaged. Inside the band the clutch keeps doing whatever it was doing.
+An *Input* card asking for *On or off* of kind *Clutch* reads yes while the clutch is engaged. Inside the band the clutch keeps doing whatever it was doing.
 
 ## Reading another Controller's variables
 
-Any Controller's declared [variables](Programming.md#variables) can be shared. Select the other Controller with the [Data Connector](Data_Connector.md) and link a card to it as for any block:
+Any Controller's declared [variables](Programming.md#variables) can be shared. Link the other Controller to this one with the [Data Connector](Data_Connector.md) and ask for kind *Controller* on a card:
 
-- A **Sensor** card reads one of its variables. Click the card's channel row to pick which; a yes/no variable reads 1 or 0.
-- An **Actuator** card sets one of its variables, as 1 or 0 for a number and true or false for a yes/no. Click the channel row to pick which. The first choice sets nothing.
+- An **Input** card reads one of its variables. Click the card's channel row to pick which; a yes/no variable reads 1 or 0.
+- A **Switch** card sets one of its variables, as 1 or 0 for a number and true or false for a yes/no. Click the channel row to pick which. The first choice sets nothing.
 
 The other Controller sees the value on its next step, as with its own *Write*. A fleet of robots, or several Controllers, can share state this way.
 
@@ -95,7 +100,7 @@ A bare Controller runs a program of up to **16 cards** with **4 variables** (nam
 | Part | Gives | Up to |
 | --- | --- | --- |
 | **Memory Drum** | 4 more variables | 3 |
-| **Card Rack** | 8 more cards | 3 |
+| **Card Rack** | 8 more cards and 4 more linked nodes | 3 |
 | **Escapement** | Delay cards may use a typed or wired length | 1 |
 
 A card whose program needs more than the fitted parts give is refused when you try to put it in. A [Crowbar](Crowbar.md) will not pry off a part the card in the Controller needs. Variable values survive a reload; Delay history does not, and a Delay restarts from whatever its input reads. A stopped shaft freezes variables and delays along with everything else.

@@ -16,7 +16,7 @@ Put one bonded [Data Port](Data_Port.md) and one metal plate in the crafting gri
 
 ## Reading across the pair
 
-Link a sensor or machine to the far Data Port with the [Data Connector](Data_Connector.md#linking-nodes), and a Sensor card in the controller's program can read it. A Computer shows the pair and what is linked beyond it in the Network app, and can flip what switches there ([Network](Electric_Controller.md#disk-apps)).
+Link a sensor or machine to the far Data Port with the [Data Connector](Data_Connector.md#linking-nodes), and an Input card in the controller's program can read it. A Computer shows the pair and what is linked beyond it in the Network app, and can flip what switches there ([Network](Electric_Controller.md#disk-apps)).
 
 ## Channel and address
 

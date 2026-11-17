@@ -19,7 +19,7 @@ It works only as a [micro-block](Micro_Core.md). Placed as a full-size block it 
 1. Put it in a micro cell with its front along the line the body should slide on.
 2. **Use it with an empty hand** to assemble everything joined to its front face into a second body that slides.
 3. **Use it again** to put the body back, at the nearest of the 24 ways a cube can be turned.
-4. Point a [Data Connector](Data_Connector.md) at the piston voxel and link a *Switch* card to its **Piston level** channel. A number from -1 to 1 sets the level; the travel is 0.5 block in all.
+4. Link the piston voxel to a Controller with a [Data Connector](Data_Connector.md) and add a *Switch* card on its **Piston level** channel. A number from -1 to 1 sets the level; the travel is 0.5 block in all.
 
 ## How it works
 

@@ -29,7 +29,7 @@ The disengaged clutch stays part of the driving side, so the power source keeps 
 
 ## Micro clutch
 
-A Clutch can be a voxel of a [micro build](Micro_Core.md). A [Controller](Controller.md) card switches a micro clutch, engaged or not. Point a [Data Connector](Data_Connector.md) at the clutch voxel and link a card to its **Engaged** channel.
+A Clutch can be a voxel of a [micro build](Micro_Core.md). A [Controller](Controller.md) card switches a micro clutch, engaged or not. Link the clutch voxel to the Controller with a [Data Connector](Data_Connector.md) and add a card on its **Engaged** channel.
 
 ## Uses
 

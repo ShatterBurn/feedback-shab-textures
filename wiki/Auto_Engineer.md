@@ -42,7 +42,7 @@ A [circuit](Basic_Electronic_Circuit.md) is optional. **Right-click** with one t
 - **Fewer improvised or scrapped results.** A quiet circuit makes the machine sometimes hold off from guessing at parts the stick does not cover: it waits instead of improvising or scrapping them.
 - **Longer links.** A circuit with gain lengthens a [Data Connector](Data_Connector.md#linking-nodes) link that ends at the machine.
 - **Heater.** A circuit with a [tube](Vacuum_Tube.md) takes its heater's current from the machine's line on top of the machine's own, and runs slow and noisy until warm ([Warming up](Basic_Electronic_Circuit.md#warming-up)).
-- **Readable.** With a live circuit seated, a Sensor card for a [Controller](Controller.md) can read **Progress** (how far through the assembly), **Condition** (the machine's) and **Output fill**. Link the card as for any block ([Programming](Programming.md#linking-cards-to-real-blocks)) and click its channel row to pick one.
+- **Readable.** With a live circuit seated, an Input card on a [Controller](Controller.md) can read **Progress** (how far through the assembly), **Condition** (the machine's) and **Output fill**. Link the machine to the Controller with the [Data Connector](Data_Connector.md) and click the card's channel row to pick one (see [Programming](Programming.md#input-and-switch-cards)).
 
 ## Wear
 

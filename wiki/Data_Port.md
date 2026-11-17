@@ -10,7 +10,7 @@ Put one Ender Pearl or [Synthetic Pearl](Synthetic_Pearl.md), two metal plates a
 
 - **Power it.** A Data Port is a sink on an [MV](Electricity.md#bands-and-amps) line and draws a small standing current while it is bonded. A pair carries only while both ends are powered; an unpowered end leaves the pair dark.
 - **Link things to it** with the [Data Connector](Data_Connector.md#linking-nodes), as to any other node: a sensor, a machine or a [Computer](Electric_Controller.md#computer).
-- **Read from the other end.** Whatever is linked to one end can be reached from the other end, and from any [Electric Controller](Electric_Controller.md) or [Computer](Electric_Controller.md#computer) that carries the bonded [Endernet Upgrade](Endernet_Upgrade.md), as if it were wired there. A [Sensor card](Programming.md#linking-cards-to-real-blocks) linked to a far node reads it.
+- **Read from the other end.** Whatever is linked to one end can be reached from the other end, and from any [Electric Controller](Electric_Controller.md) or [Computer](Electric_Controller.md#computer) that carries the bonded [Endernet Upgrade](Endernet_Upgrade.md), as if it were wired there. An [Input card](Programming.md#input-and-switch-cards) reads a far node.
 - **Right-click** a port empty-handed to read its tank of teleportant, whether its chunk is anchored and the state of the pair: *carrying*, *far end not loaded or not powered*, *not powered* or *none (unbonded)*. The same click steps the port's [channel](#channels): off, then 1 up to the number its circuit separates, then off again, and the message names the channel it landed on.
 - Use a [Chunk Anchor](Ender_Port.md#chunk-anchor) on a port to keep its chunk loaded, so the pair works while nobody is near. An end in an unloaded chunk pauses the pair.
 - A [Tuned Eye](Tuned_Eye.md) tuned to a port reads the distance, direction and height of the other end.
@@ -39,7 +39,7 @@ A Computer can list and switch what is linked to the far end in its [Network app
 A port can be tuned to a **channel**, a plain number. Tuning is off until you right-click it. Every port in one dimension tuned to the same channel shares it, with no names and no addresses.
 
 - **One shared allowance.** A channel carries 1200 signals a minute for everything on it, however many ports and Computers share it. A busy channel starves its own listeners.
-- **Four signal slots.** A tuned port that is carrying, and whose pair holds no robot or suit, offers four slots. An Actuator card linked to the port writes a slot; a [Sensor card](Programming.md#linking-cards-to-real-blocks) linked to any port tuned to the same channel reads it. A value that is not rewritten goes stale after about a minute.
+- **Four signal slots.** A tuned port that is carrying, and whose pair holds no robot or suit, offers four slots. A *Switch* card on the port writes a slot; an [Input card](Programming.md#input-and-switch-cards) on any port tuned to the same channel reads it. A value that is not rewritten goes stale after about a minute.
 - **Anyone tuned hears it.** A slot has no address, so every port on the channel can read it.
 - **Each signal costs** a share of the channel's allowance, plus the port's own teleportant and bandwidth over the distance, as any crossing does.
 - **Robots and suits come first.** A port whose pair carries a [robot's leash](Robots.md#endernet-leash) or a [suit's scan](Exosuit.md#sharing-a-scan) gives its channels to that and offers no slots.

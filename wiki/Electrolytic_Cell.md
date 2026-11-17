@@ -104,7 +104,7 @@ A [Mass Probe](Instruments.md#mass-probe) hung on a side reads how much the cell
 A [circuit](Basic_Electronic_Circuit.md) is optional; the cell works without one. **Right-click the cell with a circuit** to seat it. Sneak-right-click with an empty hand takes it out once the anode is out.
 
 - **Purer deposit.** A quiet circuit counts the foreign share of a deposit for less, so a batch more often clears the 95% line for ingots and a plated coat more often comes out sound. A noisy circuit helps little.
-- **Readable.** With a live circuit seated, a Sensor card for a [Controller](Controller.md) can read the cell's **Deposit**, **Purity** and **Condition**. Link the card as for any block ([Programming](Programming.md#linking-cards-to-real-blocks)) and click its channel row to pick one.
+- **Readable.** With a live circuit seated, an Input card on a [Controller](Controller.md) can read the cell's **Deposit**, **Purity** and **Condition**. Link the machine to the Controller with the [Data Connector](Data_Connector.md) and click the card's channel row to pick one (see [Programming](Programming.md#input-and-switch-cards)).
 - **Longer links.** A circuit with gain lengthens a [Data Connector](Data_Connector.md#linking-nodes) link that ends at the cell.
 
 The cell has no heater, so a [tube](Vacuum_Tube.md) in the circuit stays as cold as its surroundings keep it, and a cold tube gives no gain.

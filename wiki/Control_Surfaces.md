@@ -14,7 +14,7 @@ Then use the bearing with an empty hand to assemble the sheet as the turning par
 
 ## Driving them
 
-A [Controller](Controller.md) card sets the bearing's **Angle**: point a [Data Connector](Data_Connector.md) at the bearing voxel, link a *Switch* card to it, and feed the card from the [Driver's Seat](Vehicles.md#the-drivers-seat) keys, a sensor or any program.
+A [Controller](Controller.md) card sets the bearing's **Angle**: link the bearing voxel to the Controller with a [Data Connector](Data_Connector.md), add a *Switch* card for it, and feed the card from the [Driver's Seat](Vehicles.md#the-drivers-seat) keys, a sensor or any program.
 ## How it works
 
 A wing sheet on a hinged part turns with that part, so a deflected aileron changes the lift on its own sheet and not the whole wing. See [Wings](Vehicles.md#wings) for how sheets lift and stall.

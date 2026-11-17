@@ -8,7 +8,7 @@ Controller + Circuit Board + Copper Wire, in any arrangement.
 
 ## Using it
 
-Right-click with a medium to put it in; right-click with an empty hand to take it out. It reads a sensor only through a path of linked nodes made with the [Data Connector](Data_Connector.md#linking-nodes); with no path the reading is 0, and the wire's grade sets how exact the reading is. It evaluates only while the line delivers at least half of the current it wants; with less the outputs, variables and delay clocks hold, as a mechanical Controller's do on a dead shaft.
+Right-click with a medium to put it in; right-click with an empty hand to take it out. Link what it reads and switches to it with the [Data Connector](Data_Connector.md): select a node, then use the connector on the Electric Controller. It binds **8** nodes, and **4** more for each Card Rack fitted. A node it reaches only through a path of linked nodes ([Linking nodes](Data_Connector.md#linking-nodes)); with no path the reading is 0, and the wire's grade sets how exact the reading is. A card asks for a signal, kind and link color rather than a block: see [Programming](Programming.md#input-and-switch-cards). It evaluates only while the line delivers at least half of the current it wants; with less the outputs, variables and delay clocks hold, as a mechanical Controller's do on a dead shaft.
 
 ## Circuit slot
 
@@ -36,7 +36,7 @@ Right-click it to open the desktop, a fixed panel drawn as a terminal. The color
 
 Down the left are **drive bays A to D** and a **RUN** slot, shown as icons with a label under each; the selected one is highlighted. Your hotbar floats as a dock along the bottom of the desktop: drag program media (Punch Card, Circuit Board, Floppy Disk, USB Drive) from it onto the icons, and off again. Click an icon's label to open its **Drive** window, which shows a memory bar for the medium:
 
-- **Edit** opens the medium in an **Editor** window on the desktop. It holds the same node editor as the [Programmer](Programming.md): cards, wires, the variables panel, **Print**, **Erase**, **Stamp** and **Save fn**. Clicking **Link** on a Sensor card in the Editor opens a menu of the sensors linked straight to the Computer, each with its block name, quantity and live figure, plus a **Selected block** entry for the Data Connector's current selection; picking one links the card to it. With no sensors linked to the Computer, **Link** takes the Data Connector's selection directly. Closing the Editor window saves the edit and returns the medium to its drive. The Editor also has a **Text** view that shows the same program as written text; see [Text form](Programming.md#text-form).
+- **Edit** opens the medium in an **Editor** window on the desktop. It holds the same node editor as the [Programmer](Programming.md): cards, wires, the variables panel, **Print**, **Erase**, **Stamp** and **Save fn**. Closing the Editor window saves the edit and returns the medium to its drive. The Editor also has a **Text** view that shows the same program as written text; see [Text form](Programming.md#text-form).
 - **Run** moves the medium to the RUN slot, where it runs while the Computer is powered (the Controller's limits and upgrades apply). **Stop** puts it back in a free bay.
 - **Eject** takes it into your inventory.
 
@@ -83,19 +83,19 @@ Each app disk is researched at the [Research Table](Research_Table.md#apps): a b
 
 #### Built-in apps
 
-A Computer with power shows sensors linked straight to it (made with the [Data Connector](Data_Connector.md): Sensor fittings, Flight Sensors, channel sources such as a Driver's Seat) in the Monitor, Diagram and Scope apps with no program running. These reads travel the data wire like a Sensor card's: wire reach, a poor wire's rounding and circuit read noise all apply.
+A Computer with power shows sensors linked straight to it (made with the [Data Connector](Data_Connector.md): Sensor fittings, Flight Sensors, channel sources such as a Driver's Seat) in the Monitor, Diagram and Scope apps with no program running. These reads travel the data wire like an Input card's: wire reach, a poor wire's rounding and circuit read noise all apply.
 
-- **Monitor**: the running program's variables and the last reading of each of its sensor cards. A **Linked sensors** section lists the sensors [linked](Data_Connector.md) straight to the Computer, up to 8, whether or not a program reads them.
-- **Links**: the blocks the running program's cards are linked to, with their positions.
-- **Diagram**: the [Contraption Diagram](Instruments.md#contraption-diagram) of the vehicle a Flight Sensor is on, for a sensor an Input card of the running program is linked to, or for any Flight Sensor linked straight to the Computer. **Next sensor** steps between linked sensors; the angle, merge and assembly controls are the same as on the sensor's own screen.
+- **Monitor**: the running program's variables and the last reading of each of its Input cards. A **Linked sensors** section lists the sensors [linked](Data_Connector.md) straight to the Computer, up to 8, whether or not a program reads them.
+- **Links**: the blocks linked to the Computer, with their positions and link colors.
+- **Diagram**: the [Contraption Diagram](Instruments.md#contraption-diagram) of the vehicle a Flight Sensor is on, for any Flight Sensor linked straight to the Computer. **Next sensor** steps between linked sensors; the angle, merge and assembly controls are the same as on the sensor's own screen.
 - **Console**: a log of what the Computer did, newest at the bottom: programs started and stopped, things its program switched on and off, switches you flipped over an endernet pair (*flipped over the pair*), power lost and back, media ejected, edited or copied, and media it refused.
 - **Files**: in the Menu. Lists drives A to D and RUN with what each holds. Click a row to pick it, double-click to open its Drive window. The buttons are **Open**, **Edit**, **Run** (**Stop** for the running medium) and **Eject**. With the Library app disk in a bay, drag a written program onto another drive row to copy it onto a blank Floppy Disk or USB Drive (the same rule as the Library's Copy), or onto the **Trash** box to erase it: it asks first, and the medium is left blank and reusable. Erase needs no Library disk. Without the Library disk, dragging and Copy are unavailable.
 - **Settings**: see below.
 
 #### Disk apps
 
-- **Scope**: a trace for each sensor card of the running program, then for each sensor linked straight to the Computer, up to four traces in all, each scaled to its own range. **Pause** freezes the traces, **1x**, **2x** and **4x** set the time scale, **Clear** wipes them. Readings arrive a few times a second, so the traces are stepped.
-- **Link Map**: a plan view with the Computer in the middle and every linked block around it. Inputs are squares, outputs are crosses, and a block in an unloaded chunk is drawn hollow. Hover a mark for the block, its position and its distance. Cards without a link are counted.
+- **Scope**: a trace for each Input card of the running program, then for each sensor linked straight to the Computer, up to four traces in all, each scaled to its own range. **Pause** freezes the traces, **1x**, **2x** and **4x** set the time scale, **Clear** wipes them. Readings arrive a few times a second, so the traces are stepped.
+- **Link Map**: a plan view with the Computer in the middle and every linked block around it. Inputs are squares, outputs are crosses, and a block in an unloaded chunk is drawn hollow. Hover a mark for the block, its position and its distance.
 - **Notes**: a text pad of up to 2000 characters, saved on the block and the same for everyone.
 - **Converter**: converts between units in three tabs. Metal covers block, ingot, Qu and mB of melt (1 Qu is a nugget, 9 Qu make an ingot, 81 a block, and molten metal is 16 mB per Qu). Volume covers bucket (1000 mB), ingot (144 mB) and mB. Time covers day (24000 ticks), minute (1200), second (20) and tick.
 - **Calculator**: handles + - * / ^ and brackets, from the buttons or the keyboard. Enter or = evaluates, and `ans` recalls the last result.

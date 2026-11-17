@@ -134,9 +134,9 @@ Place it on the vehicle and right-click it to sit. **While you're seated, the ke
 
 The seat drives nothing on its own. Link it to a [Controller](Controller.md):
 
-1. Right-click the seat with a [Data Connector](Data_Connector.md).
-2. On the [Programmer](Programming.md), link an *Input* card to it. Its second row says which key it reads (*"key: W"*); click it and press a key to change it.
-3. Wire that to a *Switch* card linked to an [Engine](Engine.md). A number sets the engine's **throttle**.
+1. Link the seat to the Controller with a [Data Connector](Data_Connector.md).
+2. On the [Programmer](Programming.md), add an *Input* card with signal *Control key* and kind *Driver seat*. Its key row says which key it reads (*"key: W"*); click it and press a key to change it.
+3. Wire that to a *Switch* card of kind *Engine*. A number sets the engine's **throttle**.
 
 Use *Math* cards in between to scale or combine keys (two keys and a subtract make a steering level: `D - A`).
 
@@ -148,7 +148,7 @@ Link a *Switch* card to a [Rotary Bearing](Rotary_Bearing.md#roles) voxel and a 
 
 ## Autopilot
 
-An autopilot is a program you write, running on an [Electric Controller](Electric_Controller.md) or a [Computer](Electric_Controller.md#computer) that sits in the vehicle. Link its Input cards to the [Flight Sensor](Instruments.md#flight-sensor) and its Switch cards to the engines, bearings and surfaces, as for the Driver's Seat; write it in cards or in the Computer's [text view](Programming.md#text-form). Nothing is stabilized for you: holding a heading or a height is a program.
+An autopilot is a program you write, running on an [Electric Controller](Electric_Controller.md) or a [Computer](Electric_Controller.md#computer) that sits in the vehicle. Link the [Flight Sensor](Instruments.md#flight-sensor), the engines, bearings and surfaces to the Controller, as for the Driver's Seat, and ask for them with Input and Switch cards; write it in cards or in the Computer's [text view](Programming.md#text-form). Nothing is stabilized for you: holding a heading or a height is a program.
 
 - **Program size.** A Controller riding in a vehicle runs a program of **6 cards** with no circuit, and **5 more for each element on its [circuit](Basic_Electronic_Circuit.md)**, up to 40. Card Racks do not count on a vehicle; a Controller on the ground keeps them.
 - **The circuit does the rest.** Its speed sets how often the program steps and its noise how much readings wobble; a [Resonator](Resonator.md) steadies both. A circuit with a [tube](Vacuum_Tube.md) draws its heater from the vehicle's own line.

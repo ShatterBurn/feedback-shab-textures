@@ -19,14 +19,14 @@ The mast is a sink on an [electrical](Electricity.md) line: feed it and it liste
 1. Build a robot with a **Robot Radio** part (see [Robots](Robots.md#the-radio)).
 2. Right-click the mast with the [Data Connector](Data_Connector.md) to select it.
 3. Use the Data Connector on the robot. The bar says *"Mast paired with the robot"*. A robot with no radio says *"This robot has no radio"*.
-4. Select the mast with the Data Connector again and link a card to it in the [Programmer](Programming.md#linking-cards-to-real-blocks), as for any other block.
+4. Select the mast with the Data Connector again and use it on the Controller, as for any other node. Cards then ask for kind *Mast*.
 
 A mast pairs with one robot at a time.
 
 ## What a Controller does with it
 
-- A **Sensor** card linked to the mast reads one of the robot's senses. Click the card's channel row to pick which: *Blocked ahead*, *Breakable ahead*, *Items ahead*, *Cargo full*, *Battery charge*, *Distance ahead*, *Hardness ahead*, *Heading*, *Beacon near*, *Dock ahead*, *Position east*, *Position south* and *Height above start*. They mean what they do on the robot itself ([Robots](Robots.md#programming-a-robot)); a sense the robot's parts do not give reads zero.
-- An **Actuator** card linked to the mast holds one of the robot's actions on while the card is on and lets it go while the card is off. Click the card's channel row to pick the action: roll forward, turn left, turn right, break, place, pick up, drop, put into or take from a container, use the held item, switch a machine, climb and descend.
+- An **Input** card of kind *Mast* reads one of the robot's senses. Click the card's channel row to pick which: *Blocked ahead*, *Breakable ahead*, *Items ahead*, *Cargo full*, *Battery charge*, *Distance ahead*, *Hardness ahead*, *Heading*, *Beacon near*, *Dock ahead*, *Position east*, *Position south* and *Height above start*. They mean what they do on the robot itself ([Robots](Robots.md#programming-a-robot)); a sense the robot's parts do not give reads zero.
+- A **Switch** card of kind *Mast* holds one of the robot's actions on while the card is on and lets it go while the card is off. Click the card's channel row to pick the action: roll forward, turn left, turn right, break, place, pick up, drop, put into or take from a container, use the held item, switch a machine, climb and descend.
 
 The robot works its actions as a hand-programmed robot does, so one base Controller can drive a free robot.
 
