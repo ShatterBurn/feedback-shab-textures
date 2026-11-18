@@ -5,7 +5,10 @@ package io.github.soundgoodizerfan.feedback.control.timer;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -15,9 +18,13 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 /**
  * Runs a machine for a while and then stops it. The first automation in the game.
@@ -39,15 +46,30 @@ import net.minecraft.world.phys.BlockHitResult;
 public class TimerBlock extends Block implements EntityBlock {
 
     public static final BooleanProperty RUNNING = BlockStateProperties.LIT;
+    /** Which way the dial faces: toward the player who placed it. */
+    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     public TimerBlock(Properties properties) {
         super(properties);
-        registerDefaultState(defaultBlockState().setValue(RUNNING, false));
+        registerDefaultState(defaultBlockState().setValue(RUNNING, false).setValue(FACING, Direction.NORTH));
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(RUNNING);
+        builder.add(RUNNING, FACING);
+    }
+
+    /** Mirrors models/block/timer.json (scripts/timer_model.py): the copper casing, the winding cog and its bronze key. */
+    private static final VoxelShape SHAPE = Shapes.or(Block.box(2, 0, 2, 14, 10, 14), Block.box(5, 10, 5, 11, 12, 11), Block.box(7, 12, 7, 9, 13, 9));
+
+    @Override
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        return SHAPE;
+    }
+
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        return defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
     }
 
     /** Right click winds it and lets go. Sneak to change how long a wind lasts. */

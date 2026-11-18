@@ -1,31 +1,15 @@
 {
   "type": "feedback:engineering",
   "key": {
-    "P": {
-      "item": "feedback:steel_plate"
-    },
-    "S": {
-      "item": "feedback:shaft"
-    }
+    "P": { "item": "feedback:steel_plate" },
+    "T": { "item": "feedback:lined_tube" },
+    "V": { "item": "feedback:valve" },
+    "J": { "item": "feedback:piston_joint" },
+    "K": { "item": "feedback:crank_linkage" }
   },
-  "pattern": [
-    "PP",
-    "SS"
-  ],
-  "result": {
-    "count": 1,
-    "id": "feedback:steam_engine"
-  },
-  "tool": [
-    {
-      "ability": "feedback:driver",
-      "wear": 1
-    }
-  ],
-  "fasteners": {
-    "count": 2,
-    "floor": 2,
-    "forms": ["rivet"]
-  },
+  "pattern": [ "PTV", " J ", "PKP" ],
+  "result": { "count": 1, "id": "feedback:steam_engine" },
+  "tool": [ { "ability": "feedback:driver", "wear": 1 } ],
+  "fasteners": { "count": 4, "floor": 2, "forms": [ "rivet" ] },
   "school": "mechanical:1"
 }

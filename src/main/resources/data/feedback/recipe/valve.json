@@ -1,19 +1,13 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
+  "type": "feedback:engineering",
   "key": {
-    "I": {
-      "item": "feedback:wrought_iron_plate"
-    },
-    "C": {
-      "item": "feedback:copper_plate"
-    }
+    "P": { "item": "feedback:wrought_iron_plate" },
+    "R": { "item": "feedback:wrought_iron_rod" },
+    "C": { "item": "feedback:copper_plate" }
   },
-  "pattern": [
-    "ICI"
-  ],
-  "result": {
-    "count": 1,
-    "id": "feedback:valve"
-  }
+  "pattern": [ "PRP", "PCP" ],
+  "result": { "count": 1, "id": "feedback:valve" },
+  "tool": [ { "ability": "feedback:driver", "wear": 1 } ],
+  "fasteners": { "count": 2, "floor": 1, "forms": [ "screw" ] },
+  "school": "mechanical:1"
 }

@@ -1,7 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "misc",
-  "key": { "P": { "item": "feedback:steel_plate" }, "B": { "item": "minecraft:bucket" } },
-  "pattern": ["PPP","PBP","PPP"],
+  "key": { "P": { "item": "feedback:steel_plate" }, "V": { "item": "feedback:valve" } },
+  "pattern": ["PPP","PVP","PPP"],
   "result": { "count": 1, "id": "feedback:ballast_tank" }
 }

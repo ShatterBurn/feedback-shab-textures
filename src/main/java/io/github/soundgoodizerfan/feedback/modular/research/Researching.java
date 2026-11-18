@@ -24,8 +24,7 @@ import net.minecraft.world.item.ItemStack;
 
 /**
  * What the Research Table can research and what a run asks of the researcher. Three kinds of thing: a treatise volume, an attunement written
- * onto a rite, and an app written onto a blank disk. A volume wants as its specimen an item the volume before it taught how to build (a type gated by that volume), or for a first volume
- * one of the plain things its plan names; it also wants that earlier treatise in hand. Each kind plays its own game
+ * onto a rite, and an app written onto a blank disk. A volume wants only a blank treatise and the earlier treatise of its school (and any its plan requires) in hand. Each kind plays its own game
  * (the mode's game screen) over the plan authored for it ({@link ResearchPlan}).
  */
 public final class Researching {
@@ -92,7 +91,7 @@ public final class Researching {
     }
 
     /**
-     * How far up the property {@code key} {@code stack}'s material ranks among all the materials that state it, 0 to 1 (the share of them it matches
+     * How far up the property {@code key} {@code stack}'s material ranks among all the solid materials that state it, 0 to 1 (the share of them it matches
      * or beats); -1 when the stack is no material or states none. A rare, hard, hot or dense thing ranks high, so the bar an attunement sets
      * ({@code Effect.target}) is a rank, never an item.
      */
@@ -106,6 +105,9 @@ public final class Researching {
             return -1f;
         int below = 0, all = 0;
         for (var m : materials.values()) {
+            // an offering is a solid thing in hand: fluids (water, hydrogen) would crowd the top of heat capacity and leave every solid low
+            if (m.kind().filter(k -> k == io.github.soundgoodizerfan.feedback.process.Material.Kind.FLUID).isPresent())
+                continue;
             OptionalDouble v = figure(key, m);
             if (v.isEmpty())
                 continue;
@@ -192,26 +194,6 @@ public final class Researching {
                 && !stack.has(io.github.soundgoodizerfan.feedback.registry.FDataComponents.PROGRAM_GRAPH.get());
     }
 
-    /** Whether {@code specimen} is what research of the {@code index}-th thing of {@code mode} takes. */
-    public static boolean specimenFits(ItemStack specimen, int mode, int index) {
-        var design = ModularStacks.design(specimen);
-        ModularType type = design == null ? null : ModularTypes.known(design.type());
-        if (type == null)
-            return false;
-        if (mode == 1)
-            return true;
-        int[] v = volume(index);
-        School school = School.values()[v[0]];
-        if (v[1] <= 1) {
-            ResearchPlan plan = plan(0, index);
-            return plan != null && plan.specimens.contains(design.type().getPath());
-        }
-        // a cleaver, maul or spear is a face of the hafted tool: the school is the face's, not the type's
-        String gate = type.family() == io.github.soundgoodizerfan.feedback.modular.type.ModularType.Family.HAFTED
-                ? io.github.soundgoodizerfan.feedback.modular.type.ModularFaces.school(design, type) : type.school();
-        return School.of(gate) == school && School.volumeOf(gate) == v[1] - 1;
-    }
-
     /** Whether the earlier volume a volume builds on is in hand and every volume its plan {@code requires} of other schools (a first volume and an attunement need no earlier one). */
     public static boolean builtOn(Player player, net.minecraft.world.inventory.ContainerLevelAccess access, int mode, int index) {
         if (mode >= 1)
@@ -223,31 +205,8 @@ public final class Researching {
         return v[1] <= 1 || io.github.soundgoodizerfan.feedback.modular.treatise.Treatises.has(player, access, School.values()[v[0]], v[1] - 1);
     }
 
-    /**
-     * How forgiving the specimen is of being pushed, 0 to 1: the toughness of the material it wears with, against the reference. A tougher
-     * specimen takes more fizzles before it is worn.
-     */
-    public static float forgiving(ItemStack specimen) {
-        var design = ModularStacks.design(specimen);
-        ModularType type = design == null ? null : ModularTypes.known(design.type());
-        var part = type == null ? null : design.part(type.wearRole());
-        var m = part == null ? null : io.github.soundgoodizerfan.feedback.process.MaterialTable.get().materials().get(part.material());
-        if (m == null)
-            return 0f;
-        float t = m.mechanical().toughness().map(x -> x.value()).orElse(0f);
-        return t / (t + ModularTuning.RESEARCH_TOUGH_HALF);
-    }
-
-    /**
-     * The ink a run starts with: a base, more from a specimen that is in good shape, and the plan's eureka bonus when the researcher has already
-     * done the real thing enough times.
-     */
-    public static int ink(ServerPlayer player, ItemStack specimen, ResearchPlan plan) {
-        return ModularTuning.RESEARCH_BASE_INK + Math.round(ModularTuning.RESEARCH_SPECIMEN_INK * (1f - ModularStacks.worn(specimen))) + eurekaInk(player, plan);
-    }
-
-    /** The ink an app's run starts with: the base, and the plan's eureka bonus (what the researcher has done with the subject). It sets the tries and the brackets of {@link AppHack}. */
-    public static int appInk(ServerPlayer player, ResearchPlan plan) {
+    /** The ink a treatise's or an app's run starts with: the base, and the plan's eureka bonus (what the researcher has done with the subject). It sets the hands of {@link TreatiseHand} and the tries and brackets of {@link AppHack}. */
+    public static int ink(ServerPlayer player, ResearchPlan plan) {
         return ModularTuning.RESEARCH_BASE_INK + eurekaInk(player, plan);
     }
 

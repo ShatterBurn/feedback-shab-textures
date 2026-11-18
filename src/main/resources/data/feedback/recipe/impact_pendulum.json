@@ -1,7 +1,12 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "misc",
-  "key": { "P": { "item": "feedback:iron_plate" }, "S": { "item": "minecraft:string" }, "I": { "item": "minecraft:iron_ingot" } },
-  "pattern": [ "PPP", " S ", " I " ],
+  "key": {
+    "P": { "item": "feedback:wrought_iron_plate" },
+    "B": { "item": "feedback:bearing" },
+    "R": { "item": "feedback:wrought_iron_rod" },
+    "I": { "item": "minecraft:iron_ingot" }
+  },
+  "pattern": [ "PBP", " R ", " I " ],
   "result": { "count": 1, "id": "feedback:impact_pendulum" }
 }

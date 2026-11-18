@@ -1,12 +1,13 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
+  "type": "feedback:engineering",
   "key": {
     "S": { "item": "feedback:steel_plate" },
-    "V": { "item": "feedback:valve" }
+    "V": { "item": "feedback:valve" },
+    "K": { "type": "feedback:material", "form": "coil_spring" }
   },
-  "pattern": [
-    "SVS"
-  ],
-  "result": { "count": 1, "id": "feedback:air_valve" }
+  "pattern": [ "SVS", " K " ],
+  "result": { "count": 1, "id": "feedback:air_valve" },
+  "tool": [ { "ability": "feedback:driver", "wear": 1 } ],
+  "fasteners": { "count": 2, "floor": 1, "forms": [ "screw" ] },
+  "school": "mechanical:1"
 }

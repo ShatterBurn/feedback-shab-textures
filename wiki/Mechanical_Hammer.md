@@ -10,7 +10,7 @@ P P P
 B B B
 ```
 
-P is a Copper Plate, S is a [Shaft](Shaft.md) and B is Cobblestone. Craft it at the [Engineering Table](Engineering_Table.md) with a [hammer](Hammer.md) in the tool row and 3 [fasteners](Fasteners.md). It needs Mechanical Treatise I: Engines, Flywheels and Dynamotors ([Treatise](Treatise.md)).
+P is a Copper Plate, S is a [Shaft](Shaft.md) and B is Cobblestone. Craft it at the [Engineering Table](Engineering_Table.md) with a [hammer](Hammer.md) in the tool row and 3 machine bolts ([Fasteners](Fasteners.md)). It needs Mechanical Treatise I: Engines, Flywheels and Dynamotors ([Treatise](Treatise.md)).
 
 ## Setting it up
 
@@ -33,7 +33,7 @@ The hammer does nothing without a **[Hammer](Hammer.md)** seated as its head. Th
 - **Right-click** again (with anything, even a full hand) to take it back off.
 - Hoppers can take items off the anvil too. But a hopper doesn't know when the piece is "done" either; it just grabs whatever is there at that moment.
 
-While the linkage turns, the hammer strikes. Each blow puts work into the piece. When the piece has taken enough, it becomes the next thing (ingot → plate), and **the hammer keeps right on hitting that**. Take it off at the right time. See [Metalworking](Metalworking.md).
+While the linkage turns, a copper head clamp on a bronze guide rod lifts and drops the seated head onto the cobblestone anvil in time with the crank. A short throw drops it less far than a long one, and it stops when the linkage stops. With no head seated nothing moves. Each blow puts work into the piece. When the piece has taken enough, it becomes the next thing (ingot → plate), and **the hammer keeps right on hitting that**. Take it off at the right time. See [Metalworking](Metalworking.md).
 
 ## Crushing ore
 

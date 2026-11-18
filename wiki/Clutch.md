@@ -5,11 +5,11 @@ A shaft coupling you can disconnect. Everything past it stops being driven.
 ## Crafting
 
 ```
-P P
+P K P
 S S
 ```
 
-P is a [Copper Plate](Mechanical_Hammer.md) and S is a [Shaft](Shaft.md).
+P is a [Copper Plate](Mechanical_Hammer.md), K is a [Coil Spring](Lathe.md#what-it-makes) of any metal and S is a [Shaft](Shaft.md). Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 2 screws ([Fasteners](Fasteners.md)). It needs Mechanical Treatise I: Engines, Flywheels and Dynamotors ([Treatise](Treatise.md)).
 
 ## Placing
 
@@ -17,7 +17,9 @@ Put it inline on a shaft. The side you place it **against** is the **driving** s
 
 ## Using it
 
-**Right-click** to disengage or re-engage it. New clutches are placed **engaged**.
+**Right-click** to disengage or re-engage it. A clutch is placed **engaged**.
+
+You can see the state. Engaged, the copper pressure plate presses against the disc and both halves turn together. Disengaged, the output half slides away, leaving a gap, and turns only with whatever is downstream as it coasts, or stands still.
 
 A [Timer](Timer.md) touching it, or a [Controller](Controller.md) with a *Switch* card, can switch it for you.
 

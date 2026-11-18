@@ -1,11 +1,14 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
+  "type": "feedback:engineering",
   "key": {
+    "S": { "item": "feedback:steel_plate" },
+    "A": { "item": "feedback:robot_arm" },
     "E": { "item": "feedback:engineering_table" },
-    "M": { "item": "feedback:dynamotor" },
-    "S": { "item": "feedback:steel_plate" }
+    "M": { "item": "feedback:dynamotor" }
   },
-  "pattern": [ "SSS", "EMS", "SSS" ],
-  "result": { "count": 1, "id": "feedback:auto_engineer" }
+  "pattern": [ "SAS", "EMS", "SSS" ],
+  "result": { "count": 1, "id": "feedback:auto_engineer" },
+  "tool": [ { "ability": "feedback:driver", "wear": 1 } ],
+  "fasteners": { "count": 6, "floor": 2, "forms": [ "machine_bolt" ] },
+  "school": "robotics:2"
 }

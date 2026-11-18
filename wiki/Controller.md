@@ -7,11 +7,12 @@ It's the step up from a [Timer](Timer.md) or [Bimetallic Strip](Bimetallic_Strip
 ## Crafting
 
 ```
-P C P
+P W P
+C E C
 P S P
 ```
 
-P is a [Copper Plate](Mechanical_Hammer.md), C is a Redstone Comparator and S is a [Shaft](Shaft.md).
+P is a [Copper Plate](Mechanical_Hammer.md), W is a Wrought Iron Rod, C is a [Small Cog](Cogs.md), E is an [Escapement](#crafting-the-parts) and S is a [Shaft](Shaft.md). Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 4 screws ([Fasteners](Fasteners.md)). It needs Mechanical Treatise II: Transmission ([Treatise](Treatise.md)).
 
 ## Setting it up
 
@@ -111,11 +112,11 @@ When a new card goes in, variables it declares with the same name and kind keep 
 
 ```
 Memory Drum        Card Rack        Escapement
-P B P              I A I            S
-P R P              P A P            C
+P M P              I A I            S
+W S W              P A P            C
 P P P              I A I            R
 ```
 
-- Memory Drum: P is a [Copper Plate](Mechanical_Hammer.md), B a Redstone Block, R a copper rod. It is crafted at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, holding Electrical Treatise III: Circuits ([Treatise](Treatise.md)).
+- Memory Drum: P is a Wrought Iron Plate, M Magnetite Dust, W [Copper Wire](Wire_Drawer.md) and S a [Shaft](Shaft.md). It is crafted at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, holding Electrical Treatise III: Circuits ([Treatise](Treatise.md)); it spends no fasteners.
 - Card Rack: P is any planks, I a wrought iron rod, A paper.
 - Escapement: S is a steel plate, C a small cog, R a wrought iron rod.

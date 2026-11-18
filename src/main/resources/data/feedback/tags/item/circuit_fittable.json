@@ -4,6 +4,12 @@
     "feedback:pressure_gauge",
     "feedback:galvanometer",
     "feedback:light_meter",
-    "feedback:electroscope"
+    "feedback:electroscope",
+    "feedback:dosimeter",
+    "feedback:geiger_counter",
+    "feedback:survey_meter",
+    "feedback:flux_meter",
+    "feedback:pyrometer",
+    "feedback:component_tester"
   ]
 }

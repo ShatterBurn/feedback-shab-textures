@@ -9,16 +9,16 @@
   "hardness": 130,
   "density": 7.5,
   "thermal": {
-    "melting_point": 1380,
+    "melting_point": 2200,
     "cooling_rate": 1.33,
     "conductivity": 0.00998,
     "anneal_temperature": 1200,
-    "service_temperature": 1500,
+    "service_temperature": 1900,
     "boiling_point": 3200,
     "specific_heat": 0.53,
     "latent_heat_fusion": 300,
     "latent_heat_vaporisation": 8000,
-    "oxidation_temperature": 1380
+    "oxidation_temperature": 2200
   },
   "mechanical": {
     "toughness": 12,

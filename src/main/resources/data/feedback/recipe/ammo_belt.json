@@ -1,29 +1,15 @@
 {
   "type": "feedback:engineering",
   "key": {
-    "N": {
-      "item": "minecraft:iron_nugget"
-    }
+    "N": { "tag": "c:nuggets/iron" }
   },
-  "pattern": [
-    "NNN"
-  ],
+  "pattern": [ "NNN" ],
   "result": {
     "count": 1,
     "id": "feedback:magazine",
-    "components": {
-      "feedback:magazine_size": "belt"
-    }
+    "components": { "feedback:magazine_size": "belt" }
   },
-  "tool": [
-    {
-      "ability": "feedback:hammer",
-      "wear": 1
-    }
-  ],
-  "fasteners": {
-    "count": 0,
-    "floor": 1
-  },
+  "tool": [ { "ability": "feedback:hammer", "wear": 1 } ],
+  "fasteners": { "count": 2, "floor": 1, "forms": [ "rivet" ] },
   "school": "weapons:2"
 }

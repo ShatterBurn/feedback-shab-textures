@@ -5,11 +5,11 @@ Lets lift gas out of the [Gas Cells](Gas_Cell.md) beside it, to come down or to 
 ## Crafting
 
 ```
-P B P
-  L
+P R P
+V
 ```
 
-P is a steel plate, B is iron bars and L is a lever.
+P is a Steel Plate, R is a Wrought Iron Rod and V is a [Valve](Valve.md). Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 2 screws ([Fasteners](Fasteners.md)). It needs Mechanical Treatise I: Engines, Flywheels and Dynamotors ([Treatise](Treatise.md)).
 
 ## Using it
 

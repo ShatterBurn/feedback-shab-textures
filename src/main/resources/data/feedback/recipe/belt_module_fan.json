@@ -1,22 +1,12 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "category": "misc",
-  "ingredients": [
-    {
-      "item": "feedback:wrought_iron_plate"
-    },
-    {
-      "item": "feedback:wrought_iron_plate"
-    },
-    {
-      "item": "feedback:copper_wire"
-    },
-    {
-      "item": "feedback:copper_wire"
-    }
-  ],
-  "result": {
-    "count": 1,
-    "id": "feedback:belt_module_fan"
-  }
+  "type": "feedback:engineering",
+  "key": {
+    "P": { "item": "feedback:wrought_iron_plate" },
+    "M": { "item": "feedback:dynamotor" }
+  },
+  "pattern": [ " P ", "PMP", " P " ],
+  "result": { "count": 1, "id": "feedback:belt_module_fan" },
+  "tool": [ { "ability": "feedback:driver", "wear": 1 } ],
+  "fasteners": { "count": 4, "floor": 1, "forms": [ "screw" ] },
+  "school": "mechanical:1"
 }

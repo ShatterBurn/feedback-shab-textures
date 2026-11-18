@@ -1,21 +1,12 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
+  "type": "feedback:engineering",
   "key": {
-    "P": {
-      "item": "feedback:wrought_iron_plate"
-    },
-    "B": {
-      "item": "minecraft:iron_block"
-    }
+    "L": { "item": "feedback:lead_plate" },
+    "U": { "item": "feedback:uranium_ingot" }
   },
-  "pattern": [
-    "PPP",
-    "PBP",
-    "PPP"
-  ],
-  "result": {
-    "count": 1,
-    "id": "feedback:radiation_source"
-  }
+  "pattern": [ "LLL", "LUL", "L L" ],
+  "result": { "count": 1, "id": "feedback:radiation_source" },
+  "tool": [ { "ability": "feedback:hammer", "wear": 1 } ],
+  "fasteners": { "count": 4, "floor": 1, "forms": [ "rivet" ] },
+  "school": "nuclear:1"
 }

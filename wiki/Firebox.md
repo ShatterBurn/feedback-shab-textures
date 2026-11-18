@@ -10,7 +10,7 @@ B   B
 B B B
 ```
 
-B is a Brick.
+B is any brick.
 
 ## Using it
 

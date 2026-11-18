@@ -7,8 +7,11 @@ The Treatise Binder and the Treatise Shelf carry [treatises](Treatise.md) so tha
 Carries up to sixteen treatises the way a bundle carries items. The treatises inside count as held while the binder is in your inventory, or in the binder slot of the Engineering Table.
 
 ```
-Leather + String + String + Iron Ingot (shapeless)
+S L S
+  N
 ```
+
+S is String, L is Leather and N is an Iron Nugget.
 
 Click a treatise onto the binder to put it in. Click the binder on an empty slot to take one out. Only treatises go in.
 

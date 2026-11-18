@@ -1,19 +1,28 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
+  "type": "feedback:engineering",
   "key": {
-    "I": { "item": "feedback:wrought_iron_plate" },
+    "P": { "item": "feedback:wrought_iron_plate" },
     "F": { "item": "feedback:furnace" },
-    "B": { "item": "minecraft:bricks" },
-    "R": { "item": "feedback:wrought_iron_rod" }
+    "B": { "tag": "c:bricks/normal" },
+    "R": { "item": "feedback:wrought_iron_rod" },
+    "S": { "item": "feedback:shaft" }
   },
   "pattern": [
     "BBB",
-    "RFI",
-    "BBB"
+    "SFR",
+    "BPB"
   ],
   "result": {
     "count": 1,
     "id": "feedback:puddling_furnace"
-  }
+  },
+  "tool": [
+    { "ability": "feedback:hammer", "wear": 1 }
+  ],
+  "fasteners": {
+    "count": 3,
+    "floor": 1,
+    "forms": ["rivet", "machine_bolt"]
+  },
+  "school": "materials:2"
 }

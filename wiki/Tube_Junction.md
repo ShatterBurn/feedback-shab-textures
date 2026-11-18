@@ -14,7 +14,7 @@ T W T
 
 T is Copper Tubing and W is a Wide-Bore Tube.
 
-**Programmed Junction**: Tube Junction + 2 Copper Wire.
+**Programmed Junction**: a [circuit](Basic_Electronic_Circuit.md) above a Tube Junction, with a Copper Wire on each side of the junction. Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and Electrical Treatise III: Circuits ([Treatise](Treatise.md)); it spends no fasteners.
 
 ## Using it
 

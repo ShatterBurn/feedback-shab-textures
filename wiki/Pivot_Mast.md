@@ -10,16 +10,19 @@ P G P
 P B P
 ```
 
-P is a Wrought Iron Plate, S is a [Shaft](Shaft.md), G is a [Gearbox](Cogs.md#gearbox) and B is a [Bearing](Bearing.md). Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 3 [fasteners](Fasteners.md).
+P is a Wrought Iron Plate, S is a [Shaft](Shaft.md), G is a [Gearbox](Cogs.md#gearbox) and B is a [Bearing](Bearing.md). Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, 3 machine bolts ([Fasteners](Fasteners.md)) and Mechanical Treatise II: Transmission ([Treatise](Treatise.md)).
 
 | Part | Recipe |
 | --- | --- |
 | Pivot Arm (Short), 3 blocks | three wrought iron rods in a row |
 | Pivot Arm (Medium), 5 blocks | three rods in a row, one beneath the left |
 | Pivot Arm (Long), 8 blocks | two rows of three rods |
-| Any tip | a wrought iron plate, a wrought iron rod and a marker, shapeless |
-
-Tip markers: string for Cutting, flint for Breaking, wheat seeds for Planting, wheat for Feeding, an iron nugget for Striking, a hopper for Collecting.
+| Cutting Tip | two wrought iron rods and a wrought iron plate in a row, the plate at the right |
+| Breaking Tip | a wrought iron plate above two wrought iron rods |
+| Striking Tip | a [Joint Link](Joint_Link.md) between two wrought iron plates, in a column |
+| Planting Tip | a [Hopper](Hopper.md) above a wrought iron rod |
+| Feeding Tip | a [Dispenser](Dropper_and_Dispenser.md) above a wrought iron rod |
+| Collecting Tip | a [Hopper](Hopper.md) above a wrought iron plate |
 
 ## Using it
 

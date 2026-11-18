@@ -1,27 +1,14 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
+  "type": "feedback:engineering",
   "key": {
-    "G": {
-      "item": "minecraft:glass_pane"
-    },
-    "W": {
-      "item": "feedback:copper_wire"
-    },
-    "S": {
-      "item": "feedback:stainless_steel_plate"
-    },
-    "P": {
-      "item": "feedback:lead_plate"
-    }
+    "T": { "item": "feedback:glass_tubing" },
+    "W": { "item": "feedback:copper_wire" },
+    "P": { "item": "feedback:lead_plate" },
+    "S": { "item": "feedback:stainless_steel_plate" }
   },
-  "pattern": [
-    " G ",
-    "WPW",
-    " S "
-  ],
-  "result": {
-    "count": 1,
-    "id": "feedback:flux_meter"
-  }
+  "pattern": [ " T ", "WPW", " S " ],
+  "result": { "count": 1, "id": "feedback:flux_meter" },
+  "tool": [ { "ability": "feedback:driver", "wear": 1 } ],
+  "fasteners": { "count": 2, "floor": 1, "forms": [ "screw" ] },
+  "school": "nuclear:1"
 }

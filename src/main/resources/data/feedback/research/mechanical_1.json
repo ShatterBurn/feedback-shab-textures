@@ -100,9 +100,5 @@
     "item": "feedback:hand_crank",
     "threshold": 3,
     "ink": 2
-  },
-  "specimens": [
-    "hand_crank",
-    "water_wheel"
-  ]
+  }
 }

@@ -49,6 +49,8 @@ public final class Punching {
 
     /** Game tick each player last threw a punch the shells could still follow. */
     private static final Map<UUID, Long> LAST_PUNCH = new HashMap<>();
+    /** Punches each player has thrown in a row before the arm recovered (drives exhaustion). */
+    private static final Map<UUID, Integer> STREAK = new HashMap<>();
 
     private Punching() {
     }
@@ -81,8 +83,13 @@ public final class Punching {
             return;
         }
         ServerLevel level = player.serverLevel();
-        CombatState.set(player, new CombatState(CombatPhase.IDLE, PunchTuning.COOLDOWN, 0, CombatState.of(player).iFrames()));
-        LAST_PUNCH.put(player.getUUID(), level.getGameTime());
+        long now = level.getGameTime();
+        Long before = LAST_PUNCH.get(player.getUUID());
+        int streak = before != null && now - before <= PunchTuning.PUNCH_TICKS + PunchTuning.EXHAUST_MAX ? STREAK.getOrDefault(player.getUUID(), 0) + 1 : 0;
+        STREAK.put(player.getUUID(), streak);
+        int exhaustion = Math.min(PunchTuning.EXHAUST_MAX, PunchTuning.EXHAUST_MIN + streak * PunchTuning.EXHAUST_STEP);
+        CombatState.set(player, new CombatState(CombatPhase.IDLE, exhaustion, 0, CombatState.of(player).iFrames()));
+        LAST_PUNCH.put(player.getUUID(), now);
         // A punch cancels a whip's reel and keeps the wearer's momentum.
         io.github.soundgoodizerfan.feedback.combat.whip.Whipping.cancel(player);
         player.swing(hand(player), true);

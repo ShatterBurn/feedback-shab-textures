@@ -1,27 +1,12 @@
 {
   "type": "feedback:engineering",
   "key": {
-    "P": {
-      "item": "feedback:wrought_iron_plate"
-    }
+    "P": { "item": "feedback:wrought_iron_plate" },
+    "K": { "type": "feedback:material", "form": "coil_spring" }
   },
-  "pattern": [
-    "P P",
-    "PPP"
-  ],
-  "result": {
-    "count": 1,
-    "id": "feedback:magazine"
-  },
-  "tool": [
-    {
-      "ability": "feedback:hammer",
-      "wear": 1
-    }
-  ],
-  "fasteners": {
-    "count": 0,
-    "floor": 1
-  },
+  "pattern": [ "P P", "PKP", "PPP" ],
+  "result": { "count": 1, "id": "feedback:magazine" },
+  "tool": [ { "ability": "feedback:hammer", "wear": 1 } ],
+  "fasteners": { "count": 2, "floor": 1, "forms": [ "rivet" ] },
   "school": "weapons:2"
 }

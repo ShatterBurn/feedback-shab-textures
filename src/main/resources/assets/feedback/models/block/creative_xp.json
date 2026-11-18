@@ -1,6 +1,6 @@
 {
-  "parent": "block/cube_all",
+  "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "feedback:block/block_metal_fiery"
+    "all": "feedback:block/creative_sculk"
   }
 }

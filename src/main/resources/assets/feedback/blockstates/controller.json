@@ -1,5 +1,19 @@
 {
   "variants": {
-    "": { "model": "feedback:block/controller" }
+    "facing=north": {
+      "model": "feedback:block/controller"
+    },
+    "facing=east": {
+      "model": "feedback:block/controller",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "feedback:block/controller",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "feedback:block/controller",
+      "y": 270
+    }
   }
 }

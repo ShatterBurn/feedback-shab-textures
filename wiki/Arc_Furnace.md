@@ -22,7 +22,7 @@ C S C
 C   C
 ```
 
-S is a Steel Plate, C is Ceramic and W is Copper Fine Wire.
+S is a Steel Plate, C is Ceramic and W is [Copper Wire](Wire_Drawer.md). Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, 3 machine bolts ([Fasteners](Fasteners.md)) and Electrical Treatise II: Coils and Magnets ([Treatise](Treatise.md)).
 
 **Electrode**: three bars of one material in a vertical column make an electrode of that material. A bar is a rod, an ingot or a lump. The material is graphite or any conducting metal. A bar of a tougher material above an electrode in a column adds a [tip](#tipped-electrodes).
 

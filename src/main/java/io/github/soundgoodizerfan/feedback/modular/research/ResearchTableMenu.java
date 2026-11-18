@@ -35,20 +35,20 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 /**
- * The Research Table: a Blank Treatise and a specimen. the tabs choose between researching a treatise volume, an attunement written onto a
- * rite and an app written onto a blank disk (a Floppy Disk with nothing on it and the thing the app is about), a click on a listed entry picks it, {@link #BTN_RESEARCH} opens the research board. A volume takes as its specimen an item
- * the volume before it taught how to build (a first volume, one of the plain things its plan names) and wants that earlier treatise in hand.
- * The experience is spent whatever the score; the specimen is worn or comes apart by how hard the researcher pushed it; the blank becomes the
+ * The Research Table: the tabs choose between researching a treatise volume onto a Blank Treatise, an attunement written onto a
+ * rite and an app written onto a blank disk (a Floppy Disk with nothing on it and the thing the app is about), a click on a listed entry picks it, {@link #BTN_RESEARCH} opens the research board. A volume needs only the blank
+ * and the experience, and wants the earlier treatise of its school (and any its plan requires) in hand; no specimen is used.
+ * The experience is spent whatever the score; the blank becomes the
  * volume with the score as its notes' quality, or the attunement is learned.
  */
 public class ResearchTableMenu extends AbstractContainerMenu {
 
     /** {@code BTN_TREATISES} and {@code BTN_ATTUNEMENTS} choose what is listed, {@code BTN_PICK + i} picks the i-th entry, {@code BTN_RESEARCH} opens the board. */
     public static final int BTN_TREATISES = 1, BTN_ATTUNEMENTS = 2, BTN_RESEARCH = 3, BTN_APPS = 4, BTN_PICK = 100;
-    public static final int NOTE_NONE = 0, NOTE_NO_BLANK = 1, NOTE_NO_SPECIMEN = 2, NOTE_NO_XP = 3, NOTE_NOTHING = 4, NOTE_WRITTEN = 5, NOTE_LEARNED = 6,
+    public static final int NOTE_NONE = 0, NOTE_NO_BLANK = 1, NOTE_NO_XP = 3, NOTE_NOTHING = 4, NOTE_WRITTEN = 5, NOTE_LEARNED = 6,
             NOTE_NO_EARLIER = 7, NOTE_NO_PLAN = 8, NOTE_NO_OFFERING = 9, NOTE_NO_DISK = 10, NOTE_NO_SUBJECT = 11, NOTE_APP_WRITTEN = 12, NOTE_APP_FAILED = 13;
 
-    public static final int W = 304, H = 298, PAGE_X = 156, BLANK_X = 160, SPECIMEN_X = 214, RITE_X = 268, SLOT_Y = 170, INV_X = 71, INV_Y = 212;
+    public static final int W = 304, H = 298, PAGE_X = 156, BLANK_X = 160, SECOND_X = 214, RITE_X = 268, SLOT_Y = 170, INV_X = 71, INV_Y = 212;
 
     private final Container table;
     private final DataSlot mode = DataSlot.standalone(), index = DataSlot.standalone(), note = DataSlot.standalone();
@@ -92,22 +92,6 @@ public class ResearchTableMenu extends AbstractContainerMenu {
                 return 1;
             }
         });
-        addSlot(new Slot(table, ResearchTableBlockEntity.SPECIMEN, SPECIMEN_X, SLOT_Y) {
-            @Override
-            public boolean isActive() {
-                return mode.get() == 0;
-            }
-
-            @Override
-            public boolean mayPlace(ItemStack s) {
-                return ModularStacks.design(s) != null;
-            }
-
-            @Override
-            public int getMaxStackSize() {
-                return 1;
-            }
-        });
         addSlot(new Slot(table, ResearchTableBlockEntity.OFFERING, BLANK_X, SLOT_Y) {
             @Override
             public boolean isActive() {
@@ -119,7 +103,7 @@ public class ResearchTableMenu extends AbstractContainerMenu {
                 return Researching.rank("hardness", s) >= 0f || Researching.rank("density", s) >= 0f;
             }
         });
-        addSlot(new Slot(table, ResearchTableBlockEntity.REAGENT, SPECIMEN_X, SLOT_Y) {
+        addSlot(new Slot(table, ResearchTableBlockEntity.REAGENT, SECOND_X, SLOT_Y) {
             @Override
             public boolean isActive() {
                 return mode.get() == 1;
@@ -168,7 +152,7 @@ public class ResearchTableMenu extends AbstractContainerMenu {
             }
         });
         // the client holds no plans, so any item may be set down; what the app is about is checked when the research starts
-        addSlot(new Slot(table, ResearchTableBlockEntity.SUBJECT, SPECIMEN_X, SLOT_Y) {
+        addSlot(new Slot(table, ResearchTableBlockEntity.SUBJECT, SECOND_X, SLOT_Y) {
             @Override
             public boolean isActive() {
                 return mode.get() == 2;
@@ -222,8 +206,6 @@ public class ResearchTableMenu extends AbstractContainerMenu {
             return NOTE_NO_EARLIER;
         if (mode.get() == 2 && !Researching.subjectFits(Researching.plan(2, index.get()), table.getItem(ResearchTableBlockEntity.SUBJECT)))
             return NOTE_NO_SUBJECT;
-        if (mode.get() == 0 && !Researching.specimenFits(table.getItem(ResearchTableBlockEntity.SPECIMEN), mode.get(), index.get()))
-            return NOTE_NO_SPECIMEN;
         if (mode.get() == 1 && Researching.attunementInk(effect(server), table.getItem(ResearchTableBlockEntity.OFFERING),
                 table.getItem(ResearchTableBlockEntity.REAGENT), server.level()) < 0)
             return NOTE_NO_OFFERING;
@@ -265,9 +247,9 @@ public class ResearchTableMenu extends AbstractContainerMenu {
         sentMode = mode.get();
         sentIndex = index.get();
         sentPlan = plan;
-        sentInk = mode.get() == 2 ? Researching.appInk(server, plan) : mode.get() == 1 ? Researching.attunementInk(effect(server), table.getItem(ResearchTableBlockEntity.OFFERING),
+        sentInk = mode.get() == 2 ? Researching.ink(server, plan) : mode.get() == 1 ? Researching.attunementInk(effect(server), table.getItem(ResearchTableBlockEntity.OFFERING),
                 table.getItem(ResearchTableBlockEntity.REAGENT), server.level())
-                : Researching.ink(server, table.getItem(ResearchTableBlockEntity.SPECIMEN), plan);
+                : Researching.ink(server, plan);
         sentSeed = (int) (now ^ containerId * 31L);
         sentRite = mode.get() == 1 ? Researching.riteParams(effect(server), table.getItem(ResearchTableBlockEntity.OFFERING),
                 table.getItem(ResearchTableBlockEntity.REAGENT), sentInk, server.level()) : null;
@@ -303,7 +285,6 @@ public class ResearchTableMenu extends AbstractContainerMenu {
             return;
         }
         float quality;
-        int pushed = 0;
         if (mode.get() == 1) {
             if (sentRite == null)
                 return;
@@ -311,7 +292,6 @@ public class ResearchTableMenu extends AbstractContainerMenu {
         } else {
             TreatiseHand hand = TreatiseHand.replay(sentPlan, sentSeed, sentInk, Researching.volume(sentIndex)[1], sentJokers, moves);
             quality = elapsed < ModularTuning.RESEARCH_MIN_TICKS ? 0f : hand.quality(hand.reached && answer == sentPlan.answer);
-            pushed = hand.strain(Researching.forgiving(table.getItem(ResearchTableBlockEntity.SPECIMEN)));
         }
         int why = ready(server);
         if (why != 0) {
@@ -320,9 +300,7 @@ public class ResearchTableMenu extends AbstractContainerMenu {
         }
         if (!server.getAbilities().instabuild)
             server.giveExperiencePoints(-ModularTuning.RESEARCH_XP);
-        if (mode.get() == 0)
-            strainSpecimen(server, pushed);
-        else {
+        if (mode.get() == 1) {
             table.getItem(ResearchTableBlockEntity.OFFERING).shrink(1);
             table.setItem(ResearchTableBlockEntity.REAGENT, ItemStack.EMPTY);
         }
@@ -358,25 +336,6 @@ public class ResearchTableMenu extends AbstractContainerMenu {
         table.setItem(ResearchTableBlockEntity.BLANK_DISK, ComputerApps.disk(app));
         HudReadoutPayload.send(server, Component.translatable("message.feedback.research.app", Component.translatable("item.feedback.app." + app)), 60);
         note.set(NOTE_APP_WRITTEN);
-    }
-
-    /** Pushing the specimen hard wears it, and pushing it too hard takes it apart into its parts, which go to the researcher. */
-    private void strainSpecimen(ServerPlayer server, int strain) {
-        ItemStack specimen = table.getItem(ResearchTableBlockEntity.SPECIMEN);
-        if (specimen.isEmpty() || strain < ModularTuning.RESEARCH_WEAR_STRAIN)
-            return;
-        if (strain >= ModularTuning.RESEARCH_BREAK_STRAIN) {
-            var level = server.level();
-            List<ItemStack> parts = ModularRework.dismantle(specimen, ClientMaterials.on(level), EngineeringAssembly.types(level), 0f);
-            table.setItem(ResearchTableBlockEntity.SPECIMEN, ItemStack.EMPTY);
-            parts.forEach(p -> server.getInventory().placeItemBackInInventory(p));
-            return;
-        }
-        if (specimen.isDamageableItem()) {
-            int cost = Math.round(specimen.getMaxDamage() * ModularTuning.RESEARCH_WEAR_SHARE * strain / 100f);
-            specimen.setDamageValue(Math.min(specimen.getMaxDamage() - 1, specimen.getDamageValue() + cost));
-            ModularStacks.refresh(specimen);
-        }
     }
 
     @Override

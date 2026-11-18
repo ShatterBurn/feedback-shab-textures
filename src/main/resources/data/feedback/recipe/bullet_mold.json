@@ -1,30 +1,11 @@
 {
-  "type": "feedback:engineering",
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
-    "D": {
-      "item": "feedback:wrought_iron_drilled_plate"
-    },
-    "S": {
-      "item": "minecraft:stick"
-    }
+    "D": { "item": "feedback:wrought_iron_drilled_plate" },
+    "R": { "item": "feedback:wrought_iron_rod" },
+    "S": { "item": "minecraft:stick" }
   },
-  "pattern": [
-    " D ",
-    "SDS"
-  ],
-  "result": {
-    "count": 1,
-    "id": "feedback:bullet_mold"
-  },
-  "tool": [
-    {
-      "ability": "feedback:file",
-      "wear": 1
-    }
-  ],
-  "fasteners": {
-    "count": 0,
-    "floor": 1
-  },
-  "school": "weapons:2"
+  "pattern": [ "DRD", "S S" ],
+  "result": { "count": 1, "id": "feedback:bullet_mold" }
 }

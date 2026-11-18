@@ -1,16 +1,11 @@
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "minecraft:crafting_shaped",
   "category": "misc",
-  "ingredients": [
-    {
-      "item": "feedback:wrought_iron_plate"
-    },
-    {
-      "item": "feedback:bellows"
-    }
-  ],
-  "result": {
-    "count": 1,
-    "id": "feedback:belt_module_air_jet"
-  }
+  "key": {
+    "T": { "item": "feedback:copper_tubing" },
+    "B": { "item": "feedback:bellows" },
+    "P": { "item": "feedback:wrought_iron_plate" }
+  },
+  "pattern": [ "T", "B", "P" ],
+  "result": { "count": 1, "id": "feedback:belt_module_air_jet" }
 }

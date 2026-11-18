@@ -21,6 +21,7 @@ Wear it in the bracer slot. Press **B** (*Whiplash*, rebindable) once to throw t
 - **A creature up to three times your mass** (by body size, the same stand-in as the [parry](Combat.md#parry)'s) is dragged to you, slower the heavier it is than you.
 - **A heavier creature or a block** pulls you to it, at a steady speed on the ground as in the air.
 - **A creature** is bitten for **1 damage**.
+- **A creature reeled in** keeps the spear in it, holding it, and the spear pulls again if it breaks away. It stays until you press the key again, sneak, or the creature dies.
 - **Press the key again with a spear out** to retrieve that spear, also while it is still flying. A further press throws another.
 - **Jump, or punch with a Knuckleblaster,** to cancel the pull and keep your momentum.
 

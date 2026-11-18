@@ -32,11 +32,18 @@ Made from a sculk catalyst. A node on the XP network that takes the XP of anythi
 
 ## Sculk Relay
 
-Made from any Relay Organ, a warden's or a grown one. Every relay within 24 blocks of another joins its run, with no wire between and no line of sight needed, in the same dimension.
+Made from any Relay Organ, a warden's or a grown one:
+
+```
+V O V
+  P
+```
+
+V is a Sculk Vein, O is a Relay Organ and P is a Wrought Iron Plate. Every relay within 24 blocks of another joins its run, with no wire between and no line of sight needed, in the same dimension.
 
 ## Data Sensor
 
-Made from a sculk sensor. Listens like one (8 blocks, the same vibration frequencies) and holds the last frequency for two seconds. Link it to a [Controller](Controller.md) with a Data Connector and read it with an Input card: channel 0 is the frequency over 15, channels 1 to 15 are on while that exact frequency was just heard. It has no wool dampening and no sneak filter.
+Made at the [Engineering Table](Engineering_Table.md) from a Sculk Sensor, two Copper Plates, two Copper Fine Wire and a circuit ([Basic Electronic Circuit](Basic_Electronic_Circuit.md)), in the same grid as the [Sensors](Sensors.md#crafting), with a [screwdriver](Hand_Tools.md#screwdriver), 2 screws and Electrical Treatise III: Circuits ([Treatise](Treatise.md)). Listens like one (8 blocks, the same vibration frequencies) and holds the last frequency for two seconds. Link it to a [Controller](Controller.md) with a Data Connector and read it with an Input card: channel 0 is the frequency over 15, channels 1 to 15 are on while that exact frequency was just heard. It has no wool dampening and no sneak filter.
 
 ## Where to see it
 

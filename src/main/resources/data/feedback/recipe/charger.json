@@ -1,16 +1,9 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "redstone",
+  "type": "feedback:engineering",
   "key": {
-    "W": {
-      "item": "feedback:copper_wire"
-    },
-    "F": {
-      "item": "feedback:copper_foil"
-    },
-    "P": {
-      "item": "feedback:copper_plate"
-    }
+    "W": { "item": "feedback:copper_wire" },
+    "F": { "item": "feedback:copper_foil" },
+    "P": { "item": "feedback:copper_plate" }
   },
   "pattern": [
     " W ",
@@ -19,5 +12,14 @@
   "result": {
     "count": 1,
     "id": "feedback:charger"
-  }
+  },
+  "tool": [
+    { "ability": "feedback:driver", "wear": 1 }
+  ],
+  "fasteners": {
+    "count": 2,
+    "floor": 1,
+    "forms": ["screw"]
+  },
+  "school": "electrical:1"
 }

@@ -4,7 +4,7 @@ A [Controller](Controller.md) powered from a cable instead of a shaft. It runs t
 
 ## Crafting
 
-Controller + Circuit Board + Copper Wire, in any arrangement. Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 2 [fasteners](Fasteners.md), holding Electrical Treatise III: Circuits ([Treatise](Treatise.md)).
+A Controller, a Circuit Board and Copper Wire in a row, in that order. Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 2 [fasteners](Fasteners.md), holding Electrical Treatise III: Circuits ([Treatise](Treatise.md)).
 
 ## Using it
 
@@ -24,11 +24,18 @@ An [Endernet Upgrade](Endernet_Upgrade.md) makes an Electric Controller one end 
 
 ## Electric Programmer
 
-A [Programmer](Programming.md) that takes every medium. Crafted from a Programmer, a Circuit Board and Copper Wire. **Erase** works on a printed Floppy Disk or USB Drive (see [Media](Programming.md#media)). It needs no power.
+A [Programmer](Programming.md) that takes every medium. Crafted at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, 2 screws ([Fasteners](Fasteners.md)) and Electrical Treatise III: Circuits ([Treatise](Treatise.md)):
+
+```
+  C
+W P W
+```
+
+C is a [circuit](Basic_Electronic_Circuit.md), W is Copper Wire and P is a Programmer. **Erase** works on a printed Floppy Disk or USB Drive (see [Media](Programming.md#media)). It needs no power.
 
 ## Computer
 
-An Electric Programmer and an Electric Controller in one block, with a desktop. Crafted from an Electric Controller, an Electric Programmer and a Silicon Ingot at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 2 [fasteners](Fasteners.md), holding Electrical Treatise III: Circuits ([Treatise](Treatise.md)).
+An Electric Programmer and an Electric Controller in one block, with a desktop. Crafted from a [Phosphor Screen](Phosphor_Screen.md) above an Electric Controller above an Electric Programmer, in a column, at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 2 [fasteners](Fasteners.md), holding Electrical Treatise III: Circuits ([Treatise](Treatise.md)).
 
 It looks like a 1990s desktop PC: a beige case with drive slots and lamps, a CRT monitor with a blinking cursor, and a keyboard and mouse on the desk in front. The screen faces you when you place it.
 

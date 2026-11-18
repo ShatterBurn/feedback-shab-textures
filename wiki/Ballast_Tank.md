@@ -6,11 +6,11 @@ A tank of water that weighs an [airship](Airship.md) down. Dumping the water lig
 
 ```
 P P P
-P B P
+P V P
 P P P
 ```
 
-P is a steel plate and B is a bucket.
+P is a Steel Plate and V is a [Valve](Valve.md).
 
 ## Using it
 

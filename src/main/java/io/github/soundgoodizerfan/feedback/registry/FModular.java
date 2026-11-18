@@ -252,7 +252,7 @@ public final class FModular {
     public static final net.neoforged.neoforge.registries.DeferredBlock<io.github.soundgoodizerfan.feedback.modular.blueprint.BlueprintTableBlock> BLUEPRINT_TABLE =
             BLOCKS.register("blueprint_table", () -> new io.github.soundgoodizerfan.feedback.modular.blueprint.BlueprintTableBlock(
                     net.minecraft.world.level.block.state.BlockBehaviour.Properties.of()
-                            .mapColor(net.minecraft.world.level.material.MapColor.WOOD).strength(2.5f)
+                            .mapColor(net.minecraft.world.level.material.MapColor.WOOD).strength(2.5f).noOcclusion()   // an open table model in a full-cell hitbox
                             .sound(net.minecraft.world.level.block.SoundType.WOOD)));
     public static final DeferredItem<net.minecraft.world.item.BlockItem> BLUEPRINT_TABLE_ITEM = ITEMS.registerSimpleBlockItem(BLUEPRINT_TABLE);
 

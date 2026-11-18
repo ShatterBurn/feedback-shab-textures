@@ -100,9 +100,5 @@
     "item": "feedback:crucible",
     "threshold": 10,
     "ink": 2
-  },
-  "specimens": [
-    "crucible",
-    "thermal_store"
-  ]
+  }
 }

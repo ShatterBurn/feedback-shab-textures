@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "P": {
-      "item": "minecraft:brick"
-    }
+    "P": { "tag": "c:bricks/normal" }
   },
   "pattern": [
     "PPP",

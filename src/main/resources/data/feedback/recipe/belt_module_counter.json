@@ -1,19 +1,14 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "category": "misc",
-  "ingredients": [
-    {
-      "item": "feedback:copper_wire"
-    },
-    {
-      "item": "feedback:copper_wire"
-    },
-    {
-      "item": "feedback:wrought_iron_plate"
-    }
-  ],
-  "result": {
-    "count": 1,
-    "id": "feedback:belt_module_counter"
-  }
+  "type": "feedback:engineering",
+  "key": {
+    "W": { "item": "feedback:pivot_arm_short" },
+    "C": { "item": "feedback:small_cog" },
+    "E": { "item": "feedback:escapement" },
+    "P": { "item": "feedback:wrought_iron_plate" }
+  },
+  "pattern": [ " W ", " C ", "PEP" ],
+  "result": { "count": 1, "id": "feedback:belt_module_counter" },
+  "tool": [ { "ability": "feedback:driver", "wear": 1 } ],
+  "fasteners": { "count": 2, "floor": 1, "forms": [ "screw" ] },
+  "school": "mechanical:1"
 }

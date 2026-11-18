@@ -19,8 +19,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 /**
  * The machine that does not know when to stop.
@@ -33,6 +37,32 @@ public class MechanicalHammerBlock extends Block implements EntityBlock {
 
     public MechanicalHammerBlock(Properties properties) {
         super(properties);
+    }
+
+    /**
+     * Mirrors models/block/mechanical_hammer.json and the head at rest in mechanical_hammer_head.json (scripts/hammer_model.py): the
+     * cobblestone anvil slab, two posts, the top beam, and the head with its rod. The dropping head stays inside this outline.
+     */
+    private static final int[][] BOXES = {{0, 0, 0, 16, 3, 16}, {1, 3, 6, 3, 16, 10}, {13, 3, 6, 15, 16, 10}, {3, 13, 5, 13, 16, 11},
+            {3, 6, 4, 13, 12, 12}, {7, 12, 7, 9, 16, 9}};
+    private static final VoxelShape SHAPE = shape();
+
+    private static VoxelShape shape() {
+        VoxelShape s = Shapes.empty();
+        for (int[] b : BOXES)
+            s = Shapes.or(s, Block.box(b[0], b[1], b[2], b[3], b[4], b[5]));
+        return s;
+    }
+
+    @Override
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        return SHAPE;
+    }
+
+    /** A block event for the stroke animation: Block does not hand these to its block entity the way BaseEntityBlock does. */
+    @Override
+    protected boolean triggerEvent(BlockState state, Level level, BlockPos pos, int id, int param) {
+        return level.getBlockEntity(pos) instanceof MechanicalHammerBlockEntity hammer && hammer.triggerEvent(id, param);
     }
 
     /**

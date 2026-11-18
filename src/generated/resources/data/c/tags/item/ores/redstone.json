@@ -1,0 +1,8 @@
+{
+  "values": [
+    {
+      "id": "feedback:redstone_ore",
+      "required": false
+    }
+  ]
+}

@@ -29,6 +29,12 @@ There is no parry and no healing. The left arm is drawn with a red and black gau
 
 Each punch and each shockwave takes stamina and wears the gauntlet. At its last point it stops working.
 
+## Punch exhaustion
+
+A rested arm can punch again after about **0.4 seconds**. Each punch thrown before the arm has recovered adds about 0.2 seconds to the wait, up to about **1.2 seconds**, so a long string of punches slows down. Once the arm has been idle for a moment, the next punch is quick again.
+
+After a shockwave the arm is spent for about **1.9 seconds**.
+
 ## See also
 
 [Combat](Combat.md) · [Combat Gear](Combat_Gear.md) · [Feedbacker](Feedbacker.md) · [Whiplash](Whiplash.md)

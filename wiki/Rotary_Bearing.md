@@ -5,11 +5,11 @@ Turns whatever you build in front of it, as one piece, at the speed of the shaft
 ## Crafting
 
 ```
-P
+B
 S
 ```
 
-P is a Smooth Stone Slab and S is a [Shaft](Shaft.md).
+B is a Bronze Plate and S is a [Shaft](Shaft.md). Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 1 screw ([Fasteners](Fasteners.md)). It needs Mechanical Treatise I: Engines, Flywheels and Dynamotors ([Treatise](Treatise.md)).
 
 ## Using it
 

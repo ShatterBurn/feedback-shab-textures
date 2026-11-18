@@ -6,10 +6,10 @@ Two metals bonded together that bend when they get hot. Clip it to a [Crucible](
 
 ```
 F F
-N N
+I I
 ```
 
-F is [Copper Foil](Mechanical_Hammer.md) and N is a Wrought Iron Nugget.
+F is [Copper Foil](Mechanical_Hammer.md) and I is Wrought Iron Foil.
 
 ## Setting it up
 

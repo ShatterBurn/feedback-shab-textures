@@ -1,23 +1,13 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
+  "type": "feedback:engineering",
   "key": {
-    "P": {
-      "item": "feedback:wrought_iron_plate"
-    },
-    "X": {
-      "item": "feedback:shaft"
-    },
-    "B": {
-      "item": "feedback:bearing"
-    }
+    "P": { "item": "feedback:wrought_iron_plate" },
+    "X": { "item": "feedback:shaft" },
+    "B": { "item": "feedback:bearing" }
   },
-  "pattern": [
-    "PXP",
-    "PBP"
-  ],
-  "result": {
-    "count": 1,
-    "id": "feedback:crush_head"
-  }
+  "pattern": [ "PXP", "PBP" ],
+  "result": { "count": 1, "id": "feedback:crush_head" },
+  "tool": [ { "ability": "feedback:driver", "wear": 1 } ],
+  "fasteners": { "count": 4, "floor": 1, "forms": [ "screw" ] },
+  "school": "mechanical:1"
 }

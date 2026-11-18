@@ -1,21 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "misc",
-  "key": {
-    "S": {
-      "item": "feedback:steel_plate"
-    },
-    "E": {
-      "item": "minecraft:ender_eye"
-    }
-  },
-  "pattern": [
-    "SES",
-    "S S",
-    "SSS"
-  ],
-  "result": {
-    "count": 1,
-    "id": "feedback:ender_anchor"
-  }
+  "key": { "S": { "item": "feedback:steel_plate" }, "E": { "tag": "feedback:spatial_anchors" } },
+  "pattern": [ "SES", "S S", "SSS" ],
+  "result": { "count": 1, "id": "feedback:ender_anchor" }
 }

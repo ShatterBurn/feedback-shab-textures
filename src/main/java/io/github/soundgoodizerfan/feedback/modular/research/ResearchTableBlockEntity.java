@@ -19,10 +19,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
-/** The Research Table's container: the blank treatise and the specimen a volume is researched from, and for an attunement the offering, the reagent potion and the blank rite it is written onto, and for an app the blank disk and the thing the app is about. */
+/** The Research Table's container: the blank treatise a volume is written onto, and for an attunement the offering, the reagent potion and the blank rite it is written onto, and for an app the blank disk and the thing the app is about. */
 public class ResearchTableBlockEntity extends BlockEntity implements Container, MenuProvider {
 
-    public static final int BLANK = 0, SPECIMEN = 1, OFFERING = 2, REAGENT = 3, BLANK_RITE = 4, BLANK_DISK = 5, SUBJECT = 6, SIZE = 7;
+    public static final int BLANK = 0, OFFERING = 1, REAGENT = 2, BLANK_RITE = 3, BLANK_DISK = 4, SUBJECT = 5, SIZE = 6;
 
     private final NonNullList<ItemStack> items = NonNullList.withSize(SIZE, ItemStack.EMPTY);
 

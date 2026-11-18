@@ -67,14 +67,25 @@ Power is shown as a percentage of the design output. 100% is full power; the cor
 
 ### Coolant channels and the Coolant Port
 
-A second way to carry the heat off is to boil water in the core itself. A **Coolant Port** is a wall cell of the shell with two tanks: water goes in by pipe or bucket, steam comes out the same block for a pipe to carry to a [Steam Turbine](Steam_Turbine.md). **Coolant Channels** are lattice cells that draw water from the port and boil it on the core's heat: the further over the boiling point the core stands, the more each channel takes off, up to a limit, and one mB of water makes one mB of steam. A port with no water takes nothing away and the core climbs. The water slows neutrons a little, so a fuel cell beside a flowing channel multiplies more; a channel run dry gives that back.
+A second way to carry the heat off is to boil water in the core itself. A **Coolant Port** is a wall cell of the shell with two tanks. Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, 3 screws ([Fasteners](Fasteners.md)) and Nuclear Treatise I: Reactors and Fuel ([Treatise](Treatise.md)):
 
 ```
-S T S              S S S
-S T S  Channel x2  T B T  Port
-S T S              S S S
+S S S
+T S T
+S S S
 ```
-S is a Stainless Steel Plate, T is Copper Tubing, B is a bucket.
+
+S is a Stainless Steel Plate and T is Copper Tubing. It holds two tanks: water goes in by pipe or bucket, steam comes out the same block for a pipe to carry to a [Steam Turbine](Steam_Turbine.md). **Coolant Channels** are lattice cells that draw water from the port and boil it on the core's heat: the further over the boiling point the core stands, the more each channel takes off, up to a limit, and one mB of water makes one mB of steam. A port with no water takes nothing away and the core climbs. The water slows neutrons a little, so a fuel cell beside a flowing channel multiplies more; a channel run dry gives that back.
+
+A Coolant Channel (makes 2):
+
+```
+S T S
+S T S
+S T S
+```
+
+S is a Stainless Steel Plate and T is Copper Tubing.
 
 ### Reflectors
 

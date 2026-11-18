@@ -1,27 +1,12 @@
 {
   "type": "feedback:engineering",
-  "ingredients": [
-    {
-      "item": "feedback:pump"
-    },
-    {
-      "item": "feedback:tube"
-    }
-  ],
-  "result": {
-    "count": 1,
-    "id": "feedback:vacuum_pump"
+  "key": {
+    "T": { "item": "feedback:tube" },
+    "P": { "item": "feedback:pump" }
   },
-  "tool": [
-    {
-      "ability": "feedback:driver",
-      "wear": 1
-    }
-  ],
-  "fasteners": {
-    "count": 2,
-    "floor": 1,
-    "forms": ["screw", "machine_bolt"]
-  },
+  "pattern": [ "TP" ],
+  "result": { "count": 1, "id": "feedback:vacuum_pump" },
+  "tool": [ { "ability": "feedback:driver", "wear": 1 } ],
+  "fasteners": { "count": 2, "floor": 1, "forms": [ "screw", "machine_bolt" ] },
   "school": "chemical:1"
 }

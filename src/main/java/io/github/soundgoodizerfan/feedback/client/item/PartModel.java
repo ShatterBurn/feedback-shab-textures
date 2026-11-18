@@ -83,8 +83,8 @@ public final class PartModel {
             var kind = HaftedLayers.kindFile(path);
             if (kind.isPresent()) {
                 int edge = HaftedLayers.edgeSteps(made.measures(), ModularHeads.axesOf(path));
-                slot = HaftedLayers.headAlone(kind.get(), made.variant(), edge, baker.known, false);
-                held = HaftedLayers.headAlone(kind.get(), made.variant(), edge, baker.known, true);
+                slot = HaftedLayers.headAlone(kind.get(), HaftedLayers.faceVariant(kind.get(), made.variant(), made.measures()), edge, baker.known, false);
+                held = HaftedLayers.headAlone(kind.get(), HaftedLayers.faceVariant(kind.get(), made.variant(), made.measures()), edge, baker.known, true);
             } else {
                 String[] addon = ADDONS.get(path);
                 slot = held = HaftedLayers.addonAlone(addon[0], addon[1], HaftedLayers.artVariant(addon[0], made.variant(), made.measures()), baker.known);

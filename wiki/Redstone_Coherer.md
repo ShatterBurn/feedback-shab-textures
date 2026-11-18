@@ -1,15 +1,15 @@
 # Redstone Coherer
 
-A glass tube of loose redstone grains. It starts **open**. A nearby **spark** welds the grains together and it turns into a piece of wire, and it **stays** one until you tap it. It listens for [sparks](#what-a-spark-is), and it is the first detector that doesn't need a wire running to what it watches. Its glass, copper wire and redstone need no mine trip, which makes it the first part to mount on a [Basic Electronic Circuit](Basic_Electronic_Circuit.md).
+A glass tube of loose magnetite grains. It starts **open**. A nearby **spark** welds the grains together and it turns into a piece of wire, and it **stays** one until you tap it. It listens for [sparks](#what-a-spark-is), and it is the first detector that doesn't need a wire running to what it watches. It is the first part to mount on a [Basic Electronic Circuit](Basic_Electronic_Circuit.md).
 
 ## Crafting
 
 ```
 G G G
-W R W
+W M W
 ```
 
-G is Glass, W is [Copper Wire](Wire_Drawer.md) and R is Redstone. Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, holding Electrical Treatise II: Coils and Magnets ([Treatise](Treatise.md)).
+G is Glass, W is [Copper Wire](Wire_Drawer.md) and M is Magnetite Dust. Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, holding Electrical Treatise II: Coils and Magnets ([Treatise](Treatise.md)); it spends no fasteners.
 
 ## Using it
 

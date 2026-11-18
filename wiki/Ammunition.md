@@ -34,16 +34,11 @@ Two ways to make them:
 **Bullet Mold**:
 
 ```
-  D
-S D S
+D R D
+S   S
 ```
 
-D is a Wrought Iron Drilled Plate and S is a Stick. Craft it at the [Engineering Table](Engineering_Table.md) with a [file](Hand_Tools.md#file) in the tool row, holding Weapons Treatise II.
-
-```
-  D
-S D S
-```
+D is a Wrought Iron Drilled Plate, R is a Wrought Iron Rod and S is a Stick. Craft it in the plain [Crafting Table](Crafting_Table.md).
 
 **Lead** is the usual bullet metal because it's dense (11.3, against iron's 7.9): heavy bullets keep their energy. But lead is soft. A **harder** bullet goes through armor and breaks less on hard faces: see [What bullets do](Guns.md#hardness-glass-glancing-armor).
 
@@ -68,7 +63,7 @@ The shape is the bullet you seat: each shape is its own item, a Round Ball, a Fl
 - **Cast it.** The **Ball Mold** casts **round balls** the way the Bullet Mold casts round-nose bullets, eight to an ingot's worth. Any metal that melts in a crucible can be cast.
 - **Forge it.** Hammer a nugget into any shape, by hand or with a [Mechanical Hammer](Mechanical_Hammer.md). Pointed and hollow-point bullets take more work than round balls and flat noses, and a harder metal takes more again.
 
-**Ball Mold**: two Wrought Iron Drilled Plates with a Stick on each side, the bullet mold's pattern turned over.
+**Ball Mold**: two Wrought Iron Drilled Plates with a Stick on each side.
 
 ```
 S D S

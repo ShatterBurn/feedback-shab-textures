@@ -10,43 +10,47 @@ Seventeen fittings that give a [Conveyor Belt](Conveyor_Belt.md) cell a job: loa
 - **Right-click a side** with an empty hand to wipe a fouled screen or a dirty optical reader, to cycle a reader's band or a screen's mesh, or to engage or release a gate, diverter, electromagnet or air jet.
 - A module that draws current ([Belt Electromagnet](#belt-electromagnet), [Belt Optical Reader](#belt-optical-reader), [Belt Weigher](#belt-weigher), [Belt Fan](#belt-fan), [Linear Motor Coil](#linear-motor-coil)) needs a wire against its cell and does nothing without it. Each draws 1 A at LV. See [Electricity](Electricity.md).
 
+## Crafting
+
+The plain [Crafting Table](Crafting_Table.md) makes the funnels, chute, diverter, magnet, screen, air jet, hood and cooler. The gate, splitter, counter, fan, linear coil, electromagnet, optical reader and weigher are made at the [Engineering Table](Engineering_Table.md): each line below names the screws and the [treatise](Treatise.md) volume held, and every one wears the [screwdriver](Hand_Tools.md#screwdriver) a point.
+
 ## Moving cargo
 
 ### Belt Funnel (Input)
 
 Pulls items out of the container on the side it was placed against, one unit at a time, as fast as the belt has room. It reads nothing about what it pulls.
 
-Crafting: 2 Wrought Iron Plates + Hopper + Stick.
+Crafting: 2 Wrought Iron Plates + Hopper.
 
 ### Belt Funnel (Output)
 
 Pushes passing cargo into the container on its side. At the end of a run, a full container leaves the cargo queued on the belt.
 
-Crafting: 2 Wrought Iron Plates + Hopper + String.
+Crafting: Hopper + 2 Wrought Iron Plates.
 
 ### Belt Chute
 
 Drops cargo off the belt, down the column below its side, into whatever is there: a container, a lower belt or the floor. Brittle cargo (low toughness for its hardness) breaks on a long drop, three blocks or more.
 
-Crafting: 3 Wrought Iron Plates + Stick.
+Crafting: 3 Wrought Iron Plates.
 
 ### Belt Diverter
 
 A plough that sweeps every unit reaching it to its side. Engage or release it with an empty hand or a [Controller](Controller.md).
 
-Crafting: Wrought Iron Plate + 2 Sticks.
+Crafting: 3 Wrought Iron Plates + Wrought Iron Rod.
 
 ### Belt Splitter
 
 Sends passing cargo to alternate sides of the belt. If one side is full the other takes it.
 
-Crafting: 2 Wrought Iron Plates + 2 Sticks.
+Crafting: 2 Wrought Iron Plates + Wrought Iron Rod + Escapement. Engineering Table, screwdriver, 2 screws, Mechanical Treatise I.
 
 ### Belt Gate
 
 Holds cargo at its cell while engaged. Release it with an empty hand or a controller.
 
-Crafting: 2 Wrought Iron Plates + Iron Ingot + Stick.
+Crafting: 2 Wrought Iron Plates + Wrought Iron Rod + [Ball Joint](Ball_Joint.md). Engineering Table, screwdriver, 2 screws, Mechanical Treatise I.
 
 ## Sorting
 
@@ -69,13 +73,13 @@ Cargo a reader cannot place at all (an item with no known material) is handled b
 
 A permanent magnet over the belt. It sweeps magnetic cargo to its side.
 
-Crafting: 2 Iron Ingots + Stick.
+Crafting: 2 Magnetite Lumps + 3 Wrought Iron Plates.
 
 ### Belt Electromagnet
 
 A switchable magnet that draws current. Engage or release it with an empty hand or a controller.
 
-Crafting: [Electromagnet](Electromagnet.md) + Wrought Iron Plate.
+Crafting: [Electromagnet](Electromagnet.md) + 3 Wrought Iron Plates + 2 Copper Wire. Engineering Table, screwdriver, 2 screws, Electrical Treatise II.
 
 ### Belt Optical Reader
 
@@ -83,25 +87,25 @@ Reads the sheen of passing cargo and sweeps one band (dull, mid or bright) to it
 
 Crushed ore and dust it meets are **separated** instead: it tells the ore from its rock by their sheen. The concentrate is swept off its side, the tailings drop below the cell, and a unit it cannot tell goes on to be tried again. A dirty head separates nothing. Chain readers along a belt to raise the share that gets sorted ([Ore Processing](Ore_Processing.md#separating)).
 
-Crafting: Optical Glass Lens + Wrought Iron Plate + Copper Wire.
+Crafting: Optical Glass Lens + [Photocell](Sensors.md) + 2 Wrought Iron Plates + a [Basic Electronic Circuit](Basic_Electronic_Circuit.md). Engineering Table, screwdriver, 3 screws, Electrical Treatise III.
 
 ### Belt Weigher
 
 Reads the weight of passing cargo as density bands and size bands. Click to choose the band. Draws current.
 
-Crafting: Wrought Iron Plate + Steel Plate + Copper Wire.
+Crafting: Balance Scale + 2 Wrought Iron Plates + a [Basic Electronic Circuit](Basic_Electronic_Circuit.md). Engineering Table, screwdriver, 3 screws, Electrical Treatise III.
 
 ### Belt Air Jet
 
 A nozzle that blows light, dry cargo off the belt. It needs a gas pipe with pressure beside it and takes a little air with each puff; the pressure sets how dense a unit it can lift. Engage or release it with an empty hand or a controller.
 
-Crafting: Wrought Iron Plate + [Powered Bellows](Powered_Bellows.md).
+Crafting: Copper Tubing + [Powered Bellows](Powered_Bellows.md) + Wrought Iron Plate.
 
 ### Belt Screen
 
 A mesh the cargo passes over. Units lighter than the aperture fall through. Click to choose fine, medium or coarse. Fines clog the mesh and blind it until it is wiped by hand.
 
-Crafting: 2 Iron Bars + Wrought Iron Plate.
+Crafting: 4 Wrought Iron Plates + 5 Wrought Iron Rods.
 
 ## Counting and conditioning
 
@@ -109,28 +113,28 @@ Crafting: 2 Iron Bars + Wrought Iron Plate.
 
 Counts what passes and reports to a linked [Controller](Controller.md) (see [Data Connector](Data_Connector.md)). Link it to the Controller and read it with an Input card: key **C** reads the count, any other key the rate. It controls nothing and reads nothing about the cargo.
 
-Crafting: 2 Copper Wire + Wrought Iron Plate.
+Crafting: Pivot Arm (Short) + [Small Cog](Cogs.md) + Escapement + 2 Wrought Iron Plates. Engineering Table, screwdriver, 2 screws, Mechanical Treatise I.
 
 ### Belt Hood
 
-A cover over a belt cell. Rain and fluid above no longer wet the band there, so a rise keeps its grip. Cargo that holds fluid still wets it.
+A cover over a belt cell. Rain and fluid above do not wet the band there, so a rise keeps its grip. Cargo that holds fluid still wets it.
 
-Crafting: 2 Wrought Iron Plates + Leather.
+Crafting: 3 Wrought Iron Plates + 2 Leather.
 
 ### Linear Motor Coil
 
 A coil in place of a roller. While it has current it drives the whole run at a fixed speed, with or without a head roller or a shaft. Draws current.
 
-Crafting: Wrought Iron Plate + Iron Ingot + 2 Copper Wire.
+Crafting: 2 Copper Wire + Wrought Iron Rod + 3 Wrought Iron Plates. Engineering Table, screwdriver, 2 screws, Electrical Treatise II.
 
 ### Belt Cooler
 
 A cold plate that cools cargo passing over it toward a window, as a hot ingot must be cooled before it meets a leather band.
 
-Crafting: Wrought Iron Plate + 2 Copper Plates.
+Crafting: Heatsink + Copper Plate + Wrought Iron Plate.
 
 ### Belt Fan
 
 Blows air over passing cargo and cools it. Draws current.
 
-Crafting: 2 Wrought Iron Plates + 2 Copper Wire.
+Crafting: 4 Wrought Iron Plates + [Dynamotor](Dynamotor.md). Engineering Table, screwdriver, 4 screws, Mechanical Treatise I.

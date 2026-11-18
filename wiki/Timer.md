@@ -5,11 +5,12 @@ A wind-up timer. It switches the blocks it touches **on** when you start it, and
 ## Crafting
 
 ```
+  R
 P C P
-P R P
+P E P
 ```
 
-P is a [Copper Plate](Mechanical_Hammer.md), C is a [Small Cog](Cogs.md) and R is Redstone Dust.
+P is a [Copper Plate](Mechanical_Hammer.md), R is a Wrought Iron Rod, C is a [Small Cog](Cogs.md) and E is an [Escapement](Controller.md#crafting-the-parts). Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 2 screws ([Fasteners](Fasteners.md)). It needs Mechanical Treatise I: Engines, Flywheels and Dynamotors ([Treatise](Treatise.md)).
 
 ## Using it
 

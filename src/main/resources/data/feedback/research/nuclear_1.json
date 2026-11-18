@@ -97,8 +97,5 @@
     "item": "feedback:gas_centrifuge",
     "threshold": 3,
     "ink": 2
-  },
-  "specimens": [
-    "gas_centrifuge"
-  ]
+  }
 }

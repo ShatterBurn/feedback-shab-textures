@@ -1,6 +1,7 @@
 {
-  "parent": "block/cube_all",
+  "parent": "minecraft:block/cube_column",
   "textures": {
-    "all": "feedback:block/copper_coil_side"
+    "end": "feedback:block/creative_coil_end",
+    "side": "feedback:block/creative_coil_side"
   }
 }

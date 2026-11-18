@@ -1,32 +1,9 @@
 {
   "type": "feedback:engineering",
-  "key": {
-    "A": {
-      "item": "feedback:punch_card"
-    },
-    "B": {
-      "item": "feedback:copper_wire"
-    },
-    "C": {
-      "item": "feedback:copper_wire"
-    }
-  },
-  "pattern": [
-    "ABC"
-  ],
-  "result": {
-    "count": 1,
-    "id": "feedback:circuit_board"
-  },
-  "tool": [
-    {
-      "ability": "feedback:driver",
-      "wear": 1
-    }
-  ],
-  "fasteners": {
-    "count": 0,
-    "floor": 1
-  },
+  "key": { "A": { "item": "feedback:punch_card" }, "W": { "item": "feedback:copper_fine_wire" } },
+  "pattern": [ "W", "A", "W" ],
+  "result": { "count": 1, "id": "feedback:circuit_board" },
+  "tool": [ { "ability": "feedback:driver", "wear": 1 } ],
+  "fasteners": { "count": 0, "floor": 1 },
   "school": "electrical:3"
 }

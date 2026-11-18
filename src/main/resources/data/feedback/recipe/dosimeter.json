@@ -1,24 +1,13 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "equipment",
+  "type": "feedback:engineering",
   "key": {
-    "T": {
-      "item": "feedback:glass_tubing"
-    },
-    "F": {
-      "item": "feedback:gold_foil"
-    },
-    "I": {
-      "item": "feedback:wrought_iron_plate"
-    }
+    "T": { "item": "feedback:glass_tubing" },
+    "F": { "item": "feedback:gold_foil" },
+    "I": { "item": "feedback:wrought_iron_plate" }
   },
-  "pattern": [
-    " T ",
-    " F ",
-    " I "
-  ],
-  "result": {
-    "count": 1,
-    "id": "feedback:dosimeter"
-  }
+  "pattern": [ " T ", " F ", " I " ],
+  "result": { "count": 1, "id": "feedback:dosimeter" },
+  "tool": [ { "ability": "feedback:driver", "wear": 1 } ],
+  "fasteners": { "count": 1, "floor": 1, "forms": [ "screw" ] },
+  "school": "electrical:1"
 }

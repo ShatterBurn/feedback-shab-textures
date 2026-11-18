@@ -1,20 +1,147 @@
 {
   "parent": "block/block",
   "textures": {
-    "pulley": "feedback:block/log_mulberry_inner",
-    "particle": "feedback:block/log_mulberry_inner"
+    "pulley": "feedback:block/cog_wood",
+    "axle": "feedback:block/bronze_sheet",
+    "particle": "feedback:block/cog_wood",
+    "baked": "feedback:block/small_pulley_faces"
   },
   "elements": [
     {
-      "from": [5, 5, 6],
-      "to": [11, 11, 10],
+      "from": [
+        5,
+        5,
+        6
+      ],
+      "to": [
+        11,
+        11,
+        10
+      ],
       "faces": {
-        "north": { "texture": "#pulley" },
-        "south": { "texture": "#pulley" },
-        "west":  { "texture": "#pulley" },
-        "east":  { "texture": "#pulley" },
-        "up":    { "texture": "#pulley" },
-        "down":  { "texture": "#pulley" }
+        "north": {
+          "texture": "#baked",
+          "uv": [
+            0.0,
+            0.0,
+            0.75,
+            6.0
+          ]
+        },
+        "south": {
+          "texture": "#baked",
+          "uv": [
+            0.875,
+            0.0,
+            1.625,
+            6.0
+          ]
+        },
+        "west": {
+          "texture": "#baked",
+          "uv": [
+            1.75,
+            0.0,
+            2.25,
+            6.0
+          ]
+        },
+        "east": {
+          "texture": "#baked",
+          "uv": [
+            2.375,
+            0.0,
+            2.875,
+            6.0
+          ]
+        },
+        "up": {
+          "texture": "#baked",
+          "uv": [
+            3.0,
+            0.0,
+            3.75,
+            4.0
+          ]
+        },
+        "down": {
+          "texture": "#baked",
+          "uv": [
+            3.875,
+            0.0,
+            4.625,
+            4.0
+          ]
+        }
+      }
+    },
+    {
+      "name": "axle",
+      "from": [
+        6,
+        6,
+        0
+      ],
+      "to": [
+        10,
+        10,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#baked",
+          "uv": [
+            4.75,
+            0.0,
+            5.25,
+            4.0
+          ]
+        },
+        "south": {
+          "texture": "#baked",
+          "uv": [
+            5.375,
+            0.0,
+            5.875,
+            4.0
+          ]
+        },
+        "east": {
+          "texture": "#baked",
+          "uv": [
+            6.0,
+            0.0,
+            8.0,
+            4.0
+          ]
+        },
+        "west": {
+          "texture": "#baked",
+          "uv": [
+            8.125,
+            0.0,
+            10.125,
+            4.0
+          ]
+        },
+        "up": {
+          "texture": "#baked",
+          "uv": [
+            10.25,
+            0.0,
+            10.75,
+            16.0
+          ]
+        },
+        "down": {
+          "texture": "#baked",
+          "uv": [
+            10.875,
+            0.0,
+            11.375,
+            16.0
+          ]
+        }
       }
     }
   ]

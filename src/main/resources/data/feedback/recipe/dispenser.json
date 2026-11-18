@@ -1,19 +1,14 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "category": "redstone",
-  "ingredients": [
-    {
-      "item": "feedback:dropper"
-    },
-    {
-      "item": "minecraft:string"
-    },
-    {
-      "item": "minecraft:stick"
-    }
-  ],
-  "result": {
-    "count": 1,
-    "id": "feedback:dispenser"
-  }
+  "type": "feedback:engineering",
+  "key": {
+    "D": { "item": "feedback:dropper" },
+    "K": { "type": "feedback:material", "form": "coil_spring" },
+    "S": { "item": "minecraft:string" },
+    "T": { "item": "minecraft:stick" }
+  },
+  "pattern": [ "TS", "KD" ],
+  "result": { "count": 1, "id": "feedback:dispenser" },
+  "tool": [ { "ability": "feedback:driver", "wear": 1 } ],
+  "fasteners": { "count": 2, "floor": 1, "forms": [ "screw" ] },
+  "school": "mechanical:1"
 }

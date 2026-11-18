@@ -1,11 +1,15 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "redstone",
+  "type": "feedback:engineering",
   "key": {
     "S": { "item": "feedback:steel_plate" },
-    "W": { "item": "feedback:copper_fine_wire" },
+    "W": { "item": "feedback:copper_wire" },
     "C": { "item": "feedback:ceramic" }
   },
   "pattern": [ "SSS", "WCW", "S S" ],
-  "result": { "count": 1, "id": "feedback:power_cutter" }
+  "result": { "count": 1, "id": "feedback:power_cutter" },
+  "tool": [
+    { "ability": "feedback:driver", "wear": 1 }
+  ],
+  "fasteners": { "count": 3, "floor": 1, "forms": ["machine_bolt"] },
+  "school": "electrical:2"
 }

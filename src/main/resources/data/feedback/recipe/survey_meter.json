@@ -1,15 +1,14 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "equipment",
+  "type": "feedback:engineering",
   "key": {
-    "R": { "item": "minecraft:redstone" },
+    "N": { "item": "minecraft:compass" },
+    "W": { "item": "feedback:copper_wire" },
     "I": { "item": "feedback:wrought_iron_plate" },
-    "S": { "item": "feedback:shaft" }
+    "R": { "item": "feedback:wrought_iron_rod" }
   },
-  "pattern": [
-    " R ",
-    "ISI",
-    " S "
-  ],
-  "result": { "count": 1, "id": "feedback:survey_meter" }
+  "pattern": [ " N ", "IWI", " R " ],
+  "result": { "count": 1, "id": "feedback:survey_meter" },
+  "tool": [ { "ability": "feedback:driver", "wear": 1 } ],
+  "fasteners": { "count": 2, "floor": 1, "forms": [ "screw" ] },
+  "school": "electrical:1"
 }

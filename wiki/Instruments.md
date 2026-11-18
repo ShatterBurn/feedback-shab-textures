@@ -24,6 +24,8 @@ Nothing is locked behind an instrument; they are how you do on purpose what you 
 | [Oscilloscope](#oscilloscope) | Current in a cable over time, on a screen | 0.25 A steps, 10 samples a second, pegs above 4 A |
 | [Phosphor Screen](Phosphor_Screen.md) | Shows the Oscilloscope's signal | Four brightness levels |
 | [Component Tester](#component-tester) | Response and condition of a placed electronic part | 5% steps |
+| [Dosimeter](#dosimeter) | Radiation dose your body has taken | Nearest 10 Ru s |
+| [Flux Meter](#flux-meter) | Neutron flux of a reactor core | 5% steps |
 | [Geiger Counter](#geiger-counter) | Radiation at your position | 0.1 Ru from a five-second click count, jittery |
 | [XP Meter](#xp-meter) | Experience levels and points | Whole levels, points to the nearest 5 |
 | [Survey Meter](#survey-meter) | Ore and oil within 16 blocks | Counts rounded to 8, wobbling |
@@ -54,10 +56,10 @@ Turns "kind of flattened" into an exact number, and tells you exactly how worn a
 
 ```
 P   P
-  N
+  R
 ```
 
-P is a Copper Plate and N is an Iron Nugget. Craft it at the [Engineering Table](Engineering_Table.md) with a [file](Hand_Tools.md#file) in the tool row.
+P is a Copper Plate and R is a Wrought Iron Rod. Craft it at the [Engineering Table](Engineering_Table.md) with a [file](Hand_Tools.md#file) in the tool row, holding Materials Treatise I: Machine-Shop Consumables ([Treatise](Treatise.md)); it spends no fasteners.
 
 **Work in progress.** Without calipers, a half-worked item tells you what it **needs** as a number (*"Needs 14 Wu"*) but only roughly how far it has got: *Barely marked*, *Taking shape*, *Visibly worked*, *Nearly there*. Carry calipers anywhere in your inventory and that changes to an exact figure, like *"Calipers: 9 / 14 Wu"*, on the item's tooltip and in Jade, on whatever is sitting in a hammer, press, mill, drawer, drill, lathe or grinder. You do not need calipers to make a plate; the words are enough to avoid ruining one. You need them to **aim** at something that only lasts a blow or two, like copper foil, and hit it every time.
 
@@ -93,7 +95,13 @@ A spring balance with a hook, made from a string, a stick and wrought iron plate
 
 Tells you how hard an edge or a plate is, by which file bites it.
 
-Shapeless: Iron Ingot + Flint + Nether Quartz + Leather. Craft it at the [Engineering Table](Engineering_Table.md) with a [hammer](Hammer.md) in the tool row.
+```
+I I I
+S S S
+G G L
+```
+
+I is an ingot of a soft metal (hardness 12 or less), S is an ingot of a harder metal (hardness 14 to 60), G is a gem of hardness 100 or more and L is Leather. Craft it at the [Engineering Table](Engineering_Table.md) with a [file](Hand_Tools.md#file) in the tool row, holding Materials Treatise I: Machine-Shop Consumables ([Treatise](Treatise.md)); it spends no fasteners.
 
 Carry it anywhere in your inventory. A modular item's tooltip gains a line like *"Scratch files: scratched by file 5, not by file 4"*. The set has eight files, each harder than the last. A file scratches anything softer than itself, so the reading is a **rung**, not a number: your edge is harder than file 4 and softer than file 5.
 
@@ -104,12 +112,12 @@ Hardness decides what a tool can dig (see [Tools and Weapons](Tools_and_Weapons.
 A block that swings into an edge and reports its toughness. The tooltip gives toughness in words; the pendulum gives a figure.
 
 ```
-P P P
-  S
+P B P
+  R
   I
 ```
 
-P is an Iron Plate, S is String and I is an Iron Ingot.
+P is a Wrought Iron Plate, B is a [Bearing](Bearing.md), R is a Wrought Iron Rod and I is an Iron Ingot.
 
 **Right-click** it holding a tool or armor piece made at a bench. The card shows the edge's toughness, to the nearest 5. A twin-headed tool reports both heads. An armor piece reports its armor toughness. Anything else says *"Nothing here to test."* The pendulum does not mark or wear the piece.
 
@@ -123,7 +131,7 @@ L
 L
 ```
 
-P is an Iron Plate and L is any log.
+P is a Wrought Iron Plate and L is any log.
 
 **Swing at it** (left-click, or a [Better Combat](Combat.md#better-combat-required) swing) with a weapon or tool made at a bench. The card shows the Work the blow carries and the damage it deals, both to the nearest half. A tool that is not made at a bench says *"Nothing here to test."* The post does not mark or wear the tool.
 
@@ -160,6 +168,13 @@ It reads in steps of **25 Tu**. Steel's window is 60 Tu wide, so that is about t
 ## Temperature Sensor
 
 A thermometer you bolt onto a vessel so it reads all the time, and so a [Controller](Controller.md) can use the reading.
+
+```
+P T P
+W C W
+```
+
+P is a Wrought Iron Plate, T is a [Thermometer](#thermometer), W is [Copper Wire](Wire_Drawer.md) and C is a [circuit](Basic_Electronic_Circuit.md). Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, 2 screws ([Fasteners](Fasteners.md)) and Electrical Treatise III: Circuits ([Treatise](Treatise.md)).
 
 Right-click a face of a [Crucible](Crucible.md) or an **Improved Furnace** with it. It attaches to that side; one sensor per face. It does not attach to the sealed [furnaces](Furnaces.md) (Furnace, Smoker, Crude Blast Furnace, Kiln, Annealing Furnace): they have no opening for it. Being unwatchable is the price of a sealed furnace.
 
@@ -245,11 +260,12 @@ W is [Copper Wire](Wire_Drawer.md), P is a Glass Pane and G is a Glass Bottle.
 
 A small galvanometer that you bolt onto one face of a [Copper Cable](Copper_Cable.md). It reads the current through that cable all the time, so a [Controller](Controller.md) program can act on it.
 
-A [Copper Wire](Wire_Drawer.md) next to a Wrought Iron Nugget.
+```
+P G P
+W C W
+```
 
-```
-W N
-```
+P is a Wrought Iron Plate, G is a [Galvanometer](#galvanometer), W is [Copper Wire](Wire_Drawer.md) and C is a [circuit](Basic_Electronic_Circuit.md). Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, 2 screws ([Fasteners](Fasteners.md)) and Electrical Treatise III: Circuits ([Treatise](Treatise.md)).
 
 Right-click the face of a cable you want it on. You can put one on each of the six faces. Breaking the cable drops the sensor. It fits on cable only, not directly on sources or machines.
 
@@ -262,7 +278,12 @@ To use it: link the sensor to the Controller with a [Data Connector](Data_Connec
 
 Watches the current in a cable and shows it on a [Phosphor Screen](Phosphor_Screen.md).
 
-Shapeless: a Galvanometer, a Wrought Iron Plate, Copper Wire and Ceramic.
+```
+P S P
+W C W
+```
+
+P is a Wrought Iron Plate, S is a [Phosphor Screen](Phosphor_Screen.md), W is [Copper Wire](Wire_Drawer.md) and C is a [circuit](Basic_Electronic_Circuit.md). Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, 2 screws ([Fasteners](Fasteners.md)) and Electrical Treatise III: Circuits ([Treatise](Treatise.md)).
 
 Put it **against a cable** and **against a screen**. It joins no line; it only reads. Every tenth of a second it samples the cable and drives the screen to match (four levels). **Right-click** it to see the last 16 samples as a row of bars, to the nearest 0.25 A.
 
@@ -273,11 +294,11 @@ Above 4 A the trace sits pegged at the top, exact and wrong. A pegged screen is 
 Says how a part responds. It is never needed; it saves guesswork.
 
 ```
-W W
-P C
+W   W
+C G C
 ```
 
-W is Copper Wire, P is a Wrought Iron Plate and C is Ceramic.
+W is Copper Wire, C is Ceramic and G is a [Galvanometer](#galvanometer). Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, 1 screw ([Fasteners](Fasteners.md)) and Electrical Treatise I: Cells and Static Charge ([Treatise](Treatise.md)).
 
 **Right-click a placed part** to read it, to the nearest 5%:
 
@@ -289,11 +310,41 @@ W is Copper Wire, P is a Wrought Iron Plate and C is Ceramic.
 
 **Right-click in the air with a [circuit](Basic_Electronic_Circuit.md) in your other hand** to read its figures: speed, noise, joints, and where it has them **gain** (a tube), **stability**, **channels** and **bandwidth** (a [Resonator](Resonator.md)), and **memory**, **adaptation** and whether it holds (a [Lattice](Lattice.md)).
 
+## Dosimeter
+
+Reads the dose your body has taken: the running total that makes you ill in steps, after your armor has had its say. It is not the rate; the [Geiger Counter](#geiger-counter) reads that. Carry one and instruments show your dose as a figure in Ru s, to the nearest 10; hold it and the figure shows on your hand card. See [Radiation](Radiation.md).
+
+```
+  T
+  F
+  I
+```
+
+T is Glass Tubing, F is Gold Foil and I is a Wrought Iron Plate. Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, 1 screw ([Fasteners](Fasteners.md)) and Electrical Treatise I: Cells and Static Charge ([Treatise](Treatise.md)).
+
+## Flux Meter
+
+Reads the neutron flux of a [Fission Reactor](Fission_Reactor.md) core as a fraction of full power, to the nearest 5%. Right-click the core with it.
+
+```
+  T
+W P W
+  S
+```
+
+T is Glass Tubing, W is [Copper Wire](Wire_Drawer.md), P is a Lead Plate and S is a Stainless Steel Plate. Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, 2 screws ([Fasteners](Fasteners.md)) and Nuclear Treatise I: Reactors and Fuel ([Treatise](Treatise.md)).
+
 ## Geiger Counter
 
 Listens for [radiation](Radiation.md). Hold it and it clicks: a few clicks a second with nothing near, more the stronger the field. It reads the field at you **before** your armor, so it tells you why to put lead on, not how much got through.
 
-Glass tubing on top, redstone in the middle with a wrought iron plate either side, copper wire under it.
+```
+  T
+I W I
+  I
+```
+
+T is Glass Tubing, I is a Wrought Iron Plate and W is [Copper Wire](Wire_Drawer.md). Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, 2 screws ([Fasteners](Fasteners.md)) and Electrical Treatise I: Cells and Static Charge ([Treatise](Treatise.md)).
 
 A field under **0.3 Ru** is **too faint to read**: the counter gives no figure and says so.
 
@@ -318,12 +369,12 @@ Carried in your inventory, it also turns the words on container tooltips and Jad
 Tells you what ore, and what oil, lies around you, so you do not dig blind. Read-only and needs no power.
 
 ```
+  N
+I W I
   R
-I S I
-  S
 ```
 
-R is Redstone Dust, I is a Wrought Iron Plate and S is a [Shaft](Shaft.md).
+N is a Compass, I is a Wrought Iron Plate, W is [Copper Wire](Wire_Drawer.md) and R is a Wrought Iron Rod. Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, 2 screws ([Fasteners](Fasteners.md)) and Electrical Treatise I: Cells and Static Charge ([Treatise](Treatise.md)).
 
 Right-click. It lists up to four kinds of ore within 16 blocks, each with a rough block count and which way most of it lies. It then needs a couple of seconds before the next reading. The count is rounded to the nearest 8 and wobbles a little each time, so a thin vein may read as nothing and a fat one does not read the same twice.
 
@@ -389,7 +440,7 @@ The [Computer](Electric_Controller.md#built-in-apps)'s **Diagram** app shows the
 
 ## Fitting a circuit
 
-The Thermometer, Pressure Gauge, Electroscope and Galvanometer can carry a circuit. Put the instrument and a live [Basic Electronic Circuit](Basic_Electronic_Circuit.md) in a crafting grid, in any arrangement: the instrument comes out carrying the circuit and reads in finer steps than the usual figure in the table. A quiet circuit takes the step down to about half; a noisy one, such as a cold joint, helps little; a dead one cannot be fitted. A fitted instrument still never reads the exact figure. Its tooltip says how fine it reads, and its signature on readings says it is circuit-fitted.
+The Thermometer, Pressure Gauge, Electroscope, Galvanometer, [Light Meter](Light_Meter.md), Dosimeter, Geiger Counter, Survey Meter, Flux Meter, Pyrometer and Component Tester can carry a circuit. Put the instrument and a live [Basic Electronic Circuit](Basic_Electronic_Circuit.md) in a crafting grid, in any arrangement: the instrument comes out carrying the circuit and reads in finer steps than the usual figure in the table. A quiet circuit takes the step down to about half; a noisy one, such as a cold joint, helps little; a dead one cannot be fitted. A fitted instrument still never reads the exact figure. Its tooltip says how fine it reads, and its signature on readings says it is circuit-fitted.
 
 ## Drift
 

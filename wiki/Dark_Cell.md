@@ -8,7 +8,7 @@ Enclose a room, put a Dark Cell controller in its wall, and keep the inside dark
 
 ## Crafting
 
-A Dark Cell is crafted at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, holding Electrical Treatise II: Coils and Magnets ([Treatise](Treatise.md)):
+A Dark Cell is crafted at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, holding Electrical Treatise III: Circuits ([Treatise](Treatise.md)); it spends no fasteners:
 
 ```
 P X P
@@ -16,7 +16,7 @@ W C W
 P P P
 ```
 
-P is a Wrought Iron Plate, X is Galena, W is Copper Wire and C is a Copper Plate.
+P is a Wrought Iron Plate, X is Galena, W is Copper Wire and C is a [circuit](Basic_Electronic_Circuit.md).
 
 Hostile mobs gather up to a limit set by the room's volume. The overworld, the Nether and the End each draw from their own kinds.
 
@@ -38,9 +38,19 @@ Heat cooks food drops; food left in the output chars. A Shock Plate scorches wha
 ```
 Fall Plate   P P P / S . S       Fire Plate    P P P / C C C
 Crush Head   P X P / P B P       Fume Port     P G P / P T P
-Shock Plate  C C C / P P P       Radiation     P P P / P B P / P P P
-P wrought iron plate, S stick, C copper plate, X shaft, B bearing (iron block for Radiation), G glass pane, T tube
+Shock Plate  C C C / P P P
+P wrought iron plate, S stick, C copper plate, X shaft, B bearing, G glass pane, T tube
 ```
+
+The Crush Head is crafted at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 4 screws ([Fasteners](Fasteners.md)); it needs Mechanical Treatise I: Engines, Flywheels and Dynamotors ([Treatise](Treatise.md)).
+
+```
+L L L
+L U L
+L L
+```
+
+The Radiation Source is made at the Engineering Table: L is a Lead Plate and U is a Uranium Ingot. It takes a [hammer](Hammer.md) in the tool row, 4 rivets and Nuclear Treatise I: Reactors and Fuel.
 
 ## The shield
 

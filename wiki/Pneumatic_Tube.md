@@ -16,7 +16,14 @@ S S S
 S S S
 ```
 
-**Evacuated Tube**: a Wide-Bore Tube between two Steel Plates, top and bottom. Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, holding Electrical Treatise III: Circuits ([Treatise](Treatise.md)).
+**Evacuated Tube**:
+
+```
+S T S
+L   L
+```
+
+S is a Steel Plate, T is a Wide-Bore Tube and L is a Lead Plate. Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, 2 screws ([Fasteners](Fasteners.md)) and Electrical Treatise III: Circuits ([Treatise](Treatise.md)).
 
 ## Using it
 
@@ -44,7 +51,7 @@ If an evacuated run's pressure rises past the level that holds the vacuum (a lea
 
 A shaft-driven pump that draws air out of the tube run it faces, with its shaft across the flow. Faster shaft, deeper vacuum. It loads the shaft like any [pump](Pump.md).
 
-Crafting: Pump + Pneumatic Tube, at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 2 [fasteners](Fasteners.md), holding Chemical Treatise I: Pressure Vessels ([Treatise](Treatise.md)).
+Crafting: a Pneumatic Tube beside a Pump, in a row, at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 2 [fasteners](Fasteners.md), screws or machine bolts, holding Chemical Treatise I: Pressure Vessels ([Treatise](Treatise.md)).
 
 ## Linear Motor Ring
 

@@ -10,7 +10,7 @@ W C W
 S   S
 ```
 
-S is a Steel Plate, W is Copper Fine Wire and C is Ceramic.
+S is a Steel Plate, W is [Copper Wire](Wire_Drawer.md) and C is Ceramic. Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, 3 machine bolts ([Fasteners](Fasteners.md)) and Electrical Treatise II: Coils and Magnets ([Treatise](Treatise.md)).
 
 ### Heads
 
@@ -32,7 +32,7 @@ T is a Tungsten Carbide Plate and S is a Steel Plate. Craft it at the [Engineeri
 T C T
 ```
 
-T is a Tungsten Plate and C is Ceramic.
+T is a Tungsten Plate and C is Ceramic. Craft it at the [Engineering Table](Engineering_Table.md) with a [file](Hand_Tools.md#file) in the tool row. It needs Materials Treatise I: Machine-Shop Consumables ([Treatise](Treatise.md)).
 
 ## Using it
 

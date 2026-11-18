@@ -1,0 +1,8 @@
+{
+  "values": [
+    {
+      "id": "minecraft:echo_shard",
+      "required": false
+    }
+  ]
+}

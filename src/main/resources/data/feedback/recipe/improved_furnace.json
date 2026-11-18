@@ -1,31 +1,26 @@
 {
   "type": "feedback:engineering",
   "key": {
-    "S": {
-      "item": "feedback:steel_plate"
-    },
-    "F": {
-      "item": "feedback:furnace"
-    }
+    "S": { "item": "feedback:steel_plate" },
+    "F": { "item": "feedback:furnace" },
+    "T": { "item": "feedback:copper_tubing" }
   },
   "pattern": [
     "SSS",
     "SFS",
-    "SSS"
+    "STS"
   ],
   "result": {
     "count": 1,
     "id": "feedback:improved_furnace"
   },
   "tool": [
-    {
-      "ability": "feedback:hammer",
-      "wear": 1
-    }
+    { "ability": "feedback:hammer", "wear": 1 }
   ],
   "fasteners": {
     "count": 3,
     "floor": 2,
     "forms": ["rivet"]
-  }
+  },
+  "school": "materials:2"
 }

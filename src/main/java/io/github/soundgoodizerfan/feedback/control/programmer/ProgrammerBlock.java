@@ -2,6 +2,19 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.control.programmer;
 
+import io.github.soundgoodizerfan.feedback.control.FacedShape;
+
+import net.minecraft.core.Direction;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -20,6 +33,40 @@ public class ProgrammerBlock extends Block implements EntityBlock {
 
     private final boolean electric;
 
+
+    /** Which way the front faces: toward the player who placed it. */
+    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+
+    /** Mirrors models/block/programmer.json (the desk) and electric_programmer.json (the cabinet), scripts/control_models.py. */
+    private static final java.util.Map<Direction, VoxelShape> DESK = FacedShape.of(new int[][]{
+            {0, 0, 0, 16, 14, 16}, {1, 14, 11, 15, 16, 13}});
+    private static final java.util.Map<Direction, VoxelShape> CABINET = FacedShape.of(new int[][]{{1, 0, 1, 15, 16, 15}});
+
+    @Override
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        return (electric ? CABINET : DESK).get(state.getValue(FACING));
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(FACING);
+    }
+
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        return defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
+    }
+
+    @Override
+    protected BlockState rotate(BlockState state, Rotation rotation) {
+        return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
+    }
+
+    @Override
+    protected BlockState mirror(BlockState state, Mirror mirror) {
+        return state.rotate(mirror.getRotation(state.getValue(FACING)));
+    }
+
     public ProgrammerBlock(Properties properties) {
         this(properties, false);
     }
@@ -28,6 +75,7 @@ public class ProgrammerBlock extends Block implements EntityBlock {
     public ProgrammerBlock(Properties properties, boolean electric) {
         super(properties);
         this.electric = electric;
+        registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH));
     }
 
     public boolean electric() {

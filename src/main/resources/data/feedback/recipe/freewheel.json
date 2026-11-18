@@ -1,15 +1,9 @@
 {
   "type": "feedback:engineering",
   "key": {
-    "C": {
-      "item": "feedback:small_cog"
-    },
-    "K": {
-      "item": "feedback:clutch"
-    },
-    "S": {
-      "item": "feedback:shaft"
-    }
+    "C": { "item": "feedback:small_cog" },
+    "K": { "item": "feedback:clutch" },
+    "S": { "item": "feedback:shaft" }
   },
   "pattern": [
     "CKC",
@@ -20,16 +14,12 @@
     "id": "feedback:freewheel"
   },
   "tool": [
-    {
-      "ability": "feedback:driver",
-      "wear": 1
-    }
+    { "ability": "feedback:driver", "wear": 1 }
   ],
   "fasteners": {
     "count": 2,
     "floor": 1,
-    "forms": [
-      "machine_bolt"
-    ]
-  }
+    "forms": ["machine_bolt"]
+  },
+  "school": "mechanical:2"
 }

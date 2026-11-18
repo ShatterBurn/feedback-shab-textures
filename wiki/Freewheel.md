@@ -4,7 +4,7 @@ An overrunning clutch: one shaft in, one shaft out. The input drives the output 
 
 ## Crafting
 
-At the [Engineering Table](Engineering_Table.md), with a tool driver and 2 [machine bolts](Fasteners.md):
+At the [Engineering Table](Engineering_Table.md), with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, 2 machine bolts ([Fasteners](Fasteners.md)) and Mechanical Treatise II: Transmission ([Treatise](Treatise.md)):
 
 ```
 C K C

@@ -34,4 +34,4 @@ S   S
 S S S
 ```
 
-S is a Steel Plate and E is an Eye of Ender.
+S is a Steel Plate and E is an Ender Pearl or a [Synthetic Pearl](Synthetic_Pearl.md).

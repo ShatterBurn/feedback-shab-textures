@@ -27,11 +27,11 @@ An engine, transmission, propeller, jet or thruster weighs on a vehicle what the
 
 ```
 P P P
-R   R
+R S R
 R   R
 ```
 
-P is a Wrought Iron Plate and R is a Wrought Iron Rod. Craft it at the [Engineering Table](Engineering_Table.md) with a [hammer](Hammer.md) in the tool row and 3 [fasteners](Fasteners.md).
+P is a Wrought Iron Plate, R is a Wrought Iron Rod and S is a [Shaft](Shaft.md). Craft it at the [Engineering Table](Engineering_Table.md) with a [hammer](Hammer.md) in the tool row, 3 machine bolts ([Fasteners](Fasteners.md)) and Mechanical Treatise I: Engines, Flywheels and Dynamotors ([Treatise](Treatise.md)).
 
 1. Place a **Lift** and build on top of it. Everything that touches the lift, block to block, becomes the vehicle: micro cells, bearings and other joints, adapters, thrusters, seats. **It mustn't touch the ground or anything else**, or the lift complains *"Too big -- is it touching something besides the lift?"*
 2. **Right-click** the lift. Everything on it becomes one object, held still: *"Lifted."*

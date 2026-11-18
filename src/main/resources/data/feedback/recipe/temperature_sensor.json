@@ -1,10 +1,14 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "category": "equipment",
-  "ingredients": [
-    { "item": "feedback:thermometer" },
-    { "item": "feedback:copper_wire" },
-    { "item": "minecraft:iron_nugget" }
-  ],
-  "result": { "count": 1, "id": "feedback:temperature_sensor" }
+  "type": "feedback:engineering",
+  "key": {
+    "P": { "item": "feedback:wrought_iron_plate" },
+    "T": { "item": "feedback:thermometer" },
+    "W": { "item": "feedback:copper_wire" },
+    "C": { "tag": "feedback:circuits" }
+  },
+  "pattern": [ "PTP", "WCW" ],
+  "result": { "count": 1, "id": "feedback:temperature_sensor" },
+  "tool": [ { "ability": "feedback:driver", "wear": 1 } ],
+  "fasteners": { "count": 2, "floor": 1, "forms": [ "screw" ] },
+  "school": "electrical:3"
 }

@@ -2,22 +2,10 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "P": {
-      "item": "minecraft:oak_planks"
-    },
-    "E": {
-      "item": "minecraft:emerald"
-    },
-    "H": {
-      "item": "minecraft:hopper"
-    }
+    "P": { "tag": "minecraft:planks" },
+    "E": { "item": "minecraft:emerald" },
+    "H": { "item": "feedback:hopper" }
   },
-  "pattern": [
-    "PEP",
-    "PHP"
-  ],
-  "result": {
-    "count": 1,
-    "id": "feedback:counter"
-  }
+  "pattern": [ "PEP", "PHP" ],
+  "result": { "count": 1, "id": "feedback:counter" }
 }

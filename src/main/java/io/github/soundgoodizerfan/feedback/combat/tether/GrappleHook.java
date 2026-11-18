@@ -96,6 +96,8 @@ public class GrappleHook extends Projectile {
     /** The pulled body, -1 before the hook bites. */
     private int heldId = -1;
     private int reelTicks;
+    /** A whip's spear has hauled its creature all the way in (once). */
+    private boolean arrived;
     private float lastDistance;
     private float strain;
     private float rating;
@@ -388,6 +390,19 @@ public class GrappleHook extends Projectile {
         // A whip's swing is over when the reel has brought the wearer to the anchor.
         if (swing && has(WHIP) && distance <= ModularTuning.GRAPPLE_STOP_DISTANCE + 0.5) {
             discard();
+            return;
+        }
+        // A whip's spear stays in a creature it has reeled in: it holds, and pulls again if the creature breaks away, until the key is pressed again.
+        if (has(WHIP) && !swing && distance <= ModularTuning.GRAPPLE_STOP_DISTANCE) {
+            if (!arrived) {
+                arrived = true;
+                if (owner instanceof LivingEntity thrower)
+                    io.github.soundgoodizerfan.feedback.combat.grab.Throwing.attempt(thrower, living);
+            }
+            reelTicks = 0;
+            lastDistance = distance;
+            if (owner.isShiftKeyDown())
+                discard();
             return;
         }
         if (++reelTicks > ModularTuning.GRAPPLE_MAX_TICKS || !swing && distance <= ModularTuning.GRAPPLE_STOP_DISTANCE

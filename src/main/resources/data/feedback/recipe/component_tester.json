@@ -1,23 +1,13 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "redstone",
+  "type": "feedback:engineering",
   "key": {
-    "W": {
-      "item": "feedback:copper_wire"
-    },
-    "P": {
-      "item": "feedback:wrought_iron_plate"
-    },
-    "C": {
-      "item": "feedback:ceramic"
-    }
+    "W": { "item": "feedback:copper_wire" },
+    "C": { "item": "feedback:ceramic" },
+    "G": { "item": "feedback:galvanometer" }
   },
-  "pattern": [
-    "WW",
-    "PC"
-  ],
-  "result": {
-    "count": 1,
-    "id": "feedback:component_tester"
-  }
+  "pattern": [ "W W", "CGC" ],
+  "result": { "count": 1, "id": "feedback:component_tester" },
+  "tool": [ { "ability": "feedback:driver", "wear": 1 } ],
+  "fasteners": { "count": 1, "floor": 1, "forms": [ "screw" ] },
+  "school": "electrical:1"
 }

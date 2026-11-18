@@ -1,22 +1,14 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "category": "redstone",
-  "ingredients": [
-    {
-      "item": "feedback:galvanometer"
-    },
-    {
-      "item": "feedback:wrought_iron_plate"
-    },
-    {
-      "item": "feedback:copper_wire"
-    },
-    {
-      "item": "feedback:ceramic"
-    }
-  ],
-  "result": {
-    "count": 1,
-    "id": "feedback:oscilloscope"
-  }
+  "type": "feedback:engineering",
+  "key": {
+    "P": { "item": "feedback:wrought_iron_plate" },
+    "S": { "item": "feedback:phosphor_screen" },
+    "W": { "item": "feedback:copper_wire" },
+    "C": { "tag": "feedback:circuits" }
+  },
+  "pattern": [ "PSP", "WCW" ],
+  "result": { "count": 1, "id": "feedback:oscilloscope" },
+  "tool": [ { "ability": "feedback:driver", "wear": 1 } ],
+  "fasteners": { "count": 2, "floor": 1, "forms": [ "screw" ] },
+  "school": "electrical:3"
 }

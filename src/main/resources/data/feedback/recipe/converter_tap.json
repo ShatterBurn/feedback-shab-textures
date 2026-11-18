@@ -1,23 +1,13 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "redstone",
+  "type": "feedback:engineering",
   "key": {
-    "L": {
-      "item": "feedback:heating_coil"
-    },
-    "X": {
-      "item": "feedback:whisker"
-    },
-    "P": {
-      "item": "feedback:aluminium_plate"
-    }
+    "L": { "item": "feedback:induction_coil" },
+    "R": { "item": "feedback:rectifier" },
+    "P": { "item": "feedback:aluminium_plate" }
   },
-  "pattern": [
-    "LXL",
-    "PPP"
-  ],
-  "result": {
-    "count": 1,
-    "id": "feedback:converter_tap"
-  }
+  "pattern": [ "LRL", "PPP" ],
+  "result": { "count": 1, "id": "feedback:converter_tap" },
+  "tool": [ { "ability": "feedback:driver", "wear": 1 } ],
+  "fasteners": { "count": 3, "floor": 1, "forms": [ "screw" ] },
+  "school": "electrical:3"
 }

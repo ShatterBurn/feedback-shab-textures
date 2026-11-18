@@ -1,0 +1,8 @@
+{
+  "values": [
+    {
+      "id": "feedback:galena_ore",
+      "required": false
+    }
+  ]
+}

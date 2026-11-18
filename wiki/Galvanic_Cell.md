@@ -30,14 +30,15 @@ Cells touching the same line pool together and share the load, so two cells feed
 
 ### Cell Pack
 
-Cells in series raise the band: the first cell sets it by its pair, and every 4 cells past the first raise it one band. A **Galvanic Cell Pack** is 5 cells in series, so it is one band up: MV for zinc and copper. Craft it from five Galvanic Cells:
+Cells in series raise the band: the first cell sets it by its pair, and every 4 cells past the first raise it one band. A **Galvanic Cell Pack** is 5 cells in series, so it is one band up: MV for zinc and copper. Craft it from five Galvanic Cells at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, 2 screws ([Fasteners](Fasteners.md)) and Electrical Treatise I: Cells and Static Charge ([Treatise](Treatise.md)):
 
 ```
-CCC
-C C
+C C C
+C W C
+K K K
 ```
 
-C is a Galvanic Cell. The pack gives the same 1 A, at its higher band. A higher band carries more energy in each packet, so the pack spends its anode faster for the same current.
+C is a Galvanic Cell, W is [Copper Wire](Wire_Drawer.md) and K is a Ceramic. The pack gives the same 1 A, at its higher band. A higher band carries more energy in each packet, so the pack spends its anode faster for the same current.
 
 If a turning Electrostatic Generator is on the same line, its higher band overrules the cells for as long as the pulse lasts. Jade shows the cells as *"Outbid by a higher band"* during that time. That's normal.
 

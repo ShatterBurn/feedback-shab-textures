@@ -1,7 +1,19 @@
 {
   "variants": {
-    "": {
+    "facing=north": {
       "model": "feedback:block/blueprint_table"
+    },
+    "facing=east": {
+      "model": "feedback:block/blueprint_table",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "feedback:block/blueprint_table",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "feedback:block/blueprint_table",
+      "y": 270
     }
   }
 }

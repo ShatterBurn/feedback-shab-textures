@@ -345,6 +345,16 @@ public final class UpswingSwing {
      * landing at the very start of the window, and the draw back is brisk (a short clip, so its second half
      * plays quickly). Its pace is its own, not the window's or the recovery's: the clip is only the look.
      */
+    /**
+     * The Knuckleblaster's punch: the same Better Combat punch on the gauntlet's arm, run over the whole punch animation
+     * ({@code PunchTuning.PUNCH_TICKS}) with the strike {@code PUNCH_STRIKE_TICKS} in, where the server lands the hit.
+     */
+    public static void knucklePunch(AbstractClientPlayer player) {
+        AnimatedHand hand = io.github.soundgoodizerfan.feedback.combat.punch.Punching.hand(player) == InteractionHand.OFF_HAND ? AnimatedHand.OFF_HAND : AnimatedHand.MAIN_HAND;
+        float length = io.github.soundgoodizerfan.feedback.combat.punch.PunchTuning.PUNCH_TICKS;
+        play(player, "bettercombat:one_handed_punch", hand, length, 3f / length);
+    }
+
     public static void punchParry(AbstractClientPlayer player) {
         AnimatedHand hand = io.github.soundgoodizerfan.feedback.combat.punch.Punching.hand(player) == InteractionHand.OFF_HAND ? AnimatedHand.OFF_HAND : AnimatedHand.MAIN_HAND;
         play(player, "bettercombat:one_handed_punch", hand, PUNCH_LENGTH, PUNCH_STRIKE / PUNCH_LENGTH);

@@ -1,23 +1,14 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
+  "type": "feedback:engineering",
   "key": {
-    "I": {
-      "item": "feedback:wrought_iron_plate"
-    },
-    "C": {
-      "item": "feedback:copper_plate"
-    },
-    "S": {
-      "item": "feedback:shaft"
-    }
+    "I": { "item": "feedback:wrought_iron_plate" },
+    "C": { "item": "feedback:copper_plate" },
+    "S": { "item": "feedback:shaft" },
+    "K": { "type": "feedback:material", "form": "coil_spring" }
   },
-  "pattern": [
-    "III",
-    "CSC"
-  ],
-  "result": {
-    "count": 1,
-    "id": "feedback:damper"
-  }
+  "pattern": [ "IKI", "CSC" ],
+  "result": { "count": 1, "id": "feedback:damper" },
+  "tool": [ { "ability": "feedback:driver", "wear": 1 } ],
+  "fasteners": { "count": 3, "floor": 1, "forms": [ "screw" ] },
+  "school": "mechanical:1"
 }

@@ -76,21 +76,6 @@ public final class ResearchPlans extends SimpleJsonResourceReloadListener {
         return out;
     }
 
-    /** The specimen types of every first volume's plan, for the client's recipe browser. */
-    public java.util.List<io.github.soundgoodizerfan.feedback.net.ResearchSyncPayload.Entry> specimens() {
-        java.util.List<io.github.soundgoodizerfan.feedback.net.ResearchSyncPayload.Entry> out = new java.util.ArrayList<>();
-        for (var e : plans.entrySet()) {
-            int cut = e.getKey().lastIndexOf('_');
-            if (cut < 0 || e.getKey().contains("/") || e.getValue().specimens.isEmpty())
-                continue;
-            try {
-                out.add(new io.github.soundgoodizerfan.feedback.net.ResearchSyncPayload.Entry(e.getKey().substring(0, cut), Integer.parseInt(e.getKey().substring(cut + 1)), java.util.List.copyOf(e.getValue().specimens)));
-            } catch (NumberFormatException ignored) {
-                // not a volume plan ("attunement")
-            }
-        }
-        return out;
-    }
 
     @Override
     protected void apply(Map<ResourceLocation, JsonElement> files, ResourceManager manager, ProfilerFiller profiler) {

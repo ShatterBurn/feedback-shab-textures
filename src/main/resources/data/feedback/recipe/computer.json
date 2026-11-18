@@ -1,35 +1,13 @@
 {
   "type": "feedback:engineering",
   "key": {
-    "A": {
-      "item": "feedback:electric_controller"
-    },
-    "B": {
-      "item": "feedback:electric_programmer"
-    },
-    "C": {
-      "item": "feedback:silicon_ingot"
-    }
+    "F": { "item": "feedback:phosphor_screen" },
+    "E": { "item": "feedback:electric_controller" },
+    "P": { "item": "feedback:electric_programmer" }
   },
-  "pattern": [
-    "ABC"
-  ],
-  "result": {
-    "count": 1,
-    "id": "feedback:computer"
-  },
-  "tool": [
-    {
-      "ability": "feedback:driver",
-      "wear": 1
-    }
-  ],
-  "fasteners": {
-    "count": 2,
-    "floor": 1,
-    "forms": [
-      "screw"
-    ]
-  },
+  "pattern": [ "F", "E", "P" ],
+  "result": { "count": 1, "id": "feedback:computer" },
+  "tool": [ { "ability": "feedback:driver", "wear": 1 } ],
+  "fasteners": { "count": 2, "floor": 1, "forms": [ "screw" ] },
   "school": "electrical:3"
 }

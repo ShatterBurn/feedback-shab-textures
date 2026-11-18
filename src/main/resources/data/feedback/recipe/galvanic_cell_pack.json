@@ -1,7 +1,26 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "redstone",
-  "key": { "C": { "item": "feedback:galvanic_cell" } },
-  "pattern": [ "CCC", "C C" ],
-  "result": { "count": 1, "id": "feedback:galvanic_cell_pack" }
+  "type": "feedback:engineering",
+  "key": {
+    "C": { "item": "feedback:galvanic_cell" },
+    "W": { "item": "feedback:copper_wire" },
+    "K": { "item": "feedback:ceramic" }
+  },
+  "pattern": [
+    "CCC",
+    "CWC",
+    "KKK"
+  ],
+  "result": {
+    "count": 1,
+    "id": "feedback:galvanic_cell_pack"
+  },
+  "tool": [
+    { "ability": "feedback:driver", "wear": 1 }
+  ],
+  "fasteners": {
+    "count": 2,
+    "floor": 1,
+    "forms": ["screw"]
+  },
+  "school": "electrical:1"
 }

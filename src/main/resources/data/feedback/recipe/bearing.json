@@ -1,21 +1,13 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
+  "type": "feedback:engineering",
   "key": {
-    "I": {
-      "item": "feedback:wrought_iron_plate"
-    },
-    "S": {
-      "item": "feedback:shaft"
-    }
+    "P": { "item": "feedback:wrought_iron_plate" },
+    "R": { "item": "feedback:wrought_iron_rod" },
+    "S": { "item": "feedback:shaft" }
   },
-  "pattern": [
-    "I",
-    "S",
-    "I"
-  ],
-  "result": {
-    "count": 2,
-    "id": "feedback:bearing"
-  }
+  "pattern": [ "PRP", "RSR", "PRP" ],
+  "result": { "count": 1, "id": "feedback:bearing" },
+  "tool": [ { "ability": "feedback:driver", "wear": 1 } ],
+  "fasteners": { "count": 4, "floor": 1, "forms": [ "screw" ] },
+  "school": "mechanical:1"
 }

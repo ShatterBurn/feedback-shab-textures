@@ -1,35 +1,12 @@
 {
   "type": "feedback:engineering",
   "key": {
-    "I": {
-      "item": "feedback:wrought_iron_plate"
-    },
-    "P": {
-      "item": "feedback:wrought_iron_plate"
-    },
-    "S": {
-      "item": "feedback:shaft"
-    }
+    "P": { "item": "feedback:wrought_iron_plate" },
+    "R": { "item": "feedback:wrought_iron_rod" }
   },
-  "pattern": [
-    "PSP",
-    " I ",
-    "III"
-  ],
-  "result": {
-    "count": 1,
-    "id": "feedback:reloading_press"
-  },
-  "tool": [
-    {
-      "ability": "feedback:driver",
-      "wear": 1
-    }
-  ],
-  "fasteners": {
-    "count": 2,
-    "floor": 1,
-    "forms": ["screw"]
-  },
+  "pattern": [ "PRP", " P ", "PPP" ],
+  "result": { "count": 1, "id": "feedback:reloading_press" },
+  "tool": [ { "ability": "feedback:driver", "wear": 1 } ],
+  "fasteners": { "count": 2, "floor": 1, "forms": [ "screw" ] },
   "school": "weapons:2"
 }

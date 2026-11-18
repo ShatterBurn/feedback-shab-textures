@@ -100,8 +100,5 @@
     "item": "feedback:water_wheel",
     "threshold": 5,
     "ink": 2
-  },
-  "specimens": [
-    "water_wheel"
-  ]
+  }
 }

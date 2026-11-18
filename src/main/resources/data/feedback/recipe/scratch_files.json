@@ -1,31 +1,14 @@
 {
   "type": "feedback:engineering",
-  "ingredients": [
-    {
-      "item": "minecraft:iron_ingot"
-    },
-    {
-      "item": "minecraft:flint"
-    },
-    {
-      "item": "minecraft:quartz"
-    },
-    {
-      "item": "minecraft:leather"
-    }
-  ],
-  "result": {
-    "count": 1,
-    "id": "feedback:scratch_files"
+  "key": {
+    "I": { "type": "feedback:material", "form": "ingot", "property": "hardness", "max": 12 },
+    "S": { "type": "feedback:material", "form": "ingot", "property": "hardness", "min": 14, "max": 60 },
+    "G": { "type": "feedback:material", "form": "gem", "property": "hardness", "min": 100 },
+    "L": { "item": "minecraft:leather" }
   },
-  "tool": [
-    {
-      "ability": "feedback:hammer",
-      "wear": 1
-    }
-  ],
-  "fasteners": {
-    "count": 0,
-    "floor": 1
-  }
+  "pattern": [ "III", "SSS", "GGL" ],
+  "result": { "count": 1, "id": "feedback:scratch_files" },
+  "tool": [ { "ability": "feedback:file", "wear": 1 } ],
+  "fasteners": { "count": 0, "floor": 1 },
+  "school": "materials:1"
 }

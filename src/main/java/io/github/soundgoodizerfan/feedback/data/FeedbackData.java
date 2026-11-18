@@ -17,8 +17,10 @@ public final class FeedbackData {
         event.getGenerator().addProvider(event.includeClient(),
                 new FormData.BlockStates(output, event.getExistingFileHelper()));
         event.getGenerator().addProvider(event.includeServer(), FormData.loot(output, lookup));
-        event.getGenerator().addProvider(event.includeServer(),
+        var blockTags = event.getGenerator().addProvider(event.includeServer(),
                 new FormData.BlockTagsGen(output, lookup, event.getExistingFileHelper()));
+        event.getGenerator().addProvider(event.includeServer(),
+                new FormData.ItemTagsGen(output, lookup, blockTags.contentsGetter(), event.getExistingFileHelper()));
         event.getGenerator().addProvider(event.includeServer(), new FormData.Recipes(output, lookup));
     }
 }

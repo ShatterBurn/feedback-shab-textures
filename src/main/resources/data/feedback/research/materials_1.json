@@ -100,9 +100,5 @@
     "item": "feedback:hand_hammer",
     "threshold": 20,
     "ink": 2
-  },
-  "specimens": [
-    "hand_hammer",
-    "file"
-  ]
+  }
 }

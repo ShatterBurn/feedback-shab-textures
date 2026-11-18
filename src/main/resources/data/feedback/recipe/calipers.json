@@ -1,29 +1,23 @@
 {
   "type": "feedback:engineering",
   "key": {
-    "P": {
-      "item": "feedback:copper_plate"
-    },
-    "N": {
-      "item": "minecraft:iron_nugget"
-    }
+    "P": { "item": "feedback:copper_plate" },
+    "R": { "item": "feedback:wrought_iron_rod" }
   },
   "pattern": [
     "P P",
-    " N "
+    " R "
   ],
   "result": {
     "count": 1,
     "id": "feedback:calipers"
   },
   "tool": [
-    {
-      "ability": "feedback:file",
-      "wear": 1
-    }
+    { "ability": "feedback:file", "wear": 1 }
   ],
   "fasteners": {
     "count": 0,
     "floor": 1
-  }
+  },
+  "school": "materials:1"
 }

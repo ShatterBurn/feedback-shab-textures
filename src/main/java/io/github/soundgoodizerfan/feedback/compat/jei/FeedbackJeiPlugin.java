@@ -133,8 +133,6 @@ public class FeedbackJeiPlugin implements IModPlugin {
         registration.getCraftingCategory().addExtension(
                 io.github.soundgoodizerfan.feedback.modular.item.BootstrapToolRecipe.class, new BootstrapGloveExtension());
         registration.getCraftingCategory().addExtension(
-                io.github.soundgoodizerfan.feedback.modular.treatise.BootstrapSpecimenRecipe.class, new BootstrapSpecimenExtension());
-        registration.getCraftingCategory().addExtension(
                 io.github.soundgoodizerfan.feedback.item.GrappleUpgradeRecipe.class, new GrappleUpgradeCraftingExtension());
         registration.getCraftingCategory().addExtension(
                 io.github.soundgoodizerfan.feedback.machine.bearing.SliderSpringRecipe.class, new SliderSpringCraftingExtension());
@@ -716,9 +714,9 @@ public class FeedbackJeiPlugin implements IModPlugin {
         ClientTable.BASINS.onChanged(() -> show(BasinCategory.TYPE, ClientTable.BASINS.get()));
     }
 
-    /** The research cards: the first volumes' specimens arrive with their own table, the later ones and the attunements are read off the types and effects the client holds. */
+    /** The research cards: the apps' subjects arrive with their own table, the volumes and the attunements are read off the schools and effects the client holds. */
     private static void publishResearch() {
-        show(ResearchCategory.TYPE, ResearchCategory.cards(ClientTable.RESEARCH.get(), io.github.soundgoodizerfan.feedback.modular.type.ModularTypes.known(),
+        show(ResearchCategory.TYPE, ResearchCategory.cards(ClientTable.RESEARCH.get(),
                 io.github.soundgoodizerfan.feedback.modular.attunement.Attunements.get().effects()));
     }
 

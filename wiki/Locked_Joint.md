@@ -5,10 +5,11 @@ A micro-block joint that holds two bodies together as one rigid piece. It splits
 ## Crafting
 
 ```
-IBI
+I B I
+R
 ```
 
-I is a Wrought Iron Plate and B is a [Rotary Bearing](Rotary_Bearing.md).
+I is a Wrought Iron Plate, B is a [Rotary Bearing](Rotary_Bearing.md) and R is a Wrought Iron Rod. Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 2 screws ([Fasteners](Fasteners.md)). It needs Mechanical Treatise I: Engines, Flywheels and Dynamotors ([Treatise](Treatise.md)).
 
 ## Using it
 

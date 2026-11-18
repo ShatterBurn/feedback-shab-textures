@@ -45,24 +45,24 @@ The Annealing Furnace tops out at 380 Tu, so it can't overshoot; the Kiln needs 
 | --- | --- | --- |
 | **Furnace** | Ring of Cobblestone | Light and quick. General purpose. Gets hot enough to burn food if you leave it. |
 | **Smoker** | Furnace with four Logs around it | **Physically can't get above 170 Tu**, so it can't burn food. Great for food, useless for metal. |
-| **Crude Blast Furnace** | Furnace, Wrought Iron Ingots around the top, Smooth Stone below | Very heavy and very well sealed. Slow to heat, but gets hot and stays steady. Good for ore. |
-| **Improved Furnace** | Furnace surrounded by Steel Ingots | Between the two. The only furnace with an opening, so a [Temperature Sensor](Instruments.md#temperature-sensor) can be fitted and a controller can watch it. |
+| **Crude Blast Furnace** | Furnace, Wrought Iron Plates, Copper Tubing and Bricks (Engineering Table) | Very heavy and very well sealed. Slow to heat, but gets hot and stays steady. Good for ore. |
+| **Improved Furnace** | Furnace, Steel Plates and Copper Tubing (Engineering Table) | Between the two. The only furnace with an opening, so a [Temperature Sensor](Instruments.md#temperature-sensor) can be fitted and a controller can watch it. |
 | **Kiln** | Bricks: a row of three over two columns (`###` / `#_#` / `#_#`) | For ceramics and sintered carbides. Tops out at **1330 Tu**: enough for **Firebrick** (1200–1500), never enough for steel (1350). |
-| **Annealing Furnace** | Steel Ingot surrounded by [Insulation](Insulation.md) | Tops out at **380 Tu**, inside tempering's 300–400, so it **can't overheat** a tempering batch. Heavy, so it cools slowly. |
-| **[Puddling Furnace](Puddling_Furnace.md)** | Bricks, a Furnace, a Wrought Iron Rod and Plate | A shaft into its back stirs the charge. Turns cast iron into a clean iron bloom. |
+| **Annealing Furnace** | [Firebox](Firebox.md), Steel Plate and [Insulation](Insulation.md) (Engineering Table) | Tops out at **380 Tu**, inside tempering's 300–400, so it **can't overheat** a tempering batch. Heavy, so it cools slowly. |
+| **[Puddling Furnace](Puddling_Furnace.md)** | Bricks, a Furnace, a Shaft, a Wrought Iron Rod and Plate (Engineering Table) | A shaft into its back stirs the charge. Turns cast iron into a clean iron bloom. |
 
 Recipes shown as grids:
 
 ```
 Furnace          Smoker           Crude Blast      Improved         Kiln             Annealing
-# # #              L              I I I            S S S            B B B            N N N
-#   #            L F L            I F I            S F S            B   B            N S N
-# # #              L              s s s            S S S            B B B            N N N
+# # #              L              P P P            S S S            B B B            N N N
+#   #            L F L            T F P            S F S            B   B            N S N
+# # #              L              B B B            S T S            B   B            N X N
 ```
 
-`#` Cobblestone, `L` Log, `F` Furnace, `I` Wrought Iron Ingot, `s` Smooth Stone, `S` Steel Ingot, `B` Brick, `N` Insulation.
+`#` Cobblestone, `L` Log, `F` Furnace, `P` Wrought Iron Plate (Crude Blast Furnace), `T` Copper Tubing, `S` Steel Plate (Improved Furnace and Annealing Furnace), `B` Brick, `N` Insulation, `X` Firebox. The Crude Blast Furnace, Improved Furnace and Annealing Furnace grids are laid out at the [Engineering Table](Engineering_Table.md); the Kiln, Furnace and Smoker are crafted in the plain Crafting Table.
 
-The Annealing Furnace is crafted at the [Engineering Table](Engineering_Table.md) with a [hammer](Hammer.md) in the tool row, holding Materials Treatise II: Metallurgy and Heat Treatment ([Treatise](Treatise.md)).
+The three Engineering Table furnaces are built with a [hammer](Hammer.md) in the tool row and rivets ([Fasteners](Fasteners.md)): 3 for the Crude Blast Furnace and the Improved Furnace, 2 for the Annealing Furnace. Each needs Materials Treatise II: Metallurgy and Heat Treatment ([Treatise](Treatise.md)).
 
 ## Sealed vs. open
 

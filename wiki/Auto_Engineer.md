@@ -5,12 +5,12 @@ A machine that repeats one assembly you made by hand at the [Engineering Table](
 ## Crafting
 
 ```
-S S S
+S A S
 E M S
 S S S
 ```
 
-S is a Steel Plate, E is an Engineering Table and M is a [Dynamotor](Dynamotor.md).
+S is a Steel Plate, A is a [Robot Arm](Robot_Arm.md), E is an Engineering Table and M is a [Dynamotor](Dynamotor.md). Craft it at the Engineering Table with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 6 machine bolts ([Fasteners](Fasteners.md)). It needs Robotics Treatise II: Robots ([Treatise](Treatise.md)).
 
 ## Recording
 

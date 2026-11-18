@@ -71,6 +71,12 @@ public class MechanicalHammerBlockEntity extends BlockEntity implements Reciproc
      */
     private final HeadSlot head = new HeadSlot();
 
+    /** Block event id: a stroke landed. Server sends it; the client marks the linkage angle at impact so the drawn head lands with it. */
+    private static final int EVENT_STROKE = 1;
+
+    /** Client only: the linkage's angle (degrees) when the last stroke landed; the head's drop is timed from it. 0 until one lands. */
+    private float impactAngle;
+
     public MechanicalHammerBlockEntity(BlockPos pos, BlockState state) {
         super(FBlockEntities.MECHANICAL_HAMMER.get(), pos, state);
     }
@@ -167,6 +173,7 @@ public class MechanicalHammerBlockEntity extends BlockEntity implements Reciproc
             return;
 
         playBlow();
+        level.blockEvent(worldPosition, getBlockState().getBlock(), EVENT_STROKE, 0);
 
         // The ceiling is enforced here rather than in the linkage, and the surplus is not
         // discarded -- it is absorbed. Gearing past what the head can take now makes the head
@@ -246,6 +253,21 @@ public class MechanicalHammerBlockEntity extends BlockEntity implements Reciproc
         if (level == null)
             return;
         level.playSound(null, worldPosition, SoundEvents.ANVIL_LAND, SoundSource.BLOCKS, 0.15f, 1.6f);
+    }
+
+    @Override
+    public boolean triggerEvent(int id, int param) {
+        if (id != EVENT_STROKE || level == null || !level.isClientSide)
+            return super.triggerEvent(id, param);
+        CrankLinkageBlockEntity linkage = CrankLinkageBlockEntity.driving(level, worldPosition);
+        if (linkage != null)
+            impactAngle = linkage.getVisualAngle(0);
+        return true;
+    }
+
+    /** Client only: the linkage angle at the last landed stroke, which {@code MechanicalHammerRenderer} times the head's drop from. */
+    public float getImpactAngle() {
+        return impactAngle;
     }
 
     public void sync() {

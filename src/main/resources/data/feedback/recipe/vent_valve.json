@@ -1,7 +1,13 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
-  "key": { "P": { "item": "feedback:steel_plate" }, "B": { "item": "minecraft:iron_bars" }, "L": { "item": "minecraft:lever" } },
-  "pattern": ["PBP"," L "],
-  "result": { "count": 1, "id": "feedback:vent_valve" }
+  "type": "feedback:engineering",
+  "key": {
+    "P": { "item": "feedback:steel_plate" },
+    "R": { "item": "feedback:wrought_iron_rod" },
+    "V": { "item": "feedback:valve" }
+  },
+  "pattern": [ "PRP", " V " ],
+  "result": { "count": 1, "id": "feedback:vent_valve" },
+  "tool": [ { "ability": "feedback:driver", "wear": 1 } ],
+  "fasteners": { "count": 2, "floor": 1, "forms": [ "screw" ] },
+  "school": "mechanical:1"
 }

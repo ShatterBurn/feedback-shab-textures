@@ -1,27 +1,13 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "equipment",
+  "type": "feedback:engineering",
   "key": {
-    "T": {
-      "item": "feedback:glass_tubing"
-    },
-    "R": {
-      "item": "minecraft:redstone"
-    },
-    "I": {
-      "item": "feedback:wrought_iron_plate"
-    },
-    "W": {
-      "item": "feedback:copper_wire"
-    }
+    "T": { "item": "feedback:glass_tubing" },
+    "W": { "item": "feedback:copper_wire" },
+    "I": { "item": "feedback:wrought_iron_plate" }
   },
-  "pattern": [
-    " T ",
-    "IRI",
-    " W "
-  ],
-  "result": {
-    "count": 1,
-    "id": "feedback:geiger_counter"
-  }
+  "pattern": [ " T ", "IWI", " I " ],
+  "result": { "count": 1, "id": "feedback:geiger_counter" },
+  "tool": [ { "ability": "feedback:driver", "wear": 1 } ],
+  "fasteners": { "count": 2, "floor": 1, "forms": [ "screw" ] },
+  "school": "electrical:1"
 }

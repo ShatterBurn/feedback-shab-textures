@@ -6,17 +6,6 @@ The part of a shop machine that does the work and wears: a **Roll** for the [Rol
 
 A head is a modular item. Draw it at the [Blueprint Table](Blueprint_Table.md) while you hold Materials Treatise I ([Treatise](Treatise.md)), shape its part at a part bench ([Smithing Table](Smithing_Table.md)), and put the parts together in a crafting grid. Pick the material, the axis and the variant at the Blueprint Table; the bars there show the **ceiling** (*Driven up to*) and, for a bit, wheel or die, the **edge hardness**.
 
-Each type has a first specimen recipe in iron, crafted in the crafting grid:
-
-```
-Roll              Wire Die        Lathe Bit     Drill Bit     Abrasive Wheel
-I I I             I B I           I             N             G I G
-S I S             B   B           N             N             I B I
-I I I                             N             I             G I G
-```
-
-I is an Iron Ingot, S is a [Shaft](Shaft.md), B is Iron Bars (in the wire die) or a [Bearing](Bearing.md) (in the abrasive wheel), N is an Iron Nugget and G is Gravel.
-
 Each head has an **edge** slot as well as a body: the edge material is what the cut is made with, so a head with a harder edge cuts harder stock.
 
 | Head | Axis | Variants |

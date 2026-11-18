@@ -5,10 +5,11 @@ A wall valve that lets air from a [pipe](Pipe.md) into the sealed cabin it opens
 ## Crafting
 
 ```
- Steel Plate   Valve   Steel Plate
+S V S
+K
 ```
 
-Steel Plate is a steel plate and Valve is a [Valve](Valve.md).
+S is a Steel Plate, V is a [Valve](Valve.md) and K is a [Coil Spring](Lathe.md#what-it-makes) of any metal. Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 2 screws ([Fasteners](Fasteners.md)). It needs Mechanical Treatise I: Engines, Flywheels and Dynamotors ([Treatise](Treatise.md)).
 
 ## Using it
 

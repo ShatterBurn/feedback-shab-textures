@@ -1,0 +1,8 @@
+{
+  "values": [
+    {
+      "id": "feedback:graphite_ore",
+      "required": false
+    }
+  ]
+}

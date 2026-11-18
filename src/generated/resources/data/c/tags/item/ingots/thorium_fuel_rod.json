@@ -1,0 +1,8 @@
+{
+  "values": [
+    {
+      "id": "feedback:thorium_fuel_rod",
+      "required": false
+    }
+  ]
+}

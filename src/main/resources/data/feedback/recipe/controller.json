@@ -1,17 +1,15 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "redstone",
+  "type": "feedback:engineering",
   "key": {
     "P": { "item": "feedback:copper_plate" },
-    "S": { "item": "feedback:shaft" },
-    "C": { "item": "minecraft:comparator" }
+    "W": { "item": "feedback:wrought_iron_rod" },
+    "C": { "item": "feedback:small_cog" },
+    "E": { "item": "feedback:escapement" },
+    "S": { "item": "feedback:shaft" }
   },
-  "pattern": [
-    "PCP",
-    "PSP"
-  ],
-  "result": {
-    "count": 1,
-    "id": "feedback:controller"
-  }
+  "pattern": [ "PWP", "CEC", "PSP" ],
+  "result": { "count": 1, "id": "feedback:controller" },
+  "tool": [ { "ability": "feedback:driver", "wear": 1 } ],
+  "fasteners": { "count": 4, "floor": 1, "forms": [ "screw" ] },
+  "school": "mechanical:2"
 }

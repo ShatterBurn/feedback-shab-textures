@@ -46,12 +46,12 @@ Gearing **up** makes things faster, but the fast branch costs more power to fric
 ## Gearbox
 
 ```
-  C
+P C P
 C S C
-  C
+P C P
 ```
 
-C is a Small Cog and S is a [Shaft](Shaft.md). Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 2 [fasteners](Fasteners.md). It needs Mechanical Treatise II: Transmission ([Treatise](Treatise.md)).
+C is a Small Cog, S is a [Shaft](Shaft.md) and P is a Wrought Iron Plate. Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 4 machine bolts ([Fasteners](Fasteners.md)). It needs Mechanical Treatise II: Transmission ([Treatise](Treatise.md)).
 
 A gearbox connects shafts on **any of its six faces** at the same speed, so you can take power round corners and split it. Its friction is **0.2 Su per RPM**, twice a plain shaft's 0.1.
 

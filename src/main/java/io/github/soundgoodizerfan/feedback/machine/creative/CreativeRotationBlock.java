@@ -5,6 +5,10 @@ package io.github.soundgoodizerfan.feedback.machine.creative;
 import io.github.soundgoodizerfan.feedback.core.rotation.Rotatable;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
@@ -15,6 +19,11 @@ import net.minecraft.world.level.block.state.BlockState;
  * a test bench source should plug into whatever is beside it.
  */
 public class CreativeRotationBlock extends CreativeSourceBlock implements Rotatable {
+    @Override
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        return io.github.soundgoodizerfan.feedback.machine.gearbox.GearboxBlock.SHAPE;
+    }
+
 
     public CreativeRotationBlock(Properties properties) {
         super(properties, CreativeRotationBlockEntity::new);

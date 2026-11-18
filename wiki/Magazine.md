@@ -4,19 +4,19 @@ Holds cartridges of one size for a gun with a **box** or **belt** feed. Guns wit
 
 ## Sizes
 
-The recipe decides the size. All of them are crafted from Wrought Iron Plates, except the belt:
+The recipe decides the size. All of them are crafted from Wrought Iron Plates and a [Coil Spring](Lathe.md#what-it-makes) of any metal, except the belt:
 
 | Magazine | Holds | Recipe |
 | --- | --- | --- |
-| **Small Magazine** | 6 | 3 Wrought Iron Plates: `P _ P` over `_ P _` |
-| **Magazine** | 10 | 5 Wrought Iron Plates: `P _ P` over `P P P` |
-| **Extended Magazine** | 20 | 7 Wrought Iron Plates: `P _ P`, `P P P`, `P _ P` |
-| **Drum Magazine** | 50 | 8 Wrought Iron Plates: a ring |
+| **Small Magazine** | 6 | 4 Wrought Iron Plates and a spring (K): `P _ P` over `P K P` |
+| **Magazine** | 10 | 7 Wrought Iron Plates and a spring: `P _ P`, `P K P`, `P P P` |
+| **Extended Magazine** | 20 | 7 Wrought Iron Plates and 2 springs: `P K P`, `P K P`, `P P P` |
+| **Drum Magazine** | 50 | 8 Wrought Iron Plates around a spring: a ring |
 | **Ammo Belt** | 100 | 3 Iron Nuggets in a row (belt-fed automatics only) |
 
 Any gun of the right bore and feed takes any size.
 
-Every magazine is crafted at the [Engineering Table](Engineering_Table.md) with a [hammer](Hammer.md) in the tool row, holding Weapons Treatise II ([Treatise](Treatise.md)).
+Every magazine is crafted at the [Engineering Table](Engineering_Table.md) with a [hammer](Hammer.md) in the tool row and rivets ([Fasteners](Fasteners.md)): 2 for the Small Magazine, Magazine and Ammo Belt, 3 for the Extended Magazine and 4 for the Drum Magazine. It needs Weapons Treatise II ([Treatise](Treatise.md)).
 
 ## Filling it
 

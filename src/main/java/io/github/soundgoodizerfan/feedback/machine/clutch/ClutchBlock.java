@@ -9,6 +9,10 @@ import io.github.soundgoodizerfan.feedback.core.rotation.Rotatable;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -43,6 +47,20 @@ import net.minecraft.world.phys.BlockHitResult;
  * rest.
  */
 public class ClutchBlock extends Block implements EntityBlock, io.github.soundgoodizerfan.feedback.core.rotation.MicroRotation {
+
+    /** Mirrors models/block/clutch_*.json (scripts/clutch_model.py): the guard cage round the discs and the shaft through it, per axle axis. Both states fit it. */
+    private static final VoxelShape SHAPE_Z = Shapes.or(Block.box(1, 1, 2, 15, 15, 14), Block.box(6, 6, 0, 10, 10, 16));
+    private static final VoxelShape SHAPE_X = Shapes.or(Block.box(2, 1, 1, 14, 15, 15), Block.box(0, 6, 6, 16, 10, 10));
+    private static final VoxelShape SHAPE_Y = Shapes.or(Block.box(1, 2, 1, 15, 14, 15), Block.box(6, 0, 6, 10, 16, 10));
+    @Override
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        return switch (state.getValue(FACING).getAxis()) {
+            case X -> SHAPE_X;
+            case Y -> SHAPE_Y;
+            case Z -> SHAPE_Z;
+        };
+    }
+
 
     public static final DirectionProperty FACING = BlockStateProperties.FACING;
     public static final BooleanProperty ENGAGED = BooleanProperty.create("engaged");

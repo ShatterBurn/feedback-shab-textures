@@ -6,11 +6,11 @@ A furnace with a stirring rod, turned by a shaft into its back. It turns cast ir
 
 ```
 B B B
-R F I
-B B B
+S F R
+B P B
 ```
 
-B is a Brick, R is a Wrought Iron Rod, F is a [Furnace](Furnaces.md) and I is a Wrought Iron Plate.
+B is any brick, S is a [Shaft](Shaft.md), F is a [Furnace](Furnaces.md), R is a Wrought Iron Rod and P is a Wrought Iron Plate. Craft it at the [Engineering Table](Engineering_Table.md) with a [hammer](Hammer.md) in the tool row and 3 [fasteners](Fasteners.md), rivets or machine bolts. It needs Materials Treatise II: Metallurgy and Heat Treatment ([Treatise](Treatise.md)).
 
 ## Using it
 

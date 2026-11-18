@@ -1,16 +1,14 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "category": "misc",
-  "ingredients": [
-    {
-      "item": "feedback:circuit_board"
-    },
-    {
-      "item": "feedback:iron_plate"
-    }
-  ],
-  "result": {
-    "count": 1,
-    "id": "feedback:floppy_disk"
-  }
+  "type": "feedback:engineering",
+  "key": {
+    "P": { "item": "minecraft:paper" },
+    "D": { "item": "feedback:punch_card" },
+    "M": { "item": "feedback:magnetite_dust" },
+    "H": { "item": "feedback:wrought_iron_plate" }
+  },
+  "pattern": [ "PDP", "MHM" ],
+  "result": { "count": 1, "id": "feedback:floppy_disk" },
+  "tool": [ { "ability": "feedback:driver", "wear": 1 } ],
+  "fasteners": { "count": 0, "floor": 1 },
+  "school": "electrical:2"
 }

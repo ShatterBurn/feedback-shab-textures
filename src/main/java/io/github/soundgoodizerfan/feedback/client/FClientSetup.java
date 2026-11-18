@@ -108,7 +108,7 @@ public class FClientSetup {
         event.registerBlockEntityRenderer(FBlockEntities.HAND_CRANK.get(), RotatingRenderer::new);
         event.registerBlockEntityRenderer(FBlockEntities.WATER_WHEEL.get(), RotatingRenderer::new);
         event.registerBlockEntityRenderer(io.github.soundgoodizerfan.feedback.registry.FAutomation.FISH_WHEEL_ENTITY.get(), RotatingRenderer::new);
-        event.registerBlockEntityRenderer(FBlockEntities.CLUTCH.get(), RotatingRenderer::new);
+        event.registerBlockEntityRenderer(FBlockEntities.CLUTCH.get(), io.github.soundgoodizerfan.feedback.client.render.ClutchRenderer::new);
         event.registerBlockEntityRenderer(FBlockEntities.OVERSPEED_TRIP.get(), RotatingRenderer::new);
         event.registerBlockEntityRenderer(FBlockEntities.STEAM_ENGINE.get(), RotatingRenderer::new);
         event.registerBlockEntityRenderer(FBlockEntities.STEAM_TURBINE.get(), RotatingRenderer::new);
@@ -150,7 +150,6 @@ public class FClientSetup {
         rotatingVisual(FBlockEntities.HAND_CRANK.get());
         rotatingVisual(FBlockEntities.WATER_WHEEL.get());
         rotatingVisual(io.github.soundgoodizerfan.feedback.registry.FAutomation.FISH_WHEEL_ENTITY.get());
-        rotatingVisual(FBlockEntities.CLUTCH.get());
         rotatingVisual(FBlockEntities.OVERSPEED_TRIP.get());
         rotatingVisual(FBlockEntities.STEAM_ENGINE.get());
         rotatingVisual(FBlockEntities.STEAM_TURBINE.get());

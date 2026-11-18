@@ -1,16 +1,11 @@
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "minecraft:crafting_shaped",
   "category": "misc",
-  "ingredients": [
-    {
-      "item": "minecraft:paper"
-    },
-    {
-      "item": "minecraft:emerald"
-    }
-  ],
-  "result": {
-    "count": 1,
-    "id": "feedback:depot_link_card"
-  }
+  "key": {
+    "I": { "tag": "c:dyes/black" },
+    "P": { "item": "minecraft:paper" },
+    "E": { "item": "minecraft:emerald" }
+  },
+  "pattern": [ "I", "P", "E" ],
+  "result": { "count": 1, "id": "feedback:depot_link_card" }
 }

@@ -1,0 +1,232 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "stone": "feedback:block/housing_cobble",
+    "copper": "feedback:block/copper_sheet",
+    "bronze": "feedback:block/bronze_sheet",
+    "metal": "feedback:block/housing_iron",
+    "particle": "feedback:block/housing_cobble",
+    "baked": "feedback:block/mechanical_hammer_head_faces"
+  },
+  "elements": [
+    {
+      "name": "head",
+      "from": [
+        3,
+        8,
+        4
+      ],
+      "to": [
+        13,
+        12,
+        12
+      ],
+      "faces": {
+        "north": {
+          "texture": "#baked",
+          "tintindex": 0,
+          "uv": [
+            0.0,
+            0.0,
+            1.25,
+            5.818181818181818
+          ]
+        },
+        "south": {
+          "texture": "#baked",
+          "tintindex": 0,
+          "uv": [
+            1.375,
+            0.0,
+            2.625,
+            5.818181818181818
+          ]
+        },
+        "east": {
+          "texture": "#baked",
+          "tintindex": 0,
+          "uv": [
+            2.75,
+            0.0,
+            3.75,
+            5.818181818181818
+          ]
+        },
+        "west": {
+          "texture": "#baked",
+          "tintindex": 0,
+          "uv": [
+            3.875,
+            0.0,
+            4.875,
+            5.818181818181818
+          ]
+        },
+        "up": {
+          "texture": "#baked",
+          "tintindex": 0,
+          "uv": [
+            5.0,
+            0.0,
+            6.25,
+            11.636363636363637
+          ]
+        },
+        "down": {
+          "texture": "#baked",
+          "tintindex": 0,
+          "uv": [
+            6.375,
+            0.0,
+            7.625,
+            11.636363636363637
+          ]
+        }
+      }
+    },
+    {
+      "name": "face",
+      "from": [
+        4,
+        6,
+        5
+      ],
+      "to": [
+        12,
+        8,
+        11
+      ],
+      "faces": {
+        "north": {
+          "texture": "#baked",
+          "tintindex": 0,
+          "uv": [
+            7.75,
+            0.0,
+            8.75,
+            2.909090909090909
+          ]
+        },
+        "south": {
+          "texture": "#baked",
+          "tintindex": 0,
+          "uv": [
+            8.875,
+            0.0,
+            9.875,
+            2.909090909090909
+          ]
+        },
+        "east": {
+          "texture": "#baked",
+          "tintindex": 0,
+          "uv": [
+            10.0,
+            0.0,
+            10.75,
+            2.909090909090909
+          ]
+        },
+        "west": {
+          "texture": "#baked",
+          "tintindex": 0,
+          "uv": [
+            10.875,
+            0.0,
+            11.625,
+            2.909090909090909
+          ]
+        },
+        "up": {
+          "texture": "#baked",
+          "tintindex": 0,
+          "uv": [
+            11.75,
+            0.0,
+            12.75,
+            8.727272727272727
+          ]
+        },
+        "down": {
+          "texture": "#baked",
+          "tintindex": 0,
+          "uv": [
+            12.875,
+            0.0,
+            13.875,
+            8.727272727272727
+          ]
+        }
+      }
+    },
+    {
+      "name": "rod",
+      "from": [
+        7,
+        12,
+        7
+      ],
+      "to": [
+        9,
+        16,
+        9
+      ],
+      "faces": {
+        "north": {
+          "texture": "#baked",
+          "uv": [
+            14.0,
+            0.0,
+            14.25,
+            5.818181818181818
+          ]
+        },
+        "south": {
+          "texture": "#baked",
+          "uv": [
+            14.375,
+            0.0,
+            14.625,
+            5.818181818181818
+          ]
+        },
+        "east": {
+          "texture": "#baked",
+          "uv": [
+            14.75,
+            0.0,
+            15.0,
+            5.818181818181818
+          ]
+        },
+        "west": {
+          "texture": "#baked",
+          "uv": [
+            15.125,
+            0.0,
+            15.375,
+            5.818181818181818
+          ]
+        },
+        "up": {
+          "texture": "#baked",
+          "uv": [
+            15.5,
+            0.0,
+            15.75,
+            2.909090909090909
+          ]
+        },
+        "down": {
+          "texture": "#baked",
+          "uv": [
+            0.0,
+            13.090909090909092,
+            0.25,
+            16.0
+          ]
+        }
+      }
+    }
+  ]
+}

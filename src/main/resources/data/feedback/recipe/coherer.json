@@ -1,33 +1,13 @@
 {
   "type": "feedback:engineering",
   "key": {
-    "G": {
-      "item": "minecraft:glass"
-    },
-    "W": {
-      "item": "feedback:copper_wire"
-    },
-    "R": {
-      "item": "minecraft:redstone"
-    }
+    "G": { "item": "minecraft:glass" },
+    "W": { "item": "feedback:copper_wire" },
+    "M": { "item": "feedback:magnetite_dust" }
   },
-  "pattern": [
-    "GGG",
-    "WRW"
-  ],
-  "result": {
-    "count": 1,
-    "id": "feedback:coherer"
-  },
-  "tool": [
-    {
-      "ability": "feedback:driver",
-      "wear": 1
-    }
-  ],
-  "fasteners": {
-    "count": 0,
-    "floor": 1
-  },
+  "pattern": [ "GGG", "WMW" ],
+  "result": { "count": 1, "id": "feedback:coherer" },
+  "tool": [ { "ability": "feedback:driver", "wear": 1 } ],
+  "fasteners": { "count": 0, "floor": 1 },
   "school": "electrical:2"
 }

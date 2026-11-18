@@ -1,17 +1,12 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
+  "type": "feedback:engineering",
   "key": {
-    "P": {
-      "item": "feedback:steel_plate"
-    }
+    "P": { "item": "feedback:steel_plate" },
+    "T": { "item": "feedback:copper_tubing" }
   },
-  "pattern": [
-    "PPP",
-    "P P"
-  ],
-  "result": {
-    "count": 1,
-    "id": "feedback:flare"
-  }
+  "pattern": [ "P P", "P P", "PTP" ],
+  "result": { "count": 1, "id": "feedback:flare" },
+  "tool": [ { "ability": "feedback:driver", "wear": 1 } ],
+  "fasteners": { "count": 3, "floor": 1, "forms": [ "screw" ] },
+  "school": "chemical:1"
 }

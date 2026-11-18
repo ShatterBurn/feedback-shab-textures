@@ -10,7 +10,7 @@ B
 S
 ```
 
-I is a Wrought Iron Plate, B is a [Rotary Bearing](Rotary_Bearing.md) and S is a [Shaft](Shaft.md).
+I is a Wrought Iron Plate, B is a [Rotary Bearing](Rotary_Bearing.md) and S is a [Shaft](Shaft.md). Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 2 screws ([Fasteners](Fasteners.md)). It needs Mechanical Treatise I: Engines, Flywheels and Dynamotors ([Treatise](Treatise.md)).
 
 ## Using it
 

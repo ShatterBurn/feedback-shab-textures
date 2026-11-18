@@ -1,16 +1,12 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "category": "misc",
-  "ingredients": [
-    {
-      "item": "minecraft:lead"
-    },
-    {
-      "item": "feedback:rotary_bearing"
-    }
-  ],
-  "result": {
-    "count": 1,
-    "id": "feedback:joint_link"
-  }
+  "type": "feedback:engineering",
+  "key": {
+    "R": { "item": "feedback:wrought_iron_rod" },
+    "B": { "item": "feedback:rotary_bearing" }
+  },
+  "pattern": [ "R", "B", "R" ],
+  "result": { "count": 1, "id": "feedback:joint_link" },
+  "tool": [ { "ability": "feedback:driver", "wear": 1 } ],
+  "fasteners": { "count": 2, "floor": 1, "forms": [ "screw" ] },
+  "school": "mechanical:1"
 }

@@ -4,7 +4,13 @@ A reusable tool that ties a joint voxel to a body that is already lifted, withou
 
 ## Crafting
 
-Lead + [Rotary Bearing](Rotary_Bearing.md), shapeless.
+```
+R
+B
+R
+```
+
+R is a Wrought Iron Rod and B is a [Rotary Bearing](Rotary_Bearing.md). Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 2 screws ([Fasteners](Fasteners.md)). It needs Mechanical Treatise I: Engines, Flywheels and Dynamotors ([Treatise](Treatise.md)).
 
 ## Using it
 

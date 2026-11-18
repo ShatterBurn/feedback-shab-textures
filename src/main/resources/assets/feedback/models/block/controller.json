@@ -1,6 +1,220 @@
 {
-  "parent": "block/cube_all",
+  "parent": "minecraft:block/block",
   "textures": {
-    "all": "feedback:block/industrial_metal_duct_flat_1"
-  }
+    "wood": "feedback:block/cog_wood",
+    "copper": "feedback:block/copper_sheet",
+    "bronze": "feedback:block/bronze_sheet",
+    "particle": "feedback:block/cog_wood",
+    "face": "feedback:block/controller_front",
+    "baked": "feedback:block/controller_faces"
+  },
+  "elements": [
+    {
+      "name": "body",
+      "from": [
+        2,
+        2,
+        2
+      ],
+      "to": [
+        14,
+        14,
+        14
+      ],
+      "faces": {
+        "north": {
+          "texture": "#face",
+          "uv": [
+            0,
+            0,
+            12,
+            12
+          ]
+        },
+        "south": {
+          "texture": "#baked",
+          "uv": [
+            0.0,
+            0.0,
+            1.5,
+            16.0
+          ]
+        },
+        "east": {
+          "texture": "#baked",
+          "uv": [
+            1.625,
+            0.0,
+            3.125,
+            16.0
+          ]
+        },
+        "west": {
+          "texture": "#baked",
+          "uv": [
+            3.25,
+            0.0,
+            4.75,
+            16.0
+          ]
+        },
+        "up": {
+          "texture": "#baked",
+          "uv": [
+            4.875,
+            0.0,
+            6.375,
+            16.0
+          ]
+        },
+        "down": {
+          "texture": "#baked",
+          "uv": [
+            6.5,
+            0.0,
+            8.0,
+            16.0
+          ]
+        }
+      }
+    },
+    {
+      "name": "stub_e",
+      "from": [
+        14,
+        6,
+        6
+      ],
+      "to": [
+        16,
+        10,
+        10
+      ],
+      "faces": {
+        "north": {
+          "texture": "#baked",
+          "uv": [
+            8.125,
+            0.0,
+            8.375,
+            5.333333333333333
+          ]
+        },
+        "south": {
+          "texture": "#baked",
+          "uv": [
+            8.5,
+            0.0,
+            8.75,
+            5.333333333333333
+          ]
+        },
+        "east": {
+          "texture": "#baked",
+          "uv": [
+            8.875,
+            0.0,
+            9.375,
+            5.333333333333333
+          ]
+        },
+        "west": {
+          "texture": "#baked",
+          "uv": [
+            9.5,
+            0.0,
+            10.0,
+            5.333333333333333
+          ]
+        },
+        "up": {
+          "texture": "#baked",
+          "uv": [
+            10.125,
+            0.0,
+            10.375,
+            5.333333333333333
+          ]
+        },
+        "down": {
+          "texture": "#baked",
+          "uv": [
+            10.5,
+            0.0,
+            10.75,
+            5.333333333333333
+          ]
+        }
+      }
+    },
+    {
+      "name": "stub_w",
+      "from": [
+        0,
+        6,
+        6
+      ],
+      "to": [
+        2,
+        10,
+        10
+      ],
+      "faces": {
+        "north": {
+          "texture": "#baked",
+          "uv": [
+            10.875,
+            0.0,
+            11.125,
+            5.333333333333333
+          ]
+        },
+        "south": {
+          "texture": "#baked",
+          "uv": [
+            11.25,
+            0.0,
+            11.5,
+            5.333333333333333
+          ]
+        },
+        "east": {
+          "texture": "#baked",
+          "uv": [
+            11.625,
+            0.0,
+            12.125,
+            5.333333333333333
+          ]
+        },
+        "west": {
+          "texture": "#baked",
+          "uv": [
+            12.25,
+            0.0,
+            12.75,
+            5.333333333333333
+          ]
+        },
+        "up": {
+          "texture": "#baked",
+          "uv": [
+            12.875,
+            0.0,
+            13.125,
+            5.333333333333333
+          ]
+        },
+        "down": {
+          "texture": "#baked",
+          "uv": [
+            13.25,
+            0.0,
+            13.5,
+            5.333333333333333
+          ]
+        }
+      }
+    }
+  ]
 }

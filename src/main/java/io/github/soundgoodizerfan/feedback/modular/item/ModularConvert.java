@@ -149,7 +149,7 @@ public final class ModularConvert {
         if (set)
             type.extras().stream().filter(k -> type.roles().get(k).set()).forEach(extras::add);
         type.defaults().forEach((k, v) -> {
-            if (v.equals(SAME) && k.startsWith(located.form() + ":"))
+            if (k.startsWith(located.form() + ":"))
                 extras.add(k.substring(k.indexOf(':') + 1));
         });
         Map<String, Integer> counts = new java.util.LinkedHashMap<>(ToolDesigns.counts(type, 0, extras));
@@ -189,7 +189,15 @@ public final class ModularConvert {
                 l = ToolDesigns.located(r, shape, type.defaults().get(role), materials);
             if (l.isEmpty())
                 return vanilla;
-            parts.add(ToolDesigns.part(role, l.get(), shape, c.getValue()));
+            Part made = ToolDesigns.part(role, l.get(), shape, c.getValue());
+            // A trident is three-tined and a thrown weapon: its head carries three tines and is slim (a head as heavy as a spear's leaves it head-heavy, and it charges), and its pommel is a counterweight, so it balances for the hand.
+            if (located.form().equals("trident") && role.equals(type.primary()))
+                made = new Part(made.role(), made.material(), made.form(), made.count(), made.kind(), made.variant(), made.flaw(),
+                        made.measures().withAxis("tines", 3f).withAxis("head_size", 10f).withAxis("edge_length", 16f));
+            else if (located.form().equals("trident") && role.equals("P"))
+                made = new Part(made.role(), made.material(), made.form(), made.count(), made.kind(), made.variant(), made.flaw(),
+                        made.measures().withAxis("weight", 3f));
+            parts.add(made);
         }
         ResourceLocation target = hit.getKey();
         if (type.face()) {

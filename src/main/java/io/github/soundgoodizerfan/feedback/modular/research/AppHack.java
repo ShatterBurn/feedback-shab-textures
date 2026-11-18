@@ -25,6 +25,8 @@ public final class AppHack {
     public static final int TRIES_MIN = 3, TRIES_MAX = 6;
     /** The ink above the base that buys one bracket pair. */
     public static final int INK_PER_PAIR = 2;
+    /** Bracket pairs every dump has before any ink buys more. */
+    public static final int MIN_PAIRS = 5;
     /** The most picks a result may hold; a result with more is cut off there. */
     public static final int MAX_MOVES = 24;
     /** One hack in this many refills the tries and does not remove a dud. */
@@ -51,7 +53,7 @@ public final class AppHack {
     private final Random hackRng;
 
     /**
-     * @param ink the run's ink: the tries are 3 plus what is above the base ink (never above {@link #TRIES_MAX}), one bracket pair per
+     * @param ink the run's ink: the tries are 3 plus what is above the base ink (never above {@link #TRIES_MAX}), {@link #MIN_PAIRS} bracket pairs and one more per
      *            {@link #INK_PER_PAIR} of it
      */
     public AppHack(ResearchPlan plan, int seed, int ink) {
@@ -63,7 +65,7 @@ public final class AppHack {
         Random rng = new Random(seed);
         hackRng = new Random(seed ^ 0x9E3779B9L);
         int n = words.length;
-        pairs = Math.min(extra / INK_PER_PAIR, LINES - n);
+        pairs = Math.max(0, Math.min(MIN_PAIRS + extra / INK_PER_PAIR, LINES - n));
         removed = new boolean[n];
         picked = new boolean[n];
         pairUsed = new boolean[pairs];

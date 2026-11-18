@@ -12,6 +12,10 @@ import io.github.soundgoodizerfan.feedback.core.rotation.RotationNetwork;
 import io.github.soundgoodizerfan.feedback.core.rotation.RotationSplit;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
@@ -33,6 +37,11 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
  * the output never drives the input back.
  */
 public class FreewheelBlock extends Block implements EntityBlock, Rotatable {
+    @Override
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        return io.github.soundgoodizerfan.feedback.machine.gearbox.GearboxBlock.SHAPE;
+    }
+
 
     public static final DirectionProperty FACING = BlockStateProperties.FACING;
 

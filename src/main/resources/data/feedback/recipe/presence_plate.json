@@ -1,26 +1,14 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
+  "type": "feedback:engineering",
   "key": {
-    "P": {
-      "item": "feedback:wrought_iron_plate"
-    },
-    "W": {
-      "item": "minecraft:string"
-    },
-    "R": {
-      "item": "minecraft:redstone"
-    },
-    "C": {
-      "item": "feedback:copper_plate"
-    }
+    "P": { "item": "feedback:wrought_iron_plate" },
+    "X": { "item": "feedback:pivot_arm_short" },
+    "W": { "item": "feedback:copper_fine_wire" },
+    "C": { "tag": "feedback:circuits" }
   },
-  "pattern": [
-    "PWP",
-    "RCR"
-  ],
-  "result": {
-    "count": 1,
-    "id": "feedback:presence_plate"
-  }
+  "pattern": [ "PXP", "WCW" ],
+  "result": { "count": 1, "id": "feedback:presence_plate" },
+  "tool": [ { "ability": "feedback:driver", "wear": 1 } ],
+  "fasteners": { "count": 2, "floor": 1, "forms": [ "screw" ] },
+  "school": "electrical:3"
 }

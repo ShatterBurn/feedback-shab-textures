@@ -9,7 +9,7 @@ A trough that takes the pour from a [Crucible](Crucible.md) or vessel set above 
   B   B
 ```
 
-B is a Brick.
+B is any brick.
 
 ## Using it
 

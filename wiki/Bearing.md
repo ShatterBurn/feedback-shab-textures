@@ -5,12 +5,12 @@ A [Shaft](Shaft.md) with a proper bearing on it. It does exactly what a shaft do
 ## Crafting
 
 ```
-I
-S
-I
+P R P
+R S R
+P R P
 ```
 
-I is a Wrought Iron Plate and S is a Shaft. Makes **two**.
+P is a Wrought Iron Plate, R is a Wrought Iron Rod and S is a [Shaft](Shaft.md). Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 4 screws ([Fasteners](Fasteners.md)). It needs Mechanical Treatise I: Engines, Flywheels and Dynamotors ([Treatise](Treatise.md)).
 
 ## Using it
 

@@ -31,6 +31,6 @@ Each science's first study hangs on the age that provides its tools. Once the ag
 
 ## Treatises
 
-Each [Treatise](Treatise.md) volume names the age its specimen belongs to. Reading is never gated by age.
+Each [Treatise](Treatise.md) volume names the age its types belong to. Reading is never gated by age.
 
 See the [Progression Guide](Progression_Guide.md) for the order of play.

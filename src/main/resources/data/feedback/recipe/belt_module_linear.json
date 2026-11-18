@@ -1,22 +1,13 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "category": "misc",
-  "ingredients": [
-    {
-      "item": "feedback:wrought_iron_plate"
-    },
-    {
-      "item": "minecraft:iron_ingot"
-    },
-    {
-      "item": "feedback:copper_wire"
-    },
-    {
-      "item": "feedback:copper_wire"
-    }
-  ],
-  "result": {
-    "count": 1,
-    "id": "feedback:belt_module_linear"
-  }
+  "type": "feedback:engineering",
+  "key": {
+    "W": { "item": "feedback:copper_wire" },
+    "R": { "item": "feedback:wrought_iron_rod" },
+    "P": { "item": "feedback:wrought_iron_plate" }
+  },
+  "pattern": [ "WRW", "PPP" ],
+  "result": { "count": 1, "id": "feedback:belt_module_linear" },
+  "tool": [ { "ability": "feedback:driver", "wear": 1 } ],
+  "fasteners": { "count": 2, "floor": 1, "forms": [ "screw" ] },
+  "school": "electrical:2"
 }

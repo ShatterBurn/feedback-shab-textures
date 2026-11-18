@@ -1,19 +1,9 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "category": "misc",
-  "ingredients": [
-    {
-      "item": "feedback:floppy_disk"
-    },
-    {
-      "item": "feedback:copper_wire"
-    },
-    {
-      "item": "feedback:silicon_ingot"
-    }
-  ],
-  "result": {
-    "count": 1,
-    "id": "feedback:usb_drive"
-  }
+  "type": "feedback:engineering",
+  "key": { "P": { "item": "feedback:copper_plate" }, "C": { "tag": "feedback:circuits" }, "K": { "item": "feedback:ceramic" } },
+  "pattern": [ "P", "C", "K" ],
+  "result": { "count": 1, "id": "feedback:usb_drive" },
+  "tool": [ { "ability": "feedback:driver", "wear": 1 } ],
+  "fasteners": { "count": 0, "floor": 1 },
+  "school": "electrical:3"
 }

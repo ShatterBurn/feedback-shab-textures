@@ -24,6 +24,8 @@ An addon is an optional extra part made from raw stock, added when you assemble 
 
 ## Using it
 
+It is a paddle wheel with spokes on a bronze axle and hub, and it turns about its axle. Its selection box and collision are thin, matching the wheel.
+
 Place it with **flowing water** against it. Its axle runs along the face you place it on, and shafts connect at either end of the axle.
 
 **Speed depends on how many sides have moving water** against them: the RPM per flowing side on the tooltip, times up to four sides. The two axle ends don't count. It needs to be **flowing** water: still source blocks don't push it.

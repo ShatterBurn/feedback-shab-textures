@@ -1,6 +1,5 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "redstone",
+  "type": "feedback:engineering",
   "key": {
     "S": { "item": "feedback:steel_plate" },
     "C": { "item": "feedback:ceramic" },
@@ -11,5 +10,10 @@
     "WCW",
     "WSW"
   ],
-  "result": { "count": 1, "id": "feedback:induction_coil" }
+  "result": { "count": 1, "id": "feedback:induction_coil" },
+  "tool": [
+    { "ability": "feedback:driver", "wear": 1 }
+  ],
+  "fasteners": { "count": 2, "floor": 1, "forms": ["screw"] },
+  "school": "electrical:2"
 }

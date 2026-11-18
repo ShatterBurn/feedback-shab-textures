@@ -74,7 +74,7 @@ Amounts of metal and other stuff are counted in **Qu**. See [Units](Units.md#amo
 | Amethyst Bronze | 12.5 | 7.4 | 12 | 1000 Tu | A mixture of bronze with a little amethyst. The best conductor of XP, at a conductance of 4 ([Experience](Experience.md)). |
 | Uranium | 20 | 19.1 | 10 | 1132 Tu | **Radioactive.** Nearly as dense as gold and tungsten. See [Uranium](#uranium). |
 | [Osmium](Heavy_Core.md) | 39 | 22.6 | 30 | 3033 Tu | The densest metal. Its only forms are powder, sponge, compact and the [Heavy Core](Heavy_Core.md). |
-| [Netherite](Netherite.md) | 130 | 7.5 | 100 | 1380 Tu | **Magnetic.** Harder than a drill bit; only a lathe bit or a grinding wheel cuts it. |
+| [Netherite](Netherite.md) | 130 | 7.5 | 100 | 2200 Tu | **Magnetic.** Harder than a drill bit; only a lathe bit or a grinding wheel cuts it. |
 | Cast Netherite | 83 | 7.5 | 60 | 1380 Tu | **Magnetic.** The ingot before soul quenching ([Netherite](Netherite.md#soul-quenching)). |
 
 What the columns mean in play:

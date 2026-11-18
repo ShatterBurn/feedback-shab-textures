@@ -4,11 +4,12 @@ An on/off cutoff that you put in the middle of a line. It works on **air** (from
 
 ## Crafting
 
-A Wrought Iron Ingot, a [Copper Plate](Mechanical_Hammer.md) and another Wrought Iron Ingot in a row.
+```
+P R P
+P C P
+```
 
-```
-I C I
-```
+P is a Wrought Iron Plate, R is a Wrought Iron Rod and C is a [Copper Plate](Mechanical_Hammer.md). Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 2 screws ([Fasteners](Fasteners.md)). It needs Mechanical Treatise I: Engines, Flywheels and Dynamotors ([Treatise](Treatise.md)).
 
 ## Placing
 
@@ -21,7 +22,7 @@ Typical uses:
 
 ## Using it
 
-**Right-click** to open or close it. You'll hear a trapdoor-like clunk. New valves are placed **open**.
+**Right-click** to open or close it. You'll hear a trapdoor-like clunk. A valve is placed **open**.
 
 - **Open**: everything passes straight through.
 - **Closed**: air blown into it is simply lost, and anything trying to draw fluid through it gets nothing.

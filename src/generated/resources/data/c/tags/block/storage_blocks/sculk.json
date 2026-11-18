@@ -1,0 +1,8 @@
+{
+  "values": [
+    {
+      "id": "minecraft:sculk",
+      "required": false
+    }
+  ]
+}

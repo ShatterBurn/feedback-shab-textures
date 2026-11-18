@@ -6,10 +6,10 @@ A brick pan that keeps the [Anvil](Anvil.md) hot. Stock cooling in the Anvil's c
 
 ```
 B   B
-B B B
+B I B
 ```
 
-B is a Brick.
+B is any brick and I is any iron ingot.
 
 ## Using it
 

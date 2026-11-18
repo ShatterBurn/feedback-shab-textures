@@ -1,20 +1,14 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
+  "type": "feedback:engineering",
   "key": {
-    "P": {
-      "item": "feedback:wrought_iron_plate"
-    },
-    "R": {
-      "item": "minecraft:redstone"
-    }
+    "P": { "item": "feedback:wrought_iron_plate" },
+    "R": { "item": "minecraft:redstone" },
+    "W": { "item": "feedback:copper_wire" },
+    "C": { "tag": "feedback:circuits" }
   },
-  "pattern": [
-    "PR",
-    "RP"
-  ],
-  "result": {
-    "count": 1,
-    "id": "feedback:analog_adapter"
-  }
+  "pattern": [ "PRP", "WCP" ],
+  "result": { "count": 1, "id": "feedback:analog_adapter" },
+  "tool": [ { "ability": "feedback:driver", "wear": 1 } ],
+  "fasteners": { "count": 0, "floor": 1 },
+  "school": "electrical:3"
 }

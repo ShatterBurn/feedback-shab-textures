@@ -1,18 +1,10 @@
 {
   "type": "feedback:engineering",
   "key": {
-    "P": {
-      "item": "feedback:wrought_iron_plate"
-    },
-    "S": {
-      "item": "feedback:shaft"
-    },
-    "G": {
-      "item": "feedback:gearbox"
-    },
-    "B": {
-      "item": "feedback:bearing"
-    }
+    "P": { "item": "feedback:wrought_iron_plate" },
+    "S": { "item": "feedback:shaft" },
+    "G": { "item": "feedback:gearbox" },
+    "B": { "item": "feedback:bearing" }
   },
   "pattern": [
     "PSP",
@@ -24,14 +16,12 @@
     "id": "feedback:pivot_mast"
   },
   "tool": [
-    {
-      "ability": "feedback:driver",
-      "wear": 1
-    }
+    { "ability": "feedback:driver", "wear": 1 }
   ],
   "fasteners": {
     "count": 3,
     "floor": 1,
     "forms": ["machine_bolt"]
-  }
+  },
+  "school": "mechanical:2"
 }

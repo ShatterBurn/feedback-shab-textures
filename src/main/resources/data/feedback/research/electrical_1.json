@@ -93,10 +93,5 @@
     "item": "feedback:battery",
     "threshold": 2,
     "ink": 2
-  },
-  "specimens": [
-    "battery",
-    "galvanic_cell",
-    "leyden_jar"
-  ]
+  }
 }

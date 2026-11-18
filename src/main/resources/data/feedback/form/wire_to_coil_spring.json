@@ -1,0 +1,7 @@
+{
+  "from": "wire",
+  "to": "coil_spring",
+  "operation": "turn",
+  "base": 1,
+  "slope": 0.5
+}

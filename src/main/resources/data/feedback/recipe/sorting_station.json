@@ -1,33 +1,15 @@
 {
   "type": "feedback:engineering",
-  "ingredients": [
-    {
-      "item": "feedback:tube_station"
-    },
-    {
-      "item": "feedback:electromagnet"
-    },
-    {
-      "item": "feedback:lamp"
-    },
-    {
-      "item": "feedback:sort_gauge"
-    }
-  ],
-  "result": {
-    "count": 1,
-    "id": "feedback:sorting_station"
+  "key": {
+    "E": { "item": "feedback:electromagnet" },
+    "L": { "item": "feedback:lamp" },
+    "G": { "item": "feedback:sort_gauge" },
+    "C": { "tag": "feedback:circuits" },
+    "T": { "item": "feedback:tube_station" }
   },
-  "tool": [
-    {
-      "ability": "feedback:driver",
-      "wear": 1
-    }
-  ],
-  "fasteners": {
-    "count": 2,
-    "floor": 1,
-    "forms": ["screw"]
-  },
-  "school": "robotics:2"
+  "pattern": [ "ELG", " C ", " T " ],
+  "result": { "count": 1, "id": "feedback:sorting_station" },
+  "tool": [ { "ability": "feedback:driver", "wear": 1 } ],
+  "fasteners": { "count": 3, "floor": 1, "forms": [ "screw" ] },
+  "school": "electrical:3"
 }

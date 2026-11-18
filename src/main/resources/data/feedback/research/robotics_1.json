@@ -105,9 +105,5 @@
     "item": "feedback:dynamotor",
     "threshold": 3,
     "ink": 2
-  },
-  "specimens": [
-    "dynamotor",
-    "electromagnet"
-  ]
+  }
 }

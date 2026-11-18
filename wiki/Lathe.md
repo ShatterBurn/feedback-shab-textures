@@ -40,6 +40,7 @@ Like every machine, it doesn't stop when the rod is finished. Leave it and it cu
 It also turns [gun parts](Gun_Parts.md):
 
 - **Grips**: from an ingot of any gun metal, or from a **Stick** (wood), a **Bone** or **Bamboo**. A grip doesn't need to be strong.
+- **Coil Springs**: wound from a wire (from the [Wire Drawer](Wire_Drawer.md)) of any metal. Any metal's spring works, and the metal sets the stiffness. [Clutches](Clutch.md), [Dampers](Damper.md), [Air Valves](Air_Valve.md), [Dispensers](Dropper_and_Dispenser.md) and [Magazines](Magazine.md) take one.
 - **Suppressors**, from a cylinder.
 - **Coins**, from a plate (the coin a [Coin flip](Skills.md) throws).
 - **Gun Barrels**: chucked in the lathe, a barrel's **outside** gets thinner, 0.2 mm per Wu, for as long as it turns. Thin the wall too far and it's swarf.

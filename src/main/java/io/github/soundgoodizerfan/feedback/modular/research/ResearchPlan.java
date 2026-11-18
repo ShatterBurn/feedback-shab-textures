@@ -20,7 +20,7 @@ import com.google.gson.JsonParser;
  * link when they share a trait, which the screen shows, so a link is a fact the player can check and not the author's opinion. {@code start} is
  * the concept the researcher owns and {@code goal} the one to be reached. {@code replay} is what the finished chain shows, {@code question} the one blank to fill after it, and
  * {@code eureka} the real thing whose counter earns extra ink when done beforehand ({@code kind}: used, crafted or mined; {@code item}; {@code threshold}; {@code ink}).
- * {@code specimens} lists the types a first volume takes (later volumes take the types gated by the volume before). The same text is
+ * The same text is
  * read on the server (to validate and to send) and on the client (to play), so it is parsed from the one string.
  */
 public final class ResearchPlan {
@@ -32,7 +32,7 @@ public final class ResearchPlan {
     public final Map<String, String> labels = new LinkedHashMap<>();
     /** Each concept's traits, in the order authored. */
     public final Map<String, Set<String>> traits = new LinkedHashMap<>();
-    public final List<String> replay = new ArrayList<>(), options = new ArrayList<>(), specimens = new ArrayList<>();
+    public final List<String> replay = new ArrayList<>(), options = new ArrayList<>();
     /** Volumes of other schools that must be held before this one can be studied ({@code "mechanical:2"}); empty for none. */
     public final List<String> requires = new ArrayList<>();
     /** An app's plan only: every word of the dump (the {@code goal} is one of them), uppercase and of the goal's length; empty for every other plan. */
@@ -71,8 +71,6 @@ public final class ResearchPlan {
         subject = o.has("subject") ? o.get("subject").getAsString() : "";
         if (o.has("requires"))
             strings(o.getAsJsonArray("requires"), requires);
-        if (o.has("specimens"))
-            strings(o.getAsJsonArray("specimens"), specimens);
         if (o.has("eureka")) {
             JsonObject e = o.getAsJsonObject("eureka");
             eureka = new Eureka(e.get("kind").getAsString(), e.get("item").getAsString(), e.get("threshold").getAsInt(), e.get("ink").getAsInt());

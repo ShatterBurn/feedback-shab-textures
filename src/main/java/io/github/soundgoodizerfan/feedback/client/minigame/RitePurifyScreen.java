@@ -109,6 +109,8 @@ final class RitePurifyScreen extends Screen {
         GuiSkin.play(FSounds.RITE_PLACE.get(), 0.6f);
         selected = 0;
         stuck = !game.canPlay();
+        if (game.over())
+            ended();
     }
 
     private void residue() {

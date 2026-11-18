@@ -17,7 +17,7 @@ import io.github.soundgoodizerfan.feedback.modular.bake.ModularTuning;
  * trait. A hand of {@link #HAND} cards is dealt; a play is a row of up to {@link #MAX_PLAY} of them, judged as a set. The cards that share a trait with
  * another card of the row score; the most cards sharing one trait name the combo (pair to five), which has base chips and a multiplier, each scoring
  * card adds chips, a row of three or more that links card to card in order adds a chain bonus, and a card carrying a trait of a held {@link Joker}
- * or of the plan's goal adds to the multiplier. A card that shares nothing with the rest of a row of two or more burns and strains the specimen; a
+ * or of the plan's goal adds to the multiplier. A card that shares nothing with the rest of a row of two or more burns and counts one bad play; a
  * lone card is a safe single. The run is won when the score reaches the target; it is lost when the hands are spent first. Hands and discards are
  * limited, there is no clock. The client plays it; the server replays the plays over the same plan, seed, ink, tier and jokers ({@link #replay}) and
  * believes nothing the client says about its own score.
@@ -269,11 +269,6 @@ public final class TreatiseHand {
         float score01 = Math.min(1f, score / (1.5f * target));
         float left = 0.5f * hands / handsStart + 0.5f * discards / discardsStart;
         return Math.max(0f, Math.min(1f, 0.35f + 0.3f * score01 + 0.15f * left + (answeredRight ? 0.2f : 0f)));
-    }
-
-    /** How hard the specimen was pushed, 0 to 100: each bad play, scaled down by how forgiving the specimen's material is ({@code forgiving} 0 to 1). */
-    public int strain(float forgiving) {
-        return Math.max(0, Math.min(100, Math.round(bad * 20f * (1f - 0.5f * Math.max(0f, Math.min(1f, forgiving))))));
     }
 
     /** The jokers as the one string the open payload carries: {@code school:volume=trait,trait;school:volume=trait}. */

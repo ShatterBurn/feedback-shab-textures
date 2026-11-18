@@ -79,7 +79,9 @@ public final class TetherRopes {
                     buffer.endBatch(RenderType.lineStrip());
                     continue;
                 }
-                Vec3 to = hook != null ? hook.getPosition(partial) : anchor(level, t.anchor(), partial);
+                // A dragged creature holds the tether and the thrower is the anchor: the hook sits on the creature, so the line runs to the thrower, not to the hook.
+                boolean drag = hook != null && hook.getOwner() != null && t.anchor() instanceof Tether.Anchor.OnEntity a && a.entityId() == hook.getOwner().getId();
+                Vec3 to = hook != null && !drag ? hook.getPosition(partial) : anchor(level, t.anchor(), partial);
                 if (to == null)
                     continue;
                 segment(buffer, pose, camera, from, to, -1f);

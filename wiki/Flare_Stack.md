@@ -6,10 +6,11 @@ Burns off gas nobody wants. It is the safe vent for a line that makes more than 
 
 ```
 P   P
-P P P
+P   P
+P T P
 ```
 
-P is a [Steel Plate](Mechanical_Hammer.md).
+P is a Steel Plate and T is Copper Tubing. Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, 3 screws ([Fasteners](Fasteners.md)) and Chemical Treatise I: Pressure Vessels ([Treatise](Treatise.md)).
 
 ## Using it
 

@@ -1,16 +1,14 @@
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "minecraft:crafting_shaped",
   "category": "misc",
-  "ingredients": [
-    {
-      "item": "feedback:wrought_iron_plate"
-    },
-    {
-      "item": "feedback:wrought_iron_rod"
-    },
-    {
-      "item": "minecraft:iron_nugget"
-    }
+  "key": {
+    "P": { "item": "feedback:wrought_iron_plate" },
+    "J": { "item": "feedback:joint_link" }
+  },
+  "pattern": [
+    "P",
+    "J",
+    "P"
   ],
   "result": {
     "count": 1,

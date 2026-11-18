@@ -11,6 +11,10 @@ import io.github.soundgoodizerfan.feedback.core.unit.Inertia;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.Level;
@@ -42,6 +46,18 @@ import net.minecraft.world.level.block.state.BlockState;
  * no setting on it, per philosophy §3, and the player who needs the other direction adds a cog.
  */
 public class GearboxBlock extends Block implements EntityBlock, MicroRotation {
+
+    /**
+     * Mirrors models/block/gearbox.json (and freewheel.json, creative_rotation.json, which use the same boxes): the housing and the three shafts
+     * crossing it, whose ends are the stubs on every face. Rotation symmetric, so one shape for every facing.
+     */
+    public static final VoxelShape SHAPE = Shapes.or(Block.box(2, 2, 2, 14, 14, 14), Block.box(6, 0, 6, 10, 16, 10),
+            Block.box(0, 6, 6, 16, 10, 10), Block.box(6, 6, 0, 10, 10, 16));
+    @Override
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        return SHAPE;
+    }
+
 
     public GearboxBlock(Properties properties) {
         super(properties);

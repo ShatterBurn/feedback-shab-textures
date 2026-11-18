@@ -158,7 +158,7 @@ public class ResearchTableScreen extends SkinnedScreen<ResearchTableMenu> {
         blurbLines = f.split(blurb(), PAGE_W);
         hintLines = f.split(hint(), PAGE_W);
         labelA = Component.translatable(menu.mode() == 1 ? "gui.feedback.research_table.offering" : menu.mode() == 2 ? "gui.feedback.research_table.disk" : "gui.feedback.research_table.blank");
-        labelB = Component.translatable(menu.mode() == 0 ? "gui.feedback.research_table.specimen" : menu.mode() == 1 ? "gui.feedback.research_table.reagent" : "gui.feedback.research_table.subject");
+        labelB = Component.translatable(menu.mode() == 1 ? "gui.feedback.research_table.reagent" : "gui.feedback.research_table.subject");
         labelC = Component.translatable("gui.feedback.research_table.blank");
     }
 
@@ -199,7 +199,8 @@ public class ResearchTableScreen extends SkinnedScreen<ResearchTableMenu> {
         if (names.size() > visible)
             ls.scrollbar(g, leftPos + LIST_X + LIST_W - 8, topPos + LIST_Y + 2, LIST_H - 4, names.size(), visible, scroll);
         skin.slot(g, leftPos + ResearchTableMenu.BLANK_X, topPos + ResearchTableMenu.SLOT_Y);
-        skin.slot(g, leftPos + ResearchTableMenu.SPECIMEN_X, topPos + ResearchTableMenu.SLOT_Y);
+        if (menu.mode() != 0)
+            skin.slot(g, leftPos + ResearchTableMenu.SECOND_X, topPos + ResearchTableMenu.SLOT_Y);
         if (menu.mode() == 1)
             skin.slot(g, leftPos + ResearchTableMenu.RITE_X, topPos + ResearchTableMenu.SLOT_Y);
         inventory(g, ResearchTableMenu.INV_X, ResearchTableMenu.INV_Y);
@@ -224,7 +225,8 @@ public class ResearchTableScreen extends SkinnedScreen<ResearchTableMenu> {
             y += 10;
         }
         g.drawString(font, labelA, ResearchTableMenu.BLANK_X, ResearchTableMenu.SLOT_Y - 10, skin.dim(), false);
-        g.drawString(font, labelB, ResearchTableMenu.SPECIMEN_X, ResearchTableMenu.SLOT_Y - 10, skin.dim(), false);
+        if (menu.mode() != 0)
+            g.drawString(font, labelB, ResearchTableMenu.SECOND_X, ResearchTableMenu.SLOT_Y - 10, skin.dim(), false);
         if (menu.mode() == 1)
             g.drawString(font, labelC, ResearchTableMenu.RITE_X, ResearchTableMenu.SLOT_Y - 10, skin.dim(), false);
         int n = menu.note();

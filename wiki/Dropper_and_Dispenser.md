@@ -14,7 +14,14 @@ C R C
 
 C is any stone-crafting block (cobblestone and its kin), W is [Copper Wire](Wire_Drawer.md), R is redstone.
 
-Dispenser (shapeless): a Dropper + string + a stick.
+Dispenser, at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, 2 screws ([Fasteners](Fasteners.md)) and Mechanical Treatise I: Engines, Flywheels and Dynamotors ([Treatise](Treatise.md)):
+
+```
+T S
+K D
+```
+
+T is a stick, S is string, K is a [Coil Spring](Lathe.md#what-it-makes) of any metal and D is a Dropper.
 
 ## What vanilla does
 

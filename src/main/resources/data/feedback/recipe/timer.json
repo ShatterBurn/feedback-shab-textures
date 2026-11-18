@@ -1,23 +1,14 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "redstone",
+  "type": "feedback:engineering",
   "key": {
-    "P": {
-      "item": "feedback:copper_plate"
-    },
-    "C": {
-      "item": "feedback:small_cog"
-    },
-    "R": {
-      "item": "minecraft:redstone"
-    }
+    "R": { "item": "feedback:wrought_iron_rod" },
+    "P": { "item": "feedback:copper_plate" },
+    "C": { "item": "feedback:small_cog" },
+    "E": { "item": "feedback:escapement" }
   },
-  "pattern": [
-    "PCP",
-    "PRP"
-  ],
-  "result": {
-    "count": 1,
-    "id": "feedback:timer"
-  }
+  "pattern": [ " R ", "PCP", "PEP" ],
+  "result": { "count": 1, "id": "feedback:timer" },
+  "tool": [ { "ability": "feedback:driver", "wear": 1 } ],
+  "fasteners": { "count": 2, "floor": 1, "forms": [ "screw" ] },
+  "school": "mechanical:1"
 }

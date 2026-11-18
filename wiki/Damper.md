@@ -2,6 +2,15 @@
 
 A vent flap that you build against a [Crucible](Crucible.md). Open, it **lets heat out**. It's the opposite of the [Powered Bellows](Powered_Bellows.md).
 
+## Crafting
+
+```
+I K I
+C S C
+```
+
+I is a Wrought Iron Plate, K is a [Coil Spring](Lathe.md#what-it-makes) of any metal, C is a [Copper Plate](Mechanical_Hammer.md) and S is a [Shaft](Shaft.md). Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 3 screws ([Fasteners](Fasteners.md)). It needs Mechanical Treatise I: Engines, Flywheels and Dynamotors ([Treatise](Treatise.md)).
+
 ## Using it
 
 Place it against the crucible's side, the same way as [Insulation](Insulation.md). Up to **four** count. Each open damper lets out **twice** what a bare crucible loses on its own, on top of whatever insulation is doing.

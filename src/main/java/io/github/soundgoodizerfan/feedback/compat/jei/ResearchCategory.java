@@ -32,16 +32,16 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
 /**
- * What starts a research at the Research Table: for a treatise volume the Blank Treatise, the volume before it (held, not used up) and the
- * specimen types it takes; for an attunement the kind of offering and whether a potion stands in. Verbs and words, never the board's answers.
+ * What starts a research at the Research Table: for a treatise volume the Blank Treatise and the volume before it (held, not used up); for an
+ * attunement the kind of offering and whether a potion stands in. Verbs and words, never the board's answers.
  */
 public class ResearchCategory implements IRecipeCategory<ResearchCategory.Card> {
 
     /**
-     * One research: a volume ({@code school} set, {@code specimens} the type paths), an attunement ({@code school} and {@code app} null) or an
+     * One research: a volume ({@code school} set), an attunement ({@code school} and {@code app} null) or an
      * app ({@code app} set, {@code subject} an item id or {@code #tag}).
      */
-    public record Card(School school, int volume, List<String> specimens, ResourceLocation effect, String grade, String property, boolean reagent, String app, String subject) {
+    public record Card(School school, int volume, ResourceLocation effect, String grade, String property, boolean reagent, String app, String subject) {
     }
 
     static final RecipeType<Card> TYPE = RecipeType.create("feedback", "research", Card.class);
@@ -56,42 +56,19 @@ public class ResearchCategory implements IRecipeCategory<ResearchCategory.Card> 
     }
 
     /** Every volume with the types it takes, then every attunement (each is researched into a rite, again for a better one). */
-    static List<Card> cards(List<ResearchSyncPayload.Entry> first, Map<ResourceLocation, ModularType> types, Map<ResourceLocation, Attunements.Effect> effects) {
+    static List<Card> cards(List<ResearchSyncPayload.Entry> first, Map<ResourceLocation, Attunements.Effect> effects) {
         List<Card> out = new ArrayList<>();
         for (School school : School.values())
-            for (int v = 1; v <= school.volumes(); v++) {
-                List<String> specimens = new ArrayList<>();
-                if (v == 1) {
-                    for (var e : first)
-                        if (e.school().equals(school.id()) && e.volume() == 1)
-                            specimens.addAll(e.types());
-                } else {
-                    final int gate = v - 1;
-                    types.forEach((id, type) -> {
-                        if (School.of(type.school()) == school && School.volumeOf(type.school()) == gate)
-                            specimens.add(id.getPath());
-                    });
-                }
-                out.add(new Card(school, v, List.copyOf(specimens), null, "", "", false, null, ""));
-            }
+            for (int v = 1; v <= school.volumes(); v++)
+                out.add(new Card(school, v, null, "", "", false, null, ""));
         for (var e : effects.values()) {
             String grade = e.target() < 0.35f ? "modest" : e.target() < 0.65f ? "good" : e.target() < 0.85f ? "fine" : "exceptional";
-            out.add(new Card(null, 0, List.of(), e.id(), grade, e.offering().orElse("hardness"), e.reagent().isPresent(), null, ""));
+            out.add(new Card(null, 0, e.id(), grade, e.offering().orElse("hardness"), e.reagent().isPresent(), null, ""));
         }
         for (var e : first)
             if (e.school().equals("app") && e.types().size() == 2)
-                out.add(new Card(null, 0, List.of(), null, "", "", false, e.types().get(0), e.types().get(1)));
+                out.add(new Card(null, 0, null, "", "", false, e.types().get(0), e.types().get(1)));
         return out;
-    }
-
-    /** The item a specimen type is shown as: its own item, or the hafted tool under the type's name for a face (a cleaver, a maul, a spear). */
-    private static ItemStack specimen(String path) {
-        var item = BuiltInRegistries.ITEM.get(Feedback.id(path));
-        if (item != Items.AIR)
-            return new ItemStack(item);
-        ItemStack stack = new ItemStack(FModular.HAFTED_TOOL.get());
-        stack.set(DataComponents.CUSTOM_NAME, Component.translatable("item.feedback." + path));
-        return stack;
     }
 
     @Override
@@ -153,9 +130,6 @@ public class ResearchCategory implements IRecipeCategory<ResearchCategory.Card> 
         builder.addSlot(RecipeIngredientRole.INPUT, 1, 18).setStandardSlotBackground().addItemStack(new ItemStack(FModular.BLANK_TREATISE.get()));
         if (card.volume() > 1)
             builder.addSlot(RecipeIngredientRole.CATALYST, 21, 18).setStandardSlotBackground().addItemStack(Treatises.of(card.school(), card.volume() - 1));
-        var specimens = builder.addSlot(RecipeIngredientRole.INPUT, 51, 18).setStandardSlotBackground();
-        for (String s : card.specimens())
-            specimens.addItemStack(specimen(s));
         builder.addOutputSlot(143, 18).setOutputSlotBackground().addItemStack(Treatises.of(card.school(), card.volume()));
     }
 
@@ -183,7 +157,6 @@ public class ResearchCategory implements IRecipeCategory<ResearchCategory.Card> 
         graphics.drawString(font, Component.translatable("feedback.jei.research.blank"), 1, 40, LABEL_COLOUR, false);
         if (card.volume() > 1)
             graphics.drawString(font, Component.translatable("feedback.jei.research.held"), 21, 40, LABEL_COLOUR, false);
-        graphics.drawString(font, Component.translatable("feedback.jei.research.specimen"), 51, 40, LABEL_COLOUR, false);
         graphics.drawString(font, Component.translatable("feedback.jei.research.cost"), 1, 61, LABEL_COLOUR, false);
     }
 }

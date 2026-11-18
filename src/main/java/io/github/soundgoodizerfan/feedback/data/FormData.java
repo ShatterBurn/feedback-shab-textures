@@ -165,6 +165,48 @@ public final class FormData {
         }
     }
 
+    /**
+     * The common tag folder of a form: {@code c:<folder>/<material>}. A block form is {@code storage_blocks}, an ore {@code ores};
+     * every other form is its id pluralised ({@code ingot} to {@code ingots}, {@code tailings} stays), so a form needs no table entry.
+     */
+    public static String tagFolder(String form) {
+        return switch (form) {
+            case "block" -> "storage_blocks";
+            case "ore" -> "ores";
+            case "crushed" -> "crushed";
+            default -> form.endsWith("s") ? form : form + "s";
+        };
+    }
+
+    private static ResourceLocation formTag(Material.Located located) {
+        return ResourceLocation.fromNamespaceAndPath("c", tagFolder(located.form()) + "/" + located.id().getPath());
+    }
+
+    /** Every generated form item is in {@code c:<form>s/<material>} (neoforge's common convention; the prefix is {@code c}, not {@code forge}). */
+    public static class ItemTagsGen extends net.minecraft.data.tags.ItemTagsProvider {
+        public ItemTagsGen(PackOutput output, CompletableFuture<HolderLookup.Provider> lookup,
+                           CompletableFuture<net.minecraft.data.tags.TagsProvider.TagLookup<Block>> blockTags, ExistingFileHelper helper) {
+            super(output, lookup, blockTags, Feedback.MOD_ID, helper);
+        }
+
+        @Override
+        protected void addTags(HolderLookup.Provider provider) {
+            FormItems.all().forEach(g -> tag(net.minecraft.tags.TagKey.create(net.minecraft.core.registries.Registries.ITEM,
+                    formTag(new Material.Located(g.material(), FormItems.materials().get(g.material()), g.form()))))
+                    .add(g.item().get()));
+            listed((located, id) -> tag(net.minecraft.tags.TagKey.create(net.minecraft.core.registries.Registries.ITEM, formTag(located))).addOptional(id));
+        }
+    }
+
+    /** Every form a material lists by item id (hand-registered or vanilla) that names a generated-style form type; association-only names ({@code sensor}) are skipped, and shared part items cannot say whose material they are. */
+    private static void listed(java.util.function.BiConsumer<Material.Located, ResourceLocation> out) {
+        FormItems.materials().forEach((matId, material) -> material.forms().forEach((form, id) -> {
+            FormType type = FormItems.types().get(form);
+            if (type != null && !type.part())
+                out.accept(new Material.Located(matId, material, form), id);
+        }));
+    }
+
     public static class BlockTagsGen extends BlockTagsProvider {
         public BlockTagsGen(PackOutput output, CompletableFuture<HolderLookup.Provider> lookup, ExistingFileHelper helper) {
             super(output, lookup, Feedback.MOD_ID, helper);
@@ -172,6 +214,14 @@ public final class FormData {
 
         @Override
         protected void addTags(HolderLookup.Provider provider) {
+            // A generated block form is also in its form's common block tag (c:storage_blocks/<material>).
+            FormItems.all().stream().filter(g -> g.block() != null).forEach(g -> tag(net.minecraft.tags.TagKey.create(
+                    net.minecraft.core.registries.Registries.BLOCK,
+                    formTag(new Material.Located(g.material(), FormItems.materials().get(g.material()), g.form())))).add(g.block().get()));
+            listed((located, id) -> {
+                if (net.minecraft.core.registries.BuiltInRegistries.BLOCK.containsKey(id))
+                    tag(net.minecraft.tags.TagKey.create(net.minecraft.core.registries.Registries.BLOCK, formTag(located))).addOptional(id);
+            });
             // A block of foodstuff is cut with a hoe, as vanilla's soft organic blocks are; the rest are stone and metal.
             FormItems.all().stream().filter(g -> g.block() != null).forEach(g -> {
                 boolean food = FormItems.materials().get(g.material()).food().isPresent();

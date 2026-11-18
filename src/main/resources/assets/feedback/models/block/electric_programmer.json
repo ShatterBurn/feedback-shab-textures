@@ -1,6 +1,220 @@
 {
-  "parent": "block/cube_all",
+  "parent": "minecraft:block/block",
   "textures": {
-    "all": "feedback:block/space-plating-vent"
-  }
+    "wood": "feedback:block/cog_wood",
+    "copper": "feedback:block/copper_sheet",
+    "bronze": "feedback:block/bronze_sheet",
+    "particle": "feedback:block/cog_wood",
+    "door": "feedback:block/electric_programmer_front",
+    "baked": "feedback:block/electric_programmer_faces"
+  },
+  "elements": [
+    {
+      "name": "plinth",
+      "from": [
+        1,
+        0,
+        1
+      ],
+      "to": [
+        15,
+        2,
+        15
+      ],
+      "faces": {
+        "north": {
+          "texture": "#baked",
+          "uv": [
+            0.0,
+            0.0,
+            1.75,
+            1.103448275862069
+          ]
+        },
+        "south": {
+          "texture": "#baked",
+          "uv": [
+            1.875,
+            0.0,
+            3.625,
+            1.103448275862069
+          ]
+        },
+        "east": {
+          "texture": "#baked",
+          "uv": [
+            3.75,
+            0.0,
+            5.5,
+            1.103448275862069
+          ]
+        },
+        "west": {
+          "texture": "#baked",
+          "uv": [
+            5.625,
+            0.0,
+            7.375,
+            1.103448275862069
+          ]
+        },
+        "up": {
+          "texture": "#baked",
+          "uv": [
+            7.5,
+            0.0,
+            9.25,
+            7.724137931034483
+          ]
+        },
+        "down": {
+          "texture": "#baked",
+          "uv": [
+            9.375,
+            0.0,
+            11.125,
+            7.724137931034483
+          ]
+        }
+      }
+    },
+    {
+      "name": "body",
+      "from": [
+        2,
+        2,
+        2
+      ],
+      "to": [
+        14,
+        14,
+        14
+      ],
+      "faces": {
+        "north": {
+          "texture": "#door",
+          "uv": [
+            0,
+            0,
+            12,
+            12
+          ]
+        },
+        "south": {
+          "texture": "#baked",
+          "uv": [
+            11.25,
+            0.0,
+            12.75,
+            6.620689655172414
+          ]
+        },
+        "east": {
+          "texture": "#baked",
+          "uv": [
+            12.875,
+            0.0,
+            14.375,
+            6.620689655172414
+          ]
+        },
+        "west": {
+          "texture": "#baked",
+          "uv": [
+            14.5,
+            0.0,
+            16.0,
+            6.620689655172414
+          ]
+        },
+        "up": {
+          "texture": "#baked",
+          "uv": [
+            0.0,
+            8.275862068965518,
+            1.5,
+            14.89655172413793
+          ]
+        },
+        "down": {
+          "texture": "#baked",
+          "uv": [
+            1.625,
+            8.275862068965518,
+            3.125,
+            14.89655172413793
+          ]
+        }
+      }
+    },
+    {
+      "name": "cornice",
+      "from": [
+        1,
+        14,
+        1
+      ],
+      "to": [
+        15,
+        16,
+        15
+      ],
+      "faces": {
+        "north": {
+          "texture": "#baked",
+          "uv": [
+            3.25,
+            8.275862068965518,
+            5.0,
+            9.379310344827585
+          ]
+        },
+        "south": {
+          "texture": "#baked",
+          "uv": [
+            5.125,
+            8.275862068965518,
+            6.875,
+            9.379310344827585
+          ]
+        },
+        "east": {
+          "texture": "#baked",
+          "uv": [
+            7.0,
+            8.275862068965518,
+            8.75,
+            9.379310344827585
+          ]
+        },
+        "west": {
+          "texture": "#baked",
+          "uv": [
+            8.875,
+            8.275862068965518,
+            10.625,
+            9.379310344827585
+          ]
+        },
+        "up": {
+          "texture": "#baked",
+          "uv": [
+            10.75,
+            8.275862068965518,
+            12.5,
+            16.0
+          ]
+        },
+        "down": {
+          "texture": "#baked",
+          "uv": [
+            12.625,
+            8.275862068965518,
+            14.375,
+            16.0
+          ]
+        }
+      }
+    }
+  ]
 }

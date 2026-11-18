@@ -1,0 +1,8 @@
+{
+  "values": [
+    {
+      "id": "feedback:iron_ore",
+      "required": false
+    }
+  ]
+}

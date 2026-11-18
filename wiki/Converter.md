@@ -9,14 +9,18 @@ C E C
 A A A
 ```
 
-**Solid-State Converter**: C is a [Heating Coil](Heating_Coil.md) (any), E is a [Basic Electronic Circuit](Basic_Electronic_Circuit.md) and A is an Aluminum Plate.
+**Solid-State Converter**: C is an [Induction Coil](Induction.md#induction-coil), E is a [Basic Electronic Circuit](Basic_Electronic_Circuit.md) and A is an Aluminum Plate.
 
 ```
-C W C
+C R C
 A A A
 ```
 
-**Converter Tap**: C is a [Heating Coil](Heating_Coil.md) (any), W is a [Cat's Whisker Detector](Cats_Whisker_Detector.md) and A is an Aluminum Plate.
+**Converter Tap**: C is an [Induction Coil](Induction.md#induction-coil), R is a [Rectifier](Rectifier.md) and A is an Aluminum Plate.
+
+Both are crafted at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 3 screws ([Fasteners](Fasteners.md)). They need Electrical Treatise III: Circuits ([Treatise](Treatise.md)).
+
+The **Heatsink** is crafted in the plain [Crafting Table](Crafting_Table.md):
 
 ```
 A A

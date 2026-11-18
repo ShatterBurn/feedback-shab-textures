@@ -10,7 +10,7 @@ A thruster is a modular build. Draw it at the [Blueprint Table](Blueprint_Table.
 - **Shape** trades push against fuel. A **Bell** is the baseline. A **Cone** pushes 30% harder and burns 50% more fuel. A **Throat** pushes 30% less and burns half the fuel.
 - **Regen jacket** is an optional addon, a plate wrapped round the nozzle that the fuel runs through first. The fuel arrives warm, so less of it burns for the same push; the better the plate conducts heat, the less (copper saves the most).
 
-The blueprint sheet and the thruster's tooltip show how many times a reference thruster (20 mm bell) it pushes. A specimen to take apart for the treatise is in [Treatise](Treatise.md#specimens).
+The blueprint sheet and the thruster's tooltip show how many times a reference thruster (20 mm bell) it pushes. Specimens to take apart for the treatise are covered under [Treatise](Treatise.md#specimens).
 
 It does nothing on blocks that stand in the world. Like everything on a [Lift](Vehicles.md#the-lift), it works once the vehicle is lifted into a moving body.
 

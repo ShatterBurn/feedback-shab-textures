@@ -107,11 +107,5 @@
     "item": "minecraft:iron_sword",
     "threshold": 40,
     "ink": 2
-  },
-  "specimens": [
-    "sword",
-    "hand_knife",
-    "axe",
-    "hafted_tool"
-  ]
+  }
 }

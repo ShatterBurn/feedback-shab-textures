@@ -10,7 +10,7 @@ P C P
   P
 ```
 
-P is a [Wrought Iron Plate](Making_Wrought_Iron.md), C is a chest.
+P is a [Wrought Iron Plate](Making_Wrought_Iron.md) and C is any wooden chest.
 
 ## What vanilla does
 

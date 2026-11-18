@@ -1,0 +1,8 @@
+{
+  "values": [
+    {
+      "id": "feedback:enriched_fuel_rod",
+      "required": false
+    }
+  ]
+}

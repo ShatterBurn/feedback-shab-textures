@@ -7,10 +7,10 @@ A stick that records one cut from the [Stonecutter](Stonecutter.md) so a [Power 
 ```
 W
 C
-S
+K
 ```
 
-W is Copper Fine Wire, C is Ceramic and S is a Steel Plate.
+W is Copper Fine Wire, C is a [circuit](Basic_Electronic_Circuit.md) (any item in the circuits tag) and K is Ceramic. Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and Electrical Treatise III: Circuits ([Treatise](Treatise.md)); it spends no fasteners.
 
 ## Using it
 

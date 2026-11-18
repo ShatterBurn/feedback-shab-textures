@@ -10,7 +10,7 @@ P B P      P any plank, E emerald, B barrel
 P P P
 ```
 
-The **Depot Link Card** is paper + emerald.
+The **Depot Link Card** is a column of black dye, paper and an emerald, top to bottom.
 
 ## Using it
 

@@ -4,11 +4,11 @@ A thicker brick wall that you fit inside a [Crucible](Crucible.md) or a furnace 
 
 ## Crafting
 
-Three Bricks in an L (two across the top, one below the left).
+Three bricks (any brick) in an L: two across the top, one below the left.
 
 ```
 B B
-B B
+B
 ```
 
 ## Fitting it

@@ -1,20 +1,77 @@
 {
   "parent": "block/block",
   "textures": {
-    "shaft": "feedback:block/log_mulberry_inner",
-    "particle": "feedback:block/log_mulberry_inner"
+    "shaft": "feedback:block/bronze_sheet",
+    "particle": "feedback:block/bronze_sheet",
+    "baked": "feedback:block/shaft_faces"
   },
   "elements": [
     {
-      "from": [6, 0, 6],
-      "to": [10, 16, 10],
+      "from": [
+        6,
+        0,
+        6
+      ],
+      "to": [
+        10,
+        16,
+        10
+      ],
       "faces": {
-        "north": { "texture": "#shaft" },
-        "south": { "texture": "#shaft" },
-        "west":  { "texture": "#shaft" },
-        "east":  { "texture": "#shaft" },
-        "up":    { "texture": "#shaft" },
-        "down":  { "texture": "#shaft" }
+        "north": {
+          "texture": "#baked",
+          "uv": [
+            0.0,
+            0.0,
+            0.5,
+            16.0
+          ]
+        },
+        "south": {
+          "texture": "#baked",
+          "uv": [
+            0.625,
+            0.0,
+            1.125,
+            16.0
+          ]
+        },
+        "west": {
+          "texture": "#baked",
+          "uv": [
+            1.25,
+            0.0,
+            1.75,
+            16.0
+          ]
+        },
+        "east": {
+          "texture": "#baked",
+          "uv": [
+            1.875,
+            0.0,
+            2.375,
+            16.0
+          ]
+        },
+        "up": {
+          "texture": "#baked",
+          "uv": [
+            2.5,
+            0.0,
+            3.0,
+            4.0
+          ]
+        },
+        "down": {
+          "texture": "#baked",
+          "uv": [
+            3.125,
+            0.0,
+            3.625,
+            4.0
+          ]
+        }
       }
     }
   ]

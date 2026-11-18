@@ -1,21 +1,12 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
+  "type": "feedback:engineering",
   "key": {
-    "I": {
-      "item": "feedback:wrought_iron_plate"
-    },
-    "B": {
-      "item": "feedback:rotary_bearing"
-    }
+    "I": { "item": "feedback:wrought_iron_plate" },
+    "B": { "item": "feedback:rotary_bearing" }
   },
-  "pattern": [
-    "I I",
-    " B ",
-    "I I"
-  ],
-  "result": {
-    "count": 1,
-    "id": "feedback:ball_joint"
-  }
+  "pattern": [ "I I", " B ", "I I" ],
+  "result": { "count": 1, "id": "feedback:ball_joint" },
+  "tool": [ { "ability": "feedback:driver", "wear": 1 } ],
+  "fasteners": { "count": 4, "floor": 1, "forms": [ "screw" ] },
+  "school": "mechanical:1"
 }

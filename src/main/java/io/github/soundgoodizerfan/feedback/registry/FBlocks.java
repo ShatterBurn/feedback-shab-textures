@@ -1119,6 +1119,7 @@ public class FBlocks {
     public static final DeferredBlock<CreativeSourceBlock> CREATIVE_ROTATION = BLOCKS.register("creative_rotation",
             () -> new io.github.soundgoodizerfan.feedback.machine.creative.CreativeRotationBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.METAL)
+                    .noOcclusion()   // its model is a cabinet with shaft ends, open underneath: without this the world below it culls and shows the void
                     .strength(-1f, 3600000f)
                     .sound(SoundType.METAL)));
     public static final DeferredBlock<CreativeSourceBlock> CREATIVE_XP = creativeSource("creative_xp",

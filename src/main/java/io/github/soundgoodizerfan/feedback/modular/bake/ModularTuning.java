@@ -319,13 +319,8 @@ public final class ModularTuning {
     /** The learning game: parts read per specimen at most, the fewest ticks an honest reading takes, and the start levels perfect notes give. */
     public static final int NOTES_MAX_PARTS = 6;
     public static final int NOTES_MIN_READ_TICKS = 16;
-    /** Research: experience points a trial run spends, the fewest ticks an honest play takes, and the ink a run starts with (a base and a bonus for a specimen in good shape). */
-    public static final int RESEARCH_XP = 40, RESEARCH_MIN_TICKS = 60, RESEARCH_BASE_INK = 7, RESEARCH_SPECIMEN_INK = 3, RESEARCH_OFFER_INK = 4, RESEARCH_REAGENT_INK = 3;
-    /** Toughness (St) at which a specimen forgives half of what a clumsy run would strain it. */
-    public static final float RESEARCH_TOUGH_HALF = 20f;
-    /** Research strain (percent) past which the specimen is worn, and past which it comes apart; and the share of its life a full-strain run costs it. */
-    public static final int RESEARCH_WEAR_STRAIN = 35, RESEARCH_BREAK_STRAIN = 70;
-    public static final float RESEARCH_WEAR_SHARE = 0.5f;
+    /** Research: experience points a trial run spends, the fewest ticks an honest play takes, and the ink a run starts with. */
+    public static final int RESEARCH_XP = 40, RESEARCH_MIN_TICKS = 60, RESEARCH_BASE_INK = 7, RESEARCH_OFFER_INK = 4, RESEARCH_REAGENT_INK = 3;
     /** The rite game: how much of a grid's murk the best offering takes away. */
     public static final float RITE_OFFER_THIN = 0.7f;
     public static final float NOTES_MAX_LEVELS = 2f;

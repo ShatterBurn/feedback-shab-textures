@@ -14,7 +14,7 @@ import java.util.Random;
  * (cells of the effect's aspect, which are never cleared and count as filled). The tray holds {@value #TRAY} pieces of one element each, placed
  * anywhere they fit and never rotated. A full row or column clears: every piece in it is removed, and a murk cell in it is cleansed only when the
  * line also holds that murk's <b>opposite</b> element (any cell of it: a piece, an anchor or other murk). A line without the right opposite clears
- * the player's own pieces and leaves the murk. A stage is done when no murk is left; a rite is {@code stages} of them, each grid thicker.
+ * the player's own pieces and leaves the murk. A stage is done when no murk is left; a rite is {@code stages} of them; a re-draw deals pieces that fit, and a tray nothing fits with no ink left forces the residue, each grid thicker.
  * No clock: the tray can be re-drawn for one ink, and the player can take the residue at any time, which grades what was cleansed.
  *
  * <p>Elements are three opposing pairs: fire and water, earth and air, light and dark ({@link #opposite}). The figures that vary a run are in
@@ -197,9 +197,43 @@ public final class RitePurify {
     // --- the tray ---------------------------------------------------------------------------------
 
     private void fillTray() {
+        fillTray(false);
+    }
+
+    /** Deals the empty slots; {@code fitting} makes each new piece one that fits the grid as it stands, when any shape does. */
+    private void fillTray(boolean fitting) {
         for (int i = 0; i < TRAY; i++)
-            if (tray[i] == null)
-                tray[i] = draw();
+            if (tray[i] == null) {
+                Piece p = draw();
+                for (int tries = 0; fitting && !fitsAnywhere(p) && tries < 24; tries++)
+                    p = draw();
+                if (fitting && !fitsAnywhere(p))
+                    p = new Piece(0, p.element());
+                tray[i] = p;
+            }
+    }
+
+    private boolean fitsAnywhere(Piece p) {
+        for (int y = 0; y < SIZE; y++)
+            for (int x = 0; x < SIZE; x++) {
+                boolean ok = true;
+                for (int[] o : SHAPES[p.shape()]) {
+                    int cx = x + o[0], cy = y + o[1];
+                    if (cx >= SIZE || cy >= SIZE || kind[cy * SIZE + cx] != EMPTY) {
+                        ok = false;
+                        break;
+                    }
+                }
+                if (ok)
+                    return true;
+            }
+        return false;
+    }
+
+    /** With nothing playable and no ink to re-draw, the rite ends: the residue is taken. */
+    private void forceResidue() {
+        if (!over() && ink <= 0 && !canPlay())
+            taken = true;
     }
 
     private Piece draw() {
@@ -319,6 +353,7 @@ public final class RitePurify {
             }
         }
         fillTray();
+        forceResidue();
         return new Outcome(true, lines, cleansed, swept, done);
     }
 
@@ -345,7 +380,8 @@ public final class RitePurify {
         ink--;
         redraws++;
         java.util.Arrays.fill(tray, null);
-        fillTray();
+        fillTray(true);
+        forceResidue();
         return true;
     }
 

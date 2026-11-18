@@ -16,44 +16,13 @@ P is paper, W is any plank, L is a lectern.
 
 The screen is an open book. The left page is a list with three tabs, **Treatises**, **Rites** and **Apps**; each entry has a spinning icon. Click an entry to pick it. The right page shows the picked entry's two-line blurb, what it asks for, its slots and the **Research** button, which costs 40 experience points. It opens the notebook page for a treatise, the purify grid for an attunement and the terminal for an app.
 
-A volume has a slot for one Blank Treatise and a slot for one **specimen**. An attunement has a slot for an **offering**, a slot for a **reagent** and a slot for a **Blank Rite**. The text on the right page says what is missing.
-
-### Specimens
-
-A **first volume** takes a plain thing:
-
-| Volume | Specimen |
-| --- | --- |
-| Weapons I | sword, knife, axe or hafted tool |
-| Mechanical I | hand crank or water wheel |
-| Aerospace I | water wheel |
-| Robotics I | dynamotor or electromagnet |
-| Electrical I | battery, galvanic cell or Leyden jar |
-| Chemical I | crucible or thermal store |
-| Materials I | hand hammer or file |
-| Nuclear I | gas centrifuge |
-
-A volume after the first takes an item built from the volume before it, and that earlier treatise must be held: in your pack, or on a [Treatise Shelf](Treatise_Binder_and_Shelf.md) beside the table.
-
-| Volume | Specimen |
-| --- | --- |
-| Weapons II | cleaver, maul or spear |
-| Weapons III | crossbow, gun or launcher |
-| Mechanical II | engine or flywheel |
-| Aerospace II | propeller |
-| Aerospace III | thruster |
-| Robotics II | suit module |
-| Electrical II | battery, galvanic cell or Leyden jar |
-| Electrical III | heating coil, linear motor or electromagnet |
-| Materials II | roll, wire die, lathe bit, drill bit or abrasive wheel |
-| Chemical II | boiler, gas tank or pressure vessel |
-| Chemical III | compressor or heat exchanger |
+A volume has a slot for one Blank Treatise. It needs the volume before it held, in your pack or on a [Treatise Shelf](Treatise_Binder_and_Shelf.md) beside the table, and 40 experience points. An attunement has a slot for an **offering**, a slot for a **reagent** and a slot for a **Blank Rite**. The text on the right page says what is missing.
 
 Some volumes also need volumes of other schools held before they can be researched; the list is under [Treatise](Treatise.md#study-prerequisites).
 
 ### Attunements
 
-The Rites tab lists every attunement, and any of them can be researched again and again. Each attunement is about one material property: hardness, toughness, strength, weight, heat resistance, conduction or heat capacity. Its power sets a bar. The **offering** is any stock of a material, and it must rank at least that far up the property among all materials; the screen calls the bar modest, good, fine or exceptional. The further the offering is over the bar, the more ink it gives, up to 4 extra. **Mend** is about toughness and asks for an offering in the top tenth of materials by toughness.
+The Rites tab lists every attunement, and any of them can be researched again and again. Each attunement is about one material property: hardness, toughness, strength, weight, heat resistance, conduction or heat capacity. Its power sets a bar. The **offering** is any stock of a material, and it must rank at least that far up the property among the solid materials (fluids are not counted); the screen calls the bar modest, good, fine or exceptional. The further the offering is over the bar, the more ink it gives, up to 4 extra. **Mend** is about toughness and asks for an offering in the top tenth of materials by toughness.
 
 The **reagent** is an optional brewed potion.
 
@@ -67,7 +36,7 @@ Click a word to try it. The terminal answers **LIKENESS=n**, how many of its let
 
 A matched pair of brackets on one row, such as `( )`, `[ ]`, `{ }` or `< >`, can be clicked as a **hack**, once per pair. Three times in four it removes a wrong word, shown as dots. One time in four it refills the tries. A stamp grades the notes by whether the answer was found, the tries left and the hacks unused. The grade does not change the app.
 
-A plain run has 3 tries and no brackets. Each ink above the base of seven adds a try, up to 6, and every 2 ink above the base adds a bracket pair. The extra ink comes from having done the real thing before. Doing it enough times gives the bonus:
+A plain run has 3 tries and 5 bracket pairs. Each ink above the base of seven adds a try, up to 6, and every 2 ink above the base adds another bracket pair. The extra ink comes from having done the real thing before. Doing it enough times gives the bonus:
 
 | App | Done before | Extra ink |
 | --- | --- | --- |
@@ -91,7 +60,7 @@ A Blank Rite is shapeless: 2 paper + lapis lazuli + ink sac. It is used up when 
 
 Some attunements, Heat and Ward among them, name a potion. A brewed potion carrying the named effect, still potent, qualifies by itself and gives 3 ink, which gives the rite game more ink and leans its tray (see [Purifying a rite](#purifying-a-rite)). If the offering is not enough, the screen says it needs an offering that is good enough, or the potion it names.
 
-One offering is used up per run, and the potion with it. No specimen is worn.
+One offering is used up per run, and the potion with it.
 
 ## Treatise research
 
@@ -108,7 +77,7 @@ Click cards to lay a row of 1 to 5, then press **Play row**. The page shows what
 
 Reaching the target score ends the run. The page then replays what was found, asks one closing question, and a stamp grades the notes.
 
-A card that shares nothing with the rest of a row of 2 or more burns. The play is spent and, on a volume, the specimen **strains**: a few burning plays wear it, so it comes back worn and can be repaired, and many take it apart into its parts, which go to you. A tougher specimen forgives more. Burned, played and discarded cards come back on the next reshuffle. A run that spends its hands before the target is reached still gives notes, at a low grade.
+A card that shares nothing with the rest of a row of 2 or more **burns**: it counts as a bad play and scores nothing. Burned, played and discarded cards come back on the next reshuffle. A run that spends its hands before the target is reached still gives notes, at a low grade.
 
 A run has 4 hands and 2 discards. A discard throws chosen cards back for fresh ones and costs no hand. There is no clock.
 
@@ -120,7 +89,7 @@ The volume's number sets the target score: 160 for volume 1, plus 50 per volume 
 
 ### Ink
 
-A run starts with a base of seven ink. A volume adds up to three more from a specimen in good condition, and a bonus if you have already done the real thing a good number of times: fired a crossbow many times before researching guns, or forged with a hammer before Materials I. Each ink above the base adds a discard, and every 3 ink above the base adds a hand.
+A run starts with a base of seven ink. A volume adds a bonus if you have already done the real thing a good number of times: fired a crossbow many times before researching guns, or forged with a hammer before Materials I. Each ink above the base adds a discard, and every 3 ink above the base adds a hand.
 
 ### Grade
 
@@ -145,8 +114,8 @@ A grid is done when all its murk is gone. A rite takes 1 to 3 grids depending on
 
 A three-step guide in a wizard's flourishing voice shows over the grid the first time you play it in a game session; click to dismiss it, and the **?** button in the top right corner brings it back.
 
-- **Draw again** costs 1 ink and deals a whole new tray. The ink comes from the base, the offering and the reagent, as for a treatise.
-- **Take the residue** ends the run at once with what has been cleansed, at a lower grade.
+- **Draw again** costs 1 ink and deals a whole new tray of pieces that fit the grid as it stands. The ink comes from the base, the offering and the reagent, as for a treatise.
+- **Take the residue** ends the run at once with what has been cleansed, at a lower grade. It is taken for you when no piece in the tray fits and no ink is left.
 
 The grade is the purity (the grids cleansed, plus the share of the one in hand) times a bonus for few pieces and few redraws.
 

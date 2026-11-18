@@ -59,6 +59,8 @@ public final class CombatKeys {
     private static boolean jumpHeld;
     /** Ticks the punch key has stayed down since a Knuckleblaster punch, or -1 when no punch is following. */
     private static int punchHold = -1;
+    /** Whether the punch key was down last tick, so a held key's repeats never throw another punch. */
+    private static boolean punchDown;
     /** Which cast keys were down last tick, so letting one go can end a held cast. */
     private static final boolean[] castHeld = new boolean[CAST.length];
 
@@ -106,16 +108,22 @@ public final class CombatKeys {
                     punchHold = -1;
                 }
             }
-            while (PARRY.consumeClick()) {
+            // Clicks while the key was already down are the OS's key repeat, not presses: holding is for the shockwave only.
+            boolean clicked = false;
+            while (PARRY.consumeClick())
+                clicked = true;
+            if (clicked && !punchDown) {
                 if (CombatState.of(player).ready()) {
                     PacketDistributor.sendToServer(new io.github.soundgoodizerfan.feedback.combat.punch.PunchPayload(false));
                     player.swing(io.github.soundgoodizerfan.feedback.combat.punch.Punching.hand(player));
+                    UpswingSwing.knucklePunch(player);
                     punchHold = 0;
                 } else
                     deny(player);
             }
         } else
             punchHold = -1;
+        punchDown = PARRY.isDown();
         while (!fist && PARRY.consumeClick()) {
             var stats = ParryStats.of(player);
             // A worn Feedbacker parries with nothing in hand, so a weapon is not the only way to press.

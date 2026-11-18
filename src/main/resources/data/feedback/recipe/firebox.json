@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "B": {
-      "item": "minecraft:brick"
-    }
+    "B": { "tag": "c:bricks/normal" }
   },
   "pattern": [
     "BBB",

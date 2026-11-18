@@ -9,7 +9,7 @@ A clip on an [electrical](Electricity.md) line that charges one [Battery](Batter
 F P F
 ```
 
-W is [Copper Wire](Wire_Drawer.md), F is [Copper Foil](Mechanical_Hammer.md) and P is a [Copper Plate](Mechanical_Hammer.md).
+W is [Copper Wire](Wire_Drawer.md), F is [Copper Foil](Mechanical_Hammer.md) and P is a [Copper Plate](Mechanical_Hammer.md). Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, 2 screws ([Fasteners](Fasteners.md)) and Electrical Treatise I: Cells and Static Charge ([Treatise](Treatise.md)).
 
 ## Using it
 

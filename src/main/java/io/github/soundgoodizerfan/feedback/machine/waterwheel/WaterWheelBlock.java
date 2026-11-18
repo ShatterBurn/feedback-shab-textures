@@ -9,8 +9,10 @@ import org.jetbrains.annotations.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.RenderShape;
@@ -18,6 +20,9 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 /**
  * Continuous rotation, paid for with real estate and a river rather than with fuel.
@@ -34,6 +39,23 @@ public class WaterWheelBlock extends RotatedPillarBlock implements EntityBlock, 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         return defaultBlockState().setValue(AXIS, context.getClickedFace().getAxis());
+    }
+
+    /**
+     * The wheel's turning disc (the paddles stand 8 units wide across the rim) with the axle through it, one shape per axle axis.
+     * Mirrors models/block/water_wheel.json (scripts/water_wheel_model.py); the shape does not turn with the wheel.
+     */
+    private static final VoxelShape SHAPE_X = Shapes.or(Block.box(4, 0, 0, 12, 16, 16), Block.box(0, 6, 6, 16, 10, 10));
+    private static final VoxelShape SHAPE_Y = Shapes.or(Block.box(0, 4, 0, 16, 12, 16), Block.box(6, 0, 6, 10, 16, 10));
+    private static final VoxelShape SHAPE_Z = Shapes.or(Block.box(0, 0, 4, 16, 16, 12), Block.box(6, 6, 0, 10, 10, 16));
+
+    @Override
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        return switch (state.getValue(AXIS)) {
+            case X -> SHAPE_X;
+            case Y -> SHAPE_Y;
+            case Z -> SHAPE_Z;
+        };
     }
 
     @Override

@@ -366,7 +366,9 @@
   "defaults": {
     "H": "feedback:wrought_iron",
     "S": "feedback:wood",
-    "B": "feedback:leather"
+    "B": "feedback:leather",
+    "P": "feedback:wrought_iron",
+    "trident:P": "feedback:lead"
   },
   "trait": "spear_charge",
   "trait_params": {

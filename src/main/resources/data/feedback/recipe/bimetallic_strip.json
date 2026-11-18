@@ -2,16 +2,12 @@
   "type": "minecraft:crafting_shaped",
   "category": "redstone",
   "key": {
-    "F": {
-      "item": "feedback:copper_foil"
-    },
-    "N": {
-      "item": "minecraft:iron_nugget"
-    }
+    "F": { "item": "feedback:copper_foil" },
+    "I": { "item": "feedback:wrought_iron_foil" }
   },
   "pattern": [
     "FF",
-    "NN"
+    "II"
   ],
   "result": {
     "count": 1,

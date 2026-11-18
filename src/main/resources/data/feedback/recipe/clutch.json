@@ -1,20 +1,13 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
+  "type": "feedback:engineering",
   "key": {
-    "P": {
-      "item": "feedback:copper_plate"
-    },
-    "S": {
-      "item": "feedback:shaft"
-    }
+    "P": { "item": "feedback:copper_plate" },
+    "K": { "type": "feedback:material", "form": "coil_spring" },
+    "S": { "item": "feedback:shaft" }
   },
-  "pattern": [
-    "PP",
-    "SS"
-  ],
-  "result": {
-    "count": 1,
-    "id": "feedback:clutch"
-  }
+  "pattern": [ "PKP", "S S" ],
+  "result": { "count": 1, "id": "feedback:clutch" },
+  "tool": [ { "ability": "feedback:driver", "wear": 1 } ],
+  "fasteners": { "count": 2, "floor": 1, "forms": [ "screw" ] },
+  "school": "mechanical:1"
 }

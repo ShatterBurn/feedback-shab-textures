@@ -1,22 +1,13 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "category": "misc",
-  "ingredients": [
-    {
-      "item": "feedback:wrought_iron_plate"
-    },
-    {
-      "item": "feedback:wrought_iron_plate"
-    },
-    {
-      "item": "minecraft:stick"
-    },
-    {
-      "item": "minecraft:stick"
-    }
-  ],
-  "result": {
-    "count": 1,
-    "id": "feedback:belt_module_splitter"
-  }
+  "type": "feedback:engineering",
+  "key": {
+    "P": { "item": "feedback:wrought_iron_plate" },
+    "R": { "item": "feedback:wrought_iron_rod" },
+    "E": { "item": "feedback:escapement" }
+  },
+  "pattern": [ "PRP", " E " ],
+  "result": { "count": 1, "id": "feedback:belt_module_splitter" },
+  "tool": [ { "ability": "feedback:driver", "wear": 1 } ],
+  "fasteners": { "count": 2, "floor": 1, "forms": [ "screw" ] },
+  "school": "mechanical:1"
 }

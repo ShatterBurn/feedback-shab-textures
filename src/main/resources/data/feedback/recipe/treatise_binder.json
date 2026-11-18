@@ -1,19 +1,14 @@
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "minecraft:crafting_shaped",
   "category": "misc",
-  "ingredients": [
-    {
-      "item": "minecraft:leather"
-    },
-    {
-      "item": "minecraft:string"
-    },
-    {
-      "item": "minecraft:string"
-    },
-    {
-      "item": "minecraft:iron_ingot"
-    }
+  "key": {
+    "L": { "item": "minecraft:leather" },
+    "S": { "item": "minecraft:string" },
+    "N": { "item": "minecraft:iron_nugget" }
+  },
+  "pattern": [
+    "SLS",
+    " N "
   ],
   "result": {
     "count": 1,

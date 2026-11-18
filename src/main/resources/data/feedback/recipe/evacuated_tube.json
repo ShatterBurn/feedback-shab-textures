@@ -1,31 +1,13 @@
 {
   "type": "feedback:engineering",
   "key": {
-    "S": {
-      "item": "feedback:steel_plate"
-    },
-    "W": {
-      "item": "feedback:wide_tube"
-    }
+    "S": { "item": "feedback:steel_plate" },
+    "W": { "item": "feedback:wide_tube" },
+    "L": { "item": "feedback:lead_plate" }
   },
-  "pattern": [
-    "S",
-    "W",
-    "S"
-  ],
-  "result": {
-    "count": 1,
-    "id": "feedback:evacuated_tube"
-  },
-  "tool": [
-    {
-      "ability": "feedback:driver",
-      "wear": 1
-    }
-  ],
-  "fasteners": {
-    "count": 0,
-    "floor": 1
-  },
+  "pattern": [ "SWS", "L L" ],
+  "result": { "count": 1, "id": "feedback:evacuated_tube" },
+  "tool": [ { "ability": "feedback:driver", "wear": 1 } ],
+  "fasteners": { "count": 2, "floor": 1, "forms": [ "screw" ] },
   "school": "electrical:3"
 }

@@ -1,24 +1,25 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
+  "type": "feedback:engineering",
   "key": {
-    "S": {
-      "item": "feedback:stainless_steel_plate"
-    },
-    "T": {
-      "item": "feedback:copper_tubing"
-    },
-    "B": {
-      "item": "minecraft:bucket"
-    }
+    "S": { "item": "feedback:stainless_steel_plate" },
+    "T": { "item": "feedback:copper_tubing" }
   },
   "pattern": [
     "SSS",
-    "TBT",
+    "TST",
     "SSS"
   ],
   "result": {
     "count": 1,
     "id": "feedback:coolant_port"
-  }
+  },
+  "tool": [
+    { "ability": "feedback:driver", "wear": 1 }
+  ],
+  "fasteners": {
+    "count": 3,
+    "floor": 2,
+    "forms": ["screw"]
+  },
+  "school": "nuclear:1"
 }

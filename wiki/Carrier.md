@@ -27,7 +27,7 @@ Put a carrier (of any kind) and a dye in the crafting grid to get that carrier w
 
 A carrier with a magnetic plate. A [Linear Motor Ring](Pneumatic_Tube.md#linear-motor-ring) drives it through a tube block at twice the speed; it otherwise rides like a plain carrier.
 
-Crafting: Carrier + Wrought Iron Plate.
+Crafting: a Wrought Iron Plate above a Carrier.
 
 ## Pod
 

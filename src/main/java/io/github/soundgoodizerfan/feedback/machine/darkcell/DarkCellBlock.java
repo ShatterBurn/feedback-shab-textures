@@ -5,12 +5,14 @@ package io.github.soundgoodizerfan.feedback.machine.darkcell;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
@@ -18,6 +20,9 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
 
 /**
@@ -26,8 +31,23 @@ import net.minecraft.world.phys.BlockHitResult;
  */
 public class DarkCellBlock extends Block implements EntityBlock {
 
+    /** Which way the crystal window looks. Cosmetic: the room is found by flooding from every side, so the cell works whichever way it faces. */
+    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+
     public DarkCellBlock(Properties properties) {
         super(properties);
+        registerDefaultState(defaultBlockState().setValue(FACING, Direction.NORTH));
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(FACING);
+    }
+
+    /** The window faces the player who placed it, which from inside the room is into the room. */
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        return defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
     }
 
     @Override

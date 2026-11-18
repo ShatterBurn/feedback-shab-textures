@@ -1,27 +1,21 @@
 {
   "type": "feedback:engineering",
   "key": {
-    "I": {
-      "item": "feedback:insulation"
-    },
-    "S": {
-      "item": "feedback:steel_plate"
-    }
+    "I": { "item": "feedback:insulation" },
+    "S": { "item": "feedback:steel_plate" },
+    "F": { "item": "feedback:firebox" }
   },
   "pattern": [
     "III",
     "ISI",
-    "III"
+    "IFI"
   ],
   "result": {
     "count": 1,
     "id": "feedback:annealing_furnace"
   },
   "tool": [
-    {
-      "ability": "feedback:hammer",
-      "wear": 1
-    }
+    { "ability": "feedback:hammer", "wear": 1 }
   ],
   "fasteners": {
     "count": 2,

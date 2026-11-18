@@ -75,6 +75,21 @@ public final class HaftedLayers {
         return artVariant(role, p.variant(), p.measures());
     }
 
+    /**
+     * The sprite variant of a head: its own variant, else for a spear head the one its tines and barb read as (three tines a trident, four or
+     * more a pitchfork, two a trident too for want of a forked sprite, a single hooked one a harpoon), so the axes draw.
+     */
+    public static String faceVariant(String kind, String variant, io.github.soundgoodizerfan.feedback.process.Measures m) {
+        if (!variant.isEmpty() || !kind.equals("spear"))
+            return variant;
+        int tines = Math.round(m.axis("tines", 1f));
+        if (tines >= 4)
+            return "pitchfork";
+        if (tines >= 2)
+            return "trident";
+        return Math.round(m.axis("barb", 0f)) >= 3 ? "harpoon" : "";
+    }
+
     /** The art variant of an addon part: its own variant, else the one its measures read as (wraps, weight, thickness). */
     public static String artVariant(String role, String variant, io.github.soundgoodizerfan.feedback.process.Measures m) {
         if (!variant.isEmpty())
@@ -163,7 +178,7 @@ public final class HaftedLayers {
                 front = kind.orElse(null);
             first = false;
             if (kind.isPresent())
-                faces.add(new Face(letter, kind.get(), face.variant(), edgeSteps(face, role)));
+                faces.add(new Face(letter, kind.get(), faceVariant(kind.get(), face.variant(), face.measures()), edgeSteps(face, role)));
         }
         Map<String, String> parts = new java.util.HashMap<>();
         for (String r : List.of("Z", "Y", "R", "P", "G", "B", "T")) {
@@ -261,7 +276,9 @@ public final class HaftedLayers {
         part(out, sprites, plan, "P", "pommel", 0);
         // Handle, then head, then binding, then guard: the binding sits between the head and the guard, and the guard is above the head.
         out.addAll(heads);
-        part(out, sprites, plan, "B", "binding", steps);
+        // A mace's head spreads over the socket, so its binding sits two steps down the haft, clear of it.
+        boolean mace = !plan.faces().isEmpty() && plan.faces().get(0).kind().equals("maul") && plan.faces().get(0).variant().equals("mace");
+        part(out, sprites, plan, "B", "binding", mace ? steps - 2 : steps);
         part(out, sprites, plan, "G", "guard", steps);
         if (!any)
             return List.of();

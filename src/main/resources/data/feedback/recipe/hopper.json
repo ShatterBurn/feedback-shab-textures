@@ -1,21 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "misc",
-  "key": {
-    "P": {
-      "item": "feedback:wrought_iron_plate"
-    },
-    "C": {
-      "item": "minecraft:chest"
-    }
-  },
-  "pattern": [
-    "P P",
-    "PCP",
-    " P "
-  ],
-  "result": {
-    "count": 1,
-    "id": "feedback:hopper"
-  }
+  "key": { "P": { "item": "feedback:wrought_iron_plate" }, "C": { "tag": "c:chests/wooden" } },
+  "pattern": [ "P P", "PCP", " P " ],
+  "result": { "count": 1, "id": "feedback:hopper" }
 }

@@ -1,24 +1,13 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "equipment",
+  "type": "feedback:engineering",
   "key": {
-    "L": {
-      "item": "feedback:optical_glass_lens"
-    },
-    "P": {
-      "item": "feedback:copper_plate"
-    },
-    "F": {
-      "item": "feedback:copper_foil"
-    }
+    "L": { "item": "feedback:optical_glass_lens" },
+    "X": { "item": "feedback:photocell" },
+    "P": { "item": "feedback:wrought_iron_plate" }
   },
-  "pattern": [
-    "L",
-    "F",
-    "P"
-  ],
-  "result": {
-    "count": 1,
-    "id": "feedback:pyrometer"
-  }
+  "pattern": [ "L", "X", "P" ],
+  "result": { "count": 1, "id": "feedback:pyrometer" },
+  "tool": [ { "ability": "feedback:driver", "wear": 1 } ],
+  "fasteners": { "count": 1, "floor": 1, "forms": [ "screw" ] },
+  "school": "electrical:1"
 }

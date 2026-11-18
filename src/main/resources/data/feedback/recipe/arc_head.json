@@ -1,16 +1,9 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "redstone",
+  "type": "feedback:engineering",
   "key": {
-    "S": {
-      "item": "feedback:steel_plate"
-    },
-    "C": {
-      "item": "feedback:ceramic"
-    },
-    "W": {
-      "item": "feedback:copper_fine_wire"
-    }
+    "S": { "item": "feedback:steel_plate" },
+    "C": { "item": "feedback:ceramic" },
+    "W": { "item": "feedback:copper_wire" }
   },
   "pattern": [
     "SWS",
@@ -20,5 +13,10 @@
   "result": {
     "count": 1,
     "id": "feedback:arc_head"
-  }
+  },
+  "tool": [
+    { "ability": "feedback:driver", "wear": 1 }
+  ],
+  "fasteners": { "count": 3, "floor": 2, "forms": ["machine_bolt"] },
+  "school": "electrical:2"
 }

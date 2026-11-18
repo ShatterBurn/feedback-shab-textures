@@ -1,19 +1,9 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "category": "misc",
-  "ingredients": [
-    {
-      "item": "feedback:tube_junction"
-    },
-    {
-      "item": "feedback:copper_wire"
-    },
-    {
-      "item": "feedback:copper_wire"
-    }
-  ],
-  "result": {
-    "count": 1,
-    "id": "feedback:programmed_junction"
-  }
+  "type": "feedback:engineering",
+  "key": { "J": { "item": "feedback:tube_junction" }, "C": { "tag": "feedback:circuits" }, "W": { "item": "feedback:copper_wire" } },
+  "pattern": [ " C ", "WJW" ],
+  "result": { "count": 1, "id": "feedback:programmed_junction" },
+  "tool": [ { "ability": "feedback:driver", "wear": 1 } ],
+  "fasteners": { "count": 0, "floor": 1 },
+  "school": "electrical:3"
 }

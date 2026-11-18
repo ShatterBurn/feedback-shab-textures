@@ -10,7 +10,7 @@ P G P
 P P P
 ```
 
-P is an Iron Plate ([Mechanical Hammer](Mechanical_Hammer.md)) and G is [Graphite](Materials.md#graphite).
+P is a Steel Plate and G is [Graphite](Materials.md#graphite).
 
 ## Using it
 
