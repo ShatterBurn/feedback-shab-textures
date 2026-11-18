@@ -27,11 +27,11 @@ import net.minecraft.world.item.ItemStack;
 
 /**
  * The Whiplash, server side: a worn arm granting {@link WhipTuning#WHIPLASH}. Its own key throws a barbed {@link GrappleHook} from the arm
- * (the hands stay free for a sword or a gun); while the key is held the hook flies and, once it bites, the line holds. Releasing the key
- * reels: a creature lighter than the wearer is dragged in, a heavier one or a block pulls the wearer to it, an item is fetched, a projectile
- * is carried back and sent along the look, and a coin the spear touches is knocked back up. Pressing again with a line out lets it go, and
- * releasing before the hook has bitten draws it back. The line is the arm's strap material, so its rating is that metal's, as any grapple
- * line's. Throws spend stamina and wear the arm. The client only says the key went down or came up.
+ * (the hands stay free for a sword or a gun). The spear lands where it likes and the line reels at once, until wearer and spear are
+ * together: a creature lighter than the wearer is dragged in, a heavier one or a block pulls the wearer to it, an item is fetched, a
+ * projectile is carried back and sent along the look, and a coin the spear touches is knocked back up. Pressing the key with a line out
+ * only retrieves that spear; a further press throws a new one. The line is the arm's strap material, so its rating is that metal's, as any
+ * grapple line's. Throws spend stamina and wear the arm. The client only says the key went down.
  */
 public final class Whipping {
 
@@ -54,7 +54,7 @@ public final class Whipping {
         player.playNotifySound(FSounds.PRESS_DENIED.get(), SoundSource.PLAYERS, FeelTuning.DENY_VOLUME, FeelTuning.DENY_PITCH);
     }
 
-    /** The key went down: lets go of a line that is out, else throws the hook. */
+    /** The key went down: a line that is out is retrieved (and nothing else); with none out, throws the hook. */
     public static void press(ServerPlayer player) {
         ItemStack arm = arm(player);
         if (arm.isEmpty() || player.isSpectator() || player.isPassenger() || player.isSleeping() || Grabbing.holding(player)) {
@@ -84,16 +84,6 @@ public final class Whipping {
         player.swing(Punching.hand(player), true);
         level.playSound(null, player, SoundEvents.FISHING_BOBBER_THROW, SoundSource.PLAYERS, 0.8f, 1.3f);
         arm.hurtAndBreak(WhipTuning.WEAR_THROW, player, EquipmentSlot.MAINHAND);
-    }
-
-    /** The key came up: a hook that has bitten reels; one still in the air is drawn back. */
-    public static void release(ServerPlayer player) {
-        for (GrappleHook hook : hooks(player)) {
-            if (hook.anchored())
-                hook.pull();
-            else
-                hook.discard();
-        }
     }
 
     /** A punch cancels the reel, keeping the wearer's momentum: the lines let go. */

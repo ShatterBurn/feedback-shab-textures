@@ -10,7 +10,7 @@ import io.github.soundgoodizerfan.feedback.Feedback;
  */
 public final class WhipTuning {
 
-    /** Technique id the Whiplash grants: throw a barbed hook on its own key, pull on release. */
+    /** Technique id the Whiplash grants: throw a barbed spear on its own key; the line reels at once, a second press retrieves it. */
     public static final net.minecraft.resources.ResourceLocation WHIPLASH = Feedback.id("whiplash");
 
     /** Ticks before the next throw, and the stamina a throw spends. */

@@ -9242,7 +9242,7 @@
   "modular.feedback.desc.hazard.wet_line": "A shock lead trailed through your own water shorts to you unless a glove rated for the cell's band insulates the hand, and the line goes dead.",
   "item.feedback.whiplash": "Whiplash",
   "item.feedback.whiplash.flavor.1": "= You're not getting away this time.",
-  "technique.feedback.whiplash": "Whiplash; hold its key to throw a barbed hook, release to pull: a light creature, an item or a projectile comes to you, a heavy creature or a block pulls you",
+  "technique.feedback.whiplash": "Whiplash; press its key to throw a barbed spear on a lanyard that reels at once: a light creature, an item or a projectile comes to you, a heavy creature or a block pulls you; press again to retrieve it",
   "key.feedback.whip": "Whiplash",
   "modular.feedback.takes": "Takes: %s",
   "modular.feedback.needs": "Needs: %s",

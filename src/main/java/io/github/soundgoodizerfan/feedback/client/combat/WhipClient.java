@@ -20,16 +20,16 @@ import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 /**
- * The Whiplash's key. Down throws the hook (or lets go of a line that is out), up tells the server to reel; while the line it holds is a
- * swing (a block, or a creature too heavy to drag), {@link #winching} makes {@link GrappleSwing} draw the wearer in along it, as holding
- * use does for a grapple in hand. The wearer's momentum stays when the line ends.
+ * The Whiplash's key. A press throws the spear, or retrieves the one that is out; the line reels on its own once the spear lands. While the
+ * line it holds is a swing (a block, or a creature too heavy to drag), {@link #winching} makes {@link GrappleSwing} draw the wearer in
+ * along it, as holding use does for a grapple in hand. The wearer's momentum stays when the line ends.
  */
 @EventBusSubscriber(modid = Feedback.MOD_ID, value = Dist.CLIENT)
 public final class WhipClient {
 
     public static final KeyMapping WHIP = new KeyMapping("key.feedback.whip", InputConstants.KEY_B, "key.categories.feedback");
 
-    private static boolean down, winching;
+    private static boolean winching;
 
     private WhipClient() {
     }
@@ -45,23 +45,19 @@ public final class WhipClient {
         var player = mc.player;
         if (player == null || mc.level == null)
             return;
-        while (WHIP.consumeClick()) {
-        }
-        boolean held = mc.screen == null && !mc.isPaused() && !player.isSpectator() && WHIP.isDown()
+        boolean pressed = false;
+        while (WHIP.consumeClick())
+            pressed = true;
+        boolean active = mc.screen == null && !mc.isPaused() && !player.isSpectator()
                 && !CombatGear.granting(player, WhipTuning.WHIPLASH).isEmpty();
         var hooks = GrappleHook.allOf(mc.level, player).stream().filter(h -> h.has(GrappleHook.WHIP)).toList();
-        if (held && !down) {
-            // A line out is let go; none out, the hook is thrown.
-            winching = false;
-            PacketDistributor.sendToServer(new WhipPayload(true));
+        if (pressed && active) {
+            // A spear out is retrieved; none out, one is thrown.
+            PacketDistributor.sendToServer(new WhipPayload());
             if (hooks.isEmpty())
                 player.swing(Punching.hand(player));
-        } else if (!held && down) {
-            PacketDistributor.sendToServer(new WhipPayload(false));
-            winching = hooks.stream().anyMatch(GrappleHook::anchored);
         }
-        down = held;
-        if (winching && hooks.stream().noneMatch(GrappleHook::anchored))
-            winching = false;
+        // A spear that holds a swing anchor draws the wearer in at once.
+        winching = hooks.stream().anyMatch(GrappleHook::anchored);
     }
 }

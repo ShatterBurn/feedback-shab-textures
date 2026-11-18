@@ -63,7 +63,7 @@ public class GrappleHook extends Projectile {
     public static final int BARB = 4;
     /** A second hook head: using the grapple again with a line out throws a second line. */
     public static final int MULTI = 8;
-    /** Thrown from the Whiplash arm: the line holds after the bite until the key is released ({@link #pull}), the spear also bites items and projectiles, and a coin it passes is knocked up. */
+    /** Thrown from the Whiplash arm: the line reels at once after the bite until the wearer meets what it holds or presses the key again, the spear also bites items and projectiles, and a coin it passes is knocked up. */
     public static final int WHIP = 16;
 
     private static final EntityDataAccessor<Integer> DATA_FITTINGS = SynchedEntityData.defineId(GrappleHook.class, EntityDataSerializers.INT);
@@ -107,8 +107,6 @@ public class GrappleHook extends Projectile {
     private float holdStrain;
     private int lastCutter = -1;
     private int lastCutTick;
-    /** A whip's reel has been asked for (its key came up): until then the line holds what it bit and reels nothing. */
-    private boolean pulling;
     /** The item or projectile a whip's spear caught, or -1: it is fetched on release. */
     private int carriedId = -1;
 
@@ -150,11 +148,6 @@ public class GrappleHook extends Projectile {
         double along = velocity.dot(r); // toward the anchor when positive
         Vec3 v = along < 0 ? velocity.subtract(r.scale(along)) : velocity;
         return v.add(r.scale(Math.min(stretch, ModularTuning.GRAPPLE_SWING_DRAW)));
-    }
-
-    /** The whip's key came up: the line reels. */
-    public void pull() {
-        pulling = true;
     }
 
     /** A whip's spear bites an item or a projectile in flight as well as a creature (neither is pickable, so the plain rule would pass through them). */
@@ -312,7 +305,7 @@ public class GrappleHook extends Projectile {
     }
 
     /**
-     * What the whip's spear caught that is not a creature: held where it is until the key comes up, then drawn in along the line. An item
+     * What the whip's spear caught that is not a creature: drawn in along the line. An item
      * is dropped at the wearer's feet ready to pick up; a projectile is handed to the wearer and sent along their look.
      */
     private void carry() {
@@ -321,12 +314,6 @@ public class GrappleHook extends Projectile {
         if (!(owner instanceof LivingEntity thrower) || !owner.isAlive() || caught == null || !caught.isAlive()
                 || ++reelTicks > ModularTuning.GRAPPLE_MAX_TICKS || reelTicks > ModularTuning.GRAPPLE_SNEAK_GRACE && owner.isShiftKeyDown()) {
             discard();
-            return;
-        }
-        if (!pulling) {
-            caught.setDeltaMovement(Vec3.ZERO);
-            caught.hurtMarked = true;
-            setPos(caught.position());
             return;
         }
         Vec3 offset = thrower.getEyePosition().add(0, -0.3, 0).subtract(caught.position());
@@ -399,7 +386,7 @@ public class GrappleHook extends Projectile {
         float distance = (float) offset.length();
         boolean swing = living == owner;
         // A whip's swing is over when the reel has brought the wearer to the anchor.
-        if (swing && has(WHIP) && pulling && distance <= ModularTuning.GRAPPLE_STOP_DISTANCE + 0.5) {
+        if (swing && has(WHIP) && distance <= ModularTuning.GRAPPLE_STOP_DISTANCE + 0.5) {
             discard();
             return;
         }
@@ -411,7 +398,7 @@ public class GrappleHook extends Projectile {
             discard();
             return;
         }
-        boolean stalled = !swing && (!has(WHIP) || pulling) && reelTicks > 2 && lastDistance - distance < reelSpeed() * ModularTuning.GRAPPLE_STALL_FRACTION;
+        boolean stalled = !swing && reelTicks > 2 && lastDistance - distance < reelSpeed() * ModularTuning.GRAPPLE_STALL_FRACTION;
         lastDistance = distance;
         if (swing && anchorEntity < 0 && owner instanceof Player) {
             Vec3 end = living.position().add(0, living.getBbHeight() * 0.5, 0);
@@ -454,11 +441,6 @@ public class GrappleHook extends Projectile {
         }
         if (swing) {
             swing(living, offset, distance);
-            return;
-        }
-        // A whip holds a creature it bit until its key comes up.
-        if (has(WHIP) && !pulling) {
-            living.fallDistance = 0f;
             return;
         }
         float speed = reelSpeed();

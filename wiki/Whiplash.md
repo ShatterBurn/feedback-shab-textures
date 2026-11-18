@@ -1,6 +1,6 @@
 # Whiplash
 
-An arm that throws a **barbed hook on a line** from your wrist, so both hands stay free for a sword or a gun. Hold its key to throw; release to pull.
+An arm that throws a **barbed spear on a lanyard** from your wrist, so both hands stay free for a sword or a gun. One press throws it, and the line reels at once.
 
 It is a bracer-slot [combat gear](Combat_Gear.md) piece, so it takes the same slot as the [Feedbacker](Feedbacker.md) and the [Knuckleblaster](Knuckleblaster.md): you wear one of the three. It grants its technique itself; no skill needed.
 
@@ -16,13 +16,12 @@ P is a Wrought Iron Plate, R a Wrought Iron Rod, C a Chain, W a Grapple Winch (s
 
 ## Using it
 
-Wear it in the bracer slot. Press **B** (*Whiplash*, rebindable) to throw the hook along your look; hold it while the hook flies and, once it bites, while the line holds. Release to pull.
+Wear it in the bracer slot. Press **B** (*Whiplash*, rebindable) once to throw the spear along your look. It lands where it likes (a block, a creature, an item or a projectile) and the line reels at once, with no holding or releasing. The reel ends when you and the spear are together.
 
 - **A creature up to three times your mass** (by body size, the same stand-in as the [parry](Combat.md#parry)'s) is dragged to you, slower the heavier it is than you.
 - **A heavier creature or a block** pulls you to it, at a steady speed on the ground as in the air.
 - **A creature** is bitten for **1 damage**.
-- **Release before the hook bites** and it is drawn back.
-- **Press the key again with a line out** to let go.
+- **Press the key again with a spear out** to retrieve that spear, also while it is still flying. A further press throws another.
 - **Jump, or punch with a Knuckleblaster,** to cancel the pull and keep your momentum.
 
 The spear also takes what it touches:
