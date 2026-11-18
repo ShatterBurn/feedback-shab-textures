@@ -62,6 +62,8 @@ public final class StreamFx {
     private static final float PUFF_DRAG = 0.9f, FLAME_DRAG = 0.93f;
     /** Most live droplets of all streams: a hard ceiling over the per-stream and crowd caps. */
     private static final int MAX_TOTAL = 1200;
+    /** Ticks of the nozzle's past position and aim a stream remembers: what has left the gun keeps the aim it left with. */
+    private static final int HIST = 24;
 
     private static final byte DROP = 0, PUFF = 1, FLAME = 2, SOOT = 3, FOG = 4, MOTE = 5, FROST = 6, HALO = 7, EMBER = 8;
 
@@ -76,6 +78,37 @@ public final class StreamFx {
         /** Ticks since the last message; 0 on the tick one arrived. */
         int age;
         boolean updated;
+        /** The nozzle's position and (unit) aim at the end of each recent client tick, newest at {@code head}. */
+        final Vec3[] hs = new Vec3[HIST], hd = new Vec3[HIST];
+        int head;
+    }
+
+    private static final Vec3[] SCRATCH = new Vec3[2];
+
+    private static void remember(Ribbon rb, Vec3 start, Vec3 dir) {
+        rb.head = (rb.head + 1) % HIST;
+        rb.hs[rb.head] = start;
+        rb.hd[rb.head] = dir.lengthSqr() < 1e-8 ? new Vec3(0, 0, 1) : dir.normalize();
+    }
+
+    /**
+     * Where the nozzle was and where it pointed {@code ticksAgo} ticks ago, into {@link #SCRATCH}. {@code cur} is now (the live state, {@code partial} of
+     * a tick past the newest remembered one); the rest is between remembered ticks.
+     */
+    private static void sample(Ribbon rb, float ticksAgo, Vec3 curStart, Vec3 curDir, float partial) {
+        Vec3 cd = curDir.lengthSqr() < 1e-8 ? new Vec3(0, 0, 1) : curDir.normalize();
+        if (ticksAgo <= partial && partial > 1e-4f) {
+            float t = ticksAgo / partial;
+            SCRATCH[0] = curStart.lerp(rb.hs[rb.head], t);
+            SCRATCH[1] = cd.lerp(rb.hd[rb.head], t);
+            return;
+        }
+        float x = Math.min(Math.max(ticksAgo - partial, 0f), HIST - 2f);
+        int i = (int) x;
+        float fr = x - i;
+        int a = (rb.head - i + HIST) % HIST, b = (rb.head - i - 1 + HIST) % HIST;
+        SCRATCH[0] = rb.hs[a].lerp(rb.hs[b], fr);
+        SCRATCH[1] = rb.hd[a].lerp(rb.hd[b], fr);
     }
 
     /** One droplet (or puff, flame, soot, fog or mote): reused from a free list, so the droplets themselves are never reallocated once warm (the short-lived {@code Vec3}s of spawning and the strip are). */
@@ -153,6 +186,8 @@ public final class StreamFx {
             ribbon.prevStart = start;
             ribbon.prevDir = dir;
             ribbon.prevLength = p.length();
+            for (int i = 0; i < HIST; i++)
+                remember(ribbon, start, dir);
         } else {
             ribbon.prevStart = ribbon.start;
             ribbon.prevDir = ribbon.dir;
@@ -181,7 +216,7 @@ public final class StreamFx {
         // Past the far limit a stream is a bare strip; past half of it, half the droplets.
         float scale = mine || far <= CasterTuning.SPRAY_FAR * 0.5 ? 1f : far <= CasterTuning.SPRAY_FAR ? 0.5f : 0f;
         if (scale > 0f)
-            spray(mc, level, p, opening, mine, scale);
+            spray(mc, level, p, opening, mine, scale, ribbon);
     }
 
     @SubscribeEvent
@@ -199,6 +234,12 @@ public final class StreamFx {
             return;
         for (Iterator<Ribbon> it = RIBBONS.values().iterator(); it.hasNext(); ) {
             Ribbon r = it.next();
+            // Remember where the nozzle is and points this tick (your own from your live eye and look, others' from the last message).
+            if (mc.player != null && r.owner == mc.player.getId()) {
+                Vec3 look = mc.player.getViewVector(1f);
+                remember(r, mc.player.getEyePosition(1f).add(look.scale(0.4)), look);
+            } else
+                remember(r, r.start, r.dir);
             if (r.updated) {
                 r.updated = false;
                 continue;
@@ -326,7 +367,7 @@ public final class StreamFx {
      * One message's droplets. How many is capped by the particles setting; the shape is the nozzle's: the cone from {@code spread}, the
      * arc from the exit speed against gravity, the size from the cone and the fluid's thickness. {@code scale} thins far streams.
      */
-    private static void spray(Minecraft mc, ClientLevel level, CasterStreamPayload p, boolean opening, boolean mine, float scale) {
+    private static void spray(Minecraft mc, ClientLevel level, CasterStreamPayload p, boolean opening, boolean mine, float scale, Ribbon rb) {
         RandomSource random = level.random;
         Vec3 start = new Vec3(p.x(), p.y(), p.z());
         Vec3 dir = new Vec3(p.dx(), p.dy(), p.dz());
@@ -372,14 +413,21 @@ public final class StreamFx {
             // Drops are placed along the whole stream, not only at the nozzle: each starts where a drop that left earlier would be by now
             // (sagged by gravity, spread by the cone) with the life it has left, so the stream is filled from the gun to where it lands.
             float grav = gravityOf(speed);
+            // Your own stream leaves the barrel, low and to the right of the eye, and closes on the real ray over a few blocks.
+            Vec3 right = dir.cross(new Vec3(0, 1, 0));
+            right = right.lengthSqr() < 1e-6 ? new Vec3(1, 0, 0) : right.normalize();
+            Vec3 muzzle = mine ? right.scale(0.17).add(0, -0.13, 0) : Vec3.ZERO;
             for (int i = 0; i < drops; i++) {
                 float dist = length * random.nextFloat();
                 float flown = dist / speed;
                 // Four in ten ride the axis, the middle of the stream; the rest fan across the cone.
                 boolean core = random.nextFloat() < 0.4f;
                 Vec3 off = core ? across(across1, across2, random, 0.015) : across(across1, across2, random, tan * dist + 0.02);
-                Vec3 at = start.add(dir.scale(dist)).add(off).add(0, -0.5 * grav * flown * flown, 0);
-                Vec3 vel = dir.scale(speed * (0.9 + random.nextDouble() * 0.15)).add(off.scale(1.0 / Math.max(flown, 1f))).add(0, -grav * flown, 0);
+                // It left the nozzle `flown` ticks ago, from where the nozzle was then, along the aim it had then.
+                sample(rb, flown, start, dir, 0f);
+                Vec3 from = SCRATCH[0], aim = SCRATCH[1];
+                Vec3 at = from.add(aim.scale(dist)).add(off).add(muzzle.scale(Math.max(0, 1 - dist / 9f))).add(0, -0.5 * grav * flown * flown, 0);
+                Vec3 vel = aim.scale(speed * (0.9 + random.nextDouble() * 0.15)).add(off.scale(1.0 / Math.max(flown, 1f))).add(0, -grav * flown, 0);
                 Drop d = spawn(DROP, at.x, at.y, at.z, vel, size * (core ? 1.1f : 0.7f + random.nextFloat() * 0.6f),
                         Math.max(2, Math.round((length - dist) / (speed * 0.95f)) + 1), r, g, b, mine, 0f, flared);
                 if (d != null)
@@ -511,7 +559,7 @@ public final class StreamFx {
                 continue;
             boolean burning = r.kind == CasterStreamPayload.BURNING;
                         // Every liquid has a core thread the whole length of its reach (the axis of the stream); it thins out where the stream breaks into drops.
-            strip(m, vc, r, start, dir, length, length, life, cam, time, firstPerson && own, burning);
+            strip(m, vc, r, start, dir, length, length, life, cam, time, partial, firstPerson && own, burning);
         }
         Vector3f left = camera.getLeftVector(), up = camera.getUpVector();
         buffers.endBatch(RenderType.debugQuads());
@@ -550,7 +598,7 @@ public final class StreamFx {
      * {@link #ramp} along its length, billows wider as it goes and has a dark rim. {@code drawn} is how far from the nozzle it runs.
      */
     private static void strip(Matrix4f m, VertexConsumer vc, Ribbon r, Vec3 start, Vec3 dir, float length, float drawn, float life, Vec3 cam, double time,
-                              boolean own, boolean burning) {
+                              float partial, boolean own, boolean burning) {
         float cr = (r.rgb >> 16 & 255) / 255f, cg = (r.rgb >> 8 & 255) / 255f, cb = (r.rgb & 255) / 255f;
         // The core: the fluid's colour pushed toward white.
         float kr = Mth.lerp(0.55f, cr, 1f), kg = Mth.lerp(0.55f, cg, 1f), kb = Mth.lerp(0.55f, cb, 1f);
@@ -571,17 +619,21 @@ public final class StreamFx {
         int prevC = 0, prevCoreC = 0;
         for (int i = 0; i <= n; i++) {
             float s = i / (float) n, t = s * drawn;
-            Vec3 at = start.add(dir.scale(t)).add(muzzle.scale(Math.max(0, 1 - t / 9f)));
-            if (!burning) {
-                // The core follows the same arc the drops fly.
-                float flown = t / Math.max(r.speed, 0.05f);
-                at = at.add(0, -0.5 * gravityOf(r.speed) * flown * flown, 0);
-            }
+            // Each point of the stream left the nozzle t/speed ticks ago, from where it was then, along the aim it had then: a turn bends the
+            // stream into a curve that lags behind the nozzle instead of swinging it as a rod.
+            float ticks = t / Math.max(r.speed, 0.1f);
+            sample(r, ticks, start, dir, partial);
+            Vec3 at = SCRATCH[0].add(SCRATCH[1].scale(t)).add(muzzle.scale(Math.max(0, 1 - t / 9f)));
+            if (!burning)
+                at = at.add(0, -0.5 * gravityOf(r.speed) * ticks * ticks, 0);
             Vec3 toCam = cam.subtract(at);
             Vec3 side = dir.cross(toCam);
             if (side.lengthSqr() < 1e-8)
                 continue;
             side = side.normalize();
+            // A little sway growing with distance: the stream is not a rigid thread.
+            if (!burning)
+                at = at.add(side.scale(0.03 * Math.min(t / 4f, 1f) * Math.sin(t * 1.6 - time * 6.0)));
             double near = Mth.clamp((toCam.length() - 0.1) / 0.6, 0, 1);
             float w, a, coreA, rimA = 0;
             int haloC, coreC;
