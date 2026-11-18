@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.github.soundgoodizerfan.feedback.client.ClientSettings;
 import io.github.soundgoodizerfan.feedback.client.gui.GuiSkin;
 import io.github.soundgoodizerfan.feedback.client.gui.GuiStyle;
 import io.github.soundgoodizerfan.feedback.client.gui.Opening;
@@ -58,7 +59,19 @@ final class TreatiseHandScreen extends Screen {
     private String hoverText = "", messageText = "";
     private long messageUntil;
     private int phase = PLAY, asked = -1, shownChars, replayChars, px, py, hoverCard = -1, hoverStamp = -1;
-    private float shakeAt = Float.NEGATIVE_INFINITY;
+    private final Juice juice = new Juice();
+    /** Cards in the air: a played card flies to its place in the chain, a card that did not link burns where it lay, a discard drops away. */
+    private static final int FLIGHTS = 16, JOIN = 0, BURN = 1, DISCARD = 2;
+    private static final float FLY_TICKS = 8f;
+    private final String[] flyId = new String[FLIGHTS];
+    private final float[] flyFromX = new float[FLIGHTS], flyFromY = new float[FLIGHTS], flyToX = new float[FLIGHTS], flyToY = new float[FLIGHTS], flyAt = new float[FLIGHTS];
+    private final int[] flyKind = new int[FLIGHTS], flyOrder = new int[FLIGHTS];
+    private final boolean[] flyLanded = new boolean[FLIGHTS];
+    private int flyNext;
+    /** When each card of the plan was dealt into the hand (it is hidden until then); the chain chips from {@code revealFrom} show as their card lands. */
+    private float[] dealtAt;
+    private int revealFrom = Integer.MAX_VALUE;
+    private float revealAt;
     private boolean correct, sent;
     private final Tutorial tutorial = new Tutorial("hand", "gui.feedback.research.hand.tutorial", 10);
     private long endedAt;
@@ -97,7 +110,41 @@ final class TreatiseHandScreen extends Screen {
                 lines.add(piece.getString());
         replayLines = lines;
         tutorial.init(font, W - 80 - 24);
+        if (dealtAt == null) {
+            // the opening hand is dealt out one card at a time
+            dealtAt = new float[game.cards.length];
+            java.util.Arrays.fill(dealtAt, Float.NEGATIVE_INFINITY);
+            deal(List.of(), GuiStyle.time() + 4);
+        }
         rebuild();
+    }
+
+    /** Sets the cards that are in the hand now and were not in {@code before} to fly in one after another from {@code start}. */
+    private void deal(List<Integer> before, float start) {
+        if (ClientSettings.reduceMotion())
+            return;
+        int n = 0;
+        for (int card : game.hand)
+            if (!before.contains(card))
+                dealtAt[card] = start + 2 * n++;
+    }
+
+    private int chipX(int index, int from) {
+        return px + 12 + (from > 0 ? 10 : 0) + (index - from) * (CHIP_W + 3);
+    }
+
+    private void launch(String id, float fromX, float fromY, float toX, float toY, float at, int kind, int order) {
+        int f = flyNext;
+        flyNext = (flyNext + 1) % FLIGHTS;
+        flyId[f] = id;
+        flyFromX[f] = fromX;
+        flyFromY[f] = fromY;
+        flyToX[f] = toX;
+        flyToY[f] = toY;
+        flyAt[f] = ClientSettings.reduceMotion() ? at - 3 * FLY_TICKS : at;
+        flyKind[f] = kind;
+        flyOrder[f] = order;
+        flyLanded[f] = false;
     }
 
     /** The buttons of the phase: Play and Discard while playing, the answers while asking, the close button at the end. */
@@ -132,7 +179,10 @@ final class TreatiseHandScreen extends Screen {
     }
 
     private int cardAt(double mx, double my) {
+        float clock = GuiStyle.time();
         for (int s = 0; s < game.hand.size(); s++) {
+            if (clock < dealtAt[game.hand.get(s)] + FLY_TICKS)
+                continue;
             int x = cardX(s), y = py + HAND_Y - (picked.contains(game.hand.get(s)) ? 6 : 0);
             if (mx >= x && mx < x + CARD_W && my >= y && my < y + CARD_H)
                 return s;
@@ -183,28 +233,48 @@ final class TreatiseHandScreen extends Screen {
             return;
         List<Integer> row = new ArrayList<>(picked);
         String burned = firstBreak(row);
+        List<Integer> handBefore = new ArrayList<>(game.hand);
+        float[] fromX = new float[row.size()];
+        for (int k = 0; k < fromX.length; k++)
+            fromX[k] = cardX(game.hand.indexOf(row.get(k)));
+        int chainBefore = game.chain.size();
         var result = game.play(row);
         if (result == TreatiseHand.Result.IGNORED)
             return;
         moves.add(encode('p', row));
         picked.clear();
         hoverStamp = -1;
+        float clock = GuiStyle.time();
         float x = px + W / 2f, y = py + CHAIN_Y + CHIP_H / 2f;
+        // the cards that linked fly to their chips and chime as each lands; the rest burn where they lay
+        int joined = Math.max(0, Math.min(row.size(), game.chain.size() - chainBefore));
+        int from = Math.max(0, game.chain.size() - CHAIN_SHOWN);
+        revealFrom = ClientSettings.reduceMotion() ? Integer.MAX_VALUE : chainBefore;
+        revealAt = clock;
+        for (int k = 0; k < row.size(); k++) {
+            String id = game.cards[row.get(k)];
+            float fy = py + HAND_Y - 6;
+            if (k < joined)
+                launch(id, fromX[k], fy, chipX(Math.max(from, chainBefore + k), from), py + CHAIN_Y, clock + 2 * k, JOIN, k);
+            else
+                launch(id, fromX[k], fy, fromX[k], fy - 10, clock, BURN, 0);
+        }
+        deal(handBefore, clock + FLY_TICKS);
         switch (result) {
             case BROKEN -> {
                 messageText = burned;
                 messageUntil = System.currentTimeMillis() + 4500;
-                shakeAt = GuiStyle.time();
+                juice.shake(3);
+                juice.flash(0xD2452F, 6, 8);
                 specks.burst(x, py + HAND_Y + 20, 14, 1.8f, 0.4f, RED, 18, 2);
                 GuiSkin.play(FSounds.CARD_BURN.get(), 1f);
             }
             case REACHED -> {
                 specks.burst(x, y, 40, 2.4f, 0.8f, GOLD, 30, 3);
+                juice.flash(0xE8B83A, 8, 8);
                 GuiSkin.play(FSounds.PAGE_FOUND.get(), 1f);
             }
             default -> {
-                specks.burst(x, y, 10 + 2 * row.size(), 1.5f, 0.6f, GOLD, 22, 2);
-                GuiSkin.play(FSounds.CARD_PLAY.get(), 1f);
             }
         }
         refreshCount();
@@ -235,8 +305,16 @@ final class TreatiseHandScreen extends Screen {
         if (phase != PLAY || picked.isEmpty() || game.discards <= 0)
             return;
         List<Integer> out = new ArrayList<>(picked);
+        List<Integer> handBefore = new ArrayList<>(game.hand);
+        float[] fromX = new float[out.size()];
+        for (int k = 0; k < fromX.length; k++)
+            fromX[k] = cardX(game.hand.indexOf(out.get(k)));
         if (game.discard(out) == TreatiseHand.Result.IGNORED)
             return;
+        float clock = GuiStyle.time();
+        for (int k = 0; k < out.size(); k++)
+            launch(game.cards[out.get(k)], fromX[k], py + HAND_Y - 6, fromX[k] + 20, py + HAND_Y + 70, clock + k, DISCARD, 0);
+        deal(handBefore, clock + FLY_TICKS);
         moves.add(encode('d', out));
         picked.clear();
         hoverStamp = -1;
@@ -258,6 +336,15 @@ final class TreatiseHandScreen extends Screen {
         correct = n == plan.answer;
         asked = n;
         GuiSkin.play(FSounds.CARD_PLAY.get(), correct ? 1.3f : 0.8f);
+        if (correct) {
+            specks.burst(px + W - 70, py + 70, 40, 2.4f, 0.8f, GOLD, 30, 3);
+            juice.flash(0xE8B83A, 6, 8);
+        } else {
+            juice.shake(4);
+            juice.flash(0xD2452F, 7, 9);
+            specks.burst(px + W - 70, py + 70, 24, 2f, 0.5f, RED, 22, 2);
+            GuiSkin.play(FSounds.CARD_BURN.get(), 0.8f, 0.6f);
+        }
         endedAt = System.currentTimeMillis();
         to(END);
     }
@@ -273,6 +360,20 @@ final class TreatiseHandScreen extends Screen {
     @Override
     public void tick() {
         specks.tick(0.05f);
+        juice.tick();
+        float clock = GuiStyle.time();
+        for (int f = 0; f < FLIGHTS; f++) {
+            if (flyId[f] == null)
+                continue;
+            float age = clock - flyAt[f];
+            if (flyKind[f] == JOIN && !flyLanded[f] && age >= FLY_TICKS) {
+                flyLanded[f] = true;
+                GuiSkin.play(FSounds.CARD_PLAY.get(), Juice.climb(1f, flyOrder[f]));
+                specks.burst(flyToX[f] + CHIP_W / 2f, flyToY[f] + CHIP_H / 2f, 8, 1.2f, 0.5f, GOLD, 18, 2);
+            }
+            if (age > FLY_TICKS + 2)
+                flyId[f] = null;
+        }
         if (phase == REPLAY && shownChars < replayChars)
             shownChars = Math.min(replayChars, shownChars + 2);
     }
@@ -298,10 +399,10 @@ final class TreatiseHandScreen extends Screen {
             minecraft.setScreen(parent);
             return;
         }
-        int shake = GuiStyle.shake(shakeAt, 3);
+        int shakeX = juice.dx(), shakeY = juice.dy();
         opening.render(g, width, height, px, py, W, H, () -> {
             g.pose().pushPose();
-            g.pose().translate(shake, shake == 0 ? 0 : -shake / 2f, 0);
+            g.pose().translate(shakeX, shakeY, 0);
             SKIN.panel(g, px, py, W, H);
             g.drawString(font, plan.title, px + 12, py + 8, SKIN.ink(), false);
             if (phase == PLAY)
@@ -311,6 +412,7 @@ final class TreatiseHandScreen extends Screen {
             else
                 drawEnd(g);
             specks.draw(g, partial);
+            juice.draw(g, px + 3, py + 3, px + W - 3, py + H - 3);
             for (var widget : renderables)
                 widget.render(g, mx, my, partial);
             if (phase == PLAY)
@@ -329,30 +431,44 @@ final class TreatiseHandScreen extends Screen {
             g.drawString(font, "…", x, py + CHAIN_Y + 10, SKIN.dim(), false);
             x += 10;
         }
-        for (int i = from; i < total; i++, x += CHIP_W + 3)
+        float clock = GuiStyle.time();
+        boolean still = ClientSettings.reduceMotion();
+        // how far along the chain is to the goal: the newest chip glows brighter and thicker as it nears
+        float near = game.target > 0 ? Math.min(1f, game.score / (float) game.target) : 0f;
+        for (int i = from; i < total; i++, x += CHIP_W + 3) {
+            if (i >= revealFrom && clock < revealAt + 2 * (i - revealFrom) + FLY_TICKS) {
+                g.renderOutline(x, py + CHAIN_Y, CHIP_W, CHIP_H, CHAIN);
+                continue;
+            }
             chip(g, x, game.chain.get(i), i == 0 ? START : 0xFFD6B26A);
+            if (i == total - 1 && total > 1) {
+                float pulse = still ? 1f : 0.6f + 0.4f * (float) Math.sin(System.currentTimeMillis() / 220.0);
+                int glow = ((int) (255 * pulse) << 24) | (Juice.mix(GOLD, 0xFFFFFFFF, near) & 0xFFFFFF);
+                int thick = near > 0.8f ? 3 : near > 0.5f ? 2 : 1;
+                for (int t = 0; t < thick; t++)
+                    g.renderOutline(x - t, py + CHAIN_Y - t, CHIP_W + 2 * t, CHIP_H + 2 * t, glow);
+            }
+        }
         chip(g, px + W - 12 - CHIP_W, plan.goal, GREEN);
         updateHover(mx, my);
         int slots = game.hand.size();
         for (int s = 0; s < slots; s++) {
             int card = game.hand.get(s), order = picked.indexOf(card);
+            float age = clock - dealtAt[card];
+            if (age < 0)
+                continue;
             int cx = cardX(s), cy = py + HAND_Y - (order >= 0 ? 6 : 0);
-            String id = game.cards[card];
-            g.fill(cx, cy, cx + CARD_W, cy + CARD_H, order >= 0 ? CARD_HI : CARD);
-            g.renderOutline(cx, cy, CARD_W, CARD_H, order >= 0 ? GOLD : EDGE);
-            g.drawString(font, chipLabelOf(id), cx + 4, cy + 4, CARD_INK, false);
-            List<FormattedCharSequence> lines = faces.get(id);
-            g.pose().pushPose();
-            g.pose().translate(cx + 4, cy + 18, 0);
-            g.pose().scale(0.75f, 0.75f, 1f);
-            for (int l = 0; l < lines.size() && l < 4; l++)
-                g.drawString(font, lines.get(l), 0, l * 10, CARD_DIM, false);
-            g.pose().popPose();
-            if (order >= 0) {
-                g.fill(cx + CARD_W - 13, cy + 2, cx + CARD_W - 2, cy + 13, GOLD);
-                g.drawString(font, ORDER[order], cx + CARD_W - 10, cy + 4, CARD_INK, false);
+            if (age < FLY_TICKS) {
+                // a newly dealt card slides in from the deck, above and to the right
+                float left = 1 - GuiStyle.easeOut(age / FLY_TICKS);
+                cx += (int) (left * 60);
+                cy -= (int) (left * 36);
             }
+            drawCard(g, cx, cy, game.cards[card], order);
         }
+        for (int f = 0; f < FLIGHTS; f++)
+            if (flyId[f] != null)
+                drawFlight(g, f, clock);
         if (System.currentTimeMillis() < messageUntil)
             g.drawString(font, messageText, px + 12, py + H - 56, RED, false);
         else if (!hoverText.isEmpty())
@@ -361,6 +477,41 @@ final class TreatiseHandScreen extends Screen {
     }
 
     private static final String[] ORDER = {"1", "2", "3", "4", "5"};
+
+    /** One concept card at a position; {@code order} is its place in the row being built (0 first) or -1 when it is not picked. */
+    private void drawCard(GuiGraphics g, int cx, int cy, String id, int order) {
+        g.fill(cx, cy, cx + CARD_W, cy + CARD_H, order >= 0 ? CARD_HI : CARD);
+        g.renderOutline(cx, cy, CARD_W, CARD_H, order >= 0 ? GOLD : EDGE);
+        g.drawString(font, chipLabelOf(id), cx + 4, cy + 4, CARD_INK, false);
+        List<FormattedCharSequence> lines = faces.get(id);
+        g.pose().pushPose();
+        g.pose().translate(cx + 4, cy + 18, 0);
+        g.pose().scale(0.75f, 0.75f, 1f);
+        for (int l = 0; l < lines.size() && l < 4; l++)
+            g.drawString(font, lines.get(l), 0, l * 10, CARD_DIM, false);
+        g.pose().popPose();
+        if (order >= 0) {
+            g.fill(cx + CARD_W - 13, cy + 2, cx + CARD_W - 2, cy + 13, GOLD);
+            g.drawString(font, ORDER[order], cx + CARD_W - 10, cy + 4, CARD_INK, false);
+        }
+    }
+
+    /** A card in the air: a played card shrinks to a chip as it flies to the chain, a burning one reddens and rises, a discard drops and shrinks. */
+    private void drawFlight(GuiGraphics g, int f, float clock) {
+        float age = clock - flyAt[f];
+        float t = GuiStyle.easeOut(age / FLY_TICKS);
+        if (age < 0)
+            t = 0;
+        float scale = flyKind[f] == JOIN ? 1 - t * (1 - CHIP_W / (float) CARD_W) : flyKind[f] == DISCARD ? 1 - 0.5f * t : 1f;
+        float x = flyFromX[f] + (flyToX[f] - flyFromX[f]) * t, y = flyFromY[f] + (flyToY[f] - flyFromY[f]) * t;
+        g.pose().pushPose();
+        g.pose().translate(x, y, 0);
+        g.pose().scale(scale, scale, 1f);
+        drawCard(g, 0, 0, flyId[f], flyKind[f] == JOIN ? 0 : -1);
+        if (flyKind[f] == BURN)
+            g.fill(0, 0, CARD_W, CARD_H, ((int) (170 * t) << 24) | 0xD2452F);
+        g.pose().popPose();
+    }
 
     private FormattedCharSequence chipLabelOf(String id) {
         return chipLabels.get(id);

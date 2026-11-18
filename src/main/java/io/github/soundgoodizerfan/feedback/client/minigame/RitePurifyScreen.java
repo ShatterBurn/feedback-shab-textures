@@ -5,6 +5,7 @@ package io.github.soundgoodizerfan.feedback.client.minigame;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.github.soundgoodizerfan.feedback.client.ClientSettings;
 import io.github.soundgoodizerfan.feedback.client.gui.GuiSkin;
 import io.github.soundgoodizerfan.feedback.client.gui.GuiStyle;
 import io.github.soundgoodizerfan.feedback.client.gui.Opening;
@@ -46,7 +47,12 @@ final class RitePurifyScreen extends Screen {
     private final Specks specks = new Specks(160);
     private final byte[] before = new byte[RitePurify.SIZE * RitePurify.SIZE];
     private final String[] initial = new String[RitePurify.ELEMENTS];
-    private int px, py, selected, flash;
+    private final Juice juice = new Juice();
+    /** When each cell was last filled and last cleared (motion clock ticks), and the colour a cleared cell fades out in. */
+    private final float[] placedAt = new float[RitePurify.SIZE * RitePurify.SIZE], clearedAt = new float[RitePurify.SIZE * RitePurify.SIZE];
+    private final int[] clearedColour = new int[RitePurify.SIZE * RitePurify.SIZE];
+    /** Placements in a row that cleansed murk: the cleanse chime climbs with it. */
+    private int px, py, selected, streak;
     private boolean sent, stuck;
     private final Tutorial tutorial = new Tutorial("rite", "gui.feedback.research.rite.tutorial", 9);
     private long endedAt;
@@ -63,6 +69,8 @@ final class RitePurifyScreen extends Screen {
             initial[e] = name.isEmpty() ? "?" : name.substring(0, 1).toUpperCase(java.util.Locale.ROOT);
         }
         stuck = !game.canPlay();
+        java.util.Arrays.fill(placedAt, Float.NEGATIVE_INFINITY);
+        java.util.Arrays.fill(clearedAt, Float.NEGATIVE_INFINITY);
     }
 
     @Override
@@ -143,6 +151,7 @@ final class RitePurifyScreen extends Screen {
     private void place(int x, int y) {
         if (!game.fits(selected, x, y)) {
             GuiSkin.play(FSounds.RITE_STUCK.get(), 1.4f, 0.5f);
+            juice.shake(3);
             return;
         }
         System.arraycopy(game.kind, 0, before, 0, before.length);
@@ -157,10 +166,14 @@ final class RitePurifyScreen extends Screen {
         moves.add("p" + selected + "@" + x + "," + y);
         boolean sameGrid = game.stage == stageBefore;
         GuiSkin.play(FSounds.RITE_PLACE.get(), 0.9f + 0.05f * piece.cells());
+        float now = GuiStyle.time();
         if (sameGrid) {
-            for (int c = 0; c < before.length; c++)
-                if (before[c] != RitePurify.EMPTY && game.kind[c] == RitePurify.EMPTY)
+            for (int c = 0; c < before.length; c++) {
+                if (before[c] == RitePurify.EMPTY && game.kind[c] != RitePurify.EMPTY)
+                    placedAt[c] = now;
+                else if (before[c] != RitePurify.EMPTY && game.kind[c] == RitePurify.EMPTY)
                     spark(c, face[c], before[c] == RitePurify.MURK);
+            }
         } else {
             // the grid was renewed: sparks from every murk cell the last stage held
             for (int c = 0; c < before.length; c++)
@@ -168,10 +181,19 @@ final class RitePurifyScreen extends Screen {
                     spark(c, face[c], true);
         }
         if (out.cleansed() > 0) {
-            GuiSkin.play(FSounds.RITE_CLEANSE.get(), 0.9f + 0.08f * Math.min(4, out.cleansed()));
-            flash = 8;
-        } else if (out.lines() > 0)
-            GuiSkin.play(FSounds.RITE_CLEAR.get(), 1f);
+            int power = Math.min(4, out.cleansed());
+            GuiSkin.play(FSounds.RITE_CLEANSE.get(), Juice.climb(0.9f + 0.08f * power, streak));
+            juice.flash(0xFFF2CC, 6 + 2 * power, 5 + 3 * power);
+            if (out.cleansed() > 1)
+                juice.shake(1 + Math.min(2, out.cleansed() / 2));
+            streak++;
+        } else {
+            streak = 0;
+            if (out.lines() > 0) {
+                GuiSkin.play(FSounds.RITE_CLEAR.get(), 1f);
+                juice.flash(0xFFF2CC, 5, 4);
+            }
+        }
         selected = nextSlot();
         // a run as long as the server will replay is ended there, as if the residue were taken
         if (!game.over() && moves.size() >= RitePurify.MAX_MOVES - 1) {
@@ -182,6 +204,8 @@ final class RitePurifyScreen extends Screen {
             ended();
         else if (!game.canPlay() && !stuck) {
             GuiSkin.play(FSounds.RITE_STUCK.get(), 0.8f);
+            juice.shake(5);
+            juice.flash(0xFF4040, 8, 6);
             stuck = true;
         } else
             stuck = !game.canPlay();
@@ -198,6 +222,8 @@ final class RitePurifyScreen extends Screen {
     private void spark(int cell, int colour, boolean murk) {
         float cx = px + BX + (cell % RitePurify.SIZE) * CELL + CELL / 2f, cy = py + BY + (cell / RitePurify.SIZE) * CELL + CELL / 2f;
         specks.burst(cx, cy, murk ? 14 : 6, murk ? 1.6f : 0.9f, murk ? 0.9f : 0.3f, murk ? SKIN.accent() : colour, 24, 2);
+        clearedAt[cell] = GuiStyle.time();
+        clearedColour[cell] = murk ? shade(colour, 0.6f) : colour;
     }
 
     private void finish() {
@@ -211,8 +237,7 @@ final class RitePurifyScreen extends Screen {
     @Override
     public void tick() {
         specks.tick(0.04f);
-        if (flash > 0)
-            flash--;
+        juice.tick();
     }
 
     private String letter() {
@@ -230,12 +255,16 @@ final class RitePurifyScreen extends Screen {
             minecraft.setScreen(parent);
             return;
         }
+        int dx = juice.dx(), dy = juice.dy();
         opening.render(g, width, height, px, py, W, H, () -> {
             SKIN.panel(g, px, py, W, H);
             g.drawString(font, Component.translatable("gui.feedback.research.rite.header",
                     Component.translatable("gui.feedback.research.rite.element." + RitePurify.ELEMENT_NAMES[game.params.aspect()])), px + 14, py + 10, SKIN.ink(), false);
             drawStatus(g);
+            g.pose().pushPose();
+            g.pose().translate(dx, dy, 0);
             drawBoard(g, mx, my);
+            g.pose().popPose();
             drawTray(g, mx, my);
             specks.draw(g, partial);
             for (var widget : renderables)
@@ -272,12 +301,27 @@ final class RitePurifyScreen extends Screen {
         int n = RitePurify.SIZE;
         SKIN.inset(g, px + BX - 4, py + BY - 4, n * CELL + 8, n * CELL + 8);
         long time = System.currentTimeMillis();
+        float clock = GuiStyle.time();
+        boolean still = ClientSettings.reduceMotion();
         for (int c = 0; c < n * n; c++) {
             int x = px + BX + (c % n) * CELL, y = py + BY + (c / n) * CELL;
             g.fill(x + 1, y + 1, x + CELL - 1, y + CELL - 1, 0x22FFFFFF);
             byte kind = game.kind[c];
-            if (kind == RitePurify.EMPTY)
+            if (kind == RitePurify.EMPTY) {
+                // a cleared cell shrinks away in the colour it had
+                float gone = (clock - clearedAt[c]) / 8f;
+                if (!still && gone >= 0 && gone < 1) {
+                    int shrink = 1 + (int) (gone * (CELL / 2 - 2));
+                    g.fill(x + shrink, y + shrink, x + CELL - shrink, y + CELL - shrink, ((int) (200 * (1 - gone)) << 24) | (clearedColour[c] & 0xFFFFFF));
+                }
                 continue;
+            }
+            // a piece just set down drops in: a bright halo that settles into its cell
+            float settle = (clock - placedAt[c]) / 6f;
+            if (!still && settle >= 0 && settle < 1) {
+                int pop = (int) (4 * (1 - GuiStyle.easeOut(settle)));
+                g.fill(x + 1 - pop, y + 1 - pop, x + CELL - 1 + pop, y + CELL - 1 + pop, 0x66FFFFFF);
+            }
             int e = game.element[c], colour = COLOUR[e];
             if (kind == RitePurify.MURK) {
                 g.fill(x + 1, y + 1, x + CELL - 1, y + CELL - 1, shade(colour, 0.38f));
@@ -298,8 +342,7 @@ final class RitePurifyScreen extends Screen {
                 g.drawString(font, initial[e], x + (CELL - font.width(initial[e])) / 2, y + 9, 0xFF1A1030, false);
             }
         }
-        if (flash > 0)
-            g.fill(px + BX, py + BY, px + BX + n * CELL, py + BY + n * CELL, (flash * 6) << 24 | 0xFFF2CC);
+        juice.draw(g, px + BX, py + BY, px + BX + n * CELL, py + BY + n * CELL);
         // the ghost of the selected piece under the pointer
         int cell = opening.settled() && !game.over() ? cellAt(mx, my) : -1;
         if (cell >= 0 && game.tray[selected] != null) {
@@ -312,6 +355,7 @@ final class RitePurifyScreen extends Screen {
                     continue;
                 int x = px + BX + gx * CELL, y = py + BY + gy * CELL;
                 g.fill(x + 2, y + 2, x + CELL - 2, y + CELL - 2, colour);
+                g.renderOutline(x + 2, y + 2, CELL - 4, CELL - 4, withAlpha(ok ? 0xFF5CFF7A : 0xFFFF4040, still ? 0.8f : 0.55f + 0.35f * (float) Math.sin(time / 140.0)));
             }
         }
     }
