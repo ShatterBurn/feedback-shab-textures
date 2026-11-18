@@ -1,0 +1,11 @@
+{
+  "traits": [
+    "air",
+    "lift",
+    "jet",
+    "flow",
+    "slant",
+    "reaction",
+    "push"
+  ]
+}

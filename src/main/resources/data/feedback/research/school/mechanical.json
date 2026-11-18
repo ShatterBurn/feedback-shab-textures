@@ -1,0 +1,12 @@
+{
+  "traits": [
+    "turn",
+    "spin",
+    "torque",
+    "shaft",
+    "lever",
+    "mesh",
+    "grip",
+    "cycle"
+  ]
+}

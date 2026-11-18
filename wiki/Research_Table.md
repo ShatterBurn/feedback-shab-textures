@@ -1,6 +1,6 @@
 # Research Table
 
-The Research Table is where what is not yet known is found out. It writes a [Blank Treatise](Treatise.md#blank-treatise) into a treatise volume, writes a [Rite](Enchanting_Table.md#rites) for an attunement, or writes an app onto a blank Floppy Disk. A treatise is worked out with a hand of concept cards on a notebook page, an attunement by purifying a grid of murk, and an app by breaking into a terminal.
+The Research Table is where what is not yet known is found out. It writes a [Blank Treatise](Treatise.md#blank-treatise) into a treatise volume, writes a [Rite](Enchanting_Table.md#rites) for an attunement, or writes an app onto a blank Floppy Disk. A treatise is worked out by playing rows of concept cards for a score on a notebook page, an attunement by purifying a grid of murk, and an app by breaking into a terminal.
 
 ## Crafting
 
@@ -87,17 +87,20 @@ One offering is used up per run, and the potion with it. No specimen is worn.
 
 ## Treatise research
 
-Each volume has its own story, start and goal concepts, concepts and traits. The notebook page shows the volume's start concept and its goal concept. A chain row runs along the top, beginning at the start concept. Below it lies a hand of 5 concept cards, each showing its **traits** under its name, such as force, thin, hard or pressure. Two concepts link when they share a trait. Hover a card to see which traits it shares with the card before it.
+Each volume has its own story, goal concept, concepts and traits. The notebook page shows the volume's goal, the hands and discards left, and your score against the **target score**. Below lies a hand of 5 concept cards, each showing its **traits** under its name, such as force, thin, hard or pressure. Two concepts link when they share a trait. Hover a card to see its traits and whether it is raised by a treatise you hold or by the goal.
 
-Click cards to lay a row of 1 to 5, then press **Play row**. Each card must share a trait with the one before it, and the first with the end of the chain. Cards that link join the chain and score:
+Click cards to lay a row of 1 to 5, then press **Play row**. The page shows what the row is worth as you build it, as chips times a multiplier, and the row is judged as a set:
 
-- 10 points per shared trait,
-- times a chain multiplier that grows 25% per chain card, up to triple,
-- times the number of cards linked in that row, so longer rows score more.
+- A card that shares a trait with another card of the row scores. A lone card is safe and scores as a single.
+- The most cards sharing one trait name the **combo**: single, pair, triple, quad or five. A bigger combo has more base chips and a bigger multiplier.
+- Each scoring card adds chips.
+- A row of 3 or more cards that links card to card in the order laid adds a **chain** bonus to chips and multiplier, so the order of the row matters.
+- A scoring card that carries a trait of the goal adds to the multiplier. A green pip marks it.
+- Other treatise volumes you hold act as **jokers**. Each lends the traits of its school, and a scoring card carrying one of those traits adds more to the multiplier, once for each such volume. A gold pip marks it. A volume counts when it is in your pack, in a binder or on a shelf touching the table (see [Treatise](Treatise.md#using-it)); the volume being researched and the one before it do not.
 
-A card that shares a trait with the goal reaches it: +100 points and the chain ends. The page then replays what was found, asks one closing question, and a stamp grades the notes.
+Reaching the target score ends the run. The page then replays what was found, asks one closing question, and a stamp grades the notes.
 
-A card that does not link burns, along with the cards after it in the row. The hand is spent and, on a volume, the specimen **strains**: a few burns wear it, so it comes back worn and can be repaired, and many take it apart into its parts, which go to you. A tougher specimen forgives more. Burned and discarded cards come back on the next reshuffle, so a mistake never leaves the goal out of reach.
+A card that shares nothing with the rest of a row of 2 or more burns. The play is spent and, on a volume, the specimen **strains**: a few burning plays wear it, so it comes back worn and can be repaired, and many take it apart into its parts, which go to you. A tougher specimen forgives more. Burned, played and discarded cards come back on the next reshuffle. A run that spends its hands before the target is reached still gives notes, at a low grade.
 
 A run has 4 hands and 2 discards. A discard throws chosen cards back for fresh ones and costs no hand. There is no clock.
 
@@ -105,7 +108,7 @@ A three-step protocol window shows over the notebook page the first time you pla
 
 ### Target and deals
 
-The volume's number sets the **target score**: 100 for volume 1, plus 30 per volume after. It also sets how many linking cards each deal is guaranteed to hold: 2 in volume 1, 1 in volume 2, none after.
+The volume's number sets the target score: 160 for volume 1, plus 50 per volume after. It also sets how many linking cards each deal is guaranteed to hold: 2 in volume 1, 1 in volume 2, none after.
 
 ### Ink
 
@@ -115,18 +118,18 @@ A run starts with a base of seven ink. A volume adds up to three more from a spe
 
 The notes' quality adds up from four parts:
 
-- 0.35 for reaching the goal,
+- 0.35 for reaching the target,
 - up to 0.3 for the score over the target,
 - up to 0.15 for hands and discards left,
 - 0.2 for the closing answer.
 
-A run that does not reach the goal gives 0.05 to 0.25 by the length of the chain.
+A run that does not reach the target gives 0.05 to 0.25 by how close the score came.
 
 ## Purifying a rite
 
-The Rites tab's **Research** button opens a 5 by 5 grid. Its cells are **murk**, the raw effect, each of one of six elements: fire, water, earth, air, light and dark. Fire and water, earth and air, and light and dark are opposites. A few **anchors**, cells of the effect's own element, sit in the grid. Anchors never clear, and they count as filled when a line is checked.
+The Rites tab's **Research** button opens a 5 by 5 grid. Its cells are **murk**, the raw effect, each of one of six elements, drawn as its own tile: fire, water, earth, air, light and dark. Fire and water, earth and air, and light and dark are opposites. A few **anchors**, cells of the effect's own element, sit in the grid. Anchors never clear, and they count as filled when a line is checked.
 
-Under the grid is a tray of 3 pieces, each of a single element and 1 to 4 cells. Click a piece, then a cell to set it. Pieces do not rotate.
+Under the grid is a tray of 3 pieces, each of a single element and 1 to 4 cells. Press a piece and drag it: it lifts onto the pointer at full size. Release it over the grid to set it on the nearest cells where it fits, centered on the pointer. While you hold it, the cells it would cover show green where it fits and red where it does not, and any row or column it would complete glows. Released elsewhere, or where it does not fit, the piece flies back to its tray slot (with a shake if it was over the grid). Clicking a cell places nothing. Pieces do not rotate.
 
 When a row or column is full, it clears and your own pieces in it vanish. A murk cell in the line is cleansed only if the line also holds the opposite of that murk's element, in any cell, anchors and other murk included. A full line without it clears your pieces and leaves the murk.
 

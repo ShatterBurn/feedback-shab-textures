@@ -1,0 +1,11 @@
+{
+  "traits": [
+    "current",
+    "field",
+    "magnet",
+    "electric",
+    "line",
+    "spark",
+    "store"
+  ]
+}

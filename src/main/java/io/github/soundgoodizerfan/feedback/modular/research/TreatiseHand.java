@@ -5,20 +5,24 @@ package io.github.soundgoodizerfan.feedback.modular.research;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import io.github.soundgoodizerfan.feedback.modular.bake.ModularTuning;
 
 /**
- * The treatise research game's rules, pure: the plan's concepts are cards (the start and the goal are not dealt), two cards link when they share a
- * trait, and a chain grows from the plan's start. A hand of {@link #HAND} cards is dealt; a play is a row of up to {@link #MAX_PLAY} of them, each
- * linking to the one before (the first to the chain's end), and every card that links scores. A card that does not link burns, and so do the cards
- * after it, the hand is spent and the specimen is strained. A card that shares a trait with the goal reaches it and ends the chain. Hands and
- * discards are limited, there is no clock. The client plays it; the server replays the plays over the same plan, seed, ink and tier ({@link #replay})
- * and believes nothing the client says about its own score.
+ * The treatise research game's rules, pure: the plan's concepts are cards (the start and the goal are not dealt) and two cards link when they share a
+ * trait. A hand of {@link #HAND} cards is dealt; a play is a row of up to {@link #MAX_PLAY} of them, judged as a set. The cards that share a trait with
+ * another card of the row score; the most cards sharing one trait name the combo (pair to five), which has base chips and a multiplier, each scoring
+ * card adds chips, a row of three or more that links card to card in order adds a chain bonus, and a card carrying a trait of a held {@link Joker}
+ * or of the plan's goal adds to the multiplier. A card that shares nothing with the rest of a row of two or more burns and strains the specimen; a
+ * lone card is a safe single. The run is won when the score reaches the target; it is lost when the hands are spent first. Hands and discards are
+ * limited, there is no clock. The client plays it; the server replays the plays over the same plan, seed, ink, tier and jokers ({@link #replay}) and
+ * believes nothing the client says about its own score.
  *
- * <p>Tier (the volume's number) sets the target score and how many linking cards each deal is guaranteed to hold. Ink above the base buys discards
+ * <p>Tier (the volume's number) sets the target score and how many cards of each deal are guaranteed a partner. Ink above the base buys discards
  * and hands.
  */
 public final class TreatiseHand {
@@ -28,43 +32,66 @@ public final class TreatiseHand {
     public static final int MAX_MOVES = 24;
     /** One ink above the base buys a discard, this many buy a hand. */
     public static final int INK_PER_HAND = 3;
-    public static final int CARD_POINTS = 10, GOAL_BONUS = 100;
+    /** A combo by the most cards sharing one trait (index 0 is unused, 1 is a lone card): base chips and base multiplier. */
+    public static final int[] COMBO_CHIPS = {0, 5, 10, 30, 60, 100}, COMBO_MULT = {0, 1, 2, 3, 4, 5};
+    /** Chips each scoring card adds. */
+    public static final int CARD_CHIPS = 10;
+    /** A row of three or more whose cards link in the order played adds these. */
+    public static final int CHAIN_CHIPS = 10, CHAIN_MULT = 1;
+    /** Multiplier a scoring card adds for each held joker it shares a trait with, and for sharing one with the goal. */
+    public static final int JOKER_MULT = 2, GOAL_MULT = 1;
     /** Target score: this, plus this per tier above the first. */
-    public static final int TARGET_BASE = 100, TARGET_STEP = 30;
-    /** Linking cards each deal is guaranteed to hold in tier 1, falling by one per tier. */
+    public static final int TARGET_BASE = 160, TARGET_STEP = 50;
+    /** Cards of a deal that are guaranteed a partner in tier 1, falling by one per tier. */
     public static final int GUARANTEE = 2;
+
+    /** A held volume of another school: the traits its school lends a card. */
+    public record Joker(String school, int volume, Set<String> traits) {
+    }
+
+    /**
+     * A row judged: the cards that scored and the ones that burned, in row order, the combo's size (1 for a lone card, 0 when nothing scored),
+     * whether the chain bonus applied, the chips and the multiplier, and what the row is worth.
+     */
+    public record Row(List<Integer> scoring, List<Integer> burned, int combo, boolean chain, int chips, int mult) {
+        public static final Row NONE = new Row(List.of(), List.of(), 0, false, 0, 0);
+
+        public int total() {
+            return chips * mult;
+        }
+    }
 
     /** What a move did. */
     public enum Result {
-        IGNORED, LINKED, BROKEN, REACHED, DISCARDED
+        IGNORED, SCORED, BROKEN, REACHED, DISCARDED
     }
 
     public final ResearchPlan plan;
     /** The dealt concepts: a card is its index here. */
     public final String[] cards;
+    public final List<Joker> jokers;
+    public final Set<String> goalTraits;
     public final int tier, handsStart, discardsStart, target;
-    /** The chain, from the plan's start; its last concept is what the next play must link to. */
-    public final List<String> chain = new ArrayList<>();
     public final List<Integer> hand = new ArrayList<>();
-    public final boolean[] inChain;
     public int hands, discards, score, bad, links;
     public boolean reached;
-    /** What the last play's linked cards were each worth before the row's multiplier (for the screen's tally; the server grades by {@link #score}). */
-    public final List<Integer> lastChips = new ArrayList<>();
+    /** The last play, for the screen's tally (the server grades by {@link #score}). */
+    public Row last = Row.NONE;
     private final int guarantee;
     private final Random rng;
     private final ArrayDeque<Integer> pile = new ArrayDeque<>();
     private final List<Integer> spent = new ArrayList<>();
 
-    public TreatiseHand(ResearchPlan plan, int seed, int ink, int tier) {
+    public TreatiseHand(ResearchPlan plan, int seed, int ink, int tier, List<Joker> jokers) {
         this.plan = plan;
         this.tier = Math.max(1, tier);
+        this.jokers = List.copyOf(jokers);
+        goalTraits = plan.traits.getOrDefault(plan.goal, Set.of());
         List<String> dealt = new ArrayList<>();
         for (String id : plan.labels.keySet())
             if (!id.equals(plan.start) && !id.equals(plan.goal))
                 dealt.add(id);
         cards = dealt.toArray(new String[0]);
-        inChain = new boolean[cards.length];
         int extra = Math.max(0, ink - ModularTuning.RESEARCH_BASE_INK);
         hands = handsStart = HANDS + extra / INK_PER_HAND;
         discards = discardsStart = DISCARDS + extra;
@@ -76,7 +103,6 @@ public final class TreatiseHand {
             order.add(i);
         Collections.shuffle(order, rng);
         pile.addAll(order);
-        chain.add(plan.start);
         deal();
     }
 
@@ -85,19 +111,41 @@ public final class TreatiseHand {
         return pile.size();
     }
 
-    /** The concept the next play must link to. */
-    public String end() {
-        return chain.get(chain.size() - 1);
-    }
-
-    /** Whether the run is over: the goal reached, or the hands spent. */
+    /** Whether the run is over: the target reached, or the hands spent. */
     public boolean over() {
         return reached || hands <= 0;
     }
 
-    /** Whether card {@code i} links to the concept {@code to}. */
-    public boolean links(int i, String to) {
-        return plan.related(cards[i], to);
+    /** Whether cards {@code a} and {@code b} share a trait. */
+    public boolean links(int a, int b) {
+        return plan.related(cards[a], cards[b]);
+    }
+
+    /** How many jokers share a trait with card {@code c}. */
+    public int jokersOn(int c) {
+        int n = 0;
+        for (Joker j : jokers)
+            for (String t : plan.traits.get(cards[c]))
+                if (j.traits().contains(t)) {
+                    n++;
+                    break;
+                }
+        return n;
+    }
+
+    /** Whether card {@code c} carries a trait of the goal. */
+    public boolean onGoal(int c) {
+        for (String t : plan.traits.get(cards[c]))
+            if (goalTraits.contains(t))
+                return true;
+        return false;
+    }
+
+    private boolean partnered(int c, List<Integer> in) {
+        for (int o : in)
+            if (o != c && links(c, o))
+                return true;
+        return false;
     }
 
     private void deal() {
@@ -111,27 +159,66 @@ public final class TreatiseHand {
             }
             hand.add(pile.poll());
         }
-        // a low tier's deal always holds linking cards: a card that links to nothing is swapped for one that does, which goes under the pile
+        // a low tier's deal always holds cards with partners: a card that links to nothing in the hand is swapped for one that does, which goes under the pile
         int have = 0;
         for (int c : hand)
-            if (links(c, end()))
+            if (partnered(c, hand))
                 have++;
         for (int h = 0; have < guarantee && h < hand.size(); h++) {
-            if (links(hand.get(h), end()))
+            int out = hand.get(h);
+            if (partnered(out, hand))
                 continue;
             Integer pick = null;
-            for (int c : pile)
-                if (links(c, end())) {
-                    pick = c;
+            for (int c : pile) {
+                for (int o : hand)
+                    if (o != out && links(c, o)) {
+                        pick = c;
+                        break;
+                    }
+                if (pick != null)
                     break;
-                }
+            }
             if (pick == null)
                 break;
             pile.remove(pick);
-            pile.addLast(hand.get(h));
+            pile.addLast(out);
             hand.set(h, pick);
-            have++;
+            have = 0;
+            for (int c : hand)
+                if (partnered(c, hand))
+                    have++;
         }
+    }
+
+    /** What the row {@code ids} would score, with nothing changed: the screen shows it as the player builds the row. */
+    public Row preview(List<Integer> ids) {
+        List<Integer> scoring = new ArrayList<>(), burned = new ArrayList<>();
+        for (int c : ids)
+            if (ids.size() == 1 || partnered(c, ids))
+                scoring.add(c);
+            else
+                burned.add(c);
+        if (scoring.isEmpty())
+            return new Row(scoring, burned, 0, false, 0, 0);
+        // the combo: the most cards of the row that carry one trait
+        int best = 1;
+        for (int c : scoring)
+            for (String t : plan.traits.get(cards[c])) {
+                int n = 0;
+                for (int o : scoring)
+                    if (plan.traits.get(cards[o]).contains(t))
+                        n++;
+                best = Math.max(best, n);
+            }
+        int combo = Math.min(best, COMBO_CHIPS.length - 1);
+        boolean chain = ids.size() >= 3 && burned.isEmpty();
+        for (int i = 1; chain && i < ids.size(); i++)
+            chain = links(ids.get(i - 1), ids.get(i));
+        int chips = COMBO_CHIPS[combo] + CARD_CHIPS * scoring.size() + (chain ? CHAIN_CHIPS : 0);
+        int mult = COMBO_MULT[combo] + (chain ? CHAIN_MULT : 0);
+        for (int c : scoring)
+            mult += JOKER_MULT * jokersOn(c) + (onGoal(c) ? GOAL_MULT : 0);
+        return new Row(scoring, burned, combo, chain, chips, mult);
     }
 
     /** Plays the cards {@code ids} (indices into {@link #cards}, all in the hand, no repeats) as a row. */
@@ -139,41 +226,20 @@ public final class TreatiseHand {
         if (over() || ids.isEmpty() || ids.size() > MAX_PLAY || !valid(ids))
             return Result.IGNORED;
         hands--;
-        lastChips.clear();
-        float total = 0;
-        int linked = 0;
-        boolean broke = false;
-        for (int i = 0; i < ids.size(); i++) {
-            int c = ids.get(i);
+        last = preview(ids);
+        for (int c : ids)
             hand.remove((Integer) c);
-            List<String> same = plan.shared(cards[c], end());
-            if (broke || same.isEmpty()) {
-                broke = true;
-                spent.add(c);
-                continue;
-            }
-            float worth = CARD_POINTS * same.size() * Math.min(3f, 1f + 0.25f * (chain.size() - 1));
-            total += worth;
-            lastChips.add(Math.round(worth));
-            chain.add(cards[c]);
-            inChain[c] = true;
-            linked++;
-            links++;
-            if (plan.related(cards[c], plan.goal)) {
-                reached = true;
-                score += GOAL_BONUS;
-                // the cards after the one that reached the goal stay in the hand
-                for (int k = i + 1; k < ids.size(); k++)
-                    hand.add(ids.get(k));
-                break;
-            }
-        }
-        score += Math.round(total * linked);
-        if (broke)
+        spent.addAll(last.burned());
+        spent.addAll(last.scoring());
+        score += last.total();
+        links += last.scoring().size();
+        if (!last.burned().isEmpty())
             bad++;
+        if (score >= target)
+            reached = true;
         if (!over())
             deal();
-        return reached ? Result.REACHED : broke ? Result.BROKEN : Result.LINKED;
+        return reached ? Result.REACHED : !last.burned().isEmpty() ? Result.BROKEN : Result.SCORED;
     }
 
     /** Throws the cards {@code ids} back: they return on the next reshuffle and a fresh hand is dealt. Costs a discard, not a hand. */
@@ -199,7 +265,7 @@ public final class TreatiseHand {
     /** The notes' quality, 0 to 1, given whether the closing question was answered right. */
     public float quality(boolean answeredRight) {
         if (!reached)
-            return 0.05f + 0.2f * Math.max(0f, Math.min(1f, links / (float) Math.max(1, cards.length / 2)));
+            return 0.05f + 0.2f * Math.max(0f, Math.min(1f, score / (float) target));
         float score01 = Math.min(1f, score / (1.5f * target));
         float left = 0.5f * hands / handsStart + 0.5f * discards / discardsStart;
         return Math.max(0f, Math.min(1f, 0.35f + 0.3f * score01 + 0.15f * left + (answeredRight ? 0.2f : 0f)));
@@ -210,12 +276,37 @@ public final class TreatiseHand {
         return Math.max(0, Math.min(100, Math.round(bad * 20f * (1f - 0.5f * Math.max(0f, Math.min(1f, forgiving))))));
     }
 
+    /** The jokers as the one string the open payload carries: {@code school:volume=trait,trait;school:volume=trait}. */
+    public static String encode(List<Joker> jokers) {
+        StringBuilder out = new StringBuilder();
+        for (Joker j : jokers)
+            out.append(out.length() == 0 ? "" : ";").append(j.school()).append(':').append(j.volume()).append('=').append(String.join(",", j.traits()));
+        return out.toString();
+    }
+
+    /** The jokers {@link #encode} wrote; a malformed one is left out. */
+    public static List<Joker> parse(String text) {
+        List<Joker> out = new ArrayList<>();
+        for (String part : text.split(";")) {
+            int eq = part.indexOf('='), colon = part.indexOf(':');
+            if (eq < 0 || colon < 0 || colon > eq)
+                continue;
+            try {
+                out.add(new Joker(part.substring(0, colon), Integer.parseInt(part.substring(colon + 1, eq)),
+                        new LinkedHashSet<>(List.of(part.substring(eq + 1).split(",")))));
+            } catch (NumberFormatException e) {
+                // left out
+            }
+        }
+        return out;
+    }
+
     /**
-     * Replays a result's moves ({@code p<id>,<id>..} a play, {@code d<id>,<id>..} a discard) over the plan, seed, ink and tier; the run stops at its end
-     * or a malformed move.
+     * Replays a result's moves ({@code p<id>,<id>..} a play, {@code d<id>,<id>..} a discard) over the plan, seed, ink, tier and jokers; the run stops at
+     * its end or a malformed move.
      */
-    public static TreatiseHand replay(ResearchPlan plan, int seed, int ink, int tier, List<String> moves) {
-        TreatiseHand game = new TreatiseHand(plan, seed, ink, tier);
+    public static TreatiseHand replay(ResearchPlan plan, int seed, int ink, int tier, List<Joker> jokers, List<String> moves) {
+        TreatiseHand game = new TreatiseHand(plan, seed, ink, tier, jokers);
         for (String move : moves) {
             if (move.length() < 2 || game.over())
                 break;

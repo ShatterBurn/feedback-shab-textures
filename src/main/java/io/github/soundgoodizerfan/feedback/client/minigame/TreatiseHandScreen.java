@@ -16,6 +16,7 @@ import io.github.soundgoodizerfan.feedback.client.gui.Opening;
 import io.github.soundgoodizerfan.feedback.client.gui.Specks;
 import io.github.soundgoodizerfan.feedback.modular.research.ResearchPlan;
 import io.github.soundgoodizerfan.feedback.modular.research.TreatiseHand;
+import io.github.soundgoodizerfan.feedback.modular.treatise.School;
 import io.github.soundgoodizerfan.feedback.net.ResearchOpenPayload;
 import io.github.soundgoodizerfan.feedback.net.ResearchResultPayload;
 import io.github.soundgoodizerfan.feedback.registry.FSounds;
@@ -28,20 +29,20 @@ import net.minecraft.util.FormattedCharSequence;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 /**
- * The treatise research game ({@link TreatiseHand}) on a notebook page: the concepts the researcher owns link up in a chain along the top, a hand of
- * concept cards lies below. Click cards to lay them in a row (the numbers say the order), then Play: each card must share a trait with the one before
- * it (the first with the chain's end). Cards that link join the chain and score; the first that does not burns with those after it, spends the hand
- * and strains the specimen. A card that shares a trait with the goal reaches it; the page then replays what was found and asks the one thing the
- * chain does not say, and a stamp grades the notes. Discards throw cards back for a fresh hand. What is sent is what was done (the plays and the
+ * The treatise research game ({@link TreatiseHand}) on a notebook page: the goal sits at the right of the table, the treatises the researcher holds beside
+ * it (the jokers) at the left, a hand of concept cards lies below. Click cards to lay a row (the numbers say the order), then Play: the cards that share a
+ * trait with another card of the row score, the most sharing one trait name the combo, and the chips and multiplier are shown as the row is built. A card
+ * that shares nothing with its row burns and strains the specimen. Reaching the target score ends the play; the page then replays what was found and asks
+ * the one thing the notes do not say, and a stamp grades them. Discards throw cards back for a fresh hand. What is sent is what was done (the plays and the
  * discards in order, and the answer); the server replays it and grades that. Esc before the end sends nothing and spends nothing.
  *
- * <p>The chain chips, the cards and the specks are the subject of the screen and draw their own colours; the panel, the page and every button are the
+ * <p>The chips, the cards and the specks are the subject of the screen and draw their own colours; the panel, the page and every button are the
  * skin's. Faces and labels are wrapped once when the screen opens; nothing is allocated in the draw path.
  */
 final class TreatiseHandScreen extends Screen {
 
     private static final GuiSkin SKIN = GuiSkin.WOOD;
-    private static final int W = 400, H = 250, CARD_W = 68, CARD_H = 64, CHIP_W = 50, CHIP_H = 30, CHAIN_SHOWN = 6, CHAIN_Y = 62, HAND_Y = 118;
+    private static final int TABLE_X = 256, W = 400, H = 250, CARD_W = 68, CARD_H = 64, CHIP_W = 50, CHIP_H = 30, JOKERS_SHOWN = 4, CHAIN_Y = 62, HAND_Y = 118;
     /** The hand is a fan: cards overlap by a few pixels, tilt out from the middle and the outer ones sit a little lower. The deck pile sits at its right. */
     private static final int STEP = 60, HAND_X = 15, PILE_W = 54, PILE_H = 51, PILE_X = W - 12 - PILE_W, PILE_Y = HAND_Y + 4, POPS = 10;
     /** Ticks a dealt card takes to fly off the pile face-down, then to turn over. */
@@ -62,6 +63,13 @@ final class TreatiseHandScreen extends Screen {
     private final Map<String, FormattedCharSequence> chipLabels = new HashMap<>();
     private final Map<String, List<FormattedCharSequence>> faces = new HashMap<>(), chipFaces = new HashMap<>();
     private final Map<String, String> traitText = new HashMap<>();
+    /** Each joker's chip: the school's name and the traits it lends; the cards that carry a trait of a joker or of the goal wear a mark. */
+    private final List<FormattedCharSequence> jokerLabels = new ArrayList<>();
+    private final List<List<FormattedCharSequence>> jokerFaces = new ArrayList<>();
+    private final java.util.Set<String> jokerCards = new java.util.HashSet<>(), goalCards = new java.util.HashSet<>();
+    /** The row being built, judged: redone only when the picks change. */
+    private int previewKey = -1;
+    private Component comboLine, calcLine, burnLine;
     private Component goalLine, countLine, helpLine, foundLine, lostLine, tallyLine, answerLine, clickLine, playLabel, discardLabel;
     private List<String> replayLines = List.of();
     private String hoverText = "", messageText = "";
@@ -77,20 +85,18 @@ final class TreatiseHandScreen extends Screen {
     private final int[] flyKind = new int[FLIGHTS], flyOrder = new int[FLIGHTS], flyChips = new int[FLIGHTS];
     private final boolean[] flyLanded = new boolean[FLIGHTS];
     private int flyNext;
-    /** When each card of the plan was dealt into the hand (it is hidden until then); the chain chips from {@code revealFrom} show as their card lands. */
+    /** When each card of the plan was dealt into the hand (it is hidden until then). */
     private float[] dealtAt, pickAt;
     private boolean[] dealSounded;
-    private int revealFrom = Integer.MAX_VALUE;
-    private float revealAt;
     /** How far each hand slot is lifted (hover and picked), eased every tick. */
     private final float[] lift = new float[TreatiseHand.HAND];
-    /** The score as the tally has counted it: each landed card adds its chips, then the row's multiplier and the goal bonus settle the rest. */
-    private int shownScore, settleMult, settleBonus;
+    /** The score as the tally has counted it: each landed card adds its chips, then the row's multiplier and its total settle the rest. */
+    private int shownScore, settleMult, settleTotal;
     private boolean settling;
     private float settleAt, settleX;
     private int phaseNext = -1;
     private float phaseAt;
-    /** Numbers popping up over the chain: chips as a card lands, the multiplier, the goal bonus. */
+    /** Numbers popping up over the table: chips as a card lands, the multiplier, the row's total. */
     private final String[] popText = new String[POPS];
     private final float[] popX = new float[POPS], popY = new float[POPS], popAt = new float[POPS];
     private final int[] popColour = new int[POPS];
@@ -106,10 +112,16 @@ final class TreatiseHandScreen extends Screen {
         this.parent = parent;
         this.containerId = session.container();
         this.plan = ResearchPlan.parse("play", session.plan());
-        this.game = new TreatiseHand(plan, session.seed(), session.ink(), session.tier());
+        this.game = new TreatiseHand(plan, session.seed(), session.ink(), session.tier(), TreatiseHand.parse(session.jokers()));
         for (String id : plan.labels.keySet())
             traitText.put(id, traitNames(plan.traits.get(id)));
-        goalLine = Component.translatable("gui.feedback.research.hand.goal", plan.labels.get(plan.start), plan.labels.get(plan.goal), traitText.get(plan.goal));
+        goalLine = Component.translatable("gui.feedback.research.hand.goal", plan.labels.get(plan.goal), traitText.get(plan.goal));
+        for (int c = 0; c < game.cards.length; c++) {
+            if (game.jokersOn(c) > 0)
+                jokerCards.add(game.cards[c]);
+            if (game.onGoal(c))
+                goalCards.add(game.cards[c]);
+        }
         helpLine = Component.translatable("gui.feedback.research.hand.help");
         clickLine = Component.translatable("gui.feedback.research.click");
         foundLine = Component.translatable("gui.feedback.research.found");
@@ -128,6 +140,11 @@ final class TreatiseHandScreen extends Screen {
             chipLabels.put(e.getKey(), font.split(Component.literal(e.getValue()), CHIP_W - 4).get(0));
             faces.put(e.getKey(), font.split(Component.literal(traitText.get(e.getKey())), (int) ((CARD_W - 8) / 0.75f)));
             chipFaces.put(e.getKey(), font.split(Component.literal(traitText.get(e.getKey())), (int) ((CHIP_W - 4) / 0.6f)));
+        }
+        for (var joker : game.jokers) {
+            var name = font.split(Component.translatable(School.valueOf(joker.school().toUpperCase(java.util.Locale.ROOT)).itemKey(joker.volume())), CHIP_W - 4);
+            jokerLabels.add(name.isEmpty() ? FormattedCharSequence.EMPTY : name.get(0));
+            jokerFaces.add(font.split(Component.literal(traitNames(joker.traits())), (int) ((CHIP_W - 4) / 0.6f)));
         }
         List<String> lines = new ArrayList<>();
         for (String paragraph : plan.replay)
@@ -156,10 +173,6 @@ final class TreatiseHandScreen extends Screen {
                 dealtAt[card] = still ? Float.NEGATIVE_INFINITY : start + 3 * n++;
                 dealSounded[card] = still;
             }
-    }
-
-    private int chipX(int index, int from) {
-        return px + 12 + (from > 0 ? 10 : 0) + (index - from) * (CHIP_W + 3);
     }
 
     private void launch(String id, float fromX, float fromY, float angle, float toX, float toY, float at, int kind, int order, int chips) {
@@ -282,7 +295,6 @@ final class TreatiseHandScreen extends Screen {
             return;
         settle();
         List<Integer> row = new ArrayList<>(picked);
-        String burned = firstBreak(row);
         List<Integer> handBefore = new ArrayList<>(game.hand);
         float[] fromX = new float[row.size()], fromY = new float[row.size()], fromA = new float[row.size()];
         for (int k = 0; k < fromX.length; k++) {
@@ -291,39 +303,37 @@ final class TreatiseHandScreen extends Screen {
             fromY[k] = handY(slot) - lift[slot];
             fromA[k] = angle(slot);
         }
-        int chainBefore = game.chain.size();
         var result = game.play(row);
         if (result == TreatiseHand.Result.IGNORED)
             return;
+        var last = game.last;
         moves.add(encode('p', row));
         picked.clear();
         hoverStamp = -1;
+        previewKey = -1;
         float clock = GuiStyle.time();
-        float x = px + W / 2f;
-        // the cards that linked fly to their chips, each adding its chips as it lands; the rest burn where they lay
-        int joined = Math.max(0, Math.min(Math.min(row.size(), game.lastChips.size()), game.chain.size() - chainBefore));
-        int from = Math.max(0, game.chain.size() - CHAIN_SHOWN);
-        revealFrom = ClientSettings.reduceMotion() ? Integer.MAX_VALUE : chainBefore;
-        revealAt = clock;
+        float x = px + W / 2f, tableX = px + TABLE_X, tableY = py + CHAIN_Y;
+        // the cards that scored fly to the table, each adding its chips as it lands; the rest burn where they lay
+        int joined = 0;
         for (int k = 0; k < row.size(); k++) {
             String id = game.cards[row.get(k)];
-            if (k < joined)
-                launch(id, fromX[k], fromY[k], fromA[k], chipX(Math.max(from, chainBefore + k), from), py + CHAIN_Y, clock + 2 * k, JOIN, k, game.lastChips.get(k));
+            if (last.scoring().contains(row.get(k)))
+                launch(id, fromX[k], fromY[k], fromA[k], tableX, tableY, clock + 2 * joined, JOIN, joined++, TreatiseHand.CARD_CHIPS);
             else
                 launch(id, fromX[k], fromY[k], fromA[k], fromX[k], fromY[k] - 10, clock, BURN, 0, 0);
         }
         deal(handBefore, clock + 2 * row.size() + 4);
-        // once the last card lands the row's multiplier and any goal bonus settle the score
+        // once the last card lands the combo's multiplier and the row's total settle the score
         float landed = joined > 0 ? clock + 2 * (joined - 1) + FLY_TICKS : clock;
         if (joined > 0) {
             settling = true;
-            settleMult = joined;
-            settleBonus = result == TreatiseHand.Result.REACHED ? TreatiseHand.GOAL_BONUS : 0;
+            settleMult = last.mult();
+            settleTotal = last.total();
             settleAt = landed + 6;
-            settleX = chipX(Math.max(from, chainBefore + joined - 1), from) + CHIP_W / 2f;
+            settleX = tableX + CHIP_W / 2f;
         }
-        if (result == TreatiseHand.Result.BROKEN) {
-            messageText = burned;
+        if (!last.burned().isEmpty()) {
+            messageText = Component.translatable("gui.feedback.research.hand.burned", plan.labels.get(game.cards[last.burned().get(0)])).getString();
             messageUntil = System.currentTimeMillis() + 4500;
             juice.shake(3);
             juice.flash(0xD2452F, 6, 8);
@@ -331,7 +341,7 @@ final class TreatiseHandScreen extends Screen {
             GuiSkin.play(FSounds.CARD_BURN.get(), 1f);
         }
         refreshCount();
-        if (result != TreatiseHand.Result.BROKEN && ClientSettings.reduceMotion())
+        if (last.burned().isEmpty() && ClientSettings.reduceMotion())
             GuiSkin.play(FSounds.CARD_DEAL.get(), 1f, 0.5f);
         // the screen waits for the cards to land and the tally to settle before it turns the page
         float done = joined > 0 ? settleAt + (result == TreatiseHand.Result.REACHED ? 26 : 16) : clock + 16;
@@ -344,20 +354,18 @@ final class TreatiseHandScreen extends Screen {
         }
     }
 
-    /** Settles the tally: the row's multiplier and the goal bonus pop up and the score shown becomes the real one. */
+    /** Settles the tally: the combo's multiplier and the row's total pop up and the score shown becomes the real one. */
     private void settle() {
         if (!settling)
             return;
         settling = false;
         float y = py + CHAIN_Y - 6;
-        if (settleMult > 1) {
-            pop(settleX, y - 12, "x" + settleMult, MULT_RED, false);
-            GuiSkin.play(FSounds.CARD_PLAY.get(), Juice.climb(0.7f, settleMult));
-            specks.burst(settleX, y + 10, 10, 1.4f, 0.6f, MULT_RED, 18, 2);
-        }
-        if (settleBonus > 0) {
-            pop(settleX, y - 28, "+" + settleBonus, GOLD, true);
-            specks.burst(settleX, y + 10, 40, 2.4f, 0.8f, GOLD, 30, 3);
+        pop(settleX, y - 12, "x" + settleMult, MULT_RED, false);
+        GuiSkin.play(FSounds.CARD_PLAY.get(), Juice.climb(0.7f, Math.max(1, settleMult / 2)));
+        specks.burst(settleX, y + 10, 10, 1.4f, 0.6f, MULT_RED, 18, 2);
+        pop(settleX, y - 28, "+" + settleTotal, GOLD, true);
+        specks.burst(settleX, y + 10, Math.min(40, 10 + settleTotal / 10), 2.4f, 0.8f, GOLD, 30, 3);
+        if (settleTotal >= 100) {
             juice.flash(0xE8B83A, 8, 8);
             GuiSkin.play(FSounds.PAGE_FOUND.get(), 1f);
         }
@@ -374,17 +382,6 @@ final class TreatiseHandScreen extends Screen {
         popColour[p] = colour;
         popBig[p] = big;
         popAt[p] = GuiStyle.time();
-    }
-
-    /** The line for a play's first card that does not link, for the burn message; empty when every card links. */
-    private String firstBreak(List<Integer> row) {
-        String prev = game.end();
-        for (int c : row) {
-            if (!plan.related(game.cards[c], prev))
-                return Component.translatable("gui.feedback.research.hand.burned", plan.labels.get(game.cards[c]), plan.labels.get(prev)).getString();
-            prev = game.cards[c];
-        }
-        return "";
     }
 
     private void discard() {
@@ -464,8 +461,6 @@ final class TreatiseHandScreen extends Screen {
                 float cx = flyToX[f] + CHIP_W / 2f;
                 specks.burst(cx, flyToY[f] + CHIP_H / 2f, 8, 1.2f, 0.5f, GOLD, 18, 2);
                 pop(cx, flyToY[f] - 4, "+" + flyChips[f], CHIPS_BLUE, false);
-                shownScore = Math.min(game.score, shownScore + flyChips[f]);
-                refreshCount();
             }
             if (age > FLY_TICKS + 2)
                 flyId[f] = null;
@@ -559,32 +554,33 @@ final class TreatiseHandScreen extends Screen {
     private void drawPlay(GuiGraphics g, int mx, int my) {
         g.drawString(font, goalLine, px + 12, py + 20, SKIN.dim(), false);
         g.drawString(font, countLine, px + 12, py + 34, SKIN.ink(), false);
-        // the chain: its last few concepts, then the goal
-        int total = game.chain.size(), from = Math.max(0, total - CHAIN_SHOWN);
-        int x = px + 12;
-        if (from > 0) {
-            g.drawString(font, "…", x, py + CHAIN_Y + 10, SKIN.dim(), false);
-            x += 10;
-        }
         float clock = GuiStyle.time();
         boolean still = ClientSettings.reduceMotion();
-        // how far along the chain is to the goal: the newest chip glows brighter and thicker as it nears
-        float near = game.target > 0 ? Math.min(1f, game.score / (float) game.target) : 0f;
-        for (int i = from; i < total; i++, x += CHIP_W + 3) {
-            if (i >= revealFrom && clock < revealAt + 2 * (i - revealFrom) + FLY_TICKS) {
-                g.renderOutline(x, py + CHAIN_Y, CHIP_W, CHIP_H, CHAIN);
-                continue;
-            }
-            chip(g, x, game.chain.get(i), i == 0 ? START : 0xFFD6B26A);
-            if (i == total - 1 && total > 1) {
-                float pulse = still ? 1f : 0.6f + 0.4f * (float) Math.sin(System.currentTimeMillis() / 220.0);
-                int glow = ((int) (255 * pulse) << 24) | (Juice.mix(GOLD, 0xFFFFFFFF, near) & 0xFFFFFF);
-                int thick = near > 0.8f ? 3 : near > 0.5f ? 2 : 1;
-                for (int t = 0; t < thick; t++)
-                    g.renderOutline(x - t, py + CHAIN_Y - t, CHIP_W + 2 * t, CHIP_H + 2 * t, glow);
-            }
+        // the treatises held beside: their traits raise the multiplier of the cards that carry them
+        int x = px + 12, shown = Math.min(JOKERS_SHOWN, game.jokers.size());
+        for (int j = 0; j < shown; j++, x += CHIP_W + 3)
+            chip(g, x, jokerLabels.get(j), jokerFaces.get(j), 0xFFD6B26A);
+        if (game.jokers.size() > shown)
+            g.drawString(font, Component.translatable("gui.feedback.research.hand.joker_more", game.jokers.size() - shown), x, py + CHAIN_Y + 10, SKIN.dim(), false);
+        else if (game.jokers.isEmpty())
+            g.drawString(font, Component.translatable("gui.feedback.research.hand.jokers"), x, py + CHAIN_Y + 10, SKIN.dim(), false);
+        // the row being built, judged as it is laid
+        int key = picked.hashCode();
+        if (key != previewKey) {
+            previewKey = key;
+            var row = picked.isEmpty() ? TreatiseHand.Row.NONE : game.preview(picked);
+            comboLine = row.combo() == 0 ? null : Component.translatable("gui.feedback.research.hand.combo." + row.combo()).append(row.chain() ? " + " : "")
+                    .append(row.chain() ? Component.translatable("gui.feedback.research.hand.chain") : Component.empty());
+            calcLine = row.combo() == 0 ? null : Component.literal(row.chips() + " x " + row.mult());
+            burnLine = row.burned().isEmpty() ? null : Component.translatable("gui.feedback.research.hand.burn_count", row.burned().size());
         }
-        chip(g, px + W - 12 - CHIP_W, plan.goal, GREEN);
+        if (comboLine != null) {
+            g.drawString(font, comboLine, px + TABLE_X - 22, py + CHAIN_Y, GOLD, false);
+            g.drawString(font, calcLine, px + TABLE_X - 22, py + CHAIN_Y + 11, CHIPS_BLUE | 0xFF000000, false);
+        }
+        if (burnLine != null)
+            g.drawString(font, burnLine, px + TABLE_X - 22, py + CHAIN_Y + 22, RED, false);
+        chip(g, px + W - 12 - CHIP_W, chipLabels.get(plan.goal), chipFaces.get(plan.goal), GREEN);
         updateHover(mx, my);
         drawPile(g);
         // the fan is drawn left to right so each card overlaps the one before; the card under the pointer is drawn last, on top
@@ -620,6 +616,11 @@ final class TreatiseHandScreen extends Screen {
         for (int l = 0; l < lines.size() && l < 4; l++)
             g.drawString(font, lines.get(l), 0, l * 10, CARD_DIM, false);
         g.pose().popPose();
+        // a gold pip when a treatise held beside raises the card, a green one when it carries a trait of the goal
+        if (jokerCards.contains(id))
+            g.fill(cx + 4, cy + CARD_H - 8, cx + 10, cy + CARD_H - 3, GOLD);
+        if (goalCards.contains(id))
+            g.fill(cx + 13, cy + CARD_H - 8, cx + 19, cy + CARD_H - 3, GREEN);
         if (order >= 0) {
             g.fill(cx + CARD_W - 13, cy + 2, cx + CARD_W - 2, cy + 13, GOLD);
             g.drawString(font, ORDER[order], cx + CARD_W - 10, cy + 4, CARD_INK, false);
@@ -741,38 +742,36 @@ final class TreatiseHandScreen extends Screen {
         return chipLabels.get(id);
     }
 
-    private void chip(GuiGraphics g, int x, String id, int colour) {
+    private void chip(GuiGraphics g, int x, FormattedCharSequence label, List<FormattedCharSequence> face, int colour) {
         int y = py + CHAIN_Y;
         g.fill(x, y, x + CHIP_W, y + CHIP_H, colour);
         g.renderOutline(x, y, CHIP_W, CHIP_H, EDGE);
-        FormattedCharSequence label = chipLabels.get(id);
         g.drawString(font, label, x + 2, y + 2, CARD_INK, false);
         g.pose().pushPose();
         g.pose().translate(x + 2, y + 13, 0);
         g.pose().scale(0.6f, 0.6f, 1f);
-        List<FormattedCharSequence> lines = chipFaces.get(id);
-        for (int l = 0; l < lines.size() && l < 3; l++)
-            g.drawString(font, lines.get(l), 0, l * 9, CARD_DIM, false);
+        for (int l = 0; l < face.size() && l < 3; l++)
+            g.drawString(font, face.get(l), 0, l * 9, CARD_DIM, false);
         g.pose().popPose();
     }
 
-    /** Works out what the line under the hand says about the card under the pointer; redone only when the card or the row changed. */
+    /** Works out what the line under the hand says about the card under the pointer; redone only when the card changed. */
     private void updateHover(int mx, int my) {
         int slot = cardAt(mx, my);
-        int stamp = picked.size() * 64 + game.chain.size();
-        if (slot == hoverCard && stamp == hoverStamp)
+        if (slot == hoverCard && hoverStamp == 0)
             return;
         hoverCard = slot;
-        hoverStamp = stamp;
+        hoverStamp = 0;
         hoverText = "";
         if (slot < 0)
             return;
-        int card = game.hand.get(slot), at = picked.indexOf(card);
-        String before = at > 0 ? game.cards[picked.get(at - 1)] : at == 0 ? game.end() : picked.isEmpty() ? game.end() : game.cards[picked.get(picked.size() - 1)];
-        List<String> same = plan.shared(game.cards[card], before);
-        hoverText = same.isEmpty()
-                ? Component.translatable("gui.feedback.research.hand.shares_none", plan.labels.get(game.cards[card]), plan.labels.get(before)).getString()
-                : Component.translatable("gui.feedback.research.hand.shares", plan.labels.get(game.cards[card]), traitNames(same), plan.labels.get(before)).getString();
+        String id = game.cards[game.hand.get(slot)];
+        StringBuilder out = new StringBuilder(Component.translatable("gui.feedback.research.hand.shares", plan.labels.get(id), traitText.get(id)).getString());
+        if (jokerCards.contains(id))
+            out.append(", ").append(Component.translatable("gui.feedback.research.hand.on_joker").getString());
+        if (goalCards.contains(id))
+            out.append(", ").append(Component.translatable("gui.feedback.research.hand.on_goal").getString());
+        hoverText = out.toString();
     }
 
     /** The replay: what the chain found, as handwriting that comes in line by line (the page is a sheet of paper, drawn in its own colours). */

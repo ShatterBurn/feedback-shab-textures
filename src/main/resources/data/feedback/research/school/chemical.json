@@ -1,0 +1,12 @@
+{
+  "traits": [
+    "heat",
+    "gas",
+    "pressure",
+    "mix",
+    "liquid",
+    "vapour",
+    "reaction",
+    "burn"
+  ]
+}

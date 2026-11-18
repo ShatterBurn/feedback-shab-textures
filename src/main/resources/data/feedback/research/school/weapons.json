@@ -1,0 +1,11 @@
+{
+  "traits": [
+    "burst",
+    "push",
+    "release",
+    "stored",
+    "speed",
+    "force",
+    "confined"
+  ]
+}

@@ -12,6 +12,7 @@ import io.github.soundgoodizerfan.feedback.modular.engineering.TreatiseGame;
 import io.github.soundgoodizerfan.feedback.modular.item.ModularRework;
 import io.github.soundgoodizerfan.feedback.modular.item.ModularStacks;
 import io.github.soundgoodizerfan.feedback.modular.treatise.School;
+import io.github.soundgoodizerfan.feedback.modular.treatise.Treatises;
 import io.github.soundgoodizerfan.feedback.net.HudReadoutPayload;
 import io.github.soundgoodizerfan.feedback.net.ResearchOpenPayload;
 import io.github.soundgoodizerfan.feedback.process.ClientMaterials;
@@ -59,6 +60,8 @@ public class ResearchTableMenu extends AbstractContainerMenu {
     private ResearchPlan sentPlan;
     /** The figures of the rite game in play (rite mode); the client is only ever told these, and the replay runs over them. */
     private RitePurify.Params sentRite;
+    /** The jokers the treatise game in play was opened with (the replay runs over the same ones). */
+    private java.util.List<TreatiseHand.Joker> sentJokers = java.util.List.of();
 
     public ResearchTableMenu(int id, Inventory inventory, RegistryFriendlyByteBuf buf) {
         this(id, inventory, new SimpleContainer(ResearchTableBlockEntity.SIZE), buf.readBlockPos());
@@ -268,8 +271,13 @@ public class ResearchTableMenu extends AbstractContainerMenu {
         sentSeed = (int) (now ^ containerId * 31L);
         sentRite = mode.get() == 1 ? Researching.riteParams(effect(server), table.getItem(ResearchTableBlockEntity.OFFERING),
                 table.getItem(ResearchTableBlockEntity.REAGENT), sentInk, server.level()) : null;
+        if (mode.get() == 0) {
+            int[] v = Researching.volume(sentIndex);
+            sentJokers = ResearchPlans.get().jokers(Treatises.mask(server, access()), School.values()[v[0]], v[1]);
+        } else
+            sentJokers = java.util.List.of();
         PacketDistributor.sendToPlayer(server, new ResearchOpenPayload(containerId, sentRite != null ? sentRite.encode() : plan.json(), sentInk, sentSeed,
-                mode.get(), mode.get() == 0 ? Researching.volume(sentIndex)[1] : 1));
+                mode.get(), mode.get() == 0 ? Researching.volume(sentIndex)[1] : 1, TreatiseHand.encode(sentJokers)));
         return true;
     }
 
@@ -301,7 +309,7 @@ public class ResearchTableMenu extends AbstractContainerMenu {
                 return;
             quality = elapsed < ModularTuning.RESEARCH_MIN_TICKS ? 0f : RitePurify.replay(sentRite, sentSeed, moves).quality();
         } else {
-            TreatiseHand hand = TreatiseHand.replay(sentPlan, sentSeed, sentInk, Researching.volume(sentIndex)[1], moves);
+            TreatiseHand hand = TreatiseHand.replay(sentPlan, sentSeed, sentInk, Researching.volume(sentIndex)[1], sentJokers, moves);
             quality = elapsed < ModularTuning.RESEARCH_MIN_TICKS ? 0f : hand.quality(hand.reached && answer == sentPlan.answer);
             pushed = hand.strain(Researching.forgiving(table.getItem(ResearchTableBlockEntity.SPECIMEN)));
         }

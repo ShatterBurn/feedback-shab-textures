@@ -1,0 +1,11 @@
+{
+  "traits": [
+    "signal",
+    "sense",
+    "control",
+    "current",
+    "field",
+    "torque",
+    "turn"
+  ]
+}
