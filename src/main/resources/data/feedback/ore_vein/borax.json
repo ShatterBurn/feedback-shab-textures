@@ -6,11 +6,19 @@
   "dimension_filter": [
     "minecraft:overworld"
   ],
-  "biomes": "feedback:evaporite_basins",
   "indicator": "feedback:borax_loose_rock",
   "ore": "feedback:borax_ore",
   "deepslate_ore": "feedback:borax_deepslate_ore",
-  "weight": 6,
   "min_y": 30,
-  "max_y": 80
+  "max_y": 80,
+  "material": "feedback:borax",
+  "share": 1.0,
+  "province": "evaporite",
+  "biome_weights": [
+    {
+      "biome": "feedback:evaporite_basins",
+      "factor": 1.0
+    }
+  ],
+  "biome_default": 0.0
 }

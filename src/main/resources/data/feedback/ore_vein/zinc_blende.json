@@ -6,16 +6,31 @@
   "dimension_filter": [
     "minecraft:overworld"
   ],
-  "indicator": ["feedback:sphalerite_loose_rock", "feedback:zinc_violet"],
+  "indicator": [
+    "feedback:sphalerite_loose_rock",
+    "feedback:zinc_violet"
+  ],
   "ore": "feedback:sphalerite_ore",
   "deepslate_ore": "feedback:sphalerite_deepslate_ore",
-  "weight": 5,
   "min_y": -32,
   "max_y": 48,
   "scatter": [
     {
       "ore": "feedback:galena_ore",
       "density": 0.07
+    }
+  ],
+  "material": "feedback:sphalerite",
+  "share": 1.0,
+  "province": "sulphide",
+  "companions": [
+    {
+      "vein": "feedback:galena_ore",
+      "chance": 0.5
+    },
+    {
+      "vein": "feedback:pyrite_ore",
+      "chance": 0.3
     }
   ]
 }

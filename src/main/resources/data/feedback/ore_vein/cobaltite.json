@@ -9,7 +9,15 @@
   "indicator": "feedback:cobaltite_loose_rock",
   "ore": "feedback:cobaltite_ore",
   "deepslate_ore": "feedback:cobaltite_deepslate_ore",
-  "weight": 4,
   "min_y": -48,
-  "max_y": 0
+  "max_y": 0,
+  "material": "feedback:cobaltite",
+  "share": 1.0,
+  "province": "sulphide",
+  "companions": [
+    {
+      "vein": "feedback:pyrite_ore",
+      "chance": 0.2
+    }
+  ]
 }

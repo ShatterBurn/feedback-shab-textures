@@ -6,10 +6,12 @@
   "dimension_filter": [
     "minecraft:overworld"
   ],
-  "indicator": ["feedback:chalcopyrite_loose_rock", "feedback:copper_flower"],
+  "indicator": [
+    "feedback:chalcopyrite_loose_rock",
+    "feedback:copper_flower"
+  ],
   "ore": "feedback:chalcopyrite_ore",
   "deepslate_ore": "feedback:chalcopyrite_deepslate_ore",
-  "weight": 4,
   "min_y": -16,
   "max_y": 112,
   "cap": {
@@ -26,6 +28,23 @@
     {
       "ore": "feedback:pyrite_ore",
       "density": 0.05
+    }
+  ],
+  "material": "feedback:chalcopyrite",
+  "share": 1.0,
+  "province": "porphyry",
+  "companions": [
+    {
+      "vein": "feedback:gold",
+      "chance": 0.35
+    },
+    {
+      "vein": "feedback:molybdenite",
+      "chance": 0.5
+    },
+    {
+      "vein": "feedback:pyrite_ore",
+      "chance": 0.3
     }
   ]
 }

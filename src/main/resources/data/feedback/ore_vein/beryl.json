@@ -9,8 +9,26 @@
   "indicator": "feedback:beryl_loose_rock",
   "ore": "feedback:beryl_ore",
   "deepslate_ore": "feedback:beryl_deepslate_ore",
-  "weight": 3,
   "min_y": 32,
   "max_y": 256,
-  "biomes": "feedback:has_emerald_ore"
+  "material": "feedback:beryl",
+  "share": 1.0,
+  "province": "pegmatite",
+  "biome_weights": [
+    {
+      "biome": "feedback:has_emerald_ore",
+      "factor": 1.0
+    }
+  ],
+  "biome_default": 0.0,
+  "companions": [
+    {
+      "vein": "feedback:tourmaline",
+      "chance": 0.5
+    },
+    {
+      "vein": "feedback:spodumene",
+      "chance": 0.4
+    }
+  ]
 }

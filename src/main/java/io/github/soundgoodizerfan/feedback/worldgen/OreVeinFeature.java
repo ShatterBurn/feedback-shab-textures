@@ -8,6 +8,8 @@ import com.mojang.serialization.Codec;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
@@ -21,21 +23,27 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
 /**
  * Places the deposits in {@link OreVeinTable} (mechanics §9.3), GregTech style: ore exists only
  * inside a vein. The world is cut into regions of {@value #REGION_CHUNKS} by {@value #REGION_CHUNKS}
- * chunks; each region holds {@value #SLOTS} vein slots whose type, centre and height are drawn from
+ * chunks; each region holds the dimension's {@link OreDimension#slots()} vein slots whose type, centre and height are drawn from
  * the world seed and the slot alone, so every chunk that a vein touches computes the same vein and
- * fills its own part of it. A vein is a flat ellipsoid; each block in it becomes ore with the
+ * fills its own part of it. A slot draws its deposit by weight times the factors the biome and the
+ * province at its centre put on it, then may add the deposit's companions beside it. A vein is a flat ellipsoid; each block in it becomes ore with the
  * deposit's density, thinning toward the rim, where the block is the deposit's host (stone hosts
  * give {@code ore}, deepslate hosts {@code deepslate_ore}). Nothing is placed outside a vein.
  * <p>
  * {@code origin} is the chunk's corner (the placed feature has no modifiers). A vein reaches at most
- * {@value OreVein#MAX_RADIUS} blocks from its centre, less than a region, so the 3 by 3 regions
- * around the chunk's own cover every vein that can touch it.
+ * {@value OreVein#MAX_RADIUS} blocks from its centre, and a companion at most {@link #SLOT_REACH} from its slot's, less than a region,
+ * so the 3 by 3 regions around the chunk's own cover every vein that can touch it.
+ * <p>
+ * Prior art, design only (nothing copied): TerraFirmaCraft's vein features (EUPL-1.2, 1.21.x, commit 8dbb10c7). Taken:
+ * host rock as a gate on where ore may sit (here the {@code host} tag filter) and the depth gate on indicators. Rejected: per-chunk
+ * 1/rarity selection with no budget (a slot budget is what lets abundance and provinces be relative), host maps keyed by
+ * block id, biome allow-list tags, hand-written rarity per file, and surface/normal/montane copies of one ore.
  */
 public class OreVeinFeature extends Feature<NoneFeatureConfiguration> {
 
     static final int REGION_CHUNKS = 3, REGION = REGION_CHUNKS * 16;
-    /** Veins per region; Invented, with each file's {@code weight} the whole of the abundance tuning. */
-    static final int SLOTS = 12;
+    /** Farthest from a slot's centre any block of it can lie: a companion's offset plus its widest radius (a fifth over). */
+    static final int SLOT_REACH = OreVein.MAX_OFFSET + (int) Math.ceil(OreVein.MAX_RADIUS * 1.2);
 
     public OreVeinFeature(Codec<NoneFeatureConfiguration> codec) {
         super(codec);
@@ -52,41 +60,74 @@ public class OreVeinFeature extends Feature<NoneFeatureConfiguration> {
         WorldGenLevel level = context.level();
         BlockPos origin = context.origin();
         var dimension = level.getLevel().dimension().location();
+        OreDimension rules = OreDimensionTable.get().get(dimension);
+        if (rules == null)
+            return false;
         List<OreVein> veins = OreVeinTable.get().entries().stream().filter(v -> v.dimensions().contains(dimension)).toList();
-        int totalWeight = veins.stream().mapToInt(OreVein::weight).sum();
-        if (totalWeight <= 0)
+        if (veins.isEmpty())
             return false;
         long seed = level.getSeed();
         int regionX = Math.floorDiv(origin.getX(), REGION), regionZ = Math.floorDiv(origin.getZ(), REGION);
+        var generator = context.chunkGenerator();
+        var sampler = level.getLevel().getChunkSource().randomState().sampler();
+        double[] weights = new double[veins.size()];
 
         boolean placed = false;
         for (int rx = regionX - 1; rx <= regionX + 1; rx++)
             for (int rz = regionZ - 1; rz <= regionZ + 1; rz++)
-                for (int slot = 0; slot < SLOTS; slot++) {
+                for (int slot = 0; slot < rules.slots(); slot++) {
                     long s = mix(seed ^ mix(rx * 341873128712L + rz * 132897987541L + slot * 0x9E3779B97F4A7C15L));
                     RandomSource random = new XoroshiroRandomSource(s, mix(s));
-                    OreVein vein = pick(veins, random.nextInt(totalWeight));
-                    int span = vein.maxY() - vein.minY() + 1;
                     int cx = rx * REGION + random.nextInt(REGION), cz = rz * REGION + random.nextInt(REGION);
+                    // Every draw below is made whether or not this chunk is reached, so every chunk agrees.
+                    double roll = random.nextDouble();
+                    if (cx + SLOT_REACH < origin.getX() || cx - SLOT_REACH > origin.getX() + 15
+                            || cz + SLOT_REACH < origin.getZ() || cz - SLOT_REACH > origin.getZ() + 15)
+                        continue;
+                    OreVein vein = pick(veins, weights, roll, seed, rules, generator.getBiomeSource().getNoiseBiome(
+                            cx >> 2, level.getSeaLevel() >> 2, cz >> 2, sampler), cx, cz);
+                    if (vein == null)
+                        continue;
+                    int span = vein.maxY() - vein.minY() + 1;
                     int cy = vein.minY() + (vein.triangle()
                             ? (random.nextInt(span) + random.nextInt(span)) / 2
                             : random.nextInt(span));
-                    double radiusX = vein.radius() * (0.8 + 0.4 * random.nextDouble());
-                    double radiusZ = vein.radius() * (0.8 + 0.4 * random.nextDouble());
-                    if (cx + radiusX < origin.getX() || cx - radiusX > origin.getX() + 15
-                            || cz + radiusZ < origin.getZ() || cz - radiusZ > origin.getZ() + 15)
-                        continue;
-                    BlockPos centre = new BlockPos(cx, cy, cz);
-                    // The centre may lie in a chunk that is not loaded for this one; the biome is read at the
-                    // nearest column of this chunk, so a vein is cut at a biome edge chunk by chunk.
-                    if (vein.biomes().isPresent() && !level.getBiome(new BlockPos(
-                            Math.max(origin.getX(), Math.min(origin.getX() + 15, cx)), cy,
-                            Math.max(origin.getZ(), Math.min(origin.getZ() + 15, cz)))).is(vein.biomes().get()))
-                        continue;
-                    placed |= fill(level, s, vein, centre, radiusX, radiusZ, origin);
-                    if (!vein.indicators().isEmpty())
-                        outcrop(level, random, vein, centre, origin);
+                    placed |= member(level, s, 0, vein, cx, cy, cz, 1.0, origin);
+                    int index = 0;
+                    for (OreVein.Companion companion : vein.companions()) {
+                        index++;
+                        // Drawn for every companion, kept or not, so the stream never depends on the roll.
+                        double chance = random.nextDouble(), angle = random.nextDouble() * Math.PI * 2,
+                                distance = random.nextDouble();
+                        int dy = random.nextInt(13) - 6;
+                        OreVein partner = OreVeinTable.get().byId(companion.vein());
+                        if (partner == null || chance >= companion.chance())
+                            continue;
+                        double d = companion.minOffset() + distance * Math.max(0, companion.maxOffset() - companion.minOffset());
+                        placed |= member(level, mix(s + index * 0x9E3779B97F4A7C15L), index, partner,
+                                (int) Math.round(cx + Math.cos(angle) * d), cy + dy, (int) Math.round(cz + Math.sin(angle) * d),
+                                companion.sizeScale(), origin);
+                    }
                 }
+        return placed;
+    }
+
+    /**
+     * One deposit of a slot, the slot's own or a companion's. Its radii come from a random seeded by the vein seed alone
+     * (never from the slot's stream, which a chunk may or may not reach), and so does its outcrop.
+     */
+    private static boolean member(WorldGenLevel level, long veinSeed, int tag, OreVein vein, int cx, int cy, int cz,
+                                  double scale, BlockPos origin) {
+        RandomSource own = new XoroshiroRandomSource(mix(veinSeed ^ 0x2545F4914F6CDD1DL), mix(veinSeed + tag));
+        double radiusX = vein.radius() * scale * (0.8 + 0.4 * own.nextDouble());
+        double radiusZ = vein.radius() * scale * (0.8 + 0.4 * own.nextDouble());
+        if (cx + radiusX < origin.getX() || cx - radiusX > origin.getX() + 15
+                || cz + radiusZ < origin.getZ() || cz - radiusZ > origin.getZ() + 15)
+            return false;
+        BlockPos centre = new BlockPos(cx, cy, cz);
+        boolean placed = fill(level, veinSeed, vein, centre, radiusX, radiusZ, origin);
+        if (!vein.indicators().isEmpty())
+            outcrop(level, own, vein, centre, origin);
         return placed;
     }
 
@@ -100,11 +141,42 @@ public class OreVeinFeature extends Feature<NoneFeatureConfiguration> {
                 BuiltInRegistries.BLOCK.get(deepslateOre).defaultBlockState(), density);
     }
 
-    private static OreVein pick(List<OreVein> veins, int roll) {
-        for (OreVein vein : veins) {
-            roll -= vein.weight();
-            if (roll < 0)
-                return vein;
+    /**
+     * The deposit a slot draws, by weight times what its biome and province do to it at the slot's centre; null when
+     * every deposit is shut out. The province factor is worked once per province name.
+     */
+    private static OreVein pick(List<OreVein> veins, double[] weights, double roll, long seed, OreDimension rules,
+                                Holder<Biome> biome, int cx, int cz) {
+        java.util.Map<String, Double> provinceFactors = null;
+        double total = 0;
+        for (int i = 0; i < weights.length; i++) {
+            OreVein vein = veins.get(i);
+            double w = vein.weight();
+            boolean listed = false;
+            for (OreVein.BiomeWeight bw : vein.biomeWeights())
+                if (biome.is(bw.biome())) {
+                    w *= bw.factor();
+                    listed = true;
+                }
+            if (!listed && !vein.biomeWeights().isEmpty())
+                w *= vein.biomeDefault();
+            if (w > 0 && vein.province().isPresent()) {
+                if (provinceFactors == null)
+                    provinceFactors = new java.util.HashMap<>();
+                final java.util.Map<String, Double> factors = provinceFactors;
+                w *= factors.computeIfAbsent(vein.province().get(),
+                        name -> Provinces.factor(seed, name, cx, cz, rules.provinceScale()));
+            }
+            weights[i] = w;
+            total += w;
+        }
+        if (total <= 0)
+            return null;
+        double target = roll * total;
+        for (int i = 0; i < weights.length; i++) {
+            target -= weights[i];
+            if (target < 0)
+                return veins.get(i);
         }
         return veins.get(veins.size() - 1);
     }

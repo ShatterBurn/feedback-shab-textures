@@ -9,7 +9,9 @@
   "indicator": "feedback:garnet_loose_rock",
   "ore": "feedback:garnet_ore",
   "deepslate_ore": "feedback:garnet_deepslate_ore",
-  "weight": 5,
   "min_y": -32,
-  "max_y": 48
+  "max_y": 48,
+  "material": "feedback:garnet",
+  "share": 1.0,
+  "province": "pegmatite"
 }

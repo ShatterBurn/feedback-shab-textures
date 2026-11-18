@@ -12,7 +12,15 @@
   ],
   "ore": "feedback:monazite_ore",
   "deepslate_ore": "feedback:monazite_deepslate_ore",
-  "weight": 4,
   "min_y": -48,
-  "max_y": 16
+  "max_y": 16,
+  "material": "feedback:monazite",
+  "share": 1.0,
+  "province": "pegmatite",
+  "companions": [
+    {
+      "vein": "feedback:uranium_lode",
+      "chance": 0.3
+    }
+  ]
 }

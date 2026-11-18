@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Locale;
 
 import io.github.soundgoodizerfan.feedback.client.tooltip.Readout;
+import io.github.soundgoodizerfan.feedback.process.ClientTable;
 import io.github.soundgoodizerfan.feedback.worldgen.OreVein;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -32,7 +33,7 @@ public class OreVeinCategory implements IRecipeCategory<OreVein> {
 
     static final RecipeType<OreVein> TYPE = RecipeType.create("feedback", "ore_vein", OreVein.class);
 
-    private static final int WIDTH = 168, HEIGHT = 96;
+    private static final int WIDTH = 168, HEIGHT = 126;
     private static final int TITLE_COLOUR = 0xFF3F3F3F, LABEL_COLOUR = 0xFF7A7A7A, VALUE_COLOUR = 0xFF262626;
 
     private final IDrawable icon;
@@ -109,14 +110,47 @@ public class OreVeinCategory implements IRecipeCategory<OreVein> {
         y += 10;
         row(graphics, font, y, "feedback.jei.ore_vein.density", Readout.number(vein.density() * 100f) + "%");
         y += 10;
-        row(graphics, font, y, "feedback.jei.ore_vein.weight", Integer.toString(vein.weight()));
+        row(graphics, font, y, "feedback.jei.ore_vein.rarity", rarity(vein));
         y += 10;
+        if (vein.province().isPresent()) {
+            row(graphics, font, y, "feedback.jei.ore_vein.province", Component.translatable(
+                    "feedback.ore_province." + vein.province().get()).getString());
+            y += 10;
+        }
+        if (!vein.biomeWeights().isEmpty()) {
+            List<String> biomes = new ArrayList<>();
+            for (OreVein.BiomeWeight bw : vein.biomeWeights())
+                biomes.add(bw.biome().location().getPath() + " x" + Readout.number(bw.factor()));
+            if (vein.biomeDefault() != 1f)
+                biomes.add("else x" + Readout.number(vein.biomeDefault()));
+            row(graphics, font, y, "feedback.jei.ore_vein.biomes", String.join(", ", biomes));
+            y += 10;
+        }
+        if (!vein.companions().isEmpty()) {
+            List<String> names = new ArrayList<>();
+            for (OreVein.Companion companion : vein.companions())
+                ClientTable.ORE_VEINS.get().stream().filter(v -> v.id().filter(companion.vein()::equals).isPresent()).findFirst()
+                        .ifPresent(v -> names.add(stack(v.ore()).getHoverName().getString()));
+            row(graphics, font, y, "feedback.jei.ore_vein.companions", String.join(", ", names));
+            y += 10;
+        }
         row(graphics, font, y, "feedback.jei.ore_vein.dimension", String.join(", ",
                 vein.dimensions().stream().map(ResourceLocation::getPath).toList()));
         if (!vein.indicators().isEmpty()) {
             Component outcrop = Component.translatable("feedback.jei.ore_vein.outcrop");
             graphics.drawString(font, outcrop, WIDTH - 23 - (vein.indicators().size() - 1) * 18 - font.width(outcrop), 19, LABEL_COLOUR, false);
         }
+    }
+
+    /** A word and the share of its dimension's slots, from the weights the server synced: the share is the constant the word comes from. */
+    private static String rarity(OreVein vein) {
+        int total = 0;
+        for (OreVein other : ClientTable.ORE_VEINS.get())
+            if (!java.util.Collections.disjoint(other.dimensions(), vein.dimensions()))
+                total += other.weight();
+        double share = total <= 0 ? 0 : 100.0 * vein.weight() / total;
+        String word = share < 1.0 ? "very_rare" : share < 2.0 ? "rare" : share < 3.5 ? "uncommon" : "common";
+        return Component.translatable("feedback.jei.ore_vein.rarity." + word).getString() + " (" + Readout.number((float) share) + "%)";
     }
 
     private static void row(GuiGraphics graphics, Font font, int y, String labelKey, String value) {

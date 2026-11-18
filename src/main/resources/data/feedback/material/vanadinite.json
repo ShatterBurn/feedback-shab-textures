@@ -1,6 +1,7 @@
 {
   "color": "#b5301f",
   "kind": "crystal",
+  "abundance": 2.2,
   "exclude": [
     "ingot"
   ],

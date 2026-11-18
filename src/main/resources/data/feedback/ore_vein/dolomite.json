@@ -9,7 +9,8 @@
   "indicator": "feedback:dolomite_loose_rock",
   "ore": "feedback:dolomite_ore",
   "deepslate_ore": "feedback:dolomite_deepslate_ore",
-  "weight": 8,
   "min_y": 0,
-  "max_y": 96
+  "max_y": 96,
+  "material": "feedback:dolomite",
+  "share": 1.0
 }

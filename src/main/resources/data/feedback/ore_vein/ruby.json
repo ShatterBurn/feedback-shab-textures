@@ -10,8 +10,9 @@
   "ore": "feedback:ruby_ore",
   "deepslate_ore": "feedback:ruby_ore",
   "host": "feedback:netherrack_ore_replaceables",
-  "weight": 3,
   "min_y": 10,
   "max_y": 117,
-  "indicator_depth": 12
+  "indicator_depth": 12,
+  "material": "feedback:ruby",
+  "share": 1.0
 }

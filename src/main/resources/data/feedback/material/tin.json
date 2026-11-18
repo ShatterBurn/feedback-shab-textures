@@ -2,6 +2,7 @@
   "fastener": 1,
   "color": "#d6dee0",
   "kind": "metal",
+  "abundance": 21,
   "traits": [
     "solder"
   ],

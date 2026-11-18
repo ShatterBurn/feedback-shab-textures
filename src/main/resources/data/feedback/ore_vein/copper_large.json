@@ -3,7 +3,6 @@
   "deepslate_ore": "feedback:deepslate_copper_ore",
   "radius": 15,
   "thickness": 5,
-  "weight": 3,
   "density": 0.9,
   "min_y": -16,
   "max_y": 112,
@@ -11,7 +10,19 @@
   "dimension_filter": [
     "minecraft:overworld"
   ],
-  "biomes": "feedback:dripstone_caves",
-  "indicator": ["feedback:copper_loose_rock", "feedback:copper_flower"],
-  "indicator_depth": 16
+  "indicator": [
+    "feedback:copper_loose_rock",
+    "feedback:copper_flower"
+  ],
+  "indicator_depth": 16,
+  "material": "feedback:copper",
+  "share": 0.4,
+  "province": "porphyry",
+  "biome_weights": [
+    {
+      "biome": "feedback:dripstone_caves",
+      "factor": 1.0
+    }
+  ],
+  "biome_default": 0.0
 }

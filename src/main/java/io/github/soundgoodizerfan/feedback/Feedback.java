@@ -161,6 +161,7 @@ public class Feedback {
         event.addListener(io.github.soundgoodizerfan.feedback.village.GoodsTable.get());
         event.addListener(io.github.soundgoodizerfan.feedback.village.BuysTable.get());
         event.addListener(io.github.soundgoodizerfan.feedback.worldgen.OreVeinTable.get());
+        event.addListener(io.github.soundgoodizerfan.feedback.worldgen.OreDimensionTable.get());
         event.addListener(io.github.soundgoodizerfan.feedback.geology.BasinTable.get());
         event.addListener(io.github.soundgoodizerfan.feedback.modular.type.ModularTypes.get());
         event.addListener(io.github.soundgoodizerfan.feedback.weapon.GunOptions.get());

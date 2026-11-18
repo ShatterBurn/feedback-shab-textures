@@ -9,7 +9,15 @@
   "indicator": "feedback:stibnite_loose_rock",
   "ore": "feedback:stibnite_ore",
   "deepslate_ore": "feedback:stibnite_deepslate_ore",
-  "weight": 4,
   "min_y": -8,
-  "max_y": 64
+  "max_y": 64,
+  "material": "feedback:stibnite",
+  "share": 1.0,
+  "province": "sulphide",
+  "companions": [
+    {
+      "vein": "feedback:pyrite_ore",
+      "chance": 0.15
+    }
+  ]
 }

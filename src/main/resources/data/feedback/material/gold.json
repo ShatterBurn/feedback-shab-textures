@@ -2,6 +2,7 @@
   "fastener": 1,
   "color": "#fcee4b",
   "kind": "metal",
+  "abundance": 67,
   "hardness": 2.5,
   "density": 19.3,
   "thermal": {

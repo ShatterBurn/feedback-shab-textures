@@ -9,7 +9,15 @@
   "indicator": "feedback:jade_loose_rock",
   "ore": "feedback:jade_ore",
   "deepslate_ore": "feedback:jade_deepslate_ore",
-  "weight": 4,
   "min_y": 32,
-  "max_y": 160
+  "max_y": 160,
+  "material": "feedback:jade",
+  "share": 1.0,
+  "biome_weights": [
+    {
+      "biome": "minecraft:is_mountain",
+      "factor": 2.5
+    }
+  ],
+  "biome_default": 0.7
 }

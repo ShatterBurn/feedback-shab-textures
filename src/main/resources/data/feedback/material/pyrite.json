@@ -1,6 +1,7 @@
 {
   "color": "#c9b04a",
   "kind": "crystal",
+  "abundance": 9,
   "hardness": 147,
   "density": 5.0,
   "thermal": {

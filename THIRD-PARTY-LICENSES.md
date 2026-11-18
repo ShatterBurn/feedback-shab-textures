@@ -165,6 +165,24 @@ material, not a dependency, and it must never become one without the licence que
 being settled first.
 
 
+### Ore vein distribution (2026-11-17)
+
+Read on `1.21.x` at commit `8dbb10c7` (`world/feature/vein/`: `VeinFeature`, `IVeinConfig`, the vein configured features and the per-biome vein tags), for how ore deposits are chosen, gated by host rock and biome, and signposted. Nothing copied; `OreVeinFeature` carries the site comment.
+
+**Taken as design, written from scratch:**
+
+- Host rock as a gate on where ore may sit (here the `host` and `deepslate_host` block tags in an `OreVein`, which already existed; confirmed, not derived).
+- The depth gate on indicators: only a vein whose top lies near the surface shows a sign (`indicator_depth`; compared with `outcrop`, no change needed).
+
+**Rejected, and why it matters:**
+
+- **Per-chunk selection at 1/`rarity` with no budget.** A deposit type is rolled independently of every other. Feedback draws a fixed number of vein slots per region and picks among deposits by weight, because a budget is what makes abundance relative, derivable from a material figure, and scalable by province.
+- **Host maps keyed by literal block id** (ore state looked up from the rock block). Feedback keeps tags and properties, so another mod's stone works.
+- **Biome allow-list tags** (a biome includes the tag listing the veins allowed there). Feedback's biome influence is a factor on a deposit's weight, continuous and per deposit.
+- **Hand-written rarity per file** and **surface, normal and montane copies of one ore.** Feedback derives weight from the material's `abundance` and spreads one deposit over a depth window.
+
+**Not in TerraFirmaCraft at all, so invented here:** weighted slot budgets, ore provinces (`worldgen/Provinces`), companion deposits, and abundance-derived rarity.
+
 ### Catching a block up across an unloaded gap (2026-10-14)
 
 Read on the `1.21.x` branch (the one matching the target version), per the standing rule:

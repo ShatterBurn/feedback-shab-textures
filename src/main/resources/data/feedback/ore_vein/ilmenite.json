@@ -8,9 +8,10 @@
   "indicator": "feedback:ilmenite_loose_rock",
   "ore": "feedback:ilmenite_ore",
   "deepslate_ore": "feedback:ilmenite_ore",
-  "weight": 6,
   "min_y": 10,
   "max_y": 117,
   "host": "feedback:netherrack_ore_replaceables",
-  "indicator_depth": 12
+  "indicator_depth": 12,
+  "material": "feedback:ilmenite",
+  "share": 1.0
 }

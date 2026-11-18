@@ -9,7 +9,19 @@
   "indicator": "feedback:spodumene_loose_rock",
   "ore": "feedback:spodumene_ore",
   "deepslate_ore": "feedback:spodumene_deepslate_ore",
-  "weight": 3,
   "min_y": 16,
-  "max_y": 128
+  "max_y": 128,
+  "material": "feedback:spodumene",
+  "share": 1.0,
+  "province": "pegmatite",
+  "companions": [
+    {
+      "vein": "feedback:tourmaline",
+      "chance": 0.4
+    },
+    {
+      "vein": "feedback:monazite",
+      "chance": 0.3
+    }
+  ]
 }

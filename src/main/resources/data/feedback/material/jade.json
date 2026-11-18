@@ -1,6 +1,7 @@
 {
   "color": "#5f8f6a",
   "kind": "mineral",
+  "abundance": 3.6,
   "traits": ["gemstone"],
   "hardness": 65,
   "density": 2.95,

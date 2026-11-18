@@ -22,11 +22,42 @@ Dig, as before. Each ore sits where it always did.
 - **Stibnite** (antimony) in the Overworld between y -8 and 64 and **vanadinite** (vanadium) between y -24 and 40, each in veins with a loose rock above. **Cinnabar** (mercury) in the Nether between y 10 and 117, in the netherrack, with a loose rock above.
 - **Cryolite**, rare, in the overworld between y -20 and 60. It melts into the bath for [aluminum](Making_Aluminum.md).
 - **Saltpetre** in cave deposits from Y -16 to 64, with a loose rock on the surface.
-- **Nether ores**: **pentlandite**, **wolframite**, **chromite**, **cobaltite**, **uraninite** and **monazite** grow in the netherrack as common veins all through the Nether, with the same signs as their Overworld kin. Uraninite and monazite are [radioactive](Radiation.md).
+- **Nether ores**: **pentlandite**, **wolframite**, **chromite**, **cobaltite**, **uraninite** and **monazite** grow in the netherrack all through the Nether, richer in the hot Nether belt, with the same signs as their Overworld kin. Uraninite and monazite are [radioactive](Radiation.md).
 - **Bastion Rubble** in small, rare patches in the Nether between y 30 and 110. Each block breaks into 1 to 3 Worn Netherite Bits, the scrap of [Netherite](Netherite.md#getting-the-scrap).
 - **Sulfur** in the Nether, in the netherrack, with a loose rock above.
 - **Ilmenite** (titanium) in the netherrack.
 - **Nether gold and nether quartz** in the netherrack, all through the Nether. Gold still angers piglins when you mine it.
+
+## Rarity, provinces and companions
+
+**Rarity follows the material.** A common ore (coal, iron, copper) turns up more often than a rare one (diamond, emerald).
+
+**Provinces.** Large areas of the world, a few hundred blocks across, are rich or barren in a group of ores together. Find a belt and more of its ores lie nearby; in a barren area they are few. Each province is drawn separately for each world.
+
+| Province | Ores |
+| --- | --- |
+| Tin belt | tin, wolframite, molybdenite |
+| Porphyry belt | copper, chalcopyrite, gold, silver |
+| Sulfide belt | galena, sphalerite, zinc, lead, pyrite, stibnite, cobaltite |
+| Pegmatite field | beryl, tourmaline, spodumene, monazite, garnet |
+| Mafic complex | chromite, pentlandite, magnetite, osmiridium sulfide |
+| Evaporite basin | borax, saltpetre |
+| River placers | osmiridium |
+| Hot Nether belt | Nether pentlandite, chromite, cobaltite, wolframite, uraninite, monazite |
+
+Ores with no province (coal, iron, redstone, lapis, diamond, emerald and others) are spread evenly. The Nether holds a little more ore than the Overworld, and its provinces are milder.
+
+**Companion deposits.** Some veins have partners lying beside them, so finding one tells you what to look for next:
+
+- Galena with sphalerite and a little pyrite.
+- Porphyry copper with gold and molybdenite.
+- Tin with wolframite.
+- Pentlandite with chromite and osmiridium sulfide.
+- Beryl with tourmaline and spodumene.
+- Gold with silver.
+- Lead with zinc.
+
+**Biomes** tilt some ores: gold and saltpetre favor badlands, jade favors mountains. Emerald, beryl, borax, the large copper masses (dripstone caves), the extra gold (badlands) and the river osmiridium stay in their biomes.
 
 ## Reading the surface
 
@@ -83,7 +114,7 @@ What a mined ore is worth as metal depends on how far you process it; the raw ro
 
 Iron, copper and lapis want at least a stone pickaxe; gold, redstone, diamond and emerald want an iron one; coal and the Nether's two take any pickaxe.
 
-JEI's **Ore Vein** page lists every vein: its dimension, depth, size, richness and how common it is, and which ores sit in its core, cap, rim and scatter.
+JEI's **Ore Vein** page lists every vein: its dimension, depth, size and richness, a rarity word with its share of the dimension's veins, its province, its biome factors, the companion ores it is found with, and which ores sit in its core, cap, rim and scatter.
 
 ## What did not change
 

@@ -1,6 +1,7 @@
 {
   "color": "#2ecf6a",
   "kind": "crystal",
+  "abundance": 2.2,
   "traits": [
     "transparent"
   ],

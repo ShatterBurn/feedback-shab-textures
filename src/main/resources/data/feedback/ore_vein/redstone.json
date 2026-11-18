@@ -3,7 +3,6 @@
   "deepslate_ore": "feedback:deepslate_redstone_ore",
   "radius": 11,
   "thickness": 4,
-  "weight": 6,
   "density": 0.9,
   "min_y": -64,
   "max_y": -49,
@@ -22,5 +21,7 @@
     }
   ],
   "indicator": "feedback:redstone_loose_rock",
-  "indicator_depth": 8
+  "indicator_depth": 8,
+  "material": "feedback:redstone",
+  "share": 0.55
 }

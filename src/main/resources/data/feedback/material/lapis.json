@@ -6,6 +6,7 @@
     "leak": 0.1
   },
   "kind": "mineral",
+  "abundance": 31,
   "exclude": [
     "ingot"
   ],

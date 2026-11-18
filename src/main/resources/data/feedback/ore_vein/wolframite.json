@@ -9,7 +9,15 @@
   "indicator": "feedback:wolframite_loose_rock",
   "ore": "feedback:wolframite_ore",
   "deepslate_ore": "feedback:wolframite_deepslate_ore",
-  "weight": 4,
   "min_y": -56,
-  "max_y": 8
+  "max_y": 8,
+  "material": "feedback:wolframite",
+  "share": 1.0,
+  "province": "tin_belt",
+  "companions": [
+    {
+      "vein": "feedback:tin",
+      "chance": 0.4
+    }
+  ]
 }

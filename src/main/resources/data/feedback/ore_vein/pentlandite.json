@@ -9,7 +9,23 @@
   "indicator": "feedback:pentlandite_loose_rock",
   "ore": "feedback:pentlandite_ore",
   "deepslate_ore": "feedback:pentlandite_deepslate_ore",
-  "weight": 7,
   "min_y": -32,
-  "max_y": 40
+  "max_y": 40,
+  "material": "feedback:pentlandite",
+  "share": 1.0,
+  "province": "mafic",
+  "companions": [
+    {
+      "vein": "feedback:chromite",
+      "chance": 0.4
+    },
+    {
+      "vein": "feedback:osmiridium_sulfide",
+      "chance": 0.3
+    },
+    {
+      "vein": "feedback:pyrite_ore",
+      "chance": 0.2
+    }
+  ]
 }

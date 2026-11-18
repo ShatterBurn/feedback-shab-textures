@@ -11,7 +11,6 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
-import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 
@@ -54,15 +53,16 @@ import net.minecraft.world.level.block.Block;
  * @param deepslateHost what {@code deepslateOre} may replace.
  * @param radius       horizontal reach of the vein (blocks), varied a fifth either way per vein.
  * @param thickness    vertical reach of the vein (blocks): veins are flat.
- * @param weight       share of the dimension's vein slots this deposit takes; its rarity.
- * @param density      chance a block in the vein becomes ore at its heart, 0 to 1 (half that at the rim): a lean or rich vein.
+ * @param weight       share of the dimension's vein slots this deposit takes; its rarity. In a file it is an optional
+ *                     override: absent, {@link OreVeinTable} derives it from the ore's material ({@code abundance}) times
+ *                     {@code share}; a loaded or synced vein always carries the figure it is drawn by.
+ * @param density     chance a block in the vein becomes ore at its heart, 0 to 1 (half that at the rim): a lean or rich vein.
  * @param minY         lowest Y a vein may be centred at.
  * @param maxY         highest Y a vein may be centred at.
  * @param triangle     whether Y is drawn triangular (most likely mid-window) rather than uniform.
  * @param airDiscard   chance a block touching air is left unmined stone, 0 to 1: a buried deposit
  *                     shows less in cave walls.
  * @param dimensions   dimensions it occurs in.
- * @param biomes       a biome tag it is limited to; absent means any biome.
  * @param indicators   the signs a vein that comes near enough to the surface shows (mechanics §9.5), so it
  *                     can be found by walking: one id or a list in the file's {@code indicator} key, empty
  *                     means none. Each of the three spots draws one of them. How a block is laid follows from
@@ -71,12 +71,26 @@ import net.minecraft.world.level.block.Block;
  *                     down as a single heap. Any block id, so a pack may name its own.
  * @param layers       see {@link Layers}: a cap, a rim and scattered ores beside the core.
  * @param indicatorDepth how far below the surface (blocks) a vein's centre may be and still show an outcrop.
+ * @param id           the file's id, set by {@link OreVeinTable}; what a {@link Companion} names.
+ * @param material     the material this deposit yields, for its abundance; absent, the material whose {@code forms.ore} is
+ *                     this deposit's {@code ore} (a mineral whose ore block is no material's form names it here).
+ * @param share        the part of its material's abundance this deposit takes (a metal with two deposits splits it);
+ *                     scales the derived weight, unused when a file sets {@code weight}.
+ * @param province     the name of the province this deposit belongs to, if any: deposits of one province are
+ *                     rich or barren together across the world ({@link Provinces}).
+ * @param biomeWeights what each biome does to the deposit's weight: the factors of every tag the biome at the vein's
+ *                     centre is in multiply; a factor of 0 keeps the deposit out.
+ * @param biomeDefault the factor where the centre's biome is in none of the listed tags (1 when none are listed, which
+ *                     leaves the deposit everywhere; 0 makes the listed tags the only places it occurs).
+ * @param companions   deposits that tend to lie beside this one, drawn from the same slot.
  */
 public record OreVein(ResourceLocation ore, ResourceLocation deepslateOre, TagKey<Block> host,
                       TagKey<Block> deepslateHost, int radius, int thickness, int weight, float density,
                       int minY, int maxY, boolean triangle, float airDiscard, List<ResourceLocation> dimensions,
-                      Optional<TagKey<Biome>> biomes, List<ResourceLocation> indicators, int indicatorDepth,
-                      Layers layers) {
+                      List<ResourceLocation> indicators, int indicatorDepth, Layers layers,
+                      Optional<ResourceLocation> id, Optional<ResourceLocation> material, float share,
+                      Optional<String> province, List<BiomeWeight> biomeWeights, float biomeDefault,
+                      List<Companion> companions) {
 
     /** Widest a vein may be; a region is wider, which is what lets a chunk look only at its neighbouring regions. */
     public static final int MAX_RADIUS = 20;
@@ -94,7 +108,7 @@ public record OreVein(ResourceLocation ore, ResourceLocation deepslateOre, TagKe
                     .forGetter(OreVein::deepslateHost),
             Codec.intRange(1, MAX_RADIUS).fieldOf("radius").forGetter(OreVein::radius),
             Codec.intRange(1, 16).fieldOf("thickness").forGetter(OreVein::thickness),
-            ExtraCodecs.POSITIVE_INT.fieldOf("weight").forGetter(OreVein::weight),
+            Codec.intRange(0, Integer.MAX_VALUE).optionalFieldOf("weight", 0).forGetter(OreVein::weight),
             Codec.floatRange(0f, 1f).fieldOf("density").forGetter(OreVein::density),
             Codec.INT.fieldOf("min_y").forGetter(OreVein::minY),
             Codec.INT.fieldOf("max_y").forGetter(OreVein::maxY),
@@ -102,12 +116,68 @@ public record OreVein(ResourceLocation ore, ResourceLocation deepslateOre, TagKe
             Codec.floatRange(0f, 1f).optionalFieldOf("air_discard", 0.8f).forGetter(OreVein::airDiscard),
             ResourceLocation.CODEC.listOf().optionalFieldOf("dimension_filter",
                     List.of(ResourceLocation.withDefaultNamespace("overworld"))).forGetter(OreVein::dimensions),
-            TagKey.codec(Registries.BIOME).optionalFieldOf("biomes").forGetter(OreVein::biomes),
-            Tail.CODEC.forGetter(v -> new Tail(v.indicators(), v.indicatorDepth(), v.layers()))
+            Tail.CODEC.forGetter(v -> new Tail(v.indicators(), v.indicatorDepth(), v.layers())),
+            Placement.CODEC.forGetter(v -> new Placement(v.id(), v.material(), v.share(), v.province(), v.biomeWeights(),
+                    v.biomeDefault(), v.companions()))
     ).apply(instance, (ore, deepslateOre, host, deepslateHost, radius, thickness, weight, density, minY, maxY, triangle,
-                       airDiscard, dimensions, biomes, tail) -> new OreVein(ore, deepslateOre, host, deepslateHost, radius,
-            thickness, weight, density, minY, maxY, triangle, airDiscard, dimensions, biomes, tail.indicators(),
-            tail.indicatorDepth(), tail.layers())));
+                       airDiscard, dimensions, tail, placement) -> new OreVein(ore, deepslateOre, host, deepslateHost, radius,
+            thickness, weight, density, minY, maxY, triangle, airDiscard, dimensions, tail.indicators(),
+            tail.indicatorDepth(), tail.layers(), placement.id(), placement.material(), placement.share(),
+            placement.province(), placement.biomeWeights(), placement.biomeDefault(), placement.companions())));
+
+    /** What one biome tag does to a deposit's weight. */
+    public record BiomeWeight(TagKey<Biome> biome, float factor) {
+        public static final Codec<BiomeWeight> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+                TagKey.codec(Registries.BIOME).fieldOf("biome").forGetter(BiomeWeight::biome),
+                Codec.floatRange(0f, 100f).fieldOf("factor").forGetter(BiomeWeight::factor)
+        ).apply(instance, BiomeWeight::new));
+    }
+
+    /**
+     * A deposit that tends to lie beside another (galena with sphalerite and pyrite). Rolled from the parent's slot
+     * hash, so every chunk agrees; it does not take a slot of the dimension's budget. The offset and size are capped so a
+     * companion stays within the reach {@link #MAX_RADIUS} lets a chunk look.
+     *
+     * @param vein      the companion deposit's file id.
+     * @param chance    chance the parent has this companion, 0 to 1.
+     * @param minOffset nearest its centre lies to the parent's, in blocks.
+     * @param maxOffset farthest, at most {@link #MAX_OFFSET}.
+     * @param sizeScale how large it is next to its own file's radius, 0.2 to 1.
+     */
+    public record Companion(ResourceLocation vein, float chance, int minOffset, int maxOffset, float sizeScale) {
+        public static final Codec<Companion> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+                ResourceLocation.CODEC.fieldOf("vein").forGetter(Companion::vein),
+                Codec.floatRange(0f, 1f).fieldOf("chance").forGetter(Companion::chance),
+                Codec.intRange(0, MAX_OFFSET).optionalFieldOf("min_offset", 4).forGetter(Companion::minOffset),
+                Codec.intRange(0, MAX_OFFSET).optionalFieldOf("max_offset", 14).forGetter(Companion::maxOffset),
+                Codec.floatRange(0.2f, 1f).optionalFieldOf("size_scale", 0.7f).forGetter(Companion::sizeScale)
+        ).apply(instance, Companion::new));
+    }
+
+    /** Farthest a companion's centre may lie from its parent's; with {@link #MAX_RADIUS} it stays under a region's width. */
+    public static final int MAX_OFFSET = 20;
+
+    /** Keys that decide how often and where a deposit is drawn; see the record's parameters. */
+    private record Placement(Optional<ResourceLocation> id, Optional<ResourceLocation> material, float share,
+                             Optional<String> province, List<BiomeWeight> biomeWeights, float biomeDefault,
+                             List<Companion> companions) {
+        static final com.mojang.serialization.MapCodec<Placement> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+                ResourceLocation.CODEC.optionalFieldOf("id").forGetter(Placement::id),
+                ResourceLocation.CODEC.optionalFieldOf("material").forGetter(Placement::material),
+                Codec.floatRange(0f, 100f).optionalFieldOf("share", 1f).forGetter(Placement::share),
+                Codec.STRING.optionalFieldOf("province").forGetter(Placement::province),
+                BiomeWeight.CODEC.listOf().optionalFieldOf("biome_weights", List.of()).forGetter(Placement::biomeWeights),
+                Codec.floatRange(0f, 100f).optionalFieldOf("biome_default", 1f).forGetter(Placement::biomeDefault),
+                Companion.CODEC.listOf().optionalFieldOf("companions", List.of()).forGetter(Placement::companions)
+        ).apply(instance, Placement::new));
+    }
+
+    /** This deposit with the id its file gave it and the weight it is drawn by. */
+    public OreVein resolved(ResourceLocation fileId, int drawWeight) {
+        return new OreVein(ore, deepslateOre, host, deepslateHost, radius, thickness, drawWeight, density, minY, maxY,
+                triangle, airDiscard, dimensions, indicators, indicatorDepth, layers, Optional.of(fileId), material,
+                share, province, biomeWeights, biomeDefault, companions);
+    }
 
     /** One more ore in a vein: {@code ore} where the host is a stone, {@code deepslate_ore} where it is a deepslate. */
     public record Zone(ResourceLocation ore, ResourceLocation deepslateOre, float density) {

@@ -1,6 +1,7 @@
 {
   "color": "#d4143c",
   "kind": "crystal",
+  "abundance": 2.2,
   "traits": [
     "transparent", "gemstone"],
   "hardness": 200,

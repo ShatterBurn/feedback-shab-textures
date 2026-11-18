@@ -3,7 +3,6 @@
   "deepslate_ore": "feedback:osmiridium_deepslate_ore",
   "radius": 6,
   "thickness": 3,
-  "weight": 3,
   "density": 0.12,
   "min_y": 36,
   "max_y": 64,
@@ -11,7 +10,16 @@
   "dimension_filter": [
     "minecraft:overworld"
   ],
-  "biomes": "minecraft:is_river",
   "indicator": "feedback:osmiridium_loose_rock",
-  "indicator_depth": 12
+  "indicator_depth": 12,
+  "material": "feedback:osmiridium",
+  "share": 0.6,
+  "province": "placer",
+  "biome_weights": [
+    {
+      "biome": "minecraft:is_river",
+      "factor": 1.0
+    }
+  ],
+  "biome_default": 0.0
 }

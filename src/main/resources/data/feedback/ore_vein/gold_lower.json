@@ -3,7 +3,6 @@
   "deepslate_ore": "feedback:deepslate_gold_ore",
   "radius": 12,
   "thickness": 4,
-  "weight": 3,
   "density": 0.9,
   "min_y": -64,
   "max_y": -48,
@@ -11,6 +10,12 @@
   "dimension_filter": [
     "minecraft:overworld"
   ],
-  "indicator": ["feedback:gold_loose_rock", "feedback:gossan_rubble"],
-  "indicator_depth": 6
+  "indicator": [
+    "feedback:gold_loose_rock",
+    "feedback:gossan_rubble"
+  ],
+  "indicator_depth": 6,
+  "material": "feedback:gold",
+  "share": 0.27,
+  "province": "porphyry"
 }

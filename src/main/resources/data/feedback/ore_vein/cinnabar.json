@@ -4,7 +4,6 @@
   "host": "feedback:netherrack_ore_replaceables",
   "radius": 7,
   "thickness": 3,
-  "weight": 3,
   "density": 0.85,
   "min_y": 10,
   "max_y": 117,
@@ -12,5 +11,7 @@
     "minecraft:the_nether"
   ],
   "indicator": "feedback:cinnabar_loose_rock",
-  "indicator_depth": 12
+  "indicator_depth": 12,
+  "material": "feedback:cinnabar",
+  "share": 1.0
 }

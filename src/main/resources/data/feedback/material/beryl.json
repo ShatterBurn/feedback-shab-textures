@@ -1,6 +1,7 @@
 {
   "color": "#9fd3d8",
   "kind": "crystal",
+  "abundance": 2.2,
   "traits": [
     "transparent", "gemstone"],
   "exclude": [

@@ -9,7 +9,8 @@
   "indicator": "feedback:vanadinite_loose_rock",
   "ore": "feedback:vanadinite_ore",
   "deepslate_ore": "feedback:vanadinite_deepslate_ore",
-  "weight": 3,
   "min_y": -24,
-  "max_y": 40
+  "max_y": 40,
+  "material": "feedback:vanadinite",
+  "share": 1.0
 }

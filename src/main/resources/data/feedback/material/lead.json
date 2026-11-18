@@ -2,6 +2,7 @@
   "fastener": 1,
   "color": "#6a6f8a",
   "kind": "metal",
+  "abundance": 9,
   "neutron": {
     "absorption": 0.15
   },

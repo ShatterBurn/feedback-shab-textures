@@ -1,5 +1,6 @@
 {
   "kind": "mineral",
+  "abundance": 2200,
   "exclude": [
     "ingot"
   ],

@@ -9,12 +9,14 @@
   "indicator": "feedback:magnetite_loose_rock",
   "ore": "feedback:magnetite_ore",
   "deepslate_ore": "feedback:magnetite_deepslate_ore",
-  "weight": 2,
   "min_y": -64,
   "max_y": 40,
   "rim": {
     "ore": "feedback:hematite_ore",
     "deepslate_ore": "feedback:hematite_deepslate_ore",
     "density": 0.6
-  }
+  },
+  "material": "feedback:magnetite",
+  "share": 1.0,
+  "province": "mafic"
 }

@@ -1,6 +1,7 @@
 {
   "color": "#8c3028",
   "kind": "mineral",
+  "abundance": 2.2,
   "exclude": [
     "ingot"
   ],
