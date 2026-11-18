@@ -164,7 +164,7 @@ Glass is brittle. A hard hit chips a share of the coat off, and the tooltip read
 
 ## Washing clay
 
-Right-click a vessel (a Thermal Vessel or a Crucible) holding water with dirt, gravel or mud in hand to dip it. Each dip takes one item and 250 mB of water. Dirt and gravel each give 1 **Clay Ball**; mud gives 2.
+Right-click a vessel (a Thermal Vessel or a Crucible) holding water with dirt, gravel or mud in hand to dip it. Each dip takes one item and 250 mB of water. Dirt and gravel each give 1 **Clay Ball**; mud gives 2. A **wheat** dipped the same way gives 1 [Dough](Dough.md).
 
 ## Stained glass
 

@@ -1340,6 +1340,8 @@
   "feedback.jei.kind.dish.tip": "Cooked and combined foods, served from a pot or bowl.",
   "feedback.jei.kind.fluid": "Fluid",
   "feedback.jei.kind.fluid.tip": "Poured and piped, never cut. It is stored in tanks and moved by pumps.",
+  "feedback.jei.kind.composite": "Composite",
+  "feedback.jei.kind.composite.tip": "Two stuffs bonded into one body that is neither: fiber in resin, veneers in glue. Moulded and laid up like a polymer.",
   "feedback.jei.kind.polymer": "Polymer",
   "feedback.jei.kind.polymer.tip": "Plastics and rubbers. Moulded and cast like a metal, but light and insulating.",
   "feedback.jei.perk.smite": "Smite",

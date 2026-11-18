@@ -167,10 +167,10 @@ public class VillagerScreen extends SkinnedScreen<VillagerMenu> {
             OrderView o = v.orders().get(idx);
             int ry = y + TOP + 1 + i * ROW;
             skin.row(g, x + PAD + 1, ry, LIST_W - 2, ROW, idx == order, over(mx, my, x + PAD, ry, LIST_W, ROW));
-            ItemStack icon = new ItemStack(BuiltInRegistries.ITEM.get(o.type()));
+            ItemStack icon = io.github.soundgoodizerfan.feedback.village.OrderWords.icon(o.type());
             g.renderItem(icon, x + PAD + 3, ry + 2);
             boolean done = (v.doneMask() & (1 << idx)) != 0;
-            g.drawString(font, fit(icon.getHoverName(), LIST_W - 28), x + PAD + 22, ry + 2, done ? skin.dim() : skin.ink(), false);
+            g.drawString(font, fit(io.github.soundgoodizerfan.feedback.village.OrderWords.typeName(o.type()), LIST_W - 28), x + PAD + 22, ry + 2, done ? skin.dim() : skin.ink(), false);
             g.drawString(font, done ? Component.translatable("gui.feedback.villager.done") : Component.translatable("gui.feedback.villager.pay", o.pay()),
                     x + PAD + 22, ry + 11, skin.dim(), false);
         }
@@ -181,7 +181,7 @@ public class VillagerScreen extends SkinnedScreen<VillagerMenu> {
         } else if (order < v.orders().size()) {
             OrderView o = v.orders().get(order);
             int ty = y + TOP + 5;
-            g.drawString(font, fit(new ItemStack(BuiltInRegistries.ITEM.get(o.type())).getHoverName(), DETAIL_W - 12), x + DETAIL_X + 6, ty, skin.accent(), false);
+            g.drawString(font, fit(io.github.soundgoodizerfan.feedback.village.OrderWords.typeName(o.type()), DETAIL_W - 12), x + DETAIL_X + 6, ty, skin.accent(), false);
             for (TermView t : o.terms()) {
                 ty += 11;
                 marquee(g, term(t), x + DETAIL_X + 6, ty, DETAIL_W - 12 - BAR_W - 4, skin.ink());

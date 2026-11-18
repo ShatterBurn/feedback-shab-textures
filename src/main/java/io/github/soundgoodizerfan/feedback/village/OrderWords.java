@@ -22,8 +22,15 @@ public final class OrderWords {
     private OrderWords() {
     }
 
+    /** The type's name: a hafted face (sword, spear) is no item of its own, so the name comes from the type id's item key, not the registry. */
     public static Component typeName(ResourceLocation type) {
-        return new ItemStack(BuiltInRegistries.ITEM.get(type)).getHoverName();
+        return Component.translatable("item." + type.getNamespace() + "." + type.getPath());
+    }
+
+    /** The type's icon: its own item, or the haft for a hafted face. */
+    public static ItemStack icon(ResourceLocation type) {
+        var item = BuiltInRegistries.ITEM.get(type);
+        return new ItemStack(item == net.minecraft.world.item.Items.AIR ? io.github.soundgoodizerfan.feedback.registry.FModular.HAFTED_TOOL.get() : item);
     }
 
     /** One term: {@code noun: word}, a must worded as at least or at most. */
