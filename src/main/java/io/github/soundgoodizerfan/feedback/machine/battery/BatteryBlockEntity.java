@@ -80,6 +80,11 @@ public class BatteryBlockEntity extends ElectricNode implements ThermalBody, Wel
     /** Whether a powered Rectifier touches it, re-read every {@link ElectricMachineTuning#RECTIFIER_SCAN_TICKS} ticks. */
     private boolean rectified;
     private VoltageBand caseBand = VoltageBand.LV;
+    /** Runaway figures of the chemistry ({@code secondary_cell}); {@link Float#MAX_VALUE} is "never". */
+    private float runawayTu = Float.MAX_VALUE, runawayHeat, chargeFloorTu = -Float.MAX_VALUE;
+    private boolean sealed;
+    /** A cell is running away (heating itself, burning its charge); and one has been charged under its floor and may short on a heavy draw. */
+    private boolean runaway, plated;
 
     private float charge;
     private float condition = 1f;
@@ -102,6 +107,19 @@ public class BatteryBlockEntity extends ElectricNode implements ThermalBody, Wel
         return cells;
     }
 
+    /** Whether this chemistry can run away at all. */
+    private boolean prone() {
+        return runawayTu < Float.MAX_VALUE / 2f;
+    }
+
+    public boolean isRunaway() {
+        return runaway;
+    }
+
+    public boolean isSealed() {
+        return sealed;
+    }
+
     private float coldShare() {
         float t = temperature;
         float room = ThermalTuning.AMBIENT_TU.value();
@@ -111,6 +129,8 @@ public class BatteryBlockEntity extends ElectricNode implements ThermalBody, Wel
     }
 
     private float waterShare() {
+        if (sealed)
+            return 1f;
         float low = ElectricMachineTuning.BATTERY_WATER_LOW_SHARE * FTuning.BATTERY_WATER_TANK_MB;
         return water >= low ? 1f : Mth.lerp(water / low, ElectricMachineTuning.BATTERY_DRY_CAPACITY, 1f);
     }
@@ -205,7 +225,7 @@ public class BatteryBlockEntity extends ElectricNode implements ThermalBody, Wel
 
     @Override
     public float reserveWantedAmps() {
-        return full() ? 0f : amps(rectified ? ElectricMachineTuning.RECTIFIER_CHARGE_TICKS : ElectricMachineTuning.BATTERY_CHARGE_TICKS);
+        return full() || runaway ? 0f : amps(rectified ? ElectricMachineTuning.RECTIFIER_CHARGE_TICKS : ElectricMachineTuning.BATTERY_CHARGE_TICKS);
     }
 
     @Override
@@ -215,13 +235,13 @@ public class BatteryBlockEntity extends ElectricNode implements ThermalBody, Wel
 
     @Override
     public float sourceAmps() {
-        return supplying && ready() && charge > 0f ? Math.min(amps(ElectricMachineTuning.BATTERY_DISCHARGE_TICKS) * cliff(), charge / ElectricRules.packetEu(caseBand)) : 0f;
+        return supplying && !runaway && ready() && charge > 0f ? Math.min(amps(ElectricMachineTuning.BATTERY_DISCHARGE_TICKS) * cliff(), charge / ElectricRules.packetEu(caseBand)) : 0f;
     }
 
     /** Charges while its band or a higher one is fed to it; a full cell asks only a trickle, and only when the band is over its own (gassing). */
     @Override
     public float wantedAmps() {
-        if (supplying || !ready())
+        if (supplying || runaway || !ready())
             return 0f;
         float chargeAmps = amps(rectified ? ElectricMachineTuning.RECTIFIER_CHARGE_TICKS : ElectricMachineTuning.BATTERY_CHARGE_TICKS);
         if (!ElectricRules.accepts(getBand(), getPacketEu(), caseBand))
@@ -243,6 +263,10 @@ public class BatteryBlockEntity extends ElectricNode implements ThermalBody, Wel
                 charge = Math.max(0f, charge - amps * eu);
                 float limit = amps(ElectricMachineTuning.BATTERY_DISCHARGE_TICKS);
                 float over = limit <= 0f ? 0f : amps / limit - 1f;
+                if (plated && limit > 0f && amps / limit >= ElectricMachineTuning.BATTERY_PLATED_TRIP_SHARE) {
+                    runaway = true;
+                    dirty = true;
+                }
                 if (over > 0f) {
                     condition = Math.max(ElectricMachineTuning.BATTERY_CONDITION_FLOOR, condition - ElectricMachineTuning.BATTERY_OVERDRAW_WEAR * over * io.github.soundgoodizerfan.feedback.modular.attunement.MachineKinds.wearShare(design));
                     heat += ElectricMachineTuning.BATTERY_OVERDRAW_HEAT * over;
@@ -264,6 +288,18 @@ public class BatteryBlockEntity extends ElectricNode implements ThermalBody, Wel
                 heat += amps * eu * (1f - chargeEfficiency);
                 if (gassing)
                     ventAmps = amps * Math.min(1f, ElectricRules.overBand(band, caseBand));
+            }
+            if (prone()) {
+                // A cell that does not vent turns what it cannot take (full, or a band over its own) into heat.
+                if (wasFull)
+                    heat += amps * eu;
+                else
+                    heat += amps * eu * Math.min(1f, ElectricRules.overBand(band, caseBand));
+                if (temperature < chargeFloorTu) {
+                    plated = true;
+                    condition = Math.max(ElectricMachineTuning.BATTERY_CONDITION_FLOOR, condition - ElectricMachineTuning.BATTERY_PLATING_WEAR_PER_PACKET * amps
+                            * io.github.soundgoodizerfan.feedback.modular.attunement.MachineKinds.wearShare(design));
+                }
             }
             if (ventAmps > 0f) {
                 float vented = Math.min(water, ventAmps * ElectricMachineTuning.BATTERY_VENT_WATER_PER_PACKET);
@@ -319,8 +355,12 @@ public class BatteryBlockEntity extends ElectricNode implements ThermalBody, Wel
             setChanged();
             ElectricPropagator.rebuildFrom(level, worldPosition);
         }
+        if (plated && !runaway && charge <= 0f)
+            plated = false;
+        if (prone() || sealed)
+            tickRunaway(now);
         if (gas > 0f) {
-            if (now % 10 == 0)
+            if (now % ElectricMachineTuning.RUNAWAY_FLAME_TICKS == 0)
                 ignite();
             if (now % 20 == 0)
                 dispose();
@@ -328,11 +368,90 @@ public class BatteryBlockEntity extends ElectricNode implements ThermalBody, Wel
             venting = false;
     }
 
+    /** Whether water touches the case: standing in it, a water block beside it, or rain on an open top. */
+    private boolean wet() {
+        if (level.isRainingAt(worldPosition.above()) || getBlockState().getFluidState().is(FluidTags.WATER))
+            return true;
+        for (Direction d : Direction.values())
+            if (level.getFluidState(worldPosition.relative(d)).is(FluidTags.WATER))
+                return true;
+        return false;
+    }
+
+    /**
+     * Thermal runaway and the seal. A sealed cell that meets water makes hydrogen and loses condition, and a charged one
+     * flares into runaway; a cell prone to it starts when its case reaches the trigger (checked every ten ticks), then burns
+     * its stored charge into the case: faster the hotter it is, so a full cell burns longest. The heat warms the case, spreads to
+     * a neighbouring battery (conduction, so a stack cascades by itself), lights air beside it, and is eased by sand beside it.
+     * Idle cells cost one temperature compare every ten ticks; nothing else runs.
+     */
+    private void tickRunaway(long now) {
+        if (!(level instanceof ServerLevel server))
+            return;
+        if (sealed && !runaway && (now + worldPosition.asLong()) % ElectricMachineTuning.BATTERY_SEAL_CHECK_TICKS == 0 && wet()) {
+            gas += ElectricMachineTuning.RUNAWAY_WATER_GAS_MB;
+            condition = Math.max(ElectricMachineTuning.BATTERY_CONDITION_FLOOR, condition - ElectricMachineTuning.BATTERY_WET_WEAR);
+            if (charge > 0f && prone())
+                runaway = true;
+            setChanged();
+        }
+        if (!runaway) {
+            if (prone() && (now + worldPosition.asLong()) % ElectricMachineTuning.RUNAWAY_FLAME_TICKS == 0 && temperature >= runawayTu) {
+                runaway = true;
+                setChanged();
+            }
+            return;
+        }
+        float over = Math.max(0f, temperature - runawayTu);
+        float burn = Math.min(charge, effectiveCapacity() * ElectricMachineTuning.RUNAWAY_BURN_SHARE * (1f + over / ElectricMachineTuning.RUNAWAY_TEMP_SCALE));
+        charge -= burn;
+        float work = burn * runawayHeat * ElectricMachineTuning.RUNAWAY_WORK_PER_EU;
+        boolean smothered = false;
+        for (Direction d : Direction.values())
+            smothered |= level.getBlockState(worldPosition.relative(d)).is(net.minecraft.tags.BlockTags.SAND);
+        if (smothered)
+            work *= 1f - ElectricMachineTuning.RUNAWAY_SMOTHER_SHARE;
+        Heat.warm(this, work);
+        if (!isLive()) {
+            // On a line, onResolved cools it; off one, it is cooled here, so a cell cools once a tick either way.
+            Tu ambient = AmbientTable.at(level);
+            Heat.tick(this, ambient, ambient, false);
+        }
+        for (Direction d : Direction.values()) {
+            // One side of a pair does the exchange: the other, if it is also running away, leaves it to this one.
+            if (level.getBlockEntity(worldPosition.relative(d)) instanceof BatteryBlockEntity other && other != this
+                    && (!other.runaway || worldPosition.asLong() < other.worldPosition.asLong()))
+                Heat.exchange(this, other, new Conductance(ElectricMachineTuning.RUNAWAY_LINK));
+        }
+        condition = Math.max(ElectricMachineTuning.BATTERY_CONDITION_FLOOR, condition - ElectricMachineTuning.RUNAWAY_WEAR
+                * io.github.soundgoodizerfan.feedback.modular.attunement.MachineKinds.wearShare(design));
+        if (now % ElectricMachineTuning.RUNAWAY_FLAME_TICKS == 0) {
+            server.sendParticles(ParticleTypes.FLAME, worldPosition.getX() + 0.5, worldPosition.getY() + 1.0, worldPosition.getZ() + 0.5, 4, 0.2, 0.1, 0.2, 0.02);
+            server.sendParticles(ParticleTypes.LARGE_SMOKE, worldPosition.getX() + 0.5, worldPosition.getY() + 1.1, worldPosition.getZ() + 0.5, 2, 0.2, 0.1, 0.2, 0.01);
+            for (Direction d : Direction.values()) {
+                BlockPos at = worldPosition.relative(d);
+                if (level.getBlockState(at).isAir() && net.minecraft.world.level.block.Blocks.FIRE.defaultBlockState().canSurvive(level, at)
+                        && level.random.nextFloat() < ElectricMachineTuning.RUNAWAY_FIRE_CHANCE
+                        && level.getGameRules().getBoolean(net.minecraft.world.level.GameRules.RULE_DOFIRETICK))
+                    level.setBlockAndUpdate(at, net.minecraft.world.level.block.Blocks.FIRE.defaultBlockState());
+            }
+            if (wet()) {
+                // Water on a burning cell: hydrogen, and the flame sets it off at the next ignition check.
+                gas += ElectricMachineTuning.RUNAWAY_WATER_GAS_MB;
+            }
+        }
+        if (charge <= 0f && temperature < runawayTu - ElectricMachineTuning.RUNAWAY_SETTLE_TU) {
+            runaway = false;
+            plated = false;
+        }
+        setChanged();
+    }
+
     /** A flame or lit block beside the vent sets the loose hydrogen off once there is enough of it. */
     private void ignite() {
         if (gas < ElectricMachineTuning.BATTERY_GAS_BLAST_MB || !(level instanceof ServerLevel server))
             return;
-        boolean lit = HotIgnition.isSource(getBlockState());
+        boolean lit = runaway || HotIgnition.isSource(getBlockState());
         for (Direction d : Direction.values())
             lit |= HotIgnition.isSource(level.getBlockState(worldPosition.relative(d)));
         if (!lit)
@@ -391,13 +510,13 @@ public class BatteryBlockEntity extends ElectricNode implements ThermalBody, Wel
 
         @Override
         public boolean isFluidValid(int tank, @NotNull FluidStack stack) {
-            return tank == 0 ? stack.is(electrolyte) : stack.is(FluidTags.WATER);
+            return tank == 0 ? stack.is(electrolyte) : !sealed && stack.is(FluidTags.WATER);
         }
 
         @Override
         public int fill(FluidStack resource, FluidAction action) {
             boolean isAcid = resource.is(electrolyte);
-            if (!isAcid && !resource.is(FluidTags.WATER))
+            if (!isAcid && (sealed || !resource.is(FluidTags.WATER)))
                 return 0;
             float have = isAcid ? acid : water;
             int cap = getTankCapacity(isAcid ? 0 : 1);
@@ -483,6 +602,12 @@ public class BatteryBlockEntity extends ElectricNode implements ThermalBody, Wel
         tag.putFloat("ChargeEfficiency", chargeEfficiency);
         tag.putBoolean("Gassing", gassing);
         tag.putString("Electrolyte", electrolyte.location().toString());
+        tag.putFloat("RunawayTu", runawayTu);
+        tag.putFloat("RunawayHeat", runawayHeat);
+        tag.putBoolean("Sealed", sealed);
+        tag.putFloat("ChargeFloorTu", chargeFloorTu);
+        tag.putBoolean("Runaway", runaway);
+        tag.putBoolean("Plated", plated);
         tag.putFloat("Charge", charge);
         tag.putFloat("Condition", condition);
         tag.putFloat("MaxCondition", maxCondition);
@@ -505,6 +630,12 @@ public class BatteryBlockEntity extends ElectricNode implements ThermalBody, Wel
         electrolyte = TagKey.create(net.minecraft.core.registries.Registries.FLUID,
                 tag.contains("Electrolyte") ? ResourceLocation.parse(tag.getString("Electrolyte")) : ACID);
         caseBand = VoltageBand.CODEC.parse(NbtOps.INSTANCE, StringTag.valueOf(tag.getString("CaseBand"))).result().orElse(VoltageBand.LV);
+        runawayTu = tag.contains("RunawayTu") ? tag.getFloat("RunawayTu") : Float.MAX_VALUE;
+        runawayHeat = tag.getFloat("RunawayHeat");
+        sealed = tag.getBoolean("Sealed");
+        chargeFloorTu = tag.contains("ChargeFloorTu") ? tag.getFloat("ChargeFloorTu") : -Float.MAX_VALUE;
+        runaway = tag.getBoolean("Runaway");
+        plated = tag.getBoolean("Plated");
         charge = tag.getFloat("Charge");
         condition = tag.contains("Condition") ? tag.getFloat("Condition") : 1f;
         maxCondition = tag.contains("MaxCondition") ? tag.getFloat("MaxCondition") : 1f;

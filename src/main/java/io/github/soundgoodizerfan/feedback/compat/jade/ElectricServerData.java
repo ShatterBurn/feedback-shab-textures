@@ -32,7 +32,7 @@ public class ElectricServerData implements IServerDataProvider<BlockAccessor> {
     static final String BLOCKED = "ElectricBlocked";
     static final String INSULATION = "WireInsulation";
     static final String JAR = "JarState", JAR_BAND = "JarBand";
-    static final String BAT = "BatteryState", BAT_SOC = "BatterySoc", BAT_WATER = "BatteryWater", BAT_VENT = "BatteryVent", BAT_COND = "BatteryCondition", BAT_READY = "BatteryReady", BAT_UNDER = "BatteryUnder", BAT_NEED = "BatteryNeed";
+    static final String BAT = "BatteryState", BAT_SOC = "BatterySoc", BAT_WATER = "BatteryWater", BAT_VENT = "BatteryVent", BAT_COND = "BatteryCondition", BAT_READY = "BatteryReady", BAT_UNDER = "BatteryUnder", BAT_NEED = "BatteryNeed", BAT_RUNAWAY = "BatteryRunaway";
 
     @Override
     public void appendServerData(CompoundTag data, BlockAccessor accessor) {
@@ -55,6 +55,7 @@ public class ElectricServerData implements IServerDataProvider<BlockAccessor> {
             data.putFloat(BAT_SOC, battery.stateOfCharge());
             data.putFloat(BAT_WATER, battery.water() / io.github.soundgoodizerfan.feedback.core.FTuning.BATTERY_WATER_TANK_MB);
             data.putBoolean(BAT_VENT, battery.isVenting() || battery.gas() >= io.github.soundgoodizerfan.feedback.machine.ElectricMachineTuning.BATTERY_GAS_WEEP_MB);
+            data.putBoolean(BAT_RUNAWAY, battery.isRunaway());
             data.putFloat(BAT_COND, battery.getCondition());
             data.putBoolean(BAT_READY, battery.ready());
             data.putBoolean(BAT_UNDER, !battery.isSupplying() && battery.isLive() && battery.getBand().compareTo(battery.caseBand()) < 0);

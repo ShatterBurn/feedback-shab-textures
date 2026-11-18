@@ -108,6 +108,8 @@ public class ElectricComponent implements IBlockComponentProvider {
             if (data.getBoolean(ElectricServerData.BAT_UNDER))
                 tooltip.add(Readout.gloss(Component.translatable("feedback.readout.battery.under").withStyle(ChatFormatting.GOLD), "feedback.gloss.battery.under",
                         Readout.instrumented(Quantity.BAND) ? Component.translatable(VoltageBand.values()[data.getByte(ElectricServerData.BAT_NEED)].key()).getString() : "?"));
+            if (data.getBoolean(ElectricServerData.BAT_RUNAWAY))
+                tooltip.add(Readout.gloss(Component.translatable("feedback.readout.battery.runaway").withStyle(ChatFormatting.RED), "feedback.gloss.battery.runaway"));
             if (data.getBoolean(ElectricServerData.BAT_VENT))
                 tooltip.add(Readout.gloss(Component.translatable("feedback.readout.battery.weeping").withStyle(ChatFormatting.GOLD), "feedback.gloss.battery.weeping"));
             else if (data.getFloat(ElectricServerData.BAT_WATER) < ElectricMachineTuning.BATTERY_WATER_LOW_SHARE)

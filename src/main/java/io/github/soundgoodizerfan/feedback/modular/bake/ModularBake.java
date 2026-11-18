@@ -275,7 +275,8 @@ public final class ModularBake {
     }
 
     /** What a battery design is: its cell count, one cell's capacity in Eu, the plates' figures and the band the case rates the battery. */
-    public record CellSpec(int cells, float capacity, Material.SecondaryCell plates, VoltageBand caseBand) {
+    public record CellSpec(int cells, float capacity, Material.SecondaryCell plates, VoltageBand caseBand,
+                           float runawayTu, float runawayHeat, boolean sealed, float chargeFloorTu) {
     }
 
     /**
@@ -299,8 +300,23 @@ public final class ModularBake {
         Material cathode = slotMaterial(role, plates, "cathode", materials);
         if (cathode == null || cathode.electrical().secondaryCell().isEmpty())
             return Optional.empty();
-        float euPerIngot = (sc.euPerIngot() + cathode.electrical().secondaryCell().get().euPerIngot()) / 2f;
-        return Optional.of(new CellSpec(cells, euPerIngot * perCell, sc, cm.electrical().insulation().get()));
+        Material.SecondaryCell cc = cathode.electrical().secondaryCell().get();
+        float euPerIngot;
+        if (sc.euPerIngot().isPresent() && cc.euPerIngot().isPresent())
+            euPerIngot = (sc.euPerIngot().get() + cc.euPerIngot().get()) / 2f;
+        else if (sc.hostPotential().isPresent() && cathode.electrical().electrodePotential().isPresent())
+            // No figure stated: the pair's charge per ingot follows the gap between the anode's host potential and the cathode's.
+            euPerIngot = Math.max(0f, cathode.electrical().electrodePotential().get() - sc.hostPotential().get()) * io.github.soundgoodizerfan.feedback.machine.ElectricMachineTuning.BATTERY_EU_PER_INGOT_PER_VOLT;
+        else
+            return Optional.empty();
+        if (euPerIngot <= 0f)
+            return Optional.empty();
+        // The weaker electrode sets where the pair runs away: the lower trigger, the larger heat, a seal needed by either, the warmer floor.
+        float runawayTu = Math.min(sc.runawayTu().orElse(Float.MAX_VALUE), cc.runawayTu().orElse(Float.MAX_VALUE));
+        float runawayHeat = Math.max(sc.runawayHeat(), cc.runawayHeat());
+        float floor = Math.max(sc.chargeFloorTu().orElse(-Float.MAX_VALUE), cc.chargeFloorTu().orElse(-Float.MAX_VALUE));
+        return Optional.of(new CellSpec(cells, euPerIngot * perCell, sc, cm.electrical().insulation().get(),
+                runawayTu, runawayHeat, sc.sealed() || cc.sealed(), floor));
     }
 
     /**

@@ -258,6 +258,10 @@ public final class ModularStacks {
         tag.putBoolean("Gassing", c.plates().gassing());
         tag.putString("Electrolyte", c.plates().electrolyte().toString());
         tag.putString("CaseBand", c.caseBand().getSerializedName());
+        tag.putFloat("RunawayTu", c.runawayTu());
+        tag.putFloat("RunawayHeat", c.runawayHeat());
+        tag.putBoolean("Sealed", c.sealed());
+        tag.putFloat("ChargeFloorTu", c.chargeFloorTu());
         if (!tag.contains("Condition"))
             tag.putFloat("Condition", 1f);
         stack.set(FDataComponents.BATTERY.get(), tag);

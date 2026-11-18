@@ -105,6 +105,8 @@ public final class FFluidTypes {
     /** Chemistry: acids, bases, brine, the chlorine and nitrogen gases, and the aluminium smelter's bath. Negative density rises. */
     public static final DeferredHolder<FluidType, FluidType> BRINE = petroType("brine", 1200, 1000, 300);
     public static final DeferredHolder<FluidType, FluidType> LYE = petroType("lye", 1430, 2000, 300);
+    /** The lithium cell's electrolyte: a lithium salt dissolved in an organic carbonate. */
+    public static final DeferredHolder<FluidType, FluidType> BATTERY_CARBONATE = petroType("battery_carbonate", 1280, 3000, 300);
     public static final DeferredHolder<FluidType, FluidType> HYDROCHLORIC_ACID = petroType("hydrochloric_acid", 1180, 1500, 300);
     public static final DeferredHolder<FluidType, FluidType> METHANE = petroType("methane", -3, 100, 300);
     public static final DeferredHolder<FluidType, FluidType> CHLOROFORM = petroType("chloroform", 1480, 600, 300);

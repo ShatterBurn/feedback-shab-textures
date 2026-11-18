@@ -47,6 +47,8 @@ public final class BatteryStack {
     }
 
     private static float waterShare(CompoundTag t) {
+        if (t.getBoolean("Sealed"))
+            return 1f;
         float low = ElectricMachineTuning.BATTERY_WATER_LOW_SHARE * FTuning.BATTERY_WATER_TANK_MB;
         float water = t.getFloat("Water");
         return water >= low ? 1f : Mth.lerp(water / low, ElectricMachineTuning.BATTERY_DRY_CAPACITY, 1f);
