@@ -260,7 +260,7 @@ public class ResearchTableMenu extends AbstractContainerMenu {
         sentMode = mode.get();
         sentIndex = index.get();
         sentPlan = plan;
-        sentInk = mode.get() == 2 ? Researching.appInk() : mode.get() == 1 ? Researching.attunementInk(effect(server), table.getItem(ResearchTableBlockEntity.OFFERING),
+        sentInk = mode.get() == 2 ? Researching.appInk(server, plan) : mode.get() == 1 ? Researching.attunementInk(effect(server), table.getItem(ResearchTableBlockEntity.OFFERING),
                 table.getItem(ResearchTableBlockEntity.REAGENT), server.level())
                 : Researching.ink(server, table.getItem(ResearchTableBlockEntity.SPECIMEN), plan);
         sentSeed = (int) (now ^ containerId * 31L);
@@ -279,6 +279,16 @@ public class ResearchTableMenu extends AbstractContainerMenu {
             return;
         playing = false;
         long elapsed = server.level().getGameTime() - gameStart;
+        if (mode.get() == 2) {
+            AppHack hack = AppHack.replay(sentPlan, sentSeed, sentInk, moves);
+            if (ready(server) != 0)
+                note.set(ready(server));
+            else
+                writeApp(server, hack.found && elapsed >= ModularTuning.RESEARCH_MIN_TICKS);
+            table.setChanged();
+            broadcastChanges();
+            return;
+        }
         ResearchBoard board = new ResearchBoard(sentPlan, sentSeed, sentInk);
         for (String move : moves) {
             int at = move.indexOf('@'), comma = move.indexOf(',', at + 1);
@@ -295,12 +305,6 @@ public class ResearchTableMenu extends AbstractContainerMenu {
         int why = ready(server);
         if (why != 0) {
             note.set(why);
-            return;
-        }
-        if (mode.get() == 2) {
-            writeApp(server, board.reached && elapsed >= ModularTuning.RESEARCH_MIN_TICKS);
-            table.setChanged();
-            broadcastChanges();
             return;
         }
         if (!server.getAbilities().instabuild)

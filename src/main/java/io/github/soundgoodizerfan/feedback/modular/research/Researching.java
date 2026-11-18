@@ -176,11 +176,6 @@ public final class Researching {
                 && !stack.has(io.github.soundgoodizerfan.feedback.registry.FDataComponents.PROGRAM_GRAPH.get());
     }
 
-    /** The ink an app's run starts with. */
-    public static int appInk() {
-        return ModularTuning.RESEARCH_BASE_INK + ModularTuning.RESEARCH_OFFER_INK;
-    }
-
     /** Whether {@code specimen} is what research of the {@code index}-th thing of {@code mode} takes. */
     public static boolean specimenFits(ItemStack specimen, int mode, int index) {
         var design = ModularStacks.design(specimen);
@@ -229,21 +224,27 @@ public final class Researching {
      * done the real thing enough times.
      */
     public static int ink(ServerPlayer player, ItemStack specimen, ResearchPlan plan) {
-        int ink = ModularTuning.RESEARCH_BASE_INK + Math.round(ModularTuning.RESEARCH_SPECIMEN_INK * (1f - ModularStacks.worn(specimen)));
+        return ModularTuning.RESEARCH_BASE_INK + Math.round(ModularTuning.RESEARCH_SPECIMEN_INK * (1f - ModularStacks.worn(specimen))) + eurekaInk(player, plan);
+    }
+
+    /** The ink an app's run starts with: the base, and the plan's eureka bonus (what the researcher has done with the subject). It sets the tries and the brackets of {@link AppHack}. */
+    public static int appInk(ServerPlayer player, ResearchPlan plan) {
+        return ModularTuning.RESEARCH_BASE_INK + eurekaInk(player, plan);
+    }
+
+    private static int eurekaInk(ServerPlayer player, ResearchPlan plan) {
         var e = plan.eureka;
-        if (e != null) {
-            ResourceLocation id = ResourceLocation.tryParse(e.item());
-            var item = id == null ? null : BuiltInRegistries.ITEM.getOptional(id).orElse(null);
-            if (item != null) {
-                int done = switch (e.kind()) {
-                    case "crafted" -> player.getStats().getValue(Stats.ITEM_CRAFTED.get(item));
-                    case "mined" -> player.getStats().getValue(Stats.BLOCK_MINED.get(net.minecraft.world.level.block.Block.byItem(item)));
-                    default -> player.getStats().getValue(Stats.ITEM_USED.get(item));
-                };
-                if (done >= e.threshold())
-                    ink += e.ink();
-            }
-        }
-        return ink;
+        if (e == null)
+            return 0;
+        ResourceLocation id = ResourceLocation.tryParse(e.item());
+        var item = id == null ? null : BuiltInRegistries.ITEM.getOptional(id).orElse(null);
+        if (item == null)
+            return 0;
+        int done = switch (e.kind()) {
+            case "crafted" -> player.getStats().getValue(Stats.ITEM_CRAFTED.get(item));
+            case "mined" -> player.getStats().getValue(Stats.BLOCK_MINED.get(net.minecraft.world.level.block.Block.byItem(item)));
+            default -> player.getStats().getValue(Stats.ITEM_USED.get(item));
+        };
+        return done >= e.threshold() ? e.ink() : 0;
     }
 }
