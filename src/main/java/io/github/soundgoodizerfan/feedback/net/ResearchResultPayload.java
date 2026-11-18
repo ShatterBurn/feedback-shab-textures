@@ -26,7 +26,7 @@ public record ResearchResultPayload(int container, List<String> moves, int answe
 
     public static final StreamCodec<RegistryFriendlyByteBuf, ResearchResultPayload> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.VAR_INT, ResearchResultPayload::container,
-            ByteBufCodecs.stringUtf8(48).apply(ByteBufCodecs.list(ResearchBoard.MAX_MOVES)), ResearchResultPayload::moves,
+            ByteBufCodecs.stringUtf8(48).apply(ByteBufCodecs.list(Math.max(ResearchBoard.MAX_MOVES, io.github.soundgoodizerfan.feedback.modular.research.RitePurify.MAX_MOVES))), ResearchResultPayload::moves,
             ByteBufCodecs.VAR_INT, ResearchResultPayload::answer,
             ResearchResultPayload::new);
 

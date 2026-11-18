@@ -147,6 +147,22 @@ public final class Researching {
     }
 
     /**
+     * The rite game's figures for a run: the effect's aspect and stage count, murk that thins and pieces that tidy the further the offering ranks over
+     * the bar (an offering that is only just enough, or none, gives the thickest murk and the most awkward tray), and whether a reagent leans the tray.
+     */
+    public static RitePurify.Params riteParams(Attunements.Effect effect, ItemStack offering, ItemStack reagent, int ink, net.minecraft.world.level.Level level) {
+        float over = 0f;
+        if (!offering.isEmpty() && effect.offering().isPresent()) {
+            float rank = rank(effect.offering().get(), offering);
+            if (rank >= effect.target())
+                over = (rank - effect.target()) / Math.max(0.05f, 1f - effect.target());
+        }
+        int aspect = java.util.Arrays.asList(RitePurify.ELEMENT_NAMES).indexOf(effect.aspect());
+        return new RitePurify.Params(Math.max(0, aspect), effect.stages(), 1f - ModularTuning.RITE_OFFER_THIN * over, 1f - over,
+                reagentFits(effect, reagent, level), ink);
+    }
+
+    /**
      * The experience points a player has now, from their level and the bar. {@code totalExperience} is only a running score that a level set by
      * command or lost to a vanilla enchant never touches, so it is not what a level is worth; spending points ({@code giveExperiencePoints})
      * does take them from the bar and then from the level below.

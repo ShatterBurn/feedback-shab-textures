@@ -152,6 +152,34 @@
       }
     ]
   },
+  "ui.rite_place": {
+    "sounds": [
+      {
+        "name": "feedback:rite/rite_place"
+      }
+    ]
+  },
+  "ui.rite_clear": {
+    "sounds": [
+      {
+        "name": "feedback:rite/rite_clear"
+      }
+    ]
+  },
+  "ui.rite_cleanse": {
+    "sounds": [
+      {
+        "name": "feedback:rite/rite_cleanse"
+      }
+    ]
+  },
+  "ui.rite_stuck": {
+    "sounds": [
+      {
+        "name": "feedback:rite/rite_stuck"
+      }
+    ]
+  },
   "ui.punch": {
     "sounds": [
       {

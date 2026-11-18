@@ -1,4 +1,6 @@
 {
+  "aspect": "fire",
+  "stages": 2,
   "reagent": "feedback:ignite",
   "target": 0.6,
   "band": 0.12,

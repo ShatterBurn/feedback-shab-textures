@@ -1,4 +1,6 @@
 {
+  "aspect": "water",
+  "stages": 3,
   "target": 0.55,
   "band": 0.12,
   "roles": {

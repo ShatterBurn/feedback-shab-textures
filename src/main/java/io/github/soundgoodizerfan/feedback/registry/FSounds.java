@@ -261,6 +261,14 @@ public class FSounds {
     public static final DeferredHolder<SoundEvent, SoundEvent> APP_HACK = ui("ui.app_hack");
     /** The answer found: one long tone. */
     public static final DeferredHolder<SoundEvent, SoundEvent> APP_FOUND = ui("ui.app_found");
+    /** A rite piece set down on the grid, and the tray drawn again. */
+    public static final DeferredHolder<SoundEvent, SoundEvent> RITE_PLACE = ui("ui.rite_place");
+    /** A full line clears only the player's own pieces. */
+    public static final DeferredHolder<SoundEvent, SoundEvent> RITE_CLEAR = ui("ui.rite_clear");
+    /** A line holding the opposite element cleanses murk. */
+    public static final DeferredHolder<SoundEvent, SoundEvent> RITE_CLEANSE = ui("ui.rite_cleanse");
+    /** A piece will not fit, or nothing in the tray does. */
+    public static final DeferredHolder<SoundEvent, SoundEvent> RITE_STUCK = ui("ui.rite_stuck");
 
     /** The field first rises past the coercive field in the Enchanting Table: the part begins to take. */
     public static final DeferredHolder<SoundEvent, SoundEvent> ENCHANT_ENGAGE = ui("ui.enchant_engage");

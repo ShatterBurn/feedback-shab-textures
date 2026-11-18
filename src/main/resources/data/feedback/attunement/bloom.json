@@ -1,4 +1,6 @@
 {
+  "aspect": "light",
+  "stages": 2,
   "target": 0.4,
   "band": 0.1,
   "roles": {
