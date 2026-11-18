@@ -132,6 +132,8 @@ When a row or column is full, it clears and your own pieces in it vanish. A murk
 
 A grid is done when all its murk is gone. A rite takes 1 to 3 grids depending on the attunement, and each grid is thicker than the one before. There is no clock.
 
+A three-step guide in a wizard's flourishing voice shows over the grid the first time you play it in a game session; click to dismiss it, and the **?** button in the top right corner brings it back.
+
 - **Draw again** costs 1 ink and deals a whole new tray. The ink comes from the base, the offering and the reagent, as for a treatise.
 - **Take the residue** ends the run at once with what has been cleansed, at a lower grade.
 
