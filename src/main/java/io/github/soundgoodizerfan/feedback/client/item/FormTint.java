@@ -183,6 +183,10 @@ public final class FormTint {
             }
             return 0xFF000000 | rgb;
         }, FModular.PLACED_BED.get());
+        // A fuse's wire takes its metal's colour (tint 0 is the wire in the glass).
+        event.register((state, level, pos, tintIndex) -> level != null && pos != null
+                && level.getBlockEntity(pos) instanceof io.github.soundgoodizerfan.feedback.machine.breaker.FuseBlockEntity fuse
+                && fuse.getWire() != null ? 0xFF000000 | MaterialColors.of(fuse.getWire()) : 0xFFFFFFFF, FBlocks.FUSE.get());
         event.register((state, level, pos, tintIndex) -> level != null && pos != null
                 && level.getBlockEntity(pos) instanceof io.github.soundgoodizerfan.feedback.machine.xp.XpWireBlockEntity wire
                 && wire.material() != null ? 0xFF000000 | MaterialColors.of(wire.material()) : 0xFFFFFFFF, FBlocks.XP_WIRE.get());

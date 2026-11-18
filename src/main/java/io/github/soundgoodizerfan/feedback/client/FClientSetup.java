@@ -115,6 +115,8 @@ public class FClientSetup {
         event.registerBlockEntityRenderer(FBlockEntities.PUMP.get(), RotatingRenderer::new);
         event.registerBlockEntityRenderer(FBlockEntities.GEARBOX.get(), SpinningParts.Renderer::new);
         event.registerBlockEntityRenderer(FBlockEntities.ROTATION_ADAPTER.get(), SpinningParts.Renderer::new);
+        event.registerBlockEntityRenderer(FBlockEntities.ROBOT_ARM.get(),
+                io.github.soundgoodizerfan.feedback.client.render.RobotArmRenderer::new);
         event.registerBlockEntityRenderer(FBlockEntities.ELECTROSTATIC_GENERATOR.get(),
                 io.github.soundgoodizerfan.feedback.client.render.ElectrostaticGeneratorRenderer::new);
 

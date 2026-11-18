@@ -62,9 +62,10 @@ D is a Wrought Iron Drilled Plate and S is a Stick. Set it in a [Casting Basin](
 - **Shovel Head Mold**: casts a **Shovel Head**.
 - **Hoe Head Mold**: casts a **Hoe Head**.
 - **Sickle Head Mold**: casts a **Sickle Head**.
+- **Hammer Head Mold**: casts a **Hammer Head**.
 - **Saw Blade Mold**: casts a **Saw Blade**, the blade a [Sawblade](Sawblade.md) is made from.
 
-Each takes one ingot's worth, **144 mB**, of copper, bronze, brass, iron, wrought iron, cast iron, tin, lead, zinc, gold or silver, and casts **one cell** of the part in that metal. A cast head is about a third of the weight and durability of a forged one. The part carries its metal: a Copper Pickaxe Head, a Silver Saw Blade. Assemble it at a bench as usual (see [Tools and Weapons](Tools_and_Weapons.md#putting-one-together)). Sword, spear, cleaver and maul heads, and shears, are shaped at a bench instead.
+Each takes one ingot's worth, **144 mB**, of copper, bronze, brass, iron, wrought iron, cast iron, tin, lead, zinc, gold or silver, and casts **one cell** of the part in that metal. A cast head is about a third of the weight and durability of a forged one. The part carries its metal: a Copper Pickaxe Head, a Silver Saw Blade. Assemble it at a bench as usual (see [Tools and Weapons](Tools_and_Weapons.md#putting-one-together)). Sword, spear and cleaver heads, and shears, are shaped at a bench instead.
 
 ```
 P P P    P P    P
@@ -73,9 +74,13 @@ P P P    P P    P
 
 P P   P P     P P P
   S     S P   S   S
+
+P P P
+P P P
+  S
 ```
 
-The first row is the Pickaxe, Axe and Shovel Head Molds; the second is the Hoe, Sickle and Saw Blade Molds. P is a Brick and S is a Stick.
+The first row is the Pickaxe, Axe and Shovel Head Molds; the second is the Hoe, Sickle and Saw Blade Molds; the last is the Hammer Head Mold. P is a Brick and S is a Stick.
 
 ### Pouring
 

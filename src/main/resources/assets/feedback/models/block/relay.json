@@ -1,6 +1,177 @@
 {
-  "parent": "block/cube_all",
+  "parent": "minecraft:block/block",
   "textures": {
-    "all": "feedback:block/device_terminal_side"
-  }
+    "particle": "feedback:block/relay_base",
+    "base": "feedback:block/relay_base",
+    "iron": "feedback:block/relay_iron",
+    "brass": "feedback:block/coherer_brass",
+    "armature": "feedback:block/relay_armature"
+  },
+  "elements": [
+    {
+      "name": "base",
+      "from": [
+        2,
+        0,
+        2
+      ],
+      "to": [
+        14,
+        2,
+        14
+      ],
+      "faces": {
+        "north": {
+          "texture": "#base"
+        },
+        "south": {
+          "texture": "#base"
+        },
+        "east": {
+          "texture": "#base"
+        },
+        "west": {
+          "texture": "#base"
+        },
+        "up": {
+          "texture": "#base"
+        },
+        "down": {
+          "texture": "#base"
+        }
+      }
+    },
+    {
+      "name": "yoke",
+      "from": [
+        2,
+        2,
+        6
+      ],
+      "to": [
+        4,
+        10,
+        10
+      ],
+      "faces": {
+        "north": {
+          "texture": "#iron"
+        },
+        "south": {
+          "texture": "#iron"
+        },
+        "east": {
+          "texture": "#iron"
+        },
+        "west": {
+          "texture": "#iron"
+        },
+        "up": {
+          "texture": "#iron"
+        },
+        "down": {
+          "texture": "#iron"
+        }
+      }
+    },
+    {
+      "name": "pole",
+      "from": [
+        6,
+        2,
+        6
+      ],
+      "to": [
+        10,
+        6,
+        10
+      ],
+      "faces": {
+        "north": {
+          "texture": "#iron"
+        },
+        "south": {
+          "texture": "#iron"
+        },
+        "east": {
+          "texture": "#iron"
+        },
+        "west": {
+          "texture": "#iron"
+        },
+        "up": {
+          "texture": "#iron"
+        },
+        "down": {
+          "texture": "#iron"
+        }
+      }
+    },
+    {
+      "name": "contact",
+      "from": [
+        12,
+        2,
+        6
+      ],
+      "to": [
+        14,
+        6,
+        10
+      ],
+      "faces": {
+        "north": {
+          "texture": "#brass"
+        },
+        "south": {
+          "texture": "#brass"
+        },
+        "east": {
+          "texture": "#brass"
+        },
+        "west": {
+          "texture": "#brass"
+        },
+        "up": {
+          "texture": "#brass"
+        },
+        "down": {
+          "texture": "#brass"
+        }
+      }
+    },
+    {
+      "name": "armature",
+      "from": [
+        4,
+        8,
+        6
+      ],
+      "to": [
+        14,
+        10,
+        10
+      ],
+      "faces": {
+        "north": {
+          "texture": "#armature"
+        },
+        "south": {
+          "texture": "#armature"
+        },
+        "east": {
+          "texture": "#armature"
+        },
+        "west": {
+          "texture": "#armature"
+        },
+        "up": {
+          "texture": "#armature"
+        },
+        "down": {
+          "texture": "#armature"
+        }
+      }
+    }
+  ]
 }

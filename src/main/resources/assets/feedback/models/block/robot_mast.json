@@ -1,8 +1,412 @@
 {
-  "parent": "feedback:block/tint_cube_ends",
+  "parent": "minecraft:block/block",
   "textures": {
-    "top": "feedback:block/metal_tank_ends",
-    "bottom": "feedback:block/metal_tank_ends",
-    "side": "feedback:block/copper_coil_side"
-  }
+    "paint": "feedback:block/robot_paint",
+    "steel": "feedback:block/robot_steel",
+    "hazard": "feedback:block/robot_hazard",
+    "post": "feedback:block/robot_post",
+    "lamp": "feedback:block/robot_lamp",
+    "lattice": "feedback:block/robot_lattice",
+    "cable": "feedback:block/robot_cable",
+    "particle": "feedback:block/robot_steel"
+  },
+  "elements": [
+    {
+      "name": "base",
+      "from": [
+        3,
+        0,
+        3
+      ],
+      "to": [
+        13,
+        2,
+        13
+      ],
+      "faces": {
+        "north": {
+          "texture": "#steel"
+        },
+        "south": {
+          "texture": "#steel"
+        },
+        "east": {
+          "texture": "#steel"
+        },
+        "west": {
+          "texture": "#steel"
+        },
+        "up": {
+          "texture": "#steel"
+        },
+        "down": {
+          "texture": "#steel"
+        }
+      }
+    },
+    {
+      "name": "leg_nw",
+      "from": [
+        4,
+        2,
+        4
+      ],
+      "to": [
+        6,
+        12,
+        6
+      ],
+      "faces": {
+        "north": {
+          "texture": "#steel"
+        },
+        "south": {
+          "texture": "#steel"
+        },
+        "east": {
+          "texture": "#steel"
+        },
+        "west": {
+          "texture": "#steel"
+        },
+        "up": {
+          "texture": "#steel"
+        },
+        "down": {
+          "texture": "#steel"
+        }
+      }
+    },
+    {
+      "name": "leg_ne",
+      "from": [
+        10,
+        2,
+        4
+      ],
+      "to": [
+        12,
+        12,
+        6
+      ],
+      "faces": {
+        "north": {
+          "texture": "#steel"
+        },
+        "south": {
+          "texture": "#steel"
+        },
+        "east": {
+          "texture": "#steel"
+        },
+        "west": {
+          "texture": "#steel"
+        },
+        "up": {
+          "texture": "#steel"
+        },
+        "down": {
+          "texture": "#steel"
+        }
+      }
+    },
+    {
+      "name": "leg_sw",
+      "from": [
+        4,
+        2,
+        10
+      ],
+      "to": [
+        6,
+        12,
+        12
+      ],
+      "faces": {
+        "north": {
+          "texture": "#steel"
+        },
+        "south": {
+          "texture": "#steel"
+        },
+        "east": {
+          "texture": "#steel"
+        },
+        "west": {
+          "texture": "#steel"
+        },
+        "up": {
+          "texture": "#steel"
+        },
+        "down": {
+          "texture": "#steel"
+        }
+      }
+    },
+    {
+      "name": "leg_se",
+      "from": [
+        10,
+        2,
+        10
+      ],
+      "to": [
+        12,
+        12,
+        12
+      ],
+      "faces": {
+        "north": {
+          "texture": "#steel"
+        },
+        "south": {
+          "texture": "#steel"
+        },
+        "east": {
+          "texture": "#steel"
+        },
+        "west": {
+          "texture": "#steel"
+        },
+        "up": {
+          "texture": "#steel"
+        },
+        "down": {
+          "texture": "#steel"
+        }
+      }
+    },
+    {
+      "name": "radio",
+      "from": [
+        6,
+        2,
+        6
+      ],
+      "to": [
+        10,
+        6,
+        10
+      ],
+      "faces": {
+        "north": {
+          "texture": "#paint"
+        },
+        "south": {
+          "texture": "#paint"
+        },
+        "east": {
+          "texture": "#paint"
+        },
+        "west": {
+          "texture": "#paint"
+        },
+        "up": {
+          "texture": "#paint"
+        },
+        "down": {
+          "texture": "#paint"
+        }
+      }
+    },
+    {
+      "name": "brace_n",
+      "from": [
+        6,
+        2,
+        4
+      ],
+      "to": [
+        10,
+        12,
+        4
+      ],
+      "faces": {
+        "north": {
+          "texture": "#lattice",
+          "uv": [
+            0,
+            0,
+            4,
+            10
+          ]
+        },
+        "south": {
+          "texture": "#lattice",
+          "uv": [
+            0,
+            0,
+            4,
+            10
+          ]
+        }
+      }
+    },
+    {
+      "name": "brace_s",
+      "from": [
+        6,
+        2,
+        12
+      ],
+      "to": [
+        10,
+        12,
+        12
+      ],
+      "faces": {
+        "north": {
+          "texture": "#lattice",
+          "uv": [
+            0,
+            0,
+            4,
+            10
+          ]
+        },
+        "south": {
+          "texture": "#lattice",
+          "uv": [
+            0,
+            0,
+            4,
+            10
+          ]
+        }
+      }
+    },
+    {
+      "name": "brace_w",
+      "from": [
+        4,
+        2,
+        6
+      ],
+      "to": [
+        4,
+        12,
+        10
+      ],
+      "faces": {
+        "east": {
+          "texture": "#lattice",
+          "uv": [
+            0,
+            0,
+            4,
+            10
+          ]
+        },
+        "west": {
+          "texture": "#lattice",
+          "uv": [
+            0,
+            0,
+            4,
+            10
+          ]
+        }
+      }
+    },
+    {
+      "name": "brace_e",
+      "from": [
+        12,
+        2,
+        6
+      ],
+      "to": [
+        12,
+        12,
+        10
+      ],
+      "faces": {
+        "east": {
+          "texture": "#lattice",
+          "uv": [
+            0,
+            0,
+            4,
+            10
+          ]
+        },
+        "west": {
+          "texture": "#lattice",
+          "uv": [
+            0,
+            0,
+            4,
+            10
+          ]
+        }
+      }
+    },
+    {
+      "name": "platform",
+      "from": [
+        3,
+        12,
+        3
+      ],
+      "to": [
+        13,
+        14,
+        13
+      ],
+      "faces": {
+        "north": {
+          "texture": "#steel"
+        },
+        "south": {
+          "texture": "#steel"
+        },
+        "east": {
+          "texture": "#steel"
+        },
+        "west": {
+          "texture": "#steel"
+        },
+        "up": {
+          "texture": "#steel"
+        },
+        "down": {
+          "texture": "#steel"
+        }
+      }
+    },
+    {
+      "name": "whip",
+      "from": [
+        7,
+        14,
+        7
+      ],
+      "to": [
+        9,
+        16,
+        9
+      ],
+      "faces": {
+        "north": {
+          "texture": "#steel"
+        },
+        "south": {
+          "texture": "#steel"
+        },
+        "east": {
+          "texture": "#steel"
+        },
+        "west": {
+          "texture": "#steel"
+        },
+        "up": {
+          "texture": "#steel"
+        },
+        "down": {
+          "texture": "#steel"
+        }
+      }
+    }
+  ],
+  "render_type": "minecraft:translucent"
 }

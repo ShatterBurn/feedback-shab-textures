@@ -1,1 +1,10 @@
-{ "variants": { "": { "model": "feedback:block/fuse" } } }
+{
+  "variants": {
+    "wired=false": {
+      "model": "feedback:block/fuse"
+    },
+    "wired=true": {
+      "model": "feedback:block/fuse_wired"
+    }
+  }
+}

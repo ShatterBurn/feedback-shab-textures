@@ -15,6 +15,7 @@ import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
@@ -25,6 +26,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -37,9 +41,42 @@ public class RobotArmBlock extends Block implements EntityBlock {
 
     public static final DirectionProperty FACING = net.minecraft.world.level.block.HorizontalDirectionalBlock.FACING;
 
+    /**
+     * The boxes of the arm (front on north), as {x1, y1, z1, x2, y2, z2} in sixteenths: base, pedestal, then the turning head from
+     * models/block/robot_arm_head.json (turret, upper arm, forearm, wrist, two fingers). Keep in step with scripts/robot_models.py.
+     */
+    private static final int[][] BOXES = {
+            {2, 0, 2, 14, 2, 14}, {5, 2, 5, 11, 6, 11},
+            {4, 6, 4, 12, 8, 12}, {6, 8, 6, 10, 14, 10}, {6, 12, 0, 10, 14, 6}, {5, 10, 0, 11, 12, 2}, {5, 6, 0, 7, 10, 2}, {9, 6, 0, 11, 10, 2}};
+
+    private static final java.util.Map<Direction, VoxelShape> SHAPES = new java.util.EnumMap<>(Direction.class);
+
+    static {
+        for (Direction d : Direction.Plane.HORIZONTAL) {
+            VoxelShape shape = Shapes.empty();
+            for (int[] b : BOXES) {
+                // blockstate y rotation is clockwise from above: north -> east maps (x, z) to (16 - z, x)
+                int x1 = b[0], z1 = b[2], x2 = b[3], z2 = b[5];
+                int[] r = switch (d) {
+                    case EAST -> new int[]{16 - z2, x1, 16 - z1, x2};
+                    case SOUTH -> new int[]{16 - x2, 16 - z2, 16 - x1, 16 - z1};
+                    case WEST -> new int[]{z1, 16 - x2, z2, 16 - x1};
+                    default -> new int[]{x1, z1, x2, z2};
+                };
+                shape = Shapes.or(shape, Block.box(r[0], b[1], r[1], r[2], b[4], r[3]));
+            }
+            SHAPES.put(d, shape);
+        }
+    }
+
     public RobotArmBlock(Properties properties) {
         super(properties);
         registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH));
+    }
+
+    @Override
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        return SHAPES.get(state.getValue(FACING));
     }
 
     @Override

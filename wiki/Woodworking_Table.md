@@ -12,7 +12,7 @@ An **axe** in its own slot instead of a hammer (any axe, vanilla or modular; eac
 
 The screen is the [Smithing Table](Smithing_Table.md)'s: a center slot, a **fan** of nodes around the stock in it, and a column of slots on the right. Stock in the center works like this:
 
-- **Stock** in the center: the fan shows every shape that stock can become, as icons. Shapes the pile is too small for are faint. Hover one for a ghost of the part by the result slot and a few bars (hardness, toughness, weight); click it to make it. A part takes only the stock it needs and the rest comes back as smaller items: a block that makes a one-ingot part gives the part and eight more ingots (ingots, for stone). **Break down** turns a big piece (a block) into ingot-sized pieces without making anything.
+- **Stock** in the center: the fan shows every shape that stock can become and your [treatises](Treatise.md#using-it) allow, as icons (typing opens a [filter](Smithing_Table.md)). Shapes the pile is too small for are faint. Hover one for a ghost of the part by the result slot and a few bars (hardness, toughness, weight); click it to make it. A part takes only the stock it needs and the rest comes back as smaller items: a block that makes a one-ingot part gives the part and eight more ingots (ingots, for stone). **Break down** turns a big piece (a block) into ingot-sized pieces without making anything.
 
 What the stock offers here:
 

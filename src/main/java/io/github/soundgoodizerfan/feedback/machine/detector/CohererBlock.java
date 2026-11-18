@@ -8,6 +8,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
@@ -16,15 +17,37 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 /** A redstone coherer. Empty-hand click is the tap. See {@link CohererBlockEntity}. */
 public class CohererBlock extends Block implements EntityBlock {
 
     public static final BooleanProperty WELDED = BooleanProperty.create("welded");
 
+    /** Mirrors models/block/coherer.json (scripts/coherer_model.py): base, low cap, tube, high cap, terminal, post, clapper. */
+    private static final int[][] BOXES = {
+            {2, 0, 2, 14, 2, 14}, {3, 2, 4, 11, 4, 12}, {4, 4, 5, 10, 12, 11}, {3, 12, 4, 11, 14, 12}, {6, 14, 7, 8, 16, 9},
+            {12, 2, 6, 14, 10, 8}, {10, 8, 6, 12, 10, 8}};
+    private static final VoxelShape SHAPE = shape();
+
+    private static VoxelShape shape() {
+        VoxelShape s = Shapes.empty();
+        for (int[] b : BOXES) {
+            s = Shapes.or(s, Block.box(b[0], b[1], b[2], b[3], b[4], b[5]));
+        }
+        return s;
+    }
+
     public CohererBlock(Properties properties) {
         super(properties);
         registerDefaultState(defaultBlockState().setValue(WELDED, false));
+    }
+
+    @Override
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        return SHAPE;
     }
 
     @Override

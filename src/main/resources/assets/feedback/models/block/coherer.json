@@ -1,6 +1,347 @@
 {
-  "parent": "block/cube_all",
+  "parent": "minecraft:block/block",
+  "render_type": "minecraft:translucent",
   "textures": {
-    "all": "minecraft:block/redstone_block"
-  }
+    "particle": "feedback:block/coherer_brass",
+    "glass": "feedback:block/coherer_glass",
+    "grains": "feedback:block/coherer_grains_loose",
+    "steel": "feedback:block/coherer_steel",
+    "brass": "feedback:block/coherer_brass",
+    "base": "feedback:block/coherer_base"
+  },
+  "elements": [
+    {
+      "name": "base",
+      "from": [
+        2,
+        0,
+        2
+      ],
+      "to": [
+        14,
+        2,
+        14
+      ],
+      "faces": {
+        "north": {
+          "texture": "#base"
+        },
+        "south": {
+          "texture": "#base"
+        },
+        "east": {
+          "texture": "#base"
+        },
+        "west": {
+          "texture": "#base"
+        },
+        "up": {
+          "texture": "#base"
+        },
+        "down": {
+          "texture": "#base"
+        }
+      }
+    },
+    {
+      "name": "cap_low",
+      "from": [
+        3,
+        2,
+        4
+      ],
+      "to": [
+        11,
+        4,
+        12
+      ],
+      "faces": {
+        "north": {
+          "texture": "#brass"
+        },
+        "south": {
+          "texture": "#brass"
+        },
+        "east": {
+          "texture": "#brass"
+        },
+        "west": {
+          "texture": "#brass"
+        },
+        "up": {
+          "texture": "#brass"
+        },
+        "down": {
+          "texture": "#brass"
+        }
+      }
+    },
+    {
+      "name": "glass",
+      "from": [
+        4,
+        4,
+        5
+      ],
+      "to": [
+        10,
+        12,
+        11
+      ],
+      "faces": {
+        "north": {
+          "texture": "#glass",
+          "uv": [
+            0,
+            0,
+            6,
+            8
+          ]
+        },
+        "south": {
+          "texture": "#glass",
+          "uv": [
+            0,
+            0,
+            6,
+            8
+          ]
+        },
+        "east": {
+          "texture": "#glass",
+          "uv": [
+            0,
+            0,
+            6,
+            8
+          ]
+        },
+        "west": {
+          "texture": "#glass",
+          "uv": [
+            0,
+            0,
+            6,
+            8
+          ]
+        },
+        "up": {
+          "texture": "#glass",
+          "uv": [
+            8,
+            0,
+            14,
+            6
+          ]
+        },
+        "down": {
+          "texture": "#glass",
+          "uv": [
+            8,
+            0,
+            14,
+            6
+          ]
+        }
+      }
+    },
+    {
+      "name": "grains_x",
+      "from": [
+        4,
+        4,
+        8
+      ],
+      "to": [
+        10,
+        12,
+        8
+      ],
+      "faces": {
+        "north": {
+          "texture": "#grains",
+          "uv": [
+            0,
+            0,
+            6,
+            8
+          ]
+        },
+        "south": {
+          "texture": "#grains",
+          "uv": [
+            0,
+            0,
+            6,
+            8
+          ]
+        }
+      }
+    },
+    {
+      "name": "grains_z",
+      "from": [
+        7,
+        4,
+        5
+      ],
+      "to": [
+        7,
+        12,
+        11
+      ],
+      "faces": {
+        "east": {
+          "texture": "#grains",
+          "uv": [
+            0,
+            0,
+            6,
+            8
+          ]
+        },
+        "west": {
+          "texture": "#grains",
+          "uv": [
+            0,
+            0,
+            6,
+            8
+          ]
+        }
+      }
+    },
+    {
+      "name": "cap_high",
+      "from": [
+        3,
+        12,
+        4
+      ],
+      "to": [
+        11,
+        14,
+        12
+      ],
+      "faces": {
+        "north": {
+          "texture": "#brass"
+        },
+        "south": {
+          "texture": "#brass"
+        },
+        "east": {
+          "texture": "#brass"
+        },
+        "west": {
+          "texture": "#brass"
+        },
+        "up": {
+          "texture": "#brass"
+        },
+        "down": {
+          "texture": "#brass"
+        }
+      }
+    },
+    {
+      "name": "terminal",
+      "from": [
+        6,
+        14,
+        7
+      ],
+      "to": [
+        8,
+        16,
+        9
+      ],
+      "faces": {
+        "north": {
+          "texture": "#brass"
+        },
+        "south": {
+          "texture": "#brass"
+        },
+        "east": {
+          "texture": "#brass"
+        },
+        "west": {
+          "texture": "#brass"
+        },
+        "up": {
+          "texture": "#brass"
+        },
+        "down": {
+          "texture": "#brass"
+        }
+      }
+    },
+    {
+      "name": "post",
+      "from": [
+        12,
+        2,
+        6
+      ],
+      "to": [
+        14,
+        10,
+        8
+      ],
+      "faces": {
+        "north": {
+          "texture": "#base"
+        },
+        "south": {
+          "texture": "#base"
+        },
+        "east": {
+          "texture": "#base"
+        },
+        "west": {
+          "texture": "#base"
+        },
+        "up": {
+          "texture": "#base"
+        },
+        "down": {
+          "texture": "#base"
+        }
+      }
+    },
+    {
+      "name": "clapper",
+      "from": [
+        10,
+        8,
+        6
+      ],
+      "to": [
+        12,
+        10,
+        8
+      ],
+      "faces": {
+        "north": {
+          "texture": "#steel"
+        },
+        "south": {
+          "texture": "#steel"
+        },
+        "east": {
+          "texture": "#steel"
+        },
+        "west": {
+          "texture": "#steel"
+        },
+        "up": {
+          "texture": "#steel"
+        },
+        "down": {
+          "texture": "#steel"
+        }
+      }
+    }
+  ]
 }

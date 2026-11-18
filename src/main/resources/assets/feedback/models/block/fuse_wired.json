@@ -1,0 +1,414 @@
+{
+  "parent": "minecraft:block/block",
+  "render_type": "minecraft:translucent",
+  "textures": {
+    "particle": "feedback:block/fuse_porcelain",
+    "porcelain": "feedback:block/fuse_porcelain",
+    "cap": "feedback:block/fuse_cap",
+    "clip": "feedback:block/fuse_clip",
+    "glass": "feedback:block/fuse_glass",
+    "wire": "feedback:block/fuse_wire"
+  },
+  "elements": [
+    {
+      "name": "base",
+      "from": [
+        2,
+        0,
+        2
+      ],
+      "to": [
+        14,
+        4,
+        14
+      ],
+      "faces": {
+        "north": {
+          "texture": "#porcelain",
+          "uv": [
+            2,
+            5,
+            14,
+            9
+          ]
+        },
+        "south": {
+          "texture": "#porcelain",
+          "uv": [
+            2,
+            5,
+            14,
+            9
+          ]
+        },
+        "east": {
+          "texture": "#porcelain",
+          "uv": [
+            2,
+            5,
+            14,
+            9
+          ]
+        },
+        "west": {
+          "texture": "#porcelain",
+          "uv": [
+            2,
+            5,
+            14,
+            9
+          ]
+        },
+        "up": {
+          "texture": "#porcelain"
+        },
+        "down": {
+          "texture": "#porcelain"
+        }
+      }
+    },
+    {
+      "name": "cap_low",
+      "from": [
+        5,
+        4,
+        5
+      ],
+      "to": [
+        11,
+        6,
+        11
+      ],
+      "faces": {
+        "north": {
+          "texture": "#cap"
+        },
+        "south": {
+          "texture": "#cap"
+        },
+        "east": {
+          "texture": "#cap"
+        },
+        "west": {
+          "texture": "#cap"
+        },
+        "up": {
+          "texture": "#cap"
+        },
+        "down": {
+          "texture": "#cap"
+        }
+      }
+    },
+    {
+      "name": "glass",
+      "from": [
+        6,
+        6,
+        6
+      ],
+      "to": [
+        10,
+        12,
+        10
+      ],
+      "faces": {
+        "north": {
+          "texture": "#glass",
+          "uv": [
+            0,
+            0,
+            4,
+            6
+          ]
+        },
+        "south": {
+          "texture": "#glass",
+          "uv": [
+            0,
+            0,
+            4,
+            6
+          ]
+        },
+        "east": {
+          "texture": "#glass",
+          "uv": [
+            0,
+            0,
+            4,
+            6
+          ]
+        },
+        "west": {
+          "texture": "#glass",
+          "uv": [
+            0,
+            0,
+            4,
+            6
+          ]
+        },
+        "up": {
+          "texture": "#glass",
+          "uv": [
+            8,
+            0,
+            12,
+            4
+          ]
+        },
+        "down": {
+          "texture": "#glass",
+          "uv": [
+            8,
+            0,
+            12,
+            4
+          ]
+        }
+      }
+    },
+    {
+      "name": "wire_x",
+      "from": [
+        6,
+        6,
+        8
+      ],
+      "to": [
+        10,
+        12,
+        8
+      ],
+      "faces": {
+        "north": {
+          "texture": "#wire",
+          "uv": [
+            0,
+            0,
+            4,
+            6
+          ],
+          "tintindex": 0
+        },
+        "south": {
+          "texture": "#wire",
+          "uv": [
+            0,
+            0,
+            4,
+            6
+          ],
+          "tintindex": 0
+        }
+      }
+    },
+    {
+      "name": "wire_z",
+      "from": [
+        8,
+        6,
+        6
+      ],
+      "to": [
+        8,
+        12,
+        10
+      ],
+      "faces": {
+        "east": {
+          "texture": "#wire",
+          "uv": [
+            0,
+            0,
+            4,
+            6
+          ],
+          "tintindex": 0
+        },
+        "west": {
+          "texture": "#wire",
+          "uv": [
+            0,
+            0,
+            4,
+            6
+          ],
+          "tintindex": 0
+        }
+      }
+    },
+    {
+      "name": "cap_high",
+      "from": [
+        5,
+        12,
+        5
+      ],
+      "to": [
+        11,
+        14,
+        11
+      ],
+      "faces": {
+        "north": {
+          "texture": "#cap"
+        },
+        "south": {
+          "texture": "#cap"
+        },
+        "east": {
+          "texture": "#cap"
+        },
+        "west": {
+          "texture": "#cap"
+        },
+        "up": {
+          "texture": "#cap"
+        },
+        "down": {
+          "texture": "#cap"
+        }
+      }
+    },
+    {
+      "name": "clip_west",
+      "from": [
+        3,
+        4,
+        6
+      ],
+      "to": [
+        5,
+        14,
+        10
+      ],
+      "faces": {
+        "north": {
+          "texture": "#clip",
+          "uv": [
+            2,
+            0,
+            4,
+            10
+          ]
+        },
+        "south": {
+          "texture": "#clip",
+          "uv": [
+            2,
+            0,
+            4,
+            10
+          ]
+        },
+        "east": {
+          "texture": "#clip",
+          "uv": [
+            2,
+            0,
+            6,
+            10
+          ]
+        },
+        "west": {
+          "texture": "#clip",
+          "uv": [
+            2,
+            0,
+            6,
+            10
+          ]
+        },
+        "up": {
+          "texture": "#clip",
+          "uv": [
+            2,
+            0,
+            4,
+            4
+          ]
+        },
+        "down": {
+          "texture": "#clip",
+          "uv": [
+            2,
+            0,
+            4,
+            4
+          ]
+        }
+      }
+    },
+    {
+      "name": "clip_east",
+      "from": [
+        11,
+        4,
+        6
+      ],
+      "to": [
+        13,
+        14,
+        10
+      ],
+      "faces": {
+        "north": {
+          "texture": "#clip",
+          "uv": [
+            2,
+            0,
+            4,
+            10
+          ]
+        },
+        "south": {
+          "texture": "#clip",
+          "uv": [
+            2,
+            0,
+            4,
+            10
+          ]
+        },
+        "east": {
+          "texture": "#clip",
+          "uv": [
+            2,
+            0,
+            6,
+            10
+          ]
+        },
+        "west": {
+          "texture": "#clip",
+          "uv": [
+            2,
+            0,
+            6,
+            10
+          ]
+        },
+        "up": {
+          "texture": "#clip",
+          "uv": [
+            2,
+            0,
+            4,
+            4
+          ]
+        },
+        "down": {
+          "texture": "#clip",
+          "uv": [
+            2,
+            0,
+            4,
+            4
+          ]
+        }
+      }
+    }
+  ]
+}

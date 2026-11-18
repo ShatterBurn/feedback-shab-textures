@@ -41,9 +41,35 @@ public class RobotArmBlockEntity extends ElectricNode implements ControllerCore.
     private ItemStack brain = ItemStack.EMPTY;
     private RobotSpec spec = BARE;
 
+    /** Client only: the angle the arm's head is drawn at (degrees clockwise from north, as the blockstate's y rotation) and the time it was drawn. */
+    private float visualYaw = Float.NaN;
+    private float visualLast = -1f;
+
+    /** Degrees a tick the head swings toward a new facing. */
+    private static final float SWING_DEGREES = 14f;
+
     public RobotArmBlockEntity(BlockPos pos, BlockState state) {
         super(FBlockEntities.ROBOT_ARM.get(), pos, state);
         cargo.addListener(c -> setChanged());
+    }
+
+    /**
+     * The head's angle at this frame (client): the facing is a blockstate and changes at once, so the head swings round to it over a few
+     * ticks by the short way instead of snapping.
+     */
+    public float visualYaw(float partialTick) {
+        float target = (facing().toYRot() + 180f) % 360f;
+        if (level == null || Float.isNaN(visualYaw)) {
+            visualYaw = target;
+            return visualYaw;
+        }
+        float now = level.getGameTime() + partialTick;
+        float dt = visualLast < 0f ? 0f : Math.max(0f, now - visualLast);
+        visualLast = now;
+        float diff = ((target - visualYaw + 540f) % 360f) - 180f;
+        float step = SWING_DEGREES * dt;
+        visualYaw = Math.abs(diff) <= step ? target : (visualYaw + Math.signum(diff) * step + 360f) % 360f;
+        return visualYaw;
     }
 
     public ControllerCore core() {

@@ -25,6 +25,7 @@ import org.jetbrains.annotations.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
@@ -98,8 +99,29 @@ public class FuseBlockEntity extends ElectricNode implements ThermalBody {
     private void blow() {
         wire = null;
         setChanged();
+        showWire();
         if (level != null && !level.isClientSide)
             ElectricPropagator.reconnect(level, worldPosition);
+    }
+
+    /** Puts the block's {@link FuseBlock#WIRED} state in step with the wire, so the model shows it or the blown holder. */
+    private void showWire() {
+        if (level == null || level.isClientSide)
+            return;
+        BlockState shown = getBlockState();
+        if (shown.hasProperty(FuseBlock.WIRED) && shown.getValue(FuseBlock.WIRED) != (wire != null))
+            level.setBlock(worldPosition, shown.setValue(FuseBlock.WIRED, wire != null), 3);
+    }
+
+    /** The wire's metal rides to the client so the wire in the glass takes its colour. */
+    @Override
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        return saveWithoutMetadata(registries);
+    }
+
+    @Override
+    public ClientboundBlockEntityDataPacket getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
     }
 
     /** Whether the holder has a wire in it. */
@@ -123,6 +145,7 @@ public class FuseBlockEntity extends ElectricNode implements ThermalBody {
         wire = found.get().id();
         temperature = AmbientTable.at(level).value();
         setChanged();
+        showWire();
         if (!level.isClientSide)
             ElectricPropagator.reconnect(level, worldPosition);
         return true;
@@ -159,7 +182,11 @@ public class FuseBlockEntity extends ElectricNode implements ThermalBody {
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
+        ResourceLocation before = wire;
         wire = tag.contains("Wire") ? ResourceLocation.tryParse(tag.getString("Wire")) : null;
+        // The wire's colour is read when the chunk meshes: when the wire changes on the client, ask for a new mesh.
+        if (level != null && level.isClientSide && !java.util.Objects.equals(before, wire))
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 8);
         if (tag.contains("Temperature"))
             temperature = tag.getFloat("Temperature");
     }

@@ -819,7 +819,8 @@ public class FBlocks {
             () -> new io.github.soundgoodizerfan.feedback.machine.detector.CohererBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.COLOR_RED)
                     .strength(1.0f)
-                    .sound(SoundType.GLASS)));
+                    .sound(SoundType.GLASS)
+                    .noOcclusion()));
 
     /** Cat's-whisker detector. See {@code WhiskerBlockEntity}. */
     public static final DeferredBlock<io.github.soundgoodizerfan.feedback.machine.detector.WhiskerBlock> WHISKER = BLOCKS.register("whisker",
@@ -858,14 +859,16 @@ public class FBlocks {
             () -> new io.github.soundgoodizerfan.feedback.machine.relay.RelayBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.COLOR_GRAY)
                     .strength(1.5f)
-                    .sound(SoundType.METAL)));
+                    .sound(SoundType.METAL)
+                    .noOcclusion()));
 
     /** A holder for one sacrificial fine wire. See {@code FuseBlockEntity}. */
     public static final DeferredBlock<FuseBlock> FUSE = BLOCKS.register("fuse",
             () -> new FuseBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.TERRACOTTA_WHITE)
                     .strength(1.0f)
-                    .sound(SoundType.STONE)));
+                    .sound(SoundType.STONE)
+                    .noOcclusion()));
 
     /** Holds charge and gives it back in a burst. See {@code LeydenJarBlockEntity}. */
     public static final DeferredBlock<LeydenJarBlock> LEYDEN_JAR = BLOCKS.register("leyden_jar",
@@ -902,9 +905,9 @@ public class FBlocks {
                     BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_ORANGE).strength(1.5f).sound(SoundType.COPPER).noOcclusion()));
 
     /** A landmark that wipes a robot's dead-reckoning error; see {@code robot/RobotEntity}. */
-    public static final DeferredBlock<net.minecraft.world.level.block.Block> ROBOT_BEACON =
-            BLOCKS.register("robot_beacon", () -> new net.minecraft.world.level.block.Block(
-                    BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_ORANGE).strength(1.0f).sound(SoundType.COPPER)));
+    public static final DeferredBlock<io.github.soundgoodizerfan.feedback.robot.RobotBeaconBlock> ROBOT_BEACON =
+            BLOCKS.register("robot_beacon", () -> new io.github.soundgoodizerfan.feedback.robot.RobotBeaconBlock(
+                    BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_ORANGE).strength(1.0f).sound(SoundType.COPPER).noOcclusion()));
 
     /** Charges the robot standing on it off a wire. See {@code robot/RobotDockBlockEntity}. */
     public static final DeferredBlock<io.github.soundgoodizerfan.feedback.robot.RobotDockBlock> ROBOT_DOCK =
@@ -914,7 +917,7 @@ public class FBlocks {
     /** Feeds a tethered robot off a wire. See {@code robot/RobotDockBlockEntity}. */
     public static final DeferredBlock<io.github.soundgoodizerfan.feedback.robot.RobotDockBlock> ROBOT_REEL =
             BLOCKS.register("robot_reel", () -> new io.github.soundgoodizerfan.feedback.robot.RobotDockBlock(
-                    BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_ORANGE).strength(1.0f).sound(SoundType.COPPER), true));
+                    BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_ORANGE).strength(1.0f).sound(SoundType.COPPER).noOcclusion(), true));
 
     /** Charges a battery off a wire. See {@code ChargerBlockEntity}. */
     public static final DeferredBlock<io.github.soundgoodizerfan.feedback.machine.charger.ChargerBlock> CHARGER =

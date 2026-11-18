@@ -1,3 +1,351 @@
 {
-  "parent": "feedback:block/robot_arm"
+  "parent": "minecraft:block/block",
+  "textures": {
+    "paint": "feedback:block/robot_paint",
+    "steel": "feedback:block/robot_steel",
+    "hazard": "feedback:block/robot_hazard",
+    "post": "feedback:block/robot_post",
+    "lamp": "feedback:block/robot_lamp",
+    "lattice": "feedback:block/robot_lattice",
+    "cable": "feedback:block/robot_cable",
+    "particle": "feedback:block/robot_steel"
+  },
+  "elements": [
+    {
+      "name": "base",
+      "from": [
+        2,
+        0,
+        2
+      ],
+      "to": [
+        14,
+        2,
+        14
+      ],
+      "faces": {
+        "north": {
+          "texture": "#steel"
+        },
+        "south": {
+          "texture": "#steel"
+        },
+        "east": {
+          "texture": "#steel"
+        },
+        "west": {
+          "texture": "#steel"
+        },
+        "up": {
+          "texture": "#steel"
+        },
+        "down": {
+          "texture": "#steel"
+        }
+      }
+    },
+    {
+      "name": "pedestal",
+      "from": [
+        5,
+        2,
+        5
+      ],
+      "to": [
+        11,
+        6,
+        11
+      ],
+      "faces": {
+        "north": {
+          "texture": "#steel"
+        },
+        "south": {
+          "texture": "#steel"
+        },
+        "east": {
+          "texture": "#steel"
+        },
+        "west": {
+          "texture": "#steel"
+        },
+        "up": {
+          "texture": "#steel"
+        },
+        "down": {
+          "texture": "#steel"
+        }
+      }
+    },
+    {
+      "name": "turret",
+      "from": [
+        4,
+        6,
+        4
+      ],
+      "to": [
+        12,
+        8,
+        12
+      ],
+      "faces": {
+        "north": {
+          "texture": "#hazard"
+        },
+        "south": {
+          "texture": "#hazard"
+        },
+        "east": {
+          "texture": "#hazard"
+        },
+        "west": {
+          "texture": "#hazard"
+        },
+        "up": {
+          "texture": "#hazard"
+        },
+        "down": {
+          "texture": "#hazard"
+        }
+      }
+    },
+    {
+      "name": "upper_arm",
+      "from": [
+        6,
+        8,
+        6
+      ],
+      "to": [
+        10,
+        14,
+        10
+      ],
+      "faces": {
+        "north": {
+          "texture": "#paint"
+        },
+        "south": {
+          "texture": "#paint"
+        },
+        "east": {
+          "texture": "#paint"
+        },
+        "west": {
+          "texture": "#paint"
+        },
+        "up": {
+          "texture": "#paint"
+        },
+        "down": {
+          "texture": "#paint"
+        }
+      }
+    },
+    {
+      "name": "forearm",
+      "from": [
+        6,
+        12,
+        0
+      ],
+      "to": [
+        10,
+        14,
+        6
+      ],
+      "faces": {
+        "north": {
+          "texture": "#paint"
+        },
+        "south": {
+          "texture": "#paint"
+        },
+        "east": {
+          "texture": "#paint"
+        },
+        "west": {
+          "texture": "#paint"
+        },
+        "up": {
+          "texture": "#paint"
+        },
+        "down": {
+          "texture": "#paint"
+        }
+      }
+    },
+    {
+      "name": "wrist",
+      "from": [
+        5,
+        10,
+        0
+      ],
+      "to": [
+        11,
+        12,
+        2
+      ],
+      "faces": {
+        "north": {
+          "texture": "#steel"
+        },
+        "south": {
+          "texture": "#steel"
+        },
+        "east": {
+          "texture": "#steel"
+        },
+        "west": {
+          "texture": "#steel"
+        },
+        "up": {
+          "texture": "#steel"
+        },
+        "down": {
+          "texture": "#steel"
+        }
+      }
+    },
+    {
+      "name": "finger_west",
+      "from": [
+        5,
+        6,
+        0
+      ],
+      "to": [
+        7,
+        10,
+        2
+      ],
+      "faces": {
+        "north": {
+          "texture": "#cable",
+          "uv": [
+            0,
+            0,
+            2,
+            4
+          ]
+        },
+        "south": {
+          "texture": "#cable",
+          "uv": [
+            0,
+            0,
+            2,
+            4
+          ]
+        },
+        "east": {
+          "texture": "#cable",
+          "uv": [
+            0,
+            0,
+            2,
+            4
+          ]
+        },
+        "west": {
+          "texture": "#cable",
+          "uv": [
+            0,
+            0,
+            2,
+            4
+          ]
+        },
+        "up": {
+          "texture": "#cable",
+          "uv": [
+            0,
+            0,
+            2,
+            4
+          ]
+        },
+        "down": {
+          "texture": "#cable",
+          "uv": [
+            0,
+            0,
+            2,
+            4
+          ]
+        }
+      }
+    },
+    {
+      "name": "finger_east",
+      "from": [
+        9,
+        6,
+        0
+      ],
+      "to": [
+        11,
+        10,
+        2
+      ],
+      "faces": {
+        "north": {
+          "texture": "#cable",
+          "uv": [
+            0,
+            0,
+            2,
+            4
+          ]
+        },
+        "south": {
+          "texture": "#cable",
+          "uv": [
+            0,
+            0,
+            2,
+            4
+          ]
+        },
+        "east": {
+          "texture": "#cable",
+          "uv": [
+            0,
+            0,
+            2,
+            4
+          ]
+        },
+        "west": {
+          "texture": "#cable",
+          "uv": [
+            0,
+            0,
+            2,
+            4
+          ]
+        },
+        "up": {
+          "texture": "#cable",
+          "uv": [
+            0,
+            0,
+            2,
+            4
+          ]
+        },
+        "down": {
+          "texture": "#cable",
+          "uv": [
+            0,
+            0,
+            2,
+            4
+          ]
+        }
+      }
+    }
+  ]
 }

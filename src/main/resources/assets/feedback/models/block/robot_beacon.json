@@ -1,8 +1,289 @@
 {
-  "parent": "feedback:block/tint_cube_ends",
+  "parent": "minecraft:block/block",
   "textures": {
-    "top": "feedback:block/metal_tank_ends",
-    "bottom": "feedback:block/metal_tank_ends",
-    "side": "feedback:block/copper_coil_side"
-  }
+    "paint": "feedback:block/robot_paint",
+    "steel": "feedback:block/robot_steel",
+    "hazard": "feedback:block/robot_hazard",
+    "post": "feedback:block/robot_post",
+    "lamp": "feedback:block/robot_lamp",
+    "lattice": "feedback:block/robot_lattice",
+    "cable": "feedback:block/robot_cable",
+    "particle": "feedback:block/robot_steel"
+  },
+  "elements": [
+    {
+      "name": "base",
+      "from": [
+        4,
+        0,
+        4
+      ],
+      "to": [
+        12,
+        2,
+        12
+      ],
+      "faces": {
+        "north": {
+          "texture": "#steel"
+        },
+        "south": {
+          "texture": "#steel"
+        },
+        "east": {
+          "texture": "#steel"
+        },
+        "west": {
+          "texture": "#steel"
+        },
+        "up": {
+          "texture": "#steel"
+        },
+        "down": {
+          "texture": "#steel"
+        }
+      }
+    },
+    {
+      "name": "post",
+      "from": [
+        6,
+        2,
+        6
+      ],
+      "to": [
+        10,
+        10,
+        10
+      ],
+      "faces": {
+        "north": {
+          "texture": "#post",
+          "uv": [
+            0,
+            0,
+            4,
+            8
+          ]
+        },
+        "south": {
+          "texture": "#post",
+          "uv": [
+            0,
+            0,
+            4,
+            8
+          ]
+        },
+        "east": {
+          "texture": "#post",
+          "uv": [
+            0,
+            0,
+            4,
+            8
+          ]
+        },
+        "west": {
+          "texture": "#post",
+          "uv": [
+            0,
+            0,
+            4,
+            8
+          ]
+        },
+        "up": {
+          "texture": "#post",
+          "uv": [
+            0,
+            0,
+            4,
+            8
+          ]
+        },
+        "down": {
+          "texture": "#post",
+          "uv": [
+            0,
+            0,
+            4,
+            8
+          ]
+        }
+      }
+    },
+    {
+      "name": "collar",
+      "from": [
+        5,
+        10,
+        5
+      ],
+      "to": [
+        11,
+        12,
+        11
+      ],
+      "faces": {
+        "north": {
+          "texture": "#steel"
+        },
+        "south": {
+          "texture": "#steel"
+        },
+        "east": {
+          "texture": "#steel"
+        },
+        "west": {
+          "texture": "#steel"
+        },
+        "up": {
+          "texture": "#steel"
+        },
+        "down": {
+          "texture": "#steel"
+        }
+      }
+    },
+    {
+      "name": "dome",
+      "from": [
+        6,
+        12,
+        6
+      ],
+      "to": [
+        10,
+        14,
+        10
+      ],
+      "faces": {
+        "north": {
+          "texture": "#lamp",
+          "uv": [
+            6,
+            6,
+            10,
+            10
+          ]
+        },
+        "south": {
+          "texture": "#lamp",
+          "uv": [
+            6,
+            6,
+            10,
+            10
+          ]
+        },
+        "east": {
+          "texture": "#lamp",
+          "uv": [
+            6,
+            6,
+            10,
+            10
+          ]
+        },
+        "west": {
+          "texture": "#lamp",
+          "uv": [
+            6,
+            6,
+            10,
+            10
+          ]
+        },
+        "up": {
+          "texture": "#lamp",
+          "uv": [
+            6,
+            6,
+            10,
+            10
+          ]
+        },
+        "down": {
+          "texture": "#lamp",
+          "uv": [
+            6,
+            6,
+            10,
+            10
+          ]
+        }
+      }
+    },
+    {
+      "name": "cap",
+      "from": [
+        7,
+        14,
+        7
+      ],
+      "to": [
+        9,
+        16,
+        9
+      ],
+      "faces": {
+        "north": {
+          "texture": "#lamp",
+          "uv": [
+            7,
+            7,
+            9,
+            9
+          ]
+        },
+        "south": {
+          "texture": "#lamp",
+          "uv": [
+            7,
+            7,
+            9,
+            9
+          ]
+        },
+        "east": {
+          "texture": "#lamp",
+          "uv": [
+            7,
+            7,
+            9,
+            9
+          ]
+        },
+        "west": {
+          "texture": "#lamp",
+          "uv": [
+            7,
+            7,
+            9,
+            9
+          ]
+        },
+        "up": {
+          "texture": "#lamp",
+          "uv": [
+            7,
+            7,
+            9,
+            9
+          ]
+        },
+        "down": {
+          "texture": "#lamp",
+          "uv": [
+            7,
+            7,
+            9,
+            9
+          ]
+        }
+      }
+    }
+  ],
+  "render_type": "minecraft:translucent"
 }

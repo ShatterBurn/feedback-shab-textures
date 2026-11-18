@@ -1,8 +1,81 @@
 {
-  "parent": "feedback:block/tint_cube_ends",
+  "parent": "minecraft:block/block",
   "textures": {
-    "top": "feedback:block/metal_tank_ends",
-    "bottom": "feedback:block/metal_tank_ends",
-    "side": "feedback:block/copper_coil_side"
-  }
+    "paint": "feedback:block/robot_paint",
+    "steel": "feedback:block/robot_steel",
+    "hazard": "feedback:block/robot_hazard",
+    "post": "feedback:block/robot_post",
+    "lamp": "feedback:block/robot_lamp",
+    "lattice": "feedback:block/robot_lattice",
+    "cable": "feedback:block/robot_cable",
+    "particle": "feedback:block/robot_steel"
+  },
+  "elements": [
+    {
+      "name": "base",
+      "from": [
+        2,
+        0,
+        2
+      ],
+      "to": [
+        14,
+        2,
+        14
+      ],
+      "faces": {
+        "north": {
+          "texture": "#steel"
+        },
+        "south": {
+          "texture": "#steel"
+        },
+        "east": {
+          "texture": "#steel"
+        },
+        "west": {
+          "texture": "#steel"
+        },
+        "up": {
+          "texture": "#steel"
+        },
+        "down": {
+          "texture": "#steel"
+        }
+      }
+    },
+    {
+      "name": "pedestal",
+      "from": [
+        5,
+        2,
+        5
+      ],
+      "to": [
+        11,
+        6,
+        11
+      ],
+      "faces": {
+        "north": {
+          "texture": "#steel"
+        },
+        "south": {
+          "texture": "#steel"
+        },
+        "east": {
+          "texture": "#steel"
+        },
+        "west": {
+          "texture": "#steel"
+        },
+        "up": {
+          "texture": "#steel"
+        },
+        "down": {
+          "texture": "#steel"
+        }
+      }
+    }
+  ]
 }
