@@ -1,6 +1,5 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
+  "type": "feedback:engineering",
   "key": {
     "L": {
       "item": "feedback:lead_plate"
@@ -20,5 +19,19 @@
   "result": {
     "count": 1,
     "id": "feedback:reactor_core"
-  }
+  },
+  "tool": [
+    {
+      "ability": "feedback:driver",
+      "wear": 1
+    }
+  ],
+  "fasteners": {
+    "count": 2,
+    "floor": 1,
+    "forms": [
+      "screw"
+    ]
+  },
+  "school": "nuclear:1"
 }

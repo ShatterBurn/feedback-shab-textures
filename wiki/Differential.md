@@ -9,7 +9,7 @@ C G C
   S
 ```
 
-C is a Small Cog, G is a [Gearbox](Cogs.md#gearbox) and S is a [Shaft](Shaft.md). Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 2 [fasteners](Fasteners.md).
+C is a Small Cog, G is a [Gearbox](Cogs.md#gearbox) and S is a [Shaft](Shaft.md). Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 2 [fasteners](Fasteners.md). It needs Mechanical Treatise II: Transmission ([Treatise](Treatise.md)).
 
 ## Using it
 

@@ -1,0 +1,108 @@
+{
+  "school": "robotics",
+  "volume": 2,
+  "title": "A machine that gets about",
+  "requires": [
+    "mechanical:2",
+    "electrical:3"
+  ],
+  "concepts": {
+    "chassis": {
+      "label": "A chassis",
+      "traits": [
+        "torque",
+        "turn"
+      ]
+    },
+    "drive": {
+      "label": "A drive motor",
+      "traits": [
+        "field",
+        "torque"
+      ]
+    },
+    "wheel": {
+      "label": "A wheel",
+      "traits": [
+        "turn",
+        "torque"
+      ]
+    },
+    "power": {
+      "label": "A power cell",
+      "traits": [
+        "current",
+        "torque"
+      ]
+    },
+    "sensor": {
+      "label": "A sensor",
+      "traits": [
+        "sense",
+        "signal"
+      ]
+    },
+    "encoder": {
+      "label": "An encoder",
+      "traits": [
+        "sense",
+        "turn"
+      ]
+    },
+    "brain": {
+      "label": "A brain circuit",
+      "traits": [
+        "control",
+        "signal"
+      ]
+    },
+    "loop": {
+      "label": "A control loop",
+      "traits": [
+        "control",
+        "sense"
+      ]
+    },
+    "radio": {
+      "label": "A radio",
+      "traits": [
+        "signal",
+        "field"
+      ]
+    },
+    "antenna": {
+      "label": "An antenna",
+      "traits": [
+        "field",
+        "current"
+      ]
+    },
+    "robot": {
+      "label": "A robot",
+      "traits": [
+        "control",
+        "torque"
+      ]
+    }
+  },
+  "start": "chassis",
+  "goal": "robot",
+  "replay": [
+    "A chassis carries the drive, the power and the wheels, and a drive motor turns them.",
+    "Sensors tell the brain circuit where the machine is and what is around it, and the control loop corrects the drive.",
+    "A radio lets it take orders and report back from a distance."
+  ],
+  "question": "What makes a robot more than a motor on wheels?",
+  "options": [
+    "A bigger battery",
+    "A brain that reads sensors and controls the drive",
+    "A louder radio"
+  ],
+  "answer": 1,
+  "eureka": {
+    "kind": "used",
+    "item": "feedback:robot_arm",
+    "threshold": 3,
+    "ink": 2
+  }
+}

@@ -174,8 +174,7 @@ public class EngineeringRecipe implements Recipe<EngineeringInput> {
     public Attempt attempt(EngineeringInput input) {
         if (!gridMatches(input))
             return refuse(Refusal.GRID);
-        School s = School.of(school);
-        if (s != null && ((Treatises.mask(input.binder()) | input.known()) & (1 << s.bit(School.volumeOf(school)))) == 0)
+        if (!School.met(Treatises.mask(input.binder()) | input.known(), school))
             return refuse(Refusal.SCHOOL);
         int[] slot = new int[tools.size()], wear = new int[tools.size()];
         boolean[] used = new boolean[input.tools().size()];

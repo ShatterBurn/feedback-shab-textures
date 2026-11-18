@@ -62,6 +62,8 @@ Furnace          Smoker           Crude Blast      Improved         Kiln        
 
 `#` Cobblestone, `L` Log, `F` Furnace, `I` Wrought Iron Ingot, `s` Smooth Stone, `S` Steel Ingot, `B` Brick, `N` Insulation.
 
+The Annealing Furnace is crafted at the [Engineering Table](Engineering_Table.md) with a [hammer](Hammer.md) in the tool row, holding Materials Treatise II: Metallurgy and Heat Treatment ([Treatise](Treatise.md)).
+
 ## Sealed vs. open
 
 All of them except the Improved Furnace are **sealed**. Jade can't tell you how hot they are (*"Sealed - cannot be measured"*), sensors won't fit, and a [Bimetallic Strip](Bimetallic_Strip.md) can't feel them. You can still right-click one with a [Thermometer](Instruments.md#thermometer) for a one-off reading.

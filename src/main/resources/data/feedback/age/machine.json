@@ -1,3 +1,9 @@
 {
-  "volumes": ["weapons:3", "robotics:1", "materials:1", "electrical:1"]
+  "volumes": [
+    "weapons:3",
+    "robotics:1",
+    "materials:1",
+    "electrical:2",
+    "electrical:3"
+  ]
 }

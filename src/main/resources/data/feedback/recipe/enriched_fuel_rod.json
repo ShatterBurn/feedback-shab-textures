@@ -1,6 +1,5 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
+  "type": "feedback:engineering",
   "key": {
     "U": {
       "item": "feedback:uranium_enriched_ingot"
@@ -17,5 +16,16 @@
   "result": {
     "count": 1,
     "id": "feedback:enriched_fuel_rod"
-  }
+  },
+  "tool": [
+    {
+      "ability": "feedback:driver",
+      "wear": 1
+    }
+  ],
+  "fasteners": {
+    "count": 0,
+    "floor": 1
+  },
+  "school": "nuclear:1"
 }

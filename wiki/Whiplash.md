@@ -12,7 +12,7 @@ C W C
   L
 ```
 
-P is a Wrought Iron Plate, R a Wrought Iron Rod, C a Chain, W a Grapple Winch (see [Grapple](Grapple.md#crafting)) and L Leather. Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 3 [fasteners](Fasteners.md). The recipe appears once you have unlocked the wrought iron plate. The arm comes out wrought iron.
+P is a Wrought Iron Plate, R a Wrought Iron Rod, C a Chain, W a Grapple Winch (see [Grapple](Grapple.md#crafting)) and L Leather. Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 3 [fasteners](Fasteners.md). It needs Weapons Treatise I: Blades and Heads ([Treatise](Treatise.md)). The recipe appears once you have unlocked the wrought iron plate. The arm comes out wrought iron.
 
 ## Using it
 

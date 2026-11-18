@@ -12,7 +12,7 @@ S T S
 L S L
 ```
 
-L is a Lead Plate, S is a Stainless Steel Plate and T is a [Thermometer](Instruments.md#thermometer).
+L is a Lead Plate, S is a Stainless Steel Plate and T is a [Thermometer](Instruments.md#thermometer). Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 2 [fasteners](Fasteners.md), holding Nuclear Treatise I: Reactors and Fuel ([Treatise](Treatise.md)).
 
 The parts of the lattice have their own recipes: the [Fuel Channel](#fuel-channel) and [Graphite Moderator](#graphite-moderator) below, the [Control Rod Assembly](Control_Rod.md#crafting), the [Scram Trip](Scram_Trip.md#crafting) and the fuel rods ([Nuclear Fuel](Nuclear_Fuel.md#crafting)).
 

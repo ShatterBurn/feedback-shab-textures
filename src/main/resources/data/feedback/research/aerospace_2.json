@@ -2,6 +2,9 @@
   "school": "aerospace",
   "volume": 2,
   "title": "No air needed",
+  "requires": [
+    "mechanical:2"
+  ],
   "concepts": {
     "propeller": {
       "label": "A propeller",

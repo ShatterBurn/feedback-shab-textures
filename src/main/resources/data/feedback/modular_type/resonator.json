@@ -80,5 +80,10 @@
   "defaults": {
     "C": "feedback:amethyst",
     "E": "feedback:copper"
+  },
+  "school": "electrical:3",
+  "fasteners": {
+    "count": 0,
+    "floor": 1
   }
 }

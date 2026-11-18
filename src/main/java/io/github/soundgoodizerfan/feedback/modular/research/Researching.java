@@ -209,14 +209,17 @@ public final class Researching {
         // a cleaver, maul or spear is a face of the hafted tool: the school is the face's, not the type's
         String gate = type.family() == io.github.soundgoodizerfan.feedback.modular.type.ModularType.Family.HAFTED
                 ? io.github.soundgoodizerfan.feedback.modular.type.ModularFaces.school(design, type) : type.school();
-        return (school.id() + ":" + (v[1] - 1)).equals(gate);
+        return School.of(gate) == school && School.volumeOf(gate) == v[1] - 1;
     }
 
-    /** Whether the earlier volume a volume builds on is in hand (a first volume and an attunement need none). */
+    /** Whether the earlier volume a volume builds on is in hand and every volume its plan {@code requires} of other schools (a first volume and an attunement need no earlier one). */
     public static boolean builtOn(Player player, net.minecraft.world.inventory.ContainerLevelAccess access, int mode, int index) {
         if (mode >= 1)
             return true;
         int[] v = volume(index);
+        ResearchPlan plan = ResearchPlans.get().volume(School.values()[v[0]], v[1]);
+        if (plan != null && !School.met(io.github.soundgoodizerfan.feedback.modular.treatise.Treatises.mask(player, access), String.join("+", plan.requires)))
+            return false;
         return v[1] <= 1 || io.github.soundgoodizerfan.feedback.modular.treatise.Treatises.has(player, access, School.values()[v[0]], v[1] - 1);
     }
 

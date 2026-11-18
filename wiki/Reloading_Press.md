@@ -10,7 +10,7 @@ P S P
 I I I
 ```
 
-I is a Wrought Iron Plate, P is a Wrought Iron Plate and S is a [Shaft](Shaft.md). Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 2 [fasteners](Fasteners.md).
+I is a Wrought Iron Plate, P is a Wrought Iron Plate and S is a [Shaft](Shaft.md). Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 2 [fasteners](Fasteners.md). It needs Weapons Treatise II: Firearms ([Treatise](Treatise.md)).
 
 ## The screen
 

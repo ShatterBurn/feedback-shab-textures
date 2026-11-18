@@ -1,0 +1,97 @@
+{
+  "school": "electrical",
+  "volume": 3,
+  "title": "Switches without moving parts",
+  "concepts": {
+    "filament": {
+      "label": "A hot filament",
+      "traits": [
+        "current",
+        "field"
+      ]
+    },
+    "tube": {
+      "label": "A vacuum tube",
+      "traits": [
+        "current",
+        "signal"
+      ]
+    },
+    "grid": {
+      "label": "A control grid",
+      "traits": [
+        "signal",
+        "field"
+      ]
+    },
+    "crystal": {
+      "label": "A quartz crystal",
+      "traits": [
+        "resonance",
+        "lattice"
+      ]
+    },
+    "resonator": {
+      "label": "A resonator",
+      "traits": [
+        "resonance",
+        "signal"
+      ]
+    },
+    "lattice": {
+      "label": "A lattice of cells",
+      "traits": [
+        "lattice",
+        "store"
+      ]
+    },
+    "memory": {
+      "label": "A memory",
+      "traits": [
+        "store",
+        "signal"
+      ]
+    },
+    "trace": {
+      "label": "A copper trace",
+      "traits": [
+        "line",
+        "current"
+      ]
+    },
+    "gate": {
+      "label": "A gate",
+      "traits": [
+        "signal",
+        "line"
+      ]
+    },
+    "board": {
+      "label": "A circuit board",
+      "traits": [
+        "line",
+        "store"
+      ]
+    }
+  },
+  "start": "filament",
+  "goal": "board",
+  "replay": [
+    "A hot filament in a vacuum throws off electrons, and a grid in their path can stop or pass them: a switch with nothing to wear out.",
+    "A cut crystal rings at one frequency when squeezed, and keeps time for a circuit.",
+    "Gates and stored bits, joined by traces on a board, make a circuit that decides."
+  ],
+  "question": "What does the grid in a vacuum tube do?",
+  "options": [
+    "It heats the filament",
+    "It controls how much current passes",
+    "It holds the vacuum"
+  ],
+  "answer": 1,
+  "eureka": {
+    "kind": "crafted",
+    "item": "feedback:circuit_board",
+    "threshold": 2,
+    "ink": 2
+  }
+}

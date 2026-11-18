@@ -26,5 +26,6 @@
     "count": 2,
     "floor": 2,
     "forms": ["rivet"]
-  }
+  },
+  "school": "mechanical:1"
 }

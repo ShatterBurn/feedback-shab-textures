@@ -10,7 +10,7 @@ W S W
 C C C
 ```
 
-C is Ceramic, W is [Copper Wire](Wire_Drawer.md), L is a Lever and S is a Wrought Iron Plate. This makes a standard breaker. Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 2 [fasteners](Fasteners.md).
+C is Ceramic, W is [Copper Wire](Wire_Drawer.md), L is a Lever and S is a Wrought Iron Plate. This makes a standard breaker. Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 2 [fasteners](Fasteners.md). It needs Electrical Treatise II: Coils and Magnets ([Treatise](Treatise.md)).
 
 In a crafting grid, put two [cables](Copper_Cable.md) of one gauge where the wires go and the breaker takes that gauge: thin, standard, heavy or bus bar. Two cables of different gauges make nothing.
 

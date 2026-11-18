@@ -1,6 +1,5 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "redstone",
+  "type": "feedback:engineering",
   "key": {
     "G": {
       "item": "minecraft:glass"
@@ -19,5 +18,16 @@
   "result": {
     "count": 1,
     "id": "feedback:coherer"
-  }
+  },
+  "tool": [
+    {
+      "ability": "feedback:driver",
+      "wear": 1
+    }
+  ],
+  "fasteners": {
+    "count": 0,
+    "floor": 1
+  },
+  "school": "electrical:2"
 }

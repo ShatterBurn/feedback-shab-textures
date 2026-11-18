@@ -9,7 +9,7 @@ G G G
 W R W
 ```
 
-G is Glass, W is [Copper Wire](Wire_Drawer.md) and R is Redstone.
+G is Glass, W is [Copper Wire](Wire_Drawer.md) and R is Redstone. Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, holding Electrical Treatise II: Coils and Magnets ([Treatise](Treatise.md)).
 
 ## Using it
 

@@ -9,7 +9,7 @@ RP
 PR
 ```
 
-R is a Wrought Iron Rod and P is a Wrought Iron Plate.
+R is a Wrought Iron Rod and P is a Wrought Iron Plate. Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, holding Electrical Treatise III: Circuits ([Treatise](Treatise.md)).
 
 ## Using it
 

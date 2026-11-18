@@ -552,16 +552,14 @@ public final class BlueprintBoard {
 
     /** Whether the volume {@code gate} names ({@code robotics:1}) is held; an empty gate is always met. */
     private boolean schoolHeld(String gate) {
-        io.github.soundgoodizerfan.feedback.modular.treatise.School school = io.github.soundgoodizerfan.feedback.modular.treatise.School.of(gate);
-        return school == null || (schoolsSeen & (1 << school.bit(io.github.soundgoodizerfan.feedback.modular.treatise.School.volumeOf(gate)))) != 0;
+        return io.github.soundgoodizerfan.feedback.modular.treatise.School.met(schoolsSeen, gate);
     }
 
     /** Whether the treatise volume a role asks for ({@link ModularType.Role#school}) is held; a role with none is always offered. */
     private boolean roleHeld(String role) {
         ModularType t = current();
         ModularType.Role r = t == null ? null : t.roles().get(role);
-        io.github.soundgoodizerfan.feedback.modular.treatise.School school = r == null ? null : io.github.soundgoodizerfan.feedback.modular.treatise.School.of(r.school());
-        return school == null || (schoolsSeen & (1 << school.bit(io.github.soundgoodizerfan.feedback.modular.treatise.School.volumeOf(r.school())))) != 0;
+        return r == null || io.github.soundgoodizerfan.feedback.modular.treatise.School.met(schoolsSeen, r.school());
     }
 
     /** The parts that can be added now. */

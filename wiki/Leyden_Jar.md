@@ -4,7 +4,7 @@ A glass jar lined with copper foil that **stores a charge and gives it back as a
 
 ## Building it
 
-Draw it at the [Blueprint Table](Blueprint_Table.md) (pick *Leyden Jar* in the type row); the plate area and glass wall are set there, along with the jar type and addons. It needs a blueprint but no treatise. It has one part, the **Jar Glass**, with four choices:
+Draw it at the [Blueprint Table](Blueprint_Table.md) (pick *Leyden Jar* in the type row); the plate area and glass wall are set there, along with the jar type and addons. Drawing and assembling it take Electrical Treatise I: Cells and Static Charge ([Treatise](Treatise.md)). It has one part, the **Jar Glass**, with four choices:
 
 | Choice | What it sets |
 | --- | --- |

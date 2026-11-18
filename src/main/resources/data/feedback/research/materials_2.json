@@ -1,0 +1,98 @@
+{
+  "school": "materials",
+  "volume": 2,
+  "title": "Heat that makes the metal",
+  "concepts": {
+    "ore": {
+      "label": "An ore",
+      "traits": [
+        "metal",
+        "melt"
+      ]
+    },
+    "smelting": {
+      "label": "Smelting",
+      "traits": [
+        "melt",
+        "heat"
+      ]
+    },
+    "cast": {
+      "label": "A cast bar",
+      "traits": [
+        "crystal",
+        "metal"
+      ]
+    },
+    "annealing": {
+      "label": "Annealing",
+      "traits": [
+        "heat",
+        "soft"
+      ]
+    },
+    "softened": {
+      "label": "Soft metal",
+      "traits": [
+        "soft",
+        "deform"
+      ]
+    },
+    "work": {
+      "label": "Cold work",
+      "traits": [
+        "deform",
+        "strength"
+      ]
+    },
+    "quench": {
+      "label": "Quenching",
+      "traits": [
+        "heat",
+        "hard",
+        "strength"
+      ]
+    },
+    "brittle": {
+      "label": "Brittle steel",
+      "traits": [
+        "hard",
+        "crystal"
+      ]
+    },
+    "temper": {
+      "label": "Tempering",
+      "traits": [
+        "heat",
+        "tough"
+      ]
+    },
+    "steel": {
+      "label": "Tempered steel",
+      "traits": [
+        "tough",
+        "metal"
+      ]
+    }
+  },
+  "start": "ore",
+  "goal": "steel",
+  "replay": [
+    "Smelting melts the metal out of its ore, and a cast bar cools with coarse crystals.",
+    "Heat it and let it cool slowly and it softens; heat it and plunge it in water and it goes hard, and brittle.",
+    "Reheat it gently, below red, and some of the hardness gives way to toughness."
+  ],
+  "question": "Why temper steel after quenching?",
+  "options": [
+    "To make it harder still",
+    "To trade a little hardness for toughness",
+    "To melt out the crystals"
+  ],
+  "answer": 1,
+  "eureka": {
+    "kind": "used",
+    "item": "feedback:annealing_furnace",
+    "threshold": 3,
+    "ink": 2
+  }
+}

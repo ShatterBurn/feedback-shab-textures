@@ -9,7 +9,7 @@ A Resonator is two parts ([Composed Parts](Composed_Parts.md)), each shaped at a
 - **Resonator Crystal**: from a crystal plate or a shard. Its material must ring: **quartz** rings best, then **amethyst**, then tourmaline. Two axes: **size** (4 to 20 mm) and **cut** (0 to 100%).
 - **Resonator Electrode**: from foil or fine wire. Its material must conduct; a better conductor couples the crystal to its wire better.
 
-Lay them side by side in a crafting grid:
+Drawing and assembling a resonator take Electrical Treatise III: Circuits ([Treatise](Treatise.md)). Lay them side by side in the grid:
 
 ```
 C E

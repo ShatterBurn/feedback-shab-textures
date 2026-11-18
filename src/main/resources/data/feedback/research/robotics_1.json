@@ -2,6 +2,10 @@
   "school": "robotics",
   "volume": 1,
   "title": "A motor that listens",
+  "requires": [
+    "mechanical:1",
+    "electrical:2"
+  ],
   "concepts": {
     "dynamo": {
       "label": "A dynamo",

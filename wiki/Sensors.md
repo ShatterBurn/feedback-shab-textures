@@ -10,6 +10,15 @@ Five blocks that look at the face they were placed against and report what they 
 | Fill Gauge | how full the inventory or tank in front is | eighths |
 | Observer | a change in the state of the block in front, for half a second after it | on or off |
 
+A Photocell is crafted at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, holding Electrical Treatise II: Coils and Magnets ([Treatise](Treatise.md)):
+
+```
+P G P
+R C R
+```
+
+P is a Wrought Iron Plate, G is Glass, R is Redstone and C is a Copper Plate.
+
 ## Using them
 
 Place a sensor with its face against what you want to watch, then link it to a Controller with the [Data Connector](Data_Connector.md), which costs fine wire by distance, and read it with an Input card. The reading is quantized: a probe reports a crop as unripe, a quarter, half, three quarters or ripe, never a finer figure.

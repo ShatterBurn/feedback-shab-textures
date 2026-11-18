@@ -1,19 +1,35 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "category": "misc",
-  "ingredients": [
-    {
+  "type": "feedback:engineering",
+  "key": {
+    "A": {
       "item": "feedback:electric_controller"
     },
-    {
+    "B": {
       "item": "feedback:electric_programmer"
     },
-    {
+    "C": {
       "item": "feedback:silicon_ingot"
     }
+  },
+  "pattern": [
+    "ABC"
   ],
   "result": {
     "count": 1,
     "id": "feedback:computer"
-  }
+  },
+  "tool": [
+    {
+      "ability": "feedback:driver",
+      "wear": 1
+    }
+  ],
+  "fasteners": {
+    "count": 2,
+    "floor": 1,
+    "forms": [
+      "screw"
+    ]
+  },
+  "school": "electrical:3"
 }

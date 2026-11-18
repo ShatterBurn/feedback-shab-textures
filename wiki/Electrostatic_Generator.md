@@ -9,7 +9,7 @@ P G P
   R
 ```
 
-P is a Copper Plate, G is Glass and R is a Copper Rod. Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 2 [fasteners](Fasteners.md).
+P is a Copper Plate, G is Glass and R is a Copper Rod. Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 2 [fasteners](Fasteners.md). It needs Electrical Treatise I: Cells and Static Charge ([Treatise](Treatise.md)).
 
 ## Using it
 

@@ -33,6 +33,8 @@ public final class ResearchPlan {
     /** Each concept's traits, in the order authored. */
     public final Map<String, Set<String>> traits = new LinkedHashMap<>();
     public final List<String> replay = new ArrayList<>(), options = new ArrayList<>(), specimens = new ArrayList<>();
+    /** Volumes of other schools that must be held before this one can be studied ({@code "mechanical:2"}); empty for none. */
+    public final List<String> requires = new ArrayList<>();
     /** An app's plan only: every word of the dump (the {@code goal} is one of them), uppercase and of the goal's length; empty for every other plan. */
     public final List<String> words = new ArrayList<>();
     public final int answer;
@@ -67,6 +69,8 @@ public final class ResearchPlan {
             strings(o.getAsJsonArray("options"), options);
         }
         subject = o.has("subject") ? o.get("subject").getAsString() : "";
+        if (o.has("requires"))
+            strings(o.getAsJsonArray("requires"), requires);
         if (o.has("specimens"))
             strings(o.getAsJsonArray("specimens"), specimens);
         if (o.has("eureka")) {

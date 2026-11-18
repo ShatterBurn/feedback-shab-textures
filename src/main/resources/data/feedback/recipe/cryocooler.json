@@ -30,5 +30,6 @@
     "count": 4,
     "floor": 2,
     "forms": ["rivet"]
-  }
+  },
+  "school": "chemical:2"
 }

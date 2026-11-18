@@ -9,7 +9,7 @@ W X W
 P P P
 ```
 
-W is [Copper Wire](Wire_Drawer.md), X is a [Cat's Whisker Detector](Cats_Whisker_Detector.md) and P is a Wrought Iron Plate.
+W is [Copper Wire](Wire_Drawer.md), X is a [Cat's Whisker Detector](Cats_Whisker_Detector.md) and P is a Wrought Iron Plate. Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, holding Electrical Treatise II: Coils and Magnets ([Treatise](Treatise.md)).
 
 ## Using it
 

@@ -12,7 +12,7 @@ P P P
 P   P
 ```
 
-P is a [Steel Plate](Mechanical_Hammer.md).
+P is a [Steel Plate](Mechanical_Hammer.md). Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 2 [fasteners](Fasteners.md), holding Nuclear Treatise I: Reactors and Fuel ([Treatise](Treatise.md)).
 
 ## Using it
 

@@ -54,21 +54,29 @@ public class TreatiseItem extends Item {
         for (var e : ModularTypes.known().entrySet()) {
             ModularType type = e.getValue();
             String path = e.getKey().getPath();
-            if (school == School.of(type.school()) && volume == School.volumeOf(type.school()))
+            if (names(type.school()))
                 tooltip.add(Component.literal("- ").append(Component.translatableWithFallback("item." + e.getKey().getNamespace() + "." + path, path.replace('_', ' ')))
                         .withStyle(ChatFormatting.DARK_AQUA));
             for (ModularType.Role role : type.roles().values()) {
                 if (role.part().isPresent())
                     for (ModularType.Variant v : role.part().get().variants())
-                        if (!v.school().isEmpty() && school == School.of(v.school()) && volume == School.volumeOf(v.school()))
+                        if (names(v.school()))
                             tooltip.add(Component.literal("- ").append(Component.translatableWithFallback("modular.feedback.archetype." + v.name(), v.name().replace('_', ' ')))
                                     .append(Component.literal(" (")).append(Component.translatableWithFallback("item." + e.getKey().getNamespace() + "." + path, path.replace('_', ' ')))
                                     .append(Component.literal(")")).withStyle(ChatFormatting.DARK_AQUA));
-                if (!role.school().isEmpty() && school == School.of(role.school()) && volume == School.volumeOf(role.school()))
+                if (names(role.school()))
                     tooltip.add(Component.literal("- ").append(Component.translatableWithFallback("modular.feedback.role." + role.name(), role.name()))
                             .append(Component.literal(" (")).append(Component.translatableWithFallback("item." + e.getKey().getNamespace() + "." + path, path.replace('_', ' ')))
                             .append(Component.literal(")")).withStyle(ChatFormatting.DARK_AQUA));
             }
         }
+    }
+
+    /** Whether a school field names this volume, alone or among several. */
+    private boolean names(String field) {
+        for (School.Need n : School.needs(field))
+            if (n.school() == school && n.volume() == volume)
+                return true;
+        return false;
     }
 }

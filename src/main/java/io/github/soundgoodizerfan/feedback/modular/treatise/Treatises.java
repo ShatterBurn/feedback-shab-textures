@@ -130,10 +130,9 @@ public final class Treatises {
         return mask(player, ContainerLevelAccess.NULL);
     }
 
-    /** Whether {@code mask} lets a player draw {@code type}: it has no school, or its school's volume bit is set. */
+    /** Whether {@code mask} lets a player draw {@code type}: it has no school, or every volume its school field names is held. */
     public static boolean draws(int mask, ModularType type) {
-        School school = School.of(type.school());
-        return school == null || (mask & (1 << school.bit(School.volumeOf(type.school())))) != 0;
+        return School.met(mask, type.school());
     }
 
     /**

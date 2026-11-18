@@ -4,7 +4,7 @@ An electric furnace in two blocks: an **Arc Hearth** that holds the melt, and an
 
 ## Crafting
 
-**Arc Hearth**: a ring of [Insulation](Insulation.md) blocks around a [Crucible](Crucible.md).
+**Arc Hearth**: a ring of [Insulation](Insulation.md) blocks around a [Crucible](Crucible.md). Craft it at the [Engineering Table](Engineering_Table.md) with a [hammer](Hammer.md) in the tool row, holding Electrical Treatise II: Coils and Magnets and Materials Treatise II: Metallurgy and Heat Treatment ([Treatise](Treatise.md)).
 
 ```
 I I I

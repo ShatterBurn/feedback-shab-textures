@@ -10,7 +10,7 @@ P   P
 P C P
 ```
 
-W is [Copper Wire](Wire_Drawer.md), P is a Steel Plate and C is a [Charger](Charger.md). Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 3 [fasteners](Fasteners.md).
+W is [Copper Wire](Wire_Drawer.md), P is a Steel Plate and C is a [Charger](Charger.md). Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 3 [fasteners](Fasteners.md). It needs Electrical Treatise II: Coils and Magnets and Robotics Treatise I: Suit Modules ([Treatise](Treatise.md)).
 
 ## Using it
 

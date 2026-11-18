@@ -1,0 +1,104 @@
+{
+  "school": "nuclear",
+  "volume": 1,
+  "title": "A chain that holds",
+  "requires": [
+    "chemical:2",
+    "electrical:2"
+  ],
+  "concepts": {
+    "fuel": {
+      "label": "A fuel rod",
+      "traits": [
+        "fuel",
+        "dense"
+      ]
+    },
+    "enrich": {
+      "label": "Enrichment",
+      "traits": [
+        "fuel",
+        "reaction"
+      ]
+    },
+    "fission": {
+      "label": "A fission",
+      "traits": [
+        "release",
+        "reaction"
+      ]
+    },
+    "neutron": {
+      "label": "A free neutron",
+      "traits": [
+        "release",
+        "flow"
+      ]
+    },
+    "moderator": {
+      "label": "A moderator",
+      "traits": [
+        "flow",
+        "reaction"
+      ]
+    },
+    "chain": {
+      "label": "A chain reaction",
+      "traits": [
+        "reaction",
+        "heat"
+      ]
+    },
+    "heat": {
+      "label": "Fission heat",
+      "traits": [
+        "heat",
+        "release"
+      ]
+    },
+    "coolant": {
+      "label": "A coolant",
+      "traits": [
+        "flow",
+        "heat"
+      ]
+    },
+    "rod": {
+      "label": "A control rod",
+      "traits": [
+        "control",
+        "dense"
+      ]
+    },
+    "scram": {
+      "label": "A scram",
+      "traits": [
+        "control",
+        "reaction"
+      ]
+    }
+  },
+  "start": "fuel",
+  "goal": "scram",
+  "replay": [
+    "A heavy nucleus that splits gives off heat and neutrons, and each neutron can split another.",
+    "A moderator slows the neutrons so they split more, and a coolant carries off the heat.",
+    "Rods that soak up neutrons hold the chain steady; drop them all in and it stops."
+  ],
+  "question": "What does a control rod do?",
+  "options": [
+    "Slows neutrons to split more atoms",
+    "Absorbs neutrons to hold the chain steady",
+    "Carries the heat away"
+  ],
+  "answer": 1,
+  "eureka": {
+    "kind": "used",
+    "item": "feedback:gas_centrifuge",
+    "threshold": 3,
+    "ink": 2
+  },
+  "specimens": [
+    "gas_centrifuge"
+  ]
+}

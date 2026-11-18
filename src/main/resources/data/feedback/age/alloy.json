@@ -18,6 +18,8 @@
     "feedback:osmiridium"
   ],
   "volumes": [
-    "aerospace:3"
+    "aerospace:3",
+    "robotics:2",
+    "nuclear:1"
   ]
 }

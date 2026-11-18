@@ -22,5 +22,6 @@
     "count": 2,
     "floor": 1,
     "forms": ["screw"]
-  }
+  },
+  "school": "chemical:2"
 }

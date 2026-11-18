@@ -296,10 +296,16 @@ public class EngineeringCategory implements IRecipeCategory<EngineeringCategory.
 
     /** The treatise a school field names ({@code "weapons:2"}), or "none". */
     private static Component schoolName(String field) {
-        School school = School.of(field);
-        if (school == null)
+        var needs = School.needs(field);
+        if (needs.isEmpty())
             return Component.translatable("feedback.jei.engineering.none");
-        return Treatises.of(school, School.volumeOf(field)).getHoverName();
+        net.minecraft.network.chat.MutableComponent out = Component.empty();
+        for (int i = 0; i < needs.size(); i++) {
+            if (i > 0)
+                out.append(Component.literal(" + "));
+            out.append(Treatises.of(needs.get(i).school(), needs.get(i).volume()).getHoverName());
+        }
+        return out;
     }
 
     private static Component minigame(String id) {

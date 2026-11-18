@@ -158,5 +158,10 @@
     "C": "feedback:tungsten",
     "G": "feedback:nickel",
     "P": "feedback:nickel"
+  },
+  "school": "electrical:3",
+  "fasteners": {
+    "count": 0,
+    "floor": 1
   }
 }

@@ -1,0 +1,11 @@
+{
+  "traits": [
+    "fuel",
+    "reaction",
+    "heat",
+    "flow",
+    "control",
+    "release",
+    "dense"
+  ]
+}

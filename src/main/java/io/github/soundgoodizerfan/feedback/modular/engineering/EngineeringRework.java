@@ -215,8 +215,8 @@ public final class EngineeringRework {
         if (groups.isEmpty())
             return Outcome.of(NOTHING);
         if (!Treatises.draws(mask, type)) {
-            School s = School.of(type.school());
-            return new Outcome(SCHOOL, (s.ordinal() + 1) * 8 + Math.min(School.volumeOf(type.school()), s.volumes()));
+            School.Need lacking = School.missing(mask, type.school());
+            return new Outcome(SCHOOL, (lacking.school().ordinal() + 1) * 8 + lacking.volume());
         }
         int tool = hammer(table);
         if (tool != 0)
@@ -269,12 +269,21 @@ public final class EngineeringRework {
         ModularType type = typeOf(specimen, level);
         if (type == null)
             return -NO_SPECIMEN;
-        if (School.of(type.school()) == null)
+        School taught = School.of(type.school());
+        if (taught == null)
             return -NO_SCHOOL;
+        if (unmetPrerequisite(server, taught, School.volumeOf(type.school())) != null)
+            return -SCHOOL;
         int tool = hammer(table);
         if (tool != 0)
             return -tool;
         return Math.min(io.github.soundgoodizerfan.feedback.modular.bake.ModularTuning.NOTES_MAX_PARTS, Math.max(1, ModularStacks.design(specimen).parts().size()));
+    }
+
+    /** The first volume of another school that volume {@code volume} of {@code school} is built on ({@code requires} in its research plan) and the player lacks, or null. */
+    private static School.Need unmetPrerequisite(ServerPlayer server, School school, int volume) {
+        var plan = io.github.soundgoodizerfan.feedback.modular.research.ResearchPlans.get().volume(school, volume);
+        return plan == null ? null : School.missing(Treatises.mask(server), String.join("+", plan.requires));
     }
 
     /** Learns the specimen's volume with notes of {@code quality}; {@code played} says the learning game ran (it needs no further check). */
@@ -293,10 +302,13 @@ public final class EngineeringRework {
         School school = School.of(type.school());
         if (school == null)
             return Outcome.of(NO_SCHOOL);
+        int volume = School.volumeOf(type.school());
+        School.Need unmet = unmetPrerequisite(server, school, volume);
+        if (unmet != null)
+            return new Outcome(SCHOOL, (unmet.school().ordinal() + 1) * 8 + unmet.volume());
         int tool = hammer(table);
         if (tool != 0)
             return Outcome.of(tool);
-        int volume = School.volumeOf(type.school());
         List<ItemStack> parts = ModularRework.dismantle(specimen, ClientMaterials.on(level), EngineeringAssembly.types(level), salvage(server));
         table.setItem(EngineeringTableBlockEntity.BLANK, TreatiseGame.onLearn(server, school, volume, specimen, quality));
         table.setItem(EngineeringTableBlockEntity.SPECIMEN, ItemStack.EMPTY);

@@ -84,5 +84,10 @@
   "defaults": {
     "P": "feedback:lead",
     "C": "feedback:glass"
+  },
+  "school": "electrical:1",
+  "fasteners": {
+    "count": 0,
+    "floor": 1
   }
 }

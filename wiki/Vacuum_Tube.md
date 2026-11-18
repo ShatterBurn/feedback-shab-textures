@@ -13,7 +13,7 @@ A tube is four parts, each shaped from stock at a part bench ([Composed Parts](C
 | Tube Grid | fine wire or wire | **Grids**, 1 to 3, and **pitch**, 20 to 100% |
 | Tube Plate | plate or foil | **Area**, 20 to 100% |
 
-The grid is optional: a tube without one is a diode.
+The grid is optional: a tube without one is a diode. Drawing and assembling a tube take Electrical Treatise III: Circuits ([Treatise](Treatise.md)).
 
 ## Putting one together
 

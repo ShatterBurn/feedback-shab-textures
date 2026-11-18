@@ -1,0 +1,19 @@
+{
+  "type": "feedback:bootstrap_specimen",
+  "category": "equipment",
+  "modular_type": "feedback:leyden_jar",
+  "material": "feedback:copper",
+  "pattern": [
+    "GCG",
+    "G G",
+    "GGG"
+  ],
+  "key": {
+    "C": {
+      "item": "minecraft:copper_ingot"
+    },
+    "G": {
+      "item": "minecraft:glass"
+    }
+  }
+}

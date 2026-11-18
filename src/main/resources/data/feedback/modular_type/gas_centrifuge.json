@@ -51,5 +51,6 @@
   ],
   "defaults": {
     "S": "feedback:stainless_steel"
-  }
+  },
+  "school": "nuclear:1"
 }

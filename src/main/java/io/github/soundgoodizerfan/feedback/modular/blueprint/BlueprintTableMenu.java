@@ -158,10 +158,10 @@ public class BlueprintTableMenu extends AbstractContainerMenu {
         ModularType drawn = ModularTypes.get().types().get(design.type());
         // A hafted build holding a gated face (a spear's head) is gated by that face's school.
         String gate = drawn == null ? "" : drawn.family() == ModularType.Family.HAFTED ? ModularFaces.school(design, drawn) : drawn.school();
-        School school = School.of(gate);
-        int volume = School.volumeOf(gate);
-        if (school != null && !Treatises.has(player, access, school, volume)) {
-            send(player, Component.translatable("message.feedback.blueprint_table.no_treatise", Component.translatable(school.itemKey(volume))));
+        int held = Treatises.mask(player, access);
+        School.Need lacking = School.missing(held, gate);
+        if (lacking != null) {
+            send(player, Component.translatable("message.feedback.blueprint_table.no_treatise", Component.translatable(lacking.school().itemKey(lacking.volume()))));
             return;
         }
         // An addon whose role asks for a volume (servos on armour: robotics) is refused the same way.
@@ -170,9 +170,9 @@ public class BlueprintTableMenu extends AbstractContainerMenu {
                 ModularType.Role role = drawn.roles().get(part.role());
                 String needs = role == null ? "" : !role.school().isEmpty() ? role.school()
                         : role.variant(part).map(ModularType.Variant::school).orElse("");
-                School roleSchool = School.of(needs);
-                if (roleSchool != null && !Treatises.has(player, access, roleSchool, School.volumeOf(needs))) {
-                    send(player, Component.translatable("message.feedback.blueprint_table.no_treatise", Component.translatable(roleSchool.itemKey(School.volumeOf(needs)))));
+                School.Need roleLacking = School.missing(held, needs);
+                if (roleLacking != null) {
+                    send(player, Component.translatable("message.feedback.blueprint_table.no_treatise", Component.translatable(roleLacking.school().itemKey(roleLacking.volume()))));
                     return;
                 }
             }

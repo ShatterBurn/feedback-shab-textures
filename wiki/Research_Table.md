@@ -28,9 +28,10 @@ A **first volume** takes a plain thing:
 | Mechanical I | hand crank or water wheel |
 | Aerospace I | water wheel |
 | Robotics I | dynamotor or electromagnet |
-| Electrical I | battery or galvanic cell |
+| Electrical I | battery, galvanic cell or Leyden jar |
 | Chemical I | crucible or thermal store |
 | Materials I | hand hammer or file |
+| Nuclear I | gas centrifuge |
 
 A volume after the first takes an item built from the volume before it, and that earlier treatise must be held: in your pack, or on a [Treatise Shelf](Treatise_Binder_and_Shelf.md) beside the table.
 
@@ -40,8 +41,15 @@ A volume after the first takes an item built from the volume before it, and that
 | Weapons III | crossbow, gun or launcher |
 | Mechanical II | engine or flywheel |
 | Aerospace II | propeller |
+| Aerospace III | thruster |
+| Robotics II | suit module |
+| Electrical II | battery, galvanic cell or Leyden jar |
+| Electrical III | heating coil, linear motor or electromagnet |
+| Materials II | roll, wire die, lathe bit, drill bit or abrasive wheel |
 | Chemical II | boiler, gas tank or pressure vessel |
 | Chemical III | compressor or heat exchanger |
+
+Some volumes also need volumes of other schools held before they can be researched; the list is under [Treatise](Treatise.md#study-prerequisites).
 
 ### Attunements
 

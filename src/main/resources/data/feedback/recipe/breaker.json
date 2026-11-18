@@ -33,5 +33,6 @@
     "count": 2,
     "floor": 1,
     "forms": ["screw"]
-  }
+  },
+  "school": "electrical:2"
 }

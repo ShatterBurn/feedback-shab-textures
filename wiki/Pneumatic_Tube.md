@@ -16,7 +16,7 @@ S S S
 S S S
 ```
 
-**Evacuated Tube**: a Wide-Bore Tube between two Steel Plates, top and bottom.
+**Evacuated Tube**: a Wide-Bore Tube between two Steel Plates, top and bottom. Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, holding Electrical Treatise III: Circuits ([Treatise](Treatise.md)).
 
 ## Using it
 
@@ -44,13 +44,13 @@ If an evacuated run's pressure rises past the level that holds the vacuum (a lea
 
 A shaft-driven pump that draws air out of the tube run it faces, with its shaft across the flow. Faster shaft, deeper vacuum. It loads the shaft like any [pump](Pump.md).
 
-Crafting: Pump + Pneumatic Tube.
+Crafting: Pump + Pneumatic Tube, at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 2 [fasteners](Fasteners.md), holding Chemical Treatise I: Pressure Vessels ([Treatise](Treatise.md)).
 
 ## Linear Motor Ring
 
 A coil ring placed against a tube block. Fed with current (2 A at MV), it drives capsules that carry a magnetic plate through that block at twice the speed. Plain capsules ignore it. See [Carrier](Carrier.md#magnetic-carrier) and [Electricity](Electricity.md).
 
-A modular block built from one part, a **Motor Winding** cut from wire or fine wire of a metal. Drawing and assembling it take Electrical Treatise I: Coils and Magnets ([Treatise](Treatise.md)). Two measures set it:
+A modular block built from one part, a **Motor Winding** cut from wire or fine wire of a metal. Drawing and assembling it take Electrical Treatise II: Coils and Magnets ([Treatise](Treatise.md)). Two measures set it:
 
 - **Turns**, 1 to 8: more turns push a magnetic capsule harder and draw more current.
 - **Gauge**, 20 to 100 percent: a thicker wire pushes harder, in step with the gauge, but draws with the square of the gauge.

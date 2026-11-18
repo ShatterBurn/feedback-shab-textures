@@ -12,7 +12,7 @@ A **Robot** is made from three parts ([Composed Parts](Composed_Parts.md)), each
  T 
 ```
 
-C is a Robot Chassis, D is a Robot Drive, T is a Robot Tool Head.
+C is a Robot Chassis, D is a Robot Drive, T is a Robot Tool Head. A robot takes Robotics Treatise II: Robots ([Treatise](Treatise.md)) held, to draw it and to assemble it.
 
 - **Robot Chassis**: the frame. It carries the drive, the battery and the program, and sets how much the robot weighs.
 - **Robot Drive**: what moves it. A lighter robot on the same drive moves faster. It comes in four kinds, see [Drives](#drives).

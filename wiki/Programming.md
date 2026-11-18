@@ -112,7 +112,7 @@ A printed Punch Card is **read-only**: *"Printed -- read only."* To change a pro
 A mechanical Controller and Programmer take the Punch Card only. The [Electric Controller, Electric Programmer and Computer](Electric_Controller.md) take every medium:
 
 - **Punch Card**: written once.
-- **Circuit Board**: written once. Made from a Punch Card and two copper wires.
+- **Circuit Board**: written once. Made from a Punch Card and two copper wires at the [Engineering Table](Engineering_Table.md) with a screwdriver in the tool row, holding Electrical Treatise III: Circuits ([Treatise](Treatise.md)).
 - **Floppy Disk**: made from a Circuit Board and an iron plate. Put a printed disk in the Programmer and press **Erase**: the program comes back into the editor, the disk is blank, and Print writes the new program onto the same disk.
 - **USB Drive**: a Floppy Disk, a copper wire and a silicon ingot. Rewritten the same way as a Floppy Disk.
 

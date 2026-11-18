@@ -10,7 +10,7 @@ K N K
 P P P
 ```
 
-P is a Wrought Iron Plate, K is a [Heating Coil](Heating_Coil.md) (any) and N is a [Condenser](Condenser.md). Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 3 [fasteners](Fasteners.md).
+P is a Wrought Iron Plate, K is a [Heating Coil](Heating_Coil.md) (any) and N is a [Condenser](Condenser.md). Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 3 [fasteners](Fasteners.md). It needs Chemical Treatise II: Heat and Compression ([Treatise](Treatise.md)).
 
 ## Using it
 

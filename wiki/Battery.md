@@ -4,7 +4,7 @@ A rechargeable battery, lead-acid or nickel-iron: cells in series, rated a band,
 
 ## Crafting
 
-Shape the parts at a bench and put them together in a crafting grid, as for any [modular tool](Tools_and_Weapons.md). It has two parts:
+Shape the parts at a bench and put them together as for any [modular tool](Tools_and_Weapons.md); drawing and assembling a battery take Electrical Treatise I: Cells and Static Charge ([Treatise](Treatise.md)). It has two parts:
 
 - **Battery Plates**, shaped from plates of a metal that takes a charge: lead or [nickel-iron](Materials.md#nickel-iron). The plates have an **anode** and a **cathode** slot, so the two electrodes can be different metals; both must take a charge, and a cell holds the mean of the pair's charge per ingot. Two steppers set the size: **cell size** (1 to 4), how much each cell holds, and **cell count** (1 to 12), how many cells sit in series.
 

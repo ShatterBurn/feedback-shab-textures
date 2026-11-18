@@ -282,8 +282,8 @@ public class EngineeringTableMenu extends AbstractContainerMenu {
                         ? io.github.soundgoodizerfan.feedback.modular.type.ModularFaces.school(ModularStacks.design(found.get().tool()), t) : t.school();
             }
         }
-        School s = School.of(field);
-        return s == null ? 0 : (s.ordinal() + 1) * 8 + Math.min(School.volumeOf(field), s.volumes());
+        School.Need lacking = School.missing(io.github.soundgoodizerfan.feedback.modular.treatise.Treatises.mask(in.binder()) | in.known(), field);
+        return lacking == null ? 0 : (lacking.school().ordinal() + 1) * 8 + lacking.volume();
     }
 
     public BlockPos pos() {

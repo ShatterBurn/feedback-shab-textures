@@ -42,7 +42,7 @@ W is Copper Wire and P is a Copper Plate.
 
 A station with up to three sort stages. Each stage is a separate reader (a magnet, an optical head or a weigher) that a unit must pass. A unit that passes every stage goes to the in-band address; a unit it cannot place goes to the **reject address** (an off-hand dye sets it). It runs at the pace of its slowest stage; a weigher is the slowest and a magnet the quickest.
 
-Crafting: Tube Station + [Electromagnet](Electromagnet.md) + [Glowstone Lamp](Lamp.md) + Sort Gauge.
+Crafting: Tube Station + [Electromagnet](Electromagnet.md) + [Glowstone Lamp](Lamp.md) + Sort Gauge, at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 2 [fasteners](Fasteners.md), holding Robotics Treatise II: Robots ([Treatise](Treatise.md)).
 
 The readers share the weaknesses of the [belt sorters](Belt_Modules.md#sorting).
 

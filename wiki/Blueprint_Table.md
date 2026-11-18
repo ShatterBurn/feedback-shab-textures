@@ -129,15 +129,20 @@ Some **parts** and **shapes** belong to a school too (the servos of a powered su
 | Aerospace II | thruster |
 | Aerospace III | jet |
 | Robotics I | suit module |
+| Robotics II | robot |
 | Chemical I | pressure vessel, boiler, gas tank |
 | Chemical II | heat exchanger, gas compressor |
 | Chemical III | demolition charge |
-| Electrical I | heating coil, linear motor, electromagnet |
+| Electrical I | battery, galvanic cell, Leyden jar |
+| Electrical II | heating coil, linear motor, electromagnet |
+| Electrical III | vacuum tube, resonator, lattice |
 | Materials I | none |
+| Materials II | none |
+| Nuclear I | gas centrifuge |
 
 A pulse gun's drawing also lists the ways the build hurts its wielder, as red chips beside the usual ones: **Burns the hand** (no heat governor), **Shocks the wielder** (a cell above the receiver's band), **Arcs when wet**, and **Locks hot** (a core breech). See [Electric Gun](Electric_Gun.md#misuse-and-hazards).
 
-Every other type (tools, armor, backpack, bed, water wheel, thermal store, Leyden jar, pump, fluid burner, galvanic cell, lamp, battery, belt and the rest) needs no treatise.
+Every other type (tools, armor, backpack, bed, water wheel, thermal store, pump, fluid burner, lamp, belt and the rest) needs no treatise.
 
 ## What a blueprint is for
 

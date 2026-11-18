@@ -10,7 +10,7 @@ P P P
 B B B
 ```
 
-P is a Copper Plate, S is a [Shaft](Shaft.md) and B is Cobblestone. Craft it at the [Engineering Table](Engineering_Table.md) with a [hammer](Hammer.md) in the tool row and 3 [fasteners](Fasteners.md).
+P is a Copper Plate, S is a [Shaft](Shaft.md) and B is Cobblestone. Craft it at the [Engineering Table](Engineering_Table.md) with a [hammer](Hammer.md) in the tool row and 3 [fasteners](Fasteners.md). It needs Mechanical Treatise I: Engines, Flywheels and Dynamotors ([Treatise](Treatise.md)).
 
 ## Setting it up
 

@@ -27,5 +27,6 @@
     "count": 4,
     "floor": 2,
     "forms": ["machine_bolt", "rivet"]
-  }
+  },
+  "school": "mechanical:2"
 }

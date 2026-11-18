@@ -1,8 +1,64 @@
 {
   "school": "electrical",
   "volume": 1,
-  "title": "Current that pulls",
+  "title": "Charge in a jar",
   "concepts": {
+    "rod": {
+      "label": "Amber rubbed on fur",
+      "traits": [
+        "electric",
+        "spark"
+      ]
+    },
+    "spark": {
+      "label": "A spark",
+      "traits": [
+        "spark",
+        "current"
+      ]
+    },
+    "charge": {
+      "label": "Static charge",
+      "traits": [
+        "electric",
+        "store"
+      ]
+    },
+    "plate": {
+      "label": "Two metal plates",
+      "traits": [
+        "store",
+        "line"
+      ]
+    },
+    "glass": {
+      "label": "A glass jar",
+      "traits": [
+        "store",
+        "spark"
+      ]
+    },
+    "jar": {
+      "label": "A Leyden jar",
+      "traits": [
+        "store",
+        "electric"
+      ]
+    },
+    "acid": {
+      "label": "Acid between metals",
+      "traits": [
+        "electric",
+        "current"
+      ]
+    },
+    "cell": {
+      "label": "A galvanic cell",
+      "traits": [
+        "electric",
+        "current"
+      ]
+    },
     "wire": {
       "label": "A wire",
       "traits": [
@@ -10,99 +66,37 @@
         "line"
       ]
     },
-    "coil": {
-      "label": "A coil",
+    "battery": {
+      "label": "A battery",
       "traits": [
-        "line",
-        "field"
-      ]
-    },
-    "flux": {
-      "label": "A magnetic field",
-      "traits": [
-        "field",
-        "magnet"
-      ]
-    },
-    "core": {
-      "label": "An iron core",
-      "traits": [
-        "magnet",
-        "hold"
-      ]
-    },
-    "switch": {
-      "label": "A switch",
-      "traits": [
-        "hold",
-        "current"
-      ]
-    },
-    "electromagnet": {
-      "label": "An electromagnet",
-      "traits": [
-        "magnet",
-        "current"
-      ]
-    },
-    "heater": {
-      "label": "Resistance heat",
-      "traits": [
-        "heat",
-        "current"
-      ]
-    },
-    "filament": {
-      "label": "A filament",
-      "traits": [
-        "heat",
-        "hold"
-      ]
-    },
-    "rotor": {
-      "label": "A spinning magnet",
-      "traits": [
-        "turn",
-        "field"
-      ]
-    },
-    "dynamo": {
-      "label": "A dynamo",
-      "traits": [
-        "turn",
-        "electric"
-      ]
-    },
-    "cell": {
-      "label": "A cell",
-      "traits": [
-        "electric",
+        "store",
         "current"
       ]
     }
   },
-  "start": "wire",
-  "goal": "electromagnet",
+  "start": "rod",
+  "goal": "jar",
   "replay": [
-    "Wind a wire into a coil and send current through it: a field appears around it.",
-    "Put iron in the coil and the iron holds the field, so the pull is far stronger.",
-    "Cut the current and the pull goes with it."
+    "Rub amber on fur and it holds a charge that leaps as a spark.",
+    "Put the charge on a plate inside glass, with a plate outside, and the glass keeps it apart: a jar that stores.",
+    "Two different metals in acid push a steady current instead, and cells in a row make a battery."
   ],
-  "question": "Why put an iron core in a coil?",
+  "question": "What does a Leyden jar do?",
   "options": [
-    "To make the wire hotter",
-    "To hold the field and make the pull much stronger",
-    "To make the current flow the other way"
+    "It makes current from acid",
+    "It stores charge on plates held apart by glass",
+    "It makes sparks without any charge"
   ],
   "answer": 1,
   "eureka": {
     "kind": "crafted",
-    "item": "feedback:cable",
-    "threshold": 3,
+    "item": "feedback:battery",
+    "threshold": 2,
     "ink": 2
   },
   "specimens": [
     "battery",
-    "galvanic_cell"
+    "galvanic_cell",
+    "leyden_jar"
   ]
 }

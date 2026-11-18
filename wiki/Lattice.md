@@ -9,7 +9,7 @@ A Lattice is two parts ([Composed Parts](Composed_Parts.md)), each shaped at a p
 - **Lattice Body** (the mesh): from a vein, a shard or a block. Its material must hold experience: **sculk** and **echo shard** do. Two axes: **cells** (1 to 8) and **mesh** (0 to 100%).
 - **Lattice Frame**: from a plate or foil. Its material must insulate; a better insulator keeps what the mesh holds when power is lost.
 
-Lay them side by side in a crafting grid:
+Drawing and assembling a lattice take Electrical Treatise III: Circuits ([Treatise](Treatise.md)). Lay them side by side in the grid:
 
 ```
 L F

@@ -1,6 +1,5 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
+  "type": "feedback:engineering",
   "key": {
     "S": {
       "item": "feedback:steel_plate"
@@ -17,5 +16,16 @@
   "result": {
     "count": 1,
     "id": "feedback:evacuated_tube"
-  }
+  },
+  "tool": [
+    {
+      "ability": "feedback:driver",
+      "wear": 1
+    }
+  ],
+  "fasteners": {
+    "count": 0,
+    "floor": 1
+  },
+  "school": "electrical:3"
 }

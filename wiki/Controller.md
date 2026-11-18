@@ -116,6 +116,6 @@ P R P              P A P            C
 P P P              I A I            R
 ```
 
-- Memory Drum: P is a [Copper Plate](Mechanical_Hammer.md), B a Redstone Block, R a copper rod.
+- Memory Drum: P is a [Copper Plate](Mechanical_Hammer.md), B a Redstone Block, R a copper rod. It is crafted at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, holding Electrical Treatise III: Circuits ([Treatise](Treatise.md)).
 - Card Rack: P is any planks, I a wrought iron rod, A paper.
 - Escapement: S is a steel plate, C a small cog, R a wrought iron rod.

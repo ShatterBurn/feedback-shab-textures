@@ -116,5 +116,6 @@
   ],
   "defaults": {
     "S": "feedback:glass"
-  }
+  },
+  "school": "electrical:1"
 }

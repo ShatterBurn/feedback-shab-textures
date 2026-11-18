@@ -10,7 +10,7 @@ G   G
 G G G
 ```
 
-G is Glass and W is [Copper Wire](Wire_Drawer.md). Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 2 [fasteners](Fasteners.md).
+G is Glass and W is [Copper Wire](Wire_Drawer.md). Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 2 [fasteners](Fasteners.md). It needs Chemical Treatise I: Pressure Vessels and Electrical Treatise I: Cells and Static Charge ([Treatise](Treatise.md)).
 
 ## Setting it up
 

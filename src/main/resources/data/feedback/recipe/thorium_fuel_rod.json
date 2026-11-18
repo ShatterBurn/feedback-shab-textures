@@ -1,6 +1,5 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
+  "type": "feedback:engineering",
   "key": {
     "T": {
       "item": "feedback:thorium_ingot"
@@ -20,5 +19,16 @@
   "result": {
     "count": 1,
     "id": "feedback:thorium_fuel_rod"
-  }
+  },
+  "tool": [
+    {
+      "ability": "feedback:driver",
+      "wear": 1
+    }
+  ],
+  "fasteners": {
+    "count": 0,
+    "floor": 1
+  },
+  "school": "nuclear:1"
 }

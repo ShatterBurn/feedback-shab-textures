@@ -27,5 +27,6 @@
     "count": 2,
     "floor": 1,
     "forms": ["rivet"]
-  }
+  },
+  "school": "electrical:2+materials:2"
 }

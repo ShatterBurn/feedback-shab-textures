@@ -30,5 +30,6 @@
     "count": 3,
     "floor": 1,
     "forms": ["screw", "machine_bolt"]
-  }
+  },
+  "school": "chemical:2"
 }

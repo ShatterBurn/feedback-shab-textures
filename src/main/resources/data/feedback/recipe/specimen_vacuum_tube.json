@@ -1,0 +1,22 @@
+{
+  "type": "feedback:bootstrap_specimen",
+  "category": "equipment",
+  "modular_type": "feedback:vacuum_tube",
+  "material": "feedback:copper",
+  "pattern": [
+    "GGG",
+    "CIC",
+    "G G"
+  ],
+  "key": {
+    "C": {
+      "item": "minecraft:copper_ingot"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "G": {
+      "item": "minecraft:glass"
+    }
+  }
+}

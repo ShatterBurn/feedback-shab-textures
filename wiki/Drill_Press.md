@@ -12,7 +12,7 @@ The first part cut on a drill press enters the [Machine Age](Ages.md) for you an
 I I I
 ```
 
-I is a Wrought Iron Plate, B is a [Bearing](Bearing.md) and S is a [Shaft](Shaft.md). Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 3 [fasteners](Fasteners.md).
+I is a Wrought Iron Plate, B is a [Bearing](Bearing.md) and S is a [Shaft](Shaft.md). Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 3 [fasteners](Fasteners.md). It needs Mechanical Treatise I: Engines, Flywheels and Dynamotors and Materials Treatise I: Machine-Shop Consumables ([Treatise](Treatise.md)).
 
 The bit is a [machine head](Machine_Heads.md): draw it at the Blueprint Table and put it together in a crafting grid.
 

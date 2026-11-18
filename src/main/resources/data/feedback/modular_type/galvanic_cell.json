@@ -87,5 +87,6 @@
   ],
   "defaults": {
     "S": "feedback:zinc"
-  }
+  },
+  "school": "electrical:1"
 }

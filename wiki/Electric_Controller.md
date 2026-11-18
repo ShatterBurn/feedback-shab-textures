@@ -4,7 +4,7 @@ A [Controller](Controller.md) powered from a cable instead of a shaft. It runs t
 
 ## Crafting
 
-Controller + Circuit Board + Copper Wire, in any arrangement.
+Controller + Circuit Board + Copper Wire, in any arrangement. Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 2 [fasteners](Fasteners.md), holding Electrical Treatise III: Circuits ([Treatise](Treatise.md)).
 
 ## Using it
 
@@ -28,7 +28,7 @@ A [Programmer](Programming.md) that takes every medium. Crafted from a Programme
 
 ## Computer
 
-An Electric Programmer and an Electric Controller in one block, with a desktop. Crafted from an Electric Controller, an Electric Programmer and a Silicon Ingot.
+An Electric Programmer and an Electric Controller in one block, with a desktop. Crafted from an Electric Controller, an Electric Programmer and a Silicon Ingot at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 2 [fasteners](Fasteners.md), holding Electrical Treatise III: Circuits ([Treatise](Treatise.md)).
 
 It looks like a 1990s desktop PC: a beige case with drive slots and lamps, a CRT monitor with a blinking cursor, and a keyboard and mouse on the desk in front. The screen faces you when you place it.
 

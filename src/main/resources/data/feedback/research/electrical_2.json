@@ -1,0 +1,104 @@
+{
+  "school": "electrical",
+  "volume": 2,
+  "title": "Current that pulls",
+  "concepts": {
+    "wire": {
+      "label": "A wire",
+      "traits": [
+        "current",
+        "line"
+      ]
+    },
+    "coil": {
+      "label": "A coil",
+      "traits": [
+        "line",
+        "field"
+      ]
+    },
+    "flux": {
+      "label": "A magnetic field",
+      "traits": [
+        "field",
+        "magnet"
+      ]
+    },
+    "core": {
+      "label": "An iron core",
+      "traits": [
+        "magnet",
+        "hold"
+      ]
+    },
+    "switch": {
+      "label": "A switch",
+      "traits": [
+        "hold",
+        "current"
+      ]
+    },
+    "electromagnet": {
+      "label": "An electromagnet",
+      "traits": [
+        "magnet",
+        "current"
+      ]
+    },
+    "heater": {
+      "label": "Resistance heat",
+      "traits": [
+        "heat",
+        "current"
+      ]
+    },
+    "filament": {
+      "label": "A filament",
+      "traits": [
+        "heat",
+        "hold"
+      ]
+    },
+    "rotor": {
+      "label": "A spinning magnet",
+      "traits": [
+        "turn",
+        "field"
+      ]
+    },
+    "dynamo": {
+      "label": "A dynamo",
+      "traits": [
+        "turn",
+        "electric"
+      ]
+    },
+    "cell": {
+      "label": "A cell",
+      "traits": [
+        "electric",
+        "current"
+      ]
+    }
+  },
+  "start": "wire",
+  "goal": "electromagnet",
+  "replay": [
+    "Wind a wire into a coil and send current through it: a field appears around it.",
+    "Put iron in the coil and the iron holds the field, so the pull is far stronger.",
+    "Cut the current and the pull goes with it."
+  ],
+  "question": "Why put an iron core in a coil?",
+  "options": [
+    "To make the wire hotter",
+    "To hold the field and make the pull much stronger",
+    "To make the current flow the other way"
+  ],
+  "answer": 1,
+  "eureka": {
+    "kind": "crafted",
+    "item": "feedback:cable",
+    "threshold": 3,
+    "ink": 2
+  }
+}

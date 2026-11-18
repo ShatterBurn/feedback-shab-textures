@@ -80,5 +80,10 @@
   "defaults": {
     "L": "feedback:sculk",
     "F": "feedback:glass"
+  },
+  "school": "electrical:3",
+  "fasteners": {
+    "count": 0,
+    "floor": 1
   }
 }
