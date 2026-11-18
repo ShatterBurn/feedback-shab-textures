@@ -879,8 +879,9 @@ public final class GunShots {
         level.gameEvent(shooter, f.report() < GunTuning.GUN_QUIET_REPORT ? FWeapons.GUNSHOT_QUIET
                 : f.report() >= GunTuning.GUN_THUNDEROUS_REPORT ? FWeapons.GUNSHOT_THUNDEROUS : FWeapons.GUNSHOT, muzzle);
         // The burning gas shows as smoke at the muzzle.
-        level.sendParticles(mechanism != null ? mechanism.muzzleParticle(gun, f) : f.muzzleParticle(), muzzle.x, muzzle.y, muzzle.z,
-                3, 0.02, 0.02, 0.02, 0.01);
+        var muzzlePuff = mechanism != null ? mechanism.muzzleParticle(gun, f) : f.muzzleParticle();
+        if (muzzlePuff != null)
+            level.sendParticles(muzzlePuff, muzzle.x, muzzle.y, muzzle.z, 3, 0.02, 0.02, 0.02, 0.01);
         if (mechanism instanceof FirearmMechanism)
             GunImpacts.muzzle(level, muzzle, shooter.getLookAngle(), Math.min(1f, f.report()), ejectsCase(gun));
     }

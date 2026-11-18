@@ -478,7 +478,9 @@ public final class GunClient {
             pumpHomeAtMs = now + Math.round(stroke * 0.9f);
         }
         Vec3 muzzle = player.getEyePosition().add(player.getLookAngle().scale(0.6));
-        mc.level.addParticle(mechanism != null ? mechanism.muzzleParticle(gun, f) : f.muzzleParticle(), muzzle.x, muzzle.y, muzzle.z, 0, 0.01, 0);
+        var muzzlePuff = mechanism != null ? mechanism.muzzleParticle(gun, f) : f.muzzleParticle();
+        if (muzzlePuff != null)
+            mc.level.addParticle(muzzlePuff, muzzle.x, muzzle.y, muzzle.z, 0, 0.01, 0);
         // A hot barrel smokes between shots as well as at them: the thing a hand and an eye can see.
         float heat = GunCondition.heatFraction(gun, mc.level, FTuning.GUN_PROPELLANT_IGNITION_TU);
         for (int i = 0; i < (int) (heat * 4); i++)

@@ -73,7 +73,7 @@ public interface GunMechanism {
     /** The sound of a shot as layers. */
     List<GunSound.Layer> sound(ItemStack gun, GunFigures figures, RandomSource random);
 
-    /** What shows at the muzzle. */
+    /** What shows at the muzzle, or null for nothing (a caster draws its own stream). */
     SimpleParticleType muzzleParticle(ItemStack gun, GunFigures figures);
 
     /** Whether the gun reads how long the trigger is held (a flywheel's spin, a hold charge): the client then tells the server when it goes down and comes up. */

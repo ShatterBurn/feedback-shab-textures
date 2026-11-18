@@ -675,9 +675,10 @@ public final class StreamFx {
             }
         }
         float px = ax * la, py = ay * la, pz = az * la, qx = bx * lb, qy = by * lb, qz = bz * lb;
+        // Counter-clockwise from the camera (this render type culls back faces): top-left, bottom-left, bottom-right, top-right.
         vc.addVertex(m, x + px + qx, y + py + qy, z + pz + qz).setColor(r, g, b, a).setUv(1f, 0f).setLight(0xF000F0);
-        vc.addVertex(m, x - px + qx, y - py + qy, z - pz + qz).setColor(r, g, b, a).setUv(0f, 0f).setLight(0xF000F0);
-        vc.addVertex(m, x - px - qx, y - py - qy, z - pz - qz).setColor(r, g, b, a).setUv(0f, 1f).setLight(0xF000F0);
         vc.addVertex(m, x + px - qx, y + py - qy, z + pz - qz).setColor(r, g, b, a).setUv(1f, 1f).setLight(0xF000F0);
+        vc.addVertex(m, x - px - qx, y - py - qy, z - pz - qz).setColor(r, g, b, a).setUv(0f, 1f).setLight(0xF000F0);
+        vc.addVertex(m, x - px + qx, y - py + qy, z - pz + qz).setColor(r, g, b, a).setUv(0f, 0f).setLight(0xF000F0);
     }
 }

@@ -240,7 +240,7 @@ public final class CasterMechanism implements GunMechanism {
 
     @Override
     public SimpleParticleType muzzleParticle(ItemStack gun, GunFigures figures) {
-        return ParticleTypes.SPLASH;
+        return null;
     }
 
     // --- the reload key: the pump stroke -------------------------------------------------------
