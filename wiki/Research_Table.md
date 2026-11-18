@@ -73,6 +73,8 @@ A plain run has 3 tries and no brackets. Each ink above the base of seven adds a
 | Power | crafted 4 redstone lamps | 2 |
 | Scope | crafted 1 spyglass | 3 |
 
+A three-step guide in terminal capitals shows over the terminal the first time you play it in a game session; click to dismiss it, and the **?** button in the top right corner brings it back.
+
 Keys, a low buzz on a denied word, a rising tone on a hack and the long tone on success sound as you play.
 
 ### Blank Rite
@@ -98,6 +100,8 @@ A card that shares a trait with the goal reaches it: +100 points and the chain e
 A card that does not link burns, along with the cards after it in the row. The hand is spent and, on a volume, the specimen **strains**: a few burns wear it, so it comes back worn and can be repaired, and many take it apart into its parts, which go to you. A tougher specimen forgives more. Burned and discarded cards come back on the next reshuffle, so a mistake never leaves the goal out of reach.
 
 A run has 4 hands and 2 discards. A discard throws chosen cards back for fresh ones and costs no hand. There is no clock.
+
+A three-step protocol window shows over the notebook page the first time you play it in a game session; click to dismiss it, and the **?** button in the top right corner brings it back.
 
 ### Target and deals
 
