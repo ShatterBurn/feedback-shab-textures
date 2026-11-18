@@ -326,6 +326,8 @@ public final class ModularTuning {
     /** Research strain (percent) past which the specimen is worn, and past which it comes apart; and the share of its life a full-strain run costs it. */
     public static final int RESEARCH_WEAR_STRAIN = 35, RESEARCH_BREAK_STRAIN = 70;
     public static final float RESEARCH_WEAR_SHARE = 0.5f;
+    /** The rite game: how much of a grid's murk the best offering takes away. */
+    public static final float RITE_OFFER_THIN = 0.7f;
     public static final float NOTES_MAX_LEVELS = 2f;
     /** Filing: strokes a file takes before it wears one point (hand tools may always wear). */
     public static final int FILE_STROKES_PER_WEAR = 5;

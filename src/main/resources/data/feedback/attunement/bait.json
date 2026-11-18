@@ -1,4 +1,6 @@
 {
+  "aspect": "earth",
+  "stages": 2,
   "target": 0.3,
   "band": 0.08,
   "roles": {

@@ -1,6 +1,6 @@
 # Research Table
 
-The Research Table is where what is not yet known is found out. It writes a [Blank Treatise](Treatise.md#blank-treatise) into a treatise volume, writes a [Rite](Enchanting_Table.md#rites) for an attunement, or writes an app onto a blank Floppy Disk. Treatises and attunements are worked out on a board of linked concepts; an app is won by breaking into a terminal.
+The Research Table is where what is not yet known is found out. It writes a [Blank Treatise](Treatise.md#blank-treatise) into a treatise volume, writes a [Rite](Enchanting_Table.md#rites) for an attunement, or writes an app onto a blank Floppy Disk. A treatise is worked out on a board of linked concepts, an attunement by purifying a grid of murk, and an app is won by breaking into a terminal.
 
 ## Crafting
 
@@ -14,7 +14,7 @@ P is paper, W is any plank, L is a lectern.
 
 ## Using it
 
-The screen is an open book. The left page is a list with three tabs, **Treatises**, **Rites** and **Apps**; each entry has a spinning icon. Click an entry to pick it. The right page shows the picked entry's two-line blurb, what it asks for, its slots and the **Research** button, which costs 40 experience points. It opens the research board for a treatise or an attunement and the terminal for an app.
+The screen is an open book. The left page is a list with three tabs, **Treatises**, **Rites** and **Apps**; each entry has a spinning icon. Click an entry to pick it. The right page shows the picked entry's two-line blurb, what it asks for, its slots and the **Research** button, which costs 40 experience points. It opens the research board for a treatise, the purify grid for an attunement and the terminal for an app.
 
 A volume has a slot for one Blank Treatise and a slot for one **specimen**. An attunement has a slot for an **offering**, a slot for a **reagent** and a slot for a **Blank Rite**. The text on the right page says what is missing.
 
@@ -79,13 +79,13 @@ Keys, a low buzz on a denied word, a rising tone on a hack and the long tone on 
 
 A Blank Rite is shapeless: 2 paper + lapis lazuli + ink sac. It is used up when the research writes the rite.
 
-Some attunements, Heat and Ward among them, name a potion. A brewed potion carrying the named effect, still potent, qualifies by itself and gives 3 ink, which makes the board easier. If the offering is not enough, the screen says it needs an offering that is good enough, or the potion it names.
+Some attunements, Heat and Ward among them, name a potion. A brewed potion carrying the named effect, still potent, qualifies by itself and gives 3 ink, which gives the rite game more ink and leans its tray (see [Purifying a rite](#purifying-a-rite)). If the offering is not enough, the screen says it needs an offering that is good enough, or the potion it names.
 
 One offering is used up per run, and the potion with it. No specimen is worn.
 
 ## The research board
 
-Each volume and each attunement has its own story, start and goal concepts, concepts and traits.
+Each volume has its own story, start and goal concepts, concepts and traits.
 
 The board is a hex board. The concept you already know sits at one end (the start) and the new idea at the other (the goal). Six hexes are rubble and cannot be used. Beside the board is a hand of concepts.
 
@@ -103,15 +103,32 @@ The notes' quality comes from the ink left, the longest run of joins and the ans
 
 ### Ink
 
-A run starts with seven ink. A volume adds up to three more from a specimen in good condition; an attunement adds ink from its offering and potion (see [Attunements](#attunements)). A bonus is added if you have already done the real thing a good number of times: fired a crossbow many times before researching guns, or forged with a hammer before Materials I.
+A run starts with seven ink. A volume adds up to three more from a specimen in good condition; an attunement adds ink from its offering and potion (see [Attunements](#attunements)); there the ink pays for drawing the tray again. A bonus is added if you have already done the real thing a good number of times: fired a crossbow many times before researching guns, or forged with a hammer before Materials I.
 
 ### Strain
 
 On a volume, a few fizzles wear the specimen: it comes back worn and can be repaired. Many fizzles take it apart into its parts, which go to you.
 
+## Purifying a rite
+
+The Rites tab's **Research** button opens a 5 by 5 grid. Its cells are **murk**, the raw effect, each of one of six elements: fire, water, earth, air, light and dark. Fire and water, earth and air, and light and dark are opposites. A few **anchors**, cells of the effect's own element, sit in the grid. Anchors never clear, and they count as filled when a line is checked.
+
+Under the grid is a tray of 3 pieces, each of a single element and 1 to 4 cells. Click a piece, then a cell to set it. Pieces do not rotate.
+
+When a row or column is full, it clears and your own pieces in it vanish. A murk cell in the line is cleansed only if the line also holds the opposite of that murk's element, in any cell, anchors and other murk included. A full line without it clears your pieces and leaves the murk.
+
+A grid is done when all its murk is gone. A rite takes 1 to 3 grids depending on the attunement, and each grid is thicker than the one before. There is no clock.
+
+- **Draw again** costs 1 ink and deals a whole new tray. The ink comes from the base, the offering and the reagent, as for a treatise.
+- **Take the residue** ends the run at once with what has been cleansed, at a lower grade.
+
+The grade is the purity (the grids cleansed, plus the share of the one in hand) times a bonus for few pieces and few redraws.
+
+The **offering** shapes the grids. The further its property ranks over the attunement's bar, the thinner the murk and the tidier the pieces. A **reagent** potion leans the tray toward the element that cleanses the thickest murk.
+
 ## What comes out
 
-An app is written onto the disk as it is, whatever the grade. A treatise carries the quality as its notes. An attunement gives a [Rite](Enchanting_Table.md#rites) whose quality is the research board's quality. The experience is spent either way, and a scrawl still turns the Blank Treatise into the volume. Pressing Esc before closing the notebook spends nothing.
+An app is written onto the disk as it is, whatever the grade. A treatise carries the quality as its notes. An attunement gives a [Rite](Enchanting_Table.md#rites) whose quality is the quality of the purify game. The experience is spent either way, and a scrawl still turns the Blank Treatise into the volume. Pressing Esc before closing the notebook spends nothing.
 
 ## See also
 

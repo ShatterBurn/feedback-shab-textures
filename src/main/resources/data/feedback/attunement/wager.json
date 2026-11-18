@@ -1,4 +1,6 @@
 {
+  "aspect": "dark",
+  "stages": 3,
   "target": 0.95,
   "band": 0.04,
   "roles": {

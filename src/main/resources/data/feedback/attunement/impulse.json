@@ -1,4 +1,6 @@
 {
+  "aspect": "air",
+  "stages": 2,
   "target": 0.45,
   "band": 0.12,
   "roles": {

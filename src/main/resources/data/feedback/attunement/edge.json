@@ -1,4 +1,6 @@
 {
+  "aspect": "fire",
+  "stages": 1,
   "target": 0.75,
   "band": 0.08,
   "roles": {

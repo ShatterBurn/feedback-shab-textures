@@ -56,7 +56,11 @@ public final class MinigameScreens {
 
     /** Opens the research game over the Research Table's screen. */
     public static void openResearch(Screen parent, io.github.soundgoodizerfan.feedback.net.ResearchOpenPayload session) {
-        // an app's plan holds words for the terminal; every other plan holds concepts for the board
+        // a rite sends its figures; an app's plan holds words for the terminal; every other plan holds concepts for the board
+        if (io.github.soundgoodizerfan.feedback.modular.research.RitePurify.Params.is(session.plan())) {
+            Minecraft.getInstance().setScreen(new RitePurifyScreen(parent, session));
+            return;
+        }
         boolean terminal = !io.github.soundgoodizerfan.feedback.modular.research.ResearchPlan.parse("play", session.plan()).words.isEmpty();
         Minecraft.getInstance().setScreen(terminal ? new AppHackScreen(parent, session) : new ResearchBoardScreen(parent, session));
     }

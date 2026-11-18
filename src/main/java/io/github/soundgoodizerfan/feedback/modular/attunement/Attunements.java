@@ -62,11 +62,15 @@ public final class Attunements extends SimpleJsonResourceReloadListener {
      * @param books   the vanilla enchantments this effect stands for: an enchanted book of one is a rite of it, and a vanilla tool carrying one is converted to it.
      * @param offering the material property research of this effect is about (hardness, toughness, yield, density, melting_point, conductivity or
      *                 specific_heat): an offering must rank at least {@code target} of the way up that property among materials ({@code Researching}).
+     * @param aspect  the element a rite of this effect refines to (fire, water, earth, air, light or dark): the grid the rite game is played on keeps cells of it
+     *                ({@code RitePurify}).
+     * @param stages  how many grids that game is, 1 to 3.
      * @param reagent optional potion effect id: a bottle of that potion in the player's inventory is burned for the session and lowers its experience cost
      *                (potions spec 12.4, 14.9).
      */
     public record Effect(ResourceLocation id, float target, float band, Map<String, Behaviour> roles, Map<String, Behaviour> mirror,
-            java.util.Optional<ResourceLocation> reagent, boolean starter, java.util.List<ResourceLocation> books, java.util.Optional<String> offering) {
+            java.util.Optional<ResourceLocation> reagent, boolean starter, java.util.List<ResourceLocation> books, java.util.Optional<String> offering,
+            String aspect, int stages) {
         public static final Codec<Effect> CODEC = RecordCodecBuilder.create(i -> i.group(
                 ResourceLocation.CODEC.fieldOf("id").forGetter(Effect::id),
                 Codec.floatRange(0.05f, 1f).fieldOf("target").forGetter(Effect::target),
@@ -76,7 +80,11 @@ public final class Attunements extends SimpleJsonResourceReloadListener {
                 ResourceLocation.CODEC.optionalFieldOf("reagent").forGetter(Effect::reagent),
                 Codec.BOOL.optionalFieldOf("starter", false).forGetter(Effect::starter),
                 ResourceLocation.CODEC.listOf().optionalFieldOf("books", java.util.List.of()).forGetter(Effect::books),
-                Codec.STRING.optionalFieldOf("offering").forGetter(Effect::offering)
+                Codec.STRING.optionalFieldOf("offering").forGetter(Effect::offering),
+                Codec.STRING.validate(s -> java.util.Arrays.asList(io.github.soundgoodizerfan.feedback.modular.research.RitePurify.ELEMENT_NAMES).contains(s)
+                        ? com.mojang.serialization.DataResult.success(s) : com.mojang.serialization.DataResult.error(() -> "not an element: " + s))
+                        .fieldOf("aspect").forGetter(Effect::aspect),
+                Codec.intRange(1, 3).fieldOf("stages").forGetter(Effect::stages)
         ).apply(i, Effect::new));
 
         public String key() {
