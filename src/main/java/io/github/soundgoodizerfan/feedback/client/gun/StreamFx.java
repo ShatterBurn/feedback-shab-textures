@@ -95,20 +95,15 @@ public final class StreamFx {
     /** Live droplets that are not the player's own. */
     private static int others;
 
-    /** A soft white disc (solid core, feathered rim), made once at runtime so no art file is needed: every droplet is this, tinted. */
+    /** A chunky 4 by 4 pixel blob with the corners chipped, hard-edged like the game's own particles; made once at runtime, every droplet is this tinted. */
     private static ResourceLocation disc;
 
     private static ResourceLocation disc(Minecraft mc) {
         if (disc == null) {
-            NativeImage img = new NativeImage(NativeImage.Format.RGBA, 32, 32, false);
-            for (int y = 0; y < 32; y++)
-                for (int x = 0; x < 32; x++) {
-                    float dx = (x + 0.5f) / 16f - 1f, dy = (y + 0.5f) / 16f - 1f;
-                    float rad = (float) Math.sqrt(dx * dx + dy * dy);
-                    float t = Mth.clamp((1f - rad) / 0.45f, 0f, 1f);
-                    int a = Math.round(t * t * (3f - 2f * t) * 255f);
-                    img.setPixelRGBA(x, y, a << 24 | 0xFFFFFF);
-                }
+            NativeImage img = new NativeImage(NativeImage.Format.RGBA, 4, 4, false);
+            for (int y = 0; y < 4; y++)
+                for (int x = 0; x < 4; x++)
+                    img.setPixelRGBA(x, y, (x == 0 || x == 3) && (y == 0 || y == 3) ? 0 : 0xFFFFFFFF);
             disc = Feedback.id("stream_disc");
             mc.getTextureManager().register(disc, new DynamicTexture(img));
         }
@@ -365,11 +360,17 @@ public final class StreamFx {
             float size = Mth.lerp(Math.min(p.spread() / 20f, 1f), 0.07f, 0.03f) * (1f + thick * 1.6f) * (1f + 0.05f * Math.min(body, 8f));
             // A burning stream is fire, not liquid: its fuel is consumed, so no drops of it fly (embers do, below).
             int drops = burning ? 0 : Math.min(cap, Math.round((1 + body * 0.6f) * scale));
+            // Drops are placed along the whole stream, not only at the nozzle: each starts where a drop that left earlier would be by now
+            // (sagged by gravity, spread by the cone) with the life it has left, so the stream is filled from the gun to where it lands.
             for (int i = 0; i < drops; i++) {
-                double u = random.nextDouble();
-                Vec3 vel = dir.scale(speed * (0.9 + random.nextDouble() * 0.15)).add(across(across1, across2, random, speed * (tan + 0.02)));
-                spawn(DROP, start.x + vel.x * u, start.y + vel.y * u, start.z + vel.z * u, vel, size * (0.7f + random.nextFloat() * 0.6f), life, r, g, b,
-                        mine, 0f, flared);
+                float dist = length * random.nextFloat();
+                float flown = dist / speed;
+                Vec3 off = across(across1, across2, random, tan * dist + 0.02);
+                Vec3 at = start.add(dir.scale(dist)).add(off).add(0, -0.5 * CasterTuning.SPRAY_GRAVITY * flown * flown, 0);
+                Vec3 vel = dir.scale(speed * (0.9 + random.nextDouble() * 0.15)).add(off.scale(1.0 / Math.max(flown, 1f))).add(0,
+                        -CasterTuning.SPRAY_GRAVITY * flown, 0);
+                spawn(DROP, at.x, at.y, at.z, vel, size * (0.7f + random.nextFloat() * 0.6f), Math.max(2, Math.round((length - dist) / (speed * 0.95f)) + 1), r,
+                        g, b, mine, 0f, flared);
             }
             if (burning) {
                 int flife = Mth.clamp(Math.round(6 + length * 0.3f), 6, 14);
@@ -634,7 +635,10 @@ public final class StreamFx {
         float r = d.r, g = d.g, b = d.b, a;
         switch (d.type) {
             case DROP -> {
-                a = 0.85f * (f > 0.8f ? (1f - f) / 0.2f : 1f);
+                a = 1f * (f > 0.8f ? (1f - f) / 0.2f : 1f);
+                r = Mth.lerp(0.2f, r, 1f);
+                g = Mth.lerp(0.2f, g, 1f);
+                b = Mth.lerp(0.2f, b, 1f);
                 if (d.flare) {
                     float t = Math.min(1f, f * 1.5f);
                     r = Mth.lerp(t, r, 0.85f);
@@ -642,16 +646,16 @@ public final class StreamFx {
                     b = Mth.lerp(t, b, 1f);
                 }
             }
-            case PUFF -> a = 0.35f * (1f - f);
+            case PUFF -> a = 0.6f * (1f - f);
             case FLAME, HALO, EMBER -> {
                 int c = ramp(d.type == HALO ? 0.2f : d.type == EMBER ? 0.15f + 0.4f * f : f, d.hot);
                 r = (c >> 16 & 255) / 255f;
                 g = (c >> 8 & 255) / 255f;
                 b = (c & 255) / 255f;
-                a = d.type == HALO ? 0.35f : d.type == EMBER ? 0.95f * (1f - f) : 0.6f * (1f - f * f);
+                a = d.type == HALO ? 0.35f : d.type == EMBER ? 0.95f * (1f - f) : 0.95f * (1f - f * f);
             }
             case SOOT -> a = 0.4f * (1f - f);
-            case FOG -> a = 0.3f * (1f - f) * Math.min(1f, f * 6f);
+            case FOG -> a = 0.45f * (1f - f) * Math.min(1f, f * 6f);
             case MOTE -> a = 0.9f * (0.5f + 0.5f * (float) Math.sin((d.age + partial) * 1.7f + d.x * 13f)) * (1f - f);
             default -> a = 0.8f * (1f - f);
         }
