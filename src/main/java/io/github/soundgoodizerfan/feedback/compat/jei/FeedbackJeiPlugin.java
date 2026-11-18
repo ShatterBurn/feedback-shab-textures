@@ -543,6 +543,7 @@ public class FeedbackJeiPlugin implements IModPlugin {
         net.minecraft.core.registries.BuiltInRegistries.ITEM.getOptional(io.github.soundgoodizerfan.feedback.Feedback.id("uranium_glass_block"))
                 .ifPresent(item -> info(registration, item, "uranium_glass_block"));
         info(registration, FItems.LEVITATION_SLEEVE.get(), "levitation_sleeve");
+        info(registration, FItems.COUPLING_SLEEVE.get(), "coupling_sleeve");
         info(registration, FModular.GAS_TANK.get(), "gas_tank");
         info(registration, FItems.TUBE.get(), "tube");
         info(registration, FItems.LINED_TUBE.get(), "lined_tube");

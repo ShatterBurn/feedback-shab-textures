@@ -437,6 +437,8 @@ public class FItems {
             () -> new io.github.soundgoodizerfan.feedback.machine.levitation.LevitationPlateItem(FBlocks.LEVITATION_PLATE.get(), new Item.Properties()));
     public static final DeferredItem<io.github.soundgoodizerfan.feedback.machine.levitation.LevitationSleeveItem> LEVITATION_SLEEVE = ITEMS.register("levitation_sleeve",
             () -> new io.github.soundgoodizerfan.feedback.machine.levitation.LevitationSleeveItem(new Item.Properties()));
+    public static final DeferredItem<io.github.soundgoodizerfan.feedback.machine.bearing.CouplingSleeveItem> COUPLING_SLEEVE = ITEMS.register("coupling_sleeve",
+            () -> new io.github.soundgoodizerfan.feedback.machine.bearing.CouplingSleeveItem(new Item.Properties()));
     public static final DeferredItem<io.github.soundgoodizerfan.feedback.machine.pyro.PyroPlateItem> PYRO_PLATE = ITEMS.register("pyro_plate",
             () -> new io.github.soundgoodizerfan.feedback.machine.pyro.PyroPlateItem(FBlocks.PYRO_PLATE.get(), new Item.Properties()));
     public static final DeferredItem<BlockItem> HYDRIDE_BED = ITEMS.registerSimpleBlockItem(FBlocks.HYDRIDE_BED);

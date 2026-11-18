@@ -32,6 +32,8 @@ public class LevitationComponent implements IBlockComponentProvider {
         if (data.contains(LevitationServerData.SLEEVE))
             tooltip.add(Component.translatable(data.getFloat(LevitationServerData.SLEEVE) > 0.05f
                     ? "feedback.jade.levitation.sleeve.cushioned" : "feedback.jade.levitation.sleeve.dry"));
+        if (data.contains(LevitationServerData.COUPLING))
+            tooltip.add(Component.translatable("feedback.jade.bearing.coupling." + data.getInt(LevitationServerData.COUPLING)));
     }
 
     @Override

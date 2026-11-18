@@ -76,12 +76,38 @@ public class RotaryBearingBlockEntity extends RotationNode implements io.github.
         return false;
     }
 
-    /** A rotary bearing honours one levitation sleeve. */
+    /** A rotary bearing honours one levitation sleeve and one coupling sleeve. */
     @Override
     public boolean canAdd(io.github.soundgoodizerfan.feedback.fitting.UpgradeFitting upgrade) {
+        if (upgrade instanceof io.github.soundgoodizerfan.feedback.fitting.upgrade.CouplingSleeveFitting)
+            return coupling() == null;
         return upgrade instanceof io.github.soundgoodizerfan.feedback.fitting.upgrade.LevitationSleeveFitting
                 && io.github.soundgoodizerfan.feedback.fitting.upgrade.LevitationSleeves.of(this) == null;
     }
+
+    /** The coupling sleeve fitted, or null. */
+    @Nullable
+    public io.github.soundgoodizerfan.feedback.fitting.upgrade.CouplingSleeveFitting coupling() {
+        for (var u : fittings.upgrades())
+            if (u instanceof io.github.soundgoodizerfan.feedback.fitting.upgrade.CouplingSleeveFitting c)
+                return c;
+        return null;
+    }
+
+    /**
+     * What the coupling does now, for Jade: 0 no sleeve, 1 sleeve idle (a role other than 0, or nothing held), 2 the shaft turns
+     * the body, 3 the body turns the shaft. Words only; the push itself reads off the network.
+     */
+    public int couplingState() {
+        if (coupling() == null)
+            return 0;
+        if (bearing == null || !bearing.coupled())
+            return 1;
+        return Math.abs(lastPush) < 1e-3f ? 1 : lastPush * getRpm().value() >= 0f ? 3 : 2;
+    }
+
+    /** The coupling's last push on the run, Su along the network's positive sense; server only. */
+    private float lastPush;
 
     @Override
     public boolean addUpgrade(io.github.soundgoodizerfan.feedback.fitting.UpgradeFitting upgrade) {
@@ -225,9 +251,13 @@ public class RotaryBearingBlockEntity extends RotationNode implements io.github.
             return;
         }
         lastFacing = facing();
-        boolean rebuild = bearing.tick(level, worldPosition, worldAnchor(), facing(), getRpm().value());
-        // What the road does to a wheel on this bearing reaches the run as a push.
+        // A coupling sleeve locks the body to the shaft: the body then leaves the run's inertia and its torque reaches the run.
+        var sleeve = coupling();
+        boolean rebuild = bearing.couple(sleeve == null ? 0f : sleeve.grip());
+        rebuild |= bearing.tick(level, worldPosition, worldAnchor(), facing(), getRpm().value());
+        // What the road does to a wheel on this bearing, or the coupled body to the shaft, reaches the run as a push.
         float road = bearing.takeRoadSu(facing().getAxisDirection() == Direction.AxisDirection.POSITIVE ? 1 : -1, 1);
+        lastPush = road;
         if (road != 0 && getNetwork() != null)
             getNetwork().driveExternally(new io.github.soundgoodizerfan.feedback.core.unit.Su(road),
                     new Drag(0f), new Inertia(0f));

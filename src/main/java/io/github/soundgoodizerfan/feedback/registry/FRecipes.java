@@ -98,6 +98,11 @@ public class FRecipes {
             LEVITATION_SLEEVE = SERIALIZERS.register("levitation_sleeve",
                     () -> new SimpleCraftingRecipeSerializer<>(io.github.soundgoodizerfan.feedback.machine.levitation.LevitationSleeveRecipe::new));
 
+    /** One plate and one rod of one metal with a yield strength -> a coupling sleeve in that metal. */
+    public static final DeferredHolder<RecipeSerializer<?>, SimpleCraftingRecipeSerializer<io.github.soundgoodizerfan.feedback.machine.bearing.CouplingSleeveRecipe>>
+            COUPLING_SLEEVE = SERIALIZERS.register("coupling_sleeve",
+                    () -> new SimpleCraftingRecipeSerializer<>(io.github.soundgoodizerfan.feedback.machine.bearing.CouplingSleeveRecipe::new));
+
     /** One crystal plate of a pyroelectric material and two wires -> a pyroelectric plate in that material. */
     public static final DeferredHolder<RecipeSerializer<?>, SimpleCraftingRecipeSerializer<io.github.soundgoodizerfan.feedback.machine.pyro.PyroPlateRecipe>>
             PYRO_PLATE = SERIALIZERS.register("pyro_plate",

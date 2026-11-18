@@ -18,7 +18,7 @@ public class LevitationServerData implements IServerDataProvider<BlockAccessor> 
 
     public static final LevitationServerData INSTANCE = new LevitationServerData();
 
-    static final String PLATE = "LevitationPlate", SLEEVE = "LevitationSleeve", PYRO = "PyroRate";
+    static final String PLATE = "LevitationPlate", SLEEVE = "LevitationSleeve", PYRO = "PyroRate", COUPLING = "BearingCoupling";
 
     @Override
     public void appendServerData(CompoundTag data, BlockAccessor accessor) {
@@ -30,6 +30,9 @@ public class LevitationServerData implements IServerDataProvider<BlockAccessor> 
             data.putFloat(PYRO, pyro.coupling() <= 0f || Math.abs(pyro.rate()) < pyro.resolution(io.github.soundgoodizerfan.feedback.instrument.Quantity.HEATING_RATE) / 2f ? 0f : pyro.rate());
         else if (accessor.getBlockEntity() instanceof Fittable holder && LevitationSleeves.of(holder) != null)
             data.putFloat(SLEEVE, LevitationSleeves.cut(level, pos, holder));
+        if (accessor.getBlockEntity() instanceof io.github.soundgoodizerfan.feedback.machine.bearing.RotaryBearingBlockEntity bearing
+                && bearing.couplingState() > 0)
+            data.putInt(COUPLING, bearing.couplingState());
     }
 
     @Override

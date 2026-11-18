@@ -139,6 +139,16 @@ public final class Joint {
     /** How the body sat against its parent when the constraint was made, in the parent's frame (ball swing zero). */
     private final Quaterniond relative0 = new Quaterniond();
     private double roadImpulse;
+    /**
+     * 0 for a plain bearing (the body rides the run as a flywheel); above 0 a coupling sleeve locks body to shaft, and this is the
+     * share of the torque cap its metal carries. Set each game tick, read by the physics step.
+     */
+    // Prior art: Create TwisterMill (MIT) reads a held body's spin about the bearing axis, minus its base's, as a shaft speed; we took only
+    // that reading (our drive already measures it) and rejected its flat Su per RPM with no reaction on the body: here the drive's impulse
+    // is the torque both ways, so a loaded shaft slows the body.
+    private volatile float coupling;
+    /** The drive's angular impulse on the body summed over physics steps while coupled, kpg x block^2 / s; the shaft takes the opposite. */
+    private double couplingImpulse;
     /** Physics steps the hinge's torque sat at its cap with no relative turning, summed for the game tick. */
     private final java.util.concurrent.atomic.AtomicInteger stalledTicks = new java.util.concurrent.atomic.AtomicInteger();
     /** Consecutive physics steps the drive has sat at its cap without the arm turning; physics thread only. */
@@ -308,7 +318,24 @@ public final class Joint {
 
     /** The body's inertia counted on the run, in the network's unit. */
     public float runInertia() {
-        return (float) bodyInertia * MachineTuning.ROTARY_BEARING_INERTIA_PER_KPG_BLOCK2;
+        // Coupled, the body is its own flywheel: the run feels only the torque between them, never the body's inertia as well.
+        return coupling > 0f ? 0f : (float) bodyInertia * MachineTuning.ROTARY_BEARING_INERTIA_PER_KPG_BLOCK2;
+    }
+
+    /**
+     * Couples the body to the shaft (a coupling sleeve fitted, hinge role 0 only) with {@code grip} of the torque cap, or
+     * uncouples it with 0. True when this changed whether the body counts as run inertia, so the run should be rebuilt.
+     */
+    public boolean couple(float grip) {
+        boolean wasCoupled = coupling > 0f;
+        float now = kind == Kind.HINGE && variant == 0 ? Math.max(0f, grip) : 0f;
+        coupling = now;
+        return wasCoupled != now > 0f;
+    }
+
+    /** True while a coupling sleeve locks the body to the shaft. */
+    public boolean coupled() {
+        return coupling > 0f;
     }
 
     @Nullable
@@ -590,12 +617,18 @@ public final class Joint {
      * helps it, one the road holds back loads it.
      */
     public float takeRoadSu(float facingSign, double ticks) {
-        double impulse;
+        double impulse, coupled;
         synchronized (this) {
             impulse = roadImpulse;
             roadImpulse = 0;
+            coupled = couplingImpulse;
+            couplingImpulse = 0;
         }
-        return (float) (facingSign * (impulse / Math.max(ticks / FTuning.TICKS_PER_SECOND, 1e-6) + gravityTorque) * io.github.soundgoodizerfan.feedback.core.unit.Units.SU_PER_KPG_TORQUE);
+        double seconds = Math.max(ticks / FTuning.TICKS_PER_SECOND, 1e-6);
+        // Coupled: road and weight already act on the body's spin, so the shaft feels only what the drive does to the body, reversed.
+        if (coupling > 0f)
+            return (float) (-facingSign * coupled / seconds * io.github.soundgoodizerfan.feedback.core.unit.Units.SU_PER_KPG_TORQUE);
+        return (float) (facingSign * (impulse / seconds + gravityTorque) * io.github.soundgoodizerfan.feedback.core.unit.Units.SU_PER_KPG_TORQUE);
     }
 
     /** The body's spin about the facing relative to its parent's, rad/s (positive about the positive axis). */
@@ -654,7 +687,9 @@ public final class Joint {
             double parentCap = parentInertia * MachineTuning.ROTARY_BEARING_MAX_PARENT_ACCEL * dt;
             impulse = Math.max(-parentCap, Math.min(parentCap, impulse));
         }
-        double cap = MachineTuning.ROTARY_BEARING_MAX_TORQUE * condition * dt;
+        // A coupling sleeve carries only the share of the cap its metal holds.
+        float grip = coupling;
+        double cap = MachineTuning.ROTARY_BEARING_MAX_TORQUE * condition * (grip > 0f ? grip : 1f) * dt;
         // Wear by misuse only: a drive pinned at its cap while the arm does not turn (a stalled drive).
         // Starting a heavy arm, or a drive held by its brake, sits at the cap too: only a stall that goes on past the grace is misuse.
         if (Math.abs(impulse) >= cap && Math.abs(w) < MachineTuning.JOINT_HOLD_BELOW_RAD_PER_S) {
@@ -671,6 +706,10 @@ public final class Joint {
         lastDrive = impulse;
         if (impulse == 0)
             return;
+        if (grip > 0f)
+            synchronized (this) {
+                couplingImpulse += impulse;
+            }
         torque(h, s, new Vector3d(axis).mul(impulse));
         if (hp != null)
             torque(hp, p, new Vector3d(axis).mul(-impulse));

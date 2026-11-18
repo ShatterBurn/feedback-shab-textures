@@ -152,6 +152,12 @@ public final class MachineTuning {
     public static final float ROTARY_BEARING_INERTIA_PER_KPG_BLOCK2 = 0.5f;
 
     /**
+     * Placeholder (invented). The yield strength at which a coupling sleeve's metal carries a rotary bearing's whole torque cap;
+     * a weaker metal carries yield over this share of it (iron, 7.5, about three fifths), a stronger one the whole cap.
+     */
+    public static final float COUPLING_REFERENCE_YIELD = 12f;
+
+    /**
      * Placeholders. Hold at rest: a hinge whose drive asks no speed and that turns slower than this
      * (rad/s against its parent) is held at its angle by a position servo of this rate (per second,
      * as {@link #STEER_SERVO_RATE}), its force capped at the torque the same arm gives a kingpin.

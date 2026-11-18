@@ -49,6 +49,7 @@ final class CodeRecipeExamples {
         crafting.addExtension(io.github.soundgoodizerfan.feedback.machine.levitation.LevitationPlateRecipe.class, new ElectronicsCrafting.ExtensionOf<>(ext));
         crafting.addExtension(io.github.soundgoodizerfan.feedback.machine.pyro.PyroPlateRecipe.class, new ElectronicsCrafting.ExtensionOf<>(ext));
         crafting.addExtension(io.github.soundgoodizerfan.feedback.machine.levitation.LevitationSleeveRecipe.class, new ElectronicsCrafting.ExtensionOf<>(ext));
+        crafting.addExtension(io.github.soundgoodizerfan.feedback.machine.bearing.CouplingSleeveRecipe.class, new ElectronicsCrafting.ExtensionOf<>(ext));
         crafting.addExtension(io.github.soundgoodizerfan.feedback.process.TorchRecipe.class, new ElectronicsCrafting.ExtensionOf<>(ext));
         crafting.addExtension(io.github.soundgoodizerfan.feedback.weapon.MagazineLoadRecipe.class, new ElectronicsCrafting.ExtensionOf<>(ext));
         crafting.addExtension(io.github.soundgoodizerfan.feedback.process.FoodSaltingRecipe.class, new ElectronicsCrafting.ExtensionOf<>(ext));
@@ -193,6 +194,18 @@ final class CodeRecipeExamples {
         });
         if (!sleevePlates.isEmpty())
             out.add(holder("levitation_sleeve", List.of(sleevePlates, sleeveRods), 2, 1, sleeves));
+
+        // Coupling sleeve: a plate and a rod of one metal with a yield strength.
+        List<ItemStack> couplingPlates = new ArrayList<>(), couplingRods = new ArrayList<>(), couplings = new ArrayList<>();
+        materials.forEach((id, m) -> {
+            if (m.mechanical().yieldStrength().isPresent() && m.stack(id, "plate").isPresent() && m.stack(id, "rod").isPresent()) {
+                couplingPlates.add(m.stack(id, "plate").get());
+                couplingRods.add(m.stack(id, "rod").get());
+                couplings.add(io.github.soundgoodizerfan.feedback.machine.bearing.CouplingSleeveItem.of(id));
+            }
+        });
+        if (!couplingPlates.isEmpty())
+            out.add(holder("coupling_sleeve", List.of(couplingPlates, couplingRods), 2, 1, couplings));
 
         // Pyroelectric plate: one crystal plate of a pyroelectric material and two wires.
         List<ItemStack> pyroCrystals = new ArrayList<>(), pyroPlates = new ArrayList<>();

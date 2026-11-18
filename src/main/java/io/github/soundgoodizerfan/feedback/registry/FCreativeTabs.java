@@ -461,6 +461,10 @@ public class FCreativeTabs {
                 out.accept(io.github.soundgoodizerfan.feedback.machine.levitation.LevitationSleeveItem.of(id));
         });
         forMaterials((id, m) -> {
+            if (m.mechanical().yieldStrength().isPresent())
+                out.accept(io.github.soundgoodizerfan.feedback.machine.bearing.CouplingSleeveItem.of(id));
+        });
+        forMaterials((id, m) -> {
             if (m.electrical().pyroCoupling().filter(c -> c > 0f).isPresent())
                 out.accept(io.github.soundgoodizerfan.feedback.machine.pyro.PyroPlateItem.of(id));
         });
