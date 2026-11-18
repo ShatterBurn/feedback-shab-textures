@@ -1,18 +1,72 @@
 {
   "parent": "block/block",
   "textures": {
-    "case": "feedback:block/log_fig_inner",
+    "case": "feedback:block/copper_sheet",
     "face": "feedback:block/device_gearbox_clutch_on",
-    "particle": "feedback:block/log_fig_inner"
+    "particle": "feedback:block/copper_sheet",
+    "baked": "feedback:block/timer_running_faces"
   },
   "elements": [
     {
-      "from": [2, 0, 2],
-      "to": [14, 12, 14],
+      "from": [
+        2,
+        0,
+        2
+      ],
+      "to": [
+        14,
+        12,
+        14
+      ],
       "faces": {
-        "north": { "texture": "#face" }, "south": { "texture": "#case" },
-        "west":  { "texture": "#case" }, "east":  { "texture": "#case" },
-        "up":    { "texture": "#case" }, "down":  { "texture": "#case" }
+        "north": {
+          "texture": "#face"
+        },
+        "south": {
+          "texture": "#baked",
+          "uv": [
+            0.0,
+            0.0,
+            1.5,
+            16.0
+          ]
+        },
+        "west": {
+          "texture": "#baked",
+          "uv": [
+            1.625,
+            0.0,
+            3.125,
+            16.0
+          ]
+        },
+        "east": {
+          "texture": "#baked",
+          "uv": [
+            3.25,
+            0.0,
+            4.75,
+            16.0
+          ]
+        },
+        "up": {
+          "texture": "#baked",
+          "uv": [
+            4.875,
+            0.0,
+            6.375,
+            16.0
+          ]
+        },
+        "down": {
+          "texture": "#baked",
+          "uv": [
+            6.5,
+            0.0,
+            8.0,
+            16.0
+          ]
+        }
       }
     }
   ]

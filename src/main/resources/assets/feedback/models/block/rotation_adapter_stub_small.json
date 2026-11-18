@@ -1,8 +1,8 @@
 {
   "textures": {
-    "housing": "feedback:block/device_gearbox_sides",
-    "shaft": "feedback:block/log_mulberry_inner",
-    "particle": "feedback:block/device_gearbox_sides"
+    "housing": "feedback:block/housing_wood",
+    "shaft": "feedback:block/bronze_sheet",
+    "particle": "feedback:block/housing_wood"
   },
   "elements": [
     {

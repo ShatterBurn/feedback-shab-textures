@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "feedback:block/device_gearbox_clutch_off"
+    "all": "feedback:block/housing_iron"
   }
 }

@@ -1,14 +1,13 @@
 {
   "parent": "minecraft:block/block",
   "textures": {
-    "paint": "feedback:block/robot_paint",
-    "steel": "feedback:block/robot_steel",
-    "hazard": "feedback:block/robot_hazard",
-    "post": "feedback:block/robot_post",
+    "copper": "feedback:block/copper_sheet",
+    "wire": "feedback:block/copper_winding",
+    "string": "feedback:block/string_winding",
     "lamp": "feedback:block/robot_lamp",
     "lattice": "feedback:block/robot_lattice",
-    "cable": "feedback:block/robot_cable",
-    "particle": "feedback:block/robot_steel"
+    "particle": "feedback:block/copper_sheet",
+    "baked": "feedback:block/robot_beacon_faces"
   },
   "elements": [
     {
@@ -25,22 +24,58 @@
       ],
       "faces": {
         "north": {
-          "texture": "#steel"
+          "texture": "#baked",
+          "uv": [
+            0.0,
+            0.0,
+            1.0,
+            4.0
+          ]
         },
         "south": {
-          "texture": "#steel"
+          "texture": "#baked",
+          "uv": [
+            1.125,
+            0.0,
+            2.125,
+            4.0
+          ]
         },
         "east": {
-          "texture": "#steel"
+          "texture": "#baked",
+          "uv": [
+            2.25,
+            0.0,
+            3.25,
+            4.0
+          ]
         },
         "west": {
-          "texture": "#steel"
+          "texture": "#baked",
+          "uv": [
+            3.375,
+            0.0,
+            4.375,
+            4.0
+          ]
         },
         "up": {
-          "texture": "#steel"
+          "texture": "#baked",
+          "uv": [
+            4.5,
+            0.0,
+            5.5,
+            16.0
+          ]
         },
         "down": {
-          "texture": "#steel"
+          "texture": "#baked",
+          "uv": [
+            5.625,
+            0.0,
+            6.625,
+            16.0
+          ]
         }
       }
     },
@@ -58,57 +93,57 @@
       ],
       "faces": {
         "north": {
-          "texture": "#post",
+          "texture": "#baked",
           "uv": [
-            0,
-            0,
-            4,
-            8
+            6.75,
+            0.0,
+            7.25,
+            16.0
           ]
         },
         "south": {
-          "texture": "#post",
+          "texture": "#baked",
           "uv": [
-            0,
-            0,
-            4,
-            8
+            7.375,
+            0.0,
+            7.875,
+            16.0
           ]
         },
         "east": {
-          "texture": "#post",
+          "texture": "#baked",
           "uv": [
-            0,
-            0,
-            4,
-            8
+            8.0,
+            0.0,
+            8.5,
+            16.0
           ]
         },
         "west": {
-          "texture": "#post",
+          "texture": "#baked",
           "uv": [
-            0,
-            0,
-            4,
-            8
+            8.625,
+            0.0,
+            9.125,
+            16.0
           ]
         },
         "up": {
-          "texture": "#post",
+          "texture": "#baked",
           "uv": [
-            0,
-            0,
-            4,
-            8
+            9.25,
+            0.0,
+            9.75,
+            8.0
           ]
         },
         "down": {
-          "texture": "#post",
+          "texture": "#baked",
           "uv": [
-            0,
-            0,
-            4,
-            8
+            9.875,
+            0.0,
+            10.375,
+            8.0
           ]
         }
       }
@@ -127,22 +162,58 @@
       ],
       "faces": {
         "north": {
-          "texture": "#steel"
+          "texture": "#baked",
+          "uv": [
+            10.5,
+            0.0,
+            11.25,
+            4.0
+          ]
         },
         "south": {
-          "texture": "#steel"
+          "texture": "#baked",
+          "uv": [
+            11.375,
+            0.0,
+            12.125,
+            4.0
+          ]
         },
         "east": {
-          "texture": "#steel"
+          "texture": "#baked",
+          "uv": [
+            12.25,
+            0.0,
+            13.0,
+            4.0
+          ]
         },
         "west": {
-          "texture": "#steel"
+          "texture": "#baked",
+          "uv": [
+            13.125,
+            0.0,
+            13.875,
+            4.0
+          ]
         },
         "up": {
-          "texture": "#steel"
+          "texture": "#baked",
+          "uv": [
+            14.0,
+            0.0,
+            14.75,
+            12.0
+          ]
         },
         "down": {
-          "texture": "#steel"
+          "texture": "#baked",
+          "uv": [
+            14.875,
+            0.0,
+            15.625,
+            12.0
+          ]
         }
       }
     },

@@ -1,21 +1,37 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
+  "type": "feedback:engineering",
   "key": {
     "P": {
       "item": "feedback:wrought_iron_plate"
     },
+    "X": {
+      "item": "feedback:galena"
+    },
+    "W": {
+      "item": "feedback:copper_wire"
+    },
     "C": {
-      "item": "minecraft:coal_block"
+      "item": "feedback:copper_plate"
     }
   },
   "pattern": [
-    "PPP",
-    "PCP",
+    "PXP",
+    "WCW",
     "PPP"
   ],
   "result": {
     "count": 1,
     "id": "feedback:dark_cell"
-  }
+  },
+  "tool": [
+    {
+      "ability": "feedback:driver",
+      "wear": 1
+    }
+  ],
+  "fasteners": {
+    "count": 0,
+    "floor": 1
+  },
+  "school": "electrical:2"
 }

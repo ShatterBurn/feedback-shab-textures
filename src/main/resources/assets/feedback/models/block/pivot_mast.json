@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:block/cube_column",
   "textures": {
-    "end": "feedback:block/device_gearbox_ends",
-    "side": "feedback:block/device_gearbox_sides"
+    "end": "feedback:block/housing_iron",
+    "side": "feedback:block/housing_iron"
   }
 }

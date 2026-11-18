@@ -25,10 +25,10 @@ public class RelayBlock extends Block implements EntityBlock {
     public static final BooleanProperty CLOSED = BooleanProperty.create("closed");
 
     /**
-     * Mirrors models/block/relay.json and relay_closed.json (scripts/relay_model.py): base, yoke, pole stub, contact post, then the
+     * Mirrors models/block/relay.json and relay_closed.json (scripts/relay_model.py): base, yoke, pole stub wound with its copper coil (the {5, 2, 5, 11, 6, 11} box), contact post, then the
      * armature, which lies flat on pole and contact when closed and is raised two units when open.
      */
-    private static final int[][] FIXED = {{2, 0, 2, 14, 2, 14}, {2, 2, 6, 4, 10, 10}, {6, 2, 6, 10, 6, 10}, {12, 2, 6, 14, 6, 10}};
+    private static final int[][] FIXED = {{2, 0, 2, 14, 2, 14}, {2, 2, 6, 4, 10, 10}, {5, 2, 5, 11, 6, 11}, {12, 2, 6, 14, 6, 10}};
     private static final VoxelShape OPEN = shape(new int[]{4, 8, 6, 14, 10, 10});
     private static final VoxelShape CLOSED_SHAPE = shape(new int[]{4, 6, 6, 14, 8, 10});
 

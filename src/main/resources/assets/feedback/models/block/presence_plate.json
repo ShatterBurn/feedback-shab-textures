@@ -1,8 +1,12 @@
 {
-  "parent": "minecraft:block/orientable",
+  "parent": "minecraft:block/cube",
   "textures": {
-    "front": "feedback:block/device_diskdrive_front_on_2",
-    "side": "feedback:block/device_gearbox_sides",
-    "top": "feedback:block/device_gearbox_sides"
+    "north": "feedback:block/sensor_presence_plate_front",
+    "south": "feedback:block/sensor_presence_plate_back",
+    "east": "feedback:block/sensor_presence_plate_side",
+    "west": "feedback:block/sensor_presence_plate_side",
+    "up": "feedback:block/sensor_presence_plate_top",
+    "down": "feedback:block/sensor_bottom",
+    "particle": "feedback:block/sensor_presence_plate_side"
   }
 }

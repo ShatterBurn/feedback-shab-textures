@@ -4,13 +4,19 @@ A mob farm that is a sealed dark room. Hostile mobs gather in it as a count and 
 
 ## Building it
 
-Enclose a room, put a Dark Cell controller in its wall, and keep the inside dark: no block light, no daylight. A room with an opening, or any light inside, does nothing. Right-click the controller with an empty hand to read the room's volume, how many mobs are in it, its shield and how many kill methods it has.
+Enclose a room, put a Dark Cell controller in its wall, and keep the inside dark: no block light, no daylight. A room with an opening, or any light inside, does nothing. Right-click the controller with an empty hand to read the room's volume, how many mobs are in it, its shield and how many kill methods it has. The controller is a wrought-iron casing with a galena crystal window and copper wiring.
+
+## Crafting
+
+A Dark Cell is crafted at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, holding Electrical Treatise II: Coils and Magnets ([Treatise](Treatise.md)):
 
 ```
-P P P
-P C P      P wrought iron plate, C coal block
+P X P
+W C W
 P P P
 ```
+
+P is a Wrought Iron Plate, X is Galena, W is Copper Wire and C is a Copper Plate.
 
 Hostile mobs gather up to a limit set by the room's volume. The overworld, the Nether and the End each draw from their own kinds.
 

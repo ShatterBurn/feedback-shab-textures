@@ -1,14 +1,13 @@
 {
   "parent": "minecraft:block/block",
   "textures": {
-    "paint": "feedback:block/robot_paint",
-    "steel": "feedback:block/robot_steel",
-    "hazard": "feedback:block/robot_hazard",
-    "post": "feedback:block/robot_post",
+    "copper": "feedback:block/copper_sheet",
+    "wire": "feedback:block/copper_winding",
+    "string": "feedback:block/string_winding",
     "lamp": "feedback:block/robot_lamp",
     "lattice": "feedback:block/robot_lattice",
-    "cable": "feedback:block/robot_cable",
-    "particle": "feedback:block/robot_steel"
+    "particle": "feedback:block/copper_sheet",
+    "baked": "feedback:block/robot_arm_faces"
   },
   "elements": [
     {
@@ -25,22 +24,58 @@
       ],
       "faces": {
         "north": {
-          "texture": "#steel"
+          "texture": "#baked",
+          "uv": [
+            0.0,
+            0.0,
+            1.5,
+            2.6666666666666665
+          ]
         },
         "south": {
-          "texture": "#steel"
+          "texture": "#baked",
+          "uv": [
+            1.625,
+            0.0,
+            3.125,
+            2.6666666666666665
+          ]
         },
         "east": {
-          "texture": "#steel"
+          "texture": "#baked",
+          "uv": [
+            3.25,
+            0.0,
+            4.75,
+            2.6666666666666665
+          ]
         },
         "west": {
-          "texture": "#steel"
+          "texture": "#baked",
+          "uv": [
+            4.875,
+            0.0,
+            6.375,
+            2.6666666666666665
+          ]
         },
         "up": {
-          "texture": "#steel"
+          "texture": "#baked",
+          "uv": [
+            6.5,
+            0.0,
+            8.0,
+            16.0
+          ]
         },
         "down": {
-          "texture": "#steel"
+          "texture": "#baked",
+          "uv": [
+            8.125,
+            0.0,
+            9.625,
+            16.0
+          ]
         }
       }
     },
@@ -58,22 +93,58 @@
       ],
       "faces": {
         "north": {
-          "texture": "#steel"
+          "texture": "#baked",
+          "uv": [
+            9.75,
+            0.0,
+            10.5,
+            5.333333333333333
+          ]
         },
         "south": {
-          "texture": "#steel"
+          "texture": "#baked",
+          "uv": [
+            10.625,
+            0.0,
+            11.375,
+            5.333333333333333
+          ]
         },
         "east": {
-          "texture": "#steel"
+          "texture": "#baked",
+          "uv": [
+            11.5,
+            0.0,
+            12.25,
+            5.333333333333333
+          ]
         },
         "west": {
-          "texture": "#steel"
+          "texture": "#baked",
+          "uv": [
+            12.375,
+            0.0,
+            13.125,
+            5.333333333333333
+          ]
         },
         "up": {
-          "texture": "#steel"
+          "texture": "#baked",
+          "uv": [
+            13.25,
+            0.0,
+            14.0,
+            8.0
+          ]
         },
         "down": {
-          "texture": "#steel"
+          "texture": "#baked",
+          "uv": [
+            14.125,
+            0.0,
+            14.875,
+            8.0
+          ]
         }
       }
     }

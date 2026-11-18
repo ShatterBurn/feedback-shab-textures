@@ -1,9 +1,10 @@
 {
   "parent": "block/block",
   "textures": {
-    "housing": "feedback:block/device_gearbox_sides",
-    "part": "feedback:block/plank_plywood",
-    "particle": "feedback:block/device_gearbox_sides"
+    "housing": "feedback:block/housing_iron",
+    "part": "feedback:block/housing_iron",
+    "particle": "feedback:block/housing_iron",
+    "baked": "feedback:block/piston_joint_faces"
   },
   "elements": [
     {
@@ -19,57 +20,57 @@
       ],
       "faces": {
         "north": {
-          "texture": "#housing",
+          "texture": "#baked",
           "uv": [
-            2.0,
-            2.5,
-            14.0,
-            13.5
+            0.0,
+            0.0,
+            1.5,
+            14.666666666666666
           ]
         },
         "south": {
-          "texture": "#housing",
+          "texture": "#baked",
           "uv": [
-            2.0,
-            2.5,
-            14.0,
-            13.5
+            1.625,
+            0.0,
+            3.125,
+            14.666666666666666
           ]
         },
         "east": {
-          "texture": "#housing",
+          "texture": "#baked",
           "uv": [
-            2.0,
-            2.5,
-            14.0,
-            13.5
+            3.25,
+            0.0,
+            4.75,
+            14.666666666666666
           ]
         },
         "west": {
-          "texture": "#housing",
+          "texture": "#baked",
           "uv": [
-            2.0,
-            2.5,
-            14.0,
-            13.5
+            4.875,
+            0.0,
+            6.375,
+            14.666666666666666
           ]
         },
         "up": {
-          "texture": "#housing",
+          "texture": "#baked",
           "uv": [
-            2.0,
-            2.0,
-            14.0,
-            14.0
+            6.5,
+            0.0,
+            8.0,
+            16.0
           ]
         },
         "down": {
-          "texture": "#housing",
+          "texture": "#baked",
           "uv": [
-            2.0,
-            2.0,
-            14.0,
-            14.0
+            8.125,
+            0.0,
+            9.625,
+            16.0
           ]
         }
       }
@@ -87,57 +88,57 @@
       ],
       "faces": {
         "north": {
-          "texture": "#part",
+          "texture": "#baked",
           "uv": [
-            6.0,
-            5.5,
-            10.0,
-            10.5
+            9.75,
+            0.0,
+            10.25,
+            6.666666666666667
           ]
         },
         "south": {
-          "texture": "#part",
+          "texture": "#baked",
           "uv": [
-            6.0,
-            5.5,
-            10.0,
-            10.5
+            10.375,
+            0.0,
+            10.875,
+            6.666666666666667
           ]
         },
         "east": {
-          "texture": "#part",
+          "texture": "#baked",
           "uv": [
-            6.0,
-            5.5,
-            10.0,
-            10.5
+            11.0,
+            0.0,
+            11.5,
+            6.666666666666667
           ]
         },
         "west": {
-          "texture": "#part",
+          "texture": "#baked",
           "uv": [
-            6.0,
-            5.5,
-            10.0,
-            10.5
+            11.625,
+            0.0,
+            12.125,
+            6.666666666666667
           ]
         },
         "up": {
-          "texture": "#part",
+          "texture": "#baked",
           "uv": [
-            6.0,
-            6.0,
-            10.0,
-            10.0
+            12.25,
+            0.0,
+            12.75,
+            5.333333333333333
           ]
         },
         "down": {
-          "texture": "#part",
+          "texture": "#baked",
           "uv": [
-            6.0,
-            6.0,
-            10.0,
-            10.0
+            12.875,
+            0.0,
+            13.375,
+            5.333333333333333
           ]
         }
       }

@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "feedback:item/part_mould_ingot"
+    "layer0": "feedback:item/mold_glass_block_mold"
   }
 }

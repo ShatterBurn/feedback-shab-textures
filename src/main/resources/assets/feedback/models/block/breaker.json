@@ -2,7 +2,7 @@
   "parent": "block/cube_bottom_top",
   "textures": {
     "top": "feedback:block/copper_coil_side",
-    "bottom": "feedback:block/metal_steel_block",
-    "side": "feedback:block/device_gearbox_sides"
+    "bottom": "feedback:block/housing_iron",
+    "side": "feedback:block/fuse_porcelain"
   }
 }

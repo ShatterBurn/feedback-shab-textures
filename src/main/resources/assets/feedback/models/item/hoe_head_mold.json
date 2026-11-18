@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "feedback:item/part_mould"
+    "layer0": "feedback:item/mold_hoe_head_mold"
   }
 }

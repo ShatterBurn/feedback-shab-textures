@@ -1,8 +1,1 @@
-{
-  "parent": "minecraft:block/orientable",
-  "textures": {
-    "front": "feedback:block/device_computer_front_on",
-    "side": "feedback:block/device_gearbox_sides",
-    "top": "feedback:block/device_gearbox_sides"
-  }
-}
+{ "parent": "minecraft:block/observer" }
