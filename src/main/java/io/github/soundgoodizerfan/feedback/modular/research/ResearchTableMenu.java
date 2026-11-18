@@ -264,7 +264,7 @@ public class ResearchTableMenu extends AbstractContainerMenu {
                 table.getItem(ResearchTableBlockEntity.REAGENT), server.level())
                 : Researching.ink(server, table.getItem(ResearchTableBlockEntity.SPECIMEN), plan);
         sentSeed = (int) (now ^ containerId * 31L);
-        PacketDistributor.sendToPlayer(server, new ResearchOpenPayload(containerId, plan.json(), sentInk, sentSeed));
+        PacketDistributor.sendToPlayer(server, new ResearchOpenPayload(containerId, plan.json(), sentInk, sentSeed, mode.get(), mode.get() == 0 ? Researching.volume(sentIndex)[1] : 1));
         return true;
     }
 
@@ -289,19 +289,26 @@ public class ResearchTableMenu extends AbstractContainerMenu {
             broadcastChanges();
             return;
         }
-        ResearchBoard board = new ResearchBoard(sentPlan, sentSeed, sentInk);
-        for (String move : moves) {
-            int at = move.indexOf('@'), comma = move.indexOf(',', at + 1);
-            if (at < 0 || comma < 0 || board.over())
-                break;
-            try {
-                board.place(move.substring(0, at), ResearchBoard.key(Integer.parseInt(move.substring(at + 1, comma)), Integer.parseInt(move.substring(comma + 1))));
-            } catch (NumberFormatException e) {
-                break;
+        float quality;
+        int pushed = 0;
+        if (mode.get() == 0) {
+            TreatiseHand hand = TreatiseHand.replay(sentPlan, sentSeed, sentInk, Researching.volume(sentIndex)[1], moves);
+            quality = elapsed < ModularTuning.RESEARCH_MIN_TICKS ? 0f : hand.quality(hand.reached && answer == sentPlan.answer);
+            pushed = hand.strain(Researching.forgiving(table.getItem(ResearchTableBlockEntity.SPECIMEN)));
+        } else {
+            ResearchBoard board = new ResearchBoard(sentPlan, sentSeed, sentInk);
+            for (String move : moves) {
+                int at = move.indexOf('@'), comma = move.indexOf(',', at + 1);
+                if (at < 0 || comma < 0 || board.over())
+                    break;
+                try {
+                    board.place(move.substring(0, at), ResearchBoard.key(Integer.parseInt(move.substring(at + 1, comma)), Integer.parseInt(move.substring(comma + 1))));
+                } catch (NumberFormatException e) {
+                    break;
+                }
             }
+            quality = elapsed < ModularTuning.RESEARCH_MIN_TICKS ? 0f : board.quality(board.reached && answer == sentPlan.answer);
         }
-        float quality = elapsed < ModularTuning.RESEARCH_MIN_TICKS ? 0f : board.quality(board.reached && answer == sentPlan.answer);
-        int pushed = mode.get() == 0 ? board.strain(Researching.forgiving(table.getItem(ResearchTableBlockEntity.SPECIMEN))) : 0;
         int why = ready(server);
         if (why != 0) {
             note.set(why);

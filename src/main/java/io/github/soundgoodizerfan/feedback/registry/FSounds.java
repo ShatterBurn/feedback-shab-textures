@@ -262,6 +262,15 @@ public class FSounds {
     /** The answer found: one long tone. */
     public static final DeferredHolder<SoundEvent, SoundEvent> APP_FOUND = ui("ui.app_found");
 
+    /** The treatise cards: a hand dealt. */
+    public static final DeferredHolder<SoundEvent, SoundEvent> CARD_DEAL = ui("ui.card_deal");
+    /** A row of cards laid in the chain. */
+    public static final DeferredHolder<SoundEvent, SoundEvent> CARD_PLAY = ui("ui.card_play");
+    /** A card that did not link, crumpled. */
+    public static final DeferredHolder<SoundEvent, SoundEvent> CARD_BURN = ui("ui.card_burn");
+    /** The goal reached: a page turned and a chime. */
+    public static final DeferredHolder<SoundEvent, SoundEvent> PAGE_FOUND = ui("ui.page_found");
+
     /** The field first rises past the coercive field in the Enchanting Table: the part begins to take. */
     public static final DeferredHolder<SoundEvent, SoundEvent> ENCHANT_ENGAGE = ui("ui.enchant_engage");
     /** The held field, sounded every few ticks, its pitch following the field: a tone you steer. */

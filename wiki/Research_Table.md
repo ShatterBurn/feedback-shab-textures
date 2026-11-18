@@ -1,6 +1,6 @@
 # Research Table
 
-The Research Table is where what is not yet known is found out. It writes a [Blank Treatise](Treatise.md#blank-treatise) into a treatise volume, writes a [Rite](Enchanting_Table.md#rites) for an attunement, or writes an app onto a blank Floppy Disk. Treatises and attunements are worked out on a board of linked concepts; an app is won by breaking into a terminal.
+The Research Table is where what is not yet known is found out. It writes a [Blank Treatise](Treatise.md#blank-treatise) into a treatise volume, writes a [Rite](Enchanting_Table.md#rites) for an attunement, or writes an app onto a blank Floppy Disk. A treatise is worked out with a hand of concept cards on a notebook page, an attunement on a board of linked concepts, and an app by breaking into a terminal.
 
 ## Crafting
 
@@ -14,7 +14,7 @@ P is paper, W is any plank, L is a lectern.
 
 ## Using it
 
-The screen is an open book. The left page is a list with three tabs, **Treatises**, **Rites** and **Apps**; each entry has a spinning icon. Click an entry to pick it. The right page shows the picked entry's two-line blurb, what it asks for, its slots and the **Research** button, which costs 40 experience points. It opens the research board for a treatise or an attunement and the terminal for an app.
+The screen is an open book. The left page is a list with three tabs, **Treatises**, **Rites** and **Apps**; each entry has a spinning icon. Click an entry to pick it. The right page shows the picked entry's two-line blurb, what it asks for, its slots and the **Research** button, which costs 40 experience points. It opens the notebook page for a treatise, the research board for an attunement and the terminal for an app.
 
 A volume has a slot for one Blank Treatise and a slot for one **specimen**. An attunement has a slot for an **offering**, a slot for a **reagent** and a slot for a **Blank Rite**. The text on the right page says what is missing.
 
@@ -83,35 +83,60 @@ Some attunements, Heat and Ward among them, name a potion. A brewed potion carry
 
 One offering is used up per run, and the potion with it. No specimen is worn.
 
+## Treatise research
+
+Each volume has its own story, start and goal concepts, concepts and traits. The notebook page shows the volume's start concept and its goal concept. A chain row runs along the top, beginning at the start concept. Below it lies a hand of 5 concept cards, each showing its **traits** under its name, such as force, thin, hard or pressure. Two concepts link when they share a trait. Hover a card to see which traits it shares with the card before it.
+
+Click cards to lay a row of 1 to 5, then press **Play row**. Each card must share a trait with the one before it, and the first with the end of the chain. Cards that link join the chain and score:
+
+- 10 points per shared trait,
+- times a chain multiplier that grows 25% per chain card, up to triple,
+- times the number of cards linked in that row, so longer rows score more.
+
+A card that shares a trait with the goal reaches it: +100 points and the chain ends. The page then replays what was found, asks one closing question, and a stamp grades the notes.
+
+A card that does not link burns, along with the cards after it in the row. The hand is spent and, on a volume, the specimen **strains**: a few burns wear it, so it comes back worn and can be repaired, and many take it apart into its parts, which go to you. A tougher specimen forgives more. Burned and discarded cards come back on the next reshuffle, so a mistake never leaves the goal out of reach.
+
+A run has 4 hands and 2 discards. A discard throws chosen cards back for fresh ones and costs no hand. There is no clock.
+
+### Target and deals
+
+The volume's number sets the **target score**: 100 for volume 1, plus 30 per volume after. It also sets how many linking cards each deal is guaranteed to hold: 2 in volume 1, 1 in volume 2, none after.
+
+### Ink
+
+A run starts with a base of seven ink. A volume adds up to three more from a specimen in good condition, and a bonus if you have already done the real thing a good number of times: fired a crossbow many times before researching guns, or forged with a hammer before Materials I. Each ink above the base adds a discard, and every 3 ink above the base adds a hand.
+
+### Grade
+
+The notes' quality adds up from four parts:
+
+- 0.35 for reaching the goal,
+- up to 0.3 for the score over the target,
+- up to 0.15 for hands and discards left,
+- 0.2 for the closing answer.
+
+A run that does not reach the goal gives 0.05 to 0.25 by the length of the chain.
+
 ## The research board
 
-Each volume and each attunement has its own story, start and goal concepts, concepts and traits.
+An attunement is worked out on a hex board. The concept you already know sits at one end (the start) and the idea to learn at the other (the goal). Six hexes are rubble and cannot be used. Beside the board is a hand of concepts.
 
-The board is a hex board. The concept you already know sits at one end (the start) and the new idea at the other (the goal). Six hexes are rubble and cannot be used. Beside the board is a hand of concepts.
-
-Every concept shows two or three **traits** under its name, such as force, thin, hard or pressure. Two concepts link when they share a trait. Hover a concept on the board, or the goal, to see its traits.
+Every concept shows two or three **traits** under its name. Two concepts link when they share a trait. Hover a concept on the board, or the goal, to see its traits.
 
 1. Pick a concept from the hand. The side list names which concepts on the board it shares traits with.
 2. Hover a free hex beside the chain. The chain concepts it would link with are outlined in green and the line names the shared trait; if it would share nothing, the line says so. Hovering costs nothing.
-3. Click the hex. If the concept shares a trait with a chain concept it touches, it joins the chain with a rising note. If not, it fizzles, naming the concepts the hex touched, costs a point of **ink** and, on a volume, **strains** the specimen.
+3. Click the hex. If the concept shares a trait with a chain concept it touches, it joins the chain with a rising note. If not, it fizzles, naming the concepts the hex touched, and costs a point of **ink**.
 4. Three joins in a row give an ink back.
 5. To finish, place a concept on a hex beside the goal that shares one of the goal's traits. A line under the ink pips says what the goal needs. The finding is then replayed line by line and asks one question, and a stamp grades the notes.
 
 A three-step guide shows over the board the first time you open it in a game session; click to dismiss it.
 
-The notes' quality comes from the ink left, the longest run of joins and the answer to the question. Running out of ink first leaves a scrawl.
-
-### Ink
-
-A run starts with seven ink. A volume adds up to three more from a specimen in good condition; an attunement adds ink from its offering and potion (see [Attunements](#attunements)). A bonus is added if you have already done the real thing a good number of times: fired a crossbow many times before researching guns, or forged with a hammer before Materials I.
-
-### Strain
-
-On a volume, a few fizzles wear the specimen: it comes back worn and can be repaired. Many fizzles take it apart into its parts, which go to you.
+The notes' quality comes from the ink left, the longest run of joins and the answer to the question. Running out of ink first leaves a scrawl. A run starts with seven ink, and an attunement adds ink from its offering and potion (see [Attunements](#attunements)).
 
 ## What comes out
 
-An app is written onto the disk as it is, whatever the grade. A treatise carries the quality as its notes. An attunement gives a [Rite](Enchanting_Table.md#rites) whose quality is the research board's quality. The experience is spent either way, and a scrawl still turns the Blank Treatise into the volume. Pressing Esc before closing the notebook spends nothing.
+An app is written onto the disk as it is, whatever the grade. A treatise carries the quality as its notes. An attunement gives a [Rite](Enchanting_Table.md#rites) whose quality is the board's quality. The experience is spent either way, and a scrawl still turns the Blank Treatise into the volume. Pressing Esc before closing the notebook spends nothing.
 
 ## See also
 

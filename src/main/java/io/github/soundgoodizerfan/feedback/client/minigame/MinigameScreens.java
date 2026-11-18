@@ -56,9 +56,12 @@ public final class MinigameScreens {
 
     /** Opens the research game over the Research Table's screen. */
     public static void openResearch(Screen parent, io.github.soundgoodizerfan.feedback.net.ResearchOpenPayload session) {
-        // an app's plan holds words for the terminal; every other plan holds concepts for the board
-        boolean terminal = !io.github.soundgoodizerfan.feedback.modular.research.ResearchPlan.parse("play", session.plan()).words.isEmpty();
-        Minecraft.getInstance().setScreen(terminal ? new AppHackScreen(parent, session) : new ResearchBoardScreen(parent, session));
+        // the table's mode picks the game: treatises play cards, apps a terminal, attunements the hex board
+        Minecraft.getInstance().setScreen(switch (session.kind()) {
+            case 0 -> new TreatiseHandScreen(parent, session);
+            case 2 -> new AppHackScreen(parent, session);
+            default -> new ResearchBoardScreen(parent, session);
+        });
     }
 
     /** Sends the one result of a game: a score in 0..1. */
