@@ -44,10 +44,14 @@ import net.minecraft.world.level.Level;
  */
 public final class Cooking {
 
-    /** Where an item sits: its material's food block, and the item it cooks into. */
-    public record Entry(Material.Food food, Tu charTemperature, Optional<Item> cooked, boolean kneadable, List<Material.Trait> traits, String material) {
+    /**
+     * Where an item sits: its material's food block, the item it cooks into, and the item it becomes once dried through
+     * (the file's {@code dried} form: a rotten hide-flesh dries to leather; absent, it stays the same food, only drier).
+     */
+    public record Entry(Material.Food food, Tu charTemperature, Optional<Item> cooked, boolean kneadable, List<Material.Trait> traits, String material,
+                        Optional<Item> dried) {
         public Entry(Material.Food food, Tu charTemperature, Optional<Item> cooked) {
-            this(food, charTemperature, cooked, false, List.of(), "");
+            this(food, charTemperature, cooked, false, List.of(), "", Optional.empty());
         }
     }
 
@@ -117,7 +121,8 @@ public final class Cooking {
             Material.Food food = material.food().get();
             Tu burns = food.charTemperature().or(material.thermal()::oxidationTemperature).orElse(FTuning.FOOD_CHAR_TU);
             Optional<Item> cooked = Optional.ofNullable(material.forms().get("cooked")).flatMap(BuiltInRegistries.ITEM::getOptional);
-            Entry entry = new Entry(food, burns, cooked, material.traits().contains(Material.Trait.KNEADABLE), material.traits(), me.getKey().getPath());
+            Optional<Item> dried = Optional.ofNullable(material.forms().get("dried")).flatMap(BuiltInRegistries.ITEM::getOptional);
+            Entry entry = new Entry(food, burns, cooked, material.traits().contains(Material.Trait.KNEADABLE), material.traits(), me.getKey().getPath(), dried);
             // Only the forms named in the file: a food's items already exist, nothing is generated for it.
             // Only the edible forms: a material with a food block may also have a block or tool form (honey has a block).
             material.forms().forEach((form, id) -> {
@@ -126,7 +131,7 @@ public final class Cooking {
             });
             // A block or cylinder generated for a foodstuff cooks, dries, chars and rots as its material does; it has no cooked item of its own,
             // so the cook is a state of the same item.
-            Entry whole = new Entry(food, burns, Optional.empty(), entry.kneadable(), entry.traits(), entry.material());
+            Entry whole = new Entry(food, burns, Optional.empty(), entry.kneadable(), entry.traits(), entry.material(), entry.dried());
             for (String form : material.generated(io.github.soundgoodizerfan.feedback.registry.FormItems.types()))
                 BuiltInRegistries.ITEM.getOptional(io.github.soundgoodizerfan.feedback.registry.FormItems.itemId(me.getKey(), form))
                         .ifPresent(item -> out.putIfAbsent(item, whole));

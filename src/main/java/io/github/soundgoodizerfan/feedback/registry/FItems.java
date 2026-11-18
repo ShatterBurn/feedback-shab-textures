@@ -717,6 +717,8 @@ public class FItems {
             ITEMS.register("hoe_head_mold", () -> new MoldItem(new Item.Properties().stacksTo(1), "hoe_head"));
     public static final DeferredItem<MoldItem> SICKLE_HEAD_MOLD =
             ITEMS.register("sickle_head_mold", () -> new MoldItem(new Item.Properties().stacksTo(1), "sickle_head"));
+    public static final DeferredItem<MoldItem> HAMMER_HEAD_MOLD =
+            ITEMS.register("hammer_head_mold", () -> new MoldItem(new Item.Properties().stacksTo(1), "hammer_head"));
     public static final DeferredItem<MoldItem> SAW_BLADE_MOLD =
             ITEMS.register("saw_blade_mold", () -> new MoldItem(new Item.Properties().stacksTo(1), "saw_blade"));
 

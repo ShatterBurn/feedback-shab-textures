@@ -1,4 +1,265 @@
 {
-  "parent": "block/cube_all",
-  "textures": { "all": "feedback:block/copper_coil_side" }
+  "parent": "minecraft:block/block",
+  "textures": {
+    "particle": "feedback:block/electromagnet_pole",
+    "pole": "feedback:block/electromagnet_pole",
+    "coil": "feedback:block/electromagnet_coil"
+  },
+  "elements": [
+    {
+      "name": "pole_bottom",
+      "from": [
+        2,
+        0,
+        2
+      ],
+      "to": [
+        14,
+        2,
+        14
+      ],
+      "faces": {
+        "north": {
+          "texture": "#pole"
+        },
+        "south": {
+          "texture": "#pole"
+        },
+        "east": {
+          "texture": "#pole"
+        },
+        "west": {
+          "texture": "#pole"
+        },
+        "up": {
+          "texture": "#pole"
+        },
+        "down": {
+          "texture": "#pole"
+        }
+      }
+    },
+    {
+      "name": "coil",
+      "from": [
+        3,
+        2,
+        3
+      ],
+      "to": [
+        13,
+        14,
+        13
+      ],
+      "faces": {
+        "north": {
+          "texture": "#coil",
+          "tintindex": 0
+        },
+        "south": {
+          "texture": "#coil",
+          "tintindex": 0
+        },
+        "east": {
+          "texture": "#coil",
+          "tintindex": 0
+        },
+        "west": {
+          "texture": "#coil",
+          "tintindex": 0
+        },
+        "up": {
+          "texture": "#coil",
+          "tintindex": 0
+        },
+        "down": {
+          "texture": "#coil",
+          "tintindex": 0
+        }
+      }
+    },
+    {
+      "name": "pole_top",
+      "from": [
+        2,
+        14,
+        2
+      ],
+      "to": [
+        14,
+        16,
+        14
+      ],
+      "faces": {
+        "north": {
+          "texture": "#pole"
+        },
+        "south": {
+          "texture": "#pole"
+        },
+        "east": {
+          "texture": "#pole"
+        },
+        "west": {
+          "texture": "#pole"
+        },
+        "up": {
+          "texture": "#pole"
+        },
+        "down": {
+          "texture": "#pole"
+        }
+      }
+    },
+    {
+      "name": "lug_front",
+      "from": [
+        13,
+        6,
+        5
+      ],
+      "to": [
+        15,
+        10,
+        7
+      ],
+      "faces": {
+        "north": {
+          "texture": "#coil",
+          "tintindex": 0,
+          "uv": [
+            5,
+            3,
+            7,
+            7
+          ]
+        },
+        "south": {
+          "texture": "#coil",
+          "tintindex": 0,
+          "uv": [
+            5,
+            3,
+            7,
+            7
+          ]
+        },
+        "east": {
+          "texture": "#coil",
+          "tintindex": 0,
+          "uv": [
+            5,
+            3,
+            7,
+            7
+          ]
+        },
+        "west": {
+          "texture": "#coil",
+          "tintindex": 0,
+          "uv": [
+            5,
+            3,
+            7,
+            7
+          ]
+        },
+        "up": {
+          "texture": "#coil",
+          "tintindex": 0,
+          "uv": [
+            5,
+            3,
+            7,
+            7
+          ]
+        },
+        "down": {
+          "texture": "#coil",
+          "tintindex": 0,
+          "uv": [
+            5,
+            3,
+            7,
+            7
+          ]
+        }
+      }
+    },
+    {
+      "name": "lug_back",
+      "from": [
+        13,
+        6,
+        9
+      ],
+      "to": [
+        15,
+        10,
+        11
+      ],
+      "faces": {
+        "north": {
+          "texture": "#coil",
+          "tintindex": 0,
+          "uv": [
+            5,
+            3,
+            7,
+            7
+          ]
+        },
+        "south": {
+          "texture": "#coil",
+          "tintindex": 0,
+          "uv": [
+            5,
+            3,
+            7,
+            7
+          ]
+        },
+        "east": {
+          "texture": "#coil",
+          "tintindex": 0,
+          "uv": [
+            5,
+            3,
+            7,
+            7
+          ]
+        },
+        "west": {
+          "texture": "#coil",
+          "tintindex": 0,
+          "uv": [
+            5,
+            3,
+            7,
+            7
+          ]
+        },
+        "up": {
+          "texture": "#coil",
+          "tintindex": 0,
+          "uv": [
+            5,
+            3,
+            7,
+            7
+          ]
+        },
+        "down": {
+          "texture": "#coil",
+          "tintindex": 0,
+          "uv": [
+            5,
+            3,
+            7,
+            7
+          ]
+        }
+      }
+    }
+  ]
 }

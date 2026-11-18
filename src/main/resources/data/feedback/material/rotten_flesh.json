@@ -4,7 +4,8 @@
     "protein"
   ],
   "forms": {
-    "raw": "minecraft:rotten_flesh"
+    "raw": "minecraft:rotten_flesh",
+    "dried": "minecraft:leather"
   },
   "food": {
     "moisture": 0.6,

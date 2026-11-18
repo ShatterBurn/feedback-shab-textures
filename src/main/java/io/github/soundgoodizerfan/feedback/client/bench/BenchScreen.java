@@ -86,6 +86,8 @@ public class BenchScreen extends SkinnedScreen<PartBenchMenu> {
     private List<PartBenchShaping.Option> options = List.of();
     private int optionsGeneration = -1;
     private int readKey = Integer.MIN_VALUE;
+    /** What the player has typed over the fan: shapes and cuts whose words do not hold it are left out. Empty for no filter. */
+    private String search = "";
     private ItemStack seated = ItemStack.EMPTY;
     private boolean recentre = true;
 
@@ -297,7 +299,7 @@ public class BenchScreen extends SkinnedScreen<PartBenchMenu> {
         for (int i = 0; i < menu.slots.size(); i++)
             all.add(menu.getSlot(i).getItem());
         int key = java.util.Objects.hash(menu.mode(), menu.picked(), menu.cutPicked(), menu.typePicked(level()), menu.tab(), ItemStack.hashStackList(all),
-                ModularTypes.generation(), ClientMaterials.get().size());
+                ModularTypes.generation(), ClientMaterials.get().size(), search, menu.treatiseMask(level()));
         if (key == readKey)
             return;
         readKey = key;
@@ -347,9 +349,11 @@ public class BenchScreen extends SkinnedScreen<PartBenchMenu> {
             int have = menu.centreStack().getCount() * FormItems.volume(stuff.get().form());
             // Forged shapes lie among the laid ones: their darker rim says which they are. Like parts sit side by side on the wheel.
             List<BenchFan.Node> shapes = new ArrayList<>();
+            java.util.Set<String> unlocked = menu.unlocked(level);
             for (int i = 0; i < options.size(); i++) {
                 PartBenchShaping.Option o = options.get(i);
-                if (!PartBenchShaping.takes(menu.station(), o, stuff.get()))
+                if (!PartBenchShaping.takes(menu.station(), o, stuff.get()) || !unlocked.contains(PartBenchShaping.key(o))
+                        || !matches(PartBenchShaping.words(o)))
                     continue;
                 BenchFan.Node n = new BenchFan.Node(BenchFan.Kind.SHAPE, partIcon(o, stuff.get()), o.label(), "", PartBenchMenu.BTN_PICK + i, 0, i);
                 n.faint = have < o.stockMb(1f);
@@ -362,7 +366,8 @@ public class BenchScreen extends SkinnedScreen<PartBenchMenu> {
         List<ItemStack> cuts = menu.cuts(level);
         List<BenchFan.Node> cutNodes = new ArrayList<>();
         for (int k = 0; k < cuts.size(); k++)
-            cutNodes.add(new BenchFan.Node(BenchFan.Kind.CUT, cuts.get(k), cuts.get(k).getHoverName(), "", PartBenchMenu.BTN_CUT + k, 2, k));
+            if (matches(cuts.get(k).getHoverName().getString().toLowerCase(java.util.Locale.ROOT)))
+                cutNodes.add(new BenchFan.Node(BenchFan.Kind.CUT, cuts.get(k), cuts.get(k).getHoverName(), "", PartBenchMenu.BTN_CUT + k, 2, k));
         if (cutNodes.size() > HUB_AT) {
             BenchFan.Node hub = new BenchFan.Node(BenchFan.Kind.HUB, cuts.get(0), Component.translatable("gui.feedback.bench.cuts"), "", 0, 2, -1);
             hub.kids = cutNodes;
@@ -659,12 +664,61 @@ public class BenchScreen extends SkinnedScreen<PartBenchMenu> {
             return blueprint.keyPressed(key, scan, modifiers) || super.keyPressed(key, scan, modifiers);
         if (settled() && (forge != null && forge.key(key, scan, modifiers) || shingle != null && shingle.key(key, scan, modifiers)))
             return true;
+        if (searchable()) {
+            if (key == org.lwjgl.glfw.GLFW.GLFW_KEY_BACKSPACE && !search.isEmpty()) {
+                search = search.substring(0, search.length() - 1);
+                return true;
+            }
+            if (key == org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE && !search.isEmpty()) {
+                search = "";
+                return true;
+            }
+            // A letter or digit starts the filter: keep it from the inventory key and the hotbar swaps; charTyped adds it.
+            if ((modifiers & (org.lwjgl.glfw.GLFW.GLFW_MOD_CONTROL | org.lwjgl.glfw.GLFW.GLFW_MOD_ALT)) == 0
+                    && (key >= org.lwjgl.glfw.GLFW.GLFW_KEY_A && key <= org.lwjgl.glfw.GLFW.GLFW_KEY_Z
+                            || key >= org.lwjgl.glfw.GLFW.GLFW_KEY_0 && key <= org.lwjgl.glfw.GLFW.GLFW_KEY_9
+                            || key == org.lwjgl.glfw.GLFW.GLFW_KEY_SPACE || key == org.lwjgl.glfw.GLFW.GLFW_KEY_MINUS))
+                return true;
+        }
         return super.keyPressed(key, scan, modifiers);
     }
 
     @Override
     public boolean charTyped(char c, int modifiers) {
+        if (searchable() && c > ' ' && c != 127 && !Character.isISOControl(c) || searchable() && c == ' ' && !search.isEmpty()) {
+            if (search.length() < 24)
+                search += c;
+            return true;
+        }
         return drafting() && blueprint.charTyped(c, modifiers) || super.charTyped(c, modifiers);
+    }
+
+    /** Whether typing filters the fan: the stock fan is up and nothing is being played. */
+    private boolean searchable() {
+        return level() != null && !drafting() && settled() && !busy() && menu.centre(level()) == PartBenchMenu.Centre.STOCK;
+    }
+
+    /** Whether {@code words} hold every word typed in the search (none typed matches all). */
+    private boolean matches(String words) {
+        if (search.isEmpty())
+            return true;
+        for (String w : search.toLowerCase(java.util.Locale.ROOT).trim().split("\\s+"))
+            if (!w.isEmpty() && !words.contains(w))
+                return false;
+        return true;
+    }
+
+    /** The filter's little box in the fan's top right corner, shown while something is typed. */
+    private void drawSearch(GuiGraphics g) {
+        if (search.isEmpty() || !searchable())
+            return;
+        String text = search + (((int) (GuiStyle.time() / 10)) % 2 == 0 ? "_" : "");
+        int w = Math.max(60, font.width(search) + 20);
+        int x1 = leftPos + VX + VW - 4, x0 = x1 - w, y0 = topPos + VY + 4;
+        g.fill(x0, y0, x1, y0 + 14, 0xC0000000);
+        g.renderOutline(x0, y0, w, 14, skin.dim());
+        g.drawString(font, Component.translatable("gui.feedback.bench.search"), x0 + 3, y0 - 9, skin.dim(), false);
+        g.drawString(font, text, x0 + 4, y0 + 3, 0xFFFFFFFF, false);
     }
 
     // --- drawing -------------------------------------------------------------------------------------
@@ -937,6 +991,7 @@ public class BenchScreen extends SkinnedScreen<PartBenchMenu> {
             return;
         }
         axis.renderSteppers(g, mouseX, mouseY, partialTick);
+        drawSearch(g);
         g.pose().pushPose();
         g.pose().translate(0, 0, 400);
         if (forge != null && forge.busy())

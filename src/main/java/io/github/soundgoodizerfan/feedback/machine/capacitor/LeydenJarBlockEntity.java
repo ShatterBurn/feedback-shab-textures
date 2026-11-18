@@ -17,6 +17,7 @@ import io.github.soundgoodizerfan.feedback.registry.FModular;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.level.block.state.BlockState;
 
 /**
@@ -43,7 +44,7 @@ import net.minecraft.world.level.block.state.BlockState;
  * It gives back packets of its band until the Eu run out, the last of them fractional: a burst, not a battery. It never refuses. A band over its rating punctures the glass: the jar discharges at once as a shock at its band to
  * anything within {@link ElectricMachineTuning#LEYDEN_JAR_CRACK_RADIUS} blocks and is destroyed (a cheap part may pop).
  */
-public class LeydenJarBlockEntity extends ElectricNode {
+public class LeydenJarBlockEntity extends ElectricNode implements io.github.soundgoodizerfan.feedback.modular.bake.FigureHolder {
 
     private static final String CHARGE = "Charge", SUPPLYING = "Supplying";
 
@@ -77,6 +78,22 @@ public class LeydenJarBlockEntity extends ElectricNode {
 
     public LeydenJarBlockEntity(BlockPos pos, BlockState state) {
         super(FBlockEntities.LEYDEN_JAR.get(), pos, state);
+    }
+
+    @Override
+    public FigureStore figures() {
+        return figures;
+    }
+
+    /** The design rides to the client so the glass and foil take their materials' colours. */
+    @Override
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        return saveWithoutMetadata(registries);
+    }
+
+    @Override
+    public ClientboundBlockEntityDataPacket getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
     }
 
     /** Eu held. */

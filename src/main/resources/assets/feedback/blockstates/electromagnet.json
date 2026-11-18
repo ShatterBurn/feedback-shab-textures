@@ -1,5 +1,6 @@
 {
   "variants": {
-    "": { "model": "feedback:block/electromagnet" }
+    "lit=false": { "model": "feedback:block/electromagnet" },
+    "lit=true": { "model": "feedback:block/electromagnet_on" }
   }
 }

@@ -163,7 +163,7 @@ public class FCreativeTabs {
             FModular.THERMAL_STORE, FModular.CRUCIBLE, FItems.CASTING_BASIN,
             FItems.INGOT_MOLD, FItems.TUBE_MOLD, FItems.GLASS_BLOCK_MOLD, FItems.GLASS_PANE_MOLD,
             FItems.GLASS_BOTTLE_MOLD, FItems.PICKAXE_HEAD_MOLD, FItems.AXE_HEAD_MOLD, FItems.SHOVEL_HEAD_MOLD,
-            FItems.HOE_HEAD_MOLD, FItems.SICKLE_HEAD_MOLD, FItems.SAW_BLADE_MOLD, FItems.ATOMISING_MOLD,
+            FItems.HOE_HEAD_MOLD, FItems.SICKLE_HEAD_MOLD, FItems.HAMMER_HEAD_MOLD, FItems.SAW_BLADE_MOLD, FItems.ATOMISING_MOLD,
             FItems.ICE_BOX, FItems.REFRIGERATION_UNIT, FItems.CRYOCOOLER, FItems.VACUUM_DRYER);
 
     /** Shaping metal: hammer, draw, roll, press, drill, turn; then the test rigs. */
@@ -488,12 +488,13 @@ public class FCreativeTabs {
     private static void fillFood(CreativeModeTab.Output out) {
         all(out, KITCHEN);
         // One skillet and one stock pot per material that is plate and conducts heat.
+        // items(id), not forms(): forms() holds only the hand-listed forms, and plate is a generated one.
         forMaterials((id, m) -> {
-            if (m.forms().containsKey("plate") && m.thermal().conductivity().isPresent())
+            if (m.items(id).containsKey("plate") && m.thermal().conductivity().isPresent())
                 out.accept(io.github.soundgoodizerfan.feedback.machine.skillet.SkilletItem.of(id));
         });
         forMaterials((id, m) -> {
-            if (m.forms().containsKey("plate") && m.thermal().conductivity().isPresent())
+            if (m.items(id).containsKey("plate") && m.thermal().conductivity().isPresent())
                 out.accept(io.github.soundgoodizerfan.feedback.machine.stockpot.StockpotItem.of(id));
         });
         all(out, FOOD_ITEMS);

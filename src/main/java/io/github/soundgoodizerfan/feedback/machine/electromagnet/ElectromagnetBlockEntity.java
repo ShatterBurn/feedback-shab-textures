@@ -60,7 +60,8 @@ import net.minecraft.world.phys.Vec3;
  * material gets the same behaviour with no code. A workpiece hotter than its material's Curie point
  * is not pulled (it passes the magnet, as it passes the drum).
  */
-public class ElectromagnetBlockEntity extends ElectricNode implements ThermalBody, Wearing, io.github.soundgoodizerfan.feedback.machine.Mendable {
+public class ElectromagnetBlockEntity extends ElectricNode implements ThermalBody, Wearing, io.github.soundgoodizerfan.feedback.machine.Mendable,
+        io.github.soundgoodizerfan.feedback.modular.bake.FigureHolder {
 
     private float temperature = ThermalTuning.AMBIENT_TU.value();
     private float condition = 1f;
@@ -86,6 +87,22 @@ public class ElectromagnetBlockEntity extends ElectricNode implements ThermalBod
     protected void collectImplicitComponents(net.minecraft.core.component.DataComponentMap.Builder components) {
         super.collectImplicitComponents(components);
         figures.collect(components);
+    }
+
+    @Override
+    public FigureStore figures() {
+        return figures;
+    }
+
+    /** The design rides to the client so the core and winding take their metal's colour. */
+    @Override
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        return saveWithoutMetadata(registries);
+    }
+
+    @Override
+    public net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket getUpdatePacket() {
+        return net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket.create(this);
     }
 
     public ElectromagnetBlockEntity(BlockPos pos, BlockState state) {
@@ -115,6 +132,9 @@ public class ElectromagnetBlockEntity extends ElectricNode implements ThermalBod
         field = ElectricRules.rate(eu, amps, wanted, ratedBand()) * condition;
         if (level != null && !level.isClientSide) {
             MagnetField.set(level, worldPosition, field);
+            BlockState shown = getBlockState();
+            if (shown.hasProperty(ElectromagnetBlock.LIT) && shown.getValue(ElectromagnetBlock.LIT) != field > 0f)
+                level.setBlock(worldPosition, shown.setValue(ElectromagnetBlock.LIT, field > 0f), 3);
             // A sleeved shaft or bearing touching this magnet reads its drag at the next rebuild of its run: ask for one when the field has moved a step.
             if (Math.abs(field - fieldNotified) >= ElectricMachineTuning.ELECTROMAGNET_SLEEVE_STEP || (field <= 0f) != (fieldNotified <= 0f)) {
                 fieldNotified = field;

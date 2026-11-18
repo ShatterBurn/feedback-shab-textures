@@ -133,6 +133,11 @@ public enum Station implements StringRepresentable {
         return this != WOODWORKING && this != STONECUTTING && this != SMITHING;
     }
 
+    /** Whether stock outside its hot-working window can be shaped here: the smithing table cuts and files unforged shapes cold with any hammer; the anvil keeps the window. */
+    public boolean coldWork() {
+        return this == SMITHING;
+    }
+
     /** The metal benches: the smithing table, and the anvil that does all it does and forges as well. Both carry the Trim tab. */
     public boolean smiths() {
         return this == SMITHING || this == ANVIL;

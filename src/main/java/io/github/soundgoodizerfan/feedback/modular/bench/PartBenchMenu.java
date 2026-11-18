@@ -524,6 +524,16 @@ public class PartBenchMenu extends AbstractContainerMenu {
         return types(level);
     }
 
+    /** The treatise volumes the player holds here (inventory, a binder in it, a shelf touching the table), one bit each: what the shapes list is gated by. */
+    public int treatiseMask(Level level) {
+        return io.github.soundgoodizerfan.feedback.modular.treatise.Treatises.mask(player, ContainerLevelAccess.create(level, pos));
+    }
+
+    /** The shapes ({@link PartBenchShaping#key}) the player's treatises let them make; any other is not on their list. */
+    public java.util.Set<String> unlocked(Level level) {
+        return PartBenchShaping.drawable(shapes(level), treatiseMask(level));
+    }
+
     /** The dish types the Prep Table's picker offers, in the picker's order. */
     public List<ResourceLocation> dishTypes(Level level) {
         return new ArrayList<>(types(level).keySet());
@@ -1107,7 +1117,11 @@ public class PartBenchMenu extends AbstractContainerMenu {
                 pick.set(id);
             forging = -1;
         } else if (id >= BTN_PICK) {
-            pick.set(id - BTN_PICK);
+            List<PartBenchShaping.Option> all = PartBenchShaping.options(shapes(level));
+            int n = id - BTN_PICK;
+            if (n < 0 || n >= all.size() || !unlocked(level).contains(PartBenchShaping.key(all.get(n))))
+                return false;
+            pick.set(n);
             forging = -1;
         } else if (id >= BTN_TYPE) {
             if (!dish || id - BTN_TYPE >= dishTypes(level).size())

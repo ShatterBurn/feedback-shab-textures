@@ -769,7 +769,8 @@ public class FBlocks {
             () -> new ElectromagnetBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.COLOR_ORANGE)
                     .strength(2.0f)
-                    .sound(SoundType.METAL)));
+                    .sound(SoundType.METAL)
+                    .noOcclusion()));
 
     /** The glowstone lamp (replaces the vanilla redstone lamp). See {@code LampBlockEntity}. */
     public static final DeferredBlock<LampBlock> LAMP = BLOCKS.register("lamp",
@@ -849,7 +850,8 @@ public class FBlocks {
             () -> new io.github.soundgoodizerfan.feedback.machine.phosphor.OscilloscopeBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.COLOR_GRAY)
                     .strength(1.5f)
-                    .sound(SoundType.METAL)));
+                    .sound(SoundType.METAL)
+                    .noOcclusion()));
 
     /** Contacts moved by an adjacent electromagnet. See {@code RelayBlockEntity}. */
     public static final DeferredBlock<io.github.soundgoodizerfan.feedback.machine.relay.RelayBlock> RELAY = BLOCKS.register("relay",
@@ -957,7 +959,8 @@ public class FBlocks {
                     () -> new ElectrostaticGeneratorBlock(BlockBehaviour.Properties.of()
                             .mapColor(MapColor.COLOR_ORANGE)
                             .strength(1.5f)
-                            .sound(SoundType.COPPER)));
+                            .sound(SoundType.COPPER)
+                            .noOcclusion()));
 
     /** The Bellows' opposite -- a vent, stacked against a crucible the same way insulation is. */
     public static final DeferredBlock<DamperBlock> DAMPER = BLOCKS.register("damper",

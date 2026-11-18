@@ -1,8 +1,207 @@
 {
-  "parent": "feedback:block/tint_cube_bottom_top",
+  "parent": "minecraft:block/block",
+  "render_type": "minecraft:translucent",
   "textures": {
-    "top": "feedback:block/metal_tank_ends",
-    "bottom": "feedback:block/metal_tank_ends",
-    "side": "feedback:block/metal_tank_sides"
-  }
+    "particle": "feedback:block/leyden_glass",
+    "glass": "feedback:block/leyden_glass",
+    "side": "feedback:block/metal_tank_sides",
+    "ends": "feedback:block/metal_tank_ends"
+  },
+  "elements": [
+    {
+      "name": "glass",
+      "from": [
+        4,
+        0,
+        4
+      ],
+      "to": [
+        12,
+        10,
+        12
+      ],
+      "faces": {
+        "north": {
+          "texture": "#glass",
+          "tintindex": 0
+        },
+        "south": {
+          "texture": "#glass",
+          "tintindex": 0
+        },
+        "east": {
+          "texture": "#glass",
+          "tintindex": 0
+        },
+        "west": {
+          "texture": "#glass",
+          "tintindex": 0
+        },
+        "up": {
+          "texture": "#glass",
+          "tintindex": 0
+        },
+        "down": {
+          "texture": "#glass",
+          "tintindex": 0
+        }
+      }
+    },
+    {
+      "name": "foil",
+      "from": [
+        2,
+        0,
+        2
+      ],
+      "to": [
+        14,
+        6,
+        14
+      ],
+      "faces": {
+        "north": {
+          "texture": "#side",
+          "tintindex": 1
+        },
+        "south": {
+          "texture": "#side",
+          "tintindex": 1
+        },
+        "east": {
+          "texture": "#side",
+          "tintindex": 1
+        },
+        "west": {
+          "texture": "#side",
+          "tintindex": 1
+        },
+        "up": {
+          "texture": "#side",
+          "tintindex": 1
+        },
+        "down": {
+          "texture": "#side",
+          "tintindex": 1
+        }
+      }
+    },
+    {
+      "name": "lid",
+      "from": [
+        4,
+        10,
+        4
+      ],
+      "to": [
+        12,
+        12,
+        12
+      ],
+      "faces": {
+        "north": {
+          "texture": "#ends",
+          "tintindex": 1
+        },
+        "south": {
+          "texture": "#ends",
+          "tintindex": 1
+        },
+        "east": {
+          "texture": "#ends",
+          "tintindex": 1
+        },
+        "west": {
+          "texture": "#ends",
+          "tintindex": 1
+        },
+        "up": {
+          "texture": "#ends",
+          "tintindex": 1
+        },
+        "down": {
+          "texture": "#ends",
+          "tintindex": 1
+        }
+      }
+    },
+    {
+      "name": "rod",
+      "from": [
+        7,
+        12,
+        7
+      ],
+      "to": [
+        9,
+        14,
+        9
+      ],
+      "faces": {
+        "north": {
+          "texture": "#ends",
+          "tintindex": 1
+        },
+        "south": {
+          "texture": "#ends",
+          "tintindex": 1
+        },
+        "east": {
+          "texture": "#ends",
+          "tintindex": 1
+        },
+        "west": {
+          "texture": "#ends",
+          "tintindex": 1
+        },
+        "up": {
+          "texture": "#ends",
+          "tintindex": 1
+        },
+        "down": {
+          "texture": "#ends",
+          "tintindex": 1
+        }
+      }
+    },
+    {
+      "name": "ball",
+      "from": [
+        6,
+        14,
+        6
+      ],
+      "to": [
+        10,
+        16,
+        10
+      ],
+      "faces": {
+        "north": {
+          "texture": "#ends",
+          "tintindex": 1
+        },
+        "south": {
+          "texture": "#ends",
+          "tintindex": 1
+        },
+        "east": {
+          "texture": "#ends",
+          "tintindex": 1
+        },
+        "west": {
+          "texture": "#ends",
+          "tintindex": 1
+        },
+        "up": {
+          "texture": "#ends",
+          "tintindex": 1
+        },
+        "down": {
+          "texture": "#ends",
+          "tintindex": 1
+        }
+      }
+    }
+  ]
 }

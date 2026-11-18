@@ -77,17 +77,22 @@ public class DryingRackBlockEntity extends BlockEntity {
         float air = Math.max(room, Math.min(HeatSource.at(level, worldPosition).value(), MachineTuning.RACK_MAX_AIR_TU.value()));
         boolean rain = level.isRainingAt(worldPosition.above());
         float dry = rain ? 0f : MachineTuning.RACK_DRY_PER_TICK * FTuning.TICKS_PER_SECOND * Mth.clamp(air / ThermalTuning.AMBIENT_TU.value(), 0f, 4f);
-        for (ItemStack stack : items) {
+        for (int i = 0; i < items.size(); i++) {
+            ItemStack stack = items.get(i);
             if (stack.isEmpty())
                 continue;
+            int slot = i;
             Cooking.findPerishable(level, stack).ifPresent(entry -> {
                 FoodState s = Cooking.current(stack, entry, level, air);
                 FoodState now = new FoodState(s.cook(), Math.max(0f, s.moisture() - dry * Cooking.cutHeat(stack, entry)), s.pathogen(), s.toxin(), s.charred(),
                         s.rot(), s.stamp(), s.envTu(), s.smoke(), s.salt());
                 stack.set(FDataComponents.FOOD_STATE.get(), now);
                 Cooking.apply(stack, entry, now);
-                if (Cooking.doneness(entry, now) == Cooking.Doneness.DRIED)
+                if (Cooking.doneness(entry, now) == Cooking.Doneness.DRIED) {
                     io.github.soundgoodizerfan.feedback.core.Awards.near(level, worldPosition, "progress/food/dried");
+                    // Dried through, a food whose file names a dried form is that thing now (rotten flesh cures to leather).
+                    entry.dried().ifPresent(item -> items.set(slot, new ItemStack(item, stack.getCount())));
+                }
             });
         }
         setChanged();

@@ -12,6 +12,7 @@ import io.github.soundgoodizerfan.feedback.registry.FBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.block.state.BlockState;
@@ -40,6 +41,15 @@ public class ElectrostaticGeneratorBlockEntity extends ElectricNode {
 
     private int pulseTicks;
 
+    /** Client only: the game time the wheel stops turning, the angle it has reached and the time it was last drawn. */
+    private long spinUntil;
+    private float spinAngle;
+    private float spinLast = -1f;
+
+    /** Degrees a tick the wheel turns at full speed; it slows over the last {@link #SPIN_EASE} ticks of a pulse. */
+    private static final float SPIN_DEGREES = 24f;
+    private static final float SPIN_EASE = 6f;
+
     public ElectrostaticGeneratorBlockEntity(BlockPos pos, BlockState state) {
         super(FBlockEntities.ELECTROSTATIC_GENERATOR.get(), pos, state);
     }
@@ -57,6 +67,35 @@ public class ElectrostaticGeneratorBlockEntity extends ElectricNode {
             io.github.soundgoodizerfan.feedback.core.electric.Sparks.emit(level, worldPosition, ElectricTuning.SPARK_MIN_AMPS);
         if (level != null)
             level.playSound(null, worldPosition, SoundEvents.COPPER_HIT, SoundSource.BLOCKS, 0.6f, 1.6f);
+        if (level != null)
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+    }
+
+    /** The wheel's angle in degrees at this frame (client): it turns while a pulse runs and eases to rest. */
+    public float spinAngle(float partialTick) {
+        if (level == null)
+            return spinAngle;
+        float now = level.getGameTime() + partialTick;
+        if (spinLast < 0f)
+            spinLast = now;
+        float dt = Math.max(0f, now - spinLast);
+        spinLast = now;
+        float remaining = spinUntil - now;
+        if (remaining > 0f)
+            spinAngle = (spinAngle + SPIN_DEGREES * Math.min(1f, remaining / SPIN_EASE) * dt) % 360f;
+        return spinAngle;
+    }
+
+    @Override
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        CompoundTag tag = super.getUpdateTag(registries);
+        tag.putInt("Pulse", pulseTicks);
+        return tag;
+    }
+
+    @Override
+    public ClientboundBlockEntityDataPacket getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
     }
 
     public boolean isPulsing() {
@@ -88,5 +127,7 @@ public class ElectrostaticGeneratorBlockEntity extends ElectricNode {
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
         pulseTicks = tag.getInt("Pulse");
+        if (level != null && level.isClientSide)
+            spinUntil = level.getGameTime() + pulseTicks;
     }
 }

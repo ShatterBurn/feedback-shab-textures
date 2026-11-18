@@ -1,16 +1,16 @@
 {
   "variants": {
     "glow=0": {
-      "model": "feedback:block/phosphor_screen"
+      "model": "feedback:block/phosphor_screen_0"
     },
     "glow=1": {
-      "model": "feedback:block/phosphor_screen"
+      "model": "feedback:block/phosphor_screen_1"
     },
     "glow=2": {
-      "model": "feedback:block/phosphor_screen"
+      "model": "feedback:block/phosphor_screen_2"
     },
     "glow=3": {
-      "model": "feedback:block/phosphor_screen"
+      "model": "feedback:block/phosphor_screen_3"
     }
   }
 }

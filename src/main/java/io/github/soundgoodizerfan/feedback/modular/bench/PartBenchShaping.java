@@ -112,6 +112,41 @@ public final class PartBenchShaping {
         return out;
     }
 
+    /** The key a shape goes by in {@link #drawable}: its part item and variant. */
+    public static String key(Option option) {
+        return option.shaping().item() + "/" + option.variant().name();
+    }
+
+    /**
+     * The shapes {@code mask} (the treatise volumes held, {@link io.github.soundgoodizerfan.feedback.modular.treatise.Treatises#mask})
+     * lets a player make: every shape of every type they may draw, so a plate a gun also uses stays on the list while the gun's own
+     * parts wait for its treatise.
+     */
+    public static Set<String> drawable(Map<ResourceLocation, ModularType> types, int mask) {
+        Set<String> out = new HashSet<>();
+        for (ModularType type : types.values()) {
+            if (!io.github.soundgoodizerfan.feedback.modular.treatise.Treatises.draws(mask, type))
+                continue;
+            List<ModularType.Shaping> shapings = new ArrayList<>();
+            for (String key : type.order())
+                type.roles().get(key).part().ifPresent(shapings::add);
+            shapings.addAll(type.shapes());
+            for (ModularType.Shaping shaping : shapings) {
+                for (ModularType.Variant v : shaping.laid())
+                    out.add(shaping.item() + "/" + v.name());
+                for (ModularType.Variant v : shaping.forged())
+                    out.add(shaping.item() + "/" + v.name());
+            }
+        }
+        return out;
+    }
+
+    /** The words a search matches against: the label, the part, the type, the variant and the base shape, lower case. */
+    public static String words(Option option) {
+        return (option.label().getString() + ' ' + option.shaping().item().getPath() + ' ' + option.type().getPath() + ' '
+                + option.variant().name() + ' ' + option.shaping().base()).replace('_', ' ').toLowerCase(java.util.Locale.ROOT);
+    }
+
     /**
      * Whether stock of {@code what}, in any amount, could make {@code option} at {@code station}: the bench works that
      * kind of stuff, the form is one the shape takes, and the material has the traits it asks for. What the bench's list
@@ -269,7 +304,7 @@ public final class PartBenchShaping {
                 return Optional.empty();
             float heat = ItemHeat.get(s, level).value();
             Material em = l.get().material();
-            if (em.minTemperature().value() > 0 && (heat < em.minTemperature().value() || heat > em.maxTemperature().value()))
+            if (!station.coldWork() && em.minTemperature().value() > 0 && (heat <em.minTemperature().value() || heat > em.maxTemperature().value()))
                 return Optional.empty();
             more.add(new Stock.Extra(slots.get(i).name(), j, l.get(), share, heat, mb));
             mainNeed -= share;
@@ -302,7 +337,7 @@ public final class PartBenchShaping {
         if (what == null || !takes(station, option, what) || (exact ? mb != need : mb < need))
             return Optional.empty();
         Material m = what.material();
-        if (m.minTemperature().value() > 0 && (coldest < m.minTemperature().value() || coldest > m.maxTemperature().value()))
+        if (!station.coldWork() && m.minTemperature().value() > 0 && (coldest <m.minTemperature().value() || coldest > m.maxTemperature().value()))
             return Optional.empty();
         if (!option.shaping().slots().isEmpty() && !option.shaping().slots().get(0).traits().isEmpty()
                 && !MaterialNeeds.hasAll(what.material(), option.shaping().slots().get(0).traits()))

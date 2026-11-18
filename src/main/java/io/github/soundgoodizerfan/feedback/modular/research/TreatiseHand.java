@@ -49,6 +49,8 @@ public final class TreatiseHand {
     public final boolean[] inChain;
     public int hands, discards, score, bad, links;
     public boolean reached;
+    /** What the last play's linked cards were each worth before the row's multiplier (for the screen's tally; the server grades by {@link #score}). */
+    public final List<Integer> lastChips = new ArrayList<>();
     private final int guarantee;
     private final Random rng;
     private final ArrayDeque<Integer> pile = new ArrayDeque<>();
@@ -76,6 +78,11 @@ public final class TreatiseHand {
         pile.addAll(order);
         chain.add(plan.start);
         deal();
+    }
+
+    /** Cards left in the draw pile (the spent ones return on a reshuffle and are not counted). */
+    public int pileSize() {
+        return pile.size();
     }
 
     /** The concept the next play must link to. */
@@ -132,6 +139,7 @@ public final class TreatiseHand {
         if (over() || ids.isEmpty() || ids.size() > MAX_PLAY || !valid(ids))
             return Result.IGNORED;
         hands--;
+        lastChips.clear();
         float total = 0;
         int linked = 0;
         boolean broke = false;
@@ -144,7 +152,9 @@ public final class TreatiseHand {
                 spent.add(c);
                 continue;
             }
-            total += CARD_POINTS * same.size() * Math.min(3f, 1f + 0.25f * (chain.size() - 1));
+            float worth = CARD_POINTS * same.size() * Math.min(3f, 1f + 0.25f * (chain.size() - 1));
+            total += worth;
+            lastChips.add(Math.round(worth));
             chain.add(cards[c]);
             inChain[c] = true;
             linked++;
