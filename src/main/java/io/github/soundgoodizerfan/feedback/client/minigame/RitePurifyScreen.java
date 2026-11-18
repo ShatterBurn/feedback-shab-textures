@@ -34,6 +34,8 @@ final class RitePurifyScreen extends Screen {
     private static final GuiSkin SKIN = GuiSkin.MYSTIC;
     private static final int W = 300, H = 236, CELL = 26, BX = 18, BY = 50, TX = 196, TY = 50, MINI = 8, SLOT = 38, SLOT_GAP = 6;
     /** Fire, water, earth, air, light, dark: the pieces' faces. */
+    /** The how-to window's backing, a deep violet (the window is its own sheet, in its own colour). */
+    private static final int VEIL = 0xF0140A26;
     private static final int[] COLOUR = {0xFFE8542A, 0xFF3C8CE8, 0xFF9A7240, 0xFFCFE6EE, 0xFFFFE070, 0xFF6B44A8};
 
     private final Opening opening = new Opening(SKIN);
@@ -46,6 +48,7 @@ final class RitePurifyScreen extends Screen {
     private final String[] initial = new String[RitePurify.ELEMENTS];
     private int px, py, selected, flash;
     private boolean sent, stuck;
+    private final Tutorial tutorial = new Tutorial("rite", "gui.feedback.research.rite.tutorial", 9);
     private long endedAt;
     private Button redraw, residue;
     private List<net.minecraft.util.FormattedCharSequence> helpLines = List.of();
@@ -68,6 +71,7 @@ final class RitePurifyScreen extends Screen {
         py = (height - H) / 2;
         opening.start();
         helpLines = font.split(Component.translatable("gui.feedback.research.rite.help"), W - 28);
+        tutorial.init(font, W - 40 - 24);
         rebuild();
     }
 
@@ -79,6 +83,7 @@ final class RitePurifyScreen extends Screen {
         }
         redraw = addRenderableWidget(GuiStyle.button(SKIN, Component.translatable("gui.feedback.research.rite.redraw"), b -> redraw(), px + TX, py + 178, 84, 16));
         residue = addRenderableWidget(GuiStyle.button(SKIN, Component.translatable("gui.feedback.research.rite.residue"), b -> residue(), px + TX, py + 196, 84, 16));
+        addRenderableWidget(tutorial.button(SKIN, px + W - 28, py + 6));
     }
 
     private void redraw() {
@@ -117,6 +122,8 @@ final class RitePurifyScreen extends Screen {
     public boolean mouseClicked(double mx, double my, int button) {
         if (!opening.settled() || button != 0)
             return !opening.settled() || super.mouseClicked(mx, my, button);
+        if (!game.over() && tutorial.click())
+            return true;
         if (super.mouseClicked(mx, my, button))
             return true;
         if (game.over())
@@ -239,6 +246,8 @@ final class RitePurifyScreen extends Screen {
                 g.drawString(font, Component.translatable("gui.feedback.research.rite.stuck"), px + BX, py + 188, SKIN.warn(), false);
             for (int i = 0; i < helpLines.size(); i++)
                 g.drawString(font, helpLines.get(i), px + 14, py + H - 22 + i * 9, SKIN.dim(), false);
+            if (!game.over())
+                tutorial.draw(g, font, px + 20, py + 28, W - 40, VEIL, SKIN.accent(), SKIN.accent(), SKIN.ink(), SKIN.dim());
         });
     }
 

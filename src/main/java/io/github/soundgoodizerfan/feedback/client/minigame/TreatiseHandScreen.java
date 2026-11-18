@@ -60,11 +60,7 @@ final class TreatiseHandScreen extends Screen {
     private int phase = PLAY, asked = -1, shownChars, replayChars, px, py, hoverCard = -1, hoverStamp = -1;
     private float shakeAt = Float.NEGATIVE_INFINITY;
     private boolean correct, sent;
-    /** The how-to window shows until the first click, once per game session; the "?" button brings it back. */
-    private static boolean tutorialSeen;
-    private boolean tutorial = !tutorialSeen;
-    private List<FormattedCharSequence> tutorialLines = List.of();
-    private int tutorialH;
+    private final Tutorial tutorial = new Tutorial("hand", "gui.feedback.research.hand.tutorial", 10);
     private long endedAt;
 
     TreatiseHandScreen(Screen parent, ResearchOpenPayload session) {
@@ -100,11 +96,7 @@ final class TreatiseHandScreen extends Screen {
             for (var piece : font.getSplitter().splitLines(paragraph, W - 56, net.minecraft.network.chat.Style.EMPTY))
                 lines.add(piece.getString());
         replayLines = lines;
-        List<FormattedCharSequence> how = new ArrayList<>();
-        for (int i = 1; i <= 3; i++)
-            how.addAll(font.split(Component.translatable("gui.feedback.research.hand.tutorial." + i), W - 80 - 24));
-        tutorialLines = how;
-        tutorialH = 36 + how.size() * 10 + 8;
+        tutorial.init(font, W - 80 - 24);
         rebuild();
     }
 
@@ -114,7 +106,7 @@ final class TreatiseHandScreen extends Screen {
         if (phase == PLAY) {
             addRenderableWidget(GuiStyle.primary(SKIN, playLabel, b -> play(), px + 12, py + H - 34, 96, 18, null));
             addRenderableWidget(GuiStyle.button(SKIN, discardLabel, b -> discard(), px + 114, py + H - 34, 96, 18));
-            addRenderableWidget(GuiStyle.button(SKIN, Component.literal("?"), b -> tutorial = true, px + W - 30, py + 6, 18, 14));
+            addRenderableWidget(tutorial.button(SKIN, px + W - 30, py + 6));
         } else if (phase == ASK)
             for (int i = 0; i < plan.options.size(); i++) {
                 int n = i;
@@ -154,11 +146,8 @@ final class TreatiseHandScreen extends Screen {
     public boolean mouseClicked(double mx, double my, int button) {
         if (!opening.settled() || button != 0)
             return !opening.settled() || super.mouseClicked(mx, my, button);
-        if (tutorial && phase == PLAY) {
-            tutorial = false;
-            tutorialSeen = true;
+        if (phase == PLAY && tutorial.click())
             return true;
-        }
         if (super.mouseClicked(mx, my, button))
             return true;
         if (phase == PLAY) {
@@ -324,21 +313,10 @@ final class TreatiseHandScreen extends Screen {
             specks.draw(g, partial);
             for (var widget : renderables)
                 widget.render(g, mx, my, partial);
-            if (tutorial && phase == PLAY)
-                drawTutorial(g);
+            if (phase == PLAY)
+                tutorial.draw(g, font, px + 40, py + 50, W - 80, PAGE, CHAIN, PAGE_INK, PAGE_INK, 0xFF6C6C70);
             g.pose().popPose();
         });
-    }
-
-    /** The how-to window, a sheet of paper in its own colours over the play area. */
-    private void drawTutorial(GuiGraphics g) {
-        int x = px + 40, y = py + 50, w = W - 80;
-        g.fill(x, y, x + w, y + tutorialH, PAGE);
-        g.renderOutline(x, y, w, tutorialH, CHAIN);
-        g.drawString(font, Component.translatable("gui.feedback.research.hand.tutorial.title"), x + 12, y + 8, PAGE_INK, false);
-        for (int i = 0; i < tutorialLines.size(); i++)
-            g.drawString(font, tutorialLines.get(i), x + 12, y + 24 + i * 10, PAGE_INK, false);
-        g.drawString(font, clickLine, x + w - 12 - font.width(clickLine), y + tutorialH - 12, 0xFF6C6C70, false);
     }
 
     private void drawPlay(GuiGraphics g, int mx, int my) {
