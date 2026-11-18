@@ -180,6 +180,34 @@
       }
     ]
   },
+  "ui.card_deal": {
+    "sounds": [
+      {
+        "name": "feedback:notebook/card_deal"
+      }
+    ]
+  },
+  "ui.card_play": {
+    "sounds": [
+      {
+        "name": "feedback:notebook/card_play"
+      }
+    ]
+  },
+  "ui.card_burn": {
+    "sounds": [
+      {
+        "name": "feedback:notebook/card_burn"
+      }
+    ]
+  },
+  "ui.page_found": {
+    "sounds": [
+      {
+        "name": "feedback:notebook/page_found"
+      }
+    ]
+  },
   "ui.punch": {
     "sounds": [
       {

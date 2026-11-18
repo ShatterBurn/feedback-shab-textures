@@ -56,13 +56,12 @@ public final class MinigameScreens {
 
     /** Opens the research game over the Research Table's screen. */
     public static void openResearch(Screen parent, io.github.soundgoodizerfan.feedback.net.ResearchOpenPayload session) {
-        // a rite sends its figures; an app's plan holds words for the terminal; every other plan holds concepts for the board
-        if (io.github.soundgoodizerfan.feedback.modular.research.RitePurify.Params.is(session.plan())) {
-            Minecraft.getInstance().setScreen(new RitePurifyScreen(parent, session));
-            return;
-        }
-        boolean terminal = !io.github.soundgoodizerfan.feedback.modular.research.ResearchPlan.parse("play", session.plan()).words.isEmpty();
-        Minecraft.getInstance().setScreen(terminal ? new AppHackScreen(parent, session) : new ResearchBoardScreen(parent, session));
+        // the table's mode picks the game: treatises play cards, rites purify a grid (their plan is the rite's figures), apps a terminal
+        Minecraft.getInstance().setScreen(switch (session.kind()) {
+            case 0 -> new TreatiseHandScreen(parent, session);
+            case 1 -> new RitePurifyScreen(parent, session);
+            default -> new AppHackScreen(parent, session);
+        });
     }
 
     /** Sends the one result of a game: a score in 0..1. */

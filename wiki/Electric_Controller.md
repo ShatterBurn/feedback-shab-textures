@@ -72,7 +72,7 @@ A bottom panel holds the **Menu** launcher, one task button per open window, and
 
 **Drive**, **Editor**, **Files**, **Settings**, **Monitor**, **Links**, **Diagram** and **Console** are built in. Every other app comes on an **app disk**, a Floppy Disk that carries the app. An app runs while its disk sits in one of the four drive bays or is installed on the [internal disk](#internal-disk). Pull the disk and the app disappears from the Menu and its window closes; the disk can go into another Computer and the app is there. An app disk is not a program medium: the Computer will not edit, run or copy onto it, and a [Programmer](Programming.md) will not take it. In a Drive window an app disk shows that it runs while in a drive. The creative tab lists each app disk.
 
-Each app disk is researched at the [Research Table](Research_Table.md#apps): a blank Floppy Disk (no app, no program) plus the thing the app is about, worked out on the research board.
+Each app disk is researched at the [Research Table](Research_Table.md#apps): a blank Floppy Disk (no app, no program) plus the thing the app is about, won by breaking into a terminal.
 
 | About item | App disk |
 | --- | --- |

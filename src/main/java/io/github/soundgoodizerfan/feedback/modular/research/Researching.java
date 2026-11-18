@@ -25,8 +25,8 @@ import net.minecraft.world.item.ItemStack;
 /**
  * What the Research Table can research and what a run asks of the researcher. Three kinds of thing: a treatise volume, an attunement written
  * onto a rite, and an app written onto a blank disk. A volume wants as its specimen an item the volume before it taught how to build (a type gated by that volume), or for a first volume
- * one of the plain things its plan names; it also wants that earlier treatise in hand. Either way the play is the research board
- * ({@code ResearchBoardScreen}) over the plan authored for it ({@link ResearchPlan}).
+ * one of the plain things its plan names; it also wants that earlier treatise in hand. Each kind plays its own game
+ * (the mode's game screen) over the plan authored for it ({@link ResearchPlan}).
  */
 public final class Researching {
 

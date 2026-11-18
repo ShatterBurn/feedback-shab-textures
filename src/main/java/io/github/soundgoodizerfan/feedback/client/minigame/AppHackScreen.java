@@ -59,6 +59,11 @@ final class AppHackScreen extends Screen {
     private final String header;
     private int px, py, hover = -1;
     private boolean sent;
+    /** The how-to window shows until the first click, once per game session; the "?" button brings it back. */
+    private static boolean tutorialSeen;
+    private boolean tutorial = !tutorialSeen;
+    private List<net.minecraft.util.FormattedCharSequence> tutorialLines = List.of();
+    private int tutorialH;
     private long endedAt;
 
     AppHackScreen(Screen parent, ResearchOpenPayload session) {
@@ -92,9 +97,16 @@ final class AppHackScreen extends Screen {
         for (int c = 32; c < 127; c++)
             glyphWidth[c] = font.width(GLYPH[c]);
         helpLines = font.split(helpLine, W - 24);
+        List<net.minecraft.util.FormattedCharSequence> how = new ArrayList<>();
+        for (int i = 1; i <= 3; i++)
+            how.addAll(font.split(Component.translatable("gui.feedback.research.app.tutorial." + i), W - 80 - 24));
+        tutorialLines = how;
+        tutorialH = 36 + how.size() * 10 + 8;
         clearWidgets();
         if (game.over())
             addRenderableWidget(GuiStyle.primary(SKIN, Component.translatable("gui.feedback.research.app.finish"), b -> finish(), px + STATUS_X, py + H - 52, STATUS_W, 18, null));
+        else
+            addRenderableWidget(GuiStyle.button(SKIN, Component.literal("?"), b -> tutorial = true, px + W - 30, py + 6, 18, 14));
     }
 
     /** Adds a line to the terminal's log, the oldest scrolling off the top. */
@@ -125,6 +137,11 @@ final class AppHackScreen extends Screen {
     public boolean mouseClicked(double mx, double my, int button) {
         if (!opening.settled() || button != 0)
             return !opening.settled() || super.mouseClicked(mx, my, button);
+        if (tutorial && !game.over()) {
+            tutorial = false;
+            tutorialSeen = true;
+            return true;
+        }
         if (super.mouseClicked(mx, my, button))
             return true;
         int cell = cellAt(mx, my);
@@ -214,7 +231,20 @@ final class AppHackScreen extends Screen {
             specks.draw(g, partial);
             for (var widget : renderables)
                 widget.render(g, mx, my, partial);
+            if (tutorial && !game.over())
+                drawTutorial(g);
         });
+    }
+
+    /** The how-to window: a boxed terminal message over the dump, in the phosphor. */
+    private void drawTutorial(GuiGraphics g) {
+        int x = px + 40, y = py + 40, w = W - 80;
+        g.fill(x, y, x + w, y + tutorialH, GLASS);
+        g.renderOutline(x, y, w, tutorialH, SKIN.ink());
+        g.drawString(font, Component.translatable("gui.feedback.research.app.tutorial.title"), x + 12, y + 8, SKIN.ink(), false);
+        for (int i = 0; i < tutorialLines.size(); i++)
+            g.drawString(font, tutorialLines.get(i), x + 12, y + 24 + i * 10, SKIN.ink(), false);
+        g.drawString(font, Component.translatable("gui.feedback.research.app.tutorial.close"), x + 12, y + tutorialH - 12, SKIN.dim(), false);
     }
 
     private void drawTries(GuiGraphics g) {

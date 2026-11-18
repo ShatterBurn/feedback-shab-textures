@@ -912,6 +912,10 @@ Log every file here. Row: path, Soundza id, creator and title, download date, `a
 | `assets/feedback/sounds/terminal/app_deny.ogg` | Soundza `cmujgouuydwtkv2uiqv8j4cqr` "Access Denied Buzz", no creator listed, 2026-11-17 | no | re-pitched 0.7, low-passed at 2.4 kHz, mono, normalised to -20 LUFS | Soundza Standard License |
 | `assets/feedback/sounds/terminal/app_hack.ogg` | Soundza `cmvjp6944xq99a9279bj26olo` "Short Laser Charge Up", no creator listed, 2026-11-17 | no | re-pitched 1.1, high-passed at 200 Hz, normalised to -20 LUFS | Soundza Standard License |
 | `assets/feedback/sounds/terminal/app_found.ogg` | Soundza `cmukcc2txkea6expgzboxjtzq` "Synth Power-Up Ascending", no creator listed, 2026-11-17 | no | re-pitched 0.85, faded out over 0.5 s, mono, normalised to -18 LUFS | Soundza Standard License |
+| `assets/feedback/sounds/notebook/card_deal.ogg` | Soundza `cmuke7x6ec5fz1afi31x1jw66` "Playing Card Deal", no creator listed, 2026-11-18 | no | re-pitched 1.08, mono, normalised to -22 LUFS | Soundza Standard License |
+| `assets/feedback/sounds/notebook/card_play.ogg` | Soundza `cmv0il4an008w06l5fcehf274` "Card Place 1", no creator listed, 2026-11-18 | no | re-pitched 0.95, mono, normalised to -20 LUFS | Soundza Standard License |
+| `assets/feedback/sounds/notebook/card_burn.ogg` | Soundza `cmv0gp82z008306i90mgj38f5` "Paper Crumple 1", no creator listed, 2026-11-18 | no | cut to 1 s, re-pitched 1.1, faded out, mono, normalised to -22 LUFS | Soundza Standard License |
+| `assets/feedback/sounds/notebook/page_found.ogg` | Soundza `cmvr5wf48wesazniiz82gr124` "Page Turn Long Crisp" and Soundza `cmvcmgxpuvpqbjdx0i99c21ia` "Glockenspiel Success Chime", no creators listed, 2026-11-18 | no, no | two layered: the page turn re-pitched 0.95, the chime cut to 1.8 s, re-pitched 0.95 and delayed 250 ms; faded out, mono, normalised to -18 LUFS | Soundza Standard License |
 
 ## Skins
 

@@ -10,7 +10,7 @@ import java.util.Random;
 import io.github.soundgoodizerfan.feedback.modular.bake.ModularTuning;
 
 /**
- * The apps' research game's rules, pure: a terminal dump of junk with the plan's words hidden in it, one of which is the app's goal. Picking a word
+ * The apps' research game's rules, pure: a terminal dump of junk with the plan's words hidden in it, one of which, drawn from the seed, is the answer. Picking a word
  * answers with its likeness (letters that match the goal in the same place) and spends a try; a bracket pair on one row is a hack that either removes a
  * dud word or refills the tries. The dump, the tries and the hacks all come from the plan, the seed and the ink, so the client plays it and the server
  * replays the picks the client sent over the same three and believes nothing the client says about its own result.
@@ -56,8 +56,8 @@ public final class AppHack {
      */
     public AppHack(ResearchPlan plan, int seed, int ink) {
         words = plan.words.toArray(new String[0]);
-        int goal = plan.words.indexOf(plan.goal);
-        answer = Math.max(0, goal);
+        // The answer is any word of the pool, drawn from the seed, so it is not the app's own name by rule.
+        answer = new Random(seed ^ 0x51ED270BL).nextInt(Math.max(1, words.length));
         int extra = Math.max(0, ink - ModularTuning.RESEARCH_BASE_INK);
         tries = triesStart = Math.min(TRIES_MAX, TRIES_MIN + extra);
         Random rng = new Random(seed);

@@ -268,13 +268,14 @@ public class ResearchTableMenu extends AbstractContainerMenu {
         sentSeed = (int) (now ^ containerId * 31L);
         sentRite = mode.get() == 1 ? Researching.riteParams(effect(server), table.getItem(ResearchTableBlockEntity.OFFERING),
                 table.getItem(ResearchTableBlockEntity.REAGENT), sentInk, server.level()) : null;
-        PacketDistributor.sendToPlayer(server, new ResearchOpenPayload(containerId, sentRite != null ? sentRite.encode() : plan.json(), sentInk, sentSeed));
+        PacketDistributor.sendToPlayer(server, new ResearchOpenPayload(containerId, sentRite != null ? sentRite.encode() : plan.json(), sentInk, sentSeed,
+                mode.get(), mode.get() == 0 ? Researching.volume(sentIndex)[1] : 1));
         return true;
     }
 
     /**
      * The client's one result: the placements it made and the answer it gave, which are replayed here over the plan, seed and ink that were
-     * sent ({@link ResearchBoard}); the score and the strain are what that replay makes, never what the client says. A result sent faster than an
+     * sent (the mode's pure rules, {@link TreatiseHand} or {@link RitePurify}); the score and the strain are what that replay makes, never what the client says. A result sent faster than an
      * honest play could be is scored as nothing. The experience is spent; the specimen is worn or comes apart; the volume is written or the
      * attunement learned.
      */
@@ -300,19 +301,9 @@ public class ResearchTableMenu extends AbstractContainerMenu {
                 return;
             quality = elapsed < ModularTuning.RESEARCH_MIN_TICKS ? 0f : RitePurify.replay(sentRite, sentSeed, moves).quality();
         } else {
-            ResearchBoard board = new ResearchBoard(sentPlan, sentSeed, sentInk);
-            for (String move : moves) {
-                int at = move.indexOf('@'), comma = move.indexOf(',', at + 1);
-                if (at < 0 || comma < 0 || board.over())
-                    break;
-                try {
-                    board.place(move.substring(0, at), ResearchBoard.key(Integer.parseInt(move.substring(at + 1, comma)), Integer.parseInt(move.substring(comma + 1))));
-                } catch (NumberFormatException e) {
-                    break;
-                }
-            }
-            quality = elapsed < ModularTuning.RESEARCH_MIN_TICKS ? 0f : board.quality(board.reached && answer == sentPlan.answer);
-            pushed = mode.get() == 0 ? board.strain(Researching.forgiving(table.getItem(ResearchTableBlockEntity.SPECIMEN))) : 0;
+            TreatiseHand hand = TreatiseHand.replay(sentPlan, sentSeed, sentInk, Researching.volume(sentIndex)[1], moves);
+            quality = elapsed < ModularTuning.RESEARCH_MIN_TICKS ? 0f : hand.quality(hand.reached && answer == sentPlan.answer);
+            pushed = hand.strain(Researching.forgiving(table.getItem(ResearchTableBlockEntity.SPECIMEN)));
         }
         int why = ready(server);
         if (why != 0) {
