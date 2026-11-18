@@ -81,6 +81,8 @@ public final class StreamFx {
     /** One droplet (or puff, flame, soot, fog or mote): reused from a free list, so the droplets themselves are never reallocated once warm (the short-lived {@code Vec3}s of spawning and the strip are). */
     private static final class Drop {
         float x, y, z, ox, oy, oz, vx, vy, vz, size, r, g, b, hot;
+        /** Fall per tick squared: a hard-driven drop barely falls, a feeble one sags. */
+        float grav;
         int age, life;
         byte type;
         /** Your own stream's: never held to the crowd cap. */
@@ -212,10 +214,10 @@ public final class StreamFx {
 
     // ---------------------------------------------------------------- the droplets
 
-    private static void spawn(byte type, double x, double y, double z, Vec3 vel, float size, int life, float r, float g, float b, boolean mine, float hot,
+    private static Drop spawn(byte type, double x, double y, double z, Vec3 vel, float size, int life, float r, float g, float b, boolean mine, float hot,
                               boolean flare) {
         if (DROPS.size() >= MAX_TOTAL || !mine && others >= CasterTuning.SPRAY_MAX_LIVE)
-            return;
+            return null;
         Drop d = FREE.isEmpty() ? new Drop() : FREE.poll();
         d.x = d.ox = (float) x;
         d.y = d.oy = (float) y;
@@ -233,9 +235,16 @@ public final class StreamFx {
         d.type = type;
         d.mine = mine;
         d.flare = flare;
+        d.grav = CasterTuning.SPRAY_GRAVITY;
         DROPS.add(d);
         if (!mine)
             others++;
+        return d;
+    }
+
+    /** How much of gravity a stream driven at {@code speed} feels: a hard jet flies nearly straight, a feeble one sags. */
+    private static float gravityOf(float speed) {
+        return CasterTuning.SPRAY_GRAVITY * (1f - 0.8f * Mth.clamp(speed / CasterTuning.SPEED_MAX, 0f, 1f));
     }
 
     /** One client tick of every droplet: its own gravity and drag by kind, growth, and removal at the end of its life. */
@@ -255,7 +264,7 @@ public final class StreamFx {
             d.oz = d.z;
             float drag = 0.99f, lift = 0f, grow = 1f;
             switch (d.type) {
-                case DROP -> lift = -CasterTuning.SPRAY_GRAVITY;
+                case DROP -> lift = -d.grav;
                 case PUFF -> {
                     drag = PUFF_DRAG;
                     lift = 0.002f;
@@ -362,15 +371,19 @@ public final class StreamFx {
             int drops = burning ? 0 : Math.min(cap, Math.round((1 + body * 0.6f) * scale));
             // Drops are placed along the whole stream, not only at the nozzle: each starts where a drop that left earlier would be by now
             // (sagged by gravity, spread by the cone) with the life it has left, so the stream is filled from the gun to where it lands.
+            float grav = gravityOf(speed);
             for (int i = 0; i < drops; i++) {
                 float dist = length * random.nextFloat();
                 float flown = dist / speed;
-                Vec3 off = across(across1, across2, random, tan * dist + 0.02);
-                Vec3 at = start.add(dir.scale(dist)).add(off).add(0, -0.5 * CasterTuning.SPRAY_GRAVITY * flown * flown, 0);
-                Vec3 vel = dir.scale(speed * (0.9 + random.nextDouble() * 0.15)).add(off.scale(1.0 / Math.max(flown, 1f))).add(0,
-                        -CasterTuning.SPRAY_GRAVITY * flown, 0);
-                spawn(DROP, at.x, at.y, at.z, vel, size * (0.7f + random.nextFloat() * 0.6f), Math.max(2, Math.round((length - dist) / (speed * 0.95f)) + 1), r,
-                        g, b, mine, 0f, flared);
+                // Four in ten ride the axis, the middle of the stream; the rest fan across the cone.
+                boolean core = random.nextFloat() < 0.4f;
+                Vec3 off = core ? across(across1, across2, random, 0.015) : across(across1, across2, random, tan * dist + 0.02);
+                Vec3 at = start.add(dir.scale(dist)).add(off).add(0, -0.5 * grav * flown * flown, 0);
+                Vec3 vel = dir.scale(speed * (0.9 + random.nextDouble() * 0.15)).add(off.scale(1.0 / Math.max(flown, 1f))).add(0, -grav * flown, 0);
+                Drop d = spawn(DROP, at.x, at.y, at.z, vel, size * (core ? 1.1f : 0.7f + random.nextFloat() * 0.6f),
+                        Math.max(2, Math.round((length - dist) / (speed * 0.95f)) + 1), r, g, b, mine, 0f, flared);
+                if (d != null)
+                    d.grav = grav;
             }
             if (burning) {
                 int flife = Mth.clamp(Math.round(6 + length * 0.3f), 6, 14);
@@ -497,13 +510,8 @@ public final class StreamFx {
             if (life <= 0f || length <= 0.05f)
                 continue;
             boolean burning = r.kind == CasterStreamPayload.BURNING;
-            boolean far = cam.distanceTo(start) > CasterTuning.SPRAY_FAR;
-            // A liquid jet keeps a core only when it is hard driven, and only near the nozzle; a far stream is the bare strip.
-            boolean jet = r.speed >= CasterTuning.SPRAY_CORE_SPEED_SHARE * CasterTuning.SPEED_MAX;
-            if (!burning && !far && !jet)
-                continue;
-            float drawn = burning || far ? length : length / 3f;
-            strip(m, vc, r, start, dir, length, drawn, life, cam, time, firstPerson && own, burning);
+                        // Every liquid has a core thread the whole length of its reach (the axis of the stream); it thins out where the stream breaks into drops.
+            strip(m, vc, r, start, dir, length, length, life, cam, time, firstPerson && own, burning);
         }
         Vector3f left = camera.getLeftVector(), up = camera.getUpVector();
         buffers.endBatch(RenderType.debugQuads());
@@ -564,6 +572,11 @@ public final class StreamFx {
         for (int i = 0; i <= n; i++) {
             float s = i / (float) n, t = s * drawn;
             Vec3 at = start.add(dir.scale(t)).add(muzzle.scale(Math.max(0, 1 - t / 9f)));
+            if (!burning) {
+                // The core follows the same arc the drops fly.
+                float flown = t / Math.max(r.speed, 0.05f);
+                at = at.add(0, -0.5 * gravityOf(r.speed) * flown * flown, 0);
+            }
             Vec3 toCam = cam.subtract(at);
             Vec3 side = dir.cross(toCam);
             if (side.lengthSqr() < 1e-8)
@@ -585,7 +598,7 @@ public final class StreamFx {
                 coreC = ramp(fs * 0.5f, hot);
             } else {
                 // The cone widens it.
-                w = w0 + (float) (t * tan * 0.35);
+                w = w0 * 0.6f + (float) (t * tan * 0.06);
                 // Bands of brightness running down the stream, a broad slow one and a fine quick one.
                 double band = 0.5 + 0.5 * Math.sin(t * 4.5 - time * 5.0 + Math.sin(t * 1.7) * 2.0);
                 double fine = 0.5 + 0.5 * Math.sin(t * 11.0 - time * 12.0);

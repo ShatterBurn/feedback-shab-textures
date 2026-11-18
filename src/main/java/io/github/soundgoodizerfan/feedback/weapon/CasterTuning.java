@@ -53,8 +53,6 @@ public final class CasterTuning {
     public static final float SPRAY_FAR = 48f;
     /** Droplet fall, blocks a tick squared. */
     public static final float SPRAY_GRAVITY = 0.045f;
-    /** A jet driven over this share of {@link #SPEED_MAX} keeps a bright core ribbon for the first third of its reach. */
-    public static final float SPRAY_CORE_SPEED_SHARE = 0.4f;
 
     // --- effects ----------------------------------------------------------------------------------
     /** A stream hotter than this scalds what it hits; one at or under {@link #FREEZE_TU} chills it. */
