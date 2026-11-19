@@ -273,6 +273,16 @@ public final class ModularFit {
         return ModularFigures.of(m, figures.step());
     }
 
+    /**
+     * A built machine (a dynamotor, a cell) starts at a condition its minigame score sets, from {@link ModularTuning#START_MACHINE_LOW} to
+     * {@link ModularTuning#START_MACHINE_HIGH}; the placed block takes it from the item. No score (hand assembly, a prediction) leaves it new.
+     */
+    public static void machineStart(ItemStack machine, ModularType type, Start start) {
+        if (start.minigame() >= 0f && (type.family() == ModularType.Family.MACHINE || type.family() == ModularType.Family.CELL))
+            machine.set(io.github.soundgoodizerfan.feedback.registry.FDataComponents.TOOL_CONDITION.get(), ModularTuning.START_MACHINE_LOW
+                    + Math.min(1f, start.minigame()) * (ModularTuning.START_MACHINE_HIGH - ModularTuning.START_MACHINE_LOW));
+    }
+
     /** Sets {@code fit} on a freshly assembled {@code tool}, and starts a damageable one worn by the head start. Call before the first bake for the fit to count. */
     public static void start(ItemStack tool, Fit fit) {
         if (tool.isDamageableItem())

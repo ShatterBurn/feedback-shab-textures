@@ -414,6 +414,9 @@ public class DynamotorBlockEntity extends ElectricNode implements ThermalBody, W
         CompoundTag state = input.get(FDataComponents.DYNAMOTOR.get());
         if (state != null)
             readState(state);
+        // A machine fresh from the Engineering Table has no saved state: its start condition rides the item.
+        else if (input.get(FDataComponents.TOOL_CONDITION.get()) != null)
+            condition = input.get(FDataComponents.TOOL_CONDITION.get());
         design = input.get(FModular.DESIGN.get());
         figures = input.get(FModular.FIGURES.get());
     }

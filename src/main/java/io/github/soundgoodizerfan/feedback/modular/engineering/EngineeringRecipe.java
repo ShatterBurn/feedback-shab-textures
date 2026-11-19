@@ -312,7 +312,7 @@ public class EngineeringRecipe implements Recipe<EngineeringInput> {
 
     public static class Serializer implements RecipeSerializer<EngineeringRecipe> {
 
-        private static final MapCodec<EngineeringRecipe> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
+        private static final MapCodec<EngineeringRecipe> CODEC = RecordCodecBuilder.<EngineeringRecipe>mapCodec(i -> i.group(
                 Codec.mapEither(ShapedRecipePattern.MAP_CODEC, Ingredient.CODEC_NONEMPTY.listOf().fieldOf("ingredients")).forGetter(r -> r.grid),
                 ItemStack.STRICT_CODEC.fieldOf("result").forGetter(r -> r.result),
                 Tool.CODEC.listOf().optionalFieldOf("tool", List.of()).forGetter(r -> r.tools),
@@ -320,7 +320,15 @@ public class EngineeringRecipe implements Recipe<EngineeringInput> {
                 Codec.STRING.optionalFieldOf("school", "").forGetter(r -> r.school),
                 Codec.STRING.optionalFieldOf("minigame").forGetter(r -> r.minigame),
                 Codec.STRING.listOf().optionalFieldOf("fit_order", List.of()).forGetter(r -> r.fitOrder),
-                Codec.BOOL.optionalFieldOf("carries_circuit", false).forGetter(r -> r.carriesCircuit)).apply(i, EngineeringRecipe::new));
+                Codec.BOOL.optionalFieldOf("carries_circuit", false).forGetter(r -> r.carriesCircuit)).apply(i, EngineeringRecipe::new))
+                .flatXmap(Serializer::checked, com.mojang.serialization.DataResult::success);
+
+        /** A minigame's score sets the start condition, which only a modular result has: a plain item with a minigame is a data error, not a score that does nothing. */
+        private static com.mojang.serialization.DataResult<EngineeringRecipe> checked(EngineeringRecipe r) {
+            return r.minigame.isPresent() && r.result.get(io.github.soundgoodizerfan.feedback.registry.FModular.DESIGN.get()) == null
+                    ? com.mojang.serialization.DataResult.error(() -> "an engineering recipe with a minigame must make a modular item (its score sets the start condition); " + r.result)
+                    : com.mojang.serialization.DataResult.success(r);
+        }
 
         private static final StreamCodec<RegistryFriendlyByteBuf, EngineeringRecipe> STREAM_CODEC = StreamCodec.of(Serializer::write, Serializer::read);
 

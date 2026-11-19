@@ -301,6 +301,9 @@ public final class EngineeringAssembly {
         ModularFit.Fit fit = ModularFit.fit(new ModularFit.Result(true, false, 0f, 0, 0, blueprint, Optional.empty()), start);
         result.set(FModular.FIT.get(), fit);
         ModularFit.start(result, fit);
+        ModularType type = ModularTypes.known(ModularStacks.design(result).type());
+        if (type != null)
+            ModularFit.machineStart(result, type, start);
         ModularStacks.rebake(result);
         return result;
     }

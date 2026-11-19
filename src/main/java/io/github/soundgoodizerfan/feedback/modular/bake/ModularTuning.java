@@ -925,6 +925,8 @@ public final class ModularTuning {
     public static final int START_BLUEPRINT_LEVELS = 1;
     /** Width of the start-condition swing a minigame score of 0 to 1 gives, centred on 0.5 (so a perfect play adds half of it). */
     public static final float START_MINIGAME_SPAN = 0.10f;
+    /** A machine's start condition from a minigame score of 0 and of 1: poor play starts it a fifth worn, good play a fifth above new (a buffer that wear spends first). */
+    public static final float START_MACHINE_LOW = 0.8f, START_MACHINE_HIGH = 1.2f;
     /** Start-condition levels lost when a hammer falls short of a recipe's {@code hammer_strength} by the most a craft allows (half of it); in between, in proportion. */
     public static final int START_HAMMER_SHORT_LEVELS = 2;
     /** The share of a recipe's {@code hammer_strength} a hammer may fall short by; past it the craft is physically impossible and refused. */

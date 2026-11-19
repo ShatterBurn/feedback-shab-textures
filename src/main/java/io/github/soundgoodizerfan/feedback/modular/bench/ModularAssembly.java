@@ -202,6 +202,7 @@ public final class ModularAssembly {
             credit(tool.get(), plan, e.getKey(), design, type, materials);
             if (start != null) {
                 ModularFit.start(tool.get(), fit);
+                ModularFit.machineStart(tool.get(), type, start);
                 ModularStacks.assemble(tool.get(), built, materials, types);
             }
             String[] role = new String[slots.size()];

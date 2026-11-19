@@ -56,7 +56,7 @@ Taking an assembled item can start a hand-work game. A build the plain [Crafting
 
 - **Torque.** Played for a type that spends fasteners, once per fastener. Hold the mouse to wind the gauge (about two seconds to the top) and let go inside the **green band**. Letting go short leaves the fastener loose; holding past the band strips the thread. A better fastener widens the band. A screwdriver with a [ratchet](Hand_Tools.md#screwdriver) keeps each pull partly wound and steadies the band, but a weak pawl stalls short of it.
 - **Rivet.** Played when the work takes rivets only, once per rivet. Hold the mouse to raise the hammer and let go to strike. A strike in the **green band** sets a tight domed head; lighter leaves the head loose, harder flattens it, and harder still splits it. Soft metal (lead, copper) forgives a wide band at a light blow; hard metal (steel, titanium) wants a harder blow in a narrower band. A better fastener widens the band.
-- **Fitting.** Played for spears and dynamotors. The bench plays a sequence of tool strokes (file, tap, turn, press), each lit on its tool with a sound; repeat it by clicking the tools or pressing 1 to 4. Harder stock makes a longer sequence, tougher stock slows the strokes down and forgives a slip. A wrong stroke ends the fitting where you got to; how far you got sets how well the assembly starts. It never stops you finishing.
+- **Fitting.** Played for spears and dynamotors. The bench plays a sequence of tool strokes (file, tap, turn, press), each lit on its tool with a sound; repeat it by clicking the tools or pressing 1 to 4. Harder stock makes a longer sequence, tougher stock slows the strokes down and forgives a slip. A wrong stroke ends the fitting where you got to; how far you got sets how well the assembly starts. It never stops you finishing. A dynamotor built after it starts at a condition the score sets: 80% at the lowest score, 120% at a perfect one (see [Dynamotor](Dynamotor.md#heat-and-wear)).
 
 Press Esc to back out; the craft stays offered. A **blueprint** in the blueprint slot skips the game and counts as a small bonus.
 
@@ -65,7 +65,7 @@ Press Esc to back out; the craft stays offered. A **blueprint** in the blueprint
 Two figures are set when an item is assembled here, and both only fall short of what its parts allow:
 
 - **Fit** is how well the joints are made: a looser fit weakens the joints, and for a gun widens the spread.
-- **Head start** is the durability the item starts with.
+- **Head start** is the durability the item starts with. A machine has a starting condition instead.
 
 Three things move them. The **fasteners** (a complex type spends them): quality above the type's floor helps, below it hurts. The **hand work** (the better the torque, rivet or fitting game, the better the start; a build with no game starts as the parts allow). And the **fit to the drawing**.
 

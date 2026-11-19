@@ -77,7 +77,7 @@ Misuse heats the machine more and wears it:
 - as a motor, being fed a band above the one its winding makes, or drawing more current than its winding carries;
 - running hotter than the housing metal's service temperature.
 
-**Ward** on its frame, winding, core, housing or bearing slows this wear ([Enchanting Table](Enchanting_Table.md#on-a-machine)). Wear takes condition down to **half** and no further. The machine never refuses a line and is never destroyed; a worn one delivers less. An [Overspeed Trip](Overspeed_Trip.md) on the shaft protects a motor that is fed too high a band and spins too fast.
+**Ward** on its frame, winding, core, housing or bearing slows this wear ([Enchanting Table](Enchanting_Table.md#on-a-machine)). Wear takes condition down to **half** and no further. A machine built by hand starts at 100%. One built at the [Engineering Table](Engineering_Table.md#hand-work) starts between 80% (lowest fitting score) and 120% (perfect score); the extra fifth is a buffer that wear spends first, and welding repair restores only up to 100%. Condition shows as a percentage on the [calipers](Instruments.md#calipers). The machine never refuses a line and is never destroyed; a worn one delivers less. An [Overspeed Trip](Overspeed_Trip.md) on the shaft protects a motor that is fed too high a band and spins too fast.
 
 ## Uses
 
