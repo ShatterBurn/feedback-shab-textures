@@ -93,6 +93,11 @@ public class MicroCellBlockEntity extends BlockEntity implements BlockEntitySubL
         return EDITS.get();
     }
 
+    /** Something a body's scans read changed outside a cell (a tire hub placed, fitted or broken in coarse space): the scans are redone. */
+    public static void touched() {
+        EDITS.incrementAndGet();
+    }
+
     private final MicroRotor[] rotors = new MicroRotor[VOXELS];
     /** The block a wedge voxel is made of (its look, weight and what mining it gives back); null: the stock wedge. */
     private final BlockState[] skins = new BlockState[VOXELS];
@@ -422,15 +427,6 @@ public class MicroCellBlockEntity extends BlockEntity implements BlockEntitySubL
         super.setRemoved();
     }
 
-    /** The voxels that are tire stock ({@link MicroWheels#TIRE}): a raycast does the tread's work, so they have no collider. */
-    public long tireBits() {
-        long bits = 0;
-        for (int i = 0; i < VOXELS; i++)
-            if (voxels[i] != null && MicroWheels.isTire(voxels[i]))
-                bits |= 1L << i;
-        return bits;
-    }
-
     private int light = -1;
 
     /** The highest light level of the voxels' blocks, 0 to 15. */
@@ -466,15 +462,11 @@ public class MicroCellBlockEntity extends BlockEntity implements BlockEntitySubL
         return out;
     }
 
-    public boolean hasTire() {
-        return tireBits() != 0;
-    }
-
     /** Writes this cell's voxel collider into Sable's scene (MicroColliders); server only. */
     public void applyCollider() {
         colliderDue = false;
         if (level instanceof ServerLevel server && filled != 0)
-            MicroColliders.apply(server, worldPosition, getBlockState(), filled & ~hinge & ~tireBits() & ~wedgeBits(), wedgeBoxes());
+            MicroColliders.apply(server, worldPosition, getBlockState(), filled & ~hinge & ~wedgeBits(), wedgeBoxes());
     }
 
     /** Sets the voxels left out of the voxel collider (see {@link #hinge}). */

@@ -1,4 +1,4 @@
-// 1.21.1	2026-11-18T18:30:18.275352189	Item Models: feedback
+// 1.21.1	2026-11-19T15:26:26.78549755	Item Models: feedback
 65f5ba7f72e4fca87b13d4ce890377b47b0160dd assets/feedback/models/item/acacia_grip.json
 73e726da459876a2f12985c5cd3247f952c6eb88 assets/feedback/models/item/alnico_birdshot.json
 49daa5676c97ca3e81e097077fcde704793d52a1 assets/feedback/models/item/alnico_bullet.json
@@ -1398,6 +1398,7 @@ c0d43c2f6da710e361b1d06f8ce409dc1e493dea assets/feedback/models/item/natural_rub
 fb06b5aefa4539926d784d9bd25e20da947ae459 assets/feedback/models/item/natural_rubber_pointed_bullet.json
 9b5244acc274311ebf603b3f503ed81ec30cc79b assets/feedback/models/item/natural_rubber_round_ball.json
 b39e2f19bb62a516f16192ae7d7767baa3f016a4 assets/feedback/models/item/natural_rubber_string.json
+61011802f8043c9c67e7131ea0ccb481a7b03886 assets/feedback/models/item/natural_rubber_tire.json
 94405843f6403f879bec90012bcb581772bbbf76 assets/feedback/models/item/nether_brick_dust.json
 e3991f2d463c3b0cfad870541bc54976c80e4422 assets/feedback/models/item/nether_brick_substrate.json
 73e726da459876a2f12985c5cd3247f952c6eb88 assets/feedback/models/item/netherite_birdshot.json
@@ -2084,6 +2085,7 @@ c0d43c2f6da710e361b1d06f8ce409dc1e493dea assets/feedback/models/item/synthetic_r
 fb06b5aefa4539926d784d9bd25e20da947ae459 assets/feedback/models/item/synthetic_rubber_pointed_bullet.json
 9b5244acc274311ebf603b3f503ed81ec30cc79b assets/feedback/models/item/synthetic_rubber_round_ball.json
 b39e2f19bb62a516f16192ae7d7767baa3f016a4 assets/feedback/models/item/synthetic_rubber_string.json
+61011802f8043c9c67e7131ea0ccb481a7b03886 assets/feedback/models/item/synthetic_rubber_tire.json
 73e726da459876a2f12985c5cd3247f952c6eb88 assets/feedback/models/item/tempered_steel_birdshot.json
 67065ce51af909879e9c2e47e3e1448d1d148f93 assets/feedback/models/item/tempered_steel_coil_spring.json
 150176f3e58a46c0bd5e1f80d795ff9ef234b209 assets/feedback/models/item/tempered_steel_coin.json

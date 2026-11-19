@@ -1,0 +1,12 @@
+{
+  "type": "feedback:engineering",
+  "key": {
+    "P": { "item": "feedback:wrought_iron_plate" },
+    "S": { "item": "feedback:shaft" }
+  },
+  "pattern": [ "PPP", "PSP", "PPP" ],
+  "result": { "count": 1, "id": "feedback:tire_hub_medium" },
+  "tool": [ { "ability": "feedback:driver", "wear": 1 } ],
+  "fasteners": { "count": 6, "floor": 1, "forms": ["machine_bolt"] },
+  "school": "mechanical:1"
+}

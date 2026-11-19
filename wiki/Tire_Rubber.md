@@ -1,6 +1,6 @@
 # Tire Rubber
 
-A block of pressed [synthetic rubber](Materials.md#polymers). Placed as voxels round a [Rotary Bearing](Rotary_Bearing.md), it makes a wheel with a softer, grippier tread than black wool.
+A block of pressed [synthetic rubber](Materials.md#polymers): a soft, grippy building block that collides like any other. It is not a wheel; a wheel is a [Tire Hub](Tire_Hub.md) fitted with a [tire](Tire.md).
 
 ## Crafting
 
@@ -13,15 +13,7 @@ R is a Synthetic Rubber Ingot. The recipe makes 1.
 
 ## Using it
 
-Cut it into [motes](Mote.md) and place them in [fine space](Fine_Space.md) in the piece a role 0 Rotary Bearing turns. Like black wool, it is **tire stock**, so the piece is a wheel; see [Wheels](Vehicles.md#wheels).
-
-## Fitting a new tire
-
-Right-click the hinge of a wheel with a block of Tire Rubber (or black wool) to fit a new tire. It uses one block. A tire that is still as built is left alone and the block is kept. See [Wheels](Vehicles.md#wheels) for how a tire wears.
-
-## How it works
-
-Rubber has a friction of 1.2. Next to black wool, a rubber tire holds the ground better, so it pushes the vehicle harder before it slips, and it rolls with less resistance. See [Wheels](Vehicles.md#wheels) for how the ground changes that.
+Place it as a block, or cut it into [motes](Mote.md) and place them in [fine space](Fine_Space.md). Rubber has a friction of 1.2, so it grips more than most blocks.
 
 ## See also
 

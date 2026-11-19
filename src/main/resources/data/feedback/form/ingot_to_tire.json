@@ -1,0 +1,11 @@
+{
+  "from": "ingot",
+  "to": "tire",
+  "operation": "blow",
+  "base": 4,
+  "slope": 0.5,
+  "kinds": [
+    "polymer",
+    "organic"
+  ]
+}

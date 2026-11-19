@@ -239,6 +239,8 @@ public record Material(St hardness, Tu minTemperature, Tu maxTemperature,
         ROLLABLE,
         /** A stone worth cutting (ruby, garnet, jade): a {@link FormType}'s {@code traits} list opens the {@code gem} form to it, whatever its kind. */
         GEMSTONE,
+        /** Moulded into a tire (a rubber): a {@link FormType}'s {@code traits} list opens the {@code tire} form to it, whatever its kind; a hub carries one and rolls on its figures. */
+        TIRE,
         ALLOY, FLAMMABLE, FIREPROOF, TRANSPARENT, LUMINOUS,
         /** Gives off light when hot enough to glow (every metal does; other materials opt in). */
         INCANDESCENT, FIBROUS, POROUS, STICKY,

@@ -483,6 +483,7 @@ public class FCreativeTabs {
             out.accept(io.github.soundgoodizerfan.feedback.control.computer.ComputerApps.disk(app));
         FAutomation.fill(out);
         all(out, VEHICLE_PARTS);
+        FVehicles.TIRE_HUB_ITEMS.forEach(hub -> out.accept(hub.get()));
         // A mote per block that can be cut into motes (a full stack of each).
         net.minecraft.core.registries.BuiltInRegistries.BLOCK.stream()
                 .filter(b -> b.asItem() != net.minecraft.world.item.Items.AIR && io.github.soundgoodizerfan.feedback.vehicle.micro.MoteItem.eligible(b.defaultBlockState()))

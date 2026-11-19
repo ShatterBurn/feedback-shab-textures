@@ -375,6 +375,7 @@ Pour a melt into an **Ingot Mold** from a [crucible or ladle](Casting.md) and it
 | Foam | blowing an ingot into a loose cellular fill |
 | Mat | rolling the polymer's string into a felted flat mat |
 | Fiber | drawing an ingot into a fine strand |
+| Tire | blows on a rubber ingot ([Tire](Tire.md)) |
 
 Bakelite, amber, soul resin and bitumen have no Foam, Mat or Fiber. Aramid has Mat and Fiber but no Foam. A part slot takes Foam as loose fill, a Mat as a mat and a Fiber as cord ([What a Part Slot Takes](What_a_Part_Slot_Takes.md#shapes)). Rubbers are soft, light and heat insulating, so a rubber foam pad cushions a [bed](Bed.md), an armor lining, a backpack liner or the lagging of a thermal store; a rubber mat serves as a bed cover, a glove body or a backpack panel; rubber fiber serves as a strap, a binding or, where the polymer is tough enough, a bowstring.
 
@@ -403,7 +404,7 @@ Every polymer has an **insulation band**, shown in the table: how high a band it
 
 ### Polymer grips
 
-A polymer grip on a tool or gun raises how securely it is held, by its friction. Rubber's is highest of the polymers. Pressed into [Tire Rubber](Tire_Rubber.md), it makes the tread of a wheel.
+A polymer grip on a tool or gun raises how securely it is held, by its friction. Rubber's is highest of the polymers. Shaped into a [Tire](Tire.md), it makes the tread of a wheel.
 
 ## Composites
 

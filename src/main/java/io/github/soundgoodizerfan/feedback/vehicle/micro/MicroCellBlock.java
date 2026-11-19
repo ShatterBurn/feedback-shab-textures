@@ -262,9 +262,24 @@ public class MicroCellBlock extends BaseEntityBlock implements BlockSubLevelColl
                 return net.minecraft.world.ItemInteractionResult.sidedSuccess(level.isClientSide);
             }
         }
-        // A block of tire stock in hand on an assembled hinge that turns a wheel fits a new tire (one block, whatever the wheel's size).
-        if (stack.getItem() instanceof net.minecraft.world.item.BlockItem tire && MicroWheels.isTire(tire.getBlock().defaultBlockState())
-                && level.getBlockEntity(pos) instanceof MicroCellBlockEntity wheeled) {
+        // A tire in hand on a fine-space tire hub fits it (the hub's own use does this for a hub in coarse space).
+        var tireMaterial = TireHubBlock.tireOf(stack);
+        if (tireMaterial != null && level.getBlockEntity(pos) instanceof MicroCellBlockEntity hubbed) {
+            int h = hubbed.pick(hit.getLocation(), hit.getDirection());
+            BlockState hub = h < 0 ? null : hubbed.get(h);
+            if (hub != null && hub.getBlock() instanceof TireHubBlock) {
+                if (!level.isClientSide) {
+                    TireHubBlock.giveBack(player, hub);
+                    hubbed.set(h, TireHubBlock.withTire(hub, tireMaterial));
+                    hubbed.commit();
+                    if (!player.getAbilities().instabuild)
+                        stack.shrink(1);
+                }
+                return net.minecraft.world.ItemInteractionResult.sidedSuccess(level.isClientSide);
+            }
+        }
+        // A tire in hand on an assembled hinge that turns a wheel fits a new tire (one, whatever the wheel's size).
+        if (tireMaterial != null && level.getBlockEntity(pos) instanceof MicroCellBlockEntity wheeled) {
             int p = wheeled.pick(hit.getLocation(), hit.getDirection());
             var joint = p < 0 ? null : wheeled.bearing(p);
             if (joint != null && joint.hasWheel()) {

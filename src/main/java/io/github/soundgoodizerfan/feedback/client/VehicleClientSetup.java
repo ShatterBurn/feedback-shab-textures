@@ -22,6 +22,7 @@ public final class VehicleClientSetup {
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerBlockEntityRenderer(FVehicles.PROPELLER_ENTITY.get(), PropRenderer::new);
         event.registerBlockEntityRenderer(FVehicles.MICRO_CELL_ENTITY.get(), MicroCellRenderer::new);
+        event.registerBlockEntityRenderer(FVehicles.TIRE_HUB_ENTITY.get(), io.github.soundgoodizerfan.feedback.client.render.TireHubRenderer::new);
         event.registerEntityRenderer(FVehicles.SEAT_RIDE.get(), net.minecraft.client.renderer.entity.NoopRenderer::new);
     }
 }

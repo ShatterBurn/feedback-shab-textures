@@ -29,11 +29,15 @@ import org.joml.Vector3d;
 import java.util.Set;
 
 /**
- * A wheel on a micro body (vehicles v2 spec, <em>wheels and tires</em>): a body turned by a hinge whose
- * voxels include tire stock ({@link #TIRE}). The tire is a raycast with a spring and a damper, not a
- * collider -- tire voxels are left out of the body's collider ({@link MicroCellBlockEntity#applyCollider}) --
- * and its radius is read off the body: the farthest tire voxel from the axle. Nothing says a tire is
- * round; a ring of voxels is. Grip is the tire voxels' friction against the ground's.
+ * A wheel on a body (vehicles v2 spec, <em>wheels and tires</em>): a body turned by a hinge that carries a
+ * tire hub ({@link TireHubBlock}) with a tire fitted. The hub says the wheel's radius and its tire the grip, softness and
+ * rolling resistance; the tire is a raycast with a spring and a damper, not a collider, with a ring of rim rays that keeps it out of
+ * walls, so the wheel is round where a ring of voxels is not. Tire stock voxels are ordinary blocks that collide. No suspension is in
+ * the hub: the wheel is where its mount puts it, and a slider joint is the suspension.
+ *
+ * <p>Prior art: Create Simulated's wheel mount (MIT), design only: a tire is data with a radius and size is a field, not a class. Rejected:
+ * its round-wheel method (three vertical rays offset by the radius; the rim ring here is the round part), built-in suspension, preset
+ * radii, redstone brake and steering, a flat force per RPM, linear lateral grip, and friction read from the road alone.
  *
  * <p>Taken from the frame drivetrain's hub (three ground rays under the axle, spring sized so the car's
  * weight is shared over its wheels, damper no stronger than the closing speed, grip cap, rolling
@@ -42,9 +46,6 @@ import java.util.Set;
  */
 public final class MicroWheels {
 
-    /** Blocks a tire can be made of: a property, so any modded rubber joins by tag. */
-    public static final TagKey<Block> TIRE = TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Feedback.MOD_ID, "tire_stock"));
-
     private static final double REACH = 0.25;
     private static final int GUARD_RAYS = 12;
     private static final double GUARD_SKIP_COS = 0.85;
@@ -52,42 +53,44 @@ public final class MicroWheels {
     private MicroWheels() {
     }
 
-    public static boolean isTire(BlockState state) {
-        return state.is(TIRE);
-    }
-
     /** What a scan of a body finds: the tread radius (blocks), grip (mean friction of the tire voxels), rolling resistance, and softness (1 for the softest tread; a softer tire wears faster). */
     public record Shape(double radius, double friction, double rolling, double softness) {
     }
 
     /**
-     * The wheel in {@code body}, turning about the line through {@code anchor} along {@code axis}
-     * (both in its plot), or null if it has no tire voxel.
+     * The wheel in {@code body}: the hubs with a tire fitted, a block's or a fine-space voxel's; the radius is the largest hub's, the
+     * grip, rolling resistance and softness the mean of the fitted tires'. Null if it has none. The hub sits on the axle (the tread is
+     * measured from the bearing's anchor).
      */
     @Nullable
     public static Shape scan(ServerLevel level, ServerSubLevel body, Vector3d anchor, Vector3d axis) {
-        double far = 0, friction = 0, rolling = 0, soft = 0;
-        int n = 0;
+        double[] sum = new double[4]; // radius (largest), friction, rolling, softness
+        int[] n = {0};
         var box = body.getPlot().getBoundingBox();
-        Vector3d a = new Vector3d(axis).normalize(), d = new Vector3d();
         for (BlockPos p : BlockPos.betweenClosed(box.minX(), box.minY(), box.minZ(), box.maxX(), box.maxY(), box.maxZ())) {
-            if (!(level.getBlockEntity(p) instanceof MicroCellBlockEntity cell) || !cell.hasTire())
-                continue;
-            for (int i = 0; i < MicroCellBlockEntity.VOXELS; i++) {
-                BlockState v = cell.get(i);
-                if (v == null || !isTire(v))
-                    continue;
-                d.set(p.getX() + ((i & 3) + 0.5) / 4, p.getY() + ((i >> 2 & 3) + 0.5) / 4, p.getZ() + ((i >> 4) + 0.5) / 4).sub(anchor);
-                double along = d.dot(a);
-                // Distance from the axle line, and half a voxel more for the tread's outer face.
-                far = Math.max(far, Math.sqrt(Math.max(0, d.lengthSquared() - along * along)) + 0.125);
-                friction += PhysicsBlockPropertyHelper.getFriction(v);
-                rolling += deformation(v.getBlock().defaultDestroyTime(), PhysicsBlockPropertyHelper.getFriction(v));
-                soft += 1 / (1 + Math.max(0, v.getBlock().defaultDestroyTime()) / VehicleTuning.ROLLING_HARDNESS);
-                n++;
-            }
+            BlockState at = level.getBlockState(p);
+            if (at.getBlock() instanceof TireHubBlock hub)
+                tally(sum, n, hub.radius(false), TireHubBlock.tire(at));
+            else if (level.getBlockEntity(p) instanceof MicroCellBlockEntity cell)
+                for (int i = 0; i < MicroCellBlockEntity.VOXELS; i++) {
+                    BlockState v = cell.get(i);
+                    if (v != null && v.getBlock() instanceof TireHubBlock hub)
+                        tally(sum, n, hub.radius(true), TireHubBlock.tire(v));
+                }
         }
-        return n == 0 ? null : new Shape(far, friction / n, rolling / n, soft / n);
+        return n[0] == 0 ? null : new Shape(sum[0], sum[1] / n[0], sum[2] / n[0], sum[3] / n[0]);
+    }
+
+    private static void tally(double[] sum, int[] n, double radius, @Nullable io.github.soundgoodizerfan.feedback.process.Material tire) {
+        if (tire == null)
+            return;
+        double hardness = tire.hardness().value();
+        double friction = tire.mechanical().friction().orElse(1f);
+        sum[0] = Math.max(sum[0], radius);
+        sum[1] += friction;
+        sum[2] += deformation(hardness, friction);
+        sum[3] += 1 / (1 + Math.max(0, hardness) / VehicleTuning.ROLLING_HARDNESS);
+        n[0]++;
     }
 
     /**

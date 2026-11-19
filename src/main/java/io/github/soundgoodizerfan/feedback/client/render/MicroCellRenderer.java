@@ -123,6 +123,21 @@ public class MicroCellRenderer implements BlockEntityRenderer<MicroCellBlockEnti
                     net.minecraft.client.renderer.LevelRenderer.renderLineBox(poseStack, lines, x, y, z, x + s, y + s, z + s, 0.4f, 0.8f, 1f, 1f);
                 }
         }
+        // A tire fitted to a fine-space hub: round, about the voxel's axle, beyond the voxel.
+        for (int i = 0; i < MicroCellBlockEntity.VOXELS; i++) {
+            BlockState hub = cell.get(i);
+            if (hub == null || !(hub.getBlock() instanceof io.github.soundgoodizerfan.feedback.vehicle.micro.TireHubBlock block))
+                continue;
+            var tire = io.github.soundgoodizerfan.feedback.vehicle.micro.TireHubBlock.tire(hub);
+            if (tire == null)
+                continue;
+            poseStack.pushPose();
+            poseStack.translate((i & 3) * s + s / 2, (i >> 2 & 3) * s + s / 2, (i >> 4) * s + s / 2);
+            double radius = block.radius(true);
+            TireMesh.draw(poseStack, buffers, hub.getValue(io.github.soundgoodizerfan.feedback.vehicle.micro.TireHubBlock.AXIS), radius,
+                    Math.min(0.125, radius * 0.5), TireHubRenderer.colour(tire), light);
+            poseStack.popPose();
+        }
         for (int z = 0; z < N; z++)
             for (int y = 0; y < N; y++)
                 for (int x = 0; x < N; x++) {

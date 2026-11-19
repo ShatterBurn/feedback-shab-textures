@@ -2,7 +2,8 @@
   "color": "#2a2a2c",
   "kind": "polymer",
   "traits": [
-    "sticky"
+    "sticky",
+    "tire"
   ],
   "hardness": 0.5,
   "density": 1.1,

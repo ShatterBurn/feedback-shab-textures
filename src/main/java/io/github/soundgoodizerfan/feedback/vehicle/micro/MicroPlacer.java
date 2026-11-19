@@ -77,7 +77,8 @@ public final class MicroPlacer {
         if (stack.getItem() instanceof MoteItem)
             return MoteItem.state(stack) != null;
         return stack.getItem() instanceof BlockItem item
-                && (item.getBlock() instanceof MicroRotation || item.getBlock() instanceof io.github.soundgoodizerfan.feedback.machine.bearing.JointPart);
+                && (item.getBlock() instanceof MicroRotation || item.getBlock() instanceof io.github.soundgoodizerfan.feedback.machine.bearing.JointPart
+                || item.getBlock() instanceof TireHubBlock);
     }
 
     /** The voxel (in world voxel coordinates) in front of a face hit at {@code hit}: the point nudged half a voxel out along the normal, then the voxel it falls in. */
@@ -429,6 +430,8 @@ public final class MicroPlacer {
             return false;
         if (skin != null)
             was = skin;
+        if (was.getBlock() instanceof TireHubBlock)
+            TireHubBlock.giveBack(player, was);
         SoundType sound = was.getSoundType();
         level.playSound(null, at, sound.getBreakSound(), SoundSource.BLOCKS, (sound.getVolume() + 1f) / 2f, sound.getPitch() * 0.8f);
         level.gameEvent(GameEvent.BLOCK_DESTROY, at, GameEvent.Context.of(player, was));

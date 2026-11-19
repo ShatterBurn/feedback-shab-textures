@@ -1,0 +1,12 @@
+{
+  "type": "feedback:engineering",
+  "key": {
+    "P": { "item": "feedback:steel_plate" },
+    "S": { "item": "feedback:shaft" }
+  },
+  "pattern": [ "PPP", "PSP", "PPP" ],
+  "result": { "count": 1, "id": "feedback:tire_hub_large" },
+  "tool": [ { "ability": "feedback:driver", "wear": 1 } ],
+  "fasteners": { "count": 8, "floor": 1, "forms": ["machine_bolt"] },
+  "school": "mechanical:1"
+}

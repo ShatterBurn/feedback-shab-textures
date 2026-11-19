@@ -1,6 +1,6 @@
 # Slider Joint
 
-A joint, in ordinary blocks or [fine space](Fine_Space.md), that lets a body slide along its front axis against a spring. It is a suspension: a wheel on a slider rides over bumps and rebounds.
+A joint, in ordinary blocks or [fine space](Fine_Space.md), that lets a body slide along its front axis against a spring. It is a suspension: a wheel on a slider rides over bumps and rebounds, since a [Tire Hub](Tire_Hub.md) has no suspension of its own.
 
 ## Crafting
 

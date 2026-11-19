@@ -479,6 +479,7 @@ public class FeedbackJeiPlugin implements IModPlugin {
         info(registration, FItems.ELECTRIC_PROGRAMMER.get(), "electric_programmer");
         info(registration, FItems.COMPUTER.get(), "computer");
         info(registration, FItems.MOTE.get(), "mote");
+        io.github.soundgoodizerfan.feedback.registry.FVehicles.TIRE_HUB_ITEMS.forEach(hub -> info(registration, hub.get(), "tire_hub"));
         info(registration, io.github.soundgoodizerfan.feedback.registry.FVehicles.MICRO_CORE.get(), "micro_core");
         info(registration, FItems.MEMORY_BOARD.get(), "memory_board");
         info(registration, FItems.USB_PORT.get(), "usb_port");

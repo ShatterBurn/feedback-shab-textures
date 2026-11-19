@@ -1300,3 +1300,12 @@ as a component and stacks by component equality; a voxel mined gives its bit bac
 class overrides (Feedback's is by shape and tags), the bit bag and virtual bit inventory, a configurable cell size, async storage encoding, the
 greedy mesh and shape caches (64 voxels do not need them), the multi-mode area chisel (Feedback's gauge has its own modes), and every asset.
 Site comments: `vehicle/micro/MicroPlacer.java`, `client/render/MotePreview.java`.
+
+## Create Simulated, Offroad wheel mount (design only, second read 2026-11-19)
+
+**Create Simulated, `offroad` module (Creators-of-Aeronautics/Simulated-Project, MIT code, all rights reserved for assets).** *Taken (design only, no code or assets):* a
+tire carried as data with a radius and a friction floor, so size is a field of the wheel, not a class; ground rays that ignore their own sub-level and reject hits above the
+axle and surfaces too steep to stand on; the wheel's visible spin integrated on the client from ground speed over circumference, slipping toward the drive speed as friction falls
+(not yet built here). *Rejected:* its round-wheel method (three vertical rays offset by the radius, no collider: Feedback keeps its ring of rim rays), the suspension built into
+the mount, preset tire radii as a menu, the redstone brake and steering, drive as a flat force per RPM with no torque limit or inertia, linear lateral grip, friction read from the road
+only, the strength dial, and every asset. Site: `vehicle/micro/TireHubBlock.java`, `vehicle/micro/MicroWheels.java`.

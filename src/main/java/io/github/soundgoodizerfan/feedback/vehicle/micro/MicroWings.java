@@ -91,7 +91,7 @@ public final class MicroWings {
         for (BlockPos p : BlockPos.betweenClosed(box.minX(), box.minY(), box.minZ(), box.maxX(), box.maxY(), box.maxZ()))
             if (level.getBlockEntity(p) instanceof MicroCellBlockEntity cell)
                 for (int i = 0; i < MicroCellBlockEntity.VOXELS; i++)
-                    if (cell.get(i) != null && !MicroWheels.isTire(cell.get(i)))
+                    if (cell.get(i) != null)
                         voxels.add(key(p.getX() * 4 + (i & 3) - ox, p.getY() * 4 + (i >> 2 & 3) - oy, p.getZ() * 4 + (i >> 4) - oz));
         if (voxels.isEmpty())
             return null;

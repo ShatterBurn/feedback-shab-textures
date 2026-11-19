@@ -88,7 +88,23 @@ public class FVehicles {
             BLOCK_ENTITIES.register("micro_cell",
                     () -> BlockEntityType.Builder.of(MicroCellBlockEntity::new, MICRO_CELL.get()).build(null));
 
-    /** Starts a build: a micro cell with one voxel of stone in it. Every voxel after is a block held against the build. */
+    /** Tire hubs: small, medium and large; each is a wheel in coarse space (a block) and a smaller one in fine space (a voxel). */
+    public static final java.util.List<DeferredBlock<io.github.soundgoodizerfan.feedback.vehicle.micro.TireHubBlock>> TIRE_HUBS = java.util.stream.IntStream
+            .range(0, io.github.soundgoodizerfan.feedback.vehicle.micro.TireHubBlock.SIZES)
+            .mapToObj(i -> BLOCKS.register("tire_hub_" + new String[]{"small", "medium", "large"}[i],
+                    () -> new io.github.soundgoodizerfan.feedback.vehicle.micro.TireHubBlock(i, BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.METAL).strength(3.0f).sound(SoundType.METAL).noOcclusion())))
+            .toList();
+    public static final java.util.List<DeferredItem<net.minecraft.world.item.BlockItem>> TIRE_HUB_ITEMS = TIRE_HUBS.stream()
+            .map(ITEMS::registerSimpleBlockItem).toList();
+
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<io.github.soundgoodizerfan.feedback.vehicle.micro.TireHubBlockEntity>> TIRE_HUB_ENTITY =
+            BLOCK_ENTITIES.register("tire_hub", () -> BlockEntityType.Builder
+                    .of(io.github.soundgoodizerfan.feedback.vehicle.micro.TireHubBlockEntity::new,
+                            TIRE_HUBS.stream().map(DeferredBlock::get).toArray(net.minecraft.world.level.block.Block[]::new))
+                    .build(null));
+
+    /** The fine-space building gauge: sets how motes go. */
     public static final DeferredItem<MicroCoreItem> MICRO_CORE = ITEMS.register("micro_core",
             () -> new MicroCoreItem(new Item.Properties()));
 
