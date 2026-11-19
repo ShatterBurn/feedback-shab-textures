@@ -18,6 +18,7 @@ B is Iron Bars and P is Wrought Iron Plate.
 - **Feed it**: right-click with an item. The creeper eats any item whose material burns and has a combustion balance: items with spare oxygen such as [saltpetre](Materials.md#saltpetre) fill the **oxidiser** half of its stomach, items that want oxygen such as [sulfur](Materials.md#sulfur), coal and charcoal fill the **fuel** half. Gunpowder fills both halves at once, 1.5 units each per item. Anything else is refused. Each half holds 96 units.
 - **Shear it**: any shears take a Creeper Sac holding the whole reserve. The creeper is left empty and cannot blow up until it has grown a reserve again.
 - **Break the pen**: the creeper comes out, charged if it was charged.
+- **Look at it with Jade**: it says whether the pen is empty or a creeper (or a charged creeper) rests there, whether the reserve is empty, low, half full or full, and whether the stomach holds an oxidiser, a fuel or both. A red *Primed: about to blow* shows once a full reserve has started its warning ([Misuse and hazards](#misuse-and-hazards)).
 
 ## How it works
 
