@@ -127,9 +127,6 @@ public class FRecipes {
     public static final DeferredHolder<RecipeSerializer<?>, SimpleCraftingRecipeSerializer<io.github.soundgoodizerfan.feedback.machine.arc.ElectrodeTipRecipe>>
             ARC_ELECTRODE_TIP = SERIALIZERS.register("arc_electrode_tip",
                     () -> new SimpleCraftingRecipeSerializer<>(io.github.soundgoodizerfan.feedback.machine.arc.ElectrodeTipRecipe::new));
-    public static final DeferredHolder<RecipeSerializer<?>, SimpleCraftingRecipeSerializer<io.github.soundgoodizerfan.feedback.machine.arc.ElectrodeRecipe>>
-            ARC_ELECTRODE = SERIALIZERS.register("arc_electrode",
-                    () -> new SimpleCraftingRecipeSerializer<>(io.github.soundgoodizerfan.feedback.machine.arc.ElectrodeRecipe::new));
     public static final DeferredHolder<RecipeSerializer<?>, SimpleCraftingRecipeSerializer<io.github.soundgoodizerfan.feedback.machine.cable.CableRecipe>>
             CABLE = SERIALIZERS.register("cable",
                     () -> new SimpleCraftingRecipeSerializer<>(io.github.soundgoodizerfan.feedback.machine.cable.CableRecipe::new));

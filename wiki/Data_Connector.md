@@ -8,7 +8,7 @@ The tool that links sensors and switchable blocks to a [Controller](Controller.m
 
 Hold the connector in either hand and every block that is a **data node** shows a small socket with a bright core, outlined through walls. Linked nodes take the color of their link; a node nothing has linked is grey-blue and blinks. A spark runs along each link.
 
-A data node is any block that offers a reading or can be switched: a [Temperature Sensor](Instruments.md#temperature-sensor) or [Current Sensor](Instruments.md#current-sensor) face, a crucible or other vessel, a heater, a [Lathe](Lathe.md), a [Clutch](Clutch.md), [Valve](Valve.md), [Damper](Damper.md), [Breaker](Breaker.md), [Engine](Engine.md), a [Driver's Seat](Vehicles.md#the-drivers-seat), and the Controllers themselves.
+A data node is any block that offers a reading or can be switched: a [Temperature Sensor](Instruments.md#temperature-sensor) or [Current Sensor](Instruments.md#current-sensor) face, a crucible or other vessel, a heater, a [Lathe](Lathe.md), a [Clutch](Clutch.md), [Valve](Valve.md), [Damper](Damper.md), [Breaker](Breaker.md), [Engine](Engine.md), [Thruster](Thruster.md), a [Driver's Seat](Vehicles.md#the-drivers-seat), and the Controllers themselves.
 
 1. **Right-click** the node. You see *"Node selected."* For a sensor attached to a face, click **the face the sensor is on**.
 2. **Right-click** the [Controller](Controller.md), [Electric Controller](Electric_Controller.md) or [Computer](Electric_Controller.md#computer). The node is linked to it.

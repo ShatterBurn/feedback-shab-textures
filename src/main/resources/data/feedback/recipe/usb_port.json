@@ -1,0 +1,9 @@
+{
+  "type": "feedback:engineering",
+  "key": { "K": { "item": "feedback:ceramic" }, "P": { "item": "feedback:copper_plate" } },
+  "pattern": [ "KKK", "KPK" ],
+  "result": { "count": 1, "id": "feedback:usb_port" },
+  "tool": [ { "ability": "feedback:driver", "wear": 1 } ],
+  "fasteners": { "count": 2, "floor": 1, "forms": ["machine_bolt"] },
+  "school": "electrical:3"
+}

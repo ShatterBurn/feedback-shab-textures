@@ -1,4 +1,23 @@
 {
-  "type": "feedback:arc_electrode",
-  "category": "misc"
+  "type": "feedback:engineering",
+  "key": {
+    "C": {
+      "type": "feedback:material",
+      "forms": ["rod", "ingot", "lump"],
+      "property": "electrode_limit",
+      "min": 0
+    }
+  },
+  "pattern": [
+    "C",
+    "C",
+    "C"
+  ],
+  "result": { "count": 1, "id": "feedback:arc_electrode" },
+  "tool": [
+    { "ability": "feedback:driver", "wear": 1 }
+  ],
+  "fasteners": { "count": 2, "floor": 1, "forms": ["machine_bolt"] },
+  "school": "electrical:2",
+  "made_of": true
 }

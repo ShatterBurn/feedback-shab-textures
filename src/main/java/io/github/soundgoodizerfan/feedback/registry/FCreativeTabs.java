@@ -138,8 +138,8 @@ public class FCreativeTabs {
     /** Controllers: mechanical, electric, then computing; media and cards last. */
     private static final List<DeferredItem<?>> CONTROLLERS = of(FItems.TIMER, FItems.CONTROLLER, FItems.PROGRAMMER,
             FItems.ELECTRIC_CONTROLLER, FItems.ELECTRIC_PROGRAMMER, FItems.COMPUTER, FItems.PUNCH_CARD,
-            FItems.CIRCUIT_BOARD, FItems.FLOPPY_DISK, FItems.USB_DRIVE, FItems.FUNCTION_CARD, FItems.MEMORY_DRUM,
-            FItems.CARD_RACK, FItems.ENDERNET_UPGRADE, FItems.DATA_STICK, FItems.DATA_CONNECTOR);
+            FItems.MEMORY_BOARD, FItems.FLOPPY_DISK, FItems.USB_DRIVE, FItems.FUNCTION_CARD, FItems.MEMORY_DRUM,
+            FItems.CARD_RACK, FItems.USB_PORT, FItems.ENDERNET_UPGRADE, FItems.DATA_STICK, FItems.DATA_CONNECTOR);
 
     /** Vehicle bodies: lift, gas cells (cloth to membrane), valves and tanks, seat, thrust, ground contact. */
     private static final List<DeferredItem<?>> VEHICLE_PARTS = of(FVehicles.LIFT_ITEM, FVehicles.GAS_CELL_CLOTH_ITEM,

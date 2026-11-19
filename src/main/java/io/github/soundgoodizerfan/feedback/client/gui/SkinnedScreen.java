@@ -157,7 +157,20 @@ public abstract class SkinnedScreen<M extends AbstractContainerMenu> extends Abs
 
     @Override
     public boolean keyPressed(int key, int scan, int modifiers) {
-        return opening.closing() || super.keyPressed(key, scan, modifiers);
+        if (opening.closing())
+            return true;
+        // A text field is the key's: the inventory key must not close the screen, a number must not swap a hotbar slot.
+        if (typing() && key != org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE) {
+            if (getFocused() != null)
+                getFocused().keyPressed(key, scan, modifiers);
+            return true;
+        }
+        return super.keyPressed(key, scan, modifiers);
+    }
+
+    /** Whether a text field has the typing focus; a screen with text fields of its own overrides this. */
+    protected boolean typing() {
+        return getFocused() instanceof net.minecraft.client.gui.components.EditBox box && box.isFocused();
     }
 
     @Override

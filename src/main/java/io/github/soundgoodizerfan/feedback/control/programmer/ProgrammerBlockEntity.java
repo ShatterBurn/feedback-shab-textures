@@ -79,14 +79,14 @@ public class ProgrammerBlockEntity extends BlockEntity implements Container, Men
         super(FBlockEntities.PROGRAMMER.get(), pos, state);
     }
 
-    /** Whether this Programmer is the electric kind, which takes every medium; the mechanical one takes the Punch Card alone. */
+    /** Whether this Programmer is the electric kind, which takes the Memory Board and the Floppy Disk; the mechanical one takes the Punch Card alone. */
     protected boolean electric() {
         return getBlockState().getBlock() instanceof ProgrammerBlock block && block.electric();
     }
 
     /** Whether the medium may sit in this Programmer's slot. */
     public boolean takes(ItemStack stack) {
-        return stack.is(electric() ? FTags.PUNCH_CARDS : FTags.MECHANICAL_CARDS)
+        return stack.is(electric() ? FTags.ELECTRIC_CARDS : FTags.MECHANICAL_CARDS)
                 && !io.github.soundgoodizerfan.feedback.control.computer.ComputerApps.isApp(stack);
     }
 

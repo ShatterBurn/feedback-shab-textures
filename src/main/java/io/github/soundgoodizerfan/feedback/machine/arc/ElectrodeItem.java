@@ -28,6 +28,9 @@ public class ElectrodeItem extends Item {
     }
 
     /** One new electrode of {@code material}. */
+    /** The forms of stock a rod can be cut from (the electrode recipe's key lists the same). */
+    public static final java.util.Set<String> STOCK = java.util.Set.of("rod", "ingot", "lump");
+
     public static ItemStack of(ResourceLocation material) {
         ItemStack stack = new ItemStack(FItems.ARC_ELECTRODE.get());
         stack.set(FDataComponents.MADE_OF.get(), new MadeOf(material, "rod", 1));

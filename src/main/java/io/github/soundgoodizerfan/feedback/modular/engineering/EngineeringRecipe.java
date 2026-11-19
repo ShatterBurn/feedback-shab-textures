@@ -119,10 +119,12 @@ public class EngineeringRecipe implements Recipe<EngineeringInput> {
     private final Optional<String> minigame;
     private final List<String> fitOrder;
     private final boolean carriesCircuit;
+    private final boolean madeOf;
 
     public EngineeringRecipe(Either<ShapedRecipePattern, List<Ingredient>> grid, ItemStack result, List<Tool> tools, Fasteners.Need need,
-                             String school, Optional<String> minigame, List<String> fitOrder, boolean carriesCircuit) {
+                             String school, Optional<String> minigame, List<String> fitOrder, boolean carriesCircuit, boolean madeOf) {
         this.carriesCircuit = carriesCircuit;
+        this.madeOf = madeOf;
         this.fitOrder = List.copyOf(fitOrder);
         this.grid = grid;
         this.result = result;
@@ -160,6 +162,24 @@ public class EngineeringRecipe implements Recipe<EngineeringInput> {
      */
     public boolean carriesCircuit() {
         return carriesCircuit;
+    }
+
+    /** Whether the result is made of the one material the grid's stock is (the {@code made_of} component), as a rod of it. */
+    public boolean madeOf() {
+        return madeOf;
+    }
+
+    /** The one material every material stock in the grid shares, or null when there is none or they differ. */
+    private static net.minecraft.resources.ResourceLocation sharedMaterial(EngineeringInput input) {
+        net.minecraft.resources.ResourceLocation shared = null;
+        var materials = io.github.soundgoodizerfan.feedback.process.MaterialIngredient.materialsNow();
+        for (ItemStack stack : input.gridStacks()) {
+            var found = io.github.soundgoodizerfan.feedback.process.Material.find(materials, stack);
+            if (found.isEmpty() || shared != null && !shared.equals(found.get().id()))
+                return null;
+            shared = found.get().id();
+        }
+        return shared;
     }
 
     /**
@@ -212,6 +232,9 @@ public class EngineeringRecipe implements Recipe<EngineeringInput> {
         ItemStack circuit = carriesCircuit ? circuitIn(input) : ItemStack.EMPTY;
         if (carriesCircuit && circuit.isEmpty())
             return refuse(Refusal.GRID);
+        net.minecraft.resources.ResourceLocation stock = madeOf ? sharedMaterial(input) : null;
+        if (madeOf && stock == null)
+            return refuse(Refusal.GRID);
         if (!School.met(Treatises.mask(input.binder()) | input.known(), school))
             return refuse(Refusal.SCHOOL);
         int[] slot = new int[tools.size()], wear = new int[tools.size()];
@@ -259,6 +282,9 @@ public class EngineeringRecipe implements Recipe<EngineeringInput> {
             return new Attempt(Refusal.NO_FASTENERS, ItemStack.EMPTY, ModularFit.Start.NONE, slot, wear, supply, shortfall);
         int lost = Math.round(shortShare / ModularTuning.HAMMER_SHORT_REFUSE * ModularTuning.START_HAMMER_SHORT_LEVELS);
         ItemStack made = result.copy();
+        if (stock != null)
+            made.set(io.github.soundgoodizerfan.feedback.registry.FDataComponents.MADE_OF.get(),
+                    new io.github.soundgoodizerfan.feedback.process.MadeOf(stock, "rod", 1));
         if (!circuit.isEmpty())
             made.set(io.github.soundgoodizerfan.feedback.registry.FDataComponents.CIRCUIT_STACK.get(), circuit.copyWithCount(1));
         return new Attempt(null, made, new ModularFit.Start(supply.levels() - lost, -1f), slot, wear, supply, shortfall);
@@ -320,7 +346,8 @@ public class EngineeringRecipe implements Recipe<EngineeringInput> {
                 Codec.STRING.optionalFieldOf("school", "").forGetter(r -> r.school),
                 Codec.STRING.optionalFieldOf("minigame").forGetter(r -> r.minigame),
                 Codec.STRING.listOf().optionalFieldOf("fit_order", List.of()).forGetter(r -> r.fitOrder),
-                Codec.BOOL.optionalFieldOf("carries_circuit", false).forGetter(r -> r.carriesCircuit)).apply(i, EngineeringRecipe::new))
+                Codec.BOOL.optionalFieldOf("carries_circuit", false).forGetter(r -> r.carriesCircuit),
+                Codec.BOOL.optionalFieldOf("made_of", false).forGetter(r -> r.madeOf)).apply(i, EngineeringRecipe::new))
                 .flatXmap(Serializer::checked, com.mojang.serialization.DataResult::success);
 
         /** A minigame's score sets the start condition, which only a modular result has: a plain item with a minigame is a data error, not a score that does nothing. */
@@ -354,7 +381,7 @@ public class EngineeringRecipe implements Recipe<EngineeringInput> {
             String school = buf.readUtf();
             Optional<String> minigame = buf.readBoolean() ? Optional.of(buf.readUtf()) : Optional.empty();
             List<String> fitOrder = ByteBufCodecs.STRING_UTF8.apply(ByteBufCodecs.list()).decode(buf);
-            return new EngineeringRecipe(grid, result, new ArrayList<>(tools), need, school, minigame, fitOrder, buf.readBoolean());
+            return new EngineeringRecipe(grid, result, new ArrayList<>(tools), need, school, minigame, fitOrder, buf.readBoolean(), buf.readBoolean());
         }
 
         private static void write(RegistryFriendlyByteBuf buf, EngineeringRecipe r) {
@@ -369,6 +396,7 @@ public class EngineeringRecipe implements Recipe<EngineeringInput> {
             r.minigame.ifPresent(buf::writeUtf);
             ByteBufCodecs.STRING_UTF8.apply(ByteBufCodecs.list()).encode(buf, r.fitOrder);
             buf.writeBoolean(r.carriesCircuit);
+            buf.writeBoolean(r.madeOf);
         }
     }
 }

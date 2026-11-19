@@ -45,7 +45,7 @@ public class ElectrodeTipRecipe extends CustomRecipe {
             return null;
         var bar = Material.find(MaterialIngredient.materialsNow(), input.getItem(0, 0));
         var base = rod.get(io.github.soundgoodizerfan.feedback.registry.FDataComponents.MADE_OF.get());
-        if (bar.isEmpty() || base == null || !ElectrodeRecipe.STOCK.contains(bar.get().form())
+        if (bar.isEmpty() || base == null || !ElectrodeItem.STOCK.contains(bar.get().form())
                 || bar.get().material().electrodeLimit().isEmpty())
             return null;
         ResourceLocation tip = bar.get().id();

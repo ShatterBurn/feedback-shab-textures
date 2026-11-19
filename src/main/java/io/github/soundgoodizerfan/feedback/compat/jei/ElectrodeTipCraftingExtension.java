@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.github.soundgoodizerfan.feedback.machine.arc.ElectrodeItem;
-import io.github.soundgoodizerfan.feedback.machine.arc.ElectrodeRecipe;
 import io.github.soundgoodizerfan.feedback.machine.arc.ElectrodeTipRecipe;
 import io.github.soundgoodizerfan.feedback.process.MaterialIngredient;
 
@@ -34,7 +33,7 @@ public class ElectrodeTipCraftingExtension implements ICraftingCategoryExtension
                 var tipLimit = tip.getValue().electrodeLimit();
                 if (tipLimit.isEmpty() || tipLimit.get().value() <= rodLimit.get().value())
                     continue;
-                for (String form : ElectrodeRecipe.STOCK) {
+                for (String form : ElectrodeItem.STOCK) {
                     var item = tip.getValue().item(tip.getKey(), form);
                     if (item.isPresent()) {
                         bars.add(new ItemStack(item.get()));

@@ -13,9 +13,18 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 public class EmbeddedProgrammer extends ProgrammerBlockEntity {
 
     private final BlockEntity host;
-    public EmbeddedProgrammer(BlockEntity host) {
+    private final java.util.function.Predicate<net.minecraft.world.item.ItemStack> medium;
+
+    /** {@code medium} is what the host's drives take: the editor takes the same. */
+    public EmbeddedProgrammer(BlockEntity host, java.util.function.Predicate<net.minecraft.world.item.ItemStack> medium) {
         super(host.getBlockPos(), host.getBlockState());
         this.host = host;
+        this.medium = medium;
+    }
+
+    @Override
+    public boolean takes(net.minecraft.world.item.ItemStack stack) {
+        return medium.test(stack) && super.takes(stack);
     }
 
     @Override

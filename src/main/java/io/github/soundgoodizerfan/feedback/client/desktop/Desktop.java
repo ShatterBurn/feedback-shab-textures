@@ -327,6 +327,12 @@ public final class Desktop {
         return false;
     }
 
+    /** Whether the front window has a text field or text pane taking keys. */
+    public boolean typing() {
+        DesktopWindow win = focused();
+        return win != null && win.typing();
+    }
+
     /** The topmost window that is on screen, or null. */
     public DesktopWindow focused() {
         for (int i = stack.size() - 1; i >= 0; i--)

@@ -19,6 +19,7 @@ It does nothing on blocks that stand in the world. Like everything on a [Lift](V
 - **Place it** so it faces the way you want to be pushed: set against a face, it pushes the body away from that face. Flame comes out of the back.
 - **Fuel.** A bucket fills it, or a [Pipe](Pipe.md). It mixes whatever arrives **by mass** and never refuses a fluid, like an [Engine](Engine.md)'s tank; a fluid that does not burn dilutes the flame. See [Fuels](Fuels.md).
 - **Right-click** to turn it on or off. The message tells you how much fuel is left.
+- **Automate it.** A redstone signal, a [Timer](Timer.md) or [Bimetallic Strip](Bimetallic_Strip.md) touching it, or a [Controller](Controller.md) *Switch* card linked to it with the [Data Connector](Data_Connector.md) starts and stops it. It is on or off only; the [Jet](Jet.md) is the engine that runs at part throttle.
 
 ## What it pushes with
 

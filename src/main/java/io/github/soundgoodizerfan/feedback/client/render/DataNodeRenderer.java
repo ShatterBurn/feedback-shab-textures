@@ -63,7 +63,8 @@ public final class DataNodeRenderer {
     static void queue(Minecraft mc, float partial) {
         if (mc.player == null || mc.level == null || !holding(mc.player)) {
             nodes.clear();
-            scannedAt = Long.MIN_VALUE;
+            // now - Long.MIN_VALUE overflows negative, so only the epoch can force the rescan on the next hold.
+            scannedEpoch = -1;
             return;
         }
         long now = mc.level.getGameTime();

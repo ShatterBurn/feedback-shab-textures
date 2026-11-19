@@ -1,6 +1,6 @@
 # Electric Controller
 
-A [Controller](Controller.md) powered from a cable instead of a shaft. It runs the same programs, with the same upgrades, but takes every [program medium](Programming.md#media): Punch Card, Circuit Board, Floppy Disk and USB Drive. A mechanical Controller and Programmer take the Punch Card only.
+A [Controller](Controller.md) powered from a cable instead of a shaft. It runs the same programs, with the same upgrades, but takes the Memory Board and the Floppy Disk, two of the [program media](Programming.md#media). A mechanical Controller and Programmer take the Punch Card only.
 
 ## Crafting
 
@@ -9,7 +9,7 @@ A B
 D C
 ```
 
-A is a [Controller](Controller.md), B is a Circuit Board, D is a [circuit](Basic_Electronic_Circuit.md) and C is Copper Wire. The finished controller keeps the circuit. Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 2 [fasteners](Fasteners.md), holding Electrical Treatise III: Circuits ([Treatise](Treatise.md)).
+A is a [Controller](Controller.md), B is a Memory Board, D is a [circuit](Basic_Electronic_Circuit.md) and C is Copper Wire. The finished controller keeps the circuit. Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 2 [fasteners](Fasteners.md), holding Electrical Treatise III: Circuits ([Treatise](Treatise.md)).
 
 ## Using it
 
@@ -29,14 +29,14 @@ An [Endernet Upgrade](Endernet_Upgrade.md) makes an Electric Controller one end 
 
 ## Electric Programmer
 
-A [Programmer](Programming.md) that takes every medium. Crafted at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, 2 screws ([Fasteners](Fasteners.md)) and Electrical Treatise III: Circuits ([Treatise](Treatise.md)):
+A [Programmer](Programming.md) that takes the Memory Board and the Floppy Disk. Crafted at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, 2 screws ([Fasteners](Fasteners.md)) and Electrical Treatise III: Circuits ([Treatise](Treatise.md)):
 
 ```
   C
 W P W
 ```
 
-C is a [circuit](Basic_Electronic_Circuit.md), W is Copper Wire and P is a Programmer. **Erase** works on a printed Floppy Disk or USB Drive (see [Media](Programming.md#media)). It needs no power.
+C is a [circuit](Basic_Electronic_Circuit.md), W is Copper Wire and P is a Programmer. **Erase** works on a printed Memory Board or Floppy Disk (see [Media](Programming.md#media)). It needs no power.
 
 ## Computer
 
@@ -44,13 +44,15 @@ An Electric Programmer and an Electric Controller in one block, with a desktop. 
 
 It looks like a 1990s desktop PC: a beige case with drive slots and lamps, a CRT monitor with a blinking cursor, and a keyboard and mouse on the desk in front. The screen faces you when you place it.
 
-The Computer takes the Electric Controller's circuit, which is built in and works as the Electric Controller's [circuit](#circuit-slot). It takes an [Endernet Upgrade](#endernet-upgrade).
+The Computer takes the Electric Controller's circuit, which is built in and works as the Electric Controller's [circuit](#circuit-slot). It takes an [Endernet Upgrade](#endernet-upgrade) and a [USB Port](USB_Port.md).
+
+Its drive bays, running slot and editor take the Floppy Disk, and the USB Drive once a USB Port is fitted. A Punch Card or a Memory Board does not go in; the Computer runs programs from its internal disk through a card it makes itself.
 
 Right-click it to open the desktop, a fixed panel drawn as a terminal. The colors, wallpaper and screen effects are set in the **Settings** window and are the same for everyone who opens this Computer.
 
 The desktop has no inventory slots. Down the left are icons for **drive bays A: to D:**, the **RUN** slot and **INT**, the internal disk (see [Internal disk](#internal-disk)); each drive icon shows what its medium holds. Click an icon to open its **Drive** window, which shows a memory bar for the medium. Right-click a drive icon for its menu.
 
-**Sneak** and right-click the Computer with an empty hand to open the **drive way** instead: an ordinary slot screen with the four bays (A to D), the running slot and your inventory, where program media (Punch Card, Circuit Board, Floppy Disk, USB Drive) and app disks go in and out by hand.
+**Sneak** and right-click the Computer with an empty hand to open the **drive way** instead: an ordinary slot screen with the four bays (A to D), the running slot and your inventory, where Floppy Disks (and USB Drives, once a USB Port is fitted) go in and out by hand, program and app disks alike.
 
 The Drive window offers:
 
@@ -130,7 +132,7 @@ A Computer with power shows sensors linked straight to it (made with the [Data C
 
 Every Computer has an internal disk of **16 files**, each at most **16 KiB**. The files stay with the Computer: break it and place the dropped item again and the files are there; a copy of the Computer gets a copy of the files.
 
-The Internal disk window lists the files, each with a **Run**, **Edit** and **Delete** button. **Edit** opens the program in an Editor window, and closing the Editor saves it back. A right-click menu offers **Copy to** and **Move to** a drive, which needs a blank Floppy Disk or USB Drive alone in that bay. An app is installed, not copied: saving an app disk leaves the disk blank, and an app can only be moved back onto a blank disk. A program or app disk goes onto the internal disk from its drive icon's menu (**Save to internal disk**, **Install on internal disk**). An app installed on the internal disk runs with no disk in a bay. A program received over the network is kept on the internal disk when there is room.
+The Internal disk window lists the files, each with a **Run**, **Edit** and **Delete** button. **Edit** opens the program in an Editor window, and closing the Editor saves it back. A right-click menu offers **Copy to** and **Move to** a drive, which needs a blank Floppy Disk (or USB Drive, with a USB Port fitted) alone in that bay. An app is installed, not copied: saving an app disk leaves the disk blank, and an app can only be moved back onto a blank disk. A program or app disk goes onto the internal disk from its drive icon's menu (**Save to internal disk**, **Install on internal disk**). An app installed on the internal disk runs with no disk in a bay. A program received over the network is kept on the internal disk when there is room.
 
 Media have a capacity (Punch Card 1, USB Drive 4, Floppy Disk 8), but a medium still holds one program or one app.
 

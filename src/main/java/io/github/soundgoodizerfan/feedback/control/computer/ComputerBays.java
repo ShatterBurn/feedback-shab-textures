@@ -2,8 +2,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.control.computer;
 
-import io.github.soundgoodizerfan.feedback.registry.FTags;
-
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
 
@@ -13,10 +11,12 @@ public class ComputerBays extends SimpleContainer {
     public static final int SIZE = 4;
 
     private final Runnable changed;
+    private final java.util.function.Predicate<ItemStack> takes;
 
-    public ComputerBays(Runnable changed) {
+    public ComputerBays(Runnable changed, java.util.function.Predicate<ItemStack> takes) {
         super(SIZE);
         this.changed = changed;
+        this.takes = takes;
     }
 
     @Override
@@ -26,7 +26,7 @@ public class ComputerBays extends SimpleContainer {
 
     @Override
     public boolean canPlaceItem(int slot, ItemStack stack) {
-        return stack.is(FTags.PUNCH_CARDS);
+        return takes.test(stack);
     }
 
     @Override

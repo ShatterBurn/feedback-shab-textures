@@ -123,8 +123,6 @@ public class FeedbackJeiPlugin implements IModPlugin {
         registration.getCraftingCategory().addExtension(
                 io.github.soundgoodizerfan.feedback.machine.cable.CableRecipe.class, new CableCraftingExtension());
         registration.getCraftingCategory().addExtension(
-                io.github.soundgoodizerfan.feedback.machine.arc.ElectrodeRecipe.class, new ElectrodeCraftingExtension());
-        registration.getCraftingCategory().addExtension(
                 io.github.soundgoodizerfan.feedback.machine.arc.ElectrodeTipRecipe.class, new ElectrodeTipCraftingExtension());
         registration.getCraftingCategory().addExtension(
                 io.github.soundgoodizerfan.feedback.machine.skillet.SkilletRecipe.class, new SkilletCraftingExtension());
@@ -480,7 +478,8 @@ public class FeedbackJeiPlugin implements IModPlugin {
         info(registration, FItems.ELECTRIC_CONTROLLER.get(), "electric_controller");
         info(registration, FItems.ELECTRIC_PROGRAMMER.get(), "electric_programmer");
         info(registration, FItems.COMPUTER.get(), "computer");
-        info(registration, FItems.CIRCUIT_BOARD.get(), "circuit_board");
+        info(registration, FItems.MEMORY_BOARD.get(), "memory_board");
+        info(registration, FItems.USB_PORT.get(), "usb_port");
         info(registration, FItems.FLOPPY_DISK.get(), "floppy_disk");
         info(registration, FItems.USB_DRIVE.get(), "usb_drive");
         info(registration, FItems.FUNCTION_CARD.get(), "function_card");

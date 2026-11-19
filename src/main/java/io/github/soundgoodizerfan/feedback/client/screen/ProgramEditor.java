@@ -374,7 +374,7 @@ public final class ProgramEditor {
     }
 
     /** Whether a text box has the keys. */
-    boolean typing() {
+    public boolean typing() {
         return literalBox != null || nameBox.isFocused();
     }
 

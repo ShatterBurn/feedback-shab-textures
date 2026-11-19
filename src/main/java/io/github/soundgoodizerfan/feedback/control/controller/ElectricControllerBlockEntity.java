@@ -17,12 +17,11 @@ import net.minecraft.world.level.block.state.BlockState;
 
 /**
  * The Electric Controller: the same {@link ControllerCore} as the mechanical one, powered as an electrical sink instead of off a shaft. It
- * evaluates while the line delivers at least half of what it wants, and takes every program medium: Punch Card, Circuit Board, Floppy
- * Disk and USB Drive.
+ * evaluates while the line delivers at least half of what it wants, and takes the Memory Board and the Floppy Disk.
  */
 public class ElectricControllerBlockEntity extends ElectricNode implements ControllerHost, io.github.soundgoodizerfan.feedback.control.endernet.Endernet.End {
 
-    private final ControllerCore core = new ControllerCore(this, this::powered, stack -> stack.is(FTags.PUNCH_CARDS)).withCircuitSlot(true).builtInCircuit().withEndernet().cardCap(this::vehicleCap);
+    private final ControllerCore core = new ControllerCore(this, this::powered, stack -> stack.is(FTags.ELECTRIC_CARDS)).withCircuitSlot(true).builtInCircuit().withEndernet().cardCap(this::vehicleCap);
 
     public ElectricControllerBlockEntity(BlockPos pos, BlockState state) {
         this(FBlockEntities.ELECTRIC_CONTROLLER.get(), pos, state);

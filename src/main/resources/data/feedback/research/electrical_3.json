@@ -90,7 +90,7 @@
   "answer": 1,
   "eureka": {
     "kind": "crafted",
-    "item": "feedback:circuit_board",
+    "item": "feedback:memory_board",
     "threshold": 2,
     "ink": 2
   }

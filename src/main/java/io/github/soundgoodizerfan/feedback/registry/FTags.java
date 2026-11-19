@@ -21,7 +21,13 @@ public final class FTags {
     public static final TagKey<Item> SOFT_CARDS = TagKey.create(Registries.ITEM, Feedback.id("soft_cards"));
     /** The media a mechanical Controller and Programmer take: the Punch Card alone. Every other medium needs an electric host. */
     public static final TagKey<Item> MECHANICAL_CARDS = TagKey.create(Registries.ITEM, Feedback.id("mechanical_cards"));
-    public static final TagKey<Item> PUNCH_CARDS = TagKey.create(Registries.ITEM, Feedback.id("punch_cards"));
+    /** The media an electric Controller and Programmer take: the Memory Board and the Floppy Disk (not a Punch Card, not a USB Drive). */
+    public static final TagKey<Item> ELECTRIC_CARDS = TagKey.create(Registries.ITEM, Feedback.id("electric_cards"));
+    /** The media a Computer's bays take as built: the Floppy Disk. */
+    public static final TagKey<Item> COMPUTER_CARDS = TagKey.create(Registries.ITEM, Feedback.id("computer_cards"));
+    /** The media a Computer takes only with a fitted USB port. */
+    public static final TagKey<Item> PORT_CARDS = TagKey.create(Registries.ITEM, Feedback.id("port_cards"));
+    public static final TagKey<Item> PUNCH_CARDS =TagKey.create(Registries.ITEM, Feedback.id("punch_cards"));
     /** What an Engine Stand prints a design onto: blank paper, or a blueprint to edit. */
     public static final TagKey<Item> BLUEPRINT_PAPER = TagKey.create(Registries.ITEM, Feedback.id("blueprint_paper"));
     /** Held containers a stockpot can ladle a serving into. */

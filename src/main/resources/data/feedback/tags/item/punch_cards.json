@@ -1,7 +1,7 @@
 {
   "values": [
     "feedback:punch_card",
-    "feedback:circuit_board",
+    "feedback:memory_board",
     "feedback:floppy_disk",
     "feedback:usb_drive"
   ]

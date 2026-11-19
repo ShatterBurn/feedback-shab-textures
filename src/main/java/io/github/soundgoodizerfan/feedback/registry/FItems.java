@@ -117,9 +117,9 @@ public class FItems {
      */
     public static final DeferredItem<Item> PUNCH_CARD =
             ITEMS.registerItem("punch_card", Item::new, new Item.Properties());
-    /** Mid medium: a printed circuit board, written once like a punch card. */
-    public static final DeferredItem<Item> CIRCUIT_BOARD =
-            ITEMS.registerItem("circuit_board", Item::new, new Item.Properties());
+    /** Mid medium: a board of remanent traces, erased and written again by the Programmer; an electric host takes it. */
+    public static final DeferredItem<Item> MEMORY_BOARD =
+            ITEMS.registerItem("memory_board", Item::new, new Item.Properties());
     /** Late medium: a floppy disk, erased and written again by the Programmer. */
     public static final DeferredItem<Item> FLOPPY_DISK =
             ITEMS.registerItem("floppy_disk", Item::new, new Item.Properties());
@@ -770,6 +770,10 @@ public class FItems {
     public static final DeferredItem<Item> CARD_RACK =
             ITEMS.register("card_rack", () -> new io.github.soundgoodizerfan.feedback.item.ControllerUpgradeItem(
                     new Item.Properties().stacksTo(16), io.github.soundgoodizerfan.feedback.fitting.upgrade.CardRackFitting::new));
+    /** A socket for USB Drives, fitted to a Computer. See {@code fitting.upgrade.UsbPortFitting}. */
+    public static final DeferredItem<Item> USB_PORT =
+            ITEMS.register("usb_port", () -> new io.github.soundgoodizerfan.feedback.item.ControllerUpgradeItem(
+                    new Item.Properties().stacksTo(16), io.github.soundgoodizerfan.feedback.fitting.upgrade.UsbPortFitting::new));
     public static final DeferredItem<Item> ESCAPEMENT =
             ITEMS.register("escapement", () -> new io.github.soundgoodizerfan.feedback.item.ControllerUpgradeItem(
                     new Item.Properties().stacksTo(16), io.github.soundgoodizerfan.feedback.fitting.upgrade.EscapementFitting::new));

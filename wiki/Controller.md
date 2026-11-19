@@ -1,6 +1,6 @@
 # Controller
 
-A mechanical logic box. It reads sensors, compares numbers, and switches things **on or off**, following a program punched into a **Punch Card**. It takes the Punch Card only; the [Electric Controller](Electric_Controller.md) and the [Computer](Electric_Controller.md#computer) take every [program medium](Programming.md#media).
+A mechanical logic box. It reads sensors, compares numbers, and switches things **on or off**, following a program punched into a **Punch Card**. It takes the Punch Card only; the [Electric Controller](Electric_Controller.md) takes the Memory Board and the Floppy Disk, and the [Computer](Electric_Controller.md#computer) takes the Floppy Disk and USB Drive ([program media](Programming.md#media)).
 
 It's the step up from a [Timer](Timer.md) or [Bimetallic Strip](Bimetallic_Strip.md): it can watch more than one thing, compare against any number you like, and switch several things at once.
 
@@ -57,11 +57,12 @@ A *Switch* card drives every linked node of the kind it asks for. These turn on 
 - [Valve](Valve.md)
 - [Damper](Damper.md)
 - [Engine](Engine.md)
+- [Thruster](Thruster.md)
 - [Breaker](Breaker.md)
 - a robot's actions, through a [Radio Mast](Radio_Mast.md)
 - another Controller's variables, as 1/0 or true/false (see [Reading another Controller's variables](#reading-another-controllers-variables))
 
-A **true** signal switches the target **on**: clutch engaged, valve open, damper open, engine running, breaker closed. **False** switches it **off**.
+A **true** signal switches the target **on**: clutch engaged, valve open, damper open, engine or thruster running, breaker closed. **False** switches it **off**.
 
 ## Linked nodes
 

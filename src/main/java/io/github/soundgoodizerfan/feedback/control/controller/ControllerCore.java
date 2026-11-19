@@ -69,12 +69,13 @@ public class ControllerCore implements Container, Fittable {
     private static final String ESCAPEMENT = "Escapement";
     private static final String CIRCUIT = "Circuit";
     private static final String ENDERNET = "Endernet";
+    private static final String USB_PORT = "UsbPort";
 
     private ItemStack card = ItemStack.EMPTY;
 
     /** The circuit in this host's circuit slot (a host that has one: {@link #withCircuitSlot}). It sets the clock rate and the read noise. A built-in circuit ({@link #builtInCircuit}) is required: the host does not step without a live one; a hand-seated one is optional and none still runs, slower and noisier. */
     private ItemStack circuit = ItemStack.EMPTY;
-    private boolean circuitSlot, circuitHeater, endernetCapable, circuitBuiltIn;
+    private boolean circuitSlot, circuitHeater, endernetCapable, circuitBuiltIn, usbCapable;
     /** A host whose program size is something other than the upgrades' (a robot's brain): the cards it may hold. */
     @Nullable
     private java.util.function.IntSupplier cardCap;
@@ -212,6 +213,17 @@ public class ControllerCore implements Container, Fittable {
     public ControllerCore withEndernet() {
         endernetCapable = true;
         return this;
+    }
+
+    /** Lets this host take a USB port upgrade (a Computer: its bays then take USB Drives). */
+    public ControllerCore withUsb() {
+        usbCapable = true;
+        return this;
+    }
+
+    /** Whether a USB port is fitted. */
+    public boolean usbPort() {
+        return upgrades.stream().anyMatch(io.github.soundgoodizerfan.feedback.fitting.upgrade.UsbPortFitting.class::isInstance);
     }
 
     /** The pair id of the fitted endernet upgrade, or null for none. */
@@ -894,6 +906,8 @@ public class ControllerCore implements Container, Fittable {
             return same < ControlTuning.CARD_RACK_MAX;
         if (upgrade instanceof io.github.soundgoodizerfan.feedback.fitting.upgrade.EndernetFitting)
             return endernetCapable && same < 1;
+        if (upgrade instanceof io.github.soundgoodizerfan.feedback.fitting.upgrade.UsbPortFitting)
+            return usbCapable && same < 1;
         return upgrade instanceof EscapementFitting && same < 1;
     }
 
@@ -948,6 +962,7 @@ public class ControllerCore implements Container, Fittable {
         tag.putInt(DRUMS, (int) upgrades.stream().filter(MemoryDrumFitting.class::isInstance).count());
         tag.putInt(RACKS, (int) upgrades.stream().filter(CardRackFitting.class::isInstance).count());
         tag.putBoolean(ESCAPEMENT, upgrades.stream().anyMatch(EscapementFitting.class::isInstance));
+        tag.putBoolean(USB_PORT, usbPort());
         java.util.UUID pair = endernetPair();
         if (pair != null) {
             tag.putUUID(ENDERNET, pair);
@@ -976,6 +991,8 @@ public class ControllerCore implements Container, Fittable {
             upgrades.add(new CardRackFitting());
         if (tag.getBoolean(ESCAPEMENT))
             upgrades.add(new EscapementFitting());
+        if (usbCapable && tag.getBoolean(USB_PORT))
+            upgrades.add(new io.github.soundgoodizerfan.feedback.fitting.upgrade.UsbPortFitting());
         if (endernetCapable && tag.hasUUID(ENDERNET)) {
             upgrades.add(new io.github.soundgoodizerfan.feedback.fitting.upgrade.EndernetFitting(tag.getUUID(ENDERNET)));
             tunedChannel = Math.max(1, tag.getInt(ENDERNET + "Channel"));

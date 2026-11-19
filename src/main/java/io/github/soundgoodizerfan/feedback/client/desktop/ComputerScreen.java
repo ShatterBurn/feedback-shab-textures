@@ -597,6 +597,11 @@ public class ComputerScreen extends SkinnedScreen<ComputerMenu> implements Compu
     }
 
     @Override
+    protected boolean typing() {
+        return desktop.typing();
+    }
+
+    @Override
     public boolean charTyped(char c, int modifiers) {
         return closing() || desktop.charTyped(c, modifiers) || super.charTyped(c, modifiers);
     }

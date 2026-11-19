@@ -224,6 +224,11 @@ final class EditorWindow extends DesktopWindow {
     }
 
     @Override
+    protected boolean typing() {
+        return textMode && pane != null || editor != null && editor.typing() || super.typing();
+    }
+
+    @Override
     protected boolean keyPressed(int key, int scan, int modifiers) {
         if (textMode && pane != null)
             return pane.keyPressed(key, scan, modifiers);

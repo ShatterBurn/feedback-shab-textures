@@ -40,9 +40,17 @@ import net.minecraft.world.level.block.state.BlockState;
 public class ComputerBlockEntity extends ElectricNode implements ControllerHost, ProgrammerProvider, net.minecraft.world.MenuProvider,
         io.github.soundgoodizerfan.feedback.control.endernet.Packets.Node {
 
-    private final ControllerCore core = new ControllerCore(this, this::powered, stack -> stack.is(FTags.PUNCH_CARDS) && !ComputerApps.isApp(stack)).withCircuitSlot(true).builtInCircuit().withEndernet().cardCap(this::vehicleCap);
-    private final EmbeddedProgrammer programmer = new EmbeddedProgrammer(this);
-    private final ComputerBays bays = new ComputerBays(this::setChanged);
+    private final ControllerCore core = new ControllerCore(this, this::powered, stack -> takesMedium(stack) && !ComputerApps.isApp(stack)).withCircuitSlot(true).builtInCircuit().withEndernet().withUsb().cardCap(this::vehicleCap);
+    private final EmbeddedProgrammer programmer = new EmbeddedProgrammer(this, this::takesMedium);
+    private final ComputerBays bays = new ComputerBays(this::setChanged, this::takesMedium);
+
+    /**
+     * Whether a medium may sit in a bay, the running slot or the editor: a Floppy Disk, a USB Drive once a USB port is fitted, or the card the
+     * Computer itself made from an internal file. Not a Punch Card or a Memory Board, which an electric Controller reads.
+     */
+    public boolean takesMedium(net.minecraft.world.item.ItemStack stack) {
+        return stack.is(FTags.COMPUTER_CARDS) || stack.is(FTags.PORT_CARDS) && core.usbPort() || ComputerFiles.isTransient(stack);
+    }
     /** The bay the medium in the editor came from, or -1. */
     private int editorDrive = -1;
     /** Who has it open in the editor; not saved (a medium left in the editor over a restart goes back to its bay when the next desktop opens). */

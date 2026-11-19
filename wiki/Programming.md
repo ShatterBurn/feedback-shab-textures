@@ -109,10 +109,10 @@ A printed Punch Card is **read-only**: *"Printed -- read only."* To change a pro
 
 ## Media
 
-A mechanical Controller and Programmer take the Punch Card only. The [Electric Controller, Electric Programmer and Computer](Electric_Controller.md) take every medium:
+Each host takes its own media. The mechanical Controller and Programmer take the Punch Card only. The [Electric Controller and Electric Programmer](Electric_Controller.md) take the Memory Board and the Floppy Disk. The [Computer's](Electric_Controller.md#computer) drive bays, running slot and editor take the Floppy Disk, and the USB Drive once a [USB Port](USB_Port.md) is fitted. A Computer takes neither a Punch Card nor a Memory Board.
 
-- **Punch Card**: written once.
-- **Circuit Board**: written once. Made at the [Engineering Table](Engineering_Table.md) from a Punch Card between two Copper Fine Wires in a column, with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, holding Electrical Treatise III: Circuits ([Treatise](Treatise.md)); it spends no fasteners.
+- **Punch Card**: written once. Mechanical hosts only.
+- **Memory Board**: rewritable: press **Erase** at an electric Programmer to bring the program back into the editor, then print the next one onto the same board. Made at the [Engineering Table](Engineering_Table.md) from a Punch Card between two Copper Fine Wires in a column, with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, holding Electrical Treatise III: Circuits ([Treatise](Treatise.md)); it spends no fasteners.
 - **Floppy Disk**: made at the Engineering Table with a screwdriver in the tool row and Electrical Treatise II: Coils and Magnets ([Treatise](Treatise.md)), from paper, a Punch Card, magnetite dust and a Wrought Iron Plate:
 
   ```
@@ -121,7 +121,7 @@ A mechanical Controller and Programmer take the Punch Card only. The [Electric C
   ```
 
   P is paper, D is a Punch Card, M is Magnetite Dust and H is a Wrought Iron Plate. It spends no fasteners. Put a printed disk in the Programmer and press **Erase**: the program comes back into the editor, the disk is blank, and Print writes the new program onto the same disk.
-- **USB Drive**: a Copper Plate above a [circuit](Basic_Electronic_Circuit.md) above a Ceramic, made at the Engineering Table with a screwdriver in the tool row and Electrical Treatise III: Circuits, with no fasteners. Rewritten the same way as a Floppy Disk.
+- **USB Drive**: a Copper Plate above a [circuit](Basic_Electronic_Circuit.md) above a Ceramic, made at the Engineering Table with a screwdriver in the tool row and Electrical Treatise III: Circuits, with no fasteners. Rewritten the same way as a Floppy Disk. It goes only into a Computer fitted with a [USB Port](USB_Port.md).
 
 ## Text form
 

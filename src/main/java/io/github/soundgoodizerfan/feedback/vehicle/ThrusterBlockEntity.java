@@ -42,7 +42,41 @@ import net.minecraft.world.level.block.state.BlockState;
  * There is no wear, because nothing about running it correctly or not damages it yet.
  * [OPEN] nozzle vectoring: thrust is along the facing for now.
  */
-public class ThrusterBlockEntity extends BlockEntity implements BlockEntitySubLevelActor {
+public class ThrusterBlockEntity extends BlockEntity implements BlockEntitySubLevelActor,
+        io.github.soundgoodizerfan.feedback.control.Switchable, io.github.soundgoodizerfan.feedback.control.data.DataNode {
+
+    // A switch, never a dial (the jet is the throttled one): redstone, a Timer and a Controller's actuator card start and stop the burn.
+    @Override
+    public boolean isEngaged() {
+        return running;
+    }
+
+    @Override
+    public void setEngaged(boolean engaged) {
+        if (level != null && !level.isClientSide)
+            setRunning(engaged);
+    }
+
+    @Override
+    public BlockPos getNodePos() {
+        return getBlockPos();
+    }
+
+    @Override
+    public Direction getNodeSide() {
+        return null;
+    }
+
+    @Override
+    public Level getNodeLevel() {
+        return level;
+    }
+
+    @Override
+    public BlockEntity getNodeOwner() {
+        return this;
+    }
+
 
     private final FuelBlend fuel = new FuelBlend(this::setChanged);
     private boolean running;

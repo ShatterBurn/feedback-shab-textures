@@ -97,7 +97,7 @@ New here? Start with [Metalworking](Metalworking.md), then [Heat](Heat.md). Want
 
 **Experience:** [Experience](Experience.md) · [Sculk Culture](Sculk_Culture.md)
 
-**Control:** [Timer](Timer.md) · [Bimetallic Strip](Bimetallic_Strip.md) · [Controller](Controller.md) · [Electric Controller](Electric_Controller.md) · [Programming](Programming.md) · [Data Connector](Data_Connector.md) · [Endernet Upgrade](Endernet_Upgrade.md) · [Radio Mast](Radio_Mast.md) · [Robots](Robots.md) · [Robot Arm](Robot_Arm.md) · [Robot Beacon](Robot_Beacon.md) · [Robot Dock](Robot_Dock.md) · [Tether Reel](Tether_Reel.md)
+**Control:** [Timer](Timer.md) · [Bimetallic Strip](Bimetallic_Strip.md) · [Controller](Controller.md) · [Electric Controller](Electric_Controller.md) · [Programming](Programming.md) · [Data Connector](Data_Connector.md) · [Endernet Upgrade](Endernet_Upgrade.md) · [USB Port](USB_Port.md) · [Radio Mast](Radio_Mast.md) · [Robots](Robots.md) · [Robot Arm](Robot_Arm.md) · [Robot Beacon](Robot_Beacon.md) · [Robot Dock](Robot_Dock.md) · [Tether Reel](Tether_Reel.md)
 
 **Guns:** [Fluid Caster](Fluid_Caster.md) · [Gun Parts](Gun_Parts.md) · [Reloading Press](Reloading_Press.md) · [Magazine](Magazine.md) · [Mixer](Mixer.md) · [Demolition Charge](Demolition_Charge.md) · [Shock Capsule](Shock_Capsule.md)
 

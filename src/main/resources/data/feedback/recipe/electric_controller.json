@@ -2,7 +2,7 @@
   "type": "feedback:engineering",
   "key": {
     "A": { "item": "feedback:controller" },
-    "B": { "item": "feedback:circuit_board" },
+    "B": { "item": "feedback:memory_board" },
     "C": { "item": "feedback:copper_wire" },
     "D": { "tag": "feedback:circuits" }
   },

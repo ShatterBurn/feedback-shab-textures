@@ -208,6 +208,11 @@ public abstract class DesktopWindow {
         return true;
     }
 
+    /** Whether a text field here has the typing focus. */
+    protected boolean typing() {
+        return focus != null;
+    }
+
     protected boolean charTyped(char c, int modifiers) {
         return focus != null && focus.charTyped(c, modifiers);
     }
