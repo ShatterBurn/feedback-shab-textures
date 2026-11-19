@@ -92,8 +92,30 @@ public class ShaftBlockEntity extends RotationNode implements Wearing, io.github
         Drag drag = getBlockState().getBlock() instanceof ShaftBlock shaft
                 ? new Drag(figures.get("Drag", shaft.getDragSuPerRpm().suPerRpm()))
                 : MachineTuning.SHAFT_DRAG_SU_PER_RPM;
+        if (unsupported())
+            drag = new Drag(drag.suPerRpm() * MachineTuning.SHAFT_UNSUPPORTED_DRAG_FACTOR);
         float cut = io.github.soundgoodizerfan.feedback.fitting.upgrade.LevitationSleeves.cut(level, worldPosition, this);
         return cut <= 0f ? drag : new Drag(drag.suPerRpm() * (1f - cut));
+    }
+
+    /** A plain shaft in a run of them longer than the support span: no bearing or machine within reach along its axis. A bearing itself is a support. */
+    private boolean unsupported() {
+        if (level == null || getBlockState().is(io.github.soundgoodizerfan.feedback.registry.FBlocks.BEARING))
+            return false;
+        var axis = getBlockState().getValue(ShaftBlock.AXIS);
+        int run = 1;
+        for (var way : new net.minecraft.core.Direction.AxisDirection[] {net.minecraft.core.Direction.AxisDirection.POSITIVE, net.minecraft.core.Direction.AxisDirection.NEGATIVE}) {
+            var step = net.minecraft.core.Direction.get(way, axis);
+            var at = worldPosition.relative(step);
+            while (run <= MachineTuning.SHAFT_SUPPORT_SPAN) {
+                var state = level.getBlockState(at);
+                if (!(state.getBlock() instanceof ShaftBlock) || state.is(io.github.soundgoodizerfan.feedback.registry.FBlocks.BEARING) || state.getValue(ShaftBlock.AXIS) != axis)
+                    break;
+                run++;
+                at = at.relative(step);
+            }
+        }
+        return run > MachineTuning.SHAFT_SUPPORT_SPAN;
     }
 
     @Override

@@ -59,6 +59,10 @@ public final class ElectricRun {
     private final boolean[] reached;
     private boolean built;
     private int rebuilds;
+    /** The tree was built with each store a generator can reach through wire as a leaf (a charge path), not as a root. */
+    private boolean routedCharging;
+    /** A store carried part of the load last tick, so it is a root and not a leaf. */
+    private boolean discharging;
 
     // Scratch, reused every tick.
     private final float[] through;
@@ -125,9 +129,11 @@ public final class ElectricRun {
         float capacity = genCap + resCap;
         VoltageBand runBand = top == null ? VoltageBand.LV : top;
         float rootEu = top == null ? 0f : ElectricRules.packetEu(top);
-        if (!built || !Arrays.equals(pooledNow, pooled)) {
+        // While generation carries the load, a store a generator reaches through wire is charged along that wire: a leaf of the generator's tree.
+        boolean charging = genCap > 0 && resCap > 0 && !discharging;
+        if (!built || !Arrays.equals(pooledNow, pooled) || charging != routedCharging) {
             System.arraycopy(pooledNow, 0, pooled, 0, n);
-            route();
+            route(charging);
         }
 
         // 2. Shares. Only a sink the pool can reach asks for anything.
@@ -153,12 +159,19 @@ public final class ElectricRun {
         float genDrawn = drawn - resDrawn;
         float chargeShare = 0;
         float chargeWant = 0;
+        discharging = resDrawn > 0;
         if (genCap > 0 && resDrawn <= 0 && genDrawn < genCap) {
+            // A store no wire joins to a generator has nothing to charge it.
             for (int i = 0; i < n; i++)
-                if (pooledNow[i] && members[i].reserve())
+                if (pooledNow[i] && members[i].reserve() && (!routedCharging || parent[i] >= 0))
                     chargeWant += members[i].reserveWantedAmps();
             chargeShare = chargeWant <= 0 ? 0 : Math.min(1f, (genCap - genDrawn) / chargeWant);
-            genDrawn += chargeWant * chargeShare; // [OPEN] charge current is not routed through wire loss or counted on wires
+            genDrawn += chargeWant * chargeShare;
+            // The charge current rides the wires from the generator to the store, so it counts on them and loses with them.
+            if (routedCharging)
+                for (int i = 0; i < n; i++)
+                    if (pooledNow[i] && members[i].reserve() && parent[i] >= 0)
+                        through[i] = members[i].reserveWantedAmps() * chargeShare;
         }
         for (int k = order.length - 1; k >= 0; k--) {
             int i = order[k];
@@ -184,7 +197,7 @@ public final class ElectricRun {
                 case SOURCE -> {
                     if (pooledNow[i] && m.reserve()) {
                         float taken = resDrawn > 0 ? resDrawn * m.sourceAmps() / resCap : -m.reserveWantedAmps() * chargeShare;
-                        m.onResolved(runBand, rootEu, taken, 0f, false);
+                        m.onResolved(runBand, parent[i] >= 0 ? eu[i] : rootEu, taken, 0f, false);
                     } else if (pooledNow[i])
                         m.onResolved(runBand, rootEu, genDrawn * m.sourceAmps() / genCap, 0f, false);
                     else
@@ -210,31 +223,44 @@ public final class ElectricRun {
      * Breadth-first from every pooled source. Roots and wires expand; a sink is a leaf, and a
      * source that is not a root is never reached (it is blocked, or idle, and conducts nothing).
      */
-    private void route() {
+    private void route(boolean charging) {
         int n = members.length;
         rebuilds++;
         built = true;
+        routedCharging = charging;
         Arrays.fill(parent, -1);
         Arrays.fill(reached, false);
 
         int[] queue = new int[n];
         int head = 0, tail = 0;
+        // When charging, the generators are the roots and a store is a root only if no wire joins it to one.
         for (int i = 0; i < n; i++)
-            if (pooled[i]) {
+            if (pooled[i] && !(charging && members[i].reserve())) {
                 reached[i] = true;
                 queue[tail++] = i;
             }
-        while (head < tail) {
-            int i = queue[head++];
-            if (members[i].role() == ElectricMember.Role.SINK)
-                continue;
-            for (int j : adjacent[i]) {
-                if (reached[j] || members[j].role() == ElectricMember.Role.SOURCE)
+        for (boolean stores = false; ; stores = true) {
+            while (head < tail) {
+                int i = queue[head++];
+                if (members[i].role() == ElectricMember.Role.SINK || (members[i].role() == ElectricMember.Role.SOURCE && parent[i] >= 0))
                     continue;
-                reached[j] = true;
-                parent[j] = i;
-                queue[tail++] = j;
+                for (int j : adjacent[i]) {
+                    if (reached[j])
+                        continue;
+                    if (members[j].role() == ElectricMember.Role.SOURCE && !(charging && pooled[j] && members[j].reserve()))
+                        continue;
+                    reached[j] = true;
+                    parent[j] = i;
+                    queue[tail++] = j;
+                }
             }
+            if (stores || !charging)
+                break;
+            for (int i = 0; i < n; i++)
+                if (pooled[i] && members[i].reserve() && !reached[i]) {
+                    reached[i] = true;
+                    queue[tail++] = i;
+                }
         }
         order = Arrays.copyOf(queue, tail);
     }

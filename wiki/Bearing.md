@@ -14,7 +14,7 @@ P is a Wrought Iron Plate, R is a Wrought Iron Rod and S is a [Shaft](Shaft.md).
 
 ## Using it
 
-Use it anywhere you'd use a shaft. Friction adds up on long runs and fast lines, which is where it helps.
+Use it anywhere you'd use a shaft. Friction adds up on long runs and fast lines, which is where it helps. A bearing also supports the shafts beside it: a run of more than 4 plain shafts without one costs double friction ([Shaft](Shaft.md#unsupported-spans)).
 
 Bearings are also an ingredient in most of the shaft-driven workshop machines: the [Wire Drawer](Wire_Drawer.md), [Rolling Mill](Rolling_Mill.md), [Mechanical Press](Mechanical_Press.md), [Drill Press](Drill_Press.md), [Lathe](Lathe.md) and [Grinding Wheel](Grinding_Wheel.md).
 

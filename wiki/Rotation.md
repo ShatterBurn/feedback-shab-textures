@@ -63,7 +63,7 @@ Every shaft, cog and gearbox costs a little power, and more the faster it spins:
 | Large Cog | 0.15 Su |
 | [Gearbox](Cogs.md#gearbox), [Flywheel](Flywheel.md), [Rotation Adapter](Rotation_Adapter.md), [Rotary Bearing](Rotary_Bearing.md), [Ring Gear](Ring_Gear.md) | 0.2 Su |
 
-So twenty shafts at 16 RPM cost 32 Su, half a steam engine. A network speeds up until its spare power runs out, so a long run doesn't stall; it just turns slower. A stopped shaft costs nothing. Gearing a branch *up* to a higher speed makes its friction costlier still. Distance itself is free: every block in the network costs the same wherever the machine is.
+So twenty shafts at 16 RPM cost 32 Su, half a steam engine. A network speeds up until its spare power runs out, so a long run doesn't stall; it just turns slower. A stopped shaft costs nothing. Gearing a branch *up* to a higher speed makes its friction costlier still. A straight run of more than 4 plain shafts with no bearing or other block in it costs double ([Shaft](Shaft.md#unsupported-spans)). Distance itself is free: every block in the network costs the same wherever the machine is.
 
 ## Gearing
 

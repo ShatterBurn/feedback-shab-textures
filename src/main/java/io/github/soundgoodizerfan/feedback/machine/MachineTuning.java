@@ -87,6 +87,15 @@ public final class MachineTuning {
     public static final Drag BEARING_DRAG_SU_PER_RPM = new Drag(0.04f);
 
     /**
+     * Placeholder. A bearing is the support a shaft turns in: a run of plain shafts (a flywheel counts as one) longer than this many blocks
+     * between bearings or machines is unsupported, and each shaft in it drags {@link #SHAFT_UNSUPPORTED_DRAG_FACTOR} times as much.
+     */
+    public static final int SHAFT_SUPPORT_SPAN = 4;
+
+    /** Placeholder. What an unsupported shaft's drag is multiplied by. */
+    public static final float SHAFT_UNSUPPORTED_DRAG_FACTOR = 2f;
+
+    /**
      * Invented. A cog drags like a shaft; a large one drags half again as much.
      *
      * <h3>What gearing costs</h3>
