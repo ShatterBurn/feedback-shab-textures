@@ -116,6 +116,7 @@ public class Feedback {
         NeoForge.EVENT_BUS.addListener(io.github.soundgoodizerfan.feedback.weapon.ArmedSkeletons::onEntityJoin);
         NeoForge.EVENT_BUS.addListener(io.github.soundgoodizerfan.feedback.weapon.ArmedSkeletons::onDrops);
         NeoForge.EVENT_BUS.addListener(io.github.soundgoodizerfan.feedback.worldgen.VanillaVesselSwap::onChunkLoad);
+        NeoForge.EVENT_BUS.addListener(io.github.soundgoodizerfan.feedback.worldgen.VanillaVeinStrip::onChunkLoad);
         NeoForge.EVENT_BUS.addListener(io.github.soundgoodizerfan.feedback.worldgen.VanillaVesselSwap::onBlockPlaced);
         NeoForge.EVENT_BUS.addListener(io.github.soundgoodizerfan.feedback.worldgen.VanillaVesselSwap::onServerTick);
         NeoForge.EVENT_BUS.addListener(Feedback::onDatapackSync);

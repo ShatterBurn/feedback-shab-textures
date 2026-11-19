@@ -125,6 +125,14 @@ public final class ModularAssembly {
     public static Optional<Match> infer(List<ItemStack> slots, ItemStack plan, Map<ResourceLocation, Material> materials,
                                         Map<ResourceLocation, ModularType> types, java.util.function.Predicate<ModularType> may,
                                         ModularFit.Start start) {
+        // Stacks of one stock merge first; if nothing is made, each slot is its own part (two roles in the same material and form, like a boot's studs and spurs).
+        Optional<Match> made = infer(slots, plan, materials, types, may, start, true);
+        return made.isPresent() ? made : infer(slots, plan, materials, types, may, start, false);
+    }
+
+    private static Optional<Match> infer(List<ItemStack> slots, ItemStack plan, Map<ResourceLocation, Material> materials,
+                                         Map<ResourceLocation, ModularType> types, java.util.function.Predicate<ModularType> may,
+                                         ModularFit.Start start, boolean merge) {
         // Merge raw stock of one material and form into one entry, remembering which slots fed it.
         List<ItemStack> merged = new ArrayList<>();
         List<List<Integer>> origin = new ArrayList<>();
@@ -136,7 +144,7 @@ public final class ModularAssembly {
             Optional<Material.Located> l = Material.find(materials, s);
             if (l.isEmpty())
                 return Optional.empty();
-            int into = mergeable(s, l.get()) ? indexOfStock(merged, what, l.get()) : -1;
+            int into = merge && mergeable(s, l.get()) ? indexOfStock(merged, what, l.get()) : -1;
             if (into >= 0) {
                 merged.set(into, merged.get(into).copyWithCount(merged.get(into).getCount() + s.getCount()));
                 origin.get(into).add(i);
