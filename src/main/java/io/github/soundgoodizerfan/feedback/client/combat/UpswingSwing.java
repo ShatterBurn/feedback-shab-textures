@@ -93,6 +93,12 @@ public final class UpswingSwing {
     private record RemoteStrike(int entity, long at, String sound) {
     }
 
+    /** A gun bludgeon's blow waiting for its clip's strike tick. */
+    private record GunStrike(long at, Runnable blow) {
+    }
+
+    private static final List<GunStrike> GUN = new ArrayList<>();
+
     private static Pending pending;
     private static final List<RemoteStrike> REMOTE = new ArrayList<>();
     /** Which of a weapon's two clips comes next, so a swing and its follow-up differ. */
@@ -170,6 +176,23 @@ public final class UpswingSwing {
             begin(mc, player, swing);
     }
 
+    /**
+     * A gun swung as a bludgeon: the slam clip plays at once (everyone else sees it through {@link SwingStartPayload}) and
+     * {@code blow} (the server's hit) runs when the clip strikes, {@code length} ticks in all, so the hit matches the swing.
+     */
+    public static void gunSwing(LocalPlayer player, boolean off, float length, Runnable blow) {
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.level == null)
+            return;
+        float len = Math.max(MIN_LENGTH, length);
+        float up = upswing(WINDUP_HEAVY, len);
+        AnimatedHand hand = off ? AnimatedHand.OFF_HAND : AnimatedHand.MAIN_HAND;
+        String clip = "bettercombat:one_handed_slam";
+        play(player, clip, hand, len, up);
+        PacketDistributor.sendToServer(new SwingStartPayload(clip, hand.ordinal(), len, up, ""));
+        GUN.add(new GunStrike(mc.level.getGameTime() + Math.round(len * up), blow));
+    }
+
     /** Starts the windup if none runs and the hand is charged enough; true if it started. */
     private static boolean begin(Minecraft mc, LocalPlayer player, Swing swing) {
         long now = mc.level.getGameTime();
@@ -195,6 +218,7 @@ public final class UpswingSwing {
         var level = mc.level;
         if (player == null || level == null) {
             pending = null;
+            GUN.clear();
             REMOTE.clear();
             return;
         }
@@ -214,6 +238,14 @@ public final class UpswingSwing {
             } else if (now >= pending.strikeAt()) {
                 strike(mc, player, pending.swing());
                 pending = null;
+            }
+        }
+        for (Iterator<GunStrike> it = GUN.iterator(); it.hasNext(); ) {
+            GunStrike g = it.next();
+            if (now >= g.at()) {
+                it.remove();
+                if (player.isAlive())
+                    g.blow().run();
             }
         }
         for (Iterator<RemoteStrike> it = REMOTE.iterator(); it.hasNext(); ) {

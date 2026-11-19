@@ -348,17 +348,20 @@ public final class GunClient {
     }
 
     /**
-     * One hand's bludgeon swing while its button is down: the swing animation at once (the server plays it for
-     * everyone else), then the server resolves the hit. Held repeats at the gun's own mass-derived cooldown.
+     * One hand's bludgeon swing while its button is down: the slam clip at once, then the server resolves the hit
+     * when the clip strikes ({@code UpswingSwing.gunSwing}). Held repeats at the gun's own mass-derived cooldown.
      * Returns the wall-clock ms the hand may swing again.
      */
     private static long bludgeon(LocalPlayer player, net.minecraft.world.item.ItemStack gun, boolean off, long nextMs, long now) {
         GunFigures f = GunItem.figures(gun);
         if (f == null || now < nextMs)
             return nextMs;
-        player.swing(off ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND);
-        PacketDistributor.sendToServer(new GunSwingPayload(off));
-        return now + GunBludgeon.cooldownTicks(f) * 50L;
+        int ticks = GunBludgeon.cooldownTicks(f);
+        io.github.soundgoodizerfan.feedback.client.combat.UpswingSwing.gunSwing(player, off, ticks, () -> {
+            player.swing(off ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND);
+            PacketDistributor.sendToServer(new GunSwingPayload(off));
+        });
+        return now + ticks * 50L;
     }
 
     /** What the next shot does in {@code gun} as it is now, or null when it cannot fire: the gun's own mechanism predicts it. */
