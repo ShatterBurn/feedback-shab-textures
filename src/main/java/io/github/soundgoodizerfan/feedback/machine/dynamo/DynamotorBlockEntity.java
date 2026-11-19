@@ -242,8 +242,18 @@ public class DynamotorBlockEntity extends ElectricNode implements ThermalBody, W
                 shaft.getNetwork().loadByBelt(getShaftLoad());
         } else if (shaft.getRatio() != 0 && getAmps() > 0) {
             // Into the run's own frame through the coupling node's ratio, as a pulley does.
-            shaft.getNetwork().driveByBelt(new Rpm(noLoadRpm() / shaft.getRatio()), getShaftTorque());
+            shaft.getNetwork().driveByBelt(new Rpm((leftWound() ? -1f : 1f) * noLoadRpm() / shaft.getRatio()), getShaftTorque());
         }
+    }
+
+    /** Whether the winding was wound the other way ({@code reverse} on its variant): the motor then drives its shaft backwards. */
+    private boolean leftWound() {
+        if (design == null)
+            return false;
+        var type = io.github.soundgoodizerfan.feedback.modular.type.ModularTypes.known(design.type());
+        var role = type == null ? null : type.roles().get(io.github.soundgoodizerfan.feedback.modular.bake.ModularBake.MACHINE_WINDING);
+        var part = design.part(io.github.soundgoodizerfan.feedback.modular.bake.ModularBake.MACHINE_WINDING);
+        return role != null && part != null && role.variant(part).map(v -> v.params().getOrDefault("reverse", 0f) > 0.5f).orElse(false);
     }
 
     /** The rotation node on the shaft face whose own axle points at this block, or null. */

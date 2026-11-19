@@ -74,6 +74,11 @@
         "stock": [
           "wire"
         ],
+        "base": "right_wound",
+        "variants": [
+          { "name": "right_wound", "params": { "reverse": 0 } },
+          { "name": "left_wound", "params": { "reverse": 1 } }
+        ],
         "slots": [
           {
             "name": "core",
