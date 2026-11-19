@@ -32,11 +32,28 @@ import net.minecraft.world.level.block.state.BlockState;
  * {@link LampBlock.Glow#BURNT}, dark, wanting nothing. A cheap panel may pop (digest, 2026-11-03). Breaking
  * a burnt lamp drops the lamp item like any other; there is no repair.
  */
-public class LampBlockEntity extends ElectricNode implements Wearing, io.github.soundgoodizerfan.feedback.machine.Mendable {
+public class LampBlockEntity extends ElectricNode implements Wearing, io.github.soundgoodizerfan.feedback.machine.Mendable,
+        io.github.soundgoodizerfan.feedback.modular.bake.FigureHolder {
 
     private float condition = 1f;
 
     private final FigureStore figures = new FigureStore();
+
+    @Override
+    public FigureStore figures() {
+        return figures;
+    }
+
+    /** The design rides to the client so the panel takes its filament's colour. */
+    @Override
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        return saveWithoutMetadata(registries);
+    }
+
+    @Override
+    public net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket getUpdatePacket() {
+        return net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket.create(this);
+    }
 
     @Override
     protected void applyImplicitComponents(DataComponentInput input) {

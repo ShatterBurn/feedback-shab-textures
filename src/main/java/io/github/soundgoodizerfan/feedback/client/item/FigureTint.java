@@ -38,15 +38,22 @@ public final class FigureTint {
     private static Map<Block, String[]> roles() {
         return Map.of(
                 FBlocks.LEYDEN_JAR.get(), new String[]{"S", "F"},        // 0 the glass, 1 the foil
-                FBlocks.ELECTROMAGNET.get(), new String[]{"S"});         // 0 the core and winding metal
+                FBlocks.ELECTROMAGNET.get(), new String[]{"S"},          // 0 the core and winding metal
+                FBlocks.LAMP.get(), new String[]{"S"});                  // 0 the whole panel: the filament's colour
     }
 
     private FigureTint() {
     }
 
-    private static int colour(ModularDesign design, String[] roles, int tintIndex) {
+    private static int colour(ModularDesign design, String[] roles, int tintIndex, boolean glows) {
         ModularDesign.Part part = design == null || tintIndex < 0 || tintIndex >= roles.length ? null : design.part(roles[tintIndex]);
-        return 0xFF000000 | MaterialColors.of(part == null ? FALLBACK : part.material());
+        int rgb = MaterialColors.of(part == null ? FALLBACK : part.material());
+        if (glows) {
+            // A light source is never dim: keep the hue, scale until the strongest channel is full (a tint only multiplies).
+            int r = rgb >> 16 & 0xFF, g = rgb >> 8 & 0xFF, b = rgb & 0xFF, max = Math.max(1, Math.max(r, Math.max(g, b)));
+            rgb = (r * 255 / max) << 16 | (g * 255 / max) << 8 | b * 255 / max;
+        }
+        return 0xFF000000 | rgb;
     }
 
     @SubscribeEvent
@@ -54,7 +61,7 @@ public final class FigureTint {
         roles().forEach((block, roles) -> event.register((state, level, pos, tintIndex) -> {
             ModularDesign design = level != null && pos != null && level.getBlockEntity(pos) instanceof FigureHolder holder
                     ? holder.figures().design() : null;
-            return colour(design, roles, tintIndex);
+            return colour(design, roles, tintIndex, block == FBlocks.LAMP.get());
         }, block));
     }
 
@@ -64,7 +71,7 @@ public final class FigureTint {
         for (Item item : BuiltInRegistries.ITEM)
             if (item instanceof ModularBlockItem block && roles.containsKey(block.getBlock())) {
                 String[] r = roles.get(block.getBlock());
-                event.register((stack, layer) -> colour(ModularStacks.design(stack), r, layer), item);
+                event.register((stack, layer) -> colour(ModularStacks.design(stack), r, layer, block.getBlock() == FBlocks.LAMP.get()), item);
             }
     }
 }

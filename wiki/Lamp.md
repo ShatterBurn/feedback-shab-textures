@@ -14,6 +14,8 @@ The filament has one measure, its **gauge**, from 20 to 100 percent (50 by defau
 
 Place it touching an [electrical](Electricity.md) line, such as a [cable](Copper_Cable.md) or a source. It is the end of the line, a load of **0.5 A** with a standard 50 percent filament, rated for the **MV** band, and it has nothing to configure.
 
+It looks like the vanilla Redstone Lamp, dark when off and bright when lit, tinted by the material of its filament: a copper filament gives a copper-colored lamp, steel a steel-gray one. The item and the placed block share the tint.
+
 It glows in four steps by how well it is fed: dark, **dim**, **bright** and **full**, giving light level 0, 5, 10 and 15. Jade names the step. A step changes only once the supply has moved well past the boundary, so a line hovering near one does not flicker the light.
 
 ## Under and over
