@@ -53,7 +53,7 @@ A jar smooths a pulse and carries you over a gap. For power that lasts, use a [B
 
 ## Careful
 
-**A band above its rating cracks the jar.** Fed a band higher than the glass is rated for, the jar shatters and drops nothing. It discharges at once as a shock at its own band to every living thing within 3 blocks, whatever the charge it held. [Gloves](Hazards.md#shock) rated for that band protect.
+**A band above its rating cracks the jar.** Fed a band higher than the glass is rated for, the jar shatters and drops nothing. It discharges at once as a shock at its own band to every living thing touching the jar, whatever the charge it held. The crack comes with the sound of breaking glass and a burst of electric sparks, even from an empty jar. [Gloves](Hazards.md#shock) rated for that band protect.
 
 A jar rated **MV** or more and holding charge shocks whoever touches it, walking into it or right-clicking it. See [Hazards](Hazards.md#shock).
 

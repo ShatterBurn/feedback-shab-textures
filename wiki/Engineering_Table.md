@@ -90,7 +90,7 @@ The plain [Crafting Table](Crafting_Table.md) swaps a part too: lay one finished
 
 The Crafting Table also **repairs** such an item: lay it in the grid with stock of the material its wearing part is made of, and durability comes back, a share for each cell of stock that depends on the material's properties. The item takes no wear for it.
 
-Repairing and a like-for-like swap need no treatise. A dish is not taken apart.
+Repairing and a like-for-like swap need no treatise. The Repair and Fit tabs refuse a dish: cooking does not undo, so a dish cannot be taken apart.
 
 ## Treatise tab
 
