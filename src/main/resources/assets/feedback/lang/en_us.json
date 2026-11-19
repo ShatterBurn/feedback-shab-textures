@@ -1012,6 +1012,8 @@
   "feedback.xp.villager": "Trade level %s, %s trade XP",
   "feedback.readout.xp_store": "Level %s, %s of %s points",
   "feedback.readout.xp_run": "Run at level %s, %s points; moving %s, leaking %s",
+  "feedback.jade.xp.banked": "Holds banked XP",
+  "feedback.jade.xp.banked_figure": "Banked XP: %s",
   "feedback.jade.xp.flowing": "XP flowing",
   "feedback.jade.xp.settled": "XP settled",
   "feedback.instrument.temperature_sensor": "Temperature Sensor",

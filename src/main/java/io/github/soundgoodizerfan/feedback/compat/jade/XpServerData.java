@@ -31,8 +31,14 @@ public class XpServerData implements IServerDataProvider<BlockAccessor> {
     static final String MASS = "CultureMass";
     static final String AIR = "CultureAir";
 
+    static final String BANKED = "VesselBankedXp";
+
     @Override
     public void appendServerData(CompoundTag data, BlockAccessor accessor) {
+        if (accessor.getBlockEntity() instanceof io.github.soundgoodizerfan.feedback.machine.vessel.ThermalVesselCore vessel && vessel.bankedXp() > 0) {
+            data.putBoolean(XP, true);
+            data.putInt(BANKED, vessel.bankedXp());
+        }
         if (!(accessor.getBlockEntity() instanceof XpNode node))
             return;
         data.putBoolean(XP, true);

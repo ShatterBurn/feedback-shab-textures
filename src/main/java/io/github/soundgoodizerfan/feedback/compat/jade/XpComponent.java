@@ -31,6 +31,9 @@ public class XpComponent implements IBlockComponentProvider {
         if (!data.getBoolean(XpServerData.XP))
             return;
         boolean figures = Readout.instrumented(Quantity.XP_LEVEL);
+        if (data.contains(XpServerData.BANKED))
+            tooltip.add(Component.translatable(figures ? "feedback.jade.xp.banked_figure" : "feedback.jade.xp.banked",
+                    figures ? Readout.figure(Quantity.EXPERIENCE, data.getInt(XpServerData.BANKED)) : "").withStyle(ChatFormatting.GRAY));
         if (data.contains(XpServerData.STAGE)) {
             var stage = io.github.soundgoodizerfan.feedback.core.xp.Culture.Stage.values()[data.getInt(XpServerData.STAGE)];
             tooltip.add(Component.translatable("feedback.culture.stage." + stage.name().toLowerCase(java.util.Locale.ROOT))
