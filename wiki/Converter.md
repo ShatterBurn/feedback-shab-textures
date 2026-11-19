@@ -1,6 +1,6 @@
 # Solid-State Converter
 
-Steps a line's band down one, down two or up one, with a Converter Tap on the other side. It changes band with no moving parts, at about 95 percent efficiency.
+Steps a line's band down one, down two or up one, with a Converter Tap on the other side. It changes band with no moving parts, at up to about 95 percent efficiency.
 
 ## Crafting
 
@@ -9,7 +9,7 @@ C E C
 A A A
 ```
 
-**Solid-State Converter**: C is an [Induction Coil](Induction.md#induction-coil), E is a [Basic Electronic Circuit](Basic_Electronic_Circuit.md) and A is an Aluminum Plate.
+**Solid-State Converter**: C is an [Induction Coil](Induction.md#induction-coil), E is a [Basic Electronic Circuit](Basic_Electronic_Circuit.md), which the finished converter keeps, and A is an Aluminum Plate.
 
 ```
 C R C
@@ -42,7 +42,11 @@ The two lines never share a run: the converter is a load on the first, and the t
 
 The converter passes a fixed amount of power, so a lower band out means more amps out, and a higher band out means fewer. Asked for more than that, it gives no more. A starved input line shrinks the output in proportion.
 
-About 5 percent of the power is lost, and the loss is **heat in the converter block**. A hot converter loses condition, down to a floor, and a worn one wastes more of what passes. It never refuses a line and is never destroyed.
+With a full-speed circuit about 5 percent of the power is lost, and the loss is **heat in the converter block**. A hot converter loses condition, down to a floor, and a worn one wastes more of what passes. It never refuses a line and is never destroyed.
+
+### The circuit
+
+The converter's [circuit](Basic_Electronic_Circuit.md) is built in and cannot be taken out. Its speed sets the efficiency: about 95 percent with a circuit at full speed, down to about 85.5 percent with a speed-0 circuit. Its traces set the amps the converter passes: printed traces carry little, etched traces more, and a converter with no circuit passes nothing. A placed converter keeps its circuit, and so does the item it drops when broken. The [Engineering Table's Repair tab](Engineering_Table.md#repair-tab) takes it apart and returns the circuit.
 
 ### Heatsinks
 

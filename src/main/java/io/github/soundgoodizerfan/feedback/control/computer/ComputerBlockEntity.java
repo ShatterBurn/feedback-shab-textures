@@ -40,7 +40,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public class ComputerBlockEntity extends ElectricNode implements ControllerHost, ProgrammerProvider, net.minecraft.world.MenuProvider,
         io.github.soundgoodizerfan.feedback.control.endernet.Packets.Node {
 
-    private final ControllerCore core = new ControllerCore(this, this::powered, stack -> stack.is(FTags.PUNCH_CARDS) && !ComputerApps.isApp(stack)).withCircuitSlot(true).withEndernet().cardCap(this::vehicleCap);
+    private final ControllerCore core = new ControllerCore(this, this::powered, stack -> stack.is(FTags.PUNCH_CARDS) && !ComputerApps.isApp(stack)).withCircuitSlot(true).builtInCircuit().withEndernet().cardCap(this::vehicleCap);
     private final EmbeddedProgrammer programmer = new EmbeddedProgrammer(this);
     private final ComputerBays bays = new ComputerBays(this::setChanged);
     /** The bay the medium in the editor came from, or -1. */
@@ -682,6 +682,7 @@ public class ComputerBlockEntity extends ElectricNode implements ControllerHost,
     @Override
     protected void collectImplicitComponents(net.minecraft.core.component.DataComponentMap.Builder components) {
         super.collectImplicitComponents(components);
+        core.circuitToComponents(components);
         if (disk != null)
             components.set(io.github.soundgoodizerfan.feedback.registry.FDataComponents.COMPUTER_DISK.get(), disk);
     }
@@ -689,6 +690,7 @@ public class ComputerBlockEntity extends ElectricNode implements ControllerHost,
     @Override
     protected void applyImplicitComponents(net.minecraft.world.level.block.entity.BlockEntity.DataComponentInput input) {
         super.applyImplicitComponents(input);
+        core.circuitFromComponents(input.get(io.github.soundgoodizerfan.feedback.registry.FDataComponents.CIRCUIT_STACK.get()));
         java.util.UUID carried = input.get(io.github.soundgoodizerfan.feedback.registry.FDataComponents.COMPUTER_DISK.get());
         if (carried != null) {
             disk = carried;

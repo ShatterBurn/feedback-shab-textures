@@ -52,7 +52,7 @@ public class ComputerDriveMenu extends AbstractContainerMenu {
                 return !ComputerFiles.isTransient(getItem());
             }
         });
-        if (computer != null && computer.core().hasCircuitSlot())
+        if (computer != null && computer.core().hasCircuitSlot() && !computer.core().circuitBuiltIn())
             addSlot(new CircuitSlot(computer.core(), CIRCUIT_X, BAY_Y));
         for (int row = 0; row < 3; row++)
             for (int column = 0; column < 9; column++)

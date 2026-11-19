@@ -72,9 +72,9 @@ public class ControllerCore implements Container, Fittable {
 
     private ItemStack card = ItemStack.EMPTY;
 
-    /** The circuit in this host's circuit slot (a host that has one: {@link #withCircuitSlot}). It sets the clock rate and the read noise; none still runs, slower and noisier. */
+    /** The circuit in this host's circuit slot (a host that has one: {@link #withCircuitSlot}). It sets the clock rate and the read noise. A built-in circuit ({@link #builtInCircuit}) is required: the host does not step without a live one; a hand-seated one is optional and none still runs, slower and noisier. */
     private ItemStack circuit = ItemStack.EMPTY;
-    private boolean circuitSlot, circuitHeater, endernetCapable;
+    private boolean circuitSlot, circuitHeater, endernetCapable, circuitBuiltIn;
     /** A host whose program size is something other than the upgrades' (a robot's brain): the cards it may hold. */
     @Nullable
     private java.util.function.IntSupplier cardCap;
@@ -184,6 +184,30 @@ public class ControllerCore implements Container, Fittable {
         return this;
     }
 
+    /**
+     * The circuit is built into the host by its engineering recipe ({@code circuit_stack} on the item) and cannot be fitted or taken by hand;
+     * the host does not step without a live one. Call after {@link #withCircuitSlot}.
+     */
+    public ControllerCore builtInCircuit() {
+        circuitBuiltIn = true;
+        return this;
+    }
+
+    public boolean circuitBuiltIn() {
+        return circuitBuiltIn;
+    }
+
+    /** Loads the circuit the item carried (the {@code circuit_stack} component), as the block is placed. */
+    public void circuitFromComponents(@Nullable ItemStack built) {
+        circuit = built == null ? ItemStack.EMPTY : built.copy();
+    }
+
+    /** Puts the circuit on the dropped item so it travels with the host. */
+    public void circuitToComponents(net.minecraft.core.component.DataComponentMap.Builder components) {
+        if (!circuit.isEmpty())
+            components.set(FDataComponents.CIRCUIT_STACK.get(), circuit.copy());
+    }
+
     /** Lets this host take an endernet upgrade (an electric host: both ends of a pair need power). */
     public ControllerCore withEndernet() {
         endernetCapable = true;
@@ -216,7 +240,7 @@ public class ControllerCore implements Container, Fittable {
 
     /** Whether a stack may go in the circuit slot: a circuit item, and the slot empty. */
     public boolean canFitCircuit(ItemStack stack) {
-        return circuitSlot && circuit.isEmpty() && stack.getItem() instanceof io.github.soundgoodizerfan.feedback.item.CircuitItem;
+        return circuitSlot && !circuitBuiltIn && circuit.isEmpty() && stack.getItem() instanceof io.github.soundgoodizerfan.feedback.item.CircuitItem;
     }
 
     public void fitCircuit(ItemStack stack) {
@@ -227,7 +251,7 @@ public class ControllerCore implements Container, Fittable {
 
     /** Whether the circuit can come out: refused while the program in the slot needs the variables its lattice holds. */
     public boolean canTakeCircuit() {
-        return limits(CIRCUIT_OUT).exceededBy(card.getOrDefault(FDataComponents.PROGRAM_GRAPH, ProgramGraph.EMPTY)).isEmpty();
+        return !circuitBuiltIn && limits(CIRCUIT_OUT).exceededBy(card.getOrDefault(FDataComponents.PROGRAM_GRAPH, ProgramGraph.EMPTY)).isEmpty();
     }
 
     public ItemStack takeCircuit() {
@@ -446,6 +470,8 @@ public class ControllerCore implements Container, Fittable {
                 if (clock % 20 == 0)
                     Circuit.scorch(circuit, level());
             }
+            if (circuitBuiltIn && !Circuit.of(circuit).live())
+                return; // a host that thinks through its built-in circuit does not step without a live one
             // The clock: a step is taken when a tick brings the credit to one. At most one a tick, so a program never steps twice in a tick.
             // A circuit short of full speed accumulates fractions of a step; a steady (resonator) clock keeps them even, an unsteady one wanders.
             float rate = clockRate();

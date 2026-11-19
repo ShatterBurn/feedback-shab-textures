@@ -12,9 +12,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 /**
- * A circuit slot on a machine that plays a recipe data stick (the Power Cutter, the Auto Engineer). The machine works without a circuit,
- * at its old pace and old accuracy: {@code Circuit.NONE} reads zero speed and full noise, which this turns into a pace of 1 and no
- * improvement. A fitted circuit, read at its warmth ({@link Circuit#of(ItemStack, Level)}), sets two things:
+ * A circuit slot on a machine. A host that plays a recipe data stick (the Power Cutter, the Auto Engineer) has its circuit built in by the
+ * engineering recipe ({@link #fromComponents}, {@link #toComponents}) and works only with a live one ({@link #live}); the hosts that still
+ * take a circuit by hand ({@link #seat}) work without one, at their old pace and accuracy: {@code Circuit.NONE} reads zero speed and full
+ * noise, which this turns into a pace of 1 and no improvement. A circuit, read at its warmth ({@link Circuit#of(ItemStack, Level)}), sets two things:
  * <ul>
  * <li>pace: playback runs {@code 1 + CIRCUIT_PACE_GAIN x speed} times as fast;</li>
  * <li>accuracy: noise is how often input the stick does not cover goes wrong. A quiet circuit scales the bad odds down and now and then
@@ -95,6 +96,22 @@ public final class CircuitSlot {
             return;
         Circuit.warm(stack, level, ticks, supply);
         Circuit.scorch(stack, level);
+    }
+
+    /** Whether a live circuit is in the slot: a host that plays a recipe stick works only with one. */
+    public boolean live() {
+        return !stack.isEmpty() && Circuit.of(stack).live();
+    }
+
+    /** Takes the circuit an engineering recipe built into the machine item (the {@code circuit_stack} component), as the item is placed. */
+    public void fromComponents(@org.jetbrains.annotations.Nullable ItemStack built) {
+        stack = built == null ? ItemStack.EMPTY : built.copy();
+    }
+
+    /** Puts the circuit back on the item the block drops, so it travels with the machine. */
+    public void toComponents(net.minecraft.core.component.DataComponentMap.Builder components) {
+        if (!stack.isEmpty())
+            components.set(io.github.soundgoodizerfan.feedback.registry.FDataComponents.CIRCUIT_STACK.get(), stack.copy());
     }
 
     public void save(CompoundTag tag, HolderLookup.Provider registries) {

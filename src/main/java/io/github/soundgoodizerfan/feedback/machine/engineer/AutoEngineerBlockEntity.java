@@ -66,8 +66,8 @@ import net.minecraft.world.level.block.state.BlockState;
  * cost condition; a worn machine only works slower, down to a floor.
  *
  * <h2>The circuit slot</h2>
- * A circuit ({@link CircuitSlot}) is optional: with none the machine keeps its old pace and accuracy. Its speed (read at its warmth) makes
- * assemblies come faster; its noise is how often the machine holds off improvising or scrapping parts the stick does not cover (it waits, as for a
+ * A circuit ({@link CircuitSlot}) is built in by the machine's engineering recipe and required: without a live one the machine does not run. Its
+ * speed (read at its warmth) makes assemblies come faster; its noise is how often the machine holds off improvising or scrapping parts the stick does not cover (it waits, as for a
  * missing tool), so a quiet circuit makes fewer improvised or scrapped results. A tubed circuit's heater draws from the machine's line. Fitted, the
  * machine is a data source: a Sensor card reads its assembly progress, condition and output fill.
  */
@@ -133,6 +133,8 @@ public class AutoEngineerBlockEntity extends ElectricNode implements Wearing,
     }
 
     private boolean working() {
+        if (!circuit.live())
+            return false;
         for (ItemStack s : bay)
             if (!s.isEmpty())
                 return true;
@@ -486,17 +488,21 @@ public class AutoEngineerBlockEntity extends ElectricNode implements Wearing,
         return circuit.get();
     }
 
-    /** Seats one circuit of {@code stack}; the one it replaces comes back. */
-    public ItemStack seatCircuit(ItemStack stack) {
-        ItemStack old = circuit.seat(stack);
-        sync();
-        return old;
+    @Override
+    protected void applyImplicitComponents(DataComponentInput input) {
+        super.applyImplicitComponents(input);
+        circuit.fromComponents(input.get(io.github.soundgoodizerfan.feedback.registry.FDataComponents.CIRCUIT_STACK.get()));
     }
 
-    public ItemStack removeCircuit() {
-        ItemStack old = circuit.take();
-        sync();
-        return old;
+    @Override
+    protected void collectImplicitComponents(net.minecraft.core.component.DataComponentMap.Builder components) {
+        super.collectImplicitComponents(components);
+        circuit.toComponents(components);
+    }
+
+    /** Whether the machine has the circuit it works through: without one it does not run. */
+    public boolean hasCircuit() {
+        return circuit.live();
     }
 
     // --- data: a fitted circuit lets a Controller read the machine --------------------------------

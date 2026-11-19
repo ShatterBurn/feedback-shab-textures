@@ -6,7 +6,14 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "feedback:converter"
+          "name": "feedback:converter",
+          "functions": [
+            {
+              "function": "minecraft:copy_components",
+              "source": "block_entity",
+              "include": [ "feedback:circuit_stack" ]
+            }
+          ]
         }
       ],
       "conditions": [

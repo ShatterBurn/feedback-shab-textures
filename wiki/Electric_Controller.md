@@ -4,7 +4,12 @@ A [Controller](Controller.md) powered from a cable instead of a shaft. It runs t
 
 ## Crafting
 
-A Controller, a Circuit Board and Copper Wire in a row, in that order. Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 2 [fasteners](Fasteners.md), holding Electrical Treatise III: Circuits ([Treatise](Treatise.md)).
+```
+A B
+D C
+```
+
+A is a [Controller](Controller.md), B is a Circuit Board, D is a [circuit](Basic_Electronic_Circuit.md) and C is Copper Wire. The finished controller keeps the circuit. Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 2 [fasteners](Fasteners.md), holding Electrical Treatise III: Circuits ([Treatise](Treatise.md)).
 
 ## Using it
 
@@ -12,9 +17,9 @@ Right-click with a medium to put it in; right-click with an empty hand to take i
 
 ## Circuit slot
 
-A [circuit](Basic_Electronic_Circuit.md) is optional. **Right-click with a circuit** to seat it; an empty hand takes out the medium first, then the circuit. The slot works as the mechanical [Controller's](Controller.md#circuit-slot): with no circuit the program steps about 4 times a second, a fast circuit takes it up to 20, and a circuit's noise makes sensor readings wobble.
+The [circuit](Basic_Electronic_Circuit.md) the controller was crafted with is built in and cannot be taken out or swapped. Without one the controller does not run. The program steps at the circuit's clock rate, as with the mechanical [Controller](Controller.md#circuit-slot): a fast circuit takes it up to 20 times a second, a slow one stays near the bottom, and a circuit's noise makes sensor readings wobble. A placed controller keeps its circuit, and so does the item it drops when broken. The [Engineering Table's Repair tab](Engineering_Table.md#repair-tab) takes it apart and returns the circuit.
 
-A circuit with a [Resonator](Resonator.md) steadies the clock and the readings. A circuit with a [Lattice](Lattice.md) adds up to 8 program variables, learns repeated readings and, unless its lattice [holds](Lattice.md#power-loss), forgets the extra variables after a long time without power. A program that uses the extra variables does not run without the circuit, so the circuit stays in while it does. A circuit with gain lengthens a [Data Connector](Data_Connector.md#linking-nodes) link that ends at the controller. The Computer's slot works the same way.
+A circuit with a [Resonator](Resonator.md) steadies the clock and the readings. A circuit with a [Lattice](Lattice.md) adds up to 8 program variables, learns repeated readings and, unless its lattice [holds](Lattice.md#power-loss), forgets the extra variables after a long time without power. A circuit with gain lengthens a [Data Connector](Data_Connector.md#linking-nodes) link that ends at the controller. The Computer's circuit works the same way.
 
 A powered Electric Controller warms a circuit with a [tube](Vacuum_Tube.md) with its heater, and the heater's current is added to what the controller wants from the line. See [Warming up](Basic_Electronic_Circuit.md#warming-up).
 
@@ -39,13 +44,13 @@ An Electric Programmer and an Electric Controller in one block, with a desktop. 
 
 It looks like a 1990s desktop PC: a beige case with drive slots and lamps, a CRT monitor with a blinking cursor, and a keyboard and mouse on the desk in front. The screen faces you when you place it.
 
-The Computer has the same [circuit slot](#circuit-slot) and takes an [Endernet Upgrade](#endernet-upgrade). **Right-click with a circuit** seats it.
+The Computer takes the Electric Controller's circuit, which is built in and works as the Electric Controller's [circuit](#circuit-slot). It takes an [Endernet Upgrade](#endernet-upgrade).
 
 Right-click it to open the desktop, a fixed panel drawn as a terminal. The colors, wallpaper and screen effects are set in the **Settings** window and are the same for everyone who opens this Computer.
 
 The desktop has no inventory slots. Down the left are icons for **drive bays A: to D:**, the **RUN** slot and **INT**, the internal disk (see [Internal disk](#internal-disk)); each drive icon shows what its medium holds. Click an icon to open its **Drive** window, which shows a memory bar for the medium. Right-click a drive icon for its menu.
 
-**Sneak** and right-click the Computer with an empty hand to open the **drive way** instead: an ordinary slot screen with the four bays (A to D), the running slot, the circuit slot and your inventory, where program media (Punch Card, Circuit Board, Floppy Disk, USB Drive) and app disks go in and out by hand.
+**Sneak** and right-click the Computer with an empty hand to open the **drive way** instead: an ordinary slot screen with the four bays (A to D), the running slot and your inventory, where program media (Punch Card, Circuit Board, Floppy Disk, USB Drive) and app disks go in and out by hand.
 
 The Drive window offers:
 

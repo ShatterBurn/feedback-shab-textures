@@ -150,7 +150,8 @@ public class EngineeringTableMenu extends AbstractContainerMenu {
         add(EngineeringTableBlockEntity.FIT_ITEM, FIT_ITEM_X, FIT_ITEM_Y, 1 << TAB_FIT, 1, EngineeringTableMenu::isModular);
         for (int i = 0; i < 16; i++)
             add(EngineeringTableBlockEntity.ATTACHMENTS + i, ATTACH_X + (i % 4) * 18, ATTACH_Y + (i / 4) * 18, 1 << TAB_FIT, 64, this::isStock);
-        add(EngineeringTableBlockEntity.REPAIR_ITEM, REPAIR_ITEM_X, REPAIR_ITEM_Y, 1 << TAB_REPAIR, 1, EngineeringTableMenu::isModular);
+        add(EngineeringTableBlockEntity.REPAIR_ITEM, REPAIR_ITEM_X, REPAIR_ITEM_Y, 1 << TAB_REPAIR, 1,
+                s -> isModular(s) || s.has(io.github.soundgoodizerfan.feedback.registry.FDataComponents.CIRCUIT_STACK.get()));
         for (int i = 0; i < 9; i++)
             add(EngineeringTableBlockEntity.REPAIR_STOCK + i, STOCK_X + (i % 3) * 18, STOCK_Y + (i / 3) * 18, 1 << TAB_REPAIR, 64, this::isStock);
         add(EngineeringTableBlockEntity.BLANK, BLANK_X, TREATISE_Y, 1 << TAB_TREATISE, 1,

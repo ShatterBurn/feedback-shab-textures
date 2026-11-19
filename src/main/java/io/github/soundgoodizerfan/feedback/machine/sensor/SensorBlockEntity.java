@@ -8,12 +8,16 @@ import java.util.Set;
 import io.github.soundgoodizerfan.feedback.control.ChannelSource;
 import io.github.soundgoodizerfan.feedback.control.data.DataNode;
 import io.github.soundgoodizerfan.feedback.control.data.DataNodeRef;
+import io.github.soundgoodizerfan.feedback.process.Circuit;
 import io.github.soundgoodizerfan.feedback.registry.FAutomation;
+import io.github.soundgoodizerfan.feedback.registry.FDataComponents;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -30,6 +34,8 @@ public class SensorBlockEntity extends BlockEntity implements DataNode, ChannelS
 
     private BlockState seen;
     private int pulse;
+    /** The circuit built in by the sensor's engineering recipe ({@code carries_circuit}); empty for a sensor made without one. */
+    private ItemStack circuit = ItemStack.EMPTY;
 
     public SensorBlockEntity(BlockPos pos, BlockState state) {
         super(FAutomation.SENSOR_ENTITY.get(), pos, state);
@@ -84,15 +90,39 @@ public class SensorBlockEntity extends BlockEntity implements DataNode, ChannelS
         return this;
     }
 
+    /**
+     * What the built-in circuit does to the sensor's banding: 1 with none, down to about half for a quiet one, so a banded reading
+     * (ripeness, light, fill) is cut into up to about twice the bands. Read as built: a sensor has no heater to warm a tube.
+     */
+    public float stepFactor() {
+        return Circuit.of(circuit).stepFactor();
+    }
+
+    @Override
+    protected void applyImplicitComponents(DataComponentInput input) {
+        super.applyImplicitComponents(input);
+        ItemStack built = input.get(FDataComponents.CIRCUIT_STACK.get());
+        circuit = built == null ? ItemStack.EMPTY : built.copy();
+    }
+
+    @Override
+    protected void collectImplicitComponents(DataComponentMap.Builder components) {
+        super.collectImplicitComponents(components);
+        if (!circuit.isEmpty())
+            components.set(FDataComponents.CIRCUIT_STACK.get(), circuit.copy());
+    }
+
     @Override
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
         tag.putInt("Pulse", pulse);
+        tag.put("Circuit", circuit.saveOptional(registries));
     }
 
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
         pulse = tag.getInt("Pulse");
+        circuit = ItemStack.parseOptional(registries, tag.getCompound("Circuit"));
     }
 }

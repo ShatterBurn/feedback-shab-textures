@@ -22,7 +22,7 @@ import net.minecraft.world.level.block.state.BlockState;
  */
 public class ElectricControllerBlockEntity extends ElectricNode implements ControllerHost, io.github.soundgoodizerfan.feedback.control.endernet.Endernet.End {
 
-    private final ControllerCore core = new ControllerCore(this, this::powered, stack -> stack.is(FTags.PUNCH_CARDS)).withCircuitSlot(true).withEndernet().cardCap(this::vehicleCap);
+    private final ControllerCore core = new ControllerCore(this, this::powered, stack -> stack.is(FTags.PUNCH_CARDS)).withCircuitSlot(true).builtInCircuit().withEndernet().cardCap(this::vehicleCap);
 
     public ElectricControllerBlockEntity(BlockPos pos, BlockState state) {
         this(FBlockEntities.ELECTRIC_CONTROLLER.get(), pos, state);
@@ -147,5 +147,17 @@ public class ElectricControllerBlockEntity extends ElectricNode implements Contr
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
         core.load(tag, registries);
+    }
+
+    @Override
+    protected void applyImplicitComponents(DataComponentInput input) {
+        super.applyImplicitComponents(input);
+        core.circuitFromComponents(input.get(io.github.soundgoodizerfan.feedback.registry.FDataComponents.CIRCUIT_STACK.get()));
+    }
+
+    @Override
+    protected void collectImplicitComponents(net.minecraft.core.component.DataComponentMap.Builder components) {
+        super.collectImplicitComponents(components);
+        core.circuitToComponents(components);
     }
 }

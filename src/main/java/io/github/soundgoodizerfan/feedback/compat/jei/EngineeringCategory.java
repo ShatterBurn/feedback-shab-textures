@@ -60,7 +60,7 @@ public class EngineeringCategory implements IRecipeCategory<EngineeringCategory.
      * The cards of a recipe are told apart by {@code id}.
      */
     public record Card(ResourceLocation id, boolean generated, List<Ingredient> grid, ItemStack output,
-                       List<EngineeringRecipe.Tool> tools, Fasteners.Need need, String school, String minigame) {
+                       List<EngineeringRecipe.Tool> tools, Fasteners.Need need, String school, String minigame, boolean carriesCircuit) {
 
         @Override
         public boolean equals(Object o) {
@@ -131,7 +131,7 @@ public class EngineeringCategory implements IRecipeCategory<EngineeringCategory.
         }
         return new Card(id, false, cells, recipe.getResultItem(null), recipe.tools(), recipe.fasteners(), recipe.school(),
                 recipe.minigame().orElse(recipe.fasteners().count() > 0 && EngineeringMinigames.rivetsOnly(recipe.fasteners())
-                        ? EngineeringMinigames.UPSET.toString() : ""));
+                        ? EngineeringMinigames.UPSET.toString() : ""), recipe.carriesCircuit());
     }
 
     /** The cards of every complex type with a build, from the client's copy of the types. */
@@ -144,7 +144,7 @@ public class EngineeringCategory implements IRecipeCategory<EngineeringCategory.
             for (String t : type.tools())
                 tools.add(new EngineeringRecipe.Tool(t, 1, 0f));
             out.add(new Card(id, true, List.of(), ItemStack.EMPTY, tools, type.fasteners(), type.school(),
-                    EngineeringMinigames.forType(type, type.fasteners().count())));
+                    EngineeringMinigames.forType(type, type.fasteners().count()), false));
         });
         return out;
     }
@@ -276,6 +276,8 @@ public class EngineeringCategory implements IRecipeCategory<EngineeringCategory.
                     22, y + 5, VALUE_COLOUR, false);
         y += ROW + 2;
         y = note(graphics, font, y, Component.translatable("feedback.jei.engineering.school", schoolName(card.school())), VALUE_COLOUR);
+        if (card.carriesCircuit())
+            y = note(graphics, font, y, Component.translatable("feedback.jei.engineering.circuit"), VALUE_COLOUR);
         y = note(graphics, font, y, minigame(card.minigame()), VALUE_COLOUR);
         if (!card.minigame().isEmpty())
             y = note(graphics, font, y, Component.translatable("feedback.jei.engineering.blueprint"), LABEL_COLOUR);

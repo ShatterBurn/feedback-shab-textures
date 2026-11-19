@@ -6,7 +6,14 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "feedback:electric_controller"
+          "name": "feedback:electric_controller",
+          "functions": [
+            {
+              "function": "minecraft:copy_components",
+              "source": "block_entity",
+              "include": [ "feedback:circuit_stack" ]
+            }
+          ]
         }
       ],
       "conditions": [

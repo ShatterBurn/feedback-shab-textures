@@ -3,12 +3,11 @@
   "key": {
     "P": { "item": "feedback:wrought_iron_plate" },
     "X": { "item": "feedback:pivot_arm_short" },
-    "W": { "item": "feedback:copper_fine_wire" },
-    "C": { "tag": "feedback:circuits" }
+    "W": { "item": "feedback:copper_fine_wire" }
   },
-  "pattern": [ "PXP", "WCW" ],
+  "pattern": [ "PXP", "W W" ],
   "result": { "count": 1, "id": "feedback:presence_plate" },
   "tool": [ { "ability": "feedback:driver", "wear": 1 } ],
   "fasteners": { "count": 2, "floor": 1, "forms": [ "screw" ] },
-  "school": "electrical:3"
+  "school": "electrical:2"
 }

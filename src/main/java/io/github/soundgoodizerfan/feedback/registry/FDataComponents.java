@@ -387,6 +387,16 @@ public class FDataComponents {
                     .networkSynchronized(io.github.soundgoodizerfan.feedback.process.Circuit.STREAM_CODEC)
                     .build());
 
+    /**
+     * The whole circuit item built into a machine item by an engineering recipe ({@code carries_circuit}): the host block entity loads it
+     * into its circuit slot on placing and the dropped item carries it again, so the circuit's warmth and traces go with the machine.
+     */
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<net.minecraft.world.item.ItemStack>> CIRCUIT_STACK =
+            COMPONENTS.register("circuit_stack", () -> DataComponentType.<net.minecraft.world.item.ItemStack>builder()
+                    .persistent(net.minecraft.world.item.ItemStack.CODEC)
+                    .networkSynchronized(net.minecraft.world.item.ItemStack.STREAM_CODEC)
+                    .build());
+
     /** A sealed vacuum tube's finished figures; absent is a tube not yet evacuated. See {@code process/Tube}. */
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<io.github.soundgoodizerfan.feedback.process.Tube>> TUBE =
             COMPONENTS.register("tube", () -> DataComponentType.<io.github.soundgoodizerfan.feedback.process.Tube>builder()

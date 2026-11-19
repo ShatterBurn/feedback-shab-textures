@@ -6,7 +6,14 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "feedback:power_cutter"
+          "name": "feedback:power_cutter",
+          "functions": [
+            {
+              "function": "minecraft:copy_components",
+              "source": "block_entity",
+              "include": [ "feedback:circuit_stack" ]
+            }
+          ]
         }
       ],
       "conditions": [

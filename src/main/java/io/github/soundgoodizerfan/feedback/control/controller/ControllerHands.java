@@ -75,7 +75,8 @@ public final class ControllerHands {
                 if (io.github.soundgoodizerfan.feedback.control.computer.ComputerFiles.isTransient(controller.getItem(i)))
                     controller.removeItemNoUpdate(i);
             Containers.dropContents(level, pos, controller);
-            Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), controller.core().takeCircuit());
+            if (!controller.core().circuitBuiltIn())
+                Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), controller.core().takeCircuit());
             Fittable.dropAll(controller, level, pos);
         }
     }

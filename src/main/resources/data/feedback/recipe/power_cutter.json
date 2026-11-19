@@ -3,13 +3,13 @@
   "key": {
     "S": { "item": "feedback:steel_plate" },
     "W": { "item": "feedback:copper_wire" },
-    "C": { "item": "feedback:ceramic" }
+    "C": { "item": "feedback:ceramic" },
+    "D": { "tag": "feedback:circuits" }
   },
-  "pattern": [ "SSS", "WCW", "S S" ],
+  "pattern": [ "SSS", "WCW", "SDS" ],
   "result": { "count": 1, "id": "feedback:power_cutter" },
-  "tool": [
-    { "ability": "feedback:driver", "wear": 1 }
-  ],
-  "fasteners": { "count": 3, "floor": 1, "forms": ["machine_bolt"] },
-  "school": "electrical:2"
+  "tool": [ { "ability": "feedback:driver", "wear": 1 } ],
+  "fasteners": { "count": 3, "floor": 1, "forms": [ "machine_bolt" ] },
+  "school": "electrical:2",
+  "carries_circuit": true
 }

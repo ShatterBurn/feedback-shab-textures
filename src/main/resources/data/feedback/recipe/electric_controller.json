@@ -1,35 +1,15 @@
 {
   "type": "feedback:engineering",
   "key": {
-    "A": {
-      "item": "feedback:controller"
-    },
-    "B": {
-      "item": "feedback:circuit_board"
-    },
-    "C": {
-      "item": "feedback:copper_wire"
-    }
+    "A": { "item": "feedback:controller" },
+    "B": { "item": "feedback:circuit_board" },
+    "C": { "item": "feedback:copper_wire" },
+    "D": { "tag": "feedback:circuits" }
   },
-  "pattern": [
-    "ABC"
-  ],
-  "result": {
-    "count": 1,
-    "id": "feedback:electric_controller"
-  },
-  "tool": [
-    {
-      "ability": "feedback:driver",
-      "wear": 1
-    }
-  ],
-  "fasteners": {
-    "count": 2,
-    "floor": 1,
-    "forms": [
-      "screw"
-    ]
-  },
-  "school": "electrical:3"
+  "pattern": [ "AB", "DC" ],
+  "result": { "count": 1, "id": "feedback:electric_controller" },
+  "tool": [ { "ability": "feedback:driver", "wear": 1 } ],
+  "fasteners": { "count": 2, "floor": 1, "forms": [ "screw" ] },
+  "school": "electrical:3",
+  "carries_circuit": true
 }

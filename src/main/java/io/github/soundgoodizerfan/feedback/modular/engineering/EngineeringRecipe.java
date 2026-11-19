@@ -118,9 +118,11 @@ public class EngineeringRecipe implements Recipe<EngineeringInput> {
     private final String school;
     private final Optional<String> minigame;
     private final List<String> fitOrder;
+    private final boolean carriesCircuit;
 
     public EngineeringRecipe(Either<ShapedRecipePattern, List<Ingredient>> grid, ItemStack result, List<Tool> tools, Fasteners.Need need,
-                             String school, Optional<String> minigame, List<String> fitOrder) {
+                             String school, Optional<String> minigame, List<String> fitOrder, boolean carriesCircuit) {
+        this.carriesCircuit = carriesCircuit;
         this.fitOrder = List.copyOf(fitOrder);
         this.grid = grid;
         this.result = result;
@@ -152,6 +154,39 @@ public class EngineeringRecipe implements Recipe<EngineeringInput> {
         return fitOrder;
     }
 
+    /**
+     * Whether the circuit laid in the grid is built into the result (the {@code circuit_stack} component): the machine reads its figures
+     * from then on, and the grid must hold one live circuit.
+     */
+    public boolean carriesCircuit() {
+        return carriesCircuit;
+    }
+
+    /**
+     * The one live circuit in the grid, or empty: a loose circuit item, or the circuit already built into a machine that goes into this one
+     * (an Electric Controller's circuit becomes its Computer's).
+     */
+    private static ItemStack circuitIn(EngineeringInput input) {
+        ItemStack found = ItemStack.EMPTY;
+        for (ItemStack stack : input.gridStacks()) {
+            ItemStack here = ItemStack.EMPTY;
+            if (stack.getItem() instanceof io.github.soundgoodizerfan.feedback.item.CircuitItem
+                    && io.github.soundgoodizerfan.feedback.process.Circuit.of(stack).live())
+                here = stack;
+            else {
+                ItemStack built = stack.get(io.github.soundgoodizerfan.feedback.registry.FDataComponents.CIRCUIT_STACK.get());
+                if (built != null && io.github.soundgoodizerfan.feedback.process.Circuit.of(built).live())
+                    here = built;
+            }
+            if (here.isEmpty())
+                continue;
+            if (!found.isEmpty())
+                return ItemStack.EMPTY; // two circuits in the grid: one would be lost, so the recipe does not match
+            found = here;
+        }
+        return found;
+    }
+
     /** Whether the ingredients are laid in a pattern (else any order). */
     public boolean shaped() {
         return grid.left().isPresent();
@@ -173,6 +208,9 @@ public class EngineeringRecipe implements Recipe<EngineeringInput> {
     /** Everything a craft of this input would do, or why it is refused. Pure: nothing is worn or spent until {@link Attempt#apply}. */
     public Attempt attempt(EngineeringInput input) {
         if (!gridMatches(input))
+            return refuse(Refusal.GRID);
+        ItemStack circuit = carriesCircuit ? circuitIn(input) : ItemStack.EMPTY;
+        if (carriesCircuit && circuit.isEmpty())
             return refuse(Refusal.GRID);
         if (!School.met(Treatises.mask(input.binder()) | input.known(), school))
             return refuse(Refusal.SCHOOL);
@@ -220,7 +258,10 @@ public class EngineeringRecipe implements Recipe<EngineeringInput> {
         if (!supply.complete())
             return new Attempt(Refusal.NO_FASTENERS, ItemStack.EMPTY, ModularFit.Start.NONE, slot, wear, supply, shortfall);
         int lost = Math.round(shortShare / ModularTuning.HAMMER_SHORT_REFUSE * ModularTuning.START_HAMMER_SHORT_LEVELS);
-        return new Attempt(null, result.copy(), new ModularFit.Start(supply.levels() - lost, -1f), slot, wear, supply, shortfall);
+        ItemStack made = result.copy();
+        if (!circuit.isEmpty())
+            made.set(io.github.soundgoodizerfan.feedback.registry.FDataComponents.CIRCUIT_STACK.get(), circuit.copyWithCount(1));
+        return new Attempt(null, made, new ModularFit.Start(supply.levels() - lost, -1f), slot, wear, supply, shortfall);
     }
 
     private static Attempt refuse(Refusal why) {
@@ -278,7 +319,8 @@ public class EngineeringRecipe implements Recipe<EngineeringInput> {
                 Fasteners.Need.CODEC.optionalFieldOf("fasteners", Fasteners.Need.DEFAULT).forGetter(r -> r.need),
                 Codec.STRING.optionalFieldOf("school", "").forGetter(r -> r.school),
                 Codec.STRING.optionalFieldOf("minigame").forGetter(r -> r.minigame),
-                Codec.STRING.listOf().optionalFieldOf("fit_order", List.of()).forGetter(r -> r.fitOrder)).apply(i, EngineeringRecipe::new));
+                Codec.STRING.listOf().optionalFieldOf("fit_order", List.of()).forGetter(r -> r.fitOrder),
+                Codec.BOOL.optionalFieldOf("carries_circuit", false).forGetter(r -> r.carriesCircuit)).apply(i, EngineeringRecipe::new));
 
         private static final StreamCodec<RegistryFriendlyByteBuf, EngineeringRecipe> STREAM_CODEC = StreamCodec.of(Serializer::write, Serializer::read);
 
@@ -304,7 +346,7 @@ public class EngineeringRecipe implements Recipe<EngineeringInput> {
             String school = buf.readUtf();
             Optional<String> minigame = buf.readBoolean() ? Optional.of(buf.readUtf()) : Optional.empty();
             List<String> fitOrder = ByteBufCodecs.STRING_UTF8.apply(ByteBufCodecs.list()).decode(buf);
-            return new EngineeringRecipe(grid, result, new ArrayList<>(tools), need, school, minigame, fitOrder);
+            return new EngineeringRecipe(grid, result, new ArrayList<>(tools), need, school, minigame, fitOrder, buf.readBoolean());
         }
 
         private static void write(RegistryFriendlyByteBuf buf, EngineeringRecipe r) {
@@ -318,6 +360,7 @@ public class EngineeringRecipe implements Recipe<EngineeringInput> {
             buf.writeBoolean(r.minigame.isPresent());
             r.minigame.ifPresent(buf::writeUtf);
             ByteBufCodecs.STRING_UTF8.apply(ByteBufCodecs.list()).encode(buf, r.fitOrder);
+            buf.writeBoolean(r.carriesCircuit);
         }
     }
 }

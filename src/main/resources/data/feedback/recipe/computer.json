@@ -9,5 +9,6 @@
   "result": { "count": 1, "id": "feedback:computer" },
   "tool": [ { "ability": "feedback:driver", "wear": 1 } ],
   "fasteners": { "count": 2, "floor": 1, "forms": [ "screw" ] },
-  "school": "electrical:3"
+  "school": "electrical:3",
+  "carries_circuit": true
 }

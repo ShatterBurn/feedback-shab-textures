@@ -6,11 +6,11 @@ A machine that repeats one assembly you made by hand at the [Engineering Table](
 
 ```
 S A S
-E M S
+E M C
 S S S
 ```
 
-S is a Steel Plate, A is a [Robot Arm](Robot_Arm.md), E is an Engineering Table and M is a [Dynamotor](Dynamotor.md). Craft it at the Engineering Table with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 6 machine bolts ([Fasteners](Fasteners.md)). It needs Robotics Treatise II: Robots ([Treatise](Treatise.md)).
+S is a Steel Plate, A is a [Robot Arm](Robot_Arm.md), E is an Engineering Table and M is a [Dynamotor](Dynamotor.md) and C is a [Basic Electronic Circuit](Basic_Electronic_Circuit.md), which the finished machine keeps. Craft it at the Engineering Table with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 6 machine bolts ([Fasteners](Fasteners.md)). It needs Robotics Treatise II: Robots ([Treatise](Treatise.md)).
 
 ## Recording
 
@@ -19,7 +19,7 @@ Hold a blank Recipe Data Stick in your **off hand** while you take an Engineerin
 ## Using it
 
 - **Right-click** with a stick to seat it. **Right-click** with a hand tool to put it in one of the four tool slots, with a fastener to fill the fastener stock, and with anything else to fill the parts bay.
-- **Right-click** empty-handed to take the output, then the stick, then the circuit. **Sneak** and right-click empty-handed to take back the tools, fasteners and parts.
+- **Right-click** empty-handed to take the output, then the stick. **Sneak** and right-click empty-handed to take back the tools, fasteners and parts.
 - A **hopper** can fill the bay and the fastener stock, and empty the output. The tool slots are filled by hand.
 
 It is an [EHV](Electricity.md#bands-and-amps) sink, about **2.6 A** while parts are in the bay. An assembly takes about 3 seconds.
@@ -36,13 +36,13 @@ Parts that do not match the recording are not refused. The machine picks one thi
 
 ## Circuit
 
-A [circuit](Basic_Electronic_Circuit.md) is optional. **Right-click** with one to seat it (a circuit already seated comes back to you). **Right-click empty-handed** takes the output, then the stick, then the circuit.
+The [circuit](Basic_Electronic_Circuit.md) the machine was crafted with is built in and cannot be taken out or swapped. Without one the machine does not run. A placed machine keeps its circuit, and so does the item it drops when broken. The [Engineering Table's Repair tab](Engineering_Table.md#repair-tab) takes the machine apart and returns the circuit.
 
-- **Faster.** A fast circuit makes each assembly come sooner, up to about twice as fast. With none an assembly takes as long as given above.
+- **Faster.** A fast circuit makes each assembly come sooner, up to about twice as fast. A slow one leaves an assembly at about the time given above.
 - **Fewer improvised or scrapped results.** A quiet circuit makes the machine sometimes hold off from guessing at parts the stick does not cover: it waits instead of improvising or scrapping them.
 - **Longer links.** A circuit with gain lengthens a [Data Connector](Data_Connector.md#linking-nodes) link that ends at the machine.
 - **Heater.** A circuit with a [tube](Vacuum_Tube.md) takes its heater's current from the machine's line on top of the machine's own, and runs slow and noisy until warm ([Warming up](Basic_Electronic_Circuit.md#warming-up)).
-- **Readable.** With a live circuit seated, an Input card on a [Controller](Controller.md) can read **Progress** (how far through the assembly), **Condition** (the machine's) and **Output fill**. Link the machine to the Controller with the [Data Connector](Data_Connector.md) and click the card's channel row to pick one (see [Programming](Programming.md#input-and-switch-cards)).
+- **Readable.** An Input card on a [Controller](Controller.md) can read **Progress** (how far through the assembly), **Condition** (the machine's) and **Output fill**. Link the machine to the Controller with the [Data Connector](Data_Connector.md) and click the card's channel row to pick one (see [Programming](Programming.md#input-and-switch-cards)).
 
 ## Wear
 

@@ -456,12 +456,14 @@ public final class ElectricMachineTuning {
 
     /**
      * Invented, grid spec 5. Solid-state DC converter: {@code CONVERTER_EFFICIENCY} of the power in comes out (about 95 percent);
-     * {@code CONVERTER_RATED_EU_PER_TICK} (packet times amps) is the most it passes; the loss becomes heat in the block at
+     * {@code CONVERTER_RATED_EU_PER_TICK} (packet times amps) is the most it passes, or what its built-in circuit's traces carry if that is less;
+     * a circuit of speed 0 passes {@code CONVERTER_SPEED_FLOOR} of the base efficiency, speed 1 all of it; the loss becomes heat in the block at
      * {@code CONVERTER_HEAT_SCALE} work per unit lost, shed at {@code CONVERTER_LEAK}, multiplied by
      * {@code CONVERTER_HEATSINK_LEAK_MULTIPLE} for each adjacent heatsink (at most {@code CONVERTER_MAX_HEATSINKS}); past
      * {@code CONVERTER_SERVICE_TU} it loses condition down to {@code CONVERTER_CONDITION_FLOOR}.
      */
     public static final float CONVERTER_EFFICIENCY = 0.95f, CONVERTER_RATED_EU_PER_TICK = 16384f, CONVERTER_STANDING_AMPS = 0.02f,
+            CONVERTER_SPEED_FLOOR = 0.9f,
             CONVERTER_HEAT_SCALE = 0.002f, CONVERTER_HEATSINK_LEAK_MULTIPLE = 2f, CONVERTER_SERVICE_TU = 250f,
             CONVERTER_CONDITION_FLOOR = 0.4f;
 

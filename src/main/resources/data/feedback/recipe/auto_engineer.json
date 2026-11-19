@@ -4,11 +4,13 @@
     "S": { "item": "feedback:steel_plate" },
     "A": { "item": "feedback:robot_arm" },
     "E": { "item": "feedback:engineering_table" },
-    "M": { "item": "feedback:dynamotor" }
+    "M": { "item": "feedback:dynamotor" },
+    "D": { "tag": "feedback:circuits" }
   },
-  "pattern": [ "SAS", "EMS", "SSS" ],
+  "pattern": [ "SAS", "EMD", "SSS" ],
   "result": { "count": 1, "id": "feedback:auto_engineer" },
   "tool": [ { "ability": "feedback:driver", "wear": 1 } ],
   "fasteners": { "count": 6, "floor": 2, "forms": [ "machine_bolt" ] },
-  "school": "robotics:2"
+  "school": "robotics:2",
+  "carries_circuit": true
 }

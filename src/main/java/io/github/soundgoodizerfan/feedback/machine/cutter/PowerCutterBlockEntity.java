@@ -46,7 +46,7 @@ import net.minecraft.world.level.block.state.BlockState;
  * input, and does not tick work when idle.
  *
  * <h2>The circuit slot</h2>
- * A circuit in the slot ({@link CircuitSlot}) is optional: with none the cutter keeps its old pace and old odds. Its speed (read at its
+ * A circuit ({@link CircuitSlot}) is built in by the cutter's engineering recipe and required: without a live one the cutter does not run. Its speed (read at its
  * warmth) makes the cutter play faster; its noise scales down the jam, blade-wear and scrap odds for input the stick does not cover and now and
  * then holds off guessing. A tubed circuit's heater draws from the cutter's line. Fitted, the cutter is also a data source: a Sensor card
  * reads its cut progress, head condition and output fill.
@@ -93,7 +93,7 @@ public class PowerCutterBlockEntity extends ElectricNode implements Headed, Wear
     }
 
     private boolean working() {
-        return !head.isEmpty() && !input.isEmpty() && !jammed;
+        return !head.isEmpty() && !input.isEmpty() && !jammed && circuit.live();
     }
 
     public boolean isJammed() {
@@ -245,17 +245,21 @@ public class PowerCutterBlockEntity extends ElectricNode implements Headed, Wear
         return circuit.get();
     }
 
-    /** Seats one circuit of {@code stack}; the one it replaces comes back. */
-    public ItemStack seatCircuit(ItemStack stack) {
-        ItemStack old = circuit.seat(stack);
-        sync();
-        return old;
+    @Override
+    protected void applyImplicitComponents(DataComponentInput input) {
+        super.applyImplicitComponents(input);
+        circuit.fromComponents(input.get(io.github.soundgoodizerfan.feedback.registry.FDataComponents.CIRCUIT_STACK.get()));
     }
 
-    public ItemStack removeCircuit() {
-        ItemStack old = circuit.take();
-        sync();
-        return old;
+    @Override
+    protected void collectImplicitComponents(net.minecraft.core.component.DataComponentMap.Builder components) {
+        super.collectImplicitComponents(components);
+        circuit.toComponents(components);
+    }
+
+    /** Whether the cutter has the circuit it works through: without one it does not run. */
+    public boolean hasCircuit() {
+        return circuit.live();
     }
 
     // --- data: a fitted circuit lets a Controller read the cutter ------------------------------

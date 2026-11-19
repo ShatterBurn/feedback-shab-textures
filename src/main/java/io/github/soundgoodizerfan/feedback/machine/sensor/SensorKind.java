@@ -25,7 +25,7 @@ public enum SensorKind {
             for (var property : state.getProperties())
                 if (property instanceof IntegerProperty age && property.getName().equals("age")) {
                     int max = age.getPossibleValues().stream().max(Integer::compare).orElse(1);
-                    return band(state.getValue(age) / (float) max, 4);
+                    return band(state.getValue(age) / (float) max, finer(4, self));
                 }
             return 0f;
         }
@@ -37,7 +37,7 @@ public enum SensorKind {
             BlockPos at = pos.relative(face);
             int sky = Math.max(0, level.getBrightness(LightLayer.SKY, at) - level.getSkyDarken());
             int block = level.getBrightness(LightLayer.BLOCK, at);
-            return band(Math.max(sky, block) / 15f, 5);
+            return band(Math.max(sky, block) / 15f, finer(5, self));
         }
     },
     /** A creature or a dropped item standing in the face's block. */
@@ -62,7 +62,7 @@ public enum SensorKind {
                     if (!stack.isEmpty())
                         filled += stack.getCount() / (float) Math.min(items.getSlotLimit(i), stack.getMaxStackSize());
                 }
-                return band(filled / items.getSlots(), 8);
+                return band(filled / items.getSlots(), finer(8, self));
             }
             var fluids = level.getCapability(Capabilities.FluidHandler.BLOCK, at, face.getOpposite());
             if (fluids != null && fluids.getTanks() > 0) {
@@ -71,7 +71,7 @@ public enum SensorKind {
                     have += fluids.getFluidInTank(i).getAmount();
                     cap += fluids.getTankCapacity(i);
                 }
-                return cap <= 0f ? 0f : band(have / cap, 8);
+                return cap <= 0f ? 0f : band(have / cap, finer(8, self));
             }
             return 0f;
         }
@@ -95,6 +95,11 @@ public enum SensorKind {
     }
 
     public abstract float read(Level level, BlockPos pos, Direction face, SensorBlockEntity self);
+
+    /** The bands a reading is cut into: {@code base}, or more when the sensor carries a quiet circuit ({@link SensorBlockEntity#stepFactor}). */
+    static int finer(int base, SensorBlockEntity self) {
+        return self == null ? base : Math.max(base, Math.round(base / self.stepFactor()));
+    }
 
     /** Rounds a 0-1 fraction to {@code steps} equal bands. */
     static float band(float fraction, int steps) {

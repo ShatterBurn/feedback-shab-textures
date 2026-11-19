@@ -4875,6 +4875,7 @@
   "feedback.jei.engineering.fasteners": "%s x%s, quality %s or better",
   "feedback.jei.engineering.fastener_forms": "Only: %s",
   "feedback.jei.engineering.fastener_tip": "Spends %s; quality %s or better builds clean, lower still builds but worse.",
+  "feedback.jei.engineering.circuit": "The circuit is built in and kept",
   "feedback.jei.engineering.school": "Treatise: %s",
   "feedback.jei.engineering.none": "none",
   "feedback.jei.engineering.minigame": "Hand work: %s",

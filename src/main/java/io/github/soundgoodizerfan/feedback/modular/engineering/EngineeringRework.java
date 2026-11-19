@@ -169,6 +169,17 @@ public final class EngineeringRework {
     public static Outcome takeApart(Container table, ServerPlayer server) {
         Level level = server.level();
         ItemStack item = table.getItem(EngineeringTableBlockEntity.REPAIR_ITEM);
+        ItemStack built = item.get(io.github.soundgoodizerfan.feedback.registry.FDataComponents.CIRCUIT_STACK.get());
+        if (built != null && !built.isEmpty() && typeOf(item, level) == null) {
+            // a machine with a circuit built in: only the circuit comes back, the rest is lost in the taking apart
+            int tool = hammer(table);
+            if (tool != 0)
+                return Outcome.of(tool);
+            table.setItem(EngineeringTableBlockEntity.REPAIR_ITEM, ItemStack.EMPTY);
+            server.getInventory().placeItemBackInInventory(built.copy());
+            wear(table);
+            return Outcome.of(TAKEN_APART);
+        }
         ModularType type = typeOf(item, level);
         if (type == null)
             return Outcome.of(NOT_MODULAR);

@@ -7,10 +7,10 @@ A machine that cuts stock fed to it, two cuts a second, repeating a cut recorded
 ```
 S S S
 W C W
-S   S
+S D S
 ```
 
-S is a Steel Plate, W is [Copper Wire](Wire_Drawer.md) and C is Ceramic. Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, 3 machine bolts ([Fasteners](Fasteners.md)) and Electrical Treatise II: Coils and Magnets ([Treatise](Treatise.md)).
+S is a Steel Plate, W is [Copper Wire](Wire_Drawer.md), C is Ceramic and D is a [Basic Electronic Circuit](Basic_Electronic_Circuit.md), which the finished cutter keeps. Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, 3 machine bolts ([Fasteners](Fasteners.md)) and Electrical Treatise II: Coils and Magnets ([Treatise](Treatise.md)).
 
 ### Heads
 
@@ -37,20 +37,20 @@ T is a Tungsten Plate and C is Ceramic. Craft it at the [Engineering Table](Engi
 ## Using it
 
 - It is an **EHV** sink: about **2.6 A**. See [Electricity](Electricity.md).
-- **Right-click** with a head or a data stick to seat it. **Right-click** empty-handed to take out the output, then the stick, then the circuit. **Sneak** and right-click to take the head.
+- **Right-click** with a head or a data stick to seat it. **Right-click** empty-handed to take out the output, then the stick. **Sneak** and right-click to take the head.
 - It has one head slot and one stick slot. A hopper feeds it and empties it: stock goes in, cut pieces come out.
 - It idles with no head, no stock or no power.
 - **Right-click empty-handed** on a jammed cutter clears the jam; the next empty-handed click takes the output.
 
 ## Circuit
 
-A [circuit](Basic_Electronic_Circuit.md) is optional. **Right-click** with one to seat it (a circuit already seated comes back to you). **Right-click empty-handed** takes the output, then the stick, then the circuit.
+The [circuit](Basic_Electronic_Circuit.md) the cutter was crafted with is built in and cannot be taken out or swapped. Without one the cutter does not run. A placed cutter keeps its circuit, and so does the item it drops when broken. The [Engineering Table's Repair tab](Engineering_Table.md#repair-tab) takes the cutter apart and returns the circuit.
 
-- **Faster.** A fast circuit makes the cutter play its cuts faster, up to about twice as fast. With none the pace is as given above.
-- **More accurate.** A quiet circuit lowers the odds of a jam, blade wear or scrap on stock the stick does not cover, and sometimes makes the cutter hold off from guessing at such stock at all. With none the odds are as described below.
+- **Faster.** A fast circuit makes the cutter play its cuts faster, up to about twice as fast. A slow one leaves the pace near the one given above.
+- **More accurate.** A quiet circuit lowers the odds of a jam, blade wear or scrap on stock the stick does not cover, and sometimes makes the cutter hold off from guessing at such stock at all.
 - **Longer links.** A circuit with gain lengthens a [Data Connector](Data_Connector.md#linking-nodes) link that ends at the cutter.
 - **Heater.** A circuit with a [tube](Vacuum_Tube.md) takes its heater's current from the cutter's line on top of the cutter's own, and runs slow and noisy until warm ([Warming up](Basic_Electronic_Circuit.md#warming-up)).
-- **Readable.** With a live circuit seated, an Input card on a [Controller](Controller.md) can read the cutter's **Progress** (how far through the cut), **Condition** (the head's) and **Output fill**. Link the machine to the Controller with the [Data Connector](Data_Connector.md) and click the card's channel row to pick one (see [Programming](Programming.md#input-and-switch-cards)).
+- **Readable.** An Input card on a [Controller](Controller.md) can read the cutter's **Progress** (how far through the cut), **Condition** (the head's) and **Output fill**. Link the machine to the Controller with the [Data Connector](Data_Connector.md) and click the card's channel row to pick one (see [Programming](Programming.md#input-and-switch-cards)).
 
 ## How it cuts
 

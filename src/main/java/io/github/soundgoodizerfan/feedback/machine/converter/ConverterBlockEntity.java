@@ -15,10 +15,14 @@ import io.github.soundgoodizerfan.feedback.core.unit.ThermalMass;
 import io.github.soundgoodizerfan.feedback.core.unit.Tu;
 import io.github.soundgoodizerfan.feedback.core.unit.VoltageBand;
 import io.github.soundgoodizerfan.feedback.machine.Wearing;
+import io.github.soundgoodizerfan.feedback.process.Circuit;
+import io.github.soundgoodizerfan.feedback.registry.FDataComponents;
 import io.github.soundgoodizerfan.feedback.registry.FBlockEntities;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponentMap;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.state.BlockState;
@@ -35,6 +39,8 @@ public class ConverterBlockEntity extends ElectricNode implements ThermalBody, W
 
     private float temperature = ThermalTuning.AMBIENT_TU.value();
     private float condition = 1f;
+    /** The circuit built into this converter by its engineering recipe; read as built (a converter has no heater to warm a tube). */
+    private ItemStack circuit = ItemStack.EMPTY;
     private BlockPos tapPos;
     private int sinks;
 
@@ -62,9 +68,40 @@ public class ConverterBlockEntity extends ElectricNode implements ThermalBody, W
         return getBlockState().getValue(ConverterBlock.RATIO);
     }
 
-    /** The share of the power it takes in that comes out: the base efficiency, less what wear and a hot body waste. */
+    /**
+     * The share of the power it takes in that comes out: the base efficiency, less what a slow switching circuit wastes
+     * ({@code CONVERTER_SPEED_FLOOR} at speed 0, none at speed 1) and what wear and a hot body waste.
+     */
     public float efficiency() {
-        return ElectricMachineTuning.CONVERTER_EFFICIENCY * (0.6f + 0.4f * condition);
+        float speed = Circuit.of(circuit).speed();
+        return ElectricMachineTuning.CONVERTER_EFFICIENCY * (ElectricMachineTuning.CONVERTER_SPEED_FLOOR
+                + (1f - ElectricMachineTuning.CONVERTER_SPEED_FLOOR) * speed) * (0.6f + 0.4f * condition);
+    }
+
+    /** Whether it holds the circuit it switches with: without a live one it passes nothing. */
+    public boolean hasCircuit() {
+        return Circuit.of(circuit).live();
+    }
+
+    /** The most amps at the output packet it passes: its own rating, or what the circuit's traces carry if that is less; none without a circuit. */
+    private float passAmps(VoltageBand outBand) {
+        if (!hasCircuit())
+            return 0f;
+        return Math.min(ElectricMachineTuning.CONVERTER_RATED_EU_PER_TICK / ElectricRules.packetEu(outBand), Circuit.of(circuit).ratingAmps());
+    }
+
+    @Override
+    protected void applyImplicitComponents(DataComponentInput input) {
+        super.applyImplicitComponents(input);
+        ItemStack built = input.get(FDataComponents.CIRCUIT_STACK.get());
+        circuit = built == null ? ItemStack.EMPTY : built.copy();
+    }
+
+    @Override
+    protected void collectImplicitComponents(DataComponentMap.Builder components) {
+        super.collectImplicitComponents(components);
+        if (!circuit.isEmpty())
+            components.set(FDataComponents.CIRCUIT_STACK.get(), circuit.copy());
     }
 
     @Override
@@ -102,7 +139,7 @@ public class ConverterBlockEntity extends ElectricNode implements ThermalBody, W
             // What the tap offers is this block's band, stepped, never more Eu/t than the converter's rating passes. A starved
             // input line (delivered below wanted) lowers the offer in proportion, so the output sags rather than stopping.
             float fed = wanted > 0f ? Math.min(1f, amps / wanted) : 0f;
-            tap.offer(outBand, outBand != null ? ElectricMachineTuning.CONVERTER_RATED_EU_PER_TICK / ElectricRules.packetEu(outBand) * fed : 0f);
+            tap.offer(outBand, outBand != null ? passAmps(outBand) * fed : 0f);
             float power = tap.getPacketEu() * tap.getAmps();
             if (power > 0f)
                 Heat.warm(this, power * (1f / efficiency() - 1f) * ElectricMachineTuning.CONVERTER_HEAT_SCALE);
@@ -166,11 +203,13 @@ public class ConverterBlockEntity extends ElectricNode implements ThermalBody, W
         super.saveAdditional(tag, registries);
         tag.putFloat("Temperature", temperature);
         tag.putFloat("Condition", condition);
+        tag.put("Circuit", circuit.saveOptional(registries));
     }
 
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
+        circuit = ItemStack.parseOptional(registries, tag.getCompound("Circuit"));
         if (tag.contains("Temperature"))
             temperature = tag.getFloat("Temperature");
         condition = tag.contains("Condition") ? tag.getFloat("Condition") : 1f;
