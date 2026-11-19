@@ -1290,3 +1290,13 @@ The design is the one `docs/specs/computer_storage_spec.md` recorded; CC: Tweake
   lazily on first use, one media abstraction (contents, capacity, a default per item), and the store is cleaned of computers that are gone.
 - **Rejected:** an integer counter and an `ids.json`, directory-backed mounts, byte capacity and config capacity (capacity is a count of
   files, with a per-item override), alias-on-duplicate ids (a duplicate forks to a new id with a copy), Lua filesystem mounting, and the id in tooltips.
+
+## Chisels & Bits (design only, 2026-11-19)
+
+**Chisels & Bits (ChiselsAndBits/Chisels-and-Bits, MIT, branch `version/1.21.1`, commit 34122620).** *Taken (design only, no code or assets):* the
+target voxel of a placement is the hit point nudged half a voxel along the face normal, then the voxel it falls in; air becomes bit storage and
+the first placement happens in the same click; the target is previewed as a wireframe without touching the world; one bit item carries its block
+as a component and stacks by component equality; a voxel mined gives its bit back. *Rejected:* eligibility by reflecting on which methods a block
+class overrides (Feedback's is by shape and tags), the bit bag and virtual bit inventory, a configurable cell size, async storage encoding, the
+greedy mesh and shape caches (64 voxels do not need them), the multi-mode area chisel (Feedback's gauge has its own modes), and every asset.
+Site comments: `vehicle/micro/MicroPlacer.java`, `client/render/MotePreview.java`.

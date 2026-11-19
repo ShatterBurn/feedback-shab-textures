@@ -74,21 +74,33 @@ public final class MicroPlacer {
      * entity). A voxel is a bare state, so a lift, an engine, a machine or a chest cannot be one.
      */
     public static boolean fits(ItemStack stack) {
-        if (!(stack.getItem() instanceof BlockItem item))
-            return false;
-        if (item.getBlock() instanceof MicroRotation)
-            return true;
-        BlockState state = item.getBlock().defaultBlockState();
-        return !state.hasBlockEntity() && state.getRenderShape() == RenderShape.MODEL;
+        if (stack.getItem() instanceof MoteItem)
+            return MoteItem.state(stack) != null;
+        return stack.getItem() instanceof BlockItem item
+                && (item.getBlock() instanceof MicroRotation || item.getBlock() instanceof io.github.soundgoodizerfan.feedback.machine.bearing.JointPart);
+    }
+
+    /** The voxel (in world voxel coordinates) in front of a face hit at {@code hit}: the point nudged half a voxel out along the normal, then the voxel it falls in. */
+    public static BlockPos voxelInFront(Vec3 hit, Direction face) {
+        Vec3 p = hit.add(face.getStepX() * 0.5 / N, face.getStepY() * 0.5 / N, face.getStepZ() * 0.5 / N);
+        return new BlockPos((int) Math.floor(p.x * N), (int) Math.floor(p.y * N), (int) Math.floor(p.z * N));
+    }
+
+    /** The block a held voxel stack is made of: the mote's block, or the block item's own. */
+    private static Block blockOf(ItemStack held) {
+        BlockState mote = MoteItem.state(held);
+        return mote != null ? mote.getBlock() : ((BlockItem) held.getItem()).getBlock();
     }
 
     @SubscribeEvent(priority = EventPriority.HIGH)
     public static void onRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
         Level level = event.getLevel();
-        if (event.getEntity().isSpectator() || !(level.getBlockState(event.getPos()).getBlock() instanceof MicroCellBlock))
+        boolean mote = event.getItemStack().getItem() instanceof MoteItem;
+        // A mote goes on any block (the click makes fine space where there is none); every other voxel goes only on a cell.
+        if (event.getEntity().isSpectator() || !mote && !(level.getBlockState(event.getPos()).getBlock() instanceof MicroCellBlock))
             return;
         // A full-size Bearing on an assembled joint voxel fits it new, before it could be placed as a voxel.
-        if (event.getItemStack().is(io.github.soundgoodizerfan.feedback.registry.FItems.BEARING.get())
+        if (!mote && event.getItemStack().is(io.github.soundgoodizerfan.feedback.registry.FItems.BEARING.get())
                 && level.getBlockEntity(event.getPos()) instanceof MicroCellBlockEntity cell) {
             int i = cell.pick(event.getHitVec().getLocation(), event.getHitVec().getDirection());
             var joint = i < 0 ? null : cell.bearing(i);
@@ -124,23 +136,41 @@ public final class MicroPlacer {
      * tool ({@link #onBreakSpeed}), never a sneak-click. False if nothing happened.
      */
     public static boolean use(Player player, ItemStack held, BlockPos cell, BlockHitResult hit) {
-        if (!(player.level().getBlockEntity(cell) instanceof MicroCellBlockEntity be))
-            return false;
-        int hitVoxel = be.pick(hit.getLocation(), hit.getDirection());
-        if (hitVoxel < 0)
-            return false;
-        int vx = cell.getX() * N + (hitVoxel & 3), vy = cell.getY() * N + (hitVoxel >> 2 & 3), vz = cell.getZ() * N + (hitVoxel >> 4);
         Direction face = hit.getDirection();
-        int tx = vx + face.getStepX(), ty = vy + face.getStepY(), tz = vz + face.getStepZ();
+        int tx, ty, tz;
+        BlockState against = null;
+        if (held.getItem() instanceof MoteItem) {
+            // The voxel in front of the face: the hit point nudged half a voxel out along the normal, then the voxel it falls in
+            // (the next cell's, if it falls outside the block). Prior art: Chisels & Bits' placement target, design only.
+            BlockPos target = voxelInFront(hit.getLocation(), face);
+            tx = target.getX();
+            ty = target.getY();
+            tz = target.getZ();
+            if (player.level().getBlockEntity(cell) instanceof MicroCellBlockEntity clicked) {
+                int v = clicked.pick(hit.getLocation(), face);
+                against = v < 0 ? null : clicked.get(v);
+            }
+        } else {
+            if (!(player.level().getBlockEntity(cell) instanceof MicroCellBlockEntity be))
+                return false;
+            int hitVoxel = be.pick(hit.getLocation(), face);
+            if (hitVoxel < 0)
+                return false;
+            int vx = cell.getX() * N + (hitVoxel & 3), vy = cell.getY() * N + (hitVoxel >> 2 & 3), vz = cell.getZ() * N + (hitVoxel >> 4);
+            tx = vx + face.getStepX();
+            ty = vy + face.getStepY();
+            tz = vz + face.getStepZ();
+            against = be.get(hitVoxel);
+        }
         // A Micro Core in the other hand sets how the block in this one goes: a line, a box, mirrored, or as a wedge of it.
         ItemStack other = held == player.getMainHandItem() ? player.getOffhandItem() : player.getMainHandItem();
         BlockState skin = null;
         BlockState voxel;
         if (other.getItem() instanceof MicroCoreItem && MicroTool.mode(other) == MicroTool.Mode.WEDGE && wedgeable(held)) {
-            skin = ((BlockItem) held.getItem()).getBlock().defaultBlockState();
-            voxel = placementState(player, held, hit, be.get(hitVoxel), tx, ty, tz, io.github.soundgoodizerfan.feedback.registry.FBlocks.MICRO_WEDGE.get());
+            skin = blockOf(held).defaultBlockState();
+            voxel = placementState(player, held, hit, against, tx, ty, tz, io.github.soundgoodizerfan.feedback.registry.FBlocks.MICRO_WEDGE.get());
         } else
-            voxel = placementState(player, held, hit, be.get(hitVoxel), tx, ty, tz, null);
+            voxel = placementState(player, held, hit, against, tx, ty, tz, null);
         if (voxel == null)
             return false;
         if (other.getItem() instanceof MicroCoreItem)
@@ -153,9 +183,9 @@ public final class MicroPlacer {
 
     /** A plain whole block can be cut to a wedge of itself; a rotation part, a joint or a wedge already cannot. */
     private static boolean wedgeable(ItemStack held) {
-        if (!(held.getItem() instanceof BlockItem item) || !fits(held))
+        if (!fits(held))
             return false;
-        var block = item.getBlock();
+        var block = blockOf(held);
         return !(block instanceof MicroRotation) && !(block instanceof MicroWedgeBlock)
                 && block.defaultBlockState().isCollisionShapeFullBlock(net.minecraft.world.level.EmptyBlockGetter.INSTANCE, BlockPos.ZERO);
     }
@@ -215,7 +245,7 @@ public final class MicroPlacer {
                 return at;
             }
         };
-        Block block = as != null ? as : ((BlockItem) held.getItem()).getBlock();
+        Block block = as != null ? as : blockOf(held);
         return block instanceof MicroRotation part ? part.getStateForPlacement(context, against) : block.getStateForPlacement(context);
     }
 
@@ -404,7 +434,12 @@ public final class MicroPlacer {
         level.gameEvent(GameEvent.BLOCK_DESTROY, at, GameEvent.Context.of(player, was));
         // A voxel that wants a tool (stone wants a pickaxe) gives its block only to one; the rest is lost.
         // The voxel goes back into the credit; a whole block comes out of it once there are enough.
-        if (!player.isCreative() && (!was.requiresCorrectToolForDrops() || player.hasCorrectToolForDrops(was))) {
+        if (!player.isCreative() && (!was.requiresCorrectToolForDrops() || player.hasCorrectToolForDrops(was)) && MoteItem.eligible(was)) {
+            // A voxel of a plain block comes back as the mote it was.
+            ItemStack back = MoteItem.of(was.getBlock(), 1);
+            if (!player.getInventory().add(back))
+                player.drop(back, false);
+        } else if (!player.isCreative() && (!was.requiresCorrectToolForDrops() || player.hasCorrectToolForDrops(was))) {
             int have = credit(player, was) + 1;
             if (have >= VOXELS_PER_BLOCK) {
                 have -= VOXELS_PER_BLOCK;

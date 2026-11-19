@@ -245,7 +245,7 @@ public final class Joint {
         var box = body.getPlot().getBoundingBox();
         for (BlockPos p : BlockPos.betweenClosed(box.minX(), box.minY(), box.minZ(), box.maxX(), box.maxY(), box.maxZ())) {
             var be = level.getBlockEntity(p);
-            if (be instanceof RotaryBearingBlockEntity b && b.holding()
+            if (be instanceof RotaryBearingBlockEntity b && b.holding() || be instanceof JointBlockEntity j && j.holding()
                     || be instanceof io.github.soundgoodizerfan.feedback.vehicle.micro.MicroCellBlockEntity c && c.holdsBearing())
                 return true;
         }

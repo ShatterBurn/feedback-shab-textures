@@ -129,6 +129,8 @@ public class LiftBlockEntity extends BlockEntity {
                 cell.retarget(moves);
             } else if (moved instanceof RotaryBearingBlockEntity bearing)
                 bearing.moved(delta);
+            else if (moved instanceof io.github.soundgoodizerfan.feedback.machine.bearing.JointBlockEntity joint)
+                joint.moved(delta);
             else if (moved instanceof io.github.soundgoodizerfan.feedback.machine.pulley.PulleyBlockEntity pulley)
                 pulley.retarget(moves);
         }

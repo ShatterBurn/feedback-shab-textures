@@ -1,0 +1,10 @@
+{
+  "type": "feedback:engineering",
+  "key": { "B": { "item": "minecraft:stone" } },
+  "pattern": [ "B" ],
+  "result": { "count": 64, "id": "feedback:mote", "components": { "feedback:mote": "minecraft:stone" } },
+  "tool": [ { "ability": "feedback:saw", "wear": 1 } ],
+  "fasteners": { "count": 0, "floor": 1 },
+  "school": "mechanical:1",
+  "cuts_motes": true
+}

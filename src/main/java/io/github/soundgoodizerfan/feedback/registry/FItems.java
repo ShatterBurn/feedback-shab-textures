@@ -770,6 +770,9 @@ public class FItems {
     public static final DeferredItem<Item> CARD_RACK =
             ITEMS.register("card_rack", () -> new io.github.soundgoodizerfan.feedback.item.ControllerUpgradeItem(
                     new Item.Properties().stacksTo(16), io.github.soundgoodizerfan.feedback.fitting.upgrade.CardRackFitting::new));
+    /** One fine-space voxel of a block, cut from it. See {@code vehicle.micro.MoteItem}. */
+    public static final DeferredItem<Item> MOTE =
+            ITEMS.register("mote", () -> new io.github.soundgoodizerfan.feedback.vehicle.micro.MoteItem(new Item.Properties()));
     /** A socket for USB Drives, fitted to a Computer. See {@code fitting.upgrade.UsbPortFitting}. */
     public static final DeferredItem<Item> USB_PORT =
             ITEMS.register("usb_port", () -> new io.github.soundgoodizerfan.feedback.item.ControllerUpgradeItem(

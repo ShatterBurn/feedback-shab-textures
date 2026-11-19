@@ -56,7 +56,7 @@ New here? Start with [Metalworking](Metalworking.md), then [Heat](Heat.md). Want
 - [Designations](Designations.md): every name a gun, tool, armor piece or dish earns, and what gives it
 - [Combat](Combat.md), [Skills](Skills.md) and [Material Perks](Material_Perks.md)
 - [Hazards](Hazards.md): heat, steam and shock
-- [Vehicles](Vehicles.md): lifts, micro-block joints, wheels and wings; [Micro Core](Micro_Core.md) builds
+- [Vehicles](Vehicles.md): lifts, fine-space joints, wheels and wings; [Fine Space](Fine_Space.md) builds
 - [Controller](Controller.md): automation
 
 ## Guides
@@ -75,7 +75,7 @@ New here? Start with [Metalworking](Metalworking.md), then [Heat](Heat.md). Want
 
 **Power and transmission:** [Hand Crank](Hand_Crank.md) · [Water Wheel](Water_Wheel.md) · [Steam Engine](Steam_Engine.md) · [Steam Turbine](Steam_Turbine.md) · [Engine](Engine.md) · [Differential](Differential.md) · [Dynamotor](Dynamotor.md) · [Shaft](Shaft.md) · [Bearing](Bearing.md) · [Rotary Bearing](Rotary_Bearing.md) · [Coupling Sleeve](Coupling_Sleeve.md) · [Ring Gear](Ring_Gear.md) · [Large Ring Gear](Large_Ring_Gear.md) · [Rotation Adapter](Rotation_Adapter.md) · [Flywheel](Flywheel.md) · [Cogs and Gearbox](Cogs.md) · [Pulleys and Belt](Pulleys.md) · [Clutch](Clutch.md) · [Freewheel](Freewheel.md) · [Overspeed Trip](Overspeed_Trip.md) · [Pump](Pump.md) · [Transmission](Transmission.md)
 
-**Micro-blocks and vehicles:** [Micro Core](Micro_Core.md) · [Micro Wedge](Micro_Wedge.md) · [Ball Joint](Ball_Joint.md) · [Locked Joint](Locked_Joint.md) · [Slider Joint](Slider_Joint.md) · [Piston Joint](Piston_Joint.md) · [Rotary Bearing](Rotary_Bearing.md) · [Ring Gear](Ring_Gear.md) · [Large Ring Gear](Large_Ring_Gear.md) · [Joint Link](Joint_Link.md) · [Tire Rubber](Tire_Rubber.md) · [Vehicles](Vehicles.md)
+**Fine space and vehicles:** [Fine Space](Fine_Space.md) · [Mote](Mote.md) · [Fine Gauge](Fine_Gauge.md) · [Fine Wedge](Fine_Wedge.md) · [Ball Joint](Ball_Joint.md) · [Locked Joint](Locked_Joint.md) · [Slider Joint](Slider_Joint.md) · [Piston Joint](Piston_Joint.md) · [Rotary Bearing](Rotary_Bearing.md) · [Ring Gear](Ring_Gear.md) · [Large Ring Gear](Large_Ring_Gear.md) · [Joint Link](Joint_Link.md) · [Tire Rubber](Tire_Rubber.md) · [Vehicles](Vehicles.md)
 
 **Logistics:** [Conveyor Belt](Conveyor_Belt.md) · [Belt Head Roller](Belt_Head_Roller.md) · [Belt Modules](Belt_Modules.md) · [Pneumatic Tube](Pneumatic_Tube.md) · [Carrier](Carrier.md) · [Tube Junction](Tube_Junction.md) · [Tube Station](Tube_Station.md) · [Ender Port](Ender_Port.md) · [Data Port](Data_Port.md) · [Liquid Teleportant](Liquid_Teleportant.md) · [Synthetic Pearl](Synthetic_Pearl.md) · [Tuned Eye](Tuned_Eye.md)
 

@@ -120,11 +120,14 @@ public class EngineeringRecipe implements Recipe<EngineeringInput> {
     private final List<String> fitOrder;
     private final boolean carriesCircuit;
     private final boolean madeOf;
+    private final boolean cutsMotes;
 
     public EngineeringRecipe(Either<ShapedRecipePattern, List<Ingredient>> grid, ItemStack result, List<Tool> tools, Fasteners.Need need,
-                             String school, Optional<String> minigame, List<String> fitOrder, boolean carriesCircuit, boolean madeOf) {
+                             String school, Optional<String> minigame, List<String> fitOrder, boolean carriesCircuit, boolean madeOf,
+                             boolean cutsMotes) {
         this.carriesCircuit = carriesCircuit;
         this.madeOf = madeOf;
+        this.cutsMotes = cutsMotes;
         this.fitOrder = List.copyOf(fitOrder);
         this.grid = grid;
         this.result = result;
@@ -167,6 +170,24 @@ public class EngineeringRecipe implements Recipe<EngineeringInput> {
     /** Whether the result is made of the one material the grid's stock is (the {@code made_of} component), as a rod of it. */
     public boolean madeOf() {
         return madeOf;
+    }
+
+    /**
+     * Whether the recipe cuts one block into motes (the {@code result}'s count of them): the grid is exactly one block that
+     * {@link io.github.soundgoodizerfan.feedback.vehicle.micro.MoteItem#eligible} says can be cut, whatever the key lists (the key is the
+     * example JEI shows).
+     */
+    public boolean cutsMotes() {
+        return cutsMotes;
+    }
+
+    /** The block in a grid of exactly one block item that can be cut into motes, or null. */
+    @org.jetbrains.annotations.Nullable
+    private static net.minecraft.world.level.block.Block cuttable(EngineeringInput input) {
+        List<ItemStack> have = input.gridStacks();
+        if (have.size() != 1 || !(have.get(0).getItem() instanceof net.minecraft.world.item.BlockItem item))
+            return null;
+        return io.github.soundgoodizerfan.feedback.vehicle.micro.MoteItem.eligible(item.getBlock().defaultBlockState()) ? item.getBlock() : null;
     }
 
     /** The one material every material stock in the grid shares, or null when there is none or they differ. */
@@ -218,6 +239,8 @@ public class EngineeringRecipe implements Recipe<EngineeringInput> {
     }
 
     private boolean gridMatches(EngineeringInput input) {
+        if (cutsMotes)
+            return cuttable(input) != null;
         if (grid.left().isPresent())
             return grid.left().get().matches(input.crafting());
         List<Ingredient> wanted = grid.right().orElseThrow();
@@ -282,6 +305,8 @@ public class EngineeringRecipe implements Recipe<EngineeringInput> {
             return new Attempt(Refusal.NO_FASTENERS, ItemStack.EMPTY, ModularFit.Start.NONE, slot, wear, supply, shortfall);
         int lost = Math.round(shortShare / ModularTuning.HAMMER_SHORT_REFUSE * ModularTuning.START_HAMMER_SHORT_LEVELS);
         ItemStack made = result.copy();
+        if (cutsMotes)
+            made = io.github.soundgoodizerfan.feedback.vehicle.micro.MoteItem.of(cuttable(input), result.getCount());
         if (stock != null)
             made.set(io.github.soundgoodizerfan.feedback.registry.FDataComponents.MADE_OF.get(),
                     new io.github.soundgoodizerfan.feedback.process.MadeOf(stock, "rod", 1));
@@ -347,7 +372,8 @@ public class EngineeringRecipe implements Recipe<EngineeringInput> {
                 Codec.STRING.optionalFieldOf("minigame").forGetter(r -> r.minigame),
                 Codec.STRING.listOf().optionalFieldOf("fit_order", List.of()).forGetter(r -> r.fitOrder),
                 Codec.BOOL.optionalFieldOf("carries_circuit", false).forGetter(r -> r.carriesCircuit),
-                Codec.BOOL.optionalFieldOf("made_of", false).forGetter(r -> r.madeOf)).apply(i, EngineeringRecipe::new))
+                Codec.BOOL.optionalFieldOf("made_of", false).forGetter(r -> r.madeOf),
+                Codec.BOOL.optionalFieldOf("cuts_motes", false).forGetter(r -> r.cutsMotes)).apply(i, EngineeringRecipe::new))
                 .flatXmap(Serializer::checked, com.mojang.serialization.DataResult::success);
 
         /** A minigame's score sets the start condition, which only a modular result has: a plain item with a minigame is a data error, not a score that does nothing. */
@@ -381,7 +407,7 @@ public class EngineeringRecipe implements Recipe<EngineeringInput> {
             String school = buf.readUtf();
             Optional<String> minigame = buf.readBoolean() ? Optional.of(buf.readUtf()) : Optional.empty();
             List<String> fitOrder = ByteBufCodecs.STRING_UTF8.apply(ByteBufCodecs.list()).decode(buf);
-            return new EngineeringRecipe(grid, result, new ArrayList<>(tools), need, school, minigame, fitOrder, buf.readBoolean(), buf.readBoolean());
+            return new EngineeringRecipe(grid, result, new ArrayList<>(tools), need, school, minigame, fitOrder, buf.readBoolean(), buf.readBoolean(), buf.readBoolean());
         }
 
         private static void write(RegistryFriendlyByteBuf buf, EngineeringRecipe r) {
@@ -397,6 +423,7 @@ public class EngineeringRecipe implements Recipe<EngineeringInput> {
             ByteBufCodecs.STRING_UTF8.apply(ByteBufCodecs.list()).encode(buf, r.fitOrder);
             buf.writeBoolean(r.carriesCircuit);
             buf.writeBoolean(r.madeOf);
+            buf.writeBoolean(r.cutsMotes);
         }
     }
 }

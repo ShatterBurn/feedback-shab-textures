@@ -103,6 +103,13 @@ public class FBlockEntities {
                     .of(RotaryBearingBlockEntity::new, FBlocks.ROTARY_BEARING.get(), FBlocks.RING_GEAR.get(), FBlocks.LARGE_RING_GEAR.get())
                     .build(null));
 
+    /** The ball, locked, slider and piston joints placed in coarse space; in fine space they are voxels and need none. */
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<io.github.soundgoodizerfan.feedback.machine.bearing.JointBlockEntity>> JOINT =
+            BLOCK_ENTITIES.register("joint", () -> BlockEntityType.Builder
+                    .of(io.github.soundgoodizerfan.feedback.machine.bearing.JointBlockEntity::new, FBlocks.BALL_JOINT.get(),
+                            FBlocks.LOCKED_JOINT.get(), FBlocks.SLIDER_JOINT.get(), FBlocks.PISTON_JOINT.get())
+                    .build(null));
+
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<HandCrankBlockEntity>> HAND_CRANK =
             BLOCK_ENTITIES.register("hand_crank", () -> BlockEntityType.Builder
                     .of(HandCrankBlockEntity::new, FBlocks.HAND_CRANK.get())

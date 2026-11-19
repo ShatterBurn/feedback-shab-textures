@@ -1,6 +1,6 @@
 # Rotary Bearing
 
-Turns whatever you build in front of it, as one piece, at the speed of the shaft behind it. It is how an arm, a rotor, a wheel or a sail spins on a line of [rotation](Rotation.md), and as a micro-block it is a hinge that a card can steer.
+Turns whatever you build in front of it, as one piece, at the speed of the shaft behind it. It is how an arm, a rotor, a wheel or a sail spins on a line of [rotation](Rotation.md), and in fine space it is a hinge that a card can steer.
 
 ## Crafting
 
@@ -13,10 +13,10 @@ B is a Bronze Plate and S is a [Shaft](Shaft.md). Craft it at the [Engineering T
 
 ## Using it
 
-Place it against the end of a [Shaft](Shaft.md), the face of a [Gearbox](Cogs.md#gearbox) or a [Cog](Cogs.md); it points away from the face you click. Its back joins that block the way a shaft end does. Build in front of it with ordinary blocks and [micro cells](Micro_Core.md).
+Place it against the end of a [Shaft](Shaft.md), the face of a [Gearbox](Cogs.md#gearbox) or a [Cog](Cogs.md); it points away from the face you click. Its back joins that block the way a shaft end does. Build in front of it with ordinary blocks and [fine space](Fine_Space.md).
 
 - **Right-click it with an empty hand** to take everything built in front of it, joined block to block, as one piece. It turns with the shaft: *"Assembled: it turns with the shaft."*
-- **Right-click it again** to put the piece back as blocks where it started, at the nearest quarter turn about its axis. A piece made of micro-blocks goes back only unturned: turn it back first, or you are told *"Turn it back first: the blocks on it would not line up with the grid."* A piece that carries another bearing needs that bearing's piece put back first: *"Put back what its bearings carry first."*
+- **Right-click it again** to put the piece back as blocks where it started, at the nearest quarter turn about its axis. A piece made of fine space goes back only unturned: turn it back first, or you are told *"Turn it back first: the blocks on it would not line up with the grid."* A piece that carries another bearing needs that bearing's piece put back first: *"Put back what its bearings carry first."*
 
 The piece can hold up to 1024 blocks. A bigger build, or one touching the ground or something that is not part of it, is refused: *"Too big, or it touches the ground."* With nothing in front you see *"Nothing in front of it to turn."* If a block stands where one of the piece's blocks would go back, putting it back is refused: *"Something stands where a block would go back."*
 
@@ -28,9 +28,9 @@ A bearing also works on something that moves. Put one on a car or on the arm of 
 
 Breaking the bearing puts its piece back into the world as blocks, as a click would. The piece is let go only if something blocks the put-back or it carries a piece of its own.
 
-## Micro bearings
+## Bearings in fine space
 
-A Rotary Bearing can be a voxel of a micro build, used with an empty hand. It turns the voxels joined to its front face; the rest of their cell stays. Putting back lands the voxels at the nearest quarter turn. A piece can hold up to 16384 voxels. Several spinning arms fit in one block as long as their voxels never meet. Breaking the voxel puts its voxels back, as a click would.
+A Rotary Bearing can be a voxel of [fine space](Fine_Space.md), used with an empty hand. It turns the voxels joined to its front face; the rest of their cell stays. Putting back lands the voxels at the nearest quarter turn. A piece can hold up to 16384 voxels. Several spinning arms fit in one block as long as their voxels never meet. Breaking the voxel puts its voxels back, as a click would.
 
 When the bearing is inside a body, full-size blocks touching the arm join it. Putting back lands them only at turns that put them on the grid; otherwise the message says to turn it back first. A [Joint Link](Joint_Link.md) holds another lifted body to a bearing voxel.
 
@@ -54,4 +54,4 @@ A role 0 bearing whose piece holds tire stock is a wheel; see [Wheels](Vehicles.
 
 - [Ring Gear](Ring_Gear.md): the same, driven from the side by a cog instead of from behind.
 - [Bearing](Bearing.md): the low-friction shaft, a different block.
-- [Vehicles](Vehicles.md#joints): the other joints a micro-block build uses.
+- [Vehicles](Vehicles.md#joints): the other joints fine space uses.

@@ -478,6 +478,8 @@ public class FeedbackJeiPlugin implements IModPlugin {
         info(registration, FItems.ELECTRIC_CONTROLLER.get(), "electric_controller");
         info(registration, FItems.ELECTRIC_PROGRAMMER.get(), "electric_programmer");
         info(registration, FItems.COMPUTER.get(), "computer");
+        info(registration, FItems.MOTE.get(), "mote");
+        info(registration, io.github.soundgoodizerfan.feedback.registry.FVehicles.MICRO_CORE.get(), "micro_core");
         info(registration, FItems.MEMORY_BOARD.get(), "memory_board");
         info(registration, FItems.USB_PORT.get(), "usb_port");
         info(registration, FItems.FLOPPY_DISK.get(), "floppy_disk");

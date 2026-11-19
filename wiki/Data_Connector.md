@@ -17,7 +17,7 @@ The Controller's program finds the node by what it is, not where it is: see [Pro
 
 To color the link, hold a **dye in the other hand** while you make the second click: the link takes that dye's color (16 dyes). With nothing in the other hand the link has no color. A card can ask for a link color, so colors sort several nodes of one kind into groups.
 
-On a [micro cell](Micro_Core.md), the connector picks the single joint voxel you aim at instead of the cell. A card then reads or sets that voxel: a [Piston Joint](Piston_Joint.md)'s **Piston level**, a hinge's **Angle** or **Brake** (see [Rotary Bearing](Rotary_Bearing.md#roles)), a micro [Clutch](Clutch.md#micro-clutch)'s **Engaged**. With the connector in hand, the voxels a card can set (pistons, hinges, clutches) are outlined in the cell.
+On [fine space](Fine_Space.md), the connector picks the single joint voxel you aim at instead of the block. A card then reads or sets that voxel: a [Piston Joint](Piston_Joint.md)'s **Piston level**, a hinge's **Angle** or **Brake** (see [Rotary Bearing](Rotary_Bearing.md#roles)), a [Clutch](Clutch.md#fine-clutch)'s **Engaged**. With the connector in hand, the voxels a card can set (pistons, hinges, clutches) are outlined in the block.
 
 ## Modes
 

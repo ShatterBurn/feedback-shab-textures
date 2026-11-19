@@ -1,0 +1,229 @@
+// Copyright (C) 2026 soundgoodizerfan
+// SPDX-License-Identifier: GPL-3.0-or-later
+package io.github.soundgoodizerfan.feedback.machine.bearing;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import dev.ryanhcode.sable.api.SubLevelAssemblyHelper;
+import dev.ryanhcode.sable.api.sublevel.ServerSubLevelContainer;
+import dev.ryanhcode.sable.companion.math.BoundingBox3i;
+import dev.ryanhcode.sable.sublevel.ServerSubLevel;
+import dev.ryanhcode.sable.sublevel.storage.SubLevelRemovalReason;
+
+import io.github.soundgoodizerfan.feedback.control.Analog;
+import io.github.soundgoodizerfan.feedback.control.data.DataNode;
+import io.github.soundgoodizerfan.feedback.core.FTuning;
+import io.github.soundgoodizerfan.feedback.registry.FBlockEntities;
+
+import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3d;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+
+/**
+ * A ball, locked, slider or piston joint in coarse space: the same hold on a body ({@link Joint}) as the voxel kind in fine space
+ * ({@code MicroBearings}), made the way a Rotary Bearing makes its body ({@link RotaryBearingBlockEntity}): everything connected to the
+ * front face becomes a Sable body, joined here with the joint's own Sable joint. A piston's level is set by a controller card like a
+ * voxel piston's ({@link Analog} channel 0, -1 to 1).
+ */
+public class JointBlockEntity extends BlockEntity implements Analog, DataNode {
+
+    @Nullable
+    private Joint joint;
+    /** The piston's level; the other kinds ignore it. */
+    private float pistonLevel;
+    /** The facing as last ticked: what a broken joint's body is put back about once the block's state is gone. */
+    private Direction lastFacing;
+
+    public JointBlockEntity(BlockPos pos, BlockState state) {
+        super(FBlockEntities.JOINT.get(), pos, state);
+    }
+
+    private JointBlock block() {
+        return (JointBlock) getBlockState().getBlock();
+    }
+
+    private Direction facing() {
+        return getBlockState().getValue(JointBlock.FACING);
+    }
+
+    /** The hold on its body, or null. */
+    @Nullable
+    public Joint joint() {
+        return joint;
+    }
+
+    /** True while it holds a body. */
+    public boolean holding() {
+        return joint != null;
+    }
+
+    /** A Lift carried this joint's parent by {@code delta} blocks. */
+    public void moved(BlockPos delta) {
+        if (joint != null)
+            joint.shift(delta);
+    }
+
+    /** Assembles, or puts back. Returns the message key (under {@code message.feedback.rotary_bearing.}). */
+    public String toggle(ServerLevel level) {
+        return joint == null ? assemble(level) : disassemble(level, facing());
+    }
+
+    private Vector3d anchor() {
+        Direction f = facing();
+        return new Vector3d(worldPosition.getX() + 0.5 + 0.5 * f.getStepX(), worldPosition.getY() + 0.5 + 0.5 * f.getStepY(),
+                worldPosition.getZ() + 0.5 + 0.5 * f.getStepZ());
+    }
+
+    private String assemble(ServerLevel level) {
+        Direction f = facing();
+        BlockPos front = worldPosition.relative(f), host = worldPosition.relative(f.getOpposite());
+        if (level.getBlockState(front).isAir())
+            return "empty";
+        var gathered = SubLevelAssemblyHelper.gatherConnectedBlocks(front, level, FTuning.ROTARY_BEARING_MAX_BLOCKS,
+                (a, aState, to, toState, direction) -> !to.equals(worldPosition) && !to.equals(host));
+        if (gathered.assemblyState() == SubLevelAssemblyHelper.GatherResult.State.NO_BLOCKS)
+            return "empty";
+        if (gathered.assemblyState() != SubLevelAssemblyHelper.GatherResult.State.SUCCESS || gathered.blocks() == null)
+            return "too_big";
+        List<BlockPos> blocks = new ArrayList<>(gathered.blocks());
+        // From a body too: Sable starts the new body at its parent's pose and speed, so nothing moves.
+        ServerSubLevel parent = Joint.parentOf(level, worldPosition);
+        BlockMoves.enter();
+        ServerSubLevel made;
+        try {
+            made = SubLevelAssemblyHelper.assembleBlocks(level, front, blocks, BoundingBox3i.from(blocks));
+        } finally {
+            BlockMoves.leave();
+        }
+        joint = Joint.of(block().kind(), getBlockState().getValue(JointBlock.VARIANT), made, anchor(), f, front, parent);
+        setChanged();
+        return "assembled";
+    }
+
+    /** Puts the body back at the nearest quarter turn about {@code f}'s axis; its blocks and their states turn with it. */
+    private String disassemble(ServerLevel level, Direction f) {
+        ServerSubLevel s = joint.held(level);
+        if (s == null)
+            return "not_loaded";
+        if (Joint.carriesChild(level, s))
+            return "has_child";
+        var box = s.getPlot().getBoundingBox();
+        List<BlockPos> blocks = new ArrayList<>();
+        for (BlockPos p : BlockPos.betweenClosed(box.minX(), box.minY(), box.minZ(), box.maxX(), box.maxY(), box.maxZ()))
+            if (!level.getBlockState(p).isAir())
+                blocks.add(p.immutable());
+        float sign = f.getAxisDirection() == Direction.AxisDirection.POSITIVE ? 1 : -1;
+        int k = Math.floorMod(Math.round(sign * joint.turned(s, Joint.parentOf(level, worldPosition), f) / 90f), 4);
+        // A fine-space cell's voxels are not turned by a block move, only its position: a body with cells goes back unturned.
+        if (k != 0)
+            for (BlockPos p : blocks)
+                if (level.getBlockState(p).getBlock() instanceof io.github.soundgoodizerfan.feedback.vehicle.micro.MicroCellBlock)
+                    return "misaligned";
+        var transform = new TurnedTransform(joint.homeFrom(), joint.homeTo(), worldPosition, f.getAxis(), k, level);
+        for (BlockPos p : blocks)
+            if (!level.getBlockState(transform.apply(p)).canBeReplaced())
+                return "blocked";
+        joint.letGo();
+        BlockMoves.enter();
+        try {
+            if (!blocks.isEmpty())
+                SubLevelAssemblyHelper.moveBlocks(level, transform, blocks);
+            ServerSubLevelContainer.getContainer(level).removeSubLevel(s, SubLevelRemovalReason.REMOVED);
+        } finally {
+            BlockMoves.leave();
+        }
+        joint = null;
+        setChanged();
+        return "disassembled";
+    }
+
+    void tickServer(ServerLevel level) {
+        if (joint == null)
+            return;
+        if (joint.gone(level)) {
+            joint.letGo();
+            joint = null;
+            setChanged();
+            return;
+        }
+        lastFacing = facing();
+        joint.tick(level, worldPosition, anchor(), lastFacing, pistonLevel);
+    }
+
+    /** Broken or unloaded: the joint goes (a body broken off goes back into the world, or falls free when it cannot). */
+    @Override
+    public void setRemoved() {
+        if (joint != null) {
+            boolean broken = !BlockMoves.active() && level instanceof ServerLevel && lastFacing != null && level.isLoaded(worldPosition)
+                    && !(level.getBlockState(worldPosition).getBlock() instanceof JointBlock);
+            if (!broken || !"disassembled".equals(disassemble((ServerLevel) level, lastFacing)))
+                joint.letGo();
+        }
+        super.setRemoved();
+    }
+
+    // --- Analog: a piston's level -----------------------------------------------------------
+
+    @Override
+    public void setLevel(int channel, float level) {
+        if (channel == 0 && block().kind() == Joint.Kind.PISTON)
+            pistonLevel = Math.clamp(level, -1f, 1f);
+    }
+
+    @Override
+    public String[] channelKeys() {
+        return block().kind() == Joint.Kind.PISTON ? new String[]{"feedback.channel.piston_level"} : new String[0];
+    }
+
+    // --- DataNode ---------------------------------------------------------------------------
+
+    @Override
+    public BlockPos getNodePos() {
+        return worldPosition;
+    }
+
+    @Nullable
+    @Override
+    public Direction getNodeSide() {
+        return null;
+    }
+
+    @Override
+    public Level getNodeLevel() {
+        return getLevel();
+    }
+
+    @Override
+    public BlockEntity getNodeOwner() {
+        return this;
+    }
+
+    @Override
+    public boolean isNodeValid() {
+        return !isRemoved() && block().kind() == Joint.Kind.PISTON;
+    }
+
+    @Override
+    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        super.saveAdditional(tag, registries);
+        if (joint != null)
+            tag.put("Joint", joint.save());
+        tag.putFloat("Level", pistonLevel);
+    }
+
+    @Override
+    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        super.loadAdditional(tag, registries);
+        joint = tag.contains("Joint") ? Joint.load(tag.getCompound("Joint")) : null;
+        pistonLevel = tag.getFloat("Level");
+    }
+}

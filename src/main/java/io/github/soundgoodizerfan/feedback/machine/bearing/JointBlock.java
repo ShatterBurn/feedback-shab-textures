@@ -29,7 +29,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
  * named choice: the ball's cone (narrow, stock, wide) or the slider's spring (soft, stock, stiff);
  * sneaking with an empty hand cycles it while nothing is assembled.
  */
-public class JointBlock extends Block implements JointPart {
+public class JointBlock extends Block implements JointPart, net.minecraft.world.level.block.EntityBlock {
 
     public static final DirectionProperty FACING = BlockStateProperties.FACING;
     public static final IntegerProperty VARIANT = IntegerProperty.create("variant", 0, 2);
@@ -82,10 +82,25 @@ public class JointBlock extends Block implements JointPart {
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
         if (level.isClientSide)
             return InteractionResult.SUCCESS;
-        if (player.isShiftKeyDown())
+        if (!(level instanceof net.minecraft.server.level.ServerLevel server) || !(level.getBlockEntity(pos) instanceof JointBlockEntity be))
+            return InteractionResult.CONSUME;
+        if (!player.isShiftKeyDown())
+            player.displayClientMessage(Component.translatable("message.feedback.rotary_bearing." + be.toggle(server)), true);
+        else if (!be.holding())
             level.setBlock(pos, cycled(state), Block.UPDATE_ALL);
-        else
-            player.displayClientMessage(Component.translatable("message.feedback.joint.micro_only"), true);
         return InteractionResult.CONSUME;
+    }
+
+    @org.jetbrains.annotations.Nullable
+    @Override
+    public net.minecraft.world.level.block.entity.BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new JointBlockEntity(pos, state);
+    }
+
+    @org.jetbrains.annotations.Nullable
+    @Override
+    public <T extends net.minecraft.world.level.block.entity.BlockEntity> net.minecraft.world.level.block.entity.BlockEntityTicker<T> getTicker(
+            Level level, BlockState state, net.minecraft.world.level.block.entity.BlockEntityType<T> type) {
+        return level.isClientSide ? null : (l, p, s, be) -> ((JointBlockEntity) be).tickServer((net.minecraft.server.level.ServerLevel) l);
     }
 }

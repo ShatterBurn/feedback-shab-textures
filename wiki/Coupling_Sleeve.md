@@ -8,7 +8,7 @@ One plate and one rod of the same metal, anywhere in the grid, make one Coupling
 
 ## Using it
 
-Use it on a full-size Rotary Bearing to fit it. A bearing holds one sleeve; a micro bearing cannot take it. A [Crowbar](Crowbar.md) pries it off, and breaking the bearing drops it. Jade shows *Coupled, idle*, *Shaft turning the piece* or *Piece driving the shaft*.
+Use it on a full-size Rotary Bearing to fit it. A bearing holds one sleeve; a bearing in fine space cannot take it. A [Crowbar](Crowbar.md) pries it off, and breaking the bearing drops it. Jade shows *Coupled, idle*, *Shaft turning the piece* or *Piece driving the shaft*.
 
 ## How it works
 

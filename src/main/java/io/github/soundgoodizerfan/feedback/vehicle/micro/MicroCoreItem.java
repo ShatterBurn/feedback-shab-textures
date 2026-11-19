@@ -20,28 +20,19 @@
 package io.github.soundgoodizerfan.feedback.vehicle.micro;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.Vec3;
 
 /**
- * Starts a build ({@code docs/dev/vehicle.md}): used on a block, it puts a micro cell where
- * a block would go, with one voxel of stone in it where you pointed. Every voxel after that is
- * placed by holding a block against the build ({@link MicroPlacer}).
+ * The fine-space building gauge ({@code docs/dev/vehicle.md}): held in either hand while placing or mining motes it sets how they go (a
+ * line, a box, mirrored, or as a wedge); sneak-use steps its mode. It places nothing itself: a mote starts fine space ({@link MicroPlacer}).
  */
 public class MicroCoreItem extends Item {
 
     private static final int N = MicroCellBlockEntity.N;
-    /** What the first voxel is made of. */
-    private static final BlockState START = Blocks.STONE.defaultBlockState();
 
     public MicroCoreItem(Properties properties) {
         super(properties);
@@ -83,38 +74,7 @@ public class MicroCoreItem extends Item {
                     MicroTool.planes(context.getItemInHand()).size()), true);
             return InteractionResult.CONSUME;
         }
-        // On a micro cell it adds a stone voxel in front of the face it hit, so the core builds on its
-        // own cell and not only one voxel to a block.
-        if (player != null && level.getBlockEntity(context.getClickedPos()) instanceof MicroCellBlockEntity cell) {
-            if (level.isClientSide)
-                return InteractionResult.SUCCESS;
-            int hit = cell.pick(context.getClickLocation(), context.getClickedFace());
-            if (hit < 0)
-                return InteractionResult.FAIL;
-            BlockPos c = context.getClickedPos();
-            Direction face = context.getClickedFace();
-            boolean placed = MicroPlacer.place(player, context.getItemInHand(), START,
-                    c.getX() * N + (hit & 3) + face.getStepX(), c.getY() * N + (hit >> 2 & 3) + face.getStepY(),
-                    c.getZ() * N + (hit >> 4) + face.getStepZ(), face);
-            return placed ? InteractionResult.CONSUME : InteractionResult.FAIL;
-        }
-        BlockPlaceContext where = new BlockPlaceContext(context);
-        if (player == null || !where.canPlace())
-            return InteractionResult.FAIL;
-        if (level.isClientSide)
-            return InteractionResult.SUCCESS;
-        // The click is on the new cell's edge or in it: the voxel it points at is the first.
-        BlockPos at = where.getClickedPos();
-        Vec3 click = context.getClickLocation();
-        boolean placed = MicroPlacer.place(player, context.getItemInHand(), START,
-                at.getX() * N + voxelOf(click.x - at.getX()), at.getY() * N + voxelOf(click.y - at.getY()),
-                at.getZ() * N + voxelOf(click.z - at.getZ()), context.getClickedFace());
-        return placed ? InteractionResult.CONSUME : InteractionResult.FAIL;
-    }
-
-    /** The voxel along one axis that {@code local}, in blocks from the cell's corner, falls in. */
-    private static int voxelOf(double local) {
-        return Mth.clamp((int) Math.floor(local * N), 0, N - 1);
+        return InteractionResult.PASS;
     }
 
     /** The build modes as a strip, the new one lit, with what it does beneath. */

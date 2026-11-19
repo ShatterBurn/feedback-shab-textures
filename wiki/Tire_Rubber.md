@@ -13,7 +13,7 @@ R is a Synthetic Rubber Ingot. The recipe makes 1.
 
 ## Using it
 
-Place it as voxels of a [micro build](Micro_Core.md) in the piece a role 0 Rotary Bearing turns. Like black wool, it is **tire stock**, so the piece is a wheel; see [Wheels](Vehicles.md#wheels).
+Cut it into [motes](Mote.md) and place them in [fine space](Fine_Space.md) in the piece a role 0 Rotary Bearing turns. Like black wool, it is **tire stock**, so the piece is a wheel; see [Wheels](Vehicles.md#wheels).
 
 ## Fitting a new tire
 

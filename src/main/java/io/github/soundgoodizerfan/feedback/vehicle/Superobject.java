@@ -50,6 +50,9 @@ public final class Superobject {
             } else if (be instanceof RotaryBearingBlockEntity b && b.joint() != null
                     && container.getSubLevel(b.joint().bodyId()) instanceof ServerSubLevel child && !child.isRemoved())
                 found.add(new Hold(p.immutable(), -1, b.joint(), child));
+            else if (be instanceof io.github.soundgoodizerfan.feedback.machine.bearing.JointBlockEntity j && j.joint() != null
+                    && container.getSubLevel(j.joint().bodyId()) instanceof ServerSubLevel child && !child.isRemoved())
+                found.add(new Hold(p.immutable(), -1, j.joint(), child));
         }
         return found;
     }
@@ -132,7 +135,8 @@ public final class Superobject {
             if (leaf == null)
                 return "loop";
             String result = leaf.index() < 0
-                    ? (level.getBlockEntity(leaf.pos()) instanceof RotaryBearingBlockEntity b ? b.toggle(level) : "not_loaded")
+                    ? (level.getBlockEntity(leaf.pos()) instanceof RotaryBearingBlockEntity b ? b.toggle(level)
+                    : level.getBlockEntity(leaf.pos()) instanceof io.github.soundgoodizerfan.feedback.machine.bearing.JointBlockEntity j ? j.toggle(level) : "not_loaded")
                     : MicroBearings.toggle(level, leaf.pos(), leaf.index());
             if (!result.equals("disassembled"))
                 return result;

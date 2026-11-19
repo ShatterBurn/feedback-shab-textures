@@ -461,6 +461,13 @@ public class FDataComponents {
                     .networkSynchronized(net.minecraft.resources.ResourceLocation.STREAM_CODEC)
                     .build());
 
+    /** The block a mote was cut from -- see {@code vehicle/micro/MoteItem}. */
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<net.minecraft.resources.ResourceLocation>> MOTE =
+            COMPONENTS.register("mote", () -> DataComponentType.<net.minecraft.resources.ResourceLocation>builder()
+                    .persistent(net.minecraft.resources.ResourceLocation.CODEC)
+                    .networkSynchronized(net.minecraft.resources.ResourceLocation.STREAM_CODEC)
+                    .build());
+
     /** The metal wound into a Slider Joint's spring; absent is the stock band. */
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<net.minecraft.resources.ResourceLocation>> SLIDER_SPRING =
             COMPONENTS.register("slider_spring", () -> DataComponentType.<net.minecraft.resources.ResourceLocation>builder()

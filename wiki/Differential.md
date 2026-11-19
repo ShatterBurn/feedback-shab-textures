@@ -13,7 +13,7 @@ C is a Small Cog, G is a [Gearbox](Cogs.md#gearbox) and S is a [Shaft](Shaft.md)
 
 ## Using it
 
-Place it against the shaft that drives it: the input is the face you placed it against. The two axles come out on either side, across the way you look. It works as a full-size block and as a voxel of a [micro build](Micro_Core.md).
+Place it against the shaft that drives it: the input is the face you placed it against. The two axles come out on either side, across the way you look. It works as a full-size block and as a voxel of [fine space](Fine_Space.md).
 
 **Sneak-click** it to change the mode. A strip under the crosshair lists open, limited slip and locked with the current one lit.
 
@@ -29,5 +29,5 @@ Only the input shaft is joined to the differential. Each axle is a separate run 
 
 ## See also
 
-- [Rotation Adapter](Rotation_Adapter.md): carries full-size rotation into a micro build.
+- [Rotation Adapter](Rotation_Adapter.md): carries full-size rotation into fine space.
 - [Vehicles](Vehicles.md): wheels and drive.

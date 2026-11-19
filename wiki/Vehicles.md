@@ -1,20 +1,21 @@
 # Vehicles
 
-> Build it out of micro-blocks, put joints where it should bend, lift it: it moves.
+> Build it in fine space, put joints where it should bend, lift it: it moves.
 
-A vehicle is a build of [micro cells](Micro_Core.md) and full-size blocks that a [Lift](#the-lift) turns into one moving physics body. Joints let parts of it turn, swing or slide, wheels carry it over the ground, wings carry it through the air, and every part has the weight of what it is made of.
+A vehicle is a build of [fine space](Fine_Space.md) and full-size blocks that a [Lift](#the-lift) turns into one moving physics body. Joints let parts of it turn, swing or slide, wheels carry it over the ground, wings carry it through the air, and every part has the weight of what it is made of.
 
 ## The parts
 
 | Item | Use |
 | --- | --- |
 | **[Lift](#the-lift)** | The stand you build on. Turns what is on it into a single moving object. |
-| **[Micro Core](Micro_Core.md)** | Builds in voxels, a 64th of a block each, with line, box and mirror tools. |
-| **[Micro Wedge](Micro_Wedge.md)** | A four-step ramp voxel. |
-| **[Joints](#joints)** | [Rotary Bearing](Rotary_Bearing.md), [Ring Gear](Ring_Gear.md), [Large Ring Gear](Large_Ring_Gear.md), [Ball Joint](Ball_Joint.md), [Locked Joint](Locked_Joint.md), [Slider Joint](Slider_Joint.md) and [Piston Joint](Piston_Joint.md), used as micro-blocks. |
+| **[Mote](Mote.md)** | A 64th of a block, cut from a whole block; what fine space is built from. |
+| **[Fine Gauge](Fine_Gauge.md)** | Sets single, line, box, mirror or wedge placement of motes. |
+| **[Fine Wedge](Fine_Wedge.md)** | A four-step ramp voxel. |
+| **[Joints](#joints)** | [Rotary Bearing](Rotary_Bearing.md), [Ring Gear](Ring_Gear.md), [Large Ring Gear](Large_Ring_Gear.md), [Ball Joint](Ball_Joint.md), [Locked Joint](Locked_Joint.md), [Slider Joint](Slider_Joint.md) and [Piston Joint](Piston_Joint.md), each placed against a block or as a voxel of fine space. |
 | **[Engine](Engine.md)** | Power. Drawn at the Blueprint Table, built at the [Engineering Table](Engineering_Table.md). |
 | **[Transmission](Transmission.md)** | Gears and a clutch. Drawn at the Blueprint Table, built at the [Engineering Table](Engineering_Table.md). |
-| **[Clutch](Clutch.md)** | Can be a micro voxel that a card switches. |
+| **[Clutch](Clutch.md)** | Can be a voxel of fine space that a card switches. |
 | **[Thruster](Thruster.md)** | Pushes the whole body along its facing; burns liquid fuel. |
 | **[Propeller](Propeller.md)** | Pulls the whole body along its facing from a turning shaft. |
 | **[Gas Cell](Gas_Cell.md)** | Holds a lift gas; an [Airship](Airship.md) floats on a block of them. |
@@ -33,12 +34,12 @@ R   R
 
 P is a Wrought Iron Plate, R is a Wrought Iron Rod and S is a [Shaft](Shaft.md). Craft it at the [Engineering Table](Engineering_Table.md) with a [hammer](Hammer.md) in the tool row, 3 machine bolts ([Fasteners](Fasteners.md)) and Mechanical Treatise I: Engines, Flywheels and Dynamotors ([Treatise](Treatise.md)).
 
-1. Place a **Lift** and build on top of it. Everything that touches the lift, block to block, becomes the vehicle: micro cells, bearings and other joints, adapters, thrusters, seats. **It mustn't touch the ground or anything else**, or the lift complains *"Too big -- is it touching something besides the lift?"*
+1. Place a **Lift** and build on top of it. Everything that touches the lift, block to block, becomes the vehicle: fine space, bearings and other joints, adapters, thrusters, seats. **It mustn't touch the ground or anything else**, or the lift complains *"Too big -- is it touching something besides the lift?"*
 2. **Right-click** the lift. Everything on it becomes one object, held still: *"Lifted."*
    The message also shows the vehicle's **total mass** in Mu and its **center of mass**, as an offset from the middle of the lift's top face; it shows again each time you raise or lower the lift. If thrusters with fuel are fitted, it also gives how many times its own weight their upward push would lift.
    A body that a [joint](#joints) has turned out (a wheel on a bearing, an arm on a ball joint) rides along with the lift and keeps its angle. If the joints form closed loops, the message adds *"N closed joint loops: they will be stiff and may jitter."* The lift never refuses a loop.
 3. **Right-click** again to raise it a step, and **sneak-right-click** to lower it. It goes up to 10 steps.
-4. **Sneak-right-click at the bottom** (step 0) to put the vehicle back into the world as ordinary blocks, where it stands: *"Back in the world as blocks."* Every hanging body is put back first, the outermost first, each at the nearest quarter turn, and then the micro cells and blocks return. If anything is in the way you get *"Something is in the way..."* and nothing moves.
+4. **Sneak-right-click at the bottom** (step 0) to put the vehicle back into the world as ordinary blocks, where it stands: *"Back in the world as blocks."* Every hanging body is put back first, the outermost first, each at the nearest quarter turn, and then the fine space and blocks return. If anything is in the way you get *"Something is in the way..."* and nothing moves.
 5. **Break the lift** to drop the vehicle into the world, where gravity takes over. A [Wrench](Wrench.md) takes a lift apart quickly.
 
 A lift that is part of a vehicle itself cannot lift anything. A [Controller](Controller.md) card that targets a block of the vehicle follows that block when the vehicle is lifted or lowered.
@@ -47,15 +48,15 @@ A lift that is part of a vehicle itself cannot lift anything. A [Controller](Con
 
 Right-click any creation with a **Lift item** and the whole thing goes *into the item*, with every block and everything in every chest: *"Picked up (N blocks)."* Hanging bodies are put back first, as when lowering. Clicking any part of a vehicle, a swinging arm included, takes the whole vehicle. The tooltip shows how big it is. Right-click the ground to set it back down on a new lift, already held. If anything is in the way you get *"No room to put it down here,"* and nothing is placed.
 
-## Building with micro-blocks
+## Building in fine space
 
-Use a [Micro Core](Micro_Core.md) on a block and a **micro cell** appears, holding voxels a quarter of a block on a side: up to 64 to a cell. A voxel costs a 64th of a block. Hold a block and right-click to fill a voxel; mine a voxel to take it out. A second Micro Core in the other hand changes how the block in your main hand is placed: a line, a filled box, or mirrored across up to three planes. A cell weighs its voxels by what they are made of. Bodies collide voxel by voxel, so several spinning arms fit in one block as long as their voxels never meet.
+Cut a block into [motes](Mote.md) and place them with right-click: each mote is a voxel a quarter of a block on a side, up to 64 to a block of [Fine Space](Fine_Space.md). Mine a voxel to take it out and get its mote back. A [Fine Gauge](Fine_Gauge.md) in either hand changes how motes go in: a line, a filled box, a ramp, or mirrored across up to three planes. A block of Fine Space weighs its voxels by what they are made of. Bodies collide voxel by voxel, so several spinning arms fit in one block as long as their voxels never meet.
 
-Micro shafts, cogs and bearings join full-size rotation through a [Rotation Adapter](Rotation_Adapter.md). Micro [pulleys](Pulleys.md#micro-pulleys) join each other by belt. A [Differential](Differential.md) shares a drive shaft between two axles.
+Shafts, cogs and bearings in fine space join full-size rotation through a [Rotation Adapter](Rotation_Adapter.md). [Pulleys](Pulleys.md#pulleys-in-fine-space) in fine space join each other by belt. A [Differential](Differential.md) shares a drive shaft between two axles.
 
 ## Joints
 
-A joint is a block you place as a micro-block, with its **front** toward the part that should move. Use it with an **empty hand** to assemble what is joined to its front face, block to block, into a second body; use it again to put that body back. Only the voxels joined to the front face move; the rest of the cell stays. Putting back snaps a body to the nearest of the 24 ways a cube can be turned; a hinge's body lands at the nearest quarter turn.
+A joint is a block you place against a block or in fine space, with its **front** toward the part that should move. Use it with an **empty hand** to assemble what is joined to its front face, block to block, into a second body; use it again to put that body back. Only the voxels joined to the front face move; the rest of the block stays. Putting back snaps a body to the nearest of the 24 ways a cube can be turned; a hinge's body lands at the nearest quarter turn.
 
 | Joint | The body |
 | --- | --- |
@@ -67,13 +68,13 @@ A joint is a block you place as a micro-block, with its **front** toward the par
 | [Slider Joint](Slider_Joint.md) | Slides along its front axis against a spring: suspension. |
 | [Piston Joint](Piston_Joint.md) | Slides to a level a card sets. |
 
-A joint placed as a full-size block does nothing: *"It only works as a micro-block: put it in a micro cell."* A joint can sit on a body that another joint turned, so an arm can carry a wheel. Put the outermost body back first.
+The [Ball](Ball_Joint.md), [Locked](Locked_Joint.md), [Slider](Slider_Joint.md) and [Piston](Piston_Joint.md) Joints work the same as full-size blocks and as voxels. A joint can sit on a body that another joint turned, so an arm can carry a wheel. Put the outermost body back first.
 
-Breaking an assembled bearing, as a micro voxel or as a full-size block, puts its body back into the world as voxels or blocks, as a click would. The body is let go only if something blocks the put-back or it carries a body of its own. A [Joint Link](Joint_Link.md) holds a lifted body to a joint voxel without making a new body; a Lift refuses a vehicle that has a link until it is let go.
+Breaking an assembled bearing, as a voxel of fine space or as a full-size block, puts its body back into the world as voxels or blocks, as a click would. The body is let go only if something blocks the put-back or it carries a body of its own. A [Joint Link](Joint_Link.md) holds a lifted body to a joint voxel without making a new body; a Lift refuses a vehicle that has a link until it is let go.
 
-Full-size blocks touching a micro arm join it when its bearing is inside a body. Putting such an arm back lands them only at turns that put them on the grid; otherwise the message says to turn it back first.
+Full-size blocks touching an arm in fine space join it when its bearing is inside a body. Putting such an arm back lands them only at turns that put them on the grid; otherwise the message says to turn it back first.
 
-A [Data Connector](Data_Connector.md) picks a single joint voxel, so a [Controller](Controller.md) card can brake or steer a bearing, set a piston's level or switch a micro [Clutch](Clutch.md#micro-clutch).
+A [Data Connector](Data_Connector.md) picks a single joint voxel, so a [Controller](Controller.md) card can brake or steer a bearing, set a piston's level or switch a [Clutch](Clutch.md#fine-clutch) in fine space.
 
 ## Floating on a magnet
 
