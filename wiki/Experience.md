@@ -112,4 +112,4 @@ A [Culture Dish](Sculk_Culture.md) is a node that grows its own sculk store from
 
 ## Where to see it
 
-Jade shows the seated container in words, and whether a run is moving or settled. With an XP Meter carried it shows level, points, flow and leak.
+Jade shows the seated container in words, and whether a run is moving or settled. With an XP Meter carried it shows level, points, flow and leak. Looking at a vessel that holds banked XP shows "Holds banked XP", or "Banked XP" with the figure when you carry an XP Meter; the line is absent while the vessel holds none.
