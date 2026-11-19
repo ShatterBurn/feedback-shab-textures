@@ -75,6 +75,10 @@ Taking the load off lets the cable cool back down, but **damage doesn't heal**: 
 
 Right-click a bare cable with an insulating item (rubber, leather, terracotta or any other item of a material with an insulation band, the same stuff that coats a cable in the recipe) to coat it again. One item is used up and the cable takes the band of that material. A cable carrying current cannot be coated; the screen says *A live cable cannot be coated*, so switch the line off first. [Electrified Fence](Electrified_Fence.md) posts stay bare.
 
+## Stripping insulated cable
+
+Right-click an insulated cable with any edged tool (a sword, a knife or any hafted blade) to shave the coat off. The coat is lost, not returned, and the tool takes one point of wear. A cable carrying current cannot be stripped; the screen says *A live cable cannot be stripped*, so switch the line off first. The bare cable can be coated again as above.
+
 ## Superconducting cable
 
 Cable made from Redstone Superconductor Wire carries up to its **critical current** with no loss from the packet. At standard gauge the critical current is **4 A** for the poor grade, **10 A** for fair and **25 A** for the best grade; other gauges scale like copper. Past it the cable **quenches**: it goes resistive, with a heavy loss from every packet, and heats on what it carries. It recovers once it has cooled to near room temperature and carries no more than its rating. Left heating, it degrades and burns out like any wire ([Overloading](#overloading)). All figures are placeholders.

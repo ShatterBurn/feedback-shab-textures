@@ -160,6 +160,19 @@ public class CableBlock extends Block implements EntityBlock {
     protected net.minecraft.world.ItemInteractionResult useItemOn(net.minecraft.world.item.ItemStack stack, BlockState state, Level level, BlockPos pos,
                                                                   net.minecraft.world.entity.player.Player player, net.minecraft.world.InteractionHand hand,
                                                                   net.minecraft.world.phys.BlockHitResult hit) {
+        if (level.getBlockEntity(pos) instanceof CableBlockEntity coated && coated.isInsulated()
+                && io.github.soundgoodizerfan.feedback.modular.item.ModularStacks.edged(stack)) {
+            // Stripping: any edged modular tool shaves the coat off a dead cable; the coat is lost, the tool wears.
+            if (level.isClientSide)
+                return net.minecraft.world.ItemInteractionResult.SUCCESS;
+            if (coated.getAmps() > 0f) {
+                player.displayClientMessage(net.minecraft.network.chat.Component.translatable("feedback.cable.strip_live"), true);
+                return net.minecraft.world.ItemInteractionResult.CONSUME;
+            }
+            coated.setInsulation(null);
+            stack.hurtAndBreak(1, player, net.minecraft.world.entity.LivingEntity.getSlotForHand(hand));
+            return net.minecraft.world.ItemInteractionResult.CONSUME;
+        }
         if (!(level.getBlockEntity(pos) instanceof CableBlockEntity wire) || !wire.bare())
             return net.minecraft.world.ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         io.github.soundgoodizerfan.feedback.process.Material.Located found = io.github.soundgoodizerfan.feedback.process.Material.find(
