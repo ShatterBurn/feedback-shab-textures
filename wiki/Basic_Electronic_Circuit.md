@@ -60,6 +60,8 @@ A [Controller](Controller.md#circuit-slot), [Data Port](Data_Port.md#circuit), [
 - **Heat**: past what its traces stand, the traces lift and it goes dead. Baking a finished circuit in the Reflow Oven does it too. Watch the oven with a [Thermometer](Instruments.md#thermometer); take it out to stop.
 - **Current**: a printed circuit on a whisker carries only 0.1 A. More than that and an element fuses now and then; the last one makes it dead. Etched traces carry 2 A, more than the whisker's own fuse ever lets through.
 
+A dead circuit built into a machine can be swapped for a live one at the [Engineering Table](Engineering_Table.md#repair-tab) without losing the machine.
+
 ## Sharpening an instrument
 
 A circuit crafted with a [Thermometer](Instruments.md#thermometer), [Pressure Gauge](Instruments.md#pressure-gauge), [Galvanometer](Instruments.md#galvanometer) or [Electroscope](Instruments.md#electroscope) is fitted to it and the instrument reads in finer steps everywhere (hand readings, tooltips, Jade, the lot). The step is multiplied by `1 - 0.6 x (1 - noise)`: a quiet etched circuit with a clock (noise near 0.05) gives about 43% of the bare step, a noisy circuit (noise 0.6) about 76%, and a dead one nothing. The step never reaches zero: a fitted instrument is still not exact. Check the circuit's noise with a [Component Tester](Instruments.md#component-tester) before fitting. Nothing is gated; a bare instrument reads, just coarser.
