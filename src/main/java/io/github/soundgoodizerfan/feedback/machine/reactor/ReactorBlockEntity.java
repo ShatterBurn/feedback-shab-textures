@@ -68,6 +68,8 @@ public class ReactorBlockEntity extends io.github.soundgoodizerfan.feedback.mach
     private final java.util.List<ItemStack> hopper = new java.util.ArrayList<>(
             java.util.Collections.nCopies(3, ItemStack.EMPTY));
     private float progress;
+    /** Away-time bookkeeping: see {@link io.github.soundgoodizerfan.feedback.core.thermal.Catchup}. */
+    private final io.github.soundgoodizerfan.feedback.core.thermal.Catchup offline = new io.github.soundgoodizerfan.feedback.core.thermal.Catchup();
     @Nullable
     private ThermalProcess running;
 
@@ -302,6 +304,10 @@ public class ReactorBlockEntity extends io.github.soundgoodizerfan.feedback.mach
         // No fire reaches it: a cold head against it chills it instead (cryogenic rows).
         if (fireTu.value() <= ambient.value())
             fireTu = HeatSource.coldAt(level, worldPosition);
+        // The body first, so the tanks below close their own gap against the temperature it now has.
+        long away = offline.take(level);
+        if (away > 0L)
+            io.github.soundgoodizerfan.feedback.core.thermal.Catchup.settle(this, HeatSource.spanAt(level, worldPosition, away), ambient, away);
         Heat.tick(this, fireTu, ambient, fireTu.value() != ambient.value());
         measureDelta();
         pull();
@@ -455,6 +461,7 @@ public class ReactorBlockEntity extends io.github.soundgoodizerfan.feedback.mach
     @Override
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
+        offline.save(tag, level);
         tag.putFloat("Temperature", temperature);
         tag.putFloat("Progress", progress);
         for (int i = 0; i < INPUT_TANKS; i++)
@@ -471,6 +478,7 @@ public class ReactorBlockEntity extends io.github.soundgoodizerfan.feedback.mach
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
+        offline.load(tag);
         temperature = tag.contains("Temperature") ? tag.getFloat("Temperature") : ThermalTuning.AMBIENT_TU.value();
         progress = tag.getFloat("Progress");
         for (int i = 0; i < INPUT_TANKS; i++)
