@@ -4762,7 +4762,7 @@
   "gui.feedback.engineering.note.no_blank": "Needs a blank treatise or blank paper",
   "gui.feedback.engineering.note.no_specimen": "Needs a specimen",
   "gui.feedback.engineering.note.written": "Written down",
-  "gui.feedback.engineering.note.dish": "A dish is taken apart at the Prep Table",
+  "gui.feedback.engineering.note.dish": "A dish cannot be taken apart: cooking does not undo",
   "gui.feedback.engineering.status.ok": "Ready",
   "gui.feedback.engineering.status.school": "A treatise is missing",
   "gui.feedback.engineering.status.school_named": "Needs %s",

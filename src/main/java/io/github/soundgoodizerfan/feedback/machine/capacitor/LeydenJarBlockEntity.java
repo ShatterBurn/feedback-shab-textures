@@ -42,7 +42,7 @@ import net.minecraft.world.level.block.state.BlockState;
  * so a flip rebuilds its run -- an event, not a per-tick cost.
  * <p>
  * It gives back packets of its band until the Eu run out, the last of them fractional: a burst, not a battery. It never refuses. A band over its rating punctures the glass: the jar discharges at once as a shock at its band to
- * anything within {@link ElectricMachineTuning#LEYDEN_JAR_CRACK_RADIUS} blocks and is destroyed (a cheap part may pop).
+ * anything touching the jar ({@link ElectricMachineTuning#LEYDEN_JAR_CRACK_REACH}) and is destroyed (a cheap part may pop), with a crack and sparks.
  */
 public class LeydenJarBlockEntity extends ElectricNode implements io.github.soundgoodizerfan.feedback.modular.bake.FigureHolder {
 
@@ -173,8 +173,13 @@ public class LeydenJarBlockEntity extends ElectricNode implements io.github.soun
         if (getPacketEu() > 0f && getBand().compareTo(band()) > 0) {
             float held = charge;
             for (net.minecraft.world.entity.LivingEntity near : level.getEntitiesOfClass(net.minecraft.world.entity.LivingEntity.class,
-                    new net.minecraft.world.phys.AABB(worldPosition).inflate(ElectricMachineTuning.LEYDEN_JAR_CRACK_RADIUS)))
+                    new net.minecraft.world.phys.AABB(worldPosition).inflate(ElectricMachineTuning.LEYDEN_JAR_CRACK_REACH)))
                 io.github.soundgoodizerfan.feedback.core.hazard.Shock.apply(near, band(), held);
+            // The glass goes with a crack and a flash even when the jar held nothing.
+            level.playSound(null, worldPosition, net.minecraft.sounds.SoundEvents.GLASS_BREAK, net.minecraft.sounds.SoundSource.BLOCKS, 1f, 1.4f);
+            if (level instanceof net.minecraft.server.level.ServerLevel server)
+                server.sendParticles(net.minecraft.core.particles.ParticleTypes.ELECTRIC_SPARK, worldPosition.getX() + 0.5, worldPosition.getY() + 0.5,
+                        worldPosition.getZ() + 0.5, 12, 0.3, 0.3, 0.3, 0.2);
             level.destroyBlock(worldPosition, false);
             return;
         }
