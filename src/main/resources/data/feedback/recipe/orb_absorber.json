@@ -10,12 +10,15 @@
     },
     "A": {
       "item": "minecraft:amethyst_shard"
+    },
+    "X": {
+      "item": "feedback:xp_wire"
     }
   },
   "pattern": [
     "PAP",
     "ASA",
-    "PAP"
+    "PXP"
   ],
   "result": {
     "count": 1,

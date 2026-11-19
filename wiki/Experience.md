@@ -53,9 +53,9 @@ P W P      W copper wire    P E P      P wrought iron plate
 ```
 P A P      Orb Absorber     P A P      Smelter Tap
 A S A      S sculk shrieker A H A      H hopper
-P A P                       P P P
+P X P      X XP wire        P P P
 ```
-A is an amethyst shard.
+A is an amethyst shard. The shrieker draws orbs in, the amethyst focuses the pull, and the XP wire carries what is gathered into the run.
 
 ## Disenchanting Stone
 
