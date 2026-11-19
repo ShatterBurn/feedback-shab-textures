@@ -12,12 +12,15 @@ import io.github.soundgoodizerfan.feedback.combat.hit.Wielding;
 import io.github.soundgoodizerfan.feedback.combat.state.CombatPhase;
 import io.github.soundgoodizerfan.feedback.combat.state.CombatState;
 import io.github.soundgoodizerfan.feedback.modular.item.ModularStacks;
+import io.github.soundgoodizerfan.feedback.modular.type.MaterialColors;
 import io.github.soundgoodizerfan.feedback.modular.type.ModularType;
 import io.github.soundgoodizerfan.feedback.modular.type.ModularTypes;
 import io.github.soundgoodizerfan.feedback.net.OffhandStrikePayload;
 import io.github.soundgoodizerfan.feedback.net.SwingPlayPayload;
 import io.github.soundgoodizerfan.feedback.net.SwingStartPayload;
 import io.github.soundgoodizerfan.feedback.registry.FCombat;
+import net.bettercombat.api.fx.ParticlePlacement;
+import net.bettercombat.api.fx.TrailAppearance;
 import net.bettercombat.client.BetterCombatClientMod;
 import net.bettercombat.client.animation.PlayerAttackAnimatable;
 import net.bettercombat.logic.AnimatedHand;
@@ -311,8 +314,39 @@ public final class UpswingSwing {
 
     /** Plays a Better Combat clip on {@code player}: its own gearing puts the strike {@code upswing} of {@code length} ticks in. */
     private static void play(Player player, String clip, AnimatedHand hand, float length, float upswing) {
-        if (player instanceof PlayerAttackAnimatable animatable)
+        if (player instanceof PlayerAttackAnimatable animatable) {
             animatable.playAttackAnimation(clip, hand, length, upswing);
+            trail(player, animatable, clip, hand, Math.round(length * upswing));
+        }
+    }
+
+    /**
+     * Better Combat's slash trail for a modular weapon's swing, placed by clip (design read from Better Combat's
+     * clip-keyed trail table; nothing copied) and coloured by the weapon's primary part's material. Its particles
+     * appear when the strike lands, {@code delay} ticks in. No trail for a clip with no placement, or a stack with no design.
+     */
+    private static void trail(Player player, PlayerAttackAnimatable animatable, String clip, AnimatedHand hand, int delay) {
+        boolean off = hand == AnimatedHand.OFF_HAND;
+        ItemStack held = off ? player.getOffhandItem() : player.getMainHandItem();
+        var design = ModularStacks.design(held);
+        ModularType type = design == null ? null : ModularTypes.known(design.type());
+        var part = type == null ? null : design.part(type.primary());
+        if (part == null)
+            return;
+        float roll = clip.endsWith("_left") ? 180f : 0f;
+        ParticlePlacement placement;
+        if (clip.startsWith("bettercombat:one_handed_slash_horizontal"))
+            placement = new ParticlePlacement("slash90", 0f, -0.1f, 0f, 0f, 0f, roll);
+        else if (clip.startsWith("bettercombat:two_handed_slash_horizontal"))
+            placement = new ParticlePlacement("slash180", 0f, -0.1f, 0f, 0f, 0f, roll - 5f);
+        else if (clip.startsWith("bettercombat:two_handed_stab"))
+            placement = new ParticlePlacement("stab", 0f, -0.15f, 0f, 0f, 0f, 0f);
+        else
+            return;
+        long rgb = (MaterialColors.of(part.material()) & 0xFFFFFFL) << 8; // Better Combat's colour is 0xRRGGBBAA
+        var look = new TrailAppearance(new TrailAppearance.Part(rgb | 0xFFL, false),
+                new TrailAppearance.Part(rgb | 0x99L, false));
+        animatable.playAttackParticles(off, (float) player.entityInteractionRange(), delay, List.of(placement), look);
     }
 
     private static void stop(Player player, float fade) {
