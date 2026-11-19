@@ -182,7 +182,7 @@ In barehanded mode (**B** toggles it), attacking with a gun swings it as a **blu
 | Knockback | 0.3 plus 0.08 per Mu |
 | Hits | the nearest thing on a short line from your eye |
 
-A swing doesn't wear the gun (a swing isn't misuse). Traits and [material perks](Material_Perks.md) resolve as for any hit.
+The slam animation starts at the click, and other players see it too; the blow lands when the swing strikes, a few ticks in. A swing doesn't wear the gun (a swing isn't misuse). Traits and [material perks](Material_Perks.md) resolve as for any hit.
 
 This is **gun-fu**, and the moves are learned in the [Brute skill tree](Skills.md#brute): the swing itself (*pistol whip*), a **free shot** (*chamber*: a blow that staggers its target chambers one shot, which fires at it if the gun is loaded and working; a gun too light to stagger gives nothing), swinging the **off-hand** gun too (*dual*), and a sneaking **spin** that hits everything within 2 blocks.
 
