@@ -20,7 +20,7 @@ Only a [Rotation Adapter](Rotation_Adapter.md) joins rotation in finespace to fu
 
 ## Machines in finespace
 
-Any modular machine item, such as a dynamotor, thruster, jet, gas tank, heat exchanger, water wheel or gas centrifuge, can be a voxel. Start finespace with a [Mote](Mote.md), then right-click an existing finespace cell with the machine. It takes one voxel, and that voxel is the machine: the design it was built with, running by itself and drawn at a quarter of a block. A thruster in a voxel pushes its body. One machine item pays for one voxel.
+Any modular machine item, such as a dynamotor, thruster, jet, gas tank, heat exchanger, water wheel or gas centrifuge, can be a voxel. Start finespace with a [Mote](Mote.md), then right-click an existing finespace cell with the machine. It takes one voxel, and that voxel is the machine: the design it was built with, drawn at a quarter of a block. A thruster in a voxel pushes its body. One machine item pays for one voxel.
 
 The machine is scaled to a voxel's volume when placed. Figures that follow volume are a 64th of the full-size machine: mass, power, force, burn, capacity, tank, flow, push, pull, lift, current, supply, stored energy, slots, heat, work, intake, leak and seep. Rotational inertia is a 1024th. Figures that belong to the material, such as temperatures, speeds, efficiencies and voltage bands, stay as built.
 
@@ -32,7 +32,13 @@ Fluid and item pipes, hoppers and the like see a hosted machine. The cell answer
 
 A hosted machine weighs a 64th of the mass figure of its design, not the stuff its block is made of.
 
-A hosted machine does not join shaft (rotation), electrical or heat networks, so a dynamotor in finespace runs alone. Shafts, cogs and joints are their own parts and join as described above. A machine that toggles its own state (lamp, burner, damper, valve) cannot be hosted. A machine in an assembled arm blocks the joint from assembling or putting back; the message says to take it out first. A machine that opens a screen is unchecked.
+A hosted rotation machine, such as a dynamotor on a shaft or a flywheel-driven or water-driven machine, joins the finespace rotation network. It couples to the shafts and cogs beside its voxel by the same shaft and tooth rules as the full-size block, so a finespace shaft can turn it or be turned by it.
+
+A hosted electric machine, such as a dynamotor or motor, joins the cable run: the cell is on the cable it touches like the full-size block at that spot. A hosted heat source, such as a heater or coil, heats the blocks and vessels round the cell the way the full-size block would.
+
+A cell takes part in the electric network and in heating through one machine each: the first electric machine it holds and the first heat source it holds. A second electric machine in the same cell is not on the cable. A hosted machine reaches what the cell's block touches, not the voxel beside it. When a hosted machine's figures ride the machine's standard figures they are a 64th of the full-size ones; a dynamotor's and a pressure vessel's own figures stay as the full-size machine's.
+
+A machine that toggles its own state (lamp, burner, damper, valve) cannot be hosted. A machine in an assembled arm blocks the joint from assembling or putting back; the message says to take it out first. A machine that opens a screen is unchecked.
 
 ## Joints
 

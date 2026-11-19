@@ -54,7 +54,7 @@ Cut a block into [motes](Mote.md) and place them with right-click: each mote is 
 
 Shafts, cogs and bearings in finespace join full-size rotation through a [Rotation Adapter](Rotation_Adapter.md). [Pulleys](Pulleys.md#pulleys-in-finespace) in finespace join each other by belt. A [Differential](Differential.md) shares a drive shaft between two axles.
 
-A modular machine such as a thruster, dynamotor or gas tank can take one voxel of existing finespace and work there at a 64th of its size; a thruster in a voxel pushes the body. See [Machines in finespace](Finespace.md#machines-in-finespace).
+A modular machine such as a thruster, dynamotor or gas tank can take one voxel of existing finespace and work there at a 64th of its size; a thruster in a voxel pushes the body, and a dynamotor in a voxel couples to finespace shafts and the cable it touches. See [Machines in finespace](Finespace.md#machines-in-finespace).
 
 ## Joints
 
