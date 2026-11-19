@@ -197,6 +197,7 @@ This is **gun-fu**, and the moves are learned in the [Brute skill tree](Skills.m
 ### Hits and effects
 
 - **Living targets:** flesh sprays blood, red for most mobs, green for slimes, purple for endermen. Skeletons throw bone dust. Metal-armored bodies and iron golems throw sparks and ring with a clang.
+- **A bullet passing within 3 blocks of another player makes a whiz as it goes by**, once per bullet. Passing within 3 blocks of an animal (any mob that is not hostile, other than the shooter) makes it panic and run, as if the shooter had hurt it. Hostile mobs ignore the near miss.
 - **The shooter hears a tick** on every hit on a living thing and a deeper tick on a kill.
 - **Blocks:** a bullet that strikes a block throws chips, dust and smoke, plus sparks on hard stone and metal. It leaves a **bullet hole** that fades after about 30 s on solid faces, small for a weak shot and larger for a strong one; its look follows the surface: a chip in stone or metal, a splinter in wood, a crack in glass, a dent in soft earth. Leaves and non-solid faces take none. A ricochet trails sparks.
 - **Muzzle:** every firearm shows a muzzle flash and smoke. A gun that works an action (bolt, lever, pump, self-loading, automatic) also ejects its spent case; break actions and flintlocks do not.

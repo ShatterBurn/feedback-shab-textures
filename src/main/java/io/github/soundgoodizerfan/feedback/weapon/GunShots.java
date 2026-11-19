@@ -1443,7 +1443,7 @@ public final class GunShots {
         return true;
     }
 
-    /** A bullet passing within a few blocks of a player who did not fire it is heard once, as it goes by. */
+    /** A bullet passing within a few blocks of a player who did not fire it is heard once, as it goes by; passing animals panic. */
     private static void whiz(ServerLevel level, Shot s, Vec3 from, Vec3 to) {
         Vec3 seg = to.subtract(from);
         double len2 = seg.lengthSqr();
@@ -1458,6 +1458,17 @@ public final class GunShots {
                 continue;
             s.whizzed.add(pl.getUUID());
             level.playSound(null, near.x, near.y, near.z, io.github.soundgoodizerfan.feedback.registry.FSounds.GUN_WHIZ.get(), SoundSource.PLAYERS, 1f, 0.9f + level.random.nextFloat() * 0.3f);
+        }
+        // Animals flinch: a round passing close makes them panic as if shot at (vanilla PanicGoal reads last-hurt-by). Hostiles hold their ground.
+        if (s.shooter == null)
+            return;
+        for (net.minecraft.world.entity.PathfinderMob m : level.getEntitiesOfClass(net.minecraft.world.entity.PathfinderMob.class, new AABB(from, to).inflate(3),
+                e -> !(e instanceof net.minecraft.world.entity.monster.Enemy) && e != s.shooter && !s.whizzed.contains(e.getUUID()))) {
+            double t = Mth.clamp(m.getEyePosition().subtract(from).dot(seg) / len2, 0, 1);
+            if (from.add(seg.scale(t)).distanceToSqr(m.getEyePosition()) > 9)
+                continue;
+            s.whizzed.add(m.getUUID());
+            m.setLastHurtByMob(s.shooter);
         }
     }
 }
