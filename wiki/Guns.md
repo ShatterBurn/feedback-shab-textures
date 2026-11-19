@@ -12,7 +12,7 @@ In your hands it moves: it kicks back and up on each shot (barely at all when ai
 
 ## Getting one
 
-1. Optionally, draw the gun on paper at the [Blueprint Table](Blueprint_Table.md) (it takes Weapons Treatise II: Firearms, see [Treatise](Treatise.md)) and print it: a **blueprint** of the gun. It shows the figures the gun will have (at the reference round) before you make it.
+1. Optionally, draw the gun on paper at the [Blueprint Table](Blueprint_Table.md) (it takes Weapons Treatise II: Firearms, see [Treatise](Treatise.md)) and print it: a **blueprint** of the gun. It shows the figures the gun will have (at the reference round) before you make it. A cartridge in the table's test round slot shows how the drawn gun handles that round (see [Round test](Blueprint_Table.md#round-test)).
 2. Make the parts: shape them at the bench for their stock (metal at the [Smithing Table](Smithing_Table.md) or [Anvil](Anvil.md), wood, bone and leather at the [Woodworking Table](Woodworking_Table.md), cold stock at the [Stonecutter](Stonecutter.md)) or machine them ([Gun Parts](Gun_Parts.md)).
 3. Put the parts in the grid of the Engineering Table with two [fasteners](Fasteners.md), holding Weapons Treatise II. You get the **Gun**. A blueprint in the blueprint slot judges the fit of the parts against the drawing and skips the hand work.
 4. Make [ammunition](Ammunition.md) and load it.

@@ -86,7 +86,23 @@ Every row behaves the same way:
 
 A blueprint's tooltip lists the same figures. Blueprints stack to sixteen. The table offers exactly what a [crafting grid](Tools_and_Weapons.md#putting-one-together) can assemble, because it asks the same rules: if a drawing is on the sheet, those parts put together at the [Engineering Table](Engineering_Table.md) make that tool. Heat and forging flaws are not part of a drawing: a blueprint is paper, and flaws are what forging adds. Requirements and blueprints are free; what a finished piece *has* still costs an instrument ([Balance Scale](Instruments.md#balance-scale), [Scratch Files](Instruments.md#scratch-file-set)).
 
-**Print**, at the bottom right, turns a sheet of paper in the paper slot into a **Blueprint** carrying the design and its figures. The pinned drafts print onto the paper too, and come back as pins when you put the Blueprint back in the slot to open it for drawing again. The table keeps nothing; the paper, the source blueprint and the samples come back to you when you close it.
+**Print**, at the bottom right, turns a sheet of paper in the paper slot into a **Blueprint** carrying the design and its figures. The pinned drafts print onto the paper too, and come back as pins when you put the Blueprint back in the slot to open it for drawing again. The table keeps nothing; the paper, the source blueprint, the samples and the test round come back to you when you close it.
+
+### Round test
+
+The **test round slot** on the bottom row, between the sample slot and the copy slot, takes a cartridge. With a gun drawn on the board, a **Round test** plaque shows the drawing worked out against that round on paper: the parts exactly to drawing, in ideal conditions. Nothing is fired and nothing is measured, so the figures are exact and need no instrument. The real gun's figures still come off the item with an [instrument](Instruments.md).
+
+The plaque lists:
+
+- **Chamber:** the charge against what the walls hold, in red when the charge asks more than the chamber holds, with the share it asks.
+- **Muzzle:** speed in m/s and the Work the shot carries.
+- **Cycle:** time between shots and spread.
+- **Mass:** the gun and the projectile.
+- **Kick** in degrees.
+- **Heat:** what each shot adds to the barrel and how much the barrel sheds a second, in Tu.
+- **Damage:** the most one hit can be worth, the muzzle Work at 10 Work per damage with every bit landing. The round's shape and the target take their share of it.
+
+A round the drawn gun cannot fire says why in red instead of the figures: a shot charge does not fire from a rifled bore, a bore that is not the round's does not chamber it, or the round cannot be fired from this gun. The round is never spent.
 
 ### Copying
 

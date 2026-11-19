@@ -113,6 +113,7 @@ public class BlueprintTableScreen extends SkinnedScreen<BlueprintTableMenu> impl
         skin.panel(g, leftPos, topPos, imageWidth, imageHeight);
         skin.slot(g, leftPos + BlueprintTableMenu.PAPER_X, topPos + BlueprintTableMenu.PAPER_Y);
         skin.slot(g, leftPos + BlueprintTableMenu.SOURCE_X, topPos + BlueprintTableMenu.SOURCE_Y);
+        skin.slot(g, leftPos + BlueprintTableMenu.ROUND_X, topPos + BlueprintTableMenu.ROUND_Y);
         for (int i = 0; i < 9; i++)
             skin.slot(g, leftPos + BlueprintTableMenu.HOTBAR_X + i * 18, topPos + BlueprintTableMenu.HOTBAR_Y);
         if (board.hasSelection())
@@ -126,9 +127,30 @@ public class BlueprintTableScreen extends SkinnedScreen<BlueprintTableMenu> impl
     public void render(GuiGraphics g, int mouseX, int mouseY, float partialTick) {
         super.render(g, mouseX, mouseY, partialTick);
         board.drawOverlay(g, mouseX, mouseY);
+        drawRoundTest(g);
         if (stampAt > 0)
             GuiStyle.stamp(g, Component.translatable("message.feedback.blueprint_table.printed"), board.centreXAbs(), board.centreYAbs(),
                     System.currentTimeMillis() - stampAt, skin.accent() & 0xFFFFFF);
+    }
+
+    /** The round test: with a cartridge seated and a gun on the sheet, a plaque above the slots reads the gun against it, on paper. */
+    private void drawRoundTest(GuiGraphics g) {
+        List<Component> lines = RoundTest.lines(board.drawing(), menu.round());
+        if (lines.isEmpty())
+            return;
+        int w = 190, rowH = 10, h = 24 + lines.size() * rowH;
+        int x = leftPos + BlueprintTableMenu.ROUND_X + 18 - w, y = topPos + BlueprintTableMenu.ROUND_Y - 6 - h;
+        g.pose().pushPose();
+        g.pose().translate(0, 0, 200);
+        skin.panel(g, x, y, w, h);
+        g.drawString(font, Component.translatable("gui.feedback.round_test.title"), x + 8, y + 7, skin.ink(), false);
+        g.drawString(font, Component.translatable("gui.feedback.round_test.ideal"), x + 8, y + 7 + rowH, skin.dim(), false);
+        int line = y + 7 + rowH * 2;
+        for (Component c : lines) {
+            g.drawString(font, font.plainSubstrByWidth(c.getString(), w - 16), x + 8, line, c.getStyle().getColor() != null ? c.getStyle().getColor().getValue() | 0xFF000000 : skin.ink(), false);
+            line += rowH;
+        }
+        g.pose().popPose();
     }
 
     /** Hovering says what a thing is; the paper and sample slots say what they are for while empty. */
@@ -141,6 +163,10 @@ public class BlueprintTableScreen extends SkinnedScreen<BlueprintTableMenu> impl
             return;
         if (in(mouseX, mouseY, leftPos + BlueprintTableMenu.SAMPLE_X - 1, topPos + BlueprintTableMenu.SAMPLE_Y - 1) && board.hasSelection() && menu.sample(0).isEmpty()) {
             g.renderTooltip(font, Component.translatable("gui.feedback.blueprint_table.sample"), mouseX, mouseY);
+            return;
+        }
+        if (in(mouseX, mouseY, leftPos + BlueprintTableMenu.ROUND_X - 1, topPos + BlueprintTableMenu.ROUND_Y - 1) && menu.round().isEmpty()) {
+            g.renderTooltip(font, Component.translatable("gui.feedback.blueprint_table.round"), mouseX, mouseY);
             return;
         }
         if (in(mouseX, mouseY, leftPos + BlueprintTableMenu.PAPER_X - 1, topPos + BlueprintTableMenu.PAPER_Y - 1) && !menu.getSlot(0).hasItem()) {

@@ -27,6 +27,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import io.github.soundgoodizerfan.feedback.registry.FWeapons;
 
 /**
  * The Blueprint Table's paper slot, one sample slot per role row and the hotbar. A sample is an
@@ -50,11 +51,15 @@ public class BlueprintTableMenu extends AbstractContainerMenu {
     public static final int BTN_COPY = 2;
     public static final int SOURCE_X = 240, SOURCE_Y = 294;
     public static final int SAMPLE_X = 186, SAMPLE_Y = 294, SAMPLE_STEP = 0;
+    /** The test round: a cartridge the drawn gun is read against on paper. */
+    public static final int ROUND_X = 214, ROUND_Y = 294;
 
     private final Container paper = new SimpleContainer(1);
     private final Container samples = new SimpleContainer(ROLE_SLOTS);
     /** A blueprint to copy from; kept when copied. */
     private final Container source = new SimpleContainer(1);
+    /** A round to test a drawn gun with; kept, never spent. */
+    private final Container round = new SimpleContainer(1);
     /** The treatise volumes the player holds here (bits of {@link School#bit}), kept by the server and synced, so the screen can leave out what cannot be drawn. */
     private final net.minecraft.world.inventory.DataSlot schools = net.minecraft.world.inventory.DataSlot.standalone();
     private final Player player;
@@ -113,6 +118,17 @@ public class BlueprintTableMenu extends AbstractContainerMenu {
                 return 1;
             }
         });
+        addSlot(new Slot(round, 0, ROUND_X, ROUND_Y) {
+            @Override
+            public boolean mayPlace(ItemStack stack) {
+                return stack.has(FWeapons.CARTRIDGE.get());
+            }
+
+            @Override
+            public int getMaxStackSize() {
+                return 1;
+            }
+        });
         for (int column = 0; column < 9; column++)
             addSlot(new Slot(inventory, column, HOTBAR_X + column * 18, HOTBAR_Y));
     }
@@ -142,6 +158,11 @@ public class BlueprintTableMenu extends AbstractContainerMenu {
     /** The sample in role row {@code row}. */
     public ItemStack sample(int row) {
         return samples.getItem(row);
+    }
+
+    /** The round seated for the test, or empty. */
+    public ItemStack round() {
+        return round.getItem(0);
     }
 
     public static void send(Player player, Component text) {
@@ -240,6 +261,7 @@ public class BlueprintTableMenu extends AbstractContainerMenu {
             clearContainer(player, paper);
             clearContainer(player, samples);
             clearContainer(player, source);
+            clearContainer(player, round);
         });
     }
 
@@ -255,12 +277,15 @@ public class BlueprintTableMenu extends AbstractContainerMenu {
             return ItemStack.EMPTY;
         ItemStack held = slot.getItem();
         ItemStack moved = held.copy();
-        int hotbar = 2 + ROLE_SLOTS;
+        int hotbar = 3 + ROLE_SLOTS;
         if (index < hotbar) {
             if (!moveItemStackTo(held, hotbar, slots.size(), true))
                 return ItemStack.EMPTY;
         } else if (held.is(FTags.BLUEPRINT_PAPER)) {
             if (!moveItemStackTo(held, 0, 1, false))
+                return ItemStack.EMPTY;
+        } else if (held.has(FWeapons.CARTRIDGE.get())) {
+            if (!moveItemStackTo(held, 2 + ROLE_SLOTS, 3 + ROLE_SLOTS, false))
                 return ItemStack.EMPTY;
         } else if (isSample(held)) {
             if (!moveItemStackTo(held, 1, 1 + Math.max(shown.size(), 1), false))
