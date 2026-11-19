@@ -1363,6 +1363,7 @@ public class FBlocks {
                     .mapColor(MapColor.METAL)
                     .strength(3.0f)
                     .sound(SoundType.METAL)
+                    .noOcclusion()
                     .lightLevel(state -> state.getValue(net.minecraft.world.level.block.state.properties.BlockStateProperties.LIT) ? 12 : 0)));
 
     public static final DeferredBlock<io.github.soundgoodizerfan.feedback.machine.compressor.CompressorBlock> COMPRESSOR = BLOCKS.register("compressor",
