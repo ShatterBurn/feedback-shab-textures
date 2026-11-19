@@ -43,6 +43,8 @@ public final class GunTuning {
      * many, thrown in a cone at least this wide whatever the barrel. Placeholder.
      */
     public static final float GUN_SHOT_PELLET_MM = 8f, GUN_SHOT_SPREAD_DEG = 4f;
+    /** Placeholder. A smooth bore at least this wide (mm) reports as a shotgun's boom, not the rifled classes' crack; a narrower smooth bore or any rifled one does not. */
+    public static final float GUN_SMOOTHBORE_BOOM_BORE_MM = 12f;
 
     public static final int GUN_SHOT_MAX_PELLETS = 12;
 

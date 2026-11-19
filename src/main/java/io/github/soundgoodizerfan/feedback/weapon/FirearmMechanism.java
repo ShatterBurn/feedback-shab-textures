@@ -105,7 +105,9 @@ public final class FirearmMechanism implements GunMechanism {
 
     @Override
     public List<GunSound.Layer> sound(ItemStack gun, GunFigures figures, RandomSource random) {
-        return GunSound.layers(figures, random);
+        // A wide smooth bore (a shotgun, a musket) booms; a rifled or narrow one cracks by its power.
+        boolean boom = GunSpec.of(gun).filter(g -> !g.has("gun_rifling") && g.boreMmReal() >= GunTuning.GUN_SMOOTHBORE_BOOM_BORE_MM).isPresent();
+        return GunSound.layers(figures, random, boom);
     }
 
     @Override

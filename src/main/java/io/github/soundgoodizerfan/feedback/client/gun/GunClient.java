@@ -139,6 +139,22 @@ public final class GunClient {
         return e == me ? aim : AIMING.contains(e.getId()) ? 1f : 0f;
     }
 
+    /**
+     * Raising the gun to aim is the one moment a bipod is set down (crouched) or a folding stock opens: the cue is played there, for
+     * the shooter only.
+     */
+    private static void deployCue(Minecraft mc, net.minecraft.world.entity.player.Player player, net.minecraft.world.item.ItemStack gun) {
+        var design = io.github.soundgoodizerfan.feedback.modular.item.ModularStacks.design(gun);
+        if (design == null)
+            return;
+        var stock = design.part("i");
+        var event = design.part("I") != null && player.isCrouching() ? io.github.soundgoodizerfan.feedback.registry.FSounds.GUN_BIPOD_DEPLOY
+                : stock != null && "folding".equals(stock.variant()) ? io.github.soundgoodizerfan.feedback.registry.FSounds.GUN_STOCK_OPEN : null;
+        if (event != null)
+            mc.level.playLocalSound(player.getX(), player.getEyeY(), player.getZ(), event.get(), SoundSource.PLAYERS, 0.6f,
+                    0.95f + player.getRandom().nextFloat() * 0.1f, false);
+    }
+
     /** How far aimed the held gun is, 0 to 1. */
     public static float aim() {
         return aim;
@@ -272,6 +288,8 @@ public final class GunClient {
             aimSent = wantsAim;
             if (built && held.getItem() instanceof GunItem aimed)
                 aimed.mechanism().aimChanged(held, wantsAim, mc.level.getGameTime());
+            if (built && wantsAim)
+                deployCue(mc, player, held);
             PacketDistributor.sendToServer(new io.github.soundgoodizerfan.feedback.net.AimPayload(wantsAim));
         }
 

@@ -8797,6 +8797,8 @@
   "modular.feedback.axis.bore.tip": "How wide the bore runs. A wide bore delivers a little more of the pulse in a wider cone; a narrow one tightens the beam.",
   "feedback.subtitle.gun_reload": "Gun reloads",
   "feedback.subtitle.gun_dry": "Trigger clicks",
+  "feedback.subtitle.gun_hit_surface": "Bullet strikes",
+  "feedback.subtitle.gun_handling": "Gun handling",
   "feedback.subtitle.gun_pulse": "Pulse gun fires",
   "feedback.subtitle.gun_pump": "Pulse gun charges",
   "feedback.subtitle.gun_shot_quiet": "Suppressed gunshot",

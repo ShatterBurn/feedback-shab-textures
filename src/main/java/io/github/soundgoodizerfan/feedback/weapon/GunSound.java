@@ -55,11 +55,17 @@ public final class GunSound {
      * stay a chord rather than flam.
      */
     public static java.util.List<Layer> layers(GunFigures f, RandomSource random) {
+        return layers(f, random, false);
+    }
+
+    /** As above; {@code boom} is a wide smooth bore (a shotgun's, a musket's), which reports as its own recording whatever the power. */
+    public static java.util.List<Layer> layers(GunFigures f, RandomSource random, boolean boom) {
         float jitter = 0.9f + random.nextFloat() * 0.125f;
         float p = power(f);
         var out = new java.util.ArrayList<Layer>(3);
         // A suppressor quiets the report: its own recording, softer and duller, whatever the power.
-        out.add(new Layer(f.report() < 0.6f ? io.github.soundgoodizerfan.feedback.registry.FSounds.GUN_SHOT_SUPPRESSED.get() : event(p), volume(f), (float) Math.pow(2, (PITCH_SEMITONES_AT_ZERO - 3f * p) / 12f) * jitter));
+        out.add(new Layer(f.report() < 0.6f ? io.github.soundgoodizerfan.feedback.registry.FSounds.GUN_SHOT_SUPPRESSED.get()
+                : boom ? io.github.soundgoodizerfan.feedback.registry.FSounds.GUN_SHOT_SMOOTHBORE.get() : event(p), volume(f), (float) Math.pow(2, (PITCH_SEMITONES_AT_ZERO - 3f * p) / 12f) * jitter));
         if (p > 0.25f)
             out.add(new Layer(SoundEvents.GENERIC_EXPLODE.value(), 0.5f * p * f.report(), 1.7f - 0.7f * p));
         out.add(new Layer(SoundEvents.IRON_DOOR_CLOSE, 0.35f, (1.6f - 0.5f * p) * jitter));

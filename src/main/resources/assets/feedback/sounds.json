@@ -762,202 +762,271 @@
   "gun.egun_charge": {
     "subtitle": "feedback.subtitle.gun_pump",
     "sounds": [
-    {
-      "name": "feedback:gun/egun_charge"
-    }
+      {
+        "name": "feedback:gun/egun_charge"
+      }
     ]
   },
   "gun.egun_spin": {
     "sounds": [
-    {
-      "name": "feedback:gun/egun_spin"
-    }
+      {
+        "name": "feedback:gun/egun_spin"
+      }
     ]
   },
   "gun.egun_cell_in": {
     "subtitle": "feedback.subtitle.gun_egun_cell",
     "sounds": [
-    {
-      "name": "feedback:gun/egun_cell_in"
-    }
+      {
+        "name": "feedback:gun/egun_cell_in"
+      }
     ]
   },
   "gun.egun_cell_out": {
     "subtitle": "feedback.subtitle.gun_egun_cell",
     "sounds": [
-    {
-      "name": "feedback:gun/egun_cell_out"
-    }
+      {
+        "name": "feedback:gun/egun_cell_out"
+      }
     ]
   },
   "gun.egun_flat": {
     "subtitle": "feedback.subtitle.gun_egun_zap",
     "sounds": [
-    {
-      "name": "feedback:gun/egun_flat"
-    }
+      {
+        "name": "feedback:gun/egun_flat"
+      }
     ]
   },
   "gun.egun_power_on": {
     "subtitle": "feedback.subtitle.gun_egun_power_on",
     "sounds": [
-    {
-      "name": "feedback:gun/egun_power_on"
-    }
+      {
+        "name": "feedback:gun/egun_power_on"
+      }
     ]
   },
   "gun.egun_power_off": {
     "subtitle": "feedback.subtitle.gun_egun_power_off",
     "sounds": [
-    {
-      "name": "feedback:gun/egun_power_off"
-    }
+      {
+        "name": "feedback:gun/egun_power_off"
+      }
     ]
   },
   "machine.electromagnet_hum": {
     "subtitle": "feedback.subtitle.machine_electromagnet_hum",
     "sounds": [
-    {
-      "name": "feedback:machine/electromagnet_hum"
-    }
+      {
+        "name": "feedback:machine/electromagnet_hum"
+      }
     ]
   },
   "gun.egun_refill": {
     "subtitle": "feedback.subtitle.gun_egun_power",
     "sounds": [
-    {
-      "name": "feedback:gun/egun_refill"
-    }
+      {
+        "name": "feedback:gun/egun_refill"
+      }
     ]
   },
   "gun.egun_bank": {
     "subtitle": "feedback.subtitle.gun_pulse",
     "sounds": [
-    {
-      "name": "feedback:gun/egun_bank",
-      "attenuation_distance": 96
-    }
+      {
+        "name": "feedback:gun/egun_bank",
+        "attenuation_distance": 96
+      }
     ]
   },
   "gun.egun_dynamo": {
     "subtitle": "feedback.subtitle.gun_pulse",
     "sounds": [
-    {
-      "name": "feedback:gun/egun_dynamo",
-      "attenuation_distance": 96
-    }
+      {
+        "name": "feedback:gun/egun_dynamo",
+        "attenuation_distance": 96
+      }
     ]
   },
   "gun.egun_tether": {
     "subtitle": "feedback.subtitle.gun_pulse",
     "sounds": [
-    {
-      "name": "feedback:gun/egun_tether",
-      "attenuation_distance": 96
-    }
+      {
+        "name": "feedback:gun/egun_tether",
+        "attenuation_distance": 96
+      }
     ]
   },
   "gun.egun_split": {
     "subtitle": "feedback.subtitle.gun_pulse",
     "sounds": [
-    {
-      "name": "feedback:gun/egun_split",
-      "attenuation_distance": 96
-    }
+      {
+        "name": "feedback:gun/egun_split",
+        "attenuation_distance": 96
+      }
     ]
   },
   "gun.egun_fork": {
     "subtitle": "feedback.subtitle.gun_pulse",
     "sounds": [
-    {
-      "name": "feedback:gun/egun_fork",
-      "attenuation_distance": 96
-    }
+      {
+        "name": "feedback:gun/egun_fork",
+        "attenuation_distance": 96
+      }
     ]
   },
   "gun.egun_hit_body": {
     "subtitle": "feedback.subtitle.gun_egun_zap",
     "sounds": [
-    {
-      "name": "feedback:gun/egun_hit_body",
-      "attenuation_distance": 48
-    }
+      {
+        "name": "feedback:gun/egun_hit_body",
+        "attenuation_distance": 48
+      }
     ]
   },
   "gun.egun_hit_block": {
     "subtitle": "feedback.subtitle.gun_egun_zap",
     "sounds": [
-    {
-      "name": "feedback:gun/egun_hit_block",
-      "attenuation_distance": 48
-    }
+      {
+        "name": "feedback:gun/egun_hit_block",
+        "attenuation_distance": 48
+      }
     ]
   },
   "gun.egun_pellet": {
     "subtitle": "feedback.subtitle.gun_egun_plasma",
     "sounds": [
-    {
-      "name": "feedback:gun/egun_pellet",
-      "attenuation_distance": 64
-    }
+      {
+        "name": "feedback:gun/egun_pellet",
+        "attenuation_distance": 64
+      }
     ]
   },
   "gun.egun_pellet_hit": {
     "subtitle": "feedback.subtitle.gun_egun_plasma",
     "sounds": [
-    {
-      "name": "feedback:gun/egun_pellet_hit",
-      "attenuation_distance": 48
-    }
+      {
+        "name": "feedback:gun/egun_pellet_hit",
+        "attenuation_distance": 48
+      }
     ]
   },
   "gun.egun_cutoff": {
     "subtitle": "feedback.subtitle.gun_egun_lock",
     "sounds": [
-    {
-      "name": "feedback:gun/egun_cutoff"
-    }
+      {
+        "name": "feedback:gun/egun_cutoff"
+      }
     ]
   },
   "gun.egun_hot_lock": {
     "subtitle": "feedback.subtitle.gun_egun_lock",
     "sounds": [
-    {
-      "name": "feedback:gun/egun_hot_lock"
-    }
+      {
+        "name": "feedback:gun/egun_hot_lock"
+      }
     ]
   },
   "gun.egun_overheat": {
     "subtitle": "feedback.subtitle.gun_egun_power",
     "sounds": [
-    {
-      "name": "feedback:gun/egun_overheat"
-    }
+      {
+        "name": "feedback:gun/egun_overheat"
+      }
     ]
   },
   "gun.egun_shock": {
     "subtitle": "feedback.subtitle.gun_egun_zap",
     "sounds": [
-    {
-      "name": "feedback:gun/egun_shock",
-      "attenuation_distance": 32
-    }
+      {
+        "name": "feedback:gun/egun_shock",
+        "attenuation_distance": 32
+      }
     ]
   },
   "gun.egun_zoom": {
     "subtitle": "feedback.subtitle.gun_egun_power",
     "sounds": [
-    {
-      "name": "feedback:gun/egun_zoom"
-    }
+      {
+        "name": "feedback:gun/egun_zoom"
+      }
     ]
   },
   "gun.egun_blip": {
     "subtitle": "feedback.subtitle.gun_egun_power",
     "sounds": [
-    {
-      "name": "feedback:gun/egun_blip"
-    }
+      {
+        "name": "feedback:gun/egun_blip"
+      }
+    ]
+  },
+  "gun.shot_smoothbore": {
+    "subtitle": "feedback.subtitle.gun_shot",
+    "sounds": [
+      {
+        "name": "feedback:gun/shot_smoothbore_1",
+        "attenuation_distance": 96
+      },
+      {
+        "name": "feedback:gun/shot_smoothbore_2",
+        "attenuation_distance": 96
+      }
+    ]
+  },
+  "gun.hit_stone": {
+    "subtitle": "feedback.subtitle.gun_hit_surface",
+    "sounds": [
+      {
+        "name": "feedback:gun/hit_stone"
+      }
+    ]
+  },
+  "gun.hit_metal": {
+    "subtitle": "feedback.subtitle.gun_hit_surface",
+    "sounds": [
+      {
+        "name": "feedback:gun/hit_metal"
+      }
+    ]
+  },
+  "gun.hit_wood": {
+    "subtitle": "feedback.subtitle.gun_hit_surface",
+    "sounds": [
+      {
+        "name": "feedback:gun/hit_wood"
+      }
+    ]
+  },
+  "gun.hit_glass": {
+    "subtitle": "feedback.subtitle.gun_hit_surface",
+    "sounds": [
+      {
+        "name": "feedback:gun/hit_glass"
+      }
+    ]
+  },
+  "gun.hit_soft": {
+    "subtitle": "feedback.subtitle.gun_hit_surface",
+    "sounds": [
+      {
+        "name": "feedback:gun/hit_soft"
+      }
+    ]
+  },
+  "gun.stock_open": {
+    "subtitle": "feedback.subtitle.gun_handling",
+    "sounds": [
+      {
+        "name": "feedback:gun/stock_open"
+      }
+    ]
+  },
+  "gun.bipod_deploy": {
+    "subtitle": "feedback.subtitle.gun_handling",
+    "sounds": [
+      {
+        "name": "feedback:gun/bipod_deploy"
+      }
     ]
   }
 }

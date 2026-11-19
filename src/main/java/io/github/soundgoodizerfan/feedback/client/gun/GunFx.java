@@ -252,6 +252,8 @@ public final class GunFx {
                 if (power > 0.2f)
                     level.addParticle(ParticleTypes.SMOKE, at.x, at.y, at.z, dir.x * 0.01, 0.025, dir.z * 0.01);
                 addDecal(level, at.add(dir.scale(0.004)), dir, p.decal(), power);
+                level.playLocalSound(at.x, at.y, at.z, surface(state.getSoundType()).get(), net.minecraft.sounds.SoundSource.BLOCKS,
+                        0.4f + 0.5f * power, 0.9f + r.nextFloat() * 0.2f, false);
             }
 
             case GunImpactPayload.RICOCHET -> sparks(level, at, dir, 9, 0.5, r);
@@ -487,6 +489,29 @@ public final class GunFx {
                 dir.x * speed + (r.nextDouble() - 0.5) * scatter * 2,
                 dir.y * speed + (r.nextDouble() - 0.3) * scatter * 2,
                 dir.z * speed + (r.nextDouble() - 0.5) * scatter * 2);
+    }
+
+    /** What a bullet striking a surface of this kind sounds like: metal, glass, wood or soft ground, else stone. */
+    private static net.neoforged.neoforge.registries.DeferredHolder<net.minecraft.sounds.SoundEvent, net.minecraft.sounds.SoundEvent> surface(net.minecraft.world.level.block.SoundType t) {
+        if (t == net.minecraft.world.level.block.SoundType.METAL || t == net.minecraft.world.level.block.SoundType.ANVIL
+                || t == net.minecraft.world.level.block.SoundType.CHAIN || t == net.minecraft.world.level.block.SoundType.COPPER
+                || t == net.minecraft.world.level.block.SoundType.COPPER_BULB || t == net.minecraft.world.level.block.SoundType.COPPER_GRATE
+                || t == net.minecraft.world.level.block.SoundType.NETHERITE_BLOCK)
+            return FSounds.GUN_HIT_METAL;
+        if (t == net.minecraft.world.level.block.SoundType.GLASS || t == net.minecraft.world.level.block.SoundType.AMETHYST
+                || t == net.minecraft.world.level.block.SoundType.AMETHYST_CLUSTER)
+            return FSounds.GUN_HIT_GLASS;
+        if (t == net.minecraft.world.level.block.SoundType.WOOD || t == net.minecraft.world.level.block.SoundType.NETHER_WOOD
+                || t == net.minecraft.world.level.block.SoundType.BAMBOO_WOOD || t == net.minecraft.world.level.block.SoundType.CHERRY_WOOD
+                || t == net.minecraft.world.level.block.SoundType.BAMBOO)
+            return FSounds.GUN_HIT_WOOD;
+        if (t == net.minecraft.world.level.block.SoundType.GRAVEL || t == net.minecraft.world.level.block.SoundType.GRASS
+                || t == net.minecraft.world.level.block.SoundType.SAND || t == net.minecraft.world.level.block.SoundType.SNOW
+                || t == net.minecraft.world.level.block.SoundType.WOOL || t == net.minecraft.world.level.block.SoundType.MUD
+                || t == net.minecraft.world.level.block.SoundType.SOUL_SAND || t == net.minecraft.world.level.block.SoundType.SOUL_SOIL
+                || t == net.minecraft.world.level.block.SoundType.MOSS || t == net.minecraft.world.level.block.SoundType.ROOTED_DIRT)
+            return FSounds.GUN_HIT_SOFT;
+        return FSounds.GUN_HIT_STONE;
     }
 
     private static void sparks(Level level, Vec3 at, Vec3 dir, int n, double speed, RandomSource r) {

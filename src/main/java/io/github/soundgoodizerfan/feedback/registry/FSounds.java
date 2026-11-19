@@ -20,6 +20,22 @@ public class FSounds {
             () -> SoundEvent.createVariableRangeEvent(Feedback.id("gun.shot_light")));
 
     /** A mid report, including the author's own 9 mm recording. */
+    public static final DeferredHolder<SoundEvent, SoundEvent> GUN_SHOT_SMOOTHBORE = SOUNDS.register("gun.shot_smoothbore",
+            () -> SoundEvent.createVariableRangeEvent(Feedback.id("gun.shot_smoothbore")));
+    public static final DeferredHolder<SoundEvent, SoundEvent> GUN_HIT_STONE = SOUNDS.register("gun.hit_stone",
+            () -> SoundEvent.createVariableRangeEvent(Feedback.id("gun.hit_stone")));
+    public static final DeferredHolder<SoundEvent, SoundEvent> GUN_HIT_METAL = SOUNDS.register("gun.hit_metal",
+            () -> SoundEvent.createVariableRangeEvent(Feedback.id("gun.hit_metal")));
+    public static final DeferredHolder<SoundEvent, SoundEvent> GUN_HIT_WOOD = SOUNDS.register("gun.hit_wood",
+            () -> SoundEvent.createVariableRangeEvent(Feedback.id("gun.hit_wood")));
+    public static final DeferredHolder<SoundEvent, SoundEvent> GUN_HIT_GLASS = SOUNDS.register("gun.hit_glass",
+            () -> SoundEvent.createVariableRangeEvent(Feedback.id("gun.hit_glass")));
+    public static final DeferredHolder<SoundEvent, SoundEvent> GUN_HIT_SOFT = SOUNDS.register("gun.hit_soft",
+            () -> SoundEvent.createVariableRangeEvent(Feedback.id("gun.hit_soft")));
+    public static final DeferredHolder<SoundEvent, SoundEvent> GUN_STOCK_OPEN = SOUNDS.register("gun.stock_open",
+            () -> SoundEvent.createVariableRangeEvent(Feedback.id("gun.stock_open")));
+    public static final DeferredHolder<SoundEvent, SoundEvent> GUN_BIPOD_DEPLOY = SOUNDS.register("gun.bipod_deploy",
+            () -> SoundEvent.createVariableRangeEvent(Feedback.id("gun.bipod_deploy")));
     public static final DeferredHolder<SoundEvent, SoundEvent> GUN_SHOT_MEDIUM = SOUNDS.register("gun.shot_medium",
             () -> SoundEvent.createVariableRangeEvent(Feedback.id("gun.shot_medium")));
 
