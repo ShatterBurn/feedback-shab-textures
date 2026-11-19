@@ -3,7 +3,10 @@
   "category": "misc",
   "key": {
     "C": {
-      "item": "feedback:bronze_ingot"
+      "type": "feedback:material",
+      "form": "ingot",
+      "property": "yield_strength",
+      "min": 7.5
     }
   },
   "pattern": [
