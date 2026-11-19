@@ -94,7 +94,8 @@ public final class SculkSites {
                 break;
             if (p.distSqr(at) > r2 || !level.isLoaded(p))
                 continue;
-            if (level.getBlockEntity(p) instanceof CatalystTapBlockEntity tap && tap.network() != null)
+            if (level.getBlockEntity(p) instanceof CatalystTapBlockEntity tap && tap.network() != null
+                    && io.github.soundgoodizerfan.feedback.machine.xp.XpTapBlock.drawing(level, p, tap.getBlockState()))
                 left -= tap.network().inject(left);
         }
         return points - left;
@@ -117,7 +118,8 @@ public final class SculkSites {
                 break;
             if (p.distToCenterSqr(dead.position()) > r2 || !level.isLoaded(p))
                 continue;
-            if (level.getBlockEntity(p) instanceof CatalystTapBlockEntity tap && tap.network() != null)
+            if (level.getBlockEntity(p) instanceof CatalystTapBlockEntity tap && tap.network() != null
+                    && io.github.soundgoodizerfan.feedback.machine.xp.XpTapBlock.drawing(level, p, tap.getBlockState()))
                 left -= tap.network().inject(left);
         }
         event.setDroppedExperience(left);

@@ -426,6 +426,11 @@ public class FItems {
     public static final DeferredItem<BlockItem> CATALYST_TAP = ITEMS.registerSimpleBlockItem(FBlocks.CATALYST_TAP);
     public static final DeferredItem<BlockItem> ORB_ABSORBER = ITEMS.registerSimpleBlockItem(FBlocks.ORB_ABSORBER);
     public static final DeferredItem<BlockItem> ORE_TAP = ITEMS.registerSimpleBlockItem(FBlocks.ORE_TAP);
+    /** The sensing parts of the four XP taps: each is the one thing that tells its tap what to draw from. */
+    public static final DeferredItem<Item> ORE_PICKUP = ITEMS.registerSimpleItem("ore_pickup");
+    public static final DeferredItem<Item> TOKEN_READER = ITEMS.registerSimpleItem("token_reader");
+    public static final DeferredItem<Item> CHARGE_CELL = ITEMS.registerSimpleItem("charge_cell");
+    public static final DeferredItem<Item> VESSEL_PORT = ITEMS.registerSimpleItem("vessel_port");
     public static final DeferredItem<BlockItem> TRADE_TAP = ITEMS.registerSimpleBlockItem(FBlocks.TRADE_TAP);
     public static final DeferredItem<BlockItem> SMELTER_TAP = ITEMS.registerSimpleBlockItem(FBlocks.SMELTER_TAP);
     public static final DeferredItem<BlockItem> DISENCHANT_STONE = ITEMS.registerSimpleBlockItem(FBlocks.DISENCHANT_STONE);

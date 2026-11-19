@@ -199,7 +199,7 @@ public class FCreativeTabs {
     private static final List<DeferredItem<?>> CULTURES = of(FItems.CULTURE_DISH, FItems.CULTURE_SEED,
             FItems.CREEPER_PEN, FItems.CREEPER_SAC, FItems.CREEPER_CHARGE, FItems.RELAY_ORGAN, FItems.ORB_ABSORBER,
             FItems.SCULK_RELAY, FItems.DISENCHANT_STONE, FItems.CATALYST_TAP, FItems.ORE_TAP, FItems.TRADE_TAP,
-            FItems.SMELTER_TAP, FModular.XP_CONTAINER);
+            FItems.SMELTER_TAP, FItems.ORE_PICKUP, FItems.TOKEN_READER, FItems.CHARGE_CELL, FItems.VESSEL_PORT, FModular.XP_CONTAINER);
 
     /** Fission: vessel, coolant, control, then fuel and what comes out. */
     private static final List<DeferredItem<?>> REACTORS = of(FItems.REACTOR_CORE, FItems.FUEL_CHANNEL,

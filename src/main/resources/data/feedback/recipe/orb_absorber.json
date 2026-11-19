@@ -12,10 +12,13 @@
     },
     "X": {
       "item": "feedback:xp_wire"
+    },
+    "L": {
+      "item": "minecraft:lever"
     }
   },
   "pattern": [
-    "PAP",
+    "PLP",
     "ASA",
     "PXP"
   ],

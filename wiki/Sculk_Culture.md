@@ -28,15 +28,15 @@ An atrophied or suffocated culture that dies leaves an empty dish. The dish puls
 
 ## Catalyst Tap
 
-Made from a sculk catalyst and wrought iron plates at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) and 3 screws, with Experience Treatise II: Taps ([Treatise](Treatise.md)):
+Crafted at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver), 3 screws and Experience Treatise II: Taps ([Treatise](Treatise.md)), from a Sculk Charge Cell in the same body as the other [taps](Experience.md#crafting-the-taps):
 
 ```
-  P  
+P L P
 P C P
-  P  
+P X P
 ```
 
-C is a sculk catalyst, P a wrought iron plate. A node on the XP network that takes the XP of anything dying within 8 blocks into the run it sits on, as the catalyst takes it in vanilla, without spreading any sculk. What the run cannot hold drops as orbs as usual. Players' deaths are not taken.
+P is a wrought iron plate, L a lever, C a Sculk Charge Cell and X an XP wire. A node on the XP network that takes the XP of anything dying within 8 blocks into the run it sits on, as the catalyst takes it in vanilla, without spreading any sculk. What the run cannot hold drops as orbs as usual. Players' deaths are not taken.
 
 ## Sculk Relay
 

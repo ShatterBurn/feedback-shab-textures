@@ -37,7 +37,7 @@ public class XpTapBlockEntity extends SculkNodeBlockEntity {
 
     /** Puts what the run can hold of {@code points} in and returns how many it took. */
     public int take(int points) {
-        return network() == null ? 0 : network().inject(points);
+        return network() == null || !XpTapBlock.drawing(level, worldPosition, getBlockState()) ? 0 : network().inject(points);
     }
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, XpTapBlockEntity tap) {

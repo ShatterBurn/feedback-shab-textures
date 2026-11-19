@@ -42,22 +42,50 @@ Four blocks put the world's experience into the run they sit on. Each joins the 
 | **Trade Tap** | the XP a villager's trade pays, and the XP a [Counter](Counter.md) transaction pays (3 points per point of villager experience earned; with no tap in reach a Counter pays no XP at all) | 8 blocks |
 | **Smelter Tap** | the XP a furnace or other vessel beside it earned from smelting, smoking and blasting recipes, 20 points a second | touching the vessel |
 
-The Orb Absorber needs Experience Treatise I: Orbs and Vessels, the Ore, Trade and Smelter Taps need Experience Treatise II: Taps. All are crafted at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) and 3 screws. The [Catalyst Tap and Sculk Relay](Sculk_Culture.md) are crafted there too.
+Each tap has a **lever** on it. Right-click the tap with an empty hand to open or shut its draw; a redstone signal on it holds it shut. This holds for the four blocks above and the [Catalyst Tap](Sculk_Culture.md#catalyst-tap).
 
 A vessel with no Smelter Tap keeps what it earned, up to a cap, and spills it as orbs when it is broken. Authored processes (steel, ceramics, alloys) earn none; only vanilla and modded cooking recipes do.
 
-```
-P W P      Ore Tap          P E P      Trade Tap
-W L W      L lapis block    W E W      E emerald
-P W P      W copper wire    P E P      P wrought iron plate
-```
+### Crafting the taps
+
+All are crafted at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver). The Orb Absorber takes 3 screws and Experience Treatise I: Orbs and Vessels ([Treatise](Treatise.md)); the Ore, Trade and Smelter Taps take 3 screws and Experience Treatise II: Taps. The [Catalyst Tap and Sculk Relay](Sculk_Culture.md) are crafted there too.
 
 ```
-P A P      Orb Absorber     P A P      Smelter Tap
-A S A      S sculk shrieker A H A      H hopper
-P X P      X XP wire        P P P
+P L P      Orb Absorber
+A S A      L lever, S sculk shrieker
+P X P      X XP wire, A amethyst shard
 ```
-A is an amethyst shard. The shrieker draws orbs in, the amethyst focuses the pull, and the XP wire carries what is gathered into the run.
+P is a wrought iron plate. The shrieker draws orbs in, the amethyst focuses the pull, and the XP wire carries what is gathered into the run.
+
+The Ore, Trade and Smelter Taps share one body, with a part in the middle:
+
+```
+P L P
+P T P
+P X P
+```
+P is a wrought iron plate, L a lever, X an XP wire and T the tap's part:
+
+| Tap | Part (T) |
+|---|---|
+| Ore Tap | Ore Pickup |
+| Trade Tap | Token Reader |
+| Smelter Tap | Vessel Port |
+
+The [Catalyst Tap](Sculk_Culture.md#catalyst-tap) takes the same body with a Sculk Charge Cell.
+
+### Tap parts
+
+Each part is crafted at the Engineering Table with a screwdriver, 2 screws and Experience Treatise II: Taps.
+
+```
+  A        Ore Pickup       E        Token Reader
+W P W      A amethyst shard W P W    E emerald
+
+P C P      Sculk Charge Cell P A P   Vessel Port
+  W        C sculk catalyst    H     A amethyst shard, H hopper
+```
+P is a wrought iron plate and W a copper wire. In the Ore Pickup the amethyst resonates with breaking ore and the coils turn it into a signal. In the Token Reader the emerald is the token villagers' trades are matched against. In the Sculk Charge Cell the catalyst gathers the charge a death leaves and the wire carries it out. In the Vessel Port the hopper takes the banked experience out of a vessel and the amethyst couples to its crystal.
 
 ## Disenchanting Stone
 
