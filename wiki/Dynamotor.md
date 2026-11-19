@@ -33,6 +33,8 @@ No winding makes Trunk. The band does not change with shaft speed; to turn a sha
 
 The conductor must carry current: the winding's wire material sets how many amps it holds (copper is the reference; [aluminum](Making_Aluminum.md) carries less). **Rated amps** are the smaller of two limits: what the frame's torque allows at that band and what the wire can carry, which grows with the winding's size. A large frame on a heavy winding is held to the frame's limit; a small frame on one is held to almost nothing.
 
+The winding also has a **hand**, chosen at the Smithing Table when the winding is shaped: **Right-wound** (the default) or **Left-wound**. The hand sets which way a motor drives its shaft: a right-wound motor drives it forward, a left-wound one backward. The band, the speed and the amps are the same either way.
+
 ### Bearing
 
 An optional **bearing** sets how much torque the rotor carries and how much friction heat it makes. A **Sleeve Bearing** is cheap and runs warm. A **Ball Bearing** runs cool and carries a fifth more torque. A **Roller Bearing** carries the most, nearly half as much again, with a little friction. A machine with no bearing carries the frame's own torque. A bearing is a race and a set of **balls**: the balls' material is its own stock slot, and their friction scales the bearing's drag. See [Composed Parts](Composed_Parts.md).
@@ -54,6 +56,8 @@ A line can draw up to twice the rated amps; past that every load gets the same s
 ## As a motor
 
 A motor drives its shaft toward a no-load speed set by the band it is fed: at its winding's own band that is its rated speed, and each band above is four times as fast. A long cable that shrinks the packet slows it.
+
+A motor reverses by how it is wound: a left-wound winding turns the shaft the other way from a right-wound one at the same speed. To run a shaft backward, build the motor with a Left-wound winding; the switch and the wiring stay the same.
 
 It asks for current in proportion to how far below its no-load speed it is running. An idle motor already at speed draws almost nothing; a loaded motor slows, draws more and settles where its current carries the load; an under-powered motor runs slow and never stalls outright. Two motors on one shaft share the load, and a motor can share a shaft with a [belt](Pulleys.md).
 
