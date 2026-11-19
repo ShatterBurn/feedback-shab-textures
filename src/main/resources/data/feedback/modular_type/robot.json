@@ -73,6 +73,7 @@
         "stock": [
           "plate"
         ],
+        "base": "wheels",
         "variants": [
           {
             "name": "wheels",
