@@ -50,7 +50,7 @@ Right-click any creation with a **Lift item** and the whole thing goes *into the
 
 ## Building in fine space
 
-Cut a block into [motes](Mote.md) and place them with right-click: each mote is a voxel a quarter of a block on a side, up to 64 to a block of [Fine Space](Fine_Space.md). Mine a voxel to take it out and get its mote back. A [Fine Gauge](Fine_Gauge.md) in either hand changes how motes go in: a line, a filled box, a ramp, or mirrored across up to three planes. A block of Fine Space weighs its voxels by what they are made of. Bodies collide voxel by voxel, so several spinning arms fit in one block as long as their voxels never meet.
+Cut a block into [motes](Mote.md) and place them with right-click: each mote is a voxel a quarter of a block on a side, up to 64 to a block of [Fine Space](Fine_Space.md). Mine a voxel to take it out and get its mote back. A [Fine Gauge](Fine_Gauge.md) in either hand changes how motes go in: a line, a filled box, a ramp, or mirrored across up to three planes. A block of Fine Space weighs its voxels by what they are made of, and a hosted machine by its design. Bodies collide voxel by voxel, so several spinning arms fit in one block as long as their voxels never meet.
 
 Shafts, cogs and bearings in fine space join full-size rotation through a [Rotation Adapter](Rotation_Adapter.md). [Pulleys](Pulleys.md#pulleys-in-fine-space) in fine space join each other by belt. A [Differential](Differential.md) shares a drive shaft between two axles.
 

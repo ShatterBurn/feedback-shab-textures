@@ -248,6 +248,15 @@ public class MicroCellBlock extends BaseEntityBlock implements BlockSubLevelColl
     @Override
     protected net.minecraft.world.ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player,
                                                                   net.minecraft.world.InteractionHand hand, BlockHitResult hit) {
+        // A hosted machine answers its own use first; if it declines, the click is the cell's as before.
+        if (level.getBlockEntity(pos) instanceof MicroCellBlockEntity machines) {
+            int h = machines.pick(hit.getLocation(), hit.getDirection());
+            if (h >= 0 && machines.hosted(h) != null) {
+                var used = FineHosts.useItemOn(machines, h, stack, level, player, hand, hit);
+                if (used != net.minecraft.world.ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION)
+                    return used;
+            }
+        }
         if (stack.getItem() instanceof JointLinkItem && level.getBlockEntity(pos) instanceof MicroCellBlockEntity linked) {
             int p = linked.pick(hit.getLocation(), hit.getDirection());
             if (p >= 0 && !level.isClientSide)
@@ -322,6 +331,11 @@ public class MicroCellBlock extends BaseEntityBlock implements BlockSubLevelColl
         if (!(level.getBlockEntity(pos) instanceof MicroCellBlockEntity cell))
             return InteractionResult.PASS;
         int i = cell.pick(hit.getLocation(), hit.getDirection());
+        if (i >= 0 && cell.hosted(i) != null) {
+            var used = FineHosts.useWithoutItem(cell, i, level, player, hit);
+            if (used != InteractionResult.PASS)
+                return used;
+        }
         // Sneaking on a differential voxel steps it through open, limited slip and locked.
         if (i >= 0 && player.isShiftKeyDown() && cell.get(i) != null
                 && cell.get(i).getBlock() instanceof io.github.soundgoodizerfan.feedback.machine.differential.DifferentialBlock) {

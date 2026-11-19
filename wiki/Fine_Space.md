@@ -8,7 +8,7 @@ The inside of a block, divided into 4 by 4 by 4 voxels, each a quarter of a bloc
 
 - **Mine a voxel** with the right tool for its block to take it out and get its mote back. Mining Fine Space takes one voxel at a time, the one you look at.
 - A face on the edge of a block of Fine Space is hidden when the voxel in the next block covers it.
-- A block of Fine Space weighs its voxels by what they are made of. A build in fine space lifts on a [Lift](Vehicles.md#the-lift) like any other.
+- A block of Fine Space weighs its voxels by what they are made of; a hosted machine weighs by its design (see [Machines in fine space](#machines-in-fine-space)). A build in fine space lifts on a [Lift](Vehicles.md#the-lift) like any other.
 
 The [Fine Gauge](Fine_Gauge.md) sets single, line, box, mirror or wedge placement. The [Fine Wedge](Fine_Wedge.md) is a four-step ramp voxel.
 
@@ -26,7 +26,13 @@ The machine is scaled to a voxel's volume when placed. Figures that follow volum
 
 Mine the voxel to get the machine back as an item with its figures as built. Breaking the cell or replacing the voxel drops it.
 
-A hosted machine runs alone. You cannot fill its tank, open its menu or use a crowbar on it. It does not join pipes, cables, heat or the rotation network; shafts, cogs and joints are their own parts and join as described above. A machine with a menu or screen cannot be a voxel. A machine in an assembled arm drops as an item when the arm is put back.
+A hosted machine answers its own use. Click it with an item or an empty hand and the machine decides, exactly as the full-size block would: fill a tank with a bucket, work a machine's controls. The click is mapped into the voxel.
+
+Fluid and item pipes, hoppers and the like see a hosted machine. The cell answers fluid and item connections for the machines it holds, and the machine on the face they touch first takes the connection.
+
+A hosted machine weighs a 64th of the mass figure of its design, not the stuff its block is made of.
+
+A hosted machine does not join shaft (rotation), electrical or heat networks, so a dynamotor in fine space runs alone. Shafts, cogs and joints are their own parts and join as described above. A machine that toggles its own state (lamp, burner, damper, valve) cannot be hosted. A machine in an assembled arm blocks the joint from assembling or putting back; the message says to take it out first. A machine that opens a screen is unchecked.
 
 ## Joints
 

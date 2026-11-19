@@ -87,6 +87,55 @@ public final class FineHosts {
         return out;
     }
 
+    /**
+     * Runs {@code use} as if the machine were the block entity at the cell's position (which it shares: a hosted machine is made at the cell's
+     * place), by standing it in the chunk's block entity map for the call and putting the cell back after, so the machine's own use code
+     * finds itself with {@code level.getBlockEntity(pos)}. Single-threaded with the level, restored whatever happens.
+     */
+    private static <R> R as(Level level, BlockPos pos, BlockEntity machine, java.util.function.Supplier<R> use) {
+        var map = level.getChunkAt(pos).getBlockEntities();
+        BlockEntity cell = map.get(pos);
+        map.put(pos, machine);
+        try {
+            return use.get();
+        } finally {
+            map.put(pos, cell);
+        }
+    }
+
+    /** The click as the machine's own block would see it: the point in the voxel's unit cube, the voxel's state, the cell's position. */
+    private static net.minecraft.world.phys.BlockHitResult inVoxel(BlockPos pos, int voxel, net.minecraft.world.phys.BlockHitResult hit) {
+        int n = MicroCellBlockEntity.N;
+        var local = hit.getLocation().subtract(pos.getX(), pos.getY(), pos.getZ()).scale(n)
+                .subtract(voxel & 3, voxel >> 2 & 3, voxel >> 4);
+        return new net.minecraft.world.phys.BlockHitResult(new net.minecraft.world.phys.Vec3(pos.getX() + local.x, pos.getY() + local.y, pos.getZ() + local.z),
+                hit.getDirection(), pos, hit.isInside());
+    }
+
+    /** A use with an item on the machine in voxel {@code voxel}: its own block decides. */
+    public static net.minecraft.world.ItemInteractionResult useItemOn(MicroCellBlockEntity cell, int voxel, ItemStack stack, Level level,
+                                                                      net.minecraft.world.entity.player.Player player,
+                                                                      net.minecraft.world.InteractionHand hand, net.minecraft.world.phys.BlockHitResult hit) {
+        BlockEntity machine = cell.hosted(voxel);
+        BlockState state = machine.getBlockState();
+        BlockPos pos = cell.getBlockPos();
+        var result = as(level, pos, machine, () -> state.useItemOn(stack, level, player, hand, inVoxel(pos, voxel, hit)));
+        cell.synced();
+        return result;
+    }
+
+    /** A use with an empty hand on the machine in voxel {@code voxel}: its own block decides. */
+    public static net.minecraft.world.InteractionResult useWithoutItem(MicroCellBlockEntity cell, int voxel, Level level,
+                                                                       net.minecraft.world.entity.player.Player player,
+                                                                       net.minecraft.world.phys.BlockHitResult hit) {
+        BlockEntity machine = cell.hosted(voxel);
+        BlockState state = machine.getBlockState();
+        BlockPos pos = cell.getBlockPos();
+        var result = as(level, pos, machine, () -> state.useWithoutItem(level, player, inVoxel(pos, voxel, hit)));
+        cell.synced();
+        return result;
+    }
+
     /** A hosted machine's block entity for {@code state} in the cell at {@code cell}, made from {@code stack}; null if the block makes none. */
     @Nullable
     public static BlockEntity make(Level level, BlockPos cell, BlockState state, ItemStack stack) {

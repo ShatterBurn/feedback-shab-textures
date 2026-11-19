@@ -216,10 +216,48 @@ public class MicroCellBlockEntity extends BlockEntity implements BlockEntitySubL
         hostedItems[index] = stack.copyWithCount(1);
         hostedCount++;
         setChanged();
+        level.invalidateCapabilities(worldPosition);
         return true;
     }
 
     private int hostedCount;
+
+    /** A hosted machine changed through its own use: save the cell and send it to the players watching. */
+    void synced() {
+        setChanged();
+        if (level != null && !level.isClientSide)
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_CLIENTS);
+    }
+
+    /**
+     * What the hosted machines offer as {@code capability} on the cell's face {@code side}: the first machine that answers, the ones on that
+     * face first. A pipe or a hopper finds a machine by the block entity at a position, which is the cell, so the cell answers for it.
+     */
+    @Nullable
+    public <T, C> T hostedCapability(net.neoforged.neoforge.capabilities.BlockCapability<T, C> capability, C context) {
+        if (level == null || hostedCount == 0)
+            return null;
+        Direction face = context instanceof Direction d ? d : null;
+        T found = null;
+        for (int pass = 0; pass < 2 && found == null; pass++)
+            for (int i = 0; i < VOXELS && found == null; i++) {
+                var be = hosted[i];
+                if (be == null)
+                    continue;
+                boolean onFace = face == null || switch (face) {
+                    case DOWN -> (i >> 2 & 3) == 0;
+                    case UP -> (i >> 2 & 3) == N - 1;
+                    case NORTH -> (i >> 4) == 0;
+                    case SOUTH -> (i >> 4) == N - 1;
+                    case WEST -> (i & 3) == 0;
+                    case EAST -> (i & 3) == N - 1;
+                };
+                if (pass == 0 && !onFace)
+                    continue;
+                found = level.getCapability(capability, worldPosition, be.getBlockState(), be, context);
+            }
+        return found;
+    }
 
     /** The machine in voxel {@code index}, or null. */
     @Nullable
@@ -250,6 +288,8 @@ public class MicroCellBlockEntity extends BlockEntity implements BlockEntitySubL
         hostedItems[index] = null;
         hostedCount--;
         setChanged();
+        if (level != null)
+            level.invalidateCapabilities(worldPosition);
         return item;
     }
 
@@ -438,6 +478,14 @@ public class MicroCellBlockEntity extends BlockEntity implements BlockEntitySubL
         for (BlockState state : voxels)
             if (state != null)
                 sum += each.computeIfAbsent(state.getBlock(), b -> voxelKpg(state));
+        // A hosted machine weighs what its design says, a 64th of it (a voxel's share), not the stuff its block is made of.
+        for (int i = 0; i < VOXELS; i++)
+            if (hosted[i] != null && hostedItems[i] != null && voxels[i] != null) {
+                float design = io.github.soundgoodizerfan.feedback.modular.item.ModularStacks.figures(hostedItems[i])
+                        .get(io.github.soundgoodizerfan.feedback.modular.bake.ModularFigures.Fig.MASS);
+                if (design > 0f)
+                    sum += Units.kpg(new Mu(design * FineHosts.VOLUME)) - voxelKpg(voxels[i]);
+            }
         // A skinned wedge weighs half its skin's block, not half the stock wedge's.
         for (int i = 0; i < VOXELS; i++)
             if (skins[i] != null && voxels[i] != null)
