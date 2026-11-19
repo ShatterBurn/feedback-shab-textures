@@ -18,7 +18,7 @@ A A A
 
 **Converter Tap**: C is an [Induction Coil](Induction.md#induction-coil), R is a [Rectifier](Rectifier.md) and A is an Aluminum Plate.
 
-Both are crafted at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 3 screws ([Fasteners](Fasteners.md)). They need Electrical Treatise III: Circuits ([Treatise](Treatise.md)).
+Both are crafted at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 3 screws ([Fasteners](Fasteners.md)). Both need Electrical Treatise III: Circuits ([Treatise](Treatise.md)); the Converter Tap also needs Experience Treatise III: Spending It.
 
 The **Heatsink** is crafted in the plain [Crafting Table](Crafting_Table.md):
 

@@ -1,0 +1,12 @@
+{
+  "traits": [
+    "stored",
+    "store",
+    "flow",
+    "signal",
+    "sense",
+    "release",
+    "mark",
+    "spend"
+  ]
+}

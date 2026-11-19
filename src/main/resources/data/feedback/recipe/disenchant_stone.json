@@ -1,6 +1,5 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
+  "type": "feedback:engineering",
   "key": {
     "G": {
       "item": "minecraft:grindstone"
@@ -20,5 +19,19 @@
   "result": {
     "count": 1,
     "id": "feedback:disenchant_stone"
-  }
+  },
+  "tool": [
+    {
+      "ability": "feedback:driver",
+      "wear": 1
+    }
+  ],
+  "fasteners": {
+    "count": 4,
+    "floor": 1,
+    "forms": [
+      "screw"
+    ]
+  },
+  "school": "experience:3"
 }

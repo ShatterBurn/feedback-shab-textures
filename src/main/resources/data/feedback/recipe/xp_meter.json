@@ -1,6 +1,5 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
+  "type": "feedback:engineering",
   "key": {
     "A": {
       "item": "minecraft:amethyst_shard"
@@ -23,5 +22,19 @@
   "result": {
     "count": 1,
     "id": "feedback:xp_meter"
-  }
+  },
+  "tool": [
+    {
+      "ability": "feedback:driver",
+      "wear": 1
+    }
+  ],
+  "fasteners": {
+    "count": 2,
+    "floor": 1,
+    "forms": [
+      "screw"
+    ]
+  },
+  "school": "experience:1"
 }

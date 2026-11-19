@@ -1,13 +1,36 @@
 {
   "type": "feedback:engineering",
   "key": {
-    "L": { "item": "feedback:induction_coil" },
-    "R": { "item": "feedback:rectifier" },
-    "P": { "item": "feedback:aluminium_plate" }
+    "L": {
+      "item": "feedback:induction_coil"
+    },
+    "R": {
+      "item": "feedback:rectifier"
+    },
+    "P": {
+      "item": "feedback:aluminium_plate"
+    }
   },
-  "pattern": [ "LRL", "PPP" ],
-  "result": { "count": 1, "id": "feedback:converter_tap" },
-  "tool": [ { "ability": "feedback:driver", "wear": 1 } ],
-  "fasteners": { "count": 3, "floor": 1, "forms": [ "screw" ] },
-  "school": "electrical:3"
+  "pattern": [
+    "LRL",
+    "PPP"
+  ],
+  "result": {
+    "count": 1,
+    "id": "feedback:converter_tap"
+  },
+  "tool": [
+    {
+      "ability": "feedback:driver",
+      "wear": 1
+    }
+  ],
+  "fasteners": {
+    "count": 3,
+    "floor": 1,
+    "forms": [
+      "screw"
+    ]
+  },
+  "school": "experience:3+electrical:3"
 }

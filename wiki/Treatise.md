@@ -24,6 +24,9 @@ Each school has one item per volume. Every volume is a subject of its own: holdi
 | Electrical Treatise I: Cells and Static Charge | [battery](Battery.md), [galvanic cell](Galvanic_Cell.md), [Leyden jar](Leyden_Jar.md) | [Electrostatic Generator](Electrostatic_Generator.md), [Charger](Charger.md), Galvanic Cell Pack ([Galvanic Cell](Galvanic_Cell.md#cell-pack)), [Dosimeter](Instruments.md#dosimeter), [Geiger Counter](Instruments.md#geiger-counter), [Survey Meter](Instruments.md#survey-meter), [Pyrometer](Optics.md#pyrometer), [Component Tester](Instruments.md#component-tester) |
 | Electrical Treatise II: Coils and Magnets | [heating coil](Heating_Coil.md), [linear motor](Pneumatic_Tube.md#linear-motor-ring), [electromagnet](Electromagnet.md) | [Relay](Relay.md), [Rectifier](Rectifier.md), [Redstone Coherer](Redstone_Coherer.md), [Photocell](Sensors.md#crafting), [Redstone Emitter](Redstone_Bridges.md#redstone-emitter), [Floppy Disk](Programming.md#media), [Induction Coil, Induction Stove and Preheat Coil](Induction.md), [Power Cutter](Power_Cutter.md), [Arc Head](Arc_Furnace.md#the-arc-head), [Breaker](Breaker.md), [Linear Motor Coil and Belt Electromagnet](Belt_Modules.md) |
 | Electrical Treatise III: Circuits | [vacuum tube](Vacuum_Tube.md), [resonator](Resonator.md), [lattice](Lattice.md) | Circuit Board, [Evacuated Tube](Pneumatic_Tube.md), [USB Drive](Programming.md#media), [Recipe Data Stick](Data_Stick.md), [Programmed Junction](Tube_Junction.md), [Analog Adapter](Redstone_Bridges.md#analog-adapter), [Dark Cell](Dark_Cell.md), [Oscilloscope](Instruments.md#oscilloscope), [Sorting Station](Tube_Station.md#sorting-station), [Computer, Electric Controller and Electric Programmer](Electric_Controller.md), Memory Drum, [Micro Core](Micro_Core.md), [Control Rod Assembly](Control_Rod.md), [Feedbacker](Feedbacker.md), [Solid-State Converter and Converter Tap](Converter.md), [Sensors](Sensors.md#crafting), [Data Sensor](Sculk_Culture.md#data-sensor), [Belt Optical Reader and Weigher](Belt_Modules.md) |
+| Experience Treatise I: Orbs and Vessels | | [Orb Absorber](Experience.md#taps), [XP Meter](Instruments.md#xp-meter), [Crystal Holder](Experience.md#crystal-holder) |
+| Experience Treatise II: Taps | | [Ore Tap, Trade Tap and Smelter Tap](Experience.md#taps), [Catalyst Tap](Sculk_Culture.md#catalyst-tap), [Sculk Relay](Sculk_Culture.md#sculk-relay) |
+| Experience Treatise III: Spending It | | [Disenchanting Stone](Experience.md#disenchanting-stone), [Converter Tap](Converter.md) |
 | Materials Treatise I: Machine-Shop Consumables | roll, wire die, lathe bit, drill bit, abrasive wheel ([Machine Heads](Machine_Heads.md)) | [Saw Head and Plasma Head](Power_Cutter.md), [Calipers](Instruments.md#calipers), [Scratch File Set](Instruments.md#scratch-file-set) |
 | Materials Treatise II: Metallurgy and Heat Treatment | | [Crude Blast Furnace, Improved Furnace, Annealing Furnace](Furnaces.md#the-seven-furnaces), [Puddling Furnace](Puddling_Furnace.md) |
 | Nuclear Treatise I: Reactors and Fuel | [gas centrifuge](Gas_Centrifuge.md) | [Reactor](Reactor.md), [Reactor Core](Fission_Reactor.md), [fuel rods and Breeder Rod](Nuclear_Fuel.md), [Radiation Source](Dark_Cell.md), [Flux Meter](Instruments.md#flux-meter), Coolant Port ([Reactor Core](Fission_Reactor.md)) |
@@ -39,6 +42,7 @@ A machine can name several volumes; it needs all of them held. Taking it apart t
 | [Charging Gantry](Charging_Gantry.md) | Electrical II and Robotics I |
 | [Arc Hearth](Arc_Furnace.md#the-arc-hearth) | Electrical II and Materials II |
 | [Reflow Oven](Reflow_Oven.md) | Electrical III and Materials I |
+| [Converter Tap](Converter.md) | Experience III and Electrical III |
 
 ### Study prerequisites
 
@@ -50,6 +54,8 @@ Some volumes can be researched at the [Research Table](Research_Table.md) only w
 | Robotics I | Mechanical I and Electrical II |
 | Robotics II | Mechanical II and Electrical III |
 | Nuclear I | Chemical II and Electrical II |
+| Experience I | Electrical II and Chemical I |
+| Experience III | Electrical III |
 
 Types outside every volume (tools, armor, water wheel, thermal store, pump, fluid burner, lamp, belt and the rest) need no treatise.
 

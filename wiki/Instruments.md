@@ -352,7 +352,7 @@ Carry one and instruments read radiation as a figure in Ru. Hold it and the same
 
 ## XP Meter
 
-Reads experience as numbers: the level something stands at, and the points it holds. See [Experience](Experience.md).
+Reads experience as numbers: the level something stands at, and the points it holds. See [Experience](Experience.md). Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) and 2 screws, holding Experience Treatise I: Orbs and Vessels ([Treatise](Treatise.md)).
 
 Right-click:
 

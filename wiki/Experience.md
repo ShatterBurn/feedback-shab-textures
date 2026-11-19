@@ -14,7 +14,7 @@ Hold a container and its tooltip says how high its level stands (low, moderate, 
 
 ## Crystal Holder
 
-A block with one slot. Use a container on it to seat it, an empty hand to take it out. The holder puts the seated container's XP on the network; the XP stays in the container, so taking it out takes the XP with it.
+A block with one slot. Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) and 3 screws, holding Experience Treatise I: Orbs and Vessels ([Treatise](Treatise.md)). Use a container on it to seat it, an empty hand to take it out. The holder puts the seated container's XP on the network; the XP stays in the container, so taking it out takes the XP with it.
 
 ```
 P   P
@@ -42,6 +42,8 @@ Four blocks put the world's experience into the run they sit on. Each joins the 
 | **Trade Tap** | the XP a villager's trade pays, and the XP a [Counter](Counter.md) transaction pays (3 points per point of villager experience earned; with no tap in reach a Counter pays no XP at all) | 8 blocks |
 | **Smelter Tap** | the XP a furnace or other vessel beside it earned from smelting, smoking and blasting recipes, 20 points a second | touching the vessel |
 
+The Orb Absorber needs Experience Treatise I: Orbs and Vessels, the Ore, Trade and Smelter Taps need Experience Treatise II: Taps. All are crafted at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) and 3 screws. The [Catalyst Tap and Sculk Relay](Sculk_Culture.md) are crafted there too.
+
 A vessel with no Smelter Tap keeps what it earned, up to a cap, and spills it as orbs when it is broken. Authored processes (steel, ceramics, alloys) earn none; only vanilla and modded cooking recipes do.
 
 ```
@@ -58,6 +60,8 @@ P X P      X XP wire        P P P
 A is an amethyst shard. The shrieker draws orbs in, the amethyst focuses the pull, and the XP wire carries what is gathered into the run.
 
 ## Disenchanting Stone
+
+Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) and 4 screws, holding Experience Treatise III: Spending It ([Treatise](Treatise.md)).
 
 Right-click it with an attuned part to grind one attunement off. Half of what an enchanting session costs comes back as XP, into a run touching the stone, or as orbs if none has room. The part keeps any flaws the attunement left. The stone takes one attunement at a time, in alphabetical order of the effect.
 

@@ -1,10 +1,15 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
+  "type": "feedback:engineering",
   "key": {
-    "O": { "tag": "feedback:relay_organs" },
-    "V": { "item": "minecraft:sculk_vein" },
-    "P": { "item": "feedback:wrought_iron_plate" }
+    "O": {
+      "tag": "feedback:relay_organs"
+    },
+    "V": {
+      "item": "minecraft:sculk_vein"
+    },
+    "P": {
+      "item": "feedback:wrought_iron_plate"
+    }
   },
   "pattern": [
     "VOV",
@@ -13,5 +18,19 @@
   "result": {
     "count": 1,
     "id": "feedback:sculk_relay"
-  }
+  },
+  "tool": [
+    {
+      "ability": "feedback:driver",
+      "wear": 1
+    }
+  ],
+  "fasteners": {
+    "count": 2,
+    "floor": 1,
+    "forms": [
+      "screw"
+    ]
+  },
+  "school": "experience:2"
 }

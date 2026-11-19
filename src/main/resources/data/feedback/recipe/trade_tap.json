@@ -1,6 +1,5 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
+  "type": "feedback:engineering",
   "key": {
     "E": {
       "item": "minecraft:emerald"
@@ -20,5 +19,19 @@
   "result": {
     "count": 1,
     "id": "feedback:trade_tap"
-  }
+  },
+  "tool": [
+    {
+      "ability": "feedback:driver",
+      "wear": 1
+    }
+  ],
+  "fasteners": {
+    "count": 3,
+    "floor": 1,
+    "forms": [
+      "screw"
+    ]
+  },
+  "school": "experience:2"
 }

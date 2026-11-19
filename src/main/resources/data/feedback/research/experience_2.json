@@ -1,0 +1,100 @@
+{
+  "school": "experience",
+  "volume": 2,
+  "title": "Drawing it from the world",
+  "requires": [
+    "experience:1"
+  ],
+  "concepts": {
+    "sculk": {
+      "label": "Sculk",
+      "traits": [
+        "sense",
+        "stored"
+      ]
+    },
+    "vibration": {
+      "label": "A vibration",
+      "traits": [
+        "motion",
+        "sense"
+      ]
+    },
+    "ore": {
+      "label": "Ore underfoot",
+      "traits": [
+        "motion",
+        "stored"
+      ]
+    },
+    "pickup": {
+      "label": "A pickup",
+      "traits": [
+        "sense",
+        "signal"
+      ]
+    },
+    "trade": {
+      "label": "A villager's trade",
+      "traits": [
+        "trade",
+        "signal"
+      ]
+    },
+    "token": {
+      "label": "A trade token",
+      "traits": [
+        "trade",
+        "sense"
+      ]
+    },
+    "catalyst": {
+      "label": "A catalyst",
+      "traits": [
+        "stored",
+        "release"
+      ]
+    },
+    "bloom": {
+      "label": "A bloom",
+      "traits": [
+        "release",
+        "motion"
+      ]
+    },
+    "smelt": {
+      "label": "A smelting",
+      "traits": [
+        "stored",
+        "release"
+      ]
+    },
+    "tap": {
+      "label": "A tap",
+      "traits": [
+        "signal",
+        "release"
+      ]
+    }
+  },
+  "start": "sculk",
+  "goal": "tap",
+  "replay": [
+    "Sculk feels vibration and holds what it senses; a pickup turns what it senses into a signal.",
+    "Ore breaking underfoot, a villager's trade and a smelting each let a little experience out.",
+    "A tap opens the run to one such source and lets the experience flow."
+  ],
+  "question": "What does an experience tap need beside the wire?",
+  "options": [
+    "A pickup that senses its one source",
+    "A bigger vessel",
+    "A hotter fire"
+  ],
+  "answer": 0,
+  "eureka": {
+    "kind": "used",
+    "item": "feedback:orb_absorber",
+    "threshold": 3,
+    "ink": 2
+  }
+}

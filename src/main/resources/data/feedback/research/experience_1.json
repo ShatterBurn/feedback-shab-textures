@@ -1,0 +1,101 @@
+{
+  "school": "experience",
+  "volume": 1,
+  "title": "What an orb holds",
+  "requires": [
+    "electrical:2",
+    "chemical:1"
+  ],
+  "concepts": {
+    "orb": {
+      "label": "A loose orb",
+      "traits": [
+        "stored",
+        "motion"
+      ]
+    },
+    "absorb": {
+      "label": "Drawing it in",
+      "traits": [
+        "flow",
+        "motion"
+      ]
+    },
+    "wire": {
+      "label": "An experience wire",
+      "traits": [
+        "line",
+        "flow"
+      ]
+    },
+    "loss": {
+      "label": "A leaky run",
+      "traits": [
+        "line",
+        "loss"
+      ]
+    },
+    "vessel": {
+      "label": "A crystal vessel",
+      "traits": [
+        "store",
+        "stored"
+      ]
+    },
+    "ceiling": {
+      "label": "A vessel's ceiling",
+      "traits": [
+        "store",
+        "number"
+      ]
+    },
+    "level": {
+      "label": "A level",
+      "traits": [
+        "stored",
+        "number"
+      ]
+    },
+    "overflow": {
+      "label": "Overflow",
+      "traits": [
+        "store",
+        "loss"
+      ]
+    },
+    "meter": {
+      "label": "A meter",
+      "traits": [
+        "signal",
+        "number"
+      ]
+    },
+    "reading": {
+      "label": "A reading",
+      "traits": [
+        "signal",
+        "number"
+      ]
+    }
+  },
+  "start": "orb",
+  "goal": "reading",
+  "replay": [
+    "An orb is experience loose in the world, and it drifts toward whatever draws it.",
+    "A wire carries it as a run and loses some along every block, and a crystal vessel holds a fixed amount of it.",
+    "What does not fit overflows and is lost; a meter on the run says how much is there."
+  ],
+  "question": "What happens to experience a vessel has no room for?",
+  "options": [
+    "It waits in the wire",
+    "It overflows and is lost",
+    "It flows back to the orb"
+  ],
+  "answer": 1,
+  "eureka": {
+    "kind": "crafted",
+    "item": "feedback:xp_wire",
+    "threshold": 3,
+    "ink": 2
+  }
+}

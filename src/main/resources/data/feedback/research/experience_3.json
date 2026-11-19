@@ -1,0 +1,101 @@
+{
+  "school": "experience",
+  "volume": 3,
+  "title": "Spending it",
+  "requires": [
+    "experience:2",
+    "electrical:3"
+  ],
+  "concepts": {
+    "held": {
+      "label": "Held experience",
+      "traits": [
+        "stored",
+        "store"
+      ]
+    },
+    "convert": {
+      "label": "A conversion",
+      "traits": [
+        "spend",
+        "loss"
+      ]
+    },
+    "poor": {
+      "label": "A poor exchange",
+      "traits": [
+        "loss",
+        "spend"
+      ]
+    },
+    "work": {
+      "label": "Work",
+      "traits": [
+        "release",
+        "spend"
+      ]
+    },
+    "tap": {
+      "label": "A converter tap",
+      "traits": [
+        "spend",
+        "store"
+      ]
+    },
+    "enchant": {
+      "label": "An enchantment",
+      "traits": [
+        "stored",
+        "mark"
+      ]
+    },
+    "bound": {
+      "label": "A bound enchantment",
+      "traits": [
+        "mark",
+        "hold"
+      ]
+    },
+    "disenchant": {
+      "label": "Disenchanting",
+      "traits": [
+        "release",
+        "mark"
+      ]
+    },
+    "grind": {
+      "label": "A grindstone",
+      "traits": [
+        "release",
+        "mark"
+      ]
+    },
+    "reservoir": {
+      "label": "A reservoir",
+      "traits": [
+        "store",
+        "hold"
+      ]
+    }
+  },
+  "start": "held",
+  "goal": "work",
+  "replay": [
+    "Experience converts to Work, but poorly on purpose: most of it is lost in the exchange.",
+    "A bound enchantment holds experience in a mark; stripping it gives that experience back.",
+    "A reservoir keeps what is not spent, and a converter tap spends it as Work."
+  ],
+  "question": "Why is experience a poor way to make Work?",
+  "options": [
+    "It is too heavy to carry",
+    "Most of it is lost in the exchange",
+    "It cannot be stored"
+  ],
+  "answer": 1,
+  "eureka": {
+    "kind": "used",
+    "item": "feedback:ore_tap",
+    "threshold": 3,
+    "ink": 2
+  }
+}
