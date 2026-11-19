@@ -91,7 +91,7 @@ P is a wrought iron plate and W a copper wire. In the Ore Pickup the amethyst re
 
 Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) and 4 screws, holding Experience Treatise III: Spending It ([Treatise](Treatise.md)).
 
-Right-click it with an attuned part to grind one attunement off. Half of what an enchanting session costs comes back as XP, into a run touching the stone, or as orbs if none has room. The part keeps any flaws the attunement left. The stone takes one attunement at a time, in alphabetical order of the effect.
+Right-click it with an attuned part, or an assembled tool carrying attuned parts, to grind one attunement off. Half of what an enchanting session costs comes back as XP, into a run touching the stone, or as orbs if none has room. The part keeps any flaws the attunement left. The stone takes one attunement at a time, in alphabetical order of the effect. On a tool it takes the first in that order across all its parts, from the first part carrying it, and the tool's stats are recalculated.
 
 ```
 A P A

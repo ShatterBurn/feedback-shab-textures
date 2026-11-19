@@ -10,7 +10,10 @@ import java.util.Map;
 import io.github.soundgoodizerfan.feedback.core.xp.XpNode;
 import io.github.soundgoodizerfan.feedback.modular.attunement.Attunements;
 import io.github.soundgoodizerfan.feedback.modular.bake.ModularTuning;
+import io.github.soundgoodizerfan.feedback.modular.item.ModularStacks;
+import io.github.soundgoodizerfan.feedback.modular.type.ModularDesign;
 import io.github.soundgoodizerfan.feedback.process.MadeOf;
+import io.github.soundgoodizerfan.feedback.registry.FModular;
 import io.github.soundgoodizerfan.feedback.registry.FDataComponents;
 
 import net.minecraft.core.BlockPos;
@@ -32,7 +35,8 @@ import net.minecraft.world.phys.Vec3;
  * The grindstone's cousin for attunements: held to it, a part loses one attunement against the stone and gives back a
  * share of what the session cost ({@link XpTuning#UNATTUNE_REFUND}) as XP, into an XP run beside the stone if it has room
  * and as orbs if not. The part keeps its flaws. Not a free lunch: the refund is half the price, and the stone takes the
- * lowest-named attunement first, so choosing which one goes is not offered.
+ * lowest-named attunement first, so choosing which one goes is not offered. An assembled tool works too: the stone
+ * takes the lowest-named attunement across all its parts and the tool is baked again.
  */
 public class DisenchantStoneBlock extends Block {
 
@@ -46,19 +50,37 @@ public class DisenchantStoneBlock extends Block {
         MadeOf made = stack.get(FDataComponents.MADE_OF.get());
         String key = made == null ? null : made.measures().attuned().keySet().stream()
                 .min(Comparator.naturalOrder()).orElse(null);
+        // An assembled tool: the lowest-named attunement across its parts goes, from the first part carrying it.
+        ModularDesign design = key == null ? ModularStacks.design(stack) : null;
+        ModularDesign.Part holder = null;
+        if (design != null) {
+            for (ModularDesign.Part p : design.parts())
+                for (String k : p.measures().attuned().keySet())
+                    if (key == null || k.compareTo(key) < 0) {
+                        key = k;
+                        holder = p;
+                    }
+        }
         if (key == null)
             return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         if (level.isClientSide)
             return ItemInteractionResult.SUCCESS;
-        Map<String, Float> kept = new HashMap<>(made.measures().attuned());
-        kept.remove(key);
-        ItemStack one = stack.copyWithCount(1);
-        one.set(FDataComponents.MADE_OF.get(), new MadeOf(made.material(), made.stock(), made.cells(), made.variant(), made.flaw(), made.measures().withAttuned(kept)));
-        stack.shrink(1);
-        if (stack.isEmpty())
-            player.setItemInHand(hand, one);
-        else if (!player.getInventory().add(one))
-            player.drop(one, false);
+        if (holder != null) {
+            Map<String, Float> kept = new HashMap<>(holder.measures().attuned());
+            kept.remove(key);
+            stack.set(FModular.DESIGN.get(), design.withPart(holder.withMeasures(holder.measures().withAttuned(kept))));
+            ModularStacks.rebake(stack);
+        } else {
+            Map<String, Float> kept = new HashMap<>(made.measures().attuned());
+            kept.remove(key);
+            ItemStack one = stack.copyWithCount(1);
+            one.set(FDataComponents.MADE_OF.get(), new MadeOf(made.material(), made.stock(), made.cells(), made.variant(), made.flaw(), made.measures().withAttuned(kept)));
+            stack.shrink(1);
+            if (stack.isEmpty())
+                player.setItemInHand(hand, one);
+            else if (!player.getInventory().add(one))
+                player.drop(one, false);
+        }
         int refund = Math.max(1, Math.round(ModularTuning.ENCHANT_XP_COST.value() * XpTuning.UNATTUNE_REFUND));
         int left = refund;
         for (Direction d : Direction.values())
