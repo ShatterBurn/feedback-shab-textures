@@ -320,6 +320,14 @@ public final class FModular {
                             .requiresCorrectToolForDrops(),
                     io.github.soundgoodizerfan.feedback.modular.bench.Station.STONECUTTING));
     public static final DeferredItem<net.minecraft.world.item.BlockItem> STONECUTTER_ITEM = ITEMS.registerSimpleBlockItem(STONECUTTER);
+    /** The operator's part bench: any stock, no tool, no heat window, no treatise, forged shapes at once; one Cut tab for the saw's and the stonecutter's lists. */
+    public static final net.neoforged.neoforge.registries.DeferredBlock<io.github.soundgoodizerfan.feedback.modular.bench.StationBlock> CREATIVE_TOOL_TABLE =
+            BLOCKS.register("creative_tool_table", () -> new io.github.soundgoodizerfan.feedback.modular.bench.StationBlock(
+                    net.minecraft.world.level.block.state.BlockBehaviour.Properties.of()
+                            .mapColor(net.minecraft.world.level.material.MapColor.COLOR_PURPLE).strength(2.5f)
+                            .sound(net.minecraft.world.level.block.SoundType.STONE).noOcclusion(),
+                    io.github.soundgoodizerfan.feedback.modular.bench.Station.CREATIVE));
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> CREATIVE_TOOL_TABLE_ITEM = ITEMS.registerSimpleBlockItem(CREATIVE_TOOL_TABLE);
 
     /** Replaces vanilla's enchanting table (docs/specs/feedback_enchanting_spec.md): parts are attuned here, not rolled. */
     public static final net.neoforged.neoforge.registries.DeferredBlock<io.github.soundgoodizerfan.feedback.modular.enchant.EnchantingTableBlock> ENCHANTING_TABLE =
@@ -358,7 +366,7 @@ public final class FModular {
             net.minecraft.world.level.block.entity.BlockEntityType<io.github.soundgoodizerfan.feedback.modular.bench.StationBlockEntity>> STATION_ENTITY =
             BLOCK_ENTITIES.register("station", () -> net.minecraft.world.level.block.entity.BlockEntityType.Builder
                     .of(io.github.soundgoodizerfan.feedback.modular.bench.StationBlockEntity::new,
-                            SMITHING_TABLE.get(), ANVIL.get(), WOODWORKING_TABLE.get(), STONECUTTER.get()).build(null));
+                            SMITHING_TABLE.get(), ANVIL.get(), WOODWORKING_TABLE.get(), STONECUTTER.get(), CREATIVE_TOOL_TABLE.get()).build(null));
 
     public static final DeferredHolder<net.minecraft.world.level.block.entity.BlockEntityType<?>,
             net.minecraft.world.level.block.entity.BlockEntityType<io.github.soundgoodizerfan.feedback.modular.enchant.EnchantingTableBlockEntity>> ENCHANTING_TABLE_ENTITY =

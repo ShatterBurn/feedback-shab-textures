@@ -547,6 +547,7 @@ public class FCreativeTabs {
         if (event.getTabKey() == CreativeModeTabs.OP_BLOCKS) {
             event.accept(FItems.DEBUG_HELMET.get());
             event.accept(FModular.CREATIVE_TREATISE.get());
+            event.accept(FModular.CREATIVE_TOOL_TABLE_ITEM.get());
             event.accept(FItems.CREATIVE_CONTROLLER.get());
             event.accept(FItems.DEBUG_SHELF.get());
             event.accept(FItems.CREATIVE_FLUID.get());

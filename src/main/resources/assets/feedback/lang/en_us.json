@@ -5648,6 +5648,8 @@
   "block.feedback.smithing_table": "Smithing Table",
   "block.feedback.woodworking_table": "Woodworking Table",
   "block.feedback.stonecutter": "Stonecutter",
+  "block.feedback.creative_tool_table": "Creative Tool Table",
+  "feedback.jei.info.creative_tool_table": "Makes any part of any shape from any stock, with no tool, no treatise and no working heat; forged shapes come out at once and clean. Its one Cut tab lists the saw's wood cuts and the stonecutter's cuts together. Stock is still spent.",
   "tooltip.feedback.stonecutter_wood": "Also cuts wood!",
   "block.feedback.anvil": "Anvil",
   "tooltip.feedback.anvil_forge": "Also forges! A Hearth beside it keeps the stock hot.",

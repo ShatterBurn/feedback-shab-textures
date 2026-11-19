@@ -436,6 +436,7 @@ public class FeedbackJeiPlugin implements IModPlugin {
         info(registration, FModular.ANVIL_ITEM.get(), "anvil");
         info(registration, FModular.WOODWORKING_TABLE_ITEM.get(), "woodworking_table");
         info(registration, FModular.STONECUTTER_ITEM.get(), "stonecutter");
+        info(registration, FModular.CREATIVE_TOOL_TABLE_ITEM.get(), "creative_tool_table");
         info(registration, FModular.BLUEPRINT_TABLE_ITEM.get(), "blueprint_table");
         info(registration, FModular.ENCHANTING_TABLE_ITEM.get(), "enchanting_table");
         info(registration, FModular.BLUEPRINT.get(), "modular_blueprint");
@@ -640,7 +641,7 @@ public class FeedbackJeiPlugin implements IModPlugin {
         registration.addRecipeCatalysts(SolderingCategory.TYPE, FItems.SOLDERING_IRON.get(), FItems.REFLOW_OVEN.get());
         registration.addRecipeCatalysts(EngineeringCategory.TYPE, io.github.soundgoodizerfan.feedback.registry.FModular.ENGINEERING_TABLE_ITEM.get());
         registration.addRecipeCatalysts(PartBenchToolCategory.TYPE, net.minecraft.world.item.Items.CRAFTING_TABLE, io.github.soundgoodizerfan.feedback.registry.FModular.ENGINEERING_TABLE_ITEM.get());
-        registration.addRecipeCatalysts(PartBenchPartCategory.TYPE, io.github.soundgoodizerfan.feedback.registry.FModular.SMITHING_TABLE_ITEM.get(), io.github.soundgoodizerfan.feedback.registry.FModular.ANVIL_ITEM.get(), io.github.soundgoodizerfan.feedback.registry.FModular.WOODWORKING_TABLE_ITEM.get(), io.github.soundgoodizerfan.feedback.registry.FModular.STONECUTTER_ITEM.get());
+        registration.addRecipeCatalysts(PartBenchPartCategory.TYPE, io.github.soundgoodizerfan.feedback.registry.FModular.SMITHING_TABLE_ITEM.get(), io.github.soundgoodizerfan.feedback.registry.FModular.ANVIL_ITEM.get(), io.github.soundgoodizerfan.feedback.registry.FModular.WOODWORKING_TABLE_ITEM.get(), io.github.soundgoodizerfan.feedback.registry.FModular.STONECUTTER_ITEM.get(), io.github.soundgoodizerfan.feedback.registry.FModular.CREATIVE_TOOL_TABLE_ITEM.get());
     }
 
     @Override

@@ -426,7 +426,7 @@ public final class PartBenchShaping {
     /** As above for a part of several slots: {@code extras} are the piles of the slots after the first ({@link #check}). */
     public static ItemStack make(Station station, Option option, List<ItemStack> contents, List<ItemStack> extras, Map<ResourceLocation, Material> materials,
                                  Level level, float scale, Map<String, Float> axes) {
-        if (option.forged())
+        if (option.forged() && !station.instant())
             return ItemStack.EMPTY;
         if (!(BuiltInRegistries.ITEM.get(option.shaping().item()) instanceof ModularPartItem))
             return food(option, contents, materials, level);

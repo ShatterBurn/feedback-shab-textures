@@ -484,15 +484,24 @@ public class PartBenchMenu extends AbstractContainerMenu {
         ItemStack in = centreStack();
         if (in.isEmpty() || mode.get() != MODE_PART || !cutTab())
             return List.of();
-        if (sawing(level))
-            return WoodCuts.of(level, in).stream().map(c -> c.result().copy()).toList();
-        return level.getRecipeManager().getRecipesFor(net.minecraft.world.item.crafting.RecipeType.STONECUTTING,
-                new net.minecraft.world.item.crafting.SingleRecipeInput(in), level).stream()
-                .map(r -> r.value().getResultItem(level.registryAccess()).copy()).toList();
+        List<ItemStack> wood = station == Station.WOODWORKING || station == Station.STONECUTTING && !WoodCuts.of(level, in).isEmpty() || station == Station.CREATIVE
+                ? WoodCuts.of(level, in).stream().map(c -> c.result().copy()).toList() : List.of();
+        if (station != Station.CREATIVE && !wood.isEmpty() || station == Station.WOODWORKING)
+            return wood;
+        List<ItemStack> out = new java.util.ArrayList<>(wood);
+        level.getRecipeManager().getRecipesFor(net.minecraft.world.item.crafting.RecipeType.STONECUTTING,
+                new net.minecraft.world.item.crafting.SingleRecipeInput(in), level)
+                .forEach(r -> out.add(r.value().getResultItem(level.registryAccess()).copy()));
+        return out;
     }
 
-    /** Whether the Cut or Saw tab lists the saw's wood cuts: always at the woodworking table, at the stonecutter when the stock is a plank or log. */
+    /**
+     * Whether the chosen cut is a wood cut ({@link WoodCuts}): always at the woodworking table, at the stonecutter when the stock is a plank or log.
+     * The creative table lists the wood cuts first, then the stone ones, so a pick inside the wood count is a wood cut.
+     */
     private boolean sawing(Level level) {
+        if (station == Station.CREATIVE)
+            return cutPicked() >= 0 && cutPicked() < WoodCuts.of(level, centreStack()).size();
         return station == Station.WOODWORKING || station == Station.STONECUTTING && !WoodCuts.of(level, centreStack()).isEmpty();
     }
 
@@ -526,6 +535,8 @@ public class PartBenchMenu extends AbstractContainerMenu {
 
     /** The treatise volumes the player holds here (inventory, a binder in it, a shelf touching the table), one bit each: what the shapes list is gated by. */
     public int treatiseMask(Level level) {
+        if (station.ignoresTreatises())
+            return -1;
         return io.github.soundgoodizerfan.feedback.modular.treatise.Treatises.mask(player, ContainerLevelAccess.create(level, pos));
     }
 
@@ -848,7 +859,7 @@ public class PartBenchMenu extends AbstractContainerMenu {
                 Map<ResourceLocation, Material> materials = ClientMaterials.on(level);
                 Optional<PartBenchShaping.Option> option = option(level);
                 Optional<PartBenchShaping.Stock> stock = option.flatMap(o -> PartBenchShaping.check(station, o, stock(), extras(level), materials, level, aimScale(o)));
-                if (stock.isPresent() && !option.get().forged() && BuiltInRegistries.ITEM.get(option.get().shaping().item()) instanceof ModularPartItem)
+                if (stock.isPresent() && (!option.get().forged() || station.instant()) &&BuiltInRegistries.ITEM.get(option.get().shaping().item()) instanceof ModularPartItem)
                     spend(PartBenchBlockEntity.TOOL, stock.get(), server);
                 else if (option.isPresent())
                     // A food reshaped: the whole pile goes into the new shape.

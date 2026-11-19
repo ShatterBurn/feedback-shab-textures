@@ -550,7 +550,7 @@ public class BenchScreen extends SkinnedScreen<PartBenchMenu> {
             skin.cue(GuiSkin.Cue.STAGE, stockKind(), 1f);
             return;
         }
-        if (o.forged()) {
+        if (o.forged() && !st.instant()) {
             if (forge == null || !forge.start(o, n.index))
                 reject(Component.translatable("gui.feedback.tool_table.status.cold"));
             else

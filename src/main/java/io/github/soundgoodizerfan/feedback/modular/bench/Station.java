@@ -32,7 +32,9 @@ public enum Station implements StringRepresentable {
     ANVIL("ANVIL", "hammer", "gui.feedback.tool_table.hammer", List.of(tab("forge"), tab("trim")), Panel.FORGE),
     WOODWORKING("WOOD", "axe", "gui.feedback.tool_table.axe", List.of(tab("parts"), tab("saw"))),
     STONECUTTING("STONE", "saw", "gui.feedback.tool_table.saw", List.of(tab("parts"), tab("cut"))),
-    PREP("BRICK", "knife", "gui.feedback.prep_table.knife", List.of(tab("prep"), tab("blueprint")), Panel.FORGE, Panel.PREP);
+    PREP("BRICK", "knife", "gui.feedback.prep_table.knife", List.of(tab("prep"), tab("blueprint")), Panel.FORGE, Panel.PREP),
+    /** The operator's table: any stock, no tool, no heat window, no treatise, forged shapes made at once, one Cut tab for the wood and the stone lists. */
+    CREATIVE("STONE", "hammer", "gui.feedback.tool_table.hammer", List.of(tab("parts"), tab("cut")));
 
     public static final Codec<Station> CODEC = StringRepresentable.fromEnum(Station::values);
 
@@ -125,7 +127,17 @@ public enum Station implements StringRepresentable {
 
     /** Whether the bench works with a hand tool: a hammer, an axe at the woodworking table, a saw at the stonecutter. */
     public boolean usesTool() {
-        return true;
+        return this != CREATIVE;
+    }
+
+    /** Whether forged shapes are made at once, clean, with no rhythm played: the creative table. */
+    public boolean instant() {
+        return this == CREATIVE;
+    }
+
+    /** Whether the bench ignores the treatise gate: the creative table. */
+    public boolean ignoresTreatises() {
+        return this == CREATIVE;
     }
 
     /** Whether a shape that is forged (a rhythm played) can be made here. The smithing table shapes metal but never forges it; the anvil does. */
@@ -135,7 +147,7 @@ public enum Station implements StringRepresentable {
 
     /** Whether stock outside its hot-working window can be shaped here: the smithing table cuts and files unforged shapes cold with any hammer; the anvil keeps the window. */
     public boolean coldWork() {
-        return this == SMITHING;
+        return this == SMITHING || this == CREATIVE;
     }
 
     /** The metal benches: the smithing table, and the anvil that does all it does and forges as well. Both carry the Trim tab. */
