@@ -139,6 +139,22 @@ final class CodeRecipeExamples {
             out.add(holder("cable_" + layout.gauge().getSerializedName(), in, layout.width(), layout.height(), made));
         }
 
+        // Insulated cable: a copper row over a row of one insulating material; the insulator and the coat it makes cycle in step.
+        ResourceLocation copperId = Feedback.id("copper");
+        List<ItemStack> copperWire = new ArrayList<>(), coatStacks = new ArrayList<>(), coated = new ArrayList<>();
+        if (materials.containsKey(copperId) && materials.get(copperId).stack(copperId, "wire").isPresent())
+            copperWire.add(materials.get(copperId).stack(copperId, "wire").get());
+        materials.forEach((id, m) -> m.electrical().insulation().ifPresent(band -> {
+            for (String form : List.of("sheet", "pane", "foil", "plate", "ingot"))
+                if (m.stack(id, form).isPresent()) {
+                    coatStacks.add(m.stack(id, form).get());
+                    coated.add(CableItem.of(copperId, 3, band, io.github.soundgoodizerfan.feedback.machine.cable.CableGauge.STANDARD));
+                    return;
+                }
+        }));
+        if (!copperWire.isEmpty() && !coatStacks.isEmpty())
+            out.add(holder("cable_insulated", List.of(copperWire, copperWire, copperWire, coatStacks, coatStacks, coatStacks), 3, 2, coated));
+
         // Breaker from cable: the cable's gauge cycles, and the breaker takes it.
         var ironPlate = net.minecraft.core.registries.BuiltInRegistries.ITEM.get(Feedback.id("wrought_iron_plate"));
         var copper = Feedback.id("copper");
