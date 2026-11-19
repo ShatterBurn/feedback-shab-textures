@@ -75,8 +75,8 @@ public record MaterialIngredient(Optional<String> form, Optional<TagKey<Item>> t
     public static final IngredientType<MaterialIngredient> TYPE = new IngredientType<>(CODEC);
 
     private static DataResult<MaterialIngredient> checked(MaterialIngredient in) {
-        if (in.form.isEmpty() && in.tag.isEmpty() && in.material.isEmpty())
-            return DataResult.error(() -> "a material ingredient names a form, a tag or a material");
+        if (in.form.isEmpty() && in.forms.isEmpty() && in.tag.isEmpty() && in.material.isEmpty())
+            return DataResult.error(() -> "a material ingredient names a form, a list of forms, a tag or a material");
         if ((in.min != Float.NEGATIVE_INFINITY || in.max != Float.POSITIVE_INFINITY) && in.property.isEmpty())
             return DataResult.error(() -> "min and max need a property");
         return DataResult.success(in);
@@ -147,6 +147,10 @@ public record MaterialIngredient(Optional<String> form, Optional<TagKey<Item>> t
         } else if (form.isPresent()) {
             stacks = materials.entrySet().stream().flatMap(e -> e.getValue().stack(e.getKey(), form.get()).stream()
                     .filter(s -> accepts(new Material.Located(e.getKey(), e.getValue(), form.get()))));
+        } else if (tag.isEmpty()) {
+            // a list of forms with no material named: the stock of every material in any of them
+            stacks = materials.entrySet().stream().flatMap(e -> forms.stream().flatMap(f -> e.getValue().stack(e.getKey(), f).stream()
+                    .filter(s -> accepts(new Material.Located(e.getKey(), e.getValue(), f)))));
         } else {
             stacks = BuiltInRegistries.ITEM.getTag(tag.get()).stream().flatMap(set -> set.stream())
                     .map(h -> new ItemStack(h.value()))

@@ -484,10 +484,10 @@ public class FCreativeTabs {
         FAutomation.fill(out);
         all(out, VEHICLE_PARTS);
         FVehicles.TIRE_HUB_ITEMS.forEach(hub -> out.accept(hub.get()));
-        // A mote per block that can be cut into motes (a full stack of each).
+        // A mote per block that can be cut into motes (the creative tab takes single stacks only).
         net.minecraft.core.registries.BuiltInRegistries.BLOCK.stream()
                 .filter(b -> b.asItem() != net.minecraft.world.item.Items.AIR && io.github.soundgoodizerfan.feedback.vehicle.micro.MoteItem.eligible(b.defaultBlockState()))
-                .forEach(b -> out.accept(io.github.soundgoodizerfan.feedback.vehicle.micro.MoteItem.of(b, 64)));
+                .forEach(b -> out.accept(io.github.soundgoodizerfan.feedback.vehicle.micro.MoteItem.of(b, 1)));
     }
 
     private static void fillFood(CreativeModeTab.Output out) {
