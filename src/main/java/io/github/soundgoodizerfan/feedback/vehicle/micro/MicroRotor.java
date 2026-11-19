@@ -42,7 +42,7 @@ import org.jetbrains.annotations.Nullable;
  * Speed and angle mirror {@link RotationNode}'s: the network's, scaled by the ratio, on the server;
  * the last synced, extrapolated, on the client.
  */
-public final class MicroRotor implements RotationMember {
+public final class MicroRotor implements FineMember {
 
     private static final Rpm ZERO_RPM = new Rpm(0);
     private static final Su NO_SU = new Su(0);
@@ -68,14 +68,17 @@ public final class MicroRotor implements RotationMember {
         this.state = state;
     }
 
+    @Override
     public MicroCellBlockEntity cell() {
         return cell;
     }
 
+    @Override
     public int index() {
         return index;
     }
 
+    @Override
     public BlockState state() {
         return state;
     }

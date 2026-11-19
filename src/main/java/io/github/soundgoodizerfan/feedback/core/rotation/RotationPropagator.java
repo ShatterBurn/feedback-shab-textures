@@ -299,7 +299,7 @@ public class RotationPropagator {
         if (be instanceof RotationNode node)
             return List.of(node);
         if (be instanceof MicroCellBlockEntity cell)
-            return cell.rotors();
+            return cell.rotationMembers();
         return List.of();
     }
 
@@ -310,8 +310,8 @@ public class RotationPropagator {
     private static void connectedNeighbours(Level level, RotationMember member, List<RotationMember> out, FloatArrayList gearings) {
         out.clear();
         gearings.clear();
-        if (member instanceof MicroRotor rotor) {
-            rotorNeighbours(level, rotor, out, gearings);
+        if (member instanceof io.github.soundgoodizerfan.feedback.vehicle.micro.FineMember voxel) {
+            rotorNeighbours(level, voxel, out, gearings);
             return;
         }
         if (!(member instanceof RotationNode node))
@@ -350,13 +350,13 @@ public class RotationPropagator {
      * A rotor's neighbours: the voxel one step each way on the quarter grid, in its own cell or the
      * next; and, from a central voxel of a cell face, a Rotation Adapter whose micro face meets it.
      */
-    private static void rotorNeighbours(Level level, MicroRotor rotor, List<RotationMember> out, FloatArrayList gearings) {
+    private static void rotorNeighbours(Level level, io.github.soundgoodizerfan.feedback.vehicle.micro.FineMember rotor, List<RotationMember> out, FloatArrayList gearings) {
         BlockPos pos = rotor.getBlockPos();
         int x = rotor.index() & 3, y = rotor.index() >> 2 & 3, z = rotor.index() >> 4;
         BlockState state = rotor.state();
         if (state.getBlock() instanceof Rotatable rotatable && rotatable.meshesDiagonally(state))
             for (Vec3i offset : EDGE_DIAGONALS) {
-                MicroRotor other = rotorAt(level, rotor, x + offset.getX(), y + offset.getY(), z + offset.getZ());
+                io.github.soundgoodizerfan.feedback.vehicle.micro.FineMember other = rotorAt(level, rotor, x + offset.getX(), y + offset.getY(), z + offset.getZ());
                 if (other != null)
                     add(out, gearings, other, rotatable.meshRatioAt(state, offset, other.state()));
             }
@@ -368,7 +368,7 @@ public class RotationPropagator {
                 continue;
             BlockEntity be = inside ? rotor.cell() : level.getBlockEntity(next);
             if (be instanceof MicroCellBlockEntity cell) {
-                MicroRotor other = cell.rotor(MicroCellBlockEntity.index(Math.floorMod(nx, N), Math.floorMod(ny, N), Math.floorMod(nz, N)));
+                io.github.soundgoodizerfan.feedback.vehicle.micro.FineMember other = cell.member(MicroCellBlockEntity.index(Math.floorMod(nx, N), Math.floorMod(ny, N), Math.floorMod(nz, N)));
                 if (other != null)
                     add(out, gearings, other, ratioBetween(level, pos, rotor.state(), next, other.state(), face));
             }
@@ -380,11 +380,11 @@ public class RotationPropagator {
      * in that cell or any cell round it; null if none or not loaded.
      */
     @Nullable
-    private static MicroRotor rotorAt(Level level, MicroRotor rotor, int x, int y, int z) {
+    private static io.github.soundgoodizerfan.feedback.vehicle.micro.FineMember rotorAt(Level level, io.github.soundgoodizerfan.feedback.vehicle.micro.FineMember rotor, int x, int y, int z) {
         BlockPos at = rotor.getBlockPos().offset(Math.floorDiv(x, N), Math.floorDiv(y, N), Math.floorDiv(z, N));
         BlockEntity be = at.equals(rotor.getBlockPos()) ? rotor.cell() : level.isLoaded(at) ? level.getBlockEntity(at) : null;
         return be instanceof MicroCellBlockEntity cell
-                ? cell.rotor(MicroCellBlockEntity.index(Math.floorMod(x, N), Math.floorMod(y, N), Math.floorMod(z, N)))
+                ? cell.member(MicroCellBlockEntity.index(Math.floorMod(x, N), Math.floorMod(y, N), Math.floorMod(z, N)))
                 : null;
     }
 

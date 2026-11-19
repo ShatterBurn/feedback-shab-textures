@@ -217,6 +217,11 @@ public class MicroCellBlockEntity extends BlockEntity implements BlockEntitySubL
         hostedCount++;
         setChanged();
         level.invalidateCapabilities(worldPosition);
+        if (be instanceof io.github.soundgoodizerfan.feedback.core.rotation.RotationNode node) {
+            hostedRotors[index] = new HostedRotor(this, index, node);
+            if (!level.isClientSide)
+                RotationPropagator.queue(level, worldPosition);
+        }
         return true;
     }
 
@@ -282,6 +287,14 @@ public class MicroCellBlockEntity extends BlockEntity implements BlockEntitySubL
         if (!item.isEmpty()) {
             item.applyComponents(be.collectComponents());
             FineHosts.unscaled(item);
+        }
+        // A rotation machine leaves its network as the stand-in the network knows it by, before it is removed itself.
+        var rotor = hostedRotors[index];
+        if (rotor != null) {
+            if (level != null && !level.isClientSide)
+                RotationPropagator.onRemoved(level, List.of(rotor));
+            rotor.setNetwork(null);
+            hostedRotors[index] = null;
         }
         be.setRemoved();
         hosted[index] = null;
@@ -422,6 +435,26 @@ public class MicroCellBlockEntity extends BlockEntity implements BlockEntitySubL
         skins[index] = voxels[index] != null && MicroWedgeBlock.is(voxels[index]) ? skin : null;
     }
 
+    /** Hosted machines that are rotation nodes, by voxel index: the network is shown these in place of the machines. */
+    private final HostedRotor[] hostedRotors = new HostedRotor[VOXELS];
+
+    /** The rotation member in voxel {@code index}: its rotor, or a hosted machine's stand-in; null if there is none. */
+    @Nullable
+    public FineMember member(int index) {
+        return rotors[index] != null ? rotors[index] : hostedRotors[index];
+    }
+
+    /** Every rotation member in this cell: its rotors and its hosted rotation machines. */
+    public List<FineMember> rotationMembers() {
+        List<FineMember> out = new ArrayList<>();
+        for (int i = 0; i < VOXELS; i++) {
+            FineMember m = member(i);
+            if (m != null)
+                out.add(m);
+        }
+        return out;
+    }
+
     /** The rotor in voxel {@code index}, or null if that voxel is not a rotation part. */
     @Nullable
     public MicroRotor rotor(int index) {
@@ -540,7 +573,7 @@ public class MicroCellBlockEntity extends BlockEntity implements BlockEntitySubL
         super.onLoad();
         gone.clear();
         rotorAdded = false;
-        if (level != null && !level.isClientSide && !rotors().isEmpty())
+        if (level != null && !level.isClientSide && !rotationMembers().isEmpty())
             RotationPropagator.queue(level, worldPosition);
     }
 
@@ -565,6 +598,11 @@ public class MicroCellBlockEntity extends BlockEntity implements BlockEntitySubL
             if (hosted[i] != null) {
                 if (unloaded) {
                     // Kept in place: the chunk is saved with its machines and they are loaded back with it.
+                    var standIn = hostedRotors[i];
+                    if (standIn != null && standIn.getNetwork() != null) {
+                        standIn.getNetwork().remove(standIn);
+                        standIn.setNetwork(null);
+                    }
                     hosted[i].setRemoved();
                     continue;
                 }
@@ -1013,6 +1051,7 @@ public class MicroCellBlockEntity extends BlockEntity implements BlockEntitySubL
         }
         Arrays.fill(hosted, null);
         Arrays.fill(hostedItems, null);
+        Arrays.fill(hostedRotors, null);
         hostedCount = 0;
         ListTag machines = tag.getList("Machines", Tag.TAG_COMPOUND);
         for (int k = 0; k < machines.size(); k++) {
@@ -1029,6 +1068,8 @@ public class MicroCellBlockEntity extends BlockEntity implements BlockEntitySubL
             hosted[i] = be;
             hostedItems[i] = item;
             hostedCount++;
+            if (be instanceof io.github.soundgoodizerfan.feedback.core.rotation.RotationNode node)
+                hostedRotors[i] = new HostedRotor(this, i, node);
         }
         ListTag strapped = tag.getList("Belts", Tag.TAG_COMPOUND);
         for (int k = 0; k < strapped.size(); k++) {
