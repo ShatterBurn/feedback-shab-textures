@@ -151,6 +151,34 @@ public class CableBlock extends Block implements EntityBlock {
             ElectricPropagator.requeue(level, pos);
     }
 
+    /**
+     * Recoats a bare cable (its coat burnt off) with an insulator in hand: any item of a material whose {@code electrical.insulation}
+     * is stated, as the crafting recipe reads it. One item coats the cable to that band. A live cable cannot be coated, and a fence,
+     * bare by design, is not.
+     */
+    @Override
+    protected net.minecraft.world.ItemInteractionResult useItemOn(net.minecraft.world.item.ItemStack stack, BlockState state, Level level, BlockPos pos,
+                                                                  net.minecraft.world.entity.player.Player player, net.minecraft.world.InteractionHand hand,
+                                                                  net.minecraft.world.phys.BlockHitResult hit) {
+        if (!(level.getBlockEntity(pos) instanceof CableBlockEntity wire) || !wire.bare())
+            return net.minecraft.world.ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        io.github.soundgoodizerfan.feedback.process.Material.Located found = io.github.soundgoodizerfan.feedback.process.Material.find(
+                io.github.soundgoodizerfan.feedback.process.MaterialIngredient.materialsNow(), stack).orElse(null);
+        io.github.soundgoodizerfan.feedback.core.unit.VoltageBand coat = found == null ? null : found.material().electrical().insulation().orElse(null);
+        if (coat == null)
+            return net.minecraft.world.ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        if (level.isClientSide)
+            return net.minecraft.world.ItemInteractionResult.SUCCESS;
+        if (wire.getAmps() > 0f) {
+            player.displayClientMessage(net.minecraft.network.chat.Component.translatable("feedback.cable.coat_live"), true);
+            return net.minecraft.world.ItemInteractionResult.CONSUME;
+        }
+        wire.setInsulation(coat);
+        if (!player.getAbilities().instabuild)
+            stack.shrink(1);
+        return net.minecraft.world.ItemInteractionResult.CONSUME;
+    }
+
     @Override
     protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean moved) {
         if (!state.is(newState.getBlock()) && level.getBlockEntity(pos) instanceof CableBlockEntity cable)

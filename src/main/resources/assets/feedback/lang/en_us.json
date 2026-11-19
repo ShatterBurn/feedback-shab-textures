@@ -7410,6 +7410,7 @@
   "modular.feedback.axis.slots": "Charge slots",
   "feedback.jei.info.heating_coil": "Eu to heat: set it under a vessel, or against one. A coil is wound from a wire at the Blueprint Table: a thicker wire draws more current, more turns draw less, and a metal that resists current (nichrome) turns more of it to heat than one that does not (copper). It holds as hot as its wire metal before it wears.",
   "feedback.jei.info.data_connector": "Joins data nodes with wire. Use it on one node, then another, to link them; the wire is paid for by its length and has a reach. Shift-scroll changes what a use does: link, unlink a pair, clear every wire on a node, or paint a controller link with the dye in the other hand (no dye clears it).",
+  "feedback.cable.coat_live": "A live cable cannot be coated",
   "feedback.jei.info.crucible": "A vessel for melting, built at a Stonecutter from a blueprint drawn at the Blueprint Table. Its wall is brick or metal plate: more slots make a bigger vessel that is slower to warm, a thicker wall is slower still, and the wall's own material sets how much heat that is. Held above the temperature its wall material holds, the wall wears and leaks more heat, and a spent wall gives way.",
   "form.feedback.store_core": "%s Store Core",
   "modular.feedback.desc.part.store_core": "The wall of a thermal store. A thick wall has more to heat and loses less; its material's conductivity sets the loss.",
