@@ -18,6 +18,6 @@ Right-click any block or any piece of [fine space](Fine_Space.md) with a mote in
 
 Blocks place the way they do full size: a log lies along its axis, a stair takes the half you clicked. Each voxel is drawn as its block's own model at a quarter of the size, and you walk on and bump into the exact voxels. A glowing block lights the space around it.
 
-Parts that work in fine space ([shafts](Shaft.md), [cogs](Cogs.md), [joints](Vehicles.md#joints), [bearings](Bearing.md)) are placed as themselves, not cut into motes.
+Parts that work in fine space ([shafts](Shaft.md), [cogs](Cogs.md), [joints](Vehicles.md#joints), [bearings](Bearing.md)) are placed as themselves, not cut into motes. So are [modular machines](Fine_Space.md#machines-in-fine-space), clicked onto a cell that already exists.
 
 A [Fine Gauge](Fine_Gauge.md) held in either hand sets how motes go in: one at a time, a line, a box, mirrored, or as a ramp. A [Fine Wedge](Fine_Wedge.md) is a ready-made ramp voxel.

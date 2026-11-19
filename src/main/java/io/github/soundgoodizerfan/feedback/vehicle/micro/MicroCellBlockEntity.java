@@ -101,6 +101,9 @@ public class MicroCellBlockEntity extends BlockEntity implements BlockEntitySubL
     private final MicroRotor[] rotors = new MicroRotor[VOXELS];
     /** The block a wedge voxel is made of (its look, weight and what mining it gives back); null: the stock wedge. */
     private final BlockState[] skins = new BlockState[VOXELS];
+    /** Machines hosted in voxels (docs/specs/fine_space_hosting_spec.md): the block entity of a modular machine, and the item it came from (its figures unscaled), by voxel index. */
+    private final net.minecraft.world.level.block.entity.BlockEntity[] hosted = new net.minecraft.world.level.block.entity.BlockEntity[VOXELS];
+    private final net.minecraft.world.item.ItemStack[] hostedItems = new net.minecraft.world.item.ItemStack[VOXELS];
     /** Belts from pulley voxels to pulley voxels (see {@link MicroBelts}), each with its condition. */
     private final it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap<MicroBelts.End> belts = new it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap<>();
     private final float[] beltWear = new float[VOXELS];
@@ -200,8 +203,96 @@ public class MicroCellBlockEntity extends BlockEntity implements BlockEntitySubL
         return filled;
     }
 
+    // --- hosted machines ----------------------------------------------------------------------
+
+    /** Voxel {@code index}, just set to a machine's state, becomes that machine, made from {@code stack}; call {@link #commit} after. */
+    public boolean host(int index, net.minecraft.world.item.ItemStack stack) {
+        if (level == null || voxels[index] == null)
+            return false;
+        var be = FineHosts.make(level, worldPosition, voxels[index], stack);
+        if (be == null)
+            return false;
+        hosted[index] = be;
+        hostedItems[index] = stack.copyWithCount(1);
+        hostedCount++;
+        setChanged();
+        return true;
+    }
+
+    private int hostedCount;
+
+    /** The machine in voxel {@code index}, or null. */
+    @Nullable
+    public net.minecraft.world.level.block.entity.BlockEntity hosted(int index) {
+        return hosted[index];
+    }
+
+    /** True if any voxel holds a machine. */
+    public boolean hasHosted() {
+        return hostedCount > 0;
+    }
+
+    /**
+     * Takes the machine out of voxel {@code index}, giving the item it was made from with the machine's own state on it (its condition,
+     * contents and the rest it keeps as components) and its figures back at full size; empty for none.
+     */
+    public net.minecraft.world.item.ItemStack releaseHosted(int index) {
+        var be = hosted[index];
+        if (be == null)
+            return net.minecraft.world.item.ItemStack.EMPTY;
+        var item = hostedItems[index] == null ? net.minecraft.world.item.ItemStack.EMPTY : hostedItems[index].copy();
+        if (!item.isEmpty()) {
+            item.applyComponents(be.collectComponents());
+            FineHosts.unscaled(item);
+        }
+        be.setRemoved();
+        hosted[index] = null;
+        hostedItems[index] = null;
+        hostedCount--;
+        setChanged();
+        return item;
+    }
+
+    /** Runs each machine's own ticker, as its block would. */
+    @SuppressWarnings("unchecked")
+    private void tickHosted(net.minecraft.server.level.ServerLevel server) {
+        for (var be : hosted) {
+            if (be == null)
+                continue;
+            BlockState st = be.getBlockState();
+            if (st.getBlock() instanceof net.minecraft.world.level.block.EntityBlock eb) {
+                var ticker = (net.minecraft.world.level.block.entity.BlockEntityTicker<net.minecraft.world.level.block.entity.BlockEntity>)
+                        eb.getTicker(server, st, (net.minecraft.world.level.block.entity.BlockEntityType<net.minecraft.world.level.block.entity.BlockEntity>) be.getType());
+                if (ticker != null)
+                    ticker.tick(server, worldPosition, st, be);
+            }
+        }
+    }
+
+    /** A machine that pushes a body (a thruster) does so through its cell. */
+    @Override
+    public void sable$physicsTick(dev.ryanhcode.sable.sublevel.ServerSubLevel subLevel, dev.ryanhcode.sable.api.physics.handle.RigidBodyHandle handle, double timeStep) {
+        for (var be : hosted)
+            if (be instanceof BlockEntitySubLevelActor actor)
+                actor.sable$physicsTick(subLevel, handle, timeStep);
+    }
+
+    @Override
+    public void setLevel(net.minecraft.world.level.Level level) {
+        super.setLevel(level);
+        for (var be : hosted)
+            if (be != null)
+                be.setLevel(level);
+    }
+
     /** Puts {@code state} in voxel {@code index}, or empties it for null. Call {@link #commit} once the edits are done. */
     public void set(int index, @Nullable BlockState state) {
+        // A machine whose voxel is replaced or emptied by anything but its owner taking it out (releaseHosted) drops as an item, never vanishes.
+        if (hosted[index] != null) {
+            var item = releaseHosted(index);
+            if (level instanceof net.minecraft.server.level.ServerLevel && !item.isEmpty())
+                Block.popResource(level, worldPosition, item);
+        }
         BlockState was = voxels[index];
         voxels[index] = state;
         skins[index] = null;
@@ -409,6 +500,10 @@ public class MicroCellBlockEntity extends BlockEntity implements BlockEntitySubL
     public void onChunkUnloaded() {
         super.onChunkUnloaded();
         unloaded = true;
+        // The machines hear it too, so a node among them treats the removal that follows as an unload, not a break.
+        for (var be : hosted)
+            if (be != null)
+                be.onChunkUnloaded();
     }
 
     /** As {@link io.github.soundgoodizerfan.feedback.core.rotation.RotationNode#setRemoved}: an unload leaves the runs without a rebuild. */
@@ -416,6 +511,19 @@ public class MicroCellBlockEntity extends BlockEntity implements BlockEntitySubL
     public void setRemoved() {
         for (Joint joint : bearings.values())
             joint.letGo();
+        // Broken, not unloaded and not moved into a body (which makes the cell anew with its machines): the machines drop as items.
+        boolean broken = !unloaded && !io.github.soundgoodizerfan.feedback.machine.bearing.BlockMoves.active() && level instanceof net.minecraft.server.level.ServerLevel;
+        for (int i = 0; i < VOXELS; i++)
+            if (hosted[i] != null) {
+                if (unloaded) {
+                    // Kept in place: the chunk is saved with its machines and they are loaded back with it.
+                    hosted[i].setRemoved();
+                    continue;
+                }
+                var item = releaseHosted(i);
+                if (broken && !item.isEmpty())
+                    Block.popResource(level, worldPosition, item);
+            }
         if (level != null && !level.isClientSide) {
             if (!unloaded)
                 RotationPropagator.onRemoved(level, rotors());
@@ -575,6 +683,8 @@ public class MicroCellBlockEntity extends BlockEntity implements BlockEntitySubL
                 if (cell.rotors[i] != null && cell.voxels[i] != null)
                     cell.shares[i] = io.github.soundgoodizerfan.feedback.machine.differential.DifferentialBlock.step(level, cell.rotors[i], cell.voxels[i], cell.shares[i]);
             }
+        if (level instanceof ServerLevel hostedIn && cell.hasHosted())
+            cell.tickHosted(hostedIn);
         if (cell.bearings.isEmpty() || !(level instanceof ServerLevel server))
             return;
         boolean rebuild = false;
@@ -790,6 +900,16 @@ public class MicroCellBlockEntity extends BlockEntity implements BlockEntitySubL
                 skinned.add(one);
             }
         tag.put("Skins", skinned);
+        ListTag machines = new ListTag();
+        for (int i = 0; i < VOXELS; i++)
+            if (hosted[i] != null && hostedItems[i] != null && !hostedItems[i].isEmpty()) {
+                CompoundTag one = new CompoundTag();
+                one.putByte("I", (byte) i);
+                one.put("Be", hosted[i].saveWithFullMetadata(registries));
+                one.put("Item", hostedItems[i].save(registries));
+                machines.add(one);
+            }
+        tag.put("Machines", machines);
         ListTag held = new ListTag();
         for (var e : bearings.int2ObjectEntrySet()) {
             CompoundTag one = e.getValue().save();
@@ -842,6 +962,25 @@ public class MicroCellBlockEntity extends BlockEntity implements BlockEntitySubL
             BlockState skin = NbtUtils.readBlockState(registries.lookupOrThrow(Registries.BLOCK), skinned.getCompound(k).getCompound("S"));
             if (!skin.isAir())
                 setSkin(skinned.getCompound(k).getByte("I") & (VOXELS - 1), skin);
+        }
+        Arrays.fill(hosted, null);
+        Arrays.fill(hostedItems, null);
+        hostedCount = 0;
+        ListTag machines = tag.getList("Machines", Tag.TAG_COMPOUND);
+        for (int k = 0; k < machines.size(); k++) {
+            CompoundTag one = machines.getCompound(k);
+            int i = one.getByte("I") & (VOXELS - 1);
+            if (voxels[i] == null)
+                continue;
+            var be = net.minecraft.world.level.block.entity.BlockEntity.loadStatic(worldPosition, voxels[i], one.getCompound("Be"), registries);
+            var item = net.minecraft.world.item.ItemStack.parse(registries, one.get("Item")).orElse(net.minecraft.world.item.ItemStack.EMPTY);
+            if (be == null || item.isEmpty())
+                continue;
+            if (level != null)
+                be.setLevel(level);
+            hosted[i] = be;
+            hostedItems[i] = item;
+            hostedCount++;
         }
         ListTag strapped = tag.getList("Belts", Tag.TAG_COMPOUND);
         for (int k = 0; k < strapped.size(); k++) {

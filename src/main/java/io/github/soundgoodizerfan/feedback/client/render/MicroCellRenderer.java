@@ -123,6 +123,25 @@ public class MicroCellRenderer implements BlockEntityRenderer<MicroCellBlockEnti
                     net.minecraft.client.renderer.LevelRenderer.renderLineBox(poseStack, lines, x, y, z, x + s, y + s, z + s, 0.4f, 0.8f, 1f, 1f);
                 }
         }
+        // A hosted machine's own renderer draws it at a voxel's scale and place; one that fails is skipped, never allowed to crash the frame.
+        var dispatcher = Minecraft.getInstance().getBlockEntityRenderDispatcher();
+        for (int i = 0; i < MicroCellBlockEntity.VOXELS; i++) {
+            var machine = cell.hosted(i);
+            if (machine == null)
+                continue;
+            var renderer = dispatcher.getRenderer(machine);
+            if (renderer == null)
+                continue;
+            poseStack.pushPose();
+            poseStack.translate((i & 3) * s, (i >> 2 & 3) * s, (i >> 4) * s);
+            poseStack.scale(s, s, s);
+            try {
+                renderer.render(machine, partialTick, poseStack, buffers, light, overlay);
+            } catch (RuntimeException e) {
+                org.slf4j.LoggerFactory.getLogger("feedback.micro").warn("[feedback] a hosted machine's renderer failed: {}", e.toString());
+            }
+            poseStack.popPose();
+        }
         // A tire fitted to a fine-space hub: round, about the voxel's axle, beyond the voxel.
         for (int i = 0; i < MicroCellBlockEntity.VOXELS; i++) {
             BlockState hub = cell.get(i);

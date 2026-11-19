@@ -54,6 +54,8 @@ Cut a block into [motes](Mote.md) and place them with right-click: each mote is 
 
 Shafts, cogs and bearings in fine space join full-size rotation through a [Rotation Adapter](Rotation_Adapter.md). [Pulleys](Pulleys.md#pulleys-in-fine-space) in fine space join each other by belt. A [Differential](Differential.md) shares a drive shaft between two axles.
 
+A modular machine such as a thruster, dynamotor or gas tank can take one voxel of existing fine space and work there at a 64th of its size; a thruster in a voxel pushes the body. See [Machines in fine space](Fine_Space.md#machines-in-fine-space).
+
 ## Joints
 
 A joint is a block you place against a block or in fine space, with its **front** toward the part that should move. Use it with an **empty hand** to assemble what is joined to its front face, block to block, into a second body; use it again to put that body back. Only the voxels joined to the front face move; the rest of the block stays. Putting back snaps a body to the nearest of the 24 ways a cube can be turned; a hinge's body lands at the nearest quarter turn.

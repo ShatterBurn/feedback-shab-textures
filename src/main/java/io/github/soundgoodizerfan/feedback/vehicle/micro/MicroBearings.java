@@ -129,6 +129,10 @@ public final class MicroBearings {
                         if (c.skin(i) != null)
                             skins.put(voxel(e.getKey(), i), c.skin(i));
                     }
+        // A machine does not travel with the voxels split out of a cell, so a cell with one is not split.
+        for (BlockPos c : staying.keySet())
+            if (level.getBlockEntity(c) instanceof MicroCellBlockEntity w && w.hasHosted())
+                return "machine";
         List<BlockPos> cells = new ArrayList<>(staying.keySet());
         // Inside a body, the full-size blocks the arm touches (an engine, a chest) go with it. Not in the world: the ground would come too.
         if (parent != null) {
@@ -295,6 +299,11 @@ public final class MicroBearings {
             return "not_loaded";
         if (Joint.carriesChild(level, s))
             return "has_child";
+        // A machine does not travel with the voxels put back (they move as states), so the body is put back only once it holds none.
+        var bodyBox = s.getPlot().getBoundingBox();
+        for (BlockPos p : BlockPos.betweenClosed(bodyBox.minX(), bodyBox.minY(), bodyBox.minZ(), bodyBox.maxX(), bodyBox.maxY(), bodyBox.maxZ()))
+            if (level.getBlockEntity(p) instanceof MicroCellBlockEntity inBody && inBody.hasHosted())
+                return "machine";
         Direction.Axis axis = f.getAxis();
         float sign = f.getAxisDirection() == Direction.AxisDirection.POSITIVE ? 1 : -1;
         // The body's angle about the axis's positive direction, to the nearest quarter turn; any other

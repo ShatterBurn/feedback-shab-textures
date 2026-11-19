@@ -78,7 +78,7 @@ public final class MicroPlacer {
             return MoteItem.state(stack) != null;
         return stack.getItem() instanceof BlockItem item
                 && (item.getBlock() instanceof MicroRotation || item.getBlock() instanceof io.github.soundgoodizerfan.feedback.machine.bearing.JointPart
-                || item.getBlock() instanceof TireHubBlock);
+                || item.getBlock() instanceof TireHubBlock) || FineHosts.hostable(stack);
     }
 
     /** The voxel (in world voxel coordinates) in front of a face hit at {@code hit}: the point nudged half a voxel out along the normal, then the voxel it falls in. */
@@ -266,7 +266,7 @@ public final class MicroPlacer {
         BlockPos at = cellOf(vx, vy, vz);
         // A voxel is a 64th of a block: the player's credit of that block pays it, and a whole block is
         // taken from the hand only when the credit has run out (the core starting a build is paid whole).
-        boolean credited = !player.isCreative() && paid.getItem() instanceof BlockItem bi && bi.getBlock() == pay.getBlock();
+        boolean credited = !player.isCreative() && paid.getItem() instanceof BlockItem bi && bi.getBlock() == pay.getBlock() && !FineHosts.hostable(paid);
         if (credited && credit(player, pay) <= 0 && paid.isEmpty())
             return false;
         if (!level.mayInteract(player, at) || !player.mayUseItemAt(at, face, paid) || !put(level, vx, vy, vz, voxel))
@@ -274,6 +274,14 @@ public final class MicroPlacer {
         if (skin != null && level.getBlockEntity(at) instanceof MicroCellBlockEntity cell) {
             cell.setSkin(indexOf(vx, vy, vz), skin);
             cell.commit();
+        }
+        // A machine is one voxel that is that machine: the cell hosts its block entity, made from the item in hand (and one item pays for it).
+        if (FineHosts.hostable(paid) && level.getBlockEntity(at) instanceof MicroCellBlockEntity hostCell) {
+            if (!hostCell.host(indexOf(vx, vy, vz), paid)) {
+                take(level, vx, vy, vz); // no machine could be made: leave no empty voxel of its state, and keep the item
+                return false;
+            }
+            hostCell.commit();
         }
         SoundType sound = pay.getSoundType();
         level.playSound(null, at, sound.getPlaceSound(), SoundSource.BLOCKS, (sound.getVolume() + 1f) / 2f, sound.getPitch() * 0.8f);
@@ -425,9 +433,18 @@ public final class MicroPlacer {
         if (!level.mayInteract(player, at))
             return false;
         BlockState skin = level.getBlockEntity(at) instanceof MicroCellBlockEntity cell ? cell.skin(indexOf(vx, vy, vz)) : null;
+        // A machine comes out as the item it was made from, its figures as built, to the player's hand; nothing else is paid back.
+        ItemStack machine = level.getBlockEntity(at) instanceof MicroCellBlockEntity cell ? cell.releaseHosted(indexOf(vx, vy, vz)) : ItemStack.EMPTY;
         BlockState was = take(level, vx, vy, vz);
         if (was == null)
             return false;
+        if (!machine.isEmpty()) {
+            SoundType machineSound = was.getSoundType();
+            level.playSound(null, at, machineSound.getBreakSound(), SoundSource.BLOCKS, (machineSound.getVolume() + 1f) / 2f, machineSound.getPitch() * 0.8f);
+            if (!player.isCreative() && !player.getInventory().add(machine))
+                player.drop(machine, false);
+            return true;
+        }
         if (skin != null)
             was = skin;
         if (was.getBlock() instanceof TireHubBlock)
