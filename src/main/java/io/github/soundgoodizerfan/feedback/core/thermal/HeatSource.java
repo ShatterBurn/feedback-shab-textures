@@ -101,6 +101,14 @@ public interface HeatSource {
 
     Direction[] DIRS = Direction.values();
 
+    /** The heat source standing in block {@code pos}: the block entity itself, or the first one a finespace cell hosts. */
+    private static HeatSource sourceAt(Level level, BlockPos pos) {
+        BlockEntity be = level.getBlockEntity(pos);
+        if (be instanceof HeatSource source)
+            return source;
+        return be instanceof io.github.soundgoodizerfan.feedback.vehicle.micro.MicroCellBlockEntity cell ? cell.hostedHeatSource() : null;
+    }
+
     /**
      * The source that could reach {@code pos} from candidate {@code i} (0-5: the block on that face; 6-17: a block touching an edge),
      * or null. A face neighbour always reaches; an edge neighbour reaches only when it points at a block next to {@code pos}, which is
@@ -108,13 +116,14 @@ public interface HeatSource {
      */
     private static HeatSource reaching(Level level, BlockPos pos, int i) {
         if (i < 6)
-            return level.getBlockEntity(pos.relative(DIRS[i])) instanceof HeatSource source ? source : null;
+            return sourceAt(level, pos.relative(DIRS[i]));
         int n = i - 6, pair = n / 4, signs = n % 4;
         // pair 0: x,y   pair 1: x,z   pair 2: y,z; signs pick the direction on each axis
         Direction.Axis first = pair < 2 ? Direction.Axis.X : Direction.Axis.Y, second = pair == 0 ? Direction.Axis.Y : Direction.Axis.Z;
         Direction da = Direction.fromAxisAndDirection(first, (signs & 1) == 0 ? Direction.AxisDirection.POSITIVE : Direction.AxisDirection.NEGATIVE);
         Direction db = Direction.fromAxisAndDirection(second, (signs & 2) == 0 ? Direction.AxisDirection.POSITIVE : Direction.AxisDirection.NEGATIVE);
-        if (!(level.getBlockEntity(pos.relative(da).relative(db)) instanceof HeatSource source))
+        HeatSource source = sourceAt(level, pos.relative(da).relative(db));
+        if (source == null)
             return null;
         Direction face = source.heatFacing();
         return face == da.getOpposite() || face == db.getOpposite() ? source : null;

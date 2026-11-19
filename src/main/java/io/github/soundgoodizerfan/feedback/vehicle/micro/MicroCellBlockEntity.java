@@ -222,6 +222,8 @@ public class MicroCellBlockEntity extends BlockEntity implements BlockEntitySubL
             if (!level.isClientSide)
                 RotationPropagator.queue(level, worldPosition);
         }
+        if (be instanceof io.github.soundgoodizerfan.feedback.core.electric.ElectricNode && !level.isClientSide)
+            io.github.soundgoodizerfan.feedback.core.electric.ElectricPropagator.requeue(level, worldPosition);
         return true;
     }
 
@@ -270,6 +272,24 @@ public class MicroCellBlockEntity extends BlockEntity implements BlockEntitySubL
         return hosted[index];
     }
 
+    /** The first hosted machine that is an electric node: the cell stands for it on the electric network (one a cell), or null. */
+    @Nullable
+    public io.github.soundgoodizerfan.feedback.core.electric.ElectricNode hostedElectric() {
+        for (var be : hosted)
+            if (be instanceof io.github.soundgoodizerfan.feedback.core.electric.ElectricNode node)
+                return node;
+        return null;
+    }
+
+    /** The first hosted machine that is a heat source: the cell stands for it to what it heats, or null. */
+    @Nullable
+    public io.github.soundgoodizerfan.feedback.core.thermal.HeatSource hostedHeatSource() {
+        for (var be : hosted)
+            if (be instanceof io.github.soundgoodizerfan.feedback.core.thermal.HeatSource source)
+                return source;
+        return null;
+    }
+
     /** True if any voxel holds a machine. */
     public boolean hasHosted() {
         return hostedCount > 0;
@@ -296,9 +316,10 @@ public class MicroCellBlockEntity extends BlockEntity implements BlockEntitySubL
             rotor.setNetwork(null);
             hostedRotors[index] = null;
         }
-        be.setRemoved();
+        // Out of the cell before it is removed, so a run rebuilt as it goes cannot find it again.
         hosted[index] = null;
         hostedItems[index] = null;
+        be.setRemoved();
         hostedCount--;
         setChanged();
         if (level != null)
@@ -575,6 +596,8 @@ public class MicroCellBlockEntity extends BlockEntity implements BlockEntitySubL
         rotorAdded = false;
         if (level != null && !level.isClientSide && !rotationMembers().isEmpty())
             RotationPropagator.queue(level, worldPosition);
+        if (level != null && !level.isClientSide && hostedElectric() != null)
+            io.github.soundgoodizerfan.feedback.core.electric.ElectricPropagator.requeue(level, worldPosition);
     }
 
     @Override

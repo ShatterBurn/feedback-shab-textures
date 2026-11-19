@@ -177,6 +177,9 @@ public final class ElectricPropagator {
         if (!level.isLoaded(pos))
             return null;
         BlockEntity be = level.getBlockEntity(pos);
+        // A finespace cell is the electric node of the machine it hosts (one a cell: runs are told apart by block position).
+        if (be instanceof io.github.soundgoodizerfan.feedback.vehicle.micro.MicroCellBlockEntity cell)
+            be = cell.hostedElectric();
         return be instanceof ElectricNode node && !node.isGone() ? node : null;
     }
 }
