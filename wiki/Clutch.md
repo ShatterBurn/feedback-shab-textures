@@ -31,7 +31,7 @@ The disengaged clutch stays part of the driving side, so the power source keeps 
 
 ## Fine clutch
 
-A Clutch can be a voxel of [fine space](Fine_Space.md). A [Controller](Controller.md) card switches a fine clutch, engaged or not. Link the clutch voxel to the Controller with a [Data Connector](Data_Connector.md) and add a card on its **Engaged** channel.
+A Clutch can be a voxel of [finespace](Finespace.md). A [Controller](Controller.md) card switches a fine clutch, engaged or not. Link the clutch voxel to the Controller with a [Data Connector](Data_Connector.md) and add a card on its **Engaged** channel.
 
 ## Uses
 

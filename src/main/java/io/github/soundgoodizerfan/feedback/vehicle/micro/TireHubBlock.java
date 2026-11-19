@@ -35,7 +35,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 /**
  * A tire hub: the part that makes a turned body a wheel ({@link MicroWheels}). It sits on the axle of a Rotary Bearing's body, in coarse
- * space as a block or in fine space as a voxel, and names the wheel's radius; it comes with no tire. A tire (the {@code tire} form of a
+ * space as a block or in finespace as a voxel, and names the wheel's radius; it comes with no tire. A tire (the {@code tire} form of a
  * rubber, see {@code Material.Trait.TIRE}) used on it fits the tire: the hub then rolls on that material's grip, softness and rolling
  * resistance, drawn as a round tire about the axle. Sneak-use with an empty hand takes the tire off. The hub carries no suspension: the
  * wheel is where it is mounted, and a slider joint is the suspension.
@@ -49,7 +49,7 @@ public class TireHubBlock extends Block implements EntityBlock {
     /** 0 no tire; n the (n-1)th tire material in id order. */
     public static final IntegerProperty TIRE = IntegerProperty.create("tire", 0, 7);
 
-    /** Tread radius in blocks of each size, in coarse space and in fine space. */
+    /** Tread radius in blocks of each size, in coarsespace and in finespace. */
     private static final double[] COARSE = {0.75, 1.0, 1.5}, FINE = {0.25, 0.375, 0.5};
     public static final int SIZES = 3;
 
@@ -61,7 +61,7 @@ public class TireHubBlock extends Block implements EntityBlock {
         registerDefaultState(defaultBlockState().setValue(AXIS, Direction.Axis.X).setValue(TIRE, 0));
     }
 
-    /** Tread radius in blocks, in fine space (a voxel) or coarse space (a block). */
+    /** Tread radius in blocks, in finespace (a voxel) or coarsespace (a block). */
     public double radius(boolean fine) {
         return (fine ? FINE : COARSE)[size];
     }

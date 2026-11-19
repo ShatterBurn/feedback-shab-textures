@@ -1,26 +1,26 @@
-# Fine Space
+# Finespace
 
-The inside of a block, divided into 4 by 4 by 4 voxels, each a quarter of a block on a side. It is where small mechanisms, thin arms, fine models and the bodies of [vehicles](Vehicles.md) are built. The ordinary block grid is coarse space.
+The inside of a block, divided into 4 by 4 by 4 voxels, each a quarter of a block on a side. It is where small mechanisms, thin arms, fine models and the bodies of [vehicles](Vehicles.md) are built. The ordinary block grid is coarsespace.
 
-## Making fine space
+## Making finespace
 
-[Cut](Mote.md#obtaining) a whole block into motes, then right-click a block or an empty spot with a [Mote](Mote.md). Where there was only air, the click makes the **Fine Space** block there and puts the mote in the voxel in front of the face you clicked. A Fine Space block holds up to 64 voxels.
+[Cut](Mote.md#obtaining) a whole block into motes, then right-click a block or an empty spot with a [Mote](Mote.md). Where there was only air, the click makes the **Finespace** block there and puts the mote in the voxel in front of the face you clicked. A Finespace block holds up to 64 voxels.
 
-- **Mine a voxel** with the right tool for its block to take it out and get its mote back. Mining Fine Space takes one voxel at a time, the one you look at.
-- A face on the edge of a block of Fine Space is hidden when the voxel in the next block covers it.
-- A block of Fine Space weighs its voxels by what they are made of; a hosted machine weighs by its design (see [Machines in fine space](#machines-in-fine-space)). A build in fine space lifts on a [Lift](Vehicles.md#the-lift) like any other.
+- **Mine a voxel** with the right tool for its block to take it out and get its mote back. Mining Finespace takes one voxel at a time, the one you look at.
+- A face on the edge of a block of Finespace is hidden when the voxel in the next block covers it.
+- A block of Finespace weighs its voxels by what they are made of; a hosted machine weighs by its design (see [Machines in finespace](#machines-in-finespace)). A build in finespace lifts on a [Lift](Vehicles.md#the-lift) like any other.
 
 The [Fine Gauge](Fine_Gauge.md) sets single, line, box, mirror or wedge placement. The [Fine Wedge](Fine_Wedge.md) is a four-step ramp voxel.
 
-## Rotation in fine space
+## Rotation in finespace
 
 A [Shaft](Shaft.md), [Bearing](Bearing.md), [Cog](Cogs.md), Gearbox, [Clutch](Clutch.md#fine-clutch), [Flywheel](Flywheel.md), [Rotary Bearing](Rotary_Bearing.md) or [Ring Gear](Ring_Gear.md) can be a voxel. Hold the part and right-click, as with a mote. A shaft lies along the face you click and joins the voxels it touches end to end. A cog takes the axis of the shaft you click it onto. Cogs mesh by the same rules as full-size [Cogs](Cogs.md), at a quarter of the size.
 
-Only a [Rotation Adapter](Rotation_Adapter.md) joins rotation in fine space to full-size rotation.
+Only a [Rotation Adapter](Rotation_Adapter.md) joins rotation in finespace to full-size rotation.
 
-## Machines in fine space
+## Machines in finespace
 
-Any modular machine item, such as a dynamotor, thruster, jet, gas tank, heat exchanger, water wheel or gas centrifuge, can be a voxel. Start fine space with a [Mote](Mote.md), then right-click an existing fine-space cell with the machine. It takes one voxel, and that voxel is the machine: the design it was built with, running by itself and drawn at a quarter of a block. A thruster in a voxel pushes its body. One machine item pays for one voxel.
+Any modular machine item, such as a dynamotor, thruster, jet, gas tank, heat exchanger, water wheel or gas centrifuge, can be a voxel. Start finespace with a [Mote](Mote.md), then right-click an existing finespace cell with the machine. It takes one voxel, and that voxel is the machine: the design it was built with, running by itself and drawn at a quarter of a block. A thruster in a voxel pushes its body. One machine item pays for one voxel.
 
 The machine is scaled to a voxel's volume when placed. Figures that follow volume are a 64th of the full-size machine: mass, power, force, burn, capacity, tank, flow, push, pull, lift, current, supply, stored energy, slots, heat, work, intake, leak and seep. Rotational inertia is a 1024th. Figures that belong to the material, such as temperatures, speeds, efficiencies and voltage bands, stay as built.
 
@@ -32,7 +32,7 @@ Fluid and item pipes, hoppers and the like see a hosted machine. The cell answer
 
 A hosted machine weighs a 64th of the mass figure of its design, not the stuff its block is made of.
 
-A hosted machine does not join shaft (rotation), electrical or heat networks, so a dynamotor in fine space runs alone. Shafts, cogs and joints are their own parts and join as described above. A machine that toggles its own state (lamp, burner, damper, valve) cannot be hosted. A machine in an assembled arm blocks the joint from assembling or putting back; the message says to take it out first. A machine that opens a screen is unchecked.
+A hosted machine does not join shaft (rotation), electrical or heat networks, so a dynamotor in finespace runs alone. Shafts, cogs and joints are their own parts and join as described above. A machine that toggles its own state (lamp, burner, damper, valve) cannot be hosted. A machine in an assembled arm blocks the joint from assembling or putting back; the message says to take it out first. A machine that opens a screen is unchecked.
 
 ## Joints
 

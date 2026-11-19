@@ -21,7 +21,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 /**
- * Modular blocks in fine space ({@code docs/specs/fine_space_hosting_spec.md}): a machine placed as a voxel is hosted, its own block entity made
+ * Modular blocks in finespace ({@code docs/specs/finespace_hosting_spec.md}): a machine placed as a voxel is hosted, its own block entity made
  * by its block, given the item's components and ticked by the cell. This holds what decides which machines are hosted and how their figures
  * scale to a voxel; the cell ({@link MicroCellBlockEntity}) holds the entities.
  */
@@ -44,7 +44,7 @@ public final class FineHosts {
      * Whether {@code stack} is a modular machine a cell hosts: a modular block item whose block has a block entity of its own, is not a part
      * the cell already knows, and whose block state is only its orientation. A machine that toggles its own state (lit, open, glowing)
      * writes it to its position, which in a cell is the cell's, and would replace the cell; routing such writes is later work
-     * ({@code docs/specs/fine_space_hosting_spec.md}).
+     * ({@code docs/specs/finespace_hosting_spec.md}).
      */
     public static boolean hostable(ItemStack stack) {
         if (!(stack.getItem() instanceof BlockItem item) || !(stack.getItem() instanceof Modular))

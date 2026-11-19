@@ -58,7 +58,7 @@ public final class MicroWheels {
     }
 
     /**
-     * The wheel in {@code body}: the hubs with a tire fitted, a block's or a fine-space voxel's; the radius is the largest hub's, the
+     * The wheel in {@code body}: the hubs with a tire fitted, a block's or a finespace voxel's; the radius is the largest hub's, the
      * grip, rolling resistance and softness the mean of the fitted tires'. Null if it has none. The hub sits on the axle (the tread is
      * measured from the bearing's anchor).
      */

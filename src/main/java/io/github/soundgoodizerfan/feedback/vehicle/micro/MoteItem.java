@@ -22,9 +22,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * A mote: one fine-space voxel of a block, cut from it (64 to a block). It carries the block as the {@code feedback:mote} component, so motes
+ * A mote: one finespace voxel of a block, cut from it (64 to a block). It carries the block as the {@code feedback:mote} component, so motes
  * of one block stack and a mote is whatever it was cut from. Placing one is {@link MicroPlacer}'s: a click on any block puts the mote in the
- * voxel in front of the face and makes the spot fine space if it was air.
+ * voxel in front of the face and makes the spot finespace if it was air.
  */
 public class MoteItem extends Item {
 

@@ -27,8 +27,8 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 
 /**
- * The fine-space building gauge ({@code docs/dev/vehicle.md}): held in either hand while placing or mining motes it sets how they go (a
- * line, a box, mirrored, or as a wedge); sneak-use steps its mode. It places nothing itself: a mote starts fine space ({@link MicroPlacer}).
+ * The finespace building gauge ({@code docs/dev/vehicle.md}): held in either hand while placing or mining motes it sets how they go (a
+ * line, a box, mirrored, or as a wedge); sneak-use steps its mode. It places nothing itself: a mote starts finespace ({@link MicroPlacer}).
  */
 public class MicroCoreItem extends Item {
 

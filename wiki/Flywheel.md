@@ -33,7 +33,7 @@ Shape the disc from plate or ingot of the metal you chose at the [Smithing Table
 
 ## Using it
 
-Place it in a shaft line like any shaft. It can also be placed as a voxel of [fine space](Fine_Space.md).
+Place it in a shaft line like any shaft. It can also be placed as a voxel of [finespace](Finespace.md).
 
 ## What it does
 
@@ -49,7 +49,7 @@ Its bearing drags, more for a bigger disc, and that is the price of the momentum
 
 A flywheel that spins past the **rim speed** its own metal and shape allow strains and loses condition, down to a floor. It never bursts. The tooltip shows the RPM it strains past.
 
-A flywheel in fine space's rim holds **4 times** the full-size speed before it strains. A strained rim loses condition down to a floor of 50% and carries less inertia as it does.
+A flywheel in finespace's rim holds **4 times** the full-size speed before it strains. A strained rim loses condition down to a floor of 50% and carries less inertia as it does.
 
 ## When to use one
 

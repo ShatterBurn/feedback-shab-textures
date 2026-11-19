@@ -88,7 +88,7 @@ public class FVehicles {
             BLOCK_ENTITIES.register("micro_cell",
                     () -> BlockEntityType.Builder.of(MicroCellBlockEntity::new, MICRO_CELL.get()).build(null));
 
-    /** Tire hubs: small, medium and large; each is a wheel in coarse space (a block) and a smaller one in fine space (a voxel). */
+    /** Tire hubs: small, medium and large; each is a wheel in coarsespace (a block) and a smaller one in finespace (a voxel). */
     public static final java.util.List<DeferredBlock<io.github.soundgoodizerfan.feedback.vehicle.micro.TireHubBlock>> TIRE_HUBS = java.util.stream.IntStream
             .range(0, io.github.soundgoodizerfan.feedback.vehicle.micro.TireHubBlock.SIZES)
             .mapToObj(i -> BLOCKS.register("tire_hub_" + new String[]{"small", "medium", "large"}[i],
@@ -104,7 +104,7 @@ public class FVehicles {
                             TIRE_HUBS.stream().map(DeferredBlock::get).toArray(net.minecraft.world.level.block.Block[]::new))
                     .build(null));
 
-    /** The fine-space building gauge: sets how motes go. */
+    /** The finespace building gauge: sets how motes go. */
     public static final DeferredItem<MicroCoreItem> MICRO_CORE = ITEMS.register("micro_core",
             () -> new MicroCoreItem(new Item.Properties()));
 

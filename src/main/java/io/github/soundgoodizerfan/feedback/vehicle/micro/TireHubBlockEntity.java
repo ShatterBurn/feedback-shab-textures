@@ -8,7 +8,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
-/** A coarse-space tire hub's block entity: no data, only what a renderer binds to (the round tire is drawn about the axle, beyond the block). */
+/** A coarsespace tire hub's block entity: no data, only what a renderer binds to (the round tire is drawn about the axle, beyond the block). */
 public class TireHubBlockEntity extends BlockEntity {
 
     public TireHubBlockEntity(BlockPos pos, BlockState state) {

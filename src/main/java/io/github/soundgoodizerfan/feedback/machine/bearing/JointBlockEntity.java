@@ -29,7 +29,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 /**
- * A ball, locked, slider or piston joint in coarse space: the same hold on a body ({@link Joint}) as the voxel kind in fine space
+ * A ball, locked, slider or piston joint in coarsespace: the same hold on a body ({@link Joint}) as the voxel kind in finespace
  * ({@code MicroBearings}), made the way a Rotary Bearing makes its body ({@link RotaryBearingBlockEntity}): everything connected to the
  * front face becomes a Sable body, joined here with the joint's own Sable joint. A piston's level is set by a controller card like a
  * voxel piston's ({@link Analog} channel 0, -1 to 1).
@@ -123,7 +123,7 @@ public class JointBlockEntity extends BlockEntity implements Analog, DataNode {
                 blocks.add(p.immutable());
         float sign = f.getAxisDirection() == Direction.AxisDirection.POSITIVE ? 1 : -1;
         int k = Math.floorMod(Math.round(sign * joint.turned(s, Joint.parentOf(level, worldPosition), f) / 90f), 4);
-        // A fine-space cell's voxels are not turned by a block move, only its position: a body with cells goes back unturned.
+        // A finespace cell's voxels are not turned by a block move, only its position: a body with cells goes back unturned.
         if (k != 0)
             for (BlockPos p : blocks)
                 if (level.getBlockState(p).getBlock() instanceof io.github.soundgoodizerfan.feedback.vehicle.micro.MicroCellBlock)

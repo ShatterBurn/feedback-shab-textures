@@ -127,7 +127,7 @@ public class FCapabilities {
                 (bed, side) -> bed.getPort());
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, FBlockEntities.BURNER.get(),
                 (burner, side) -> burner.getFuel());
-        // A fine-space cell answers for the machines it hosts (a pipe or a hopper finds a machine by the block entity at a position).
+        // A finespace cell answers for the machines it hosts (a pipe or a hopper finds a machine by the block entity at a position).
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, FVehicles.MICRO_CELL_ENTITY.get(),
                 (cell, side) -> cell.hostedCapability(Capabilities.FluidHandler.BLOCK, side));
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, FVehicles.MICRO_CELL_ENTITY.get(),

@@ -1,6 +1,6 @@
 # Fine Gauge
 
-A gauge for building in [fine space](Fine_Space.md). It places nothing itself: held in either hand while you place or mine [motes](Mote.md), it sets how they go.
+A gauge for building in [finespace](Finespace.md). It places nothing itself: held in either hand while you place or mine [motes](Mote.md), it sets how they go.
 
 ## Crafting
 

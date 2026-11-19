@@ -142,7 +142,7 @@ public class MicroCellRenderer implements BlockEntityRenderer<MicroCellBlockEnti
             }
             poseStack.popPose();
         }
-        // A tire fitted to a fine-space hub: round, about the voxel's axle, beyond the voxel.
+        // A tire fitted to a finespace hub: round, about the voxel's axle, beyond the voxel.
         for (int i = 0; i < MicroCellBlockEntity.VOXELS; i++) {
             BlockState hub = cell.get(i);
             if (hub == null || !(hub.getBlock() instanceof io.github.soundgoodizerfan.feedback.vehicle.micro.TireHubBlock block))

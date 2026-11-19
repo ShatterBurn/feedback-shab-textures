@@ -97,7 +97,7 @@ public final class MicroPlacer {
     public static void onRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
         Level level = event.getLevel();
         boolean mote = event.getItemStack().getItem() instanceof MoteItem;
-        // A mote goes on any block (the click makes fine space where there is none); every other voxel goes only on a cell.
+        // A mote goes on any block (the click makes finespace where there is none); every other voxel goes only on a cell.
         if (event.getEntity().isSpectator() || !mote && !(level.getBlockState(event.getPos()).getBlock() instanceof MicroCellBlock))
             return;
         // A full-size Bearing on an assembled joint voxel fits it new, before it could be placed as a voxel.

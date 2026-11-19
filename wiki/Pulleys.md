@@ -42,11 +42,11 @@ A belt can carry **60 Su**, less than a full [Mechanical Hammer](Mechanical_Hamm
 
 Slipping is also the only thing that **wears a belt**. A worn belt carries less and slips sooner, down to 30% condition. Keep the load under 60 Su and it lasts forever.
 
-## Pulleys in fine space
+## Pulleys in finespace
 
-Both pulley items can be placed as voxels of [fine space](Fine_Space.md). Use the **Belt** on one pulley voxel and then on another: *"Pulley selected,"* then *"Belt fitted."* Two voxels belt together when they are up to **16 blocks** apart. The belt is drawn as two dark lines. It slips instead of stalling and wears the same way as a full-size belt. A [Lift](Vehicles.md#the-lift) carries its belts along.
+Both pulley items can be placed as voxels of [finespace](Finespace.md). Use the **Belt** on one pulley voxel and then on another: *"Pulley selected,"* then *"Belt fitted."* Two voxels belt together when they are up to **16 blocks** apart. The belt is drawn as two dark lines. It slips instead of stalling and wears the same way as a full-size belt. A [Lift](Vehicles.md#the-lift) carries its belts along.
 
-A pulley in fine space can also be belted to a full-size pulley block: select one, then the other. The belt is drawn through the world. A pulley in fine space counts a quarter of the block pulley's radius, so it turns faster than the block pulley it is belted to.
+A pulley in finespace can also be belted to a full-size pulley block: select one, then the other. The belt is drawn through the world. A pulley in finespace counts a quarter of the block pulley's radius, so it turns faster than the block pulley it is belted to.
 
 ## Limitations
 

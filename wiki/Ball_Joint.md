@@ -1,6 +1,6 @@
 # Ball Joint
 
-A joint, in ordinary blocks or [fine space](Fine_Space.md), that lets one body swing in every direction inside a cone. It is the joint for a suspension arm, a turret or a leg.
+A joint, in ordinary blocks or [finespace](Finespace.md), that lets one body swing in every direction inside a cone. It is the joint for a suspension arm, a turret or a leg.
 
 ## Crafting
 
@@ -14,9 +14,9 @@ I is a Wrought Iron Plate and B is a [Rotary Bearing](Rotary_Bearing.md). Craft 
 
 ## Using it
 
-It works as a full-size block and as a voxel of [fine space](Fine_Space.md).
+It works as a full-size block and as a voxel of [finespace](Finespace.md).
 
-1. Place it against a block, or put it in fine space, with its front toward the part that should swing.
+1. Place it against a block, or put it in finespace, with its front toward the part that should swing.
 2. **Sneak-use** it with an empty hand to choose the cone: **narrow** (20 degrees), **stock** (45 degrees) or **wide** (90 degrees). The message reads *"Choice N of 3."* Choose before assembling.
 3. **Use it with an empty hand** to assemble everything joined to its front face into a second body that swings about the joint.
 4. **Use it again** to put the body back. It lands at the nearest of the 24 ways a cube can be turned.

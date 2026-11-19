@@ -271,7 +271,7 @@ public class MicroCellBlock extends BaseEntityBlock implements BlockSubLevelColl
                 return net.minecraft.world.ItemInteractionResult.sidedSuccess(level.isClientSide);
             }
         }
-        // A tire in hand on a fine-space tire hub fits it (the hub's own use does this for a hub in coarse space).
+        // A tire in hand on a finespace tire hub fits it (the hub's own use does this for a hub in coarse space).
         var tireMaterial = TireHubBlock.tireOf(stack);
         if (tireMaterial != null && level.getBlockEntity(pos) instanceof MicroCellBlockEntity hubbed) {
             int h = hubbed.pick(hit.getLocation(), hit.getDirection());

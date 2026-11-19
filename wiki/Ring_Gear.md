@@ -14,7 +14,7 @@ C is a Small Cog and B is a [Rotary Bearing](Rotary_Bearing.md). The corners are
 
 ## Using it
 
-Place it against the face of a [Shaft](Shaft.md) end, [Gearbox](Cogs.md#gearbox) or [Cog](Cogs.md), and build in front of it. **Right-click it with an empty hand** to take what is built there (blocks and [fine space](Fine_Space.md)) as one turning piece; right-click again to put it back as blocks. The messages, the size limit and the rules for putting back are the Rotary Bearing's.
+Place it against the face of a [Shaft](Shaft.md) end, [Gearbox](Cogs.md#gearbox) or [Cog](Cogs.md), and build in front of it. **Right-click it with an empty hand** to take what is built there (blocks and [finespace](Finespace.md)) as one turning piece; right-click again to put it back as blocks. The messages, the size limit and the rules for putting back are the Rotary Bearing's.
 
 ## How it works
 
@@ -25,7 +25,7 @@ Nothing behind it drives it: a shaft or gearbox face behind turns freely inside 
 
 See [Cogs](Cogs.md#how-cogs-work) for the full meshing rules. It costs the network **0.2 Su per RPM** of friction.
 
-A Ring Gear can also be a voxel of [fine space](Fine_Space.md), used with an empty hand: it turns the voxels joined to its front face, and putting back lands them at the nearest quarter turn. See [Vehicles](Vehicles.md#joints).
+A Ring Gear can also be a voxel of [finespace](Finespace.md), used with an empty hand: it turns the voxels joined to its front face, and putting back lands them at the nearest quarter turn. See [Vehicles](Vehicles.md#joints).
 
 ## See also
 

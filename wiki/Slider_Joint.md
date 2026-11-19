@@ -1,6 +1,6 @@
 # Slider Joint
 
-A joint, in ordinary blocks or [fine space](Fine_Space.md), that lets a body slide along its front axis against a spring. It is a suspension: a wheel on a slider rides over bumps and rebounds, since a [Tire Hub](Tire_Hub.md) has no suspension of its own.
+A joint, in ordinary blocks or [finespace](Finespace.md), that lets a body slide along its front axis against a spring. It is a suspension: a wheel on a slider rides over bumps and rebounds, since a [Tire Hub](Tire_Hub.md) has no suspension of its own.
 
 ## Crafting
 
@@ -14,9 +14,9 @@ I is a Wrought Iron Plate, B is a [Rotary Bearing](Rotary_Bearing.md) and S is a
 
 ## Using it
 
-It works as a full-size block and as a voxel of [fine space](Fine_Space.md).
+It works as a full-size block and as a voxel of [finespace](Finespace.md).
 
-1. Place it against a block, or put it in fine space, with its front along the line the body should slide on.
+1. Place it against a block, or put it in finespace, with its front along the line the body should slide on.
 2. **Sneak-use** it with an empty hand to choose the spring: **soft**, **stock** or **stiff**. The message reads *"Choice N of 3."* Choose before assembling. The spring can also be made of a metal; see [Spring from a metal](#spring-from-a-metal).
 3. **Use it with an empty hand** to assemble everything joined to its front face into a second body that slides.
 4. **Use it again** to put the body back, at the nearest of the 24 ways a cube can be turned.

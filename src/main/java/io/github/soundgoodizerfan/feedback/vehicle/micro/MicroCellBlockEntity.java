@@ -93,7 +93,7 @@ public class MicroCellBlockEntity extends BlockEntity implements BlockEntitySubL
         return EDITS.get();
     }
 
-    /** Something a body's scans read changed outside a cell (a tire hub placed, fitted or broken in coarse space): the scans are redone. */
+    /** Something a body's scans read changed outside a cell (a tire hub placed, fitted or broken in coarsespace): the scans are redone. */
     public static void touched() {
         EDITS.incrementAndGet();
     }
@@ -101,7 +101,7 @@ public class MicroCellBlockEntity extends BlockEntity implements BlockEntitySubL
     private final MicroRotor[] rotors = new MicroRotor[VOXELS];
     /** The block a wedge voxel is made of (its look, weight and what mining it gives back); null: the stock wedge. */
     private final BlockState[] skins = new BlockState[VOXELS];
-    /** Machines hosted in voxels (docs/specs/fine_space_hosting_spec.md): the block entity of a modular machine, and the item it came from (its figures unscaled), by voxel index. */
+    /** Machines hosted in voxels (docs/specs/finespace_hosting_spec.md): the block entity of a modular machine, and the item it came from (its figures unscaled), by voxel index. */
     private final net.minecraft.world.level.block.entity.BlockEntity[] hosted = new net.minecraft.world.level.block.entity.BlockEntity[VOXELS];
     private final net.minecraft.world.item.ItemStack[] hostedItems = new net.minecraft.world.item.ItemStack[VOXELS];
     /** Belts from pulley voxels to pulley voxels (see {@link MicroBelts}), each with its condition. */

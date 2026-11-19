@@ -34,7 +34,7 @@ S is a [Shaft](Shaft.md). P is a Wrought Iron Plate for the small and medium hub
 
 ## Using it
 
-1. Build the body a role 0 Rotary Bearing turns, and put the hub on its axle: as a block in ordinary space, or as a voxel in [fine space](Fine_Space.md).
+1. Build the body a role 0 Rotary Bearing turns, and put the hub on its axle: as a block in ordinary space, or as a voxel in [finespace](Finespace.md).
 2. Use a [tire](Tire.md) on the hub to fit it. A hub comes with no tire.
 3. Assemble the bearing as usual. The body is a wheel.
 
@@ -44,7 +44,7 @@ S is a [Shaft](Shaft.md). P is a Wrought Iron Plate for the small and medium hub
 
 The hub declares the wheel's radius, from the axle to the tread:
 
-| Hub | In ordinary space | In fine space |
+| Hub | In ordinary space | In finespace |
 | --- | --- | --- |
 | Small | about 0.75 blocks | 0.25 blocks |
 | Medium | 1 block | 0.375 blocks |

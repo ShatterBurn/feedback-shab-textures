@@ -14,7 +14,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
-/** The round tire of a tire hub in coarse space, drawn about its axle beyond the block; a body turned by a bearing turns it with the block. */
+/** The round tire of a tire hub in coarsespace, drawn about its axle beyond the block; a body turned by a bearing turns it with the block. */
 public class TireHubRenderer implements BlockEntityRenderer<TireHubBlockEntity> {
 
     public TireHubRenderer(BlockEntityRendererProvider.Context context) {

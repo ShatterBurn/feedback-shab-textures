@@ -14,7 +14,7 @@ C is a Large Cog and B is a [Rotary Bearing](Rotary_Bearing.md). The corners are
 
 ## Using it
 
-It is placed, assembled and put back the way a Ring Gear is: build in front of it and right-click with an empty hand. It can also be a voxel of [fine space](Fine_Space.md). The messages, the size limit and the rules for putting back are the [Rotary Bearing's](Rotary_Bearing.md).
+It is placed, assembled and put back the way a Ring Gear is: build in front of it and right-click with an empty hand. It can also be a voxel of [finespace](Finespace.md). The messages, the size limit and the rules for putting back are the [Rotary Bearing's](Rotary_Bearing.md).
 
 ## How it works
 
