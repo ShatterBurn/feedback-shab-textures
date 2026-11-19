@@ -69,7 +69,11 @@ Ask too much of a cable and it heats up. Look at it with Jade (with a [Thermomet
 
 Nothing on this list happens suddenly. You'll see it coming if you look.
 
-Taking the load off lets the cable cool back down, but **damage doesn't heal**: a scorched cable stays bare, and a degraded one stays degraded. Cable cannot be repaired. Break it and lay new cable.
+Taking the load off lets the cable cool back down, but **damage doesn't heal**: a degraded cable stays degraded and cannot be repaired. Break it and lay new cable.
+
+## Recoating bare cable
+
+Right-click a bare cable with an insulating item (rubber, leather, terracotta or any other item of a material with an insulation band, the same stuff that coats a cable in the recipe) to coat it again. One item is used up and the cable takes the band of that material. A cable carrying current cannot be coated; the screen says *A live cable cannot be coated*, so switch the line off first. [Electrified Fence](Electrified_Fence.md) posts stay bare.
 
 ## Superconducting cable
 
