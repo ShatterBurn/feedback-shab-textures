@@ -170,6 +170,10 @@ Feedback needs [Better Combat](https://modrinth.com/mod/better-combat) and its C
 
 A blade, mace, spear or bare hand does not strike the instant you click. The swing winds up first, and the blow lands at the clip's strike, a fraction of the way through the swing: quick for a dagger, late for a maul. A new swing waits until the weapon is about half recharged, and a stagger or a parry, roll or kick during the windup cancels it.
 
+## Slash trail
+
+A blade or spear swing leaves a trail in the air: an arc for a one-handed or two-handed horizontal slash, a thrust streak for a two-handed stab. It appears when the blow lands and takes the color of the weapon's main part material. Slams, punches and other swings leave no trail.
+
 ## Two hands, or one in each
 
 A spear, a heavy mace (a maul) and a heavy blade (a claymore) take both hands: while you hold one, your off hand is shut, so no off-hand strike and no dual wielding. A one-handed strike weapon in each hand lets you **dual wield**: left click always swings your main hand and right click your off hand, each with its own swing, and you attack about a fifth faster. The off hand's own attack speed sets its pace. Holding the click does not repeat a swing: let go and press again.
