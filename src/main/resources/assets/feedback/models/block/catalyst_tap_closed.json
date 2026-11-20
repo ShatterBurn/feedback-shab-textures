@@ -3,7 +3,7 @@
   "textures": {
     "particle": "feedback:block/housing_iron",
     "plate": "feedback:block/housing_iron",
-    "front": "minecraft:block/sculk_catalyst_side",
+    "front": "feedback:block/catalyst_tap_front",
     "cobble": "minecraft:block/cobblestone",
     "handle": "minecraft:block/oak_planks",
     "wire": "feedback:block/copper_sheet",

@@ -2,5 +2,13 @@
   "parent": "item/generated",
   "textures": {
     "layer0": "feedback:item/modular/grey/part_metal_gasket"
-  }
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "feedback:variant": 1
+      },
+      "model": "feedback:item/charge_casing_shaped"
+    }
+  ]
 }
