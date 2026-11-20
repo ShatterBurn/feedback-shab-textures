@@ -38,7 +38,7 @@ A hosted electric machine, such as a dynamotor or motor, joins the cable run: th
 
 A cell takes part in the electric network and in heating through one machine each: the first electric machine it holds and the first heat source it holds. A second electric machine in the same cell is not on the cable. A hosted machine reaches what the cell's block touches, not the voxel beside it. When a hosted machine's figures ride the machine's standard figures they are a 64th of the full-size ones; a dynamotor's and a pressure vessel's own figures stay as the full-size machine's.
 
-A machine that toggles its own state (lamp, burner, damper, valve) cannot be hosted. A machine in an assembled arm blocks the joint from assembling or putting back; the message says to take it out first. A machine that opens a screen is unchecked.
+A machine that toggles its own state shows it on its voxel: a burner lit, a lamp, a crucible or a boiler glowing, an electromagnet lit, a damper or a valve open. A machine in an assembled arm blocks the joint from assembling or putting back; the message says to take it out first. A machine that opens a screen is unchecked.
 
 ## Joints
 
