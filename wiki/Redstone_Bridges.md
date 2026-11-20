@@ -1,6 +1,6 @@
 # Redstone Bridges
 
-Two blocks join Feedback machines to vanilla redstone, and every machine with a switch answers to redstone on its own.
+Three blocks join Feedback machines to vanilla redstone, and every machine with a switch answers to redstone on its own.
 
 ## Redstone on a switch
 
@@ -13,6 +13,17 @@ Turns a data signal into redstone. A controller, timer or sensor program switche
 ```
 P P P
 W Y R      P wrought iron plate, W copper wire, Y relay, R redstone
+```
+
+Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, 2 screws ([Fasteners](Fasteners.md)) and Electrical Treatise II: Coils and Magnets ([Treatise](Treatise.md)).
+
+## Redstone Receiver
+
+Turns redstone into a data reading. Redstone arriving at any face is read by a Sensor card on the control signal linked to it with the [Data Connector](Data_Connector.md), as a number from 0 (none) to 15 (full strength). The reading follows the signal as it changes, so a program can follow a vanilla lever, pressure plate or detector. See [Sensors](Sensors.md) for linking a reading to a [Controller](Controller.md).
+
+```
+P P P
+R W R      P wrought iron plate, W copper wire, R redstone
 ```
 
 Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, 2 screws ([Fasteners](Fasteners.md)) and Electrical Treatise II: Coils and Magnets ([Treatise](Treatise.md)).
