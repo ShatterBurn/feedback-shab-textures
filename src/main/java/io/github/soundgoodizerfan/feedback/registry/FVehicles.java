@@ -233,7 +233,7 @@ public class FVehicles {
             DeferredRegister.create(Registries.ENTITY_TYPE, Feedback.MOD_ID);
 
     public static final DeferredBlock<DriverSeatBlock> SEAT = BLOCKS.register("driver_seat",
-            () -> new DriverSeatBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOL).strength(1.0f).sound(SoundType.WOOL)));
+            () -> new DriverSeatBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOL).strength(1.0f).sound(SoundType.WOOL).noOcclusion()));
 
     public static final DeferredItem<BlockItem> SEAT_ITEM = ITEMS.registerSimpleBlockItem(SEAT);
 

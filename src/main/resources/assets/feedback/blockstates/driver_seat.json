@@ -1,1 +1,8 @@
-{"variants": {"": {"model": "feedback:block/driver_seat"}}}
+{
+  "variants": {
+    "facing=north": { "model": "feedback:block/driver_seat" },
+    "facing=east": { "model": "feedback:block/driver_seat", "y": 90 },
+    "facing=south": { "model": "feedback:block/driver_seat", "y": 180 },
+    "facing=west": { "model": "feedback:block/driver_seat", "y": 270 }
+  }
+}
