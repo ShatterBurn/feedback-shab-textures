@@ -1,0 +1,8 @@
+{
+  "values": [
+    {
+      "id": "feedback:redstone_receiver",
+      "required": false
+    }
+  ]
+}

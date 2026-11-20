@@ -275,6 +275,11 @@ public class FBlockEntities {
                     .of(io.github.soundgoodizerfan.feedback.machine.redstone.RedstoneEmitterBlockEntity::new, FBlocks.REDSTONE_EMITTER.get())
                     .build(null));
 
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<io.github.soundgoodizerfan.feedback.machine.redstone.RedstoneReceiverBlockEntity>> REDSTONE_RECEIVER =
+            BLOCK_ENTITIES.register("redstone_receiver", () -> BlockEntityType.Builder
+                    .of(io.github.soundgoodizerfan.feedback.machine.redstone.RedstoneReceiverBlockEntity::new, FBlocks.REDSTONE_RECEIVER.get())
+                    .build(null));
+
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BellowsBlockEntity>> BELLOWS =
             BLOCK_ENTITIES.register("bellows", () -> BlockEntityType.Builder
                     .of(BellowsBlockEntity::new, FBlocks.BELLOWS.get())

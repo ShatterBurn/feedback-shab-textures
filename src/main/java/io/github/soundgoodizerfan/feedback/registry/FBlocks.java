@@ -987,6 +987,11 @@ public class FBlocks {
             () -> new io.github.soundgoodizerfan.feedback.machine.redstone.RedstoneEmitterBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.METAL).strength(3.0f).sound(SoundType.METAL)));
 
+    /** The redstone-to-data converter: a program reads the redstone strength reaching it. */
+    public static final DeferredBlock<io.github.soundgoodizerfan.feedback.machine.redstone.RedstoneReceiverBlock> REDSTONE_RECEIVER = BLOCKS.register("redstone_receiver",
+            () -> new io.github.soundgoodizerfan.feedback.machine.redstone.RedstoneReceiverBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.METAL).strength(3.0f).sound(SoundType.METAL)));
+
     public static final DeferredBlock<BellowsBlock> BELLOWS = BLOCKS.register("bellows",
             () -> new BellowsBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.WOOD)

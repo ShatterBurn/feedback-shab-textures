@@ -132,7 +132,7 @@ public class FCreativeTabs {
     // ---- Control & Vehicles ----
 
     /** Signals: a note, a redstone line, then sensors by what they sense. */
-    private static final List<DeferredItem<?>> SIGNALS = of(FItems.NOTE_BLOCK, FItems.REDSTONE_EMITTER,
+    private static final List<DeferredItem<?>> SIGNALS = of(FItems.NOTE_BLOCK, FItems.REDSTONE_EMITTER, FItems.REDSTONE_RECEIVER,
             FItems.ANALOG_ADAPTER, FItems.TEMPERATURE_SENSOR, FItems.CURRENT_SENSOR, FItems.DATA_SENSOR);
 
     /** Controllers: mechanical, electric, then computing; media and cards last. */

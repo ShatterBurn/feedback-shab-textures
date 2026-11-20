@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "feedback:block/redstone_receiver" },
+    "facing=east": { "model": "feedback:block/redstone_receiver", "y": 90 },
+    "facing=south": { "model": "feedback:block/redstone_receiver", "y": 180 },
+    "facing=west": { "model": "feedback:block/redstone_receiver", "y": 270 }
+  }
+}

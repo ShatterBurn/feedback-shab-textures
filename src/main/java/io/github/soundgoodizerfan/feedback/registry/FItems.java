@@ -353,6 +353,7 @@ public class FItems {
     public static final DeferredItem<BlockItem> DAMPER = ITEMS.registerSimpleBlockItem(FBlocks.DAMPER);
     public static final DeferredItem<BlockItem> VALVE = ITEMS.registerSimpleBlockItem(FBlocks.VALVE);
     public static final DeferredItem<BlockItem> REDSTONE_EMITTER = ITEMS.registerSimpleBlockItem(FBlocks.REDSTONE_EMITTER);
+    public static final DeferredItem<BlockItem> REDSTONE_RECEIVER = ITEMS.registerSimpleBlockItem(FBlocks.REDSTONE_RECEIVER);
     /** The sided redstone fitting (an item fitted on a face), see {@code fitting/RedstoneAnalogFitting}. */
     public static final DeferredItem<Item> ANALOG_ADAPTER = ITEMS.register("analog_adapter",
             () -> new io.github.soundgoodizerfan.feedback.item.AnalogAdapterItem(new Item.Properties()));
