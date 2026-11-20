@@ -262,7 +262,7 @@ The walls of the reactor shell must be dense: density 7 or more in the table abo
 
 A late-game wire that carries current with no loss from the packet up to a limit. It is made in four steps.
 
-1. **Purify.** Purify Redstone dust in a [Reactor](Reactor.md) with hydrochloric acid to get Purified Redstone.
+1. **Purify.** Purify Redstone dust in a [Reactor](Reactor.md) with sulfuric or hydrochloric acid to get Purified Redstone.
 2. **Blend and calcine.** Blend 62 to 70% Purified Redstone with 28 to 36% chromium in the [Mixer](Mixer.md) for Superconductor Blend. Calcine it in a [Crucible](Crucible.md) or [Kiln zone](Kiln_Zone.md) at 780 to 920 Tu for Calcined Blend. Hotter ruins it into redstone dust.
 3. **Sheath.** Four Calcined Blend and a Silver Ingot, shapeless, make a Sheathed Billet.
 4. **Draw it.** Roll the billet to a rod, draw it to a wire, draw that to a fine wire. The filament takes **one cold stage per anneal**, so anneal it (heat to 600 Tu in a Crucible or Kiln zone) after every stage. Each anneal taken at the limit adds one cycle of **texture** (tooltip *Texture: n*); an anneal taken early adds nothing. See [Work hardening](Metalworking.md#work-hardening).

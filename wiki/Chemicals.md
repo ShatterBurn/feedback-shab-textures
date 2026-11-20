@@ -94,7 +94,7 @@ A volatile, toxic gas made by leaching osmiridium with sulfuric acid and oxygen 
 
 ## Ammonia
 
-A toxic gas made in a Reactor from nitrogen and hydrogen over an iron bed. With sulfuric acid it makes [Fertilizer](Fertilizer.md).
+A toxic gas made in a Reactor from nitrogen and hydrogen over an iron bed. With sulfuric or hydrochloric acid it makes [Fertilizer](Fertilizer.md).
 
 ## Fluorine and PTFE
 

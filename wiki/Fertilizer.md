@@ -4,7 +4,7 @@ A powder that pushes a growing [crop](Crops.md) on like bone meal, and scorches 
 
 ## Obtaining
 
-Made in a [Reactor](Reactor.md) from 200 mB [ammonia](Chemicals.md#ammonia) and 100 mB [sulfuric acid](Chemicals.md#acids): two Fertilizer per batch.
+Made in a [Reactor](Reactor.md) from 200 mB [ammonia](Chemicals.md#ammonia) and 100 mB of [sulfuric or hydrochloric acid](Chemicals.md#acids): two Fertilizer per batch.
 
 ## Using it
 

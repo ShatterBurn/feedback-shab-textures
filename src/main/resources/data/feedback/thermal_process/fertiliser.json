@@ -15,7 +15,7 @@
         "mb": 200
       },
       {
-        "fluid": "feedback:sulfuric_acid",
+        "fluid": "#feedback:strong_acid",
         "mb": 100
       }
     ],

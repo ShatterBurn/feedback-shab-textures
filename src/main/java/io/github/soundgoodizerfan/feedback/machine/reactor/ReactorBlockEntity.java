@@ -350,7 +350,7 @@ public class ReactorBlockEntity extends io.github.soundgoodizerfan.feedback.mach
         var id = BuiltInRegistries.FLUID.getKey(stack.getFluid());
         for (ThermalProcess p : ThermalProcessTable.get().reactions())
             for (ThermalProcess.Amount a : p.reaction().get().fluidInputs())
-                if (a.fluid().equals(id))
+                if (a.matches(id))
                     return true;
         return false;
     }
@@ -360,7 +360,7 @@ public class ReactorBlockEntity extends io.github.soundgoodizerfan.feedback.mach
         if (!p.inputs().isEmpty() && ThermalProcessTable.match(p.inputs(), hopper) == null)
             return false;
         for (ThermalProcess.Amount a : r.fluidInputs())
-            if (ProcessRun.held(List.of(inputs), a.fluid()) < a.mb())
+            if (ProcessRun.held(List.of(inputs), a) < a.mb())
                 return false;
         return r.catalyst().isEmpty() || (hasBed() && bed.is(r.catalyst().get()));
     }
@@ -401,7 +401,7 @@ public class ReactorBlockEntity extends io.github.soundgoodizerfan.feedback.mach
         // The batch happens, in window or out: inputs are consumed either way.
         float[] sulfur = {0f};
         for (ThermalProcess.Amount a : r.fluidInputs())
-            ProcessRun.draw(List.of(inputs), a.fluid(), a.mb(), (fluid, taking) -> {
+            ProcessRun.draw(List.of(inputs), a, a.mb(), (fluid, taking) -> {
                 if (fluid.has(FDataComponents.CRUDE_GRADE.get()))
                     sulfur[0] += CrudeGrade.of(fluid).sulfur() * taking;
             });

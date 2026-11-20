@@ -34,19 +34,19 @@ public final class ProcessRun {
     }
 
     /** mB of {@code fluid} held across {@code tanks}. */
-    public static int held(List<? extends FluidTank> tanks, ResourceLocation fluid) {
+    public static int held(List<? extends FluidTank> tanks, ThermalProcess.Amount fluid) {
         int total = 0;
         for (FluidTank tank : tanks)
-            if (!tank.isEmpty() && BuiltInRegistries.FLUID.getKey(tank.getFluid().getFluid()).equals(fluid))
+            if (!tank.isEmpty() && fluid.matches(BuiltInRegistries.FLUID.getKey(tank.getFluid().getFluid())))
                 total += tank.getFluidAmount();
         return total;
     }
 
     /** Takes {@code mb} of {@code fluid} from {@code tanks}; {@code seen} is told each stack and the mB about to be taken from it. */
-    public static void draw(List<? extends FluidTank> tanks, ResourceLocation fluid, int mb, ObjIntConsumer<FluidStack> seen) {
+    public static void draw(List<? extends FluidTank> tanks, ThermalProcess.Amount fluid, int mb, ObjIntConsumer<FluidStack> seen) {
         int left = mb;
         for (FluidTank tank : tanks) {
-            if (left <= 0 || tank.isEmpty() || !BuiltInRegistries.FLUID.getKey(tank.getFluid().getFluid()).equals(fluid))
+            if (left <= 0 || tank.isEmpty() || !fluid.matches(BuiltInRegistries.FLUID.getKey(tank.getFluid().getFluid())))
                 continue;
             seen.accept(tank.getFluid(), Math.min(left, tank.getFluidAmount()));
             left -= tank.drain(left, IFluidHandler.FluidAction.EXECUTE).getAmount();

@@ -74,6 +74,14 @@ final class ThermalCard {
             next().addFluidStack(fluid, mb).setFluidRenderer(Math.max(1, mb), false, 16, 16);
         }
 
+        /** One slot that cycles through {@code fluids}: a tag input shows every fluid that satisfies it. */
+        void fluids(List<net.minecraft.world.level.material.Fluid> fluids, int mb) {
+            var slot = next();
+            for (var f : fluids)
+                slot.addFluidStack(f, mb);
+            slot.setFluidRenderer(Math.max(1, mb), false, 16, 16);
+        }
+
         void fluid(FluidStack stack) {
             if (!stack.isEmpty())
                 fluid(stack.getFluid(), stack.getAmount());
@@ -141,7 +149,7 @@ final class ThermalCard {
             in.item(input);
         var reaction = p.reaction();
         for (var a : reaction.map(ThermalProcess.Reaction::fluidInputs).orElse(List.of()))
-            in.fluid(a.fluid(), a.mb());
+            in.fluids(a.fluids(), a.mb());
         reaction.flatMap(ThermalProcess.Reaction::catalyst).ifPresent(tag ->
                 builder.addSlot(RecipeIngredientRole.CATALYST, WIDTH / 2 - 9, TOP).setStandardSlotBackground()
                         .addItemStacks(java.util.stream.StreamSupport.stream(BuiltInRegistries.ITEM.getTagOrEmpty(tag).spliterator(), false)

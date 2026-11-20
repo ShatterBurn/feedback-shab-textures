@@ -251,12 +251,35 @@ public record ThermalProcess(List<Ingredient> inputs,
                 spoilTemperature, spoiled, resultFluid, requireCooling, Optional.empty(), false, Optional.empty(), Special.NONE);
     }
 
-    /** A fluid quantity in a row: a fluid id and millibuckets. Names a fluid, never relied on for player-facing routing. */
-    public record Amount(ResourceLocation fluid, int mb) {
+    /**
+     * A fluid quantity in a row: a fluid id (or, written {@code "#ns:path"} in a row, a fluid tag) and millibuckets. A tag input takes any
+     * fluid in the tag, so a chemistry that is the same for every strong acid names {@code feedback:strong_acid} and not one acid.
+     */
+    public record Amount(ResourceLocation fluid, int mb, boolean tag) {
+        public Amount(ResourceLocation fluid, int mb) {
+            this(fluid, mb, false);
+        }
+
         public static final Codec<Amount> CODEC = RecordCodecBuilder.create(i -> i.group(
-                ResourceLocation.CODEC.fieldOf("fluid").forGetter(Amount::fluid),
+                Codec.STRING.fieldOf("fluid").forGetter(a -> a.tag ? "#" + a.fluid : a.fluid.toString()),
                 Codec.intRange(1, Integer.MAX_VALUE).fieldOf("mb").forGetter(Amount::mb)
-        ).apply(i, Amount::new));
+        ).apply(i, (name, mb) -> name.startsWith("#") ? new Amount(ResourceLocation.parse(name.substring(1)), mb, true)
+                : new Amount(ResourceLocation.parse(name), mb, false)));
+
+        /** Whether the fluid registered as {@code id} satisfies this input. */
+        public boolean matches(ResourceLocation id) {
+            if (!tag)
+                return fluid.equals(id);
+            return net.minecraft.core.registries.BuiltInRegistries.FLUID.get(id).builtInRegistryHolder().is(TagKey.create(Registries.FLUID, fluid));
+        }
+
+        /** Every fluid that satisfies this input (one, or the tag's members), for a recipe screen. */
+        public List<net.minecraft.world.level.material.Fluid> fluids() {
+            if (!tag)
+                return List.of(net.minecraft.core.registries.BuiltInRegistries.FLUID.get(fluid));
+            return java.util.stream.StreamSupport.stream(net.minecraft.core.registries.BuiltInRegistries.FLUID.getTagOrEmpty(TagKey.create(Registries.FLUID, fluid)).spliterator(), false)
+                    .map(net.minecraft.core.Holder::value).toList();
+        }
     }
 
     /**

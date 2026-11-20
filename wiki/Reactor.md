@@ -78,7 +78,7 @@ Some reactions give off heat, which warms the reactor.
 | **Leach osmiridium** | one Raw Osmiridium, 200 mB sulfuric acid, 100 mB oxygen | 100 mB [osmium tetroxide](Chemicals.md#osmium-tetroxide), and some heat | 60 to 125 Tu, best 90 |
 | **Reduce osmium tetroxide** | 100 mB osmium tetroxide, 400 mB hydrogen | one **Osmium Sponge**, and some heat | 280 to 420 Tu, best 330 |
 | **Ammonia** | 100 mB nitrogen, 300 mB hydrogen, an iron bed | 200 mB [ammonia](Chemicals.md#ammonia), and some heat | 400 to 500 Tu, best 450 |
-| **Fertilizer** | 200 mB ammonia, 100 mB sulfuric acid | 2 [Fertilizer](Fertilizer.md) | 20 to 100 Tu, best 50 |
+| **Fertilizer** | 200 mB ammonia, 100 mB sulfuric or hydrochloric acid | 2 [Fertilizer](Fertilizer.md) | 20 to 100 Tu, best 50 |
 | **Raw Spatial Slurry** | one Chorus Fruit, 100 mB water | 100 mB Raw Spatial Slurry | 0 to 60 Tu, best 25 |
 | **Damped Spatial Solvent** | 100 mB Unstable Spatial Solvent, 5 mB [Heavy Water](Heavy_Water.md), one Lapis Lazuli dust | 100 mB Damped Spatial Solvent; above 70 Tu, solvent vapor | 5 to 70 Tu, best 30 |
 | **Liquid Teleportant** | 100 mB Damped Spatial Solvent, one Redstone dust, an [Arc Head](Arc_Furnace.md#the-arc-head) against the reactor | 100 mB [Liquid Teleportant](Liquid_Teleportant.md); above 2200 Tu, solvent vapor | 300 to 2200 Tu, best 900 |
@@ -87,7 +87,7 @@ Some reactions give off heat, which warms the reactor.
 | **Roast a sulfide concentrate** | one concentrate of chalcopyrite, sphalerite, pentlandite, cobaltite or argentite, 100 mB oxygen | one Roasted concentrate, 100 mB sulfur dioxide, sulfur (and iron nuggets for some) | 500 to 900 Tu, best 700 |
 | **Diamond (high pressure)** | one Graphite and one Diamond Seed in the hopper, 160 mB [argon](Chemicals.md#argon), an iron, nickel or cobalt ingot bed, **3.8 Pu** at least (best at 4.6 Pu) | 1 Diamond, the argon returned; over 1700 Tu, a Graphite instead | 1400 to 1700 Tu, best 1550 |
 | **Diamond (vapor)** | one Diamond Seed, 8 mB [methane](Chemicals.md#fluorine-and-ptfe), 72 mB hydrogen, **1.5 Pu** at least (best at 2 Pu) | 2 Diamonds and 64 mB hydrogen; over 950 Tu, a Graphite instead | 780 to 950 Tu, best 880 |
-| **Purify redstone** | one Redstone dust, 50 mB hydrochloric acid | one [Purified Redstone](Materials.md#superconductor) | 40 to 120 Tu, best 60 |
+| **Purify redstone** | one Redstone dust, 50 mB sulfuric or hydrochloric acid | one [Purified Redstone](Materials.md#superconductor) | 40 to 120 Tu, best 60 |
 | **Superconductor anneal** | one fine wire of Redstone Filament with texture 1, 2 or 3, 160 mB oxygen, **3.8 Pu** at least (best at 4.6 Pu) | a poor, fair or best Redstone Superconductor Wire (by texture), the oxygen returned; too hot, redstone dust | 840 to 920 Tu, best 880 |
 | **Molten cryolite** | one Cryolite Ore | 144 mB [cryolite bath](Chemicals.md#cryolite-bath) | melts at 1010 Tu |
 

@@ -15,7 +15,7 @@
   "reaction": {
     "fluid_inputs": [
       {
-        "fluid": "feedback:hydrochloric_acid",
+        "fluid": "#feedback:strong_acid",
         "mb": 50
       }
     ],
