@@ -7,7 +7,7 @@ A rocket engine for a [vehicle](Vehicles.md). It burns liquid fuel and pushes th
 A thruster is a modular build. Draw it at the [Blueprint Table](Blueprint_Table.md) (pick *Thruster* in the type row, under Technology); drawing it takes Aerospace Treatise II: Thrusters ([Treatise](Treatise.md)). It has one part, the **Thruster Nozzle**, shaped from plate of a metal with a measured yield strength at the [Smithing Table](Smithing_Table.md). Assemble it at the [Engineering Table](Engineering_Table.md) with two [fasteners](Fasteners.md); the blueprint in the blueprint slot judges the fit against your drawing. The thruster comes out with the design of the nozzle, and the blueprint is kept.
 
 - **Bore** is a stepper from 8 to 40 mm in steps of 2, 20 mm by default. A wider bore pushes harder and burns more fuel; both follow the bore's area.
-- **Shape** trades push against fuel. A **Bell** is the baseline. A **Cone** pushes 30% harder and burns 50% more fuel. A **Throat** pushes 30% less and burns half the fuel.
+- **Shape** trades push against fuel. A **Bell** is the baseline. A **Cone** pushes 30% harder and burns 50% more fuel. A **Throat** pushes 30% less and burns half the fuel. The block shows the shape: a bell has a narrow neck ending in a wide flared lip, a cone tapers smoothly in a straight line, a throat is a short narrow tube. All three share the chamber and a fuel inlet on top, and a regen jacket adds a band round the nozzle.
 - **Regen jacket** is an optional addon, a plate wrapped round the nozzle that the fuel runs through first. The fuel arrives warm, so less of it burns for the same push; the better the plate conducts heat, the less (copper saves the most).
 
 The blueprint sheet and the thruster's tooltip show how many times a reference thruster (20 mm bell) it pushes. Specimens to take apart for the treatise are covered under [Treatise](Treatise.md#specimens).
@@ -16,7 +16,7 @@ It does nothing on blocks that stand in the world. Like everything on a [Lift](V
 
 ## Using it
 
-- **Place it** so it faces the way you want to be pushed: set against a face, it pushes the body away from that face. Flame comes out of the back.
+- **Place it** so it faces the way you want to be pushed: set against a face, it pushes the body away from that face. It faces any of the six directions, and flame comes out of the back, the nozzle end.
 - **Fuel.** A bucket fills it, or a [Pipe](Pipe.md). It mixes whatever arrives **by mass** and never refuses a fluid, like an [Engine](Engine.md)'s tank; a fluid that does not burn dilutes the flame. See [Fuels](Fuels.md).
 - **Right-click** to turn it on or off. The message tells you how much fuel is left.
 - **Automate it.** A redstone signal, a [Timer](Timer.md) or [Bimetallic Strip](Bimetallic_Strip.md) touching it, or a [Controller](Controller.md) *Switch* card linked to it with the [Data Connector](Data_Connector.md) starts and stops it. It is on or off only; the [Jet](Jet.md) is the engine that runs at part throttle.
