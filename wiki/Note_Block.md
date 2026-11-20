@@ -10,6 +10,8 @@ Draw it at the [Blueprint Table](Blueprint_Table.md) (pick *Note Block* in the t
 - **Noisemaker**: its shape is the instrument. Its material sets the sound: a harder material rings louder and a denser one plays lower.
 - **Second noisemaker** (optional): sounds together with the first.
 
+Each part has its own icon, tinted by its material, and every instrument has its own noisemaker icon. The placed block keeps the look of a vanilla note block.
+
 The instruments are Harp, Basedrum, Snare, Hat, Bass, Flute, Bell, Guitar, Chime, Xylophone, Iron Xylophone, Cow Bell, Didgeridoo, Bit, Banjo and Pling.
 
 ## What vanilla does

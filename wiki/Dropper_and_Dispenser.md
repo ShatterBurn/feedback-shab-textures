@@ -4,6 +4,8 @@ A dropper pushes an item out of its inventory, and a dispenser uses one (fires a
 
 ## Crafting
 
+The dispenser's actuator has its own icon: an iron housing, a plunger arm and a coil spring.
+
 Dropper:
 
 ```

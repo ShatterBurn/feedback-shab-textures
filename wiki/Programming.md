@@ -111,6 +111,8 @@ A printed Punch Card is **read-only**: *"Printed -- read only."* To change a pro
 
 Each host takes its own media. The mechanical Controller and Programmer take the Punch Card only. The [Electric Controller and Electric Programmer](Electric_Controller.md) take the Memory Board and the Floppy Disk. The [Computer's](Electric_Controller.md#computer) drive bays, running slot and editor take the Floppy Disk, and the USB Drive once a [USB Port](USB_Port.md) is fitted. A Computer takes neither a Punch Card nor a Memory Board.
 
+The USB Drive has its own icon.
+
 - **Punch Card**: written once. Mechanical hosts only.
 - **Memory Board**: rewritable: press **Erase** at an electric Programmer to bring the program back into the editor, then print the next one onto the same board. Made at the [Engineering Table](Engineering_Table.md) from a Punch Card between two Copper Fine Wires in a column, with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, holding Electrical Treatise III: Circuits ([Treatise](Treatise.md)); it spends no fasteners.
 - **Floppy Disk**: made at the Engineering Table with a screwdriver in the tool row and Electrical Treatise II: Coils and Magnets ([Treatise](Treatise.md)), from paper, a Punch Card, magnetite dust and a Wrought Iron Plate:

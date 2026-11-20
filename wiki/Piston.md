@@ -11,6 +11,8 @@ Draw it at the [Blueprint Table](Blueprint_Table.md) (pick *Piston* in the type 
 - **Seal**: a soft material (leather, skin or sheet) round the head. A soft seal keeps the gas in; a hard one lets some slip by each stroke.
 - **Sticky face** (optional): a slime ball.
 
+The cylinder is tinted by the cylinder's metal, and the head plate and rod by the rod's metal. A slime face shows as a green pad on the head.
+
 The figures bars on the table show the bore area, the reach, the danger, the slip and the stickiness.
 
 ## What vanilla does

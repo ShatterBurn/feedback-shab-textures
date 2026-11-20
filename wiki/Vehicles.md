@@ -42,7 +42,7 @@ P is a Wrought Iron Plate, R is a Wrought Iron Rod and S is a [Shaft](Shaft.md).
 4. **Sneak-right-click at the bottom** (step 0) to put the vehicle back into the world as ordinary blocks, where it stands: *"Back in the world as blocks."* Every hanging body is put back first, the outermost first, each at the nearest quarter turn, and then the finespace and blocks return. If anything is in the way you get *"Something is in the way..."* and nothing moves.
 5. **Break the lift** to drop the vehicle into the world, where gravity takes over. A [Wrench](Wrench.md) takes a lift apart quickly.
 
-A lift that is part of a vehicle itself cannot lift anything. A [Controller](Controller.md) card that targets a block of the vehicle follows that block when the vehicle is lifted or lowered.
+While the vehicle is raised, the lift shows a central shaft as a column up to the lifted body, with the platform riding on top. A lift that is part of a vehicle itself cannot lift anything. A [Controller](Controller.md) card that targets a block of the vehicle follows that block when the vehicle is lifted or lowered.
 
 ### Carrying a creation
 

@@ -28,7 +28,7 @@ Every landed blow pays the pool of the weapon's strongest suit (the words on its
 
 ## Techniques, keys and stamina
 
-Many nodes unlock a **cast**: a technique you slot into one of five **cast slots** (keys default to **Z**, **Y** and **G** for the first three; the radial on **C** also fires them) on the Equip tab of the skill screen, then fire with that key. Nodes that are not casts are **riders** (they change what a blow, parry or roll does) or plain **figures** (a number nudged).
+Many nodes unlock a **cast**: a technique you slot into one of five **cast slots** (keys default to **Z**, **Y** and **G** for the first three; the radial on **C** also fires them) on the Equip tab of the skill screen, then fire with that key. Nodes that are not casts are **riders** (they change what a blow, parry or roll does) or plain **figures** (a number nudged). Nodes in the skill screen show their own icons.
 
 - **Gun casts kick.** Every cast that fires a gun (Walking fire, Snap volley, Suppressing fire, Quick draw, Called shot, Point blank, Muzzle flash, Disarm shot, and the free shot from Chamber) kicks your view like a pulled trigger, on top of spending the round and heating the barrel. Mark and fire turns your camera to each mark itself and gives no view kick.
 - **Stamina** is the one meter. It runs to 100; each cast spends some (its cost is in its description). After about a second without spending it refills, and refilling costs a little hunger.

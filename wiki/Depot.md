@@ -4,6 +4,8 @@ One end of a trade road. A linked pair of depots swaps goods by convoy each mark
 
 ## Crafting
 
+A depot is a clean wooden tray with a ring and an emerald mark.
+
 ```
 P E P
 P B P      P any plank, E emerald, B barrel

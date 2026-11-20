@@ -4,7 +4,7 @@ Free, continuous [rotation](Rotation.md) from flowing water. It's the first sour
 
 ## Building it
 
-Draw it at the [Blueprint Table](Blueprint_Table.md) (pick *Water Wheel* in the type row); the diameter and bucket count are set there, along with the addons. It needs a blueprint but no treatise. It has one part, the **Wheel Rim**, with three choices:
+Draw it at the [Blueprint Table](Blueprint_Table.md) (pick *Water Wheel* in the type row); the diameter and bucket count are set there, along with the addons. It looks like a drum ringed with buckets. It needs a blueprint but no treatise. It has one part, the **Wheel Rim**, with three choices:
 
 | Choice | What it sets |
 | --- | --- |
