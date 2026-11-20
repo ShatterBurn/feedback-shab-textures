@@ -41,10 +41,43 @@
       }
     },
     {
-      "name": "upright",
+      "name": "upright_1",
       "from": [
         6,
         4,
+        12
+      ],
+      "to": [
+        10,
+        10,
+        14
+      ],
+      "faces": {
+        "north": {
+          "texture": "#iron"
+        },
+        "south": {
+          "texture": "#iron"
+        },
+        "east": {
+          "texture": "#iron"
+        },
+        "west": {
+          "texture": "#iron"
+        },
+        "up": {
+          "texture": "#iron"
+        },
+        "down": {
+          "texture": "#iron"
+        }
+      }
+    },
+    {
+      "name": "upright_2",
+      "from": [
+        6,
+        14,
         12
       ],
       "to": [
