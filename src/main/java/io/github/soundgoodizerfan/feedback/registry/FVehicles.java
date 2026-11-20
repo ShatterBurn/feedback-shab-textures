@@ -157,6 +157,13 @@ public class FVehicles {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<io.github.soundgoodizerfan.feedback.vehicle.FlightSensorBlockEntity>> FLIGHT_SENSOR_ENTITY =
             BLOCK_ENTITIES.register("flight_sensor", () -> BlockEntityType.Builder.of(io.github.soundgoodizerfan.feedback.vehicle.FlightSensorBlockEntity::new, FLIGHT_SENSOR.get()).build(null));
 
+    /** Bearing sensor: how far off the End the front points, and how far away, for a Controller card. */
+    public static final DeferredBlock<io.github.soundgoodizerfan.feedback.vehicle.BearingSensorBlock> BEARING_SENSOR = BLOCKS.register("bearing_sensor",
+            () -> new io.github.soundgoodizerfan.feedback.vehicle.BearingSensorBlock(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(2.0f).sound(SoundType.METAL)));
+    public static final DeferredItem<BlockItem> BEARING_SENSOR_ITEM = ITEMS.registerSimpleBlockItem(BEARING_SENSOR);
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<io.github.soundgoodizerfan.feedback.vehicle.BearingSensorBlockEntity>> BEARING_SENSOR_ENTITY =
+            BLOCK_ENTITIES.register("bearing_sensor", () -> BlockEntityType.Builder.of(io.github.soundgoodizerfan.feedback.vehicle.BearingSensorBlockEntity::new, BEARING_SENSOR.get()).build(null));
+
     /** What a propeller's parts bake to, on a Propeller. */
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<io.github.soundgoodizerfan.feedback.vehicle.air.PropDesign>> PROP_DESIGN =
             COMPONENTS.register("prop_design", () -> DataComponentType.<io.github.soundgoodizerfan.feedback.vehicle.air.PropDesign>builder()

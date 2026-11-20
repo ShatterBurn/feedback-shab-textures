@@ -11,7 +11,12 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
 
+import io.github.soundgoodizerfan.feedback.space.EndRoute;
+import io.github.soundgoodizerfan.feedback.space.SpaceTuning;
+
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.world.phys.Vec3;
+import org.joml.Vector3d;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
@@ -43,9 +48,12 @@ final class GapSky {
             new Planet(112f, 27f, 4f, 0xFFDCE9F5, 0xFFA9C4DE, 0f, 0.2f),
             // Crystal world: violet and teal.
             new Planet(305f, 41f, 3f, 0xFF8A5CD6, 0xFF3FB6B0, 0f, 0.3f),
-            // The End's gas giant: low on the horizon, banded, not large.
-            new Planet(265f, 4f, 5.5f, 0xFFC87A3C, 0xFFEBD0A0, 9f, 0.25f),
     };
+
+    /** The End's gas giant: banded. It is a real place in the Gap ({@link EndRoute#planet}), so it is drawn where it is, and grows as the craft closes on it. */
+    private static final Planet GAS_GIANT = new Planet(0f, 0f, 5.5f, 0xFFC87A3C, 0xFFEBD0A0, 9f, 0.25f);
+    /** The most its apparent size grows to, so a craft inside the capture sphere sees it fill much of the sky, not all of it. */
+    private static final float GROWTH_CAP = 10f;
 
     private static float[] stars; // x, y, z, size, r, g, b, a per star
 
@@ -53,7 +61,7 @@ final class GapSky {
     }
 
     /** Draws the whole sky. {@code view} is the camera's rotation, so directions here are fixed in the world. */
-    static void render(Matrix4f view) {
+    static void render(Matrix4f view, Vec3 camera) {
         if (stars == null)
             stars = buildStars();
         RenderSystem.disableDepthTest();
@@ -75,7 +83,12 @@ final class GapSky {
         RenderSystem.defaultBlendFunc();
         BufferBuilder solid = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
         for (Planet p : PLANETS)
-            planet(solid, view, p);
+            planet(solid, view, p, dir(p.yaw, p.pitch), p.radius);
+        Vector3d to = EndRoute.planet().sub(camera.x, camera.y, camera.z);
+        double away = to.length();
+        if (away > 1e-3)
+            planet(solid, view, GAS_GIANT, new Vector3f((float) (to.x / away), (float) (to.y / away), (float) (to.z / away)),
+                    GAS_GIANT.radius * (float) Math.min(GROWTH_CAP, SpaceTuning.END_DISTANCE / away));
         disc(solid, view, SUN, 3.6f, 0xFFFFFFF0, 0xFFFFF2C8);
         BufferUploader.drawWithShader(solid.buildOrThrow());
 
@@ -173,16 +186,15 @@ final class GapSky {
         fan(b, m, c, radius, 4, (x, y, r) -> lerp(centre, edge, r));
     }
 
-    private static void planet(BufferBuilder b, Matrix4f m, Planet p) {
-        Vector3f c = dir(p.yaw, p.pitch);
+    private static void planet(BufferBuilder b, Matrix4f m, Planet p, Vector3f c, float size) {
         Vector3f r = side(c);
         Vector3f u = new Vector3f(c).cross(r);
         // A dim halo first, for the atmosphere.
-        fan(b, m, c, p.radius * 1.5f, 8, (x, y, rad) -> {
+        fan(b, m, c, size * 1.5f, 8, (x, y, rad) -> {
             float k = rad * 1.5f;
             return k < 1f ? 0 : tint(p.rim * (1f - (k - 1f) / 0.5f) * 0.35f, lerp(p.bandA, p.bandB, 0.3f));
         });
-        fan(b, m, c, p.radius, 10, (x, y, rad) -> {
+        fan(b, m, c, size, 10, (x, y, rad) -> {
             float z = (float) Math.sqrt(Math.max(0f, 1f - x * x - y * y));
             // Normal of the sphere point, in world space; the camera sits at the origin looking at the planet.
             Vector3f n = new Vector3f(r).mul(x).add(new Vector3f(u).mul(y)).sub(new Vector3f(c).mul(z));

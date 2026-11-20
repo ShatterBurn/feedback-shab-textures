@@ -54,21 +54,27 @@ public final class SpaceTrigger {
             ScaleAboard.sweep(level);
         if (level.getGameTime() % SpaceTuning.CHECK_INTERVAL != 0)
             return;
-        if (!gap && !level.dimension().equals(Level.OVERWORLD))
+        boolean end = level.dimension().equals(Level.END);
+        if (!gap && !end && !level.dimension().equals(Level.OVERWORLD))
             return;
         SpaceTravel.noteStanding(level);
         var container = ServerSubLevelContainer.getContainer(level);
         if (container == null)
             return;
         var movers = new ArrayList<ServerSubLevel>();
+        var taken = new ArrayList<ServerSubLevel>(); // the Gap's bodies that reached the End
+        var present = new java.util.HashSet<UUID>();
         var thin = new java.util.HashSet<UUID>();
         for (ServerSubLevel body : container.getAllSubLevels()) {
             if (body.isRemoved())
                 continue;
             double y = body.logicalPose().position().y();
+            present.add(body.getUniqueId());
             if (gap) {
                 if (y < SpaceTuning.FLOOR_Y)
                     movers.add(body);
+                else if (EndRoute.captured(body))
+                    taken.add(body);
             } else if (AirDensityTable.at(level, y) <= 0f) {
                 thin.add(body.getUniqueId());
                 if (HELD.merge(body.getUniqueId(), SpaceTuning.CHECK_INTERVAL, Integer::sum) >= SpaceTuning.HOLD_TICKS)
@@ -77,17 +83,20 @@ public final class SpaceTrigger {
                 HELD.remove(body.getUniqueId());
             }
         }
-        if (!gap) // the Gap's pass has no thin bodies and must not forget the Overworld's
-            HELD.keySet().retainAll(thin); // a body that was removed or left the thin air is forgotten
+        // A body of this level that is no longer in thin air is forgotten; other levels' bodies are theirs to forget.
+        // shortcut: a body removed outright keeps its (tiny) entry until the server stops.
+        HELD.keySet().removeIf(id -> present.contains(id) && !thin.contains(id));
         for (ServerSubLevel body : movers) {
             HELD.remove(body.getUniqueId());
-            if (!body.isRemoved()) // a chain moves with its first body
-{
-                    int n = gap ? SpaceTravel.back(level, body) : SpaceTravel.send(level, body);
-                    Feedback.LOGGER.info("Space crossing of body {} at y {}: {} body(ies) moved to {}", body.getUniqueId(),
-                            Math.round(body.logicalPose().position().y()), n, gap ? "the Overworld" : "the Gap");
-                }
+            if (body.isRemoved()) // a chain moves with its first body
+                continue;
+            int n = gap ? SpaceTravel.back(level, body) : end ? EndRoute.toGap(level, body) : SpaceTravel.send(level, body);
+            Feedback.LOGGER.info("Space crossing of body {} at y {}: {} body(ies) moved to {}", body.getUniqueId(),
+                    Math.round(body.logicalPose().position().y()), n, gap ? "the Overworld" : "the Gap");
         }
+        for (ServerSubLevel body : taken)
+            if (!body.isRemoved())
+                Feedback.LOGGER.info("Space crossing of body {} to the End: {} body(ies) moved", body.getUniqueId(), EndRoute.toEnd(level, body));
     }
 
     @SubscribeEvent
