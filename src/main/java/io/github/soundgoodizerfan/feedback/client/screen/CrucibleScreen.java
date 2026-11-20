@@ -17,6 +17,9 @@ import io.github.soundgoodizerfan.feedback.client.render.GlowColours;
 import io.github.soundgoodizerfan.feedback.client.gui.SkinnedScreen;
 import io.github.soundgoodizerfan.feedback.client.tooltip.Readout;
 
+import io.github.soundgoodizerfan.feedback.client.gui.Specks;
+
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
@@ -36,6 +39,30 @@ public class CrucibleScreen extends SkinnedScreen<CrucibleMenu> {
         imageWidth = 176;
         imageHeight = CrucibleMenu.INV_Y + 58 + 18 + 8;
         inventoryLabelY = CrucibleMenu.INV_Y - 12;
+    }
+
+    /** Sparks off glowing stock and bubbles in a hot melt, panel-relative. */
+    private final Specks specks = new Specks(40);
+
+    @Override
+    protected void containerTick() {
+        super.containerTick();
+        specks.tick(0f);
+        int tu = menu.temperatureTu();
+        for (int slot = 0; slot < menu.size(); slot++)
+            if (FormTint.glowing(menu.getSlot(slot).getItem()))
+                HeatGlow.embers(specks, CrucibleMenu.slotX(slot, menu.size()), CrucibleMenu.slotY(slot, menu.size()), tu);
+        if (menu.tankMb() > 0 && tu >= 480) {
+            int h = Math.round(CrucibleMenu.GAUGE_H * (float) (menu.tankMb() / (double) menu.tankCapacity()));
+            HeatGlow.bubble(specks, CrucibleMenu.TANK_X, CrucibleMenu.GAUGE_Y + CrucibleMenu.GAUGE_H - h, CrucibleMenu.TANK_W, h,
+                    IClientFluidTypeExtensions.of(menu.tankFluid()).getTintColor() & 0xFFFFFF);
+        }
+    }
+
+    @Override
+    protected void renderLabels(GuiGraphics graphics, int mouseX, int mouseY) {
+        super.renderLabels(graphics, mouseX, mouseY);
+        specks.draw(graphics, Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false));
     }
 
     private int band() {

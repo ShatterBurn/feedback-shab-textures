@@ -30,7 +30,7 @@ Every wall material holds up to a temperature. Run the crucible **hotter than it
 - **Right-click with an item** to drop one in. Shift shows the same. A bucket or other fluid container is poured into the crucible's tank as far as it has room, and the empty bucket comes back (water here is what a dirt dip turns into clay, and what sets concrete powder into concrete). It holds as many items as it has charge slots.
 - **Right-click with an empty hand** to open its screen. Its item slots are in rows of three, beside a heat gauge and a tank gauge. Inputs and finished products share the slots: a product lands in a free slot.
 - The **heat gauge** is banded in the same ten bands as the glow of a Thermal Vessel; hover it to read the temperature in Tu.
-- Slots holding glowing stock shine with a faint bloom in the glow color, and the chamber gives off a soft, flickering halo as it heats.
+- Slots holding glowing stock shine with a faint bloom in the glow color, and sparks lift off them, more of them the hotter the stock. The chamber gives off a soft, flickering halo as it heats. Once the crucible is above 480 Tu, bubbles rise in the melt in the tank. With reduce motion on, the sparks and bubbles do not appear.
 - The **tank gauge** is filled in the melt's color, which shines toward the glow color as the crucible heats; hover it to see the fluid and its amount in ingots. Molds fill from the tank, not from the screen.
 - Items taken out of a slot come out **at the crucible's temperature** and start cooling at once. Ingots taken a click apart differ by a few Tu and do not stack on their own. **Right-click** one held on the cursor onto the other in any inventory or container to merge them at their [average heat](Heat.md#merging-heated-stacks).
 

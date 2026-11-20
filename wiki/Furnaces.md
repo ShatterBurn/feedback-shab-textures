@@ -16,7 +16,7 @@ None of them is restricted to certain items. Any of them will *try* to cook anyt
 
 Every furnace has **nine slots**, all the same, plus a **fuel slot**, and a **heat gauge** that steps through the glow colors. There's no "input" or "output" slot. Things change where they sit, and the finished item replaces the raw one in place.
 
-A slot holding glowing stock, such as hot metal, shines with a faint bloom in the furnace's glow color, and the chamber flickers like fire. Nothing shines below the faint red band.
+A slot holding glowing stock, such as hot metal, shines with a faint bloom in the furnace's glow color, and the chamber flickers like fire. Nothing shines below the faint red band. Sparks lift off glowing stock, more of them the hotter it is, and food slots give off pale puffs of steam once the furnace is above 100 Tu. With reduce motion on, the sparks and steam do not appear.
 
 Anything you take out (by hand or by hopper) comes out **at the furnace's temperature** and starts cooling.
 

@@ -14,8 +14,12 @@ import io.github.soundgoodizerfan.feedback.client.gui.Gauge;
 import io.github.soundgoodizerfan.feedback.client.gui.GuiSkin;
 import io.github.soundgoodizerfan.feedback.client.gui.HeatGlow;
 import io.github.soundgoodizerfan.feedback.client.item.FormTint;
+import io.github.soundgoodizerfan.feedback.registry.FDataComponents;
 import io.github.soundgoodizerfan.feedback.client.gui.SkinnedScreen;
 
+import io.github.soundgoodizerfan.feedback.client.gui.Specks;
+
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.Util;
 import net.minecraft.network.chat.Component;
@@ -48,6 +52,9 @@ public class ThermalVesselScreen extends SkinnedScreen<ThermalVesselMenu> {
             0xFFE83300, 0xFFFF7A00, 0xFFFFC400, 0xFFFFE988, 0xFFFFFFFF,
     };
 
+    /** Sparks and steam over the grid; the slot's panel-relative position. */
+    private final Specks specks = new Specks(40);
+
     private static final int GAUGE_WIDTH = 10;
 
     private static final int FLAME_X = 8;
@@ -69,6 +76,28 @@ public class ThermalVesselScreen extends SkinnedScreen<ThermalVesselMenu> {
         imageWidth = 176;
         imageHeight = ThermalVesselMenu.INV_Y + 58 + 18 + 8;
         inventoryLabelY = ThermalVesselMenu.INV_Y - 12;
+    }
+
+    @Override
+    protected void containerTick() {
+        super.containerTick();
+        specks.tick(0f);
+        int tu = menu.getGaugeTu();
+        for (int slot = 0; slot < ThermalVesselBlockEntity.SLOTS; slot++) {
+            ItemStack stack = menu.getSlot(slot).getItem();
+            int sx = ThermalVesselMenu.GRID_X + slot % ThermalVesselMenu.GRID_COLUMNS * ThermalVesselMenu.SLOT_PX;
+            int sy = ThermalVesselMenu.GRID_Y + slot / ThermalVesselMenu.GRID_COLUMNS * ThermalVesselMenu.SLOT_PX;
+            if (FormTint.glowing(stack))
+                HeatGlow.embers(specks, sx, sy, tu);
+            else if (stack.has(FDataComponents.FOOD_STATE.get()) && tu >= 100)
+                HeatGlow.steam(specks, sx, sy);
+        }
+    }
+
+    @Override
+    protected void renderLabels(GuiGraphics graphics, int mouseX, int mouseY) {
+        super.renderLabels(graphics, mouseX, mouseY);
+        specks.draw(graphics, Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false));
     }
 
     @Override
