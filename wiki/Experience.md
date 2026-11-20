@@ -44,6 +44,8 @@ Four blocks put the world's experience into the run they sit on. Each joins the 
 
 Each tap has a **lever** on it. Right-click the tap with an empty hand to open or shut its draw; a redstone signal on it holds it shut. This holds for the four blocks above and the [Catalyst Tap](Sculk_Culture.md#catalyst-tap).
 
+The taps share one look: an iron-plated body, the lever on top, a copper XP-wire outlet low on the back and a front plate that shows the sensing part (amethyst on the Ore Tap, emerald on the Trade Tap, a sculk catalyst on the Catalyst Tap, a hopper on the Smelter Tap). The lever leans one way when the draw is open and the other when it is shut.
+
 A vessel with no Smelter Tap keeps what it earned, up to a cap, and spills it as orbs when it is broken. Authored processes (steel, ceramics, alloys) earn none; only vanilla and modded cooking recipes do.
 
 ### Crafting the taps

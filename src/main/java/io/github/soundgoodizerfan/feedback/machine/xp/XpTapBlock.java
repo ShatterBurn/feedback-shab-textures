@@ -45,13 +45,18 @@ public class XpTapBlock extends Block implements EntityBlock {
             Block.box(10, 10, 7, 12, 14, 9), Block.box(6, 10, 11, 10, 12, 13), Block.box(7, 12, 11, 9, 15, 13),
             Block.box(6, 0, 0, 10, 4, 2));
 
+    /** Mirrors models/block/ore_tap.json (and trade, catalyst and smelter): the iron body, the front part, the lever and the wire outlet at the back. */
+    public static final net.minecraft.world.phys.shapes.VoxelShape TAP_SHAPE = net.minecraft.world.phys.shapes.Shapes.or(
+            Block.box(1, 0, 2, 15, 12, 14), Block.box(3, 2, 0, 13, 10, 2), Block.box(6, 12, 10, 10, 14, 12),
+            Block.box(7, 14, 10, 9, 16, 12), Block.box(6, 2, 14, 10, 6, 16));
+
     private final Kind kind;
 
     @Override
     protected net.minecraft.world.phys.shapes.VoxelShape getShape(BlockState state,
             net.minecraft.world.level.BlockGetter level, BlockPos pos,
             net.minecraft.world.phys.shapes.CollisionContext ctx) {
-        return kind == Kind.ORB ? ORB_SHAPE : super.getShape(state, level, pos, ctx);
+        return kind == Kind.ORB ? ORB_SHAPE : TAP_SHAPE;
     }
 
     public XpTapBlock(Properties properties, Kind kind) {

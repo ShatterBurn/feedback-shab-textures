@@ -1,7 +1,10 @@
 {
   "variants": {
-    "": {
+    "open=true": {
       "model": "feedback:block/trade_tap"
+    },
+    "open=false": {
+      "model": "feedback:block/trade_tap_closed"
     }
   }
 }
