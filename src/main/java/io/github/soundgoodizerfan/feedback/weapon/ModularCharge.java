@@ -34,7 +34,10 @@ public class ModularCharge extends ModularItem {
         if (!level.isClientSide) {
             level.setBlock(at, state, 3);
             if (level.getBlockEntity(at) instanceof DemolitionChargeBlockEntity charge)
+                {
                 charge.pack(context.getItemInHand());
+                charge.aim(context.getClickedFace().getOpposite());
+            }
             level.playSound(null, at, state.getSoundType().getPlaceSound(), SoundSource.BLOCKS, 1f, 0.9f);
             if (context.getPlayer() == null || !context.getPlayer().getAbilities().instabuild)
                 context.getItemInHand().shrink(1);

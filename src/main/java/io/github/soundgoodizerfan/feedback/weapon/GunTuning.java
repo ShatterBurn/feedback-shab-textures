@@ -292,7 +292,9 @@ public final class GunTuning {
             /** A casing with no scoring confines the gas {@code CASING_CONFINE_UNSCORED} times; fully scored loses {@code CASING_CONFINE_LOSS} of it. */
             CASING_CONFINE_UNSCORED = 1.4f, CASING_CONFINE_LOSS = 0.7f,
             /** Fragment multiple of an unscored casing, and what full scoring adds. */
-            CASING_FRAG_UNSCORED = 0.3f, CASING_FRAG_GAIN = 1.5f;
+            CASING_FRAG_UNSCORED = 0.3f, CASING_FRAG_GAIN = 1.5f,
+            /** A shaped charge placed against a block bores this many blocks per point of power, through blocks up to this hardness per point; what spills out is a blast of this share of the power that breaks nothing. */
+            SHAPED_BORE_PER_POWER = 1f, SHAPED_HARDNESS_PER_POWER = 1.5f, SHAPED_SPILL = 0.5f;
 
     public static final int GRENADE_FLASH_TICKS = 100;
 

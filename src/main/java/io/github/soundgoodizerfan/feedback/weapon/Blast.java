@@ -53,7 +53,7 @@ public final class Blast {
      * payload is luminous and blinds (a flash), and how hard the casing's attunement flings what it reaches ({@code shove}: positive
      * away from the blast, negative inward) and how many packets of a discharge the casing's charge throws through it ({@code arc}).
      */
-    public record Packed(float power, boolean fire, Material casing, int fuseTicks, boolean impact, float fragDamage, boolean flash, float shove, int arc) {
+    public record Packed(float power, boolean fire, Material casing, int fuseTicks, boolean impact, float fragDamage, boolean flash, float shove, int arc, boolean shaped) {
     }
 
     /** A charge item read as the placed block reads its contents. Empty for an item that is not a charge. */
@@ -86,7 +86,7 @@ public final class Blast {
         float shove = shoved * GunTuning.BLAST_SHOVE_PER_LEVEL;
         Material casing = null;
         int ticks = GunTuning.DEMO_FUSE_TICKS;
-        boolean impact = false, forceFire = false, flash = false;
+        boolean impact = false, forceFire = false, flash = false, shapedCase = false;
         float confine = 1f, frag = 1f, burnAdd = 0f, payloadFrag = 0f;
         for (var part : design.parts()) {
             var role = type.roles().get(part.role());
@@ -97,6 +97,7 @@ public final class Blast {
                 float scored = role == null ? 0.5f : role.axis(part, "scoring") / 100f;
                 confine = GunTuning.CASING_CONFINE_UNSCORED - GunTuning.CASING_CONFINE_LOSS * scored;
                 frag = GunTuning.CASING_FRAG_UNSCORED + GunTuning.CASING_FRAG_GAIN * scored;
+                shapedCase = v.map(x -> x.params().getOrDefault("shaped", 0f) > 0f).orElse(false);
             } else if (part.role().equals(FUSE_ROLE)) {
                 ticks = role == null ? ticks : Math.round(role.paramOf(part, "ticks", (float) GunTuning.DEMO_FUSE_TICKS));
                 impact = v.map(x -> x.params().getOrDefault("impact", 0f) > 0f).orElse(false);
@@ -115,7 +116,7 @@ public final class Blast {
         int arc = arcs;
         float held = 1f + GunTuning.BLAST_HOLD_PER_LEVEL * holds;
         float c = confine, f = frag, add = burnAdd, pf = payloadFrag;
-        boolean fireAlways = forceFire, flashed = flash, hit = impact;
+        boolean fireAlways = forceFire, flashed = flash, hit = impact, lined = shapedCase;
         int fuse = ticks;
         return Cartridge.Blend.of(materials, filler).map(b -> {
             Cartridge.Blend primed = new Cartridge.Blend(b.potential(), Math.min(1f, b.burned() + add), b.burnRate(), b.ignitionTu(), b.total());
@@ -123,7 +124,7 @@ public final class Blast {
                     : cased.hardness().value() * GunTuning.GRENADE_FRAG_DAMAGE_PER_HARDNESS * f) + pf);
             float power = Math.min(FTuning.DEMO_POWER_MAX, FTuning.DEMO_POWER_PER_SQRT
                     * (float) Math.sqrt(primed.potential() * primed.burned()) * confinement(cased, c) * held);
-            return new Packed(power, fireAlways || fire(primed), cased, fuse, hit, damage, flashed, shove, arc);
+            return new Packed(power, fireAlways || fire(primed), cased, fuse, hit, damage, flashed, shove, arc, lined);
         });
     }
 

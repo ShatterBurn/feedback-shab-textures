@@ -12,6 +12,10 @@ The casing is a shaped plate part with one measure, its **Scoring**, from 0 to 1
 
 An optional **primer** changes how the filler burns. A **Booster** burns the filler through for a harder blast and less fire. A **Flash Primer** makes the charge throw fire. An optional **payload** of hard bits (iron nuggets, flint) packed round the filler adds to the fragments; a luminous powder such as glowstone dust makes a flash that blinds nearby living things for a few seconds.
 
+### Shaped Casing
+
+The **Shaped Casing** is a cone-lined casing. Placed against a block, the charge bores a narrow line into that block instead of blasting all round. See [The blast](#the-blast) for what it cuts.
+
 ## Fuse
 
 A charge may carry a **fuse** part, shaped from a bit of raw stock, leather or a nugget. Its **delay** is a stepper on the drawing, from about 1.5 to 6 seconds from lighting to blast. A charge with no fuse part burns the standard wick, about 3 seconds. The **Striker** is a fuse of its own kind: a thrown charge goes off on the first thing it hits, and a placed charge is lit by hand on the standard wick.
@@ -27,6 +31,8 @@ Right-click in the air to throw it. The throw lights the fuse. A wick fuse lets 
 ## The blast
 
 Power rises with the square root of the powder's burned energy, so twice the powder is not twice the blast. A stronger casing metal holds the gas in longer and adds power. A powder-poor, fuel-rich blend burns short and throws fire instead. A charge too weak to blast only smokes. A blast, placed or thrown, breaks blocks the way TNT does.
+
+A placed charge with a Shaped Casing bores straight into the block it is set against. It breaks 1 block of depth per point of power, through blocks up to 1.5 hardness per point of power, and stops at the first block that is too hard. The broken blocks drop as items. Around the charge it spills a blast of half its power that breaks no blocks but still hurts anyone close. Thrown, it blasts like any other charge.
 
 Fragments hurt everything alive near the blast, more the harder the casing metal and payload and the closer it stands. A charge made from a design (placed or thrown) throws them; a charge packed by hand in the block does not.
 

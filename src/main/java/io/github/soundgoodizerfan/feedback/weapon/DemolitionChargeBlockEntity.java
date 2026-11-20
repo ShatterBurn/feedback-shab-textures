@@ -57,6 +57,9 @@ public class DemolitionChargeBlockEntity extends BlockEntity {
     private Blast.Packed made;
     /** Power change from whoever lit it (Salvage: a tamped charge blasts narrower). */
     private float tamp;
+    /** The way a placed shaped charge bores: into the block it was stuck to; null for a charge set down by hand or thrown. */
+    @org.jetbrains.annotations.Nullable
+    private net.minecraft.core.Direction bore;
     private java.util.UUID lighter;
 
     public DemolitionChargeBlockEntity(BlockPos pos, BlockState state) {
@@ -113,6 +116,12 @@ public class DemolitionChargeBlockEntity extends BlockEntity {
             return describe();
         }
         return null;
+    }
+
+    /** A shaped charge placed against {@code into}'s neighbour bores that way. */
+    public void aim(net.minecraft.core.Direction into) {
+        bore = into;
+        setChanged();
     }
 
     /** Take the filler and casing a charge item was made with: what it was designed as is what is packed. */
@@ -223,12 +232,33 @@ public class DemolitionChargeBlockEntity extends BlockEntity {
             server.playSound(null, at, SoundEvents.FIRE_EXTINGUISH, SoundSource.BLOCKS, 1f, 0.8f);
             return;
         }
-        server.explode(null, at.getX() + 0.5, at.getY() + 0.5, at.getZ() + 0.5, power, fire, Level.ExplosionInteraction.TNT);
+        if (made != null && made.shaped() && bore != null) {
+            // A shaped charge mines: a narrow bore in the wall it sits on, only what the power can break, and a blast that breaks nothing.
+            shapedBore(server, at, power);
+            server.explode(null, at.getX() + 0.5, at.getY() + 0.5, at.getZ() + 0.5, power * GunTuning.SHAPED_SPILL, false, Level.ExplosionInteraction.NONE);
+        } else
+            server.explode(null, at.getX() + 0.5, at.getY() + 0.5, at.getZ() + 0.5, power, fire, Level.ExplosionInteraction.TNT);
         if (shrapnel != null)
             Blast.scatter(server, null, lighter == null ? null : server.getServer().getPlayerList().getPlayer(lighter),
                     net.minecraft.world.phys.Vec3.atCenterOf(at), power, shrapnel);
         if (lighter != null && server.getServer().getPlayerList().getPlayer(lighter) instanceof net.minecraft.server.level.ServerPlayer p)
             io.github.soundgoodizerfan.feedback.combat.skill.SkillEarning.salvaged(p, "charge/" + at.asLong());
+    }
+
+    /** Breaks the blocks along {@link #bore} from the charge, as far as {@code power} carries, none harder than it can cut; stops at the first it cannot. */
+    private void shapedBore(ServerLevel server, BlockPos from, float power) {
+        int reach = (int) (power * GunTuning.SHAPED_BORE_PER_POWER);
+        float cut = power * GunTuning.SHAPED_HARDNESS_PER_POWER;
+        for (int i = 1; i <= reach; i++) {
+            BlockPos p = from.relative(bore, i);
+            var state = server.getBlockState(p);
+            if (state.isAir())
+                continue;
+            float hardness = state.getDestroySpeed(server, p);
+            if (hardness < 0f || hardness > cut)
+                return;
+            server.destroyBlock(p, true);
+        }
     }
 
     @Override
@@ -255,6 +285,10 @@ public class DemolitionChargeBlockEntity extends BlockEntity {
             tag.putInt("MadeArc", made.arc());
         }
         tag.putFloat("Tamp", tamp);
+        if (made != null && made.shaped())
+            tag.putBoolean("MadeShaped", true);
+        if (bore != null)
+            tag.putInt("Bore", bore.get3DDataValue());
         if (lighter != null)
             tag.putUUID("Lighter", lighter);
     }
@@ -271,7 +305,8 @@ public class DemolitionChargeBlockEntity extends BlockEntity {
         fuse = tag.contains("Fuse") ? tag.getInt("Fuse") : -1;
         fuseLength = tag.contains("FuseLength") ? tag.getInt("FuseLength") : GunTuning.DEMO_FUSE_TICKS;
         made = tag.contains("MadePower") ? new Blast.Packed(tag.getFloat("MadePower"), tag.getBoolean("MadeFire"), null, fuseLength, false,
-                tag.getFloat("MadeFrag"), tag.getBoolean("MadeFlash"), tag.getFloat("MadeShove"), tag.getInt("MadeArc")) : null;
+                tag.getFloat("MadeFrag"), tag.getBoolean("MadeFlash"), tag.getFloat("MadeShove"), tag.getInt("MadeArc"), tag.getBoolean("MadeShaped")) : null;
+        bore = tag.contains("Bore") ? net.minecraft.core.Direction.from3DDataValue(tag.getInt("Bore")) : null;
         tamp = tag.getFloat("Tamp");
         lighter = tag.hasUUID("Lighter") ? tag.getUUID("Lighter") : null;
     }

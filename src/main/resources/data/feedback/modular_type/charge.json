@@ -75,6 +75,14 @@
         "stock": [
           "plate"
         ],
+        "variants": [
+          {
+            "name": "shaped_casing",
+            "params": {
+              "shaped": 1.0
+            }
+          }
+        ],
         "slots": [
           {
             "name": "wall",
