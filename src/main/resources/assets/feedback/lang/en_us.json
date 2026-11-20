@@ -267,6 +267,7 @@
   "itemGroup.feedback.food": "Feedback: Food & Farming",
   "itemGroup.feedback.materials": "Feedback: Materials",
   "itemGroup.feedback.motes": "Feedback: Motes",
+  "feedback.jade.mote": "%s Mote",
   "block.minecraft.iron_bars": "Wrought Iron Bars",
   "block.minecraft.iron_block": "Block of Wrought Iron",
   "block.minecraft.iron_door": "Wrought Iron Door",

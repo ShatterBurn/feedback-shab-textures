@@ -91,5 +91,6 @@ public class FeedbackJadePlugin implements IWailaPlugin {
         registration.registerBlockComponent(BeltComponent.INSTANCE, Block.class);
         registration.registerBlockComponent(EnderPortComponent.INSTANCE, Block.class);
         registration.registerBlockComponent(DataNodeComponent.INSTANCE, Block.class);
+        registration.registerBlockComponent(FineComponent.INSTANCE, Block.class);
     }
 }
