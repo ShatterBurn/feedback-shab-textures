@@ -298,7 +298,7 @@ public class GrappleHook extends Projectile {
         if (owner instanceof net.minecraft.server.level.ServerPlayer line)
             io.github.soundgoodizerfan.feedback.core.Awards.give(line, "progress/survival/lashed");
         setDeltaMovement(Vec3.ZERO);
-        setPos(at);
+        setPos(anchorPoint());
         entityData.set(DATA_SWING_ROPE, !dragTarget && owner instanceof Player ? rope : 0f);
         entityData.set(DATA_ANCHORED, true);
         playSound(SoundEvents.CHAIN_HIT, 1f, 1f);
@@ -365,7 +365,19 @@ public class GrappleHook extends Projectile {
             if (e != null)
                 return e.position().add(0, e.getBbHeight() * 0.5, 0);
         }
-        return anchorPoint;
+        return onBody() ? body().logicalPose().transformPosition(anchorPoint) : anchorPoint;
+    }
+
+    /**
+     * The Sable body the hook bit, or null. A clip against a body answers in its plot (the shipyard far from the world), so the hit is kept
+     * there and carried through the body's pose each tick: without that the hook, the reel and the pull all went to the plot's coordinates.
+     */
+    private dev.ryanhcode.sable.companion.SubLevelAccess body() {
+        return dev.ryanhcode.sable.companion.SableCompanion.INSTANCE.getContaining(level(), anchorPoint);
+    }
+
+    private boolean onBody() {
+        return anchorEntity < 0 && body() != null;
     }
 
     // --- the reel -------------------------------------------------------------------------------
@@ -415,7 +427,8 @@ public class GrappleHook extends Projectile {
         }
         boolean stalled = !swing && reelTicks > 2 && lastDistance - distance < reelSpeed() * ModularTuning.GRAPPLE_STALL_FRACTION;
         lastDistance = distance;
-        if (swing && anchorEntity < 0 && owner instanceof Player) {
+        // Bends are laid from block clips, which answer in plot space on a body: a line to a body runs straight.
+        if (swing && anchorEntity < 0 && !onBody() && owner instanceof Player) {
             Vec3 end = living.position().add(0, living.getBbHeight() * 0.5, 0);
             if (RopeWrap.update(level(), this, to, bends, end))
                 entityData.set(DATA_BENDS, RopeWrap.toTag(bends));

@@ -127,7 +127,12 @@ public final class TetherRopes {
     private static Vec3 anchor(ClientLevel level, Tether.Anchor anchor, float partial) {
         return switch (anchor) {
             case Tether.Anchor.OnEntity a -> level.getEntity(a.entityId()) instanceof Entity e ? middle(e, partial) : null;
-            case Tether.Anchor.OnBlock b -> Vec3.atCenterOf(b.pos());
+            case Tether.Anchor.OnBlock b -> {
+                // A block of a Sable body is in its plot: carry it through the body's pose to where it is now.
+                Vec3 c = Vec3.atCenterOf(b.pos());
+                var body = dev.ryanhcode.sable.companion.SableCompanion.INSTANCE.getContaining(level, c);
+                yield body == null ? c : body.logicalPose().transformPosition(c);
+            }
             case Tether.Anchor.AtPoint p -> p.point();
         };
     }
