@@ -18,6 +18,8 @@ The face you click is the axle the block turns on. So clicking the top of a bloc
 - A block facing straight along the axle doesn't change: turning it about itself does nothing.
 - A block with no direction at all is left alone.
 
+On a voxel of [finespace](Finespace.md#making-finespace) the wrench turns the voxel under the cursor by the same rules, keeping its look, wear and any hosted machine. Joints do not turn.
+
 Shafts and wires reconnect at once: a turned shaft joins whatever it now points at, and leaves what it pointed at before.
 
 The wrench takes the click before the block does, so wrenching an engine turns it rather than switching it on.

@@ -42,6 +42,7 @@ Use it to throw. The hook flies fast on a short arc and bites the first block or
 - **Hold use** to winch yourself toward the anchor. With two lines out, both reel.
 - **Sneak** to let go of every line. You keep your speed, with a small boost. Using the grapple again does not let go.
 - **A block:** the line is fixed at the bite. Its length is how far you were from the anchor when it caught, up to the line's length. Fall, or run past the line's length, and you arc around the anchor, keeping your sideways speed. The swing is a smooth pendulum; a hook straight overhead does not bounce.
+- **A vehicle:** a hook that bites a [vehicle](Vehicles.md) rides on the body as it moves, and the line to it runs straight.
 - **A creature, without a barb:** the creature is a swing anchor, whatever its size.
 - **A creature, with a barb:** a creature up to three times your mass is dragged to you, slower the heavier it is than you. A heavier one is a swing anchor. Mass is judged by body size, the same stand-in as the [parry](Combat.md#parry)'s.
 

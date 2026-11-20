@@ -7,7 +7,9 @@ The inside of a block, divided into 4 by 4 by 4 voxels, each a quarter of a bloc
 [Cut](#motes) a whole block into motes, then right-click a block or an empty spot with a [Mote](#motes). Where there was only air, the click makes the **Finespace** block there and puts the mote in the voxel in front of the face you clicked. A Finespace block holds up to 64 voxels.
 
 - **Mine a voxel** with the right tool for its block to take it out and get its mote back. Mining Finespace takes one voxel at a time, the one you look at.
-- A face on the edge of a block of Finespace is hidden when the voxel in the next block covers it.
+- A face on the edge of a block of Finespace is hidden when the voxel in the next block covers it, or when a full-size block beside it does. A hosted machine hides no neighbor's face.
+- **Jade** names the voxel under the cursor: "Stone Mote" for a stone voxel.
+- A [Wrench](Wrench.md) on a voxel turns that voxel by its block's own rules (facing or axis), keeping its look, wear and any hosted machine. Joints do not turn.
 - A block of Finespace weighs its voxels by what they are made of; a hosted machine weighs by its design (see [Machines in finespace](#machines-in-finespace)). A build in finespace lifts on a [Lift](Vehicles.md#the-lift) like any other.
 
 The [Fine Gauge](#fine-gauge) sets single, line, box, mirror or wedge placement. The [Fine Wedge](#fine-wedge) is a four-step ramp voxel.
@@ -22,11 +24,11 @@ Cut a whole block into 64 motes at the [Engineering Table](Engineering_Table.md)
 B
 ```
 
-B is any plain, solid, whole block: stone, planks, a metal block, wool. A block with a menu or machinery, a half block, a fluid or anything that is not a full cube cannot be cut. The motes are named for their block ("Stone Mote") and motes of one block stack. Mining a voxel with the right tool gives its mote back.
+B is any plain, solid, whole block: stone, planks, a metal block, wool. A [shaft](Shaft.md), [cog](Cogs.md), [joint](Joints.md) or [tire hub](Tire.md#tire-hub) can be cut too, into motes of itself. A block with a menu or machinery, a half block, a fluid or anything that is not a full cube cannot be cut. The motes are named for their block ("Stone Mote") and motes of one block stack. Every cuttable block has its own mote in the **Feedback: Motes** creative tab. Mining a voxel with the right tool gives its mote back.
 
-Right-click any block or any piece of finespace with a mote in hand. It goes in the voxel in front of the face you clicked, at the exact spot you pointed. While you hold a mote, an outline shows the voxel it will fill. Blocks place the way they do full size: a log lies along its axis, a stair takes the half you clicked. Each voxel is drawn as its block's own model at a quarter of the size, and you walk on and bump into the exact voxels. A glowing block lights the space around it.
+Right-click any block or any piece of finespace with a mote in hand. It goes in the voxel in front of the face you clicked, at the exact spot you pointed. While you hold a mote, an outline shows the voxel it fills. Blocks place the way they do full size: a log lies along its axis, a stair takes the half you clicked. A mote in the inventory, in hand and on the ground is a small cube of its block's texture. In the world each voxel is drawn as its block's own model at a quarter of the size, and you walk on and bump into the exact voxels. A glowing block lights the space around it.
 
-Parts that work in finespace ([shafts](Shaft.md), [cogs](Cogs.md), [joints](Joints.md), [bearings](Bearing.md)) are placed as themselves, not cut into motes. So are [modular machines](#machines-in-finespace), clicked onto a cell that already exists.
+Parts that work in finespace ([shafts](Shaft.md), [cogs](Cogs.md), [joints](Joints.md), tire hubs) are cut into motes like any block, and each mote is one voxel of the part: a fine shaft, a fine cog. [Modular machines](#machines-in-finespace) are placed as themselves, one item per voxel.
 
 ## Fine Gauge
 
@@ -74,13 +76,13 @@ Set a Fine Gauge to **Wedge** mode, hold it in one hand and a mote in the other,
 
 ## Rotation in finespace
 
-A [Shaft](Shaft.md), [Bearing](Bearing.md), [Cog](Cogs.md), Gearbox, [Clutch](Clutch.md#fine-clutch), [Flywheel](Flywheel.md), [Rotary Bearing](Rotary_Bearing.md) or [Ring Gear](Ring_Gear.md) can be a voxel. Hold the part and right-click, as with a mote. A shaft lies along the face you click and joins the voxels it touches end to end. A cog takes the axis of the shaft you click it onto. Cogs mesh by the same rules as full-size [Cogs](Cogs.md), at a quarter of the size.
+A [Shaft](Shaft.md), [Bearing](Bearing.md), [Cog](Cogs.md), Gearbox, [Clutch](Clutch.md#fine-clutch), [Flywheel](Flywheel.md), [Rotary Bearing](Rotary_Bearing.md) or [Ring Gear](Ring_Gear.md) can be a voxel. Hold the part's mote and right-click. A shaft lies along the face you click and joins the voxels it touches end to end. A cog takes the axis of the shaft you click it onto. Cogs mesh by the same rules as full-size [Cogs](Cogs.md), at a quarter of the size.
 
 Only a [Rotation Adapter](Rotation_Adapter.md) joins rotation in finespace to full-size rotation.
 
 ## Machines in finespace
 
-Any modular machine item, such as a dynamotor, thruster, jet, gas tank, heat exchanger, water wheel or gas centrifuge, can be a voxel. Start finespace with a [Mote](Finespace.md#motes), then right-click an existing finespace cell with the machine. It takes one voxel, and that voxel is the machine: the design it was built with, drawn at a quarter of a block. A thruster in a voxel pushes its body. One machine item pays for one voxel.
+Any modular machine item, such as a dynamotor, thruster, jet, gas tank, heat exchanger, water wheel or gas centrifuge, can be a voxel. Right-click an existing finespace cell with the machine, or a block whose neighbor across the face you click is a finespace cell, so a machine can sit against a block. It takes one voxel, and that voxel is the machine: the design it was built with, drawn at a quarter of a block. A thruster in a voxel pushes its body. One machine item pays for one voxel.
 
 The machine is scaled to a voxel's volume when placed. Figures that follow volume are a 64th of the full-size machine: mass, power, force, burn, capacity, tank, flow, push, pull, lift, current, supply, stored energy, slots, heat, work, intake, leak and seep. Rotational inertia is a 1024th. Figures that belong to the material, such as temperatures, speeds, efficiencies and voltage bands, stay as built.
 
