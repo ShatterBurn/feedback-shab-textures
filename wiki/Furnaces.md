@@ -16,6 +16,8 @@ None of them is restricted to certain items. Any of them will *try* to cook anyt
 
 Every furnace has **nine slots**, all the same, plus a **fuel slot**, and a **heat gauge** that steps through the glow colors. There's no "input" or "output" slot. Things change where they sit, and the finished item replaces the raw one in place.
 
+A slot holding glowing stock, such as hot metal, shines with a faint bloom in the furnace's glow color, and the chamber flickers like fire. Nothing shines below the faint red band.
+
 Anything you take out (by hand or by hopper) comes out **at the furnace's temperature** and starts cooling.
 
 Fuel works like in a [Firebox](Firebox.md): each fuel has its own flame temperature. A [Powered Bellows](Powered_Bellows.md) touching a furnace blows straight into its fire.

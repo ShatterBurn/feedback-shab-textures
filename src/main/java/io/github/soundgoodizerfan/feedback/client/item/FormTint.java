@@ -58,6 +58,14 @@ public final class FormTint {
                 FBlocks.OVERSPEED_TRIP.get(), FVehicles.LIFT.get());
     }
 
+    /** The items whose material glows when hot, filled when the item colours register. */
+    private static final Set<Item> GLOWING = new java.util.HashSet<>();
+
+    /** Whether {@code stack} is stock that gives off light when hot (a metal or an incandescent material), so a screen may glow it. */
+    public static boolean glowing(net.minecraft.world.item.ItemStack stack) {
+        return GLOWING.contains(stack.getItem());
+    }
+
     private FormTint() {
         // static only
     }
@@ -137,6 +145,8 @@ public final class FormTint {
         colors.forEach((item, id) -> {
             var material = FormItems.materials().get(id);
             boolean glows = material != null && io.github.soundgoodizerfan.feedback.core.thermal.Incandescence.glows(material);
+            if (glows)
+                GLOWING.add(item);
             event.register((stack, layer) -> layer != 0 ? 0xFFFFFFFF
                     : 0xFF000000 | (glows ? GlowColours.heated(MaterialColors.of(id), stack) : MaterialColors.of(id)), item);
         });

@@ -10,6 +10,10 @@ import io.github.soundgoodizerfan.feedback.core.unit.Tu;
 import io.github.soundgoodizerfan.feedback.machine.crucible.CrucibleMenu;
 import io.github.soundgoodizerfan.feedback.client.gui.Gauge;
 import io.github.soundgoodizerfan.feedback.client.gui.GuiSkin;
+import io.github.soundgoodizerfan.feedback.client.gui.HeatGlow;
+import io.github.soundgoodizerfan.feedback.client.bench.BenchFire;
+import io.github.soundgoodizerfan.feedback.client.item.FormTint;
+import io.github.soundgoodizerfan.feedback.client.render.GlowColours;
 import io.github.soundgoodizerfan.feedback.client.gui.SkinnedScreen;
 import io.github.soundgoodizerfan.feedback.client.tooltip.Readout;
 
@@ -42,8 +46,16 @@ public class CrucibleScreen extends SkinnedScreen<CrucibleMenu> {
     @Override
     protected void renderBg(GuiGraphics graphics, float partialTicks, int mouseX, int mouseY) {
         skin.panel(graphics, leftPos, topPos, imageWidth, imageHeight);
-        for (int slot = 0; slot < menu.size(); slot++)
-            skin.slot(graphics, leftPos + CrucibleMenu.slotX(slot, menu.size()), topPos + CrucibleMenu.slotY(slot, menu.size()));
+        float tu = menu.temperatureTu();
+        // The chamber's own light, drawn first so it bleeds past the gauges' edge.
+        BenchFire.halo(graphics, leftPos + CrucibleMenu.HEAT_X - 2, topPos + CrucibleMenu.GAUGE_Y - 2,
+                CrucibleMenu.TANK_X + CrucibleMenu.TANK_W - CrucibleMenu.HEAT_X + 4, CrucibleMenu.GAUGE_H + 4, tu * HeatGlow.pulse());
+        for (int slot = 0; slot < menu.size(); slot++) {
+            int sx = leftPos + CrucibleMenu.slotX(slot, menu.size()), sy = topPos + CrucibleMenu.slotY(slot, menu.size());
+            skin.slot(graphics, sx, sy);
+            if (FormTint.glowing(menu.getSlot(slot).getItem()))
+                HeatGlow.slot(graphics, sx, sy, tu);
+        }
 
         int band = band();
         Gauge.of(() -> (band + 1f) / ThermalVesselScreen.BAND_COLORS.length).lead(() -> ThermalVesselScreen.BAND_COLORS[band])
@@ -51,7 +63,8 @@ public class CrucibleScreen extends SkinnedScreen<CrucibleMenu> {
                 .render(graphics, skin, leftPos + CrucibleMenu.HEAT_X, topPos + CrucibleMenu.GAUGE_Y, CrucibleMenu.GAUGE_W, CrucibleMenu.GAUGE_H);
 
         var fluid = menu.tankFluid();
-        int colour = IClientFluidTypeExtensions.of(fluid).getTintColor() | 0xFF000000;
+        // The melt shines toward the glow colour as hot as the chamber is, flickering with the fire.
+        int colour = GlowColours.heated(IClientFluidTypeExtensions.of(fluid).getTintColor() & 0xFFFFFF, tu * HeatGlow.pulse()) | 0xFF000000;
         Gauge.of(() -> menu.tankMb() / (double) menu.tankCapacity()).lead(() -> colour).vertical()
                 .render(graphics, skin, leftPos + CrucibleMenu.TANK_X, topPos + CrucibleMenu.GAUGE_Y, CrucibleMenu.TANK_W, CrucibleMenu.GAUGE_H);
         inventory(graphics, 8, CrucibleMenu.INV_Y);

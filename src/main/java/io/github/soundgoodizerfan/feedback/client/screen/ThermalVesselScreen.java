@@ -12,6 +12,8 @@ import io.github.soundgoodizerfan.feedback.client.tooltip.Readout;
 import io.github.soundgoodizerfan.feedback.core.unit.Tu;
 import io.github.soundgoodizerfan.feedback.client.gui.Gauge;
 import io.github.soundgoodizerfan.feedback.client.gui.GuiSkin;
+import io.github.soundgoodizerfan.feedback.client.gui.HeatGlow;
+import io.github.soundgoodizerfan.feedback.client.item.FormTint;
 import io.github.soundgoodizerfan.feedback.client.gui.SkinnedScreen;
 
 import net.minecraft.client.gui.GuiGraphics;
@@ -82,13 +84,19 @@ public class ThermalVesselScreen extends SkinnedScreen<ThermalVesselMenu> {
         int side = ThermalVesselMenu.GRID_COLUMNS * ThermalVesselMenu.SLOT_PX;
         graphics.fill(gx - 3, gy - 3, gx + side + 1, gy + side + 1, 0xFF161311);
         graphics.renderOutline(gx - 3, gy - 3, side + 4, side + 4, 0xFF6E6A64);
+        float pulse = HeatGlow.pulse();
         if (band > 0)
             graphics.fillGradient(gx - 2, gy - 2, gx + side, gy + side,
-                    (band * 0x05) << 24 | BAND_COLORS[band] & 0xFFFFFF, (band * 0x0C) << 24 | BAND_COLORS[band] & 0xFFFFFF);
+                    Math.min(0xFF, (int) (band * 0x05 * pulse)) << 24 | BAND_COLORS[band] & 0xFFFFFF,
+                    Math.min(0xFF, (int) (band * 0x0C * pulse)) << 24 | BAND_COLORS[band] & 0xFFFFFF);
         for (int slot = 0; slot < ThermalVesselBlockEntity.SLOTS; slot++) {
             int column = slot % ThermalVesselMenu.GRID_COLUMNS;
             int row = slot / ThermalVesselMenu.GRID_COLUMNS;
-            skin.slot(graphics, gx + column * ThermalVesselMenu.SLOT_PX, gy + row * ThermalVesselMenu.SLOT_PX);
+            int sx = gx + column * ThermalVesselMenu.SLOT_PX, sy = gy + row * ThermalVesselMenu.SLOT_PX;
+            skin.slot(graphics, sx, sy);
+            // Glowing stock throws its own bloom, at the chamber's live heat (a workpiece has no stamped heat while it cooks).
+            if (FormTint.glowing(menu.getSlot(slot).getItem()))
+                HeatGlow.slot(graphics, sx, sy, gaugeTu);
         }
 
         // The fire mouth: an arch under the fuel, glowing while lit, the glow flickering as a fire does.

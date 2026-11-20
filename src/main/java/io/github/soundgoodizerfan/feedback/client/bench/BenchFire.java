@@ -26,7 +26,7 @@ import net.minecraft.util.Mth;
  * same colour is drawn just outside the box ({@link #halo}). Stateless: a pure function of time, position and temperature.
  * No stock or cold stock draws nothing.
  */
-final class BenchFire {
+public final class BenchFire {
 
     private static final int TW = 56, TH = 28;
     private static final ResourceLocation TEXTURE = Feedback.id("bench_fire");
@@ -35,7 +35,7 @@ final class BenchFire {
     private BenchFire() { }
 
     /** The flame's base colour at {@code tu}, 0xRRGGBB: ember red below the faint-red band, the glow ramp above it, soul-fire blue past white. */
-    static int colour(float tu) {
+    public static int colour(float tu) {
         float[] c = GlowColours.rgb(GlowColours.along(Incandescence.light(tu)));
         float blue = Mth.clamp((tu - 1450f) / (ThermalTuning.MAX_VISIBLE_TU.value() - 1450f), 0f, 1f);
         int r = Math.round(Mth.lerp(blue, c[0], 0.2f) * 255f);
@@ -93,7 +93,7 @@ final class BenchFire {
      * The glow the fire casts just outside the box (x, y, w, h): four strips fading outward, in the flame's colour. Draw it before
      * the box's own fill and outside any scissor, so it bleeds past the edge.
      */
-    static void halo(GuiGraphics g, int x, int y, int w, int h, float tu) {
+    public static void halo(GuiGraphics g, int x, int y, int w, int h, float tu) {
         float h0 = Mth.clamp(tu / 1100f, 0f, 1f);
         if (h0 < 0.03f)
             return;
