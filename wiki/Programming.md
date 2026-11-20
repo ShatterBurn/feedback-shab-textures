@@ -76,7 +76,7 @@ A card names no block. It describes what it wants, and the [Controller](Controll
 An **Input** card has these rows:
 
 - **Signal**: what to read. A list of quantities such as temperature, current, speed or on or off, and a robot's senses.
-- **Kind**: a preferred kind of block, or *any kind*. The kinds are Furnace, Vessel, Heater, Clutch, Valve or damper, Engine, Driver seat, Lathe, Breaker or fuse, Electromagnet, Lamp, Mast, Redstone emitter, Redstone receiver, Controller and Robot.
+- **Kind**: a preferred kind of block, or *any kind*. The list groups the kinds under the headers *Heat*, *Motion*, *Electric*, *Machines* and *Other*. The kinds include Furnace, Vessel, Heater, Clutch, Valve or damper, Engine, Driver seat, Lathe, Breaker or fuse, Electromagnet, Lamp, Mast, Redstone emitter, Redstone receiver, Controller and Robot.
 - **Color**: the color of the link, or *any color*. It tells apart several blocks of one kind, for example two furnaces linked with different dyes.
 - **Reduction**: how several matches combine: *average of matches* (the default), *lowest of matches* or *highest of matches*.
 - **Input**: for a [Driver's Seat](Vehicles.md#the-drivers-seat), which key to read, 0 to 1 (default **W**). Click the row and press the key.

@@ -1023,7 +1023,8 @@ public final class ProgramEditor {
 
     // --- picking from a list --------------------------------------------------------------------
 
-    private record Choice(Component label, int swatch, Runnable action) {
+    /** A row to pick; a null {@code action} is a group header that only labels the rows below it. */
+    private record Choice(Component label, int swatch, @Nullable Runnable action) {
     }
 
     @Nullable
@@ -1113,15 +1114,40 @@ public final class ProgramEditor {
         });
     }
 
-    /** "any kind", then every kind the tags declare, then the robot's own. */
+    /** The kind list's groups, hand-set by what the blocks do; a kind from a datapack or another mod that none names lands under "other". */
+    private static final java.util.LinkedHashMap<String, List<String>> KIND_GROUPS = new java.util.LinkedHashMap<>();
+
+    static {
+        KIND_GROUPS.put("heat", List.of("furnace", "heater", "vessel"));
+        KIND_GROUPS.put("motion", List.of("engine", "clutch", "transmission", "propeller", "jet", "flow", "ballast"));
+        KIND_GROUPS.put("electric", List.of("controller", "breaker", "emitter", "receiver", "magnet", "lamp"));
+        KIND_GROUPS.put("machine", List.of("seat", "mast", "lathe", "voxel", "robot"));
+    }
+
+    /** "any kind", then the kinds the tags declare and the robot's own, under a muted header per group. */
     private static List<Choice> kindChoices(java.util.function.Consumer<ResourceLocation> pick, @Nullable ResourceLocation current) {
         List<Choice> out = new ArrayList<>();
         out.add(new Choice(kindName(null), 0, () -> pick.accept(null)));
         java.util.Set<ResourceLocation> kinds = new java.util.TreeSet<>(DataSpec.allKinds());
         kinds.add(RobotChannel.KIND);
-        for (ResourceLocation kind : kinds)
-            out.add(new Choice(kindName(kind), 0, () -> pick.accept(kind)));
+        java.util.Set<ResourceLocation> left = new java.util.TreeSet<>(kinds);
+        for (var group : KIND_GROUPS.entrySet()) {
+            List<ResourceLocation> members = new ArrayList<>();
+            for (ResourceLocation kind : kinds)
+                if (group.getValue().contains(kind.getPath().replace(DataSpec.KIND_PREFIX, "")) && left.remove(kind))
+                    members.add(kind);
+            addKindGroup(out, group.getKey(), members, pick);
+        }
+        addKindGroup(out, "other", new ArrayList<>(left), pick);
         return out;
+    }
+
+    private static void addKindGroup(List<Choice> out, String group, List<ResourceLocation> members, java.util.function.Consumer<ResourceLocation> pick) {
+        if (members.isEmpty())
+            return;
+        out.add(new Choice(Component.translatable("feedback.programmer.kind_group." + group), 0, null));
+        for (ResourceLocation kind : members)
+            out.add(new Choice(kindName(kind), 0, () -> pick.accept(kind)));
     }
 
     private static List<Choice> colorChoices(java.util.function.IntConsumer pick) {
@@ -1147,7 +1173,9 @@ public final class ProgramEditor {
         int rows = Math.min(list.size(), POPUP_ROWS);
         if (button == GLFW.GLFW_MOUSE_BUTTON_LEFT && mx >= popupX && mx < popupX + POPUP_W && my >= popupY && my < popupY + rows * POPUP_ROW) {
             int index = popupScroll + (int) ((my - popupY) / POPUP_ROW);
-            if (index < list.size()) {
+            if (index < list.size() && list.get(index).action() == null)
+                popup = list;
+            else if (index < list.size()) {
                 GuiSkin.play(FSounds.UI_TOGGLE.get(), 1.2f);
                 list.get(index).action().run();
             }
@@ -1165,14 +1193,14 @@ public final class ProgramEditor {
             Choice choice = popup.get(popupScroll + i);
             int y = popupY + i * POPUP_ROW;
             boolean hover = mx >= popupX && mx < popupX + POPUP_W && my >= y && my < y + POPUP_ROW;
-            if (hover)
+            if (hover && choice.action() != null)
                 graphics.fill(popupX, y, popupX + POPUP_W, y + POPUP_ROW, COLOR_SELECTED);
             int x = popupX + 3;
             if (choice.swatch() != 0) {
                 graphics.fill(x, y + 2, x + 7, y + 9, choice.swatch());
                 x += 10;
             }
-            graphics.drawString(font, choice.label(), x, y + 2, COLOR_TEXT, false);
+            graphics.drawString(font, choice.label(), x, y + 2, choice.action() == null ? COLOR_MUTED : COLOR_TEXT, false);
         }
     }
 
