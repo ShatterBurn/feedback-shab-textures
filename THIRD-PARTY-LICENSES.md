@@ -1398,7 +1398,7 @@ the first placement happens in the same click; the target is previewed as a wire
 as a component and stacks by component equality; a voxel mined gives its bit back. *Rejected:* eligibility by reflecting on which methods a block
 class overrides (Feedback's is by shape and tags), the bit bag and virtual bit inventory, a configurable cell size, async storage encoding, the
 greedy mesh and shape caches (64 voxels do not need them), the multi-mode area chisel (Feedback's gauge has its own modes), and every asset.
-Site comments: `vehicle/micro/MicroPlacer.java`, `client/render/MotePreview.java`.
+Voxel Case (2026-11-20), *taken (design only):* a whole block carried as one data component, placement that checks the target before it writes. *Rejected:* a stack of 64, ineligibility of block entities (a cell hosts machines), naming by the dominant block, and every asset. Site comments: `vehicle/micro/MicroPlacer.java`, `client/render/MotePreview.java`, `vehicle/micro/VoxelCaseItem.java`.
 
 ## Create Simulated, Offroad wheel mount (design only, second read 2026-11-19)
 

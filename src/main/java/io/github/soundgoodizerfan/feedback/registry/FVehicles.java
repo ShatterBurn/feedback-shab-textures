@@ -109,6 +109,10 @@ public class FVehicles {
     public static final DeferredItem<MicroCoreItem> MICRO_CORE = ITEMS.register("micro_core",
             () -> new MicroCoreItem(new Item.Properties()));
 
+    /** Carries one whole cell of finespace as an item. */
+    public static final DeferredItem<io.github.soundgoodizerfan.feedback.vehicle.micro.VoxelCaseItem> VOXEL_CASE = ITEMS.register("voxel_case",
+            () -> new io.github.soundgoodizerfan.feedback.vehicle.micro.VoxelCaseItem(new Item.Properties()));
+
     // --- Engines (spec section 6, a modular build at the Tool Table) ----------------------------------------------
 
     /** What an engine's parts bake to, on an Engine. */
