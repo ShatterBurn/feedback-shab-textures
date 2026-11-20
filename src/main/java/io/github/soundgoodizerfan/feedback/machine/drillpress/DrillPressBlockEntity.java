@@ -41,6 +41,12 @@ public class DrillPressBlockEntity extends HeadedShopMachineBlockEntity {
         super(FBlockEntities.DRILL_PRESS.get(), pos, state);
     }
 
+    /** The base plate of models/block/drill_press.json is the table the workpiece lies on. */
+    @Override
+    public float workpieceSurface() {
+        return 0.26f;
+    }
+
     @Override
     protected boolean takesCircuit() {
         return true;

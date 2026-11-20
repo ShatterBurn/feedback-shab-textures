@@ -44,6 +44,20 @@ public class LatheBlock extends Block implements EntityBlock, Rotatable {
 
     public static final BooleanProperty HEAVY = BooleanProperty.create("heavy");
 
+    /** Mirrors models/block/lathe.json (scripts/shop_models.py): base, lower bearing, chuck, column, rail, tail bearing, tail post, four shaft stubs. */
+    private static final net.minecraft.world.phys.shapes.VoxelShape SHAPE = net.minecraft.world.phys.shapes.Shapes.or(
+            Block.box(2, 0, 2, 14, 4, 14), Block.box(5, 4, 5, 11, 6, 11), Block.box(3, 6, 3, 13, 8, 13),
+            Block.box(11, 8, 11, 14, 16, 14), Block.box(5, 12, 11, 14, 16, 14), Block.box(6, 10, 6, 10, 12, 10),
+            Block.box(7, 10, 10, 9, 12, 12),
+            Block.box(6, 1, 0, 10, 3, 2), Block.box(6, 1, 14, 10, 3, 16), Block.box(0, 1, 6, 2, 3, 10), Block.box(14, 1, 6, 16, 3, 10));
+
+    @Override
+    protected net.minecraft.world.phys.shapes.VoxelShape getShape(BlockState state,
+            net.minecraft.world.level.BlockGetter level, BlockPos pos,
+            net.minecraft.world.phys.shapes.CollisionContext ctx) {
+        return SHAPE;
+    }
+
     public LatheBlock(Properties properties) {
         super(properties);
         registerDefaultState(defaultBlockState().setValue(HEAVY, false));

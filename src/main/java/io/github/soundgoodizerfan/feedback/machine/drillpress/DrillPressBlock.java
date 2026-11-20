@@ -40,6 +40,19 @@ public class DrillPressBlock extends Block implements EntityBlock, Rotatable {
 
     public static final BooleanProperty FAST = BooleanProperty.create("fast");
 
+    /** Mirrors models/block/drill_press.json (scripts/shop_models.py): base, upright, head, bearing, quill, four shaft stubs. */
+    private static final net.minecraft.world.phys.shapes.VoxelShape SHAPE = net.minecraft.world.phys.shapes.Shapes.or(
+            Block.box(2, 0, 2, 14, 4, 14), Block.box(6, 4, 12, 10, 16, 14), Block.box(4, 10, 4, 12, 14, 14),
+            Block.box(6, 8, 6, 10, 10, 10), Block.box(7, 6, 7, 9, 8, 9),
+            Block.box(6, 1, 0, 10, 3, 2), Block.box(6, 1, 14, 10, 3, 16), Block.box(0, 1, 6, 2, 3, 10), Block.box(14, 1, 6, 16, 3, 10));
+
+    @Override
+    protected net.minecraft.world.phys.shapes.VoxelShape getShape(BlockState state,
+            net.minecraft.world.level.BlockGetter level, BlockPos pos,
+            net.minecraft.world.phys.shapes.CollisionContext ctx) {
+        return SHAPE;
+    }
+
     public DrillPressBlock(Properties properties) {
         super(properties);
         registerDefaultState(defaultBlockState().setValue(FAST, false));

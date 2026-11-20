@@ -50,6 +50,11 @@ public abstract class ShopMachineBlockEntity extends RotationNode implements Wel
         super(type, pos, state);
     }
 
+    /** Height in blocks of the surface the workpiece lies on: the top of the block unless its model has a table lower down. */
+    public float workpieceSurface() {
+        return 1.01f;
+    }
+
     public ItemStack getWorkpiece() {
         return workpiece;
     }

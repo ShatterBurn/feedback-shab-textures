@@ -22,6 +22,17 @@ import net.minecraft.world.phys.BlockHitResult;
 /** A basket trap set in water. Bait goes in with an item; an empty hand empties the catch. */
 public class CreelBlock extends Block implements EntityBlock {
 
+    /** Mirrors models/block/creel.json (scripts/shop_models.py): body, shoulder, and the neck merged into one box. */
+    private static final net.minecraft.world.phys.shapes.VoxelShape SHAPE = net.minecraft.world.phys.shapes.Shapes.or(
+            Block.box(3, 0, 3, 13, 6, 13), Block.box(4, 6, 4, 12, 10, 12), Block.box(5, 10, 5, 11, 16, 11));
+
+    @Override
+    protected net.minecraft.world.phys.shapes.VoxelShape getShape(BlockState state,
+            net.minecraft.world.level.BlockGetter level, BlockPos pos,
+            net.minecraft.world.phys.shapes.CollisionContext ctx) {
+        return SHAPE;
+    }
+
     public CreelBlock(Properties properties) {
         super(properties);
     }

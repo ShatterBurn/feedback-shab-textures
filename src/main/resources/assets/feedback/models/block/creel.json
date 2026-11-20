@@ -1,6 +1,208 @@
 {
-  "parent": "minecraft:block/cube_all",
+  "parent": "minecraft:block/block",
+  "render_type": "cutout",
   "textures": {
-    "all": "feedback:block/device_barrel_sides"
-  }
+    "particle": "feedback:block/creel_wicker",
+    "wicker": "feedback:block/creel_wicker"
+  },
+  "elements": [
+    {
+      "name": "body",
+      "from": [
+        3,
+        0,
+        3
+      ],
+      "to": [
+        13,
+        6,
+        13
+      ],
+      "faces": {
+        "north": {
+          "texture": "#wicker"
+        },
+        "south": {
+          "texture": "#wicker"
+        },
+        "east": {
+          "texture": "#wicker"
+        },
+        "west": {
+          "texture": "#wicker"
+        },
+        "up": {
+          "texture": "#wicker"
+        },
+        "down": {
+          "texture": "#wicker"
+        }
+      }
+    },
+    {
+      "name": "shoulder",
+      "from": [
+        4,
+        6,
+        4
+      ],
+      "to": [
+        12,
+        10,
+        12
+      ],
+      "faces": {
+        "north": {
+          "texture": "#wicker"
+        },
+        "south": {
+          "texture": "#wicker"
+        },
+        "east": {
+          "texture": "#wicker"
+        },
+        "west": {
+          "texture": "#wicker"
+        },
+        "up": {
+          "texture": "#wicker"
+        },
+        "down": {
+          "texture": "#wicker"
+        }
+      }
+    },
+    {
+      "name": "neck_n",
+      "from": [
+        5,
+        10,
+        5
+      ],
+      "to": [
+        11,
+        16,
+        7
+      ],
+      "faces": {
+        "north": {
+          "texture": "#wicker"
+        },
+        "south": {
+          "texture": "#wicker"
+        },
+        "east": {
+          "texture": "#wicker"
+        },
+        "west": {
+          "texture": "#wicker"
+        },
+        "up": {
+          "texture": "#wicker"
+        },
+        "down": {
+          "texture": "#wicker"
+        }
+      }
+    },
+    {
+      "name": "neck_s",
+      "from": [
+        5,
+        10,
+        9
+      ],
+      "to": [
+        11,
+        16,
+        11
+      ],
+      "faces": {
+        "north": {
+          "texture": "#wicker"
+        },
+        "south": {
+          "texture": "#wicker"
+        },
+        "east": {
+          "texture": "#wicker"
+        },
+        "west": {
+          "texture": "#wicker"
+        },
+        "up": {
+          "texture": "#wicker"
+        },
+        "down": {
+          "texture": "#wicker"
+        }
+      }
+    },
+    {
+      "name": "neck_w",
+      "from": [
+        5,
+        10,
+        7
+      ],
+      "to": [
+        7,
+        16,
+        9
+      ],
+      "faces": {
+        "north": {
+          "texture": "#wicker"
+        },
+        "south": {
+          "texture": "#wicker"
+        },
+        "east": {
+          "texture": "#wicker"
+        },
+        "west": {
+          "texture": "#wicker"
+        },
+        "up": {
+          "texture": "#wicker"
+        },
+        "down": {
+          "texture": "#wicker"
+        }
+      }
+    },
+    {
+      "name": "neck_e",
+      "from": [
+        9,
+        10,
+        7
+      ],
+      "to": [
+        11,
+        16,
+        9
+      ],
+      "faces": {
+        "north": {
+          "texture": "#wicker"
+        },
+        "south": {
+          "texture": "#wicker"
+        },
+        "east": {
+          "texture": "#wicker"
+        },
+        "west": {
+          "texture": "#wicker"
+        },
+        "up": {
+          "texture": "#wicker"
+        },
+        "down": {
+          "texture": "#wicker"
+        }
+      }
+    }
+  ]
 }

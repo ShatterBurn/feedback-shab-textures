@@ -64,6 +64,12 @@ public class LatheBlockEntity extends HeadedShopMachineBlockEntity implements Se
         super(FBlockEntities.LATHE.get(), pos, state);
     }
 
+    /** The chuck of models/block/lathe.json is the table the workpiece lies on. */
+    @Override
+    public float workpieceSurface() {
+        return 0.51f;
+    }
+
     @Override
     public boolean insert(ItemStack stack) {
         boolean inserted = super.insert(stack);

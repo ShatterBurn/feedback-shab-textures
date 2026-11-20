@@ -21,9 +21,6 @@ import net.minecraft.world.item.ItemStack;
  */
 public class WorkpieceRenderer<T extends ShopMachineBlockEntity> implements BlockEntityRenderer<T> {
 
-    /** Just above the top face, so it does not z-fight. */
-    private static final float SURFACE = 1.01f;
-
     private final ItemRenderer itemRenderer;
 
     public WorkpieceRenderer(BlockEntityRendererProvider.Context context) {
@@ -36,7 +33,7 @@ public class WorkpieceRenderer<T extends ShopMachineBlockEntity> implements Bloc
         if (machine instanceof io.github.soundgoodizerfan.feedback.machine.HeadedShopMachineBlockEntity headed
                 && headed.getHead().get().getItem() instanceof io.github.soundgoodizerfan.feedback.modular.item.ModularMachineHead) {
             pose.pushPose();
-            pose.translate(0.2f, SURFACE + 0.05f, 0.2f);
+            pose.translate(0.2f, machine.workpieceSurface() + 0.05f, 0.2f);
             pose.mulPose(Axis.XP.rotationDegrees(90));
             pose.scale(0.3f, 0.3f, 0.3f);
             itemRenderer.renderStatic(headed.getHead().get(), ItemDisplayContext.FIXED, light, overlay, pose, buffers,
@@ -47,7 +44,7 @@ public class WorkpieceRenderer<T extends ShopMachineBlockEntity> implements Bloc
         if (workpiece.isEmpty())
             return;
         pose.pushPose();
-        pose.translate(0.5f, SURFACE, 0.5f);
+        pose.translate(0.5f, machine.workpieceSurface(), 0.5f);
         pose.mulPose(Axis.XP.rotationDegrees(90));
         pose.scale(0.5f, 0.5f, 0.5f);
         itemRenderer.renderStatic(workpiece, ItemDisplayContext.FIXED, light, overlay, pose, buffers,
