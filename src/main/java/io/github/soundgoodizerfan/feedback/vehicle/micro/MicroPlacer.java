@@ -97,8 +97,12 @@ public final class MicroPlacer {
     public static void onRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
         Level level = event.getLevel();
         boolean mote = event.getItemStack().getItem() instanceof MoteItem;
-        // A mote goes on any block (the click makes finespace where there is none); every other voxel goes only on a cell.
-        if (event.getEntity().isSpectator() || !mote && !(level.getBlockState(event.getPos()).getBlock() instanceof MicroCellBlock))
+        // A mote goes on any block (the click makes finespace where there is none); every other voxel goes on a cell, or on a block whose
+        // neighbour across the clicked face is a cell (a machine there would be blocked as a block, so it goes in as finespace: a hub right against a block).
+        boolean onCell = level.getBlockState(event.getPos()).getBlock() instanceof MicroCellBlock;
+        boolean besideCell = !onCell && fits(event.getItemStack())
+                && level.getBlockState(event.getPos().relative(event.getHitVec().getDirection())).getBlock() instanceof MicroCellBlock;
+        if (event.getEntity().isSpectator() || !mote && !onCell && !besideCell)
             return;
         // A full-size Bearing on an assembled joint voxel fits it new, before it could be placed as a voxel.
         if (!mote && event.getItemStack().is(io.github.soundgoodizerfan.feedback.registry.FItems.BEARING.get())
@@ -140,7 +144,8 @@ public final class MicroPlacer {
         Direction face = hit.getDirection();
         int tx, ty, tz;
         BlockState against = null;
-        if (held.getItem() instanceof MoteItem) {
+        // A mote goes by the point it hit; so does any voxel item clicked on a block that is not a cell (the cell beside it takes it, see onRightClickBlock).
+        if (held.getItem() instanceof MoteItem || !(player.level().getBlockEntity(cell) instanceof MicroCellBlockEntity)) {
             // The voxel in front of the face: the hit point nudged half a voxel out along the normal, then the voxel it falls in
             // (the next cell's, if it falls outside the block). Prior art: Chisels & Bits' placement target, design only.
             BlockPos target = voxelInFront(hit.getLocation(), face);
@@ -177,6 +182,42 @@ public final class MicroPlacer {
         if (other.getItem() instanceof MicroCoreItem)
             return useTool(player, held, other, voxel, skin, new BlockPos(tx, ty, tz), face);
         return place(player, held, voxel, tx, ty, tz, face);
+    }
+
+    /**
+     * A wrench's quarter turn of the voxel the ray hit, by the block's own rules ({@link io.github.soundgoodizerfan.feedback.item.WrenchItem#turned}).
+     * True if the voxel can turn (on the client, only says so); on the server it turns, keeping its skin, its wear and a hosted machine. A joint does not turn.
+     */
+    public static boolean turn(Level level, MicroCellBlockEntity cell, Vec3 at, Direction face, boolean back) {
+        int i = cell.pick(at, face);
+        BlockState was = i < 0 ? null : cell.get(i);
+        if (was == null || cell.bearing(i) != null)
+            return false;
+        BlockState turned = io.github.soundgoodizerfan.feedback.item.WrenchItem.turned(was, face, back);
+        if (turned == null)
+            return false;
+        if (level.isClientSide)
+            return true;
+        var machine = cell.hosted(i);
+        if (machine != null) {
+            if (!cell.hostedState(machine, turned))
+                return false;
+            if (level instanceof net.minecraft.server.level.ServerLevel server) {
+                io.github.soundgoodizerfan.feedback.core.rotation.RotationPropagator.rebuildFrom(server, cell.getBlockPos());
+                io.github.soundgoodizerfan.feedback.core.electric.ElectricPropagator.requeue(server, cell.getBlockPos());
+            }
+            return true;
+        }
+        BlockState skin = cell.skin(i);
+        MicroRotor rotor = cell.rotor(i);
+        float wear = rotor == null ? 1f : rotor.condition();
+        cell.set(i, turned);
+        if (skin != null)
+            cell.setSkin(i, skin);
+        if (cell.rotor(i) != null)
+            cell.rotor(i).setCondition(wear);
+        cell.commit();
+        return true;
     }
 
     /** Most voxels one line or box may put in a click: a click that could stall the server is refused. */

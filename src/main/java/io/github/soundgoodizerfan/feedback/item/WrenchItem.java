@@ -61,6 +61,14 @@ public class WrenchItem extends Item {
         BlockPos pos = context.getClickedPos();
         BlockState state = level.getBlockState(pos);
         boolean back = context.getPlayer() != null && context.getPlayer().isShiftKeyDown();
+        // A finespace cell: the voxel the ray hit turns, by the same rules as a block (server and client agree on whether it can).
+        if (level.getBlockEntity(pos) instanceof io.github.soundgoodizerfan.feedback.vehicle.micro.MicroCellBlockEntity cell) {
+            if (!io.github.soundgoodizerfan.feedback.vehicle.micro.MicroPlacer.turn(level, cell, context.getClickLocation(), context.getClickedFace(), back))
+                return InteractionResult.PASS;
+            if (!level.isClientSide)
+                level.playSound(null, pos, SoundEvents.ITEM_FRAME_ROTATE_ITEM, SoundSource.BLOCKS, 0.8f, 1.2f);
+            return InteractionResult.sidedSuccess(level.isClientSide);
+        }
         BlockState turned = turned(state, context.getClickedFace(), back);
         if (turned == null)
             return InteractionResult.PASS;
@@ -74,7 +82,7 @@ public class WrenchItem extends Item {
 
     /** {@code state} a quarter turn about {@code face}'s axis, or null if it has nothing that turns. */
     @Nullable
-    static BlockState turned(BlockState state, Direction face, boolean back) {
+    public static BlockState turned(BlockState state, Direction face, boolean back) {
         Direction.Axis about = face.getAxis();
         // Clockwise as seen looking at the clicked face.
         boolean clockwise = (face.getAxisDirection() == Direction.AxisDirection.POSITIVE) != back;
