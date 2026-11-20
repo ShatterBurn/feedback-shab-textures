@@ -10,13 +10,13 @@
       "model": "feedback:block/creeper_pen_creeper"
     },
     "charged=true,stage=1": {
-      "model": "feedback:block/creeper_pen_creeper"
+      "model": "feedback:block/creeper_pen_creeper_charged"
     },
     "charged=false,stage=2": {
       "model": "feedback:block/creeper_pen_swell"
     },
     "charged=true,stage=2": {
-      "model": "feedback:block/creeper_pen_swell"
+      "model": "feedback:block/creeper_pen_swell_charged"
     }
   }
 }

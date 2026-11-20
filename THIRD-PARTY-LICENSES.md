@@ -834,6 +834,10 @@ Copied or derived from Minecraft 1.21.1's textures (Mojang AB assets, reused by 
 - `block/lead_chest.png`: the vanilla chest texture, recoloured.
 - `item/copper_bucket.png`: the vanilla bucket, recoloured.
 - `item/form/lump.png`, `item/form/raw.png`: the vanilla raw iron sprite, recoloured (greyscale form sprites tinted at runtime).
+- `item/creeper_sac.png`: `items/mobdrop_venomsac.png` from malcolmriley/unused-textures (CC BY 4.0, Malcolm Riley), recoloured green-grey.
+- `item/material_sulfur.png`, `item/material_saltpetre.png`: `items/material_crystal_sulfur_fancy.png` and `items/material_crystal_salt.png` from malcolmriley/unused-textures (CC BY 4.0, Malcolm Riley), unmodified.
+- `block/creeper_pen_creeper_charged.png`: recolour of `block/creeper_pen_creeper.png` to blue-white.
+- `block/redstone_receiver_side.png`, `block/redstone_receiver_front.png`: darkened `block/housing_iron.png`, the front with a pxl-drawn window.
 - `item/form/dust.png`: `items/material_dust_generic.png` from malcolmriley/unused-textures (CC BY 4.0, Malcolm Riley), reduced to luminance (greyscale form sprite tinted at runtime).
 - `item/form/foam.png`, `item/form/mat.png`: `items/material_fleece_white_2.png` and `items/material_fleece_white.png` from malcolmriley/unused-textures (CC BY 4.0, Malcolm Riley), reduced to luminance and stretched to the light range of the other `item/form/*` sprites (greyscale form sprites tinted at runtime).
 - `item/form/coil_spring.png`: `items/part_metal_spring.png` from malcolmriley/unused-textures (CC BY 4.0, Malcolm Riley), reduced to luminance and stretched to the light range of the other `item/form/*` sprites (greyscale form sprite tinted at runtime).
