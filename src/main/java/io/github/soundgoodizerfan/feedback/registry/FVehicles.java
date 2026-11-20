@@ -136,7 +136,7 @@ public class FVehicles {
 
     /** Liquid-fuel thruster (petrochemistry spec 9.2). */
     public static final DeferredBlock<io.github.soundgoodizerfan.feedback.vehicle.ThrusterBlock> THRUSTER = BLOCKS.register("thruster",
-            () -> new io.github.soundgoodizerfan.feedback.vehicle.ThrusterBlock(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(3.0f).sound(SoundType.METAL)));
+            () -> new io.github.soundgoodizerfan.feedback.vehicle.ThrusterBlock(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(3.0f).sound(SoundType.METAL).noOcclusion()));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<io.github.soundgoodizerfan.feedback.vehicle.ThrusterBlockEntity>> THRUSTER_ENTITY =
             BLOCK_ENTITIES.register("thruster", () -> BlockEntityType.Builder.of(io.github.soundgoodizerfan.feedback.vehicle.ThrusterBlockEntity::new, THRUSTER.get()).build(null));
 

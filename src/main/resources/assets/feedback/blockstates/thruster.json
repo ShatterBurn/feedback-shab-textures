@@ -1,10 +1,82 @@
 {
   "variants": {
-    "facing=up":    { "model": "feedback:block/thruster" },
-    "facing=down":  { "model": "feedback:block/thruster", "x": 180 },
-    "facing=north": { "model": "feedback:block/thruster", "x": 90 },
-    "facing=south": { "model": "feedback:block/thruster", "x": 90, "y": 180 },
-    "facing=west":  { "model": "feedback:block/thruster", "x": 90, "y": 270 },
-    "facing=east":  { "model": "feedback:block/thruster", "x": 90, "y": 90 }
+    "facing=up,nozzle=bell": {
+      "model": "feedback:block/thruster"
+    },
+    "facing=up,nozzle=cone": {
+      "model": "feedback:block/thruster_cone"
+    },
+    "facing=up,nozzle=throat": {
+      "model": "feedback:block/thruster_throat"
+    },
+    "facing=down,nozzle=bell": {
+      "model": "feedback:block/thruster",
+      "x": 180
+    },
+    "facing=down,nozzle=cone": {
+      "model": "feedback:block/thruster_cone",
+      "x": 180
+    },
+    "facing=down,nozzle=throat": {
+      "model": "feedback:block/thruster_throat",
+      "x": 180
+    },
+    "facing=north,nozzle=bell": {
+      "model": "feedback:block/thruster",
+      "x": 90
+    },
+    "facing=north,nozzle=cone": {
+      "model": "feedback:block/thruster_cone",
+      "x": 90
+    },
+    "facing=north,nozzle=throat": {
+      "model": "feedback:block/thruster_throat",
+      "x": 90
+    },
+    "facing=south,nozzle=bell": {
+      "model": "feedback:block/thruster",
+      "x": 90,
+      "y": 180
+    },
+    "facing=south,nozzle=cone": {
+      "model": "feedback:block/thruster_cone",
+      "x": 90,
+      "y": 180
+    },
+    "facing=south,nozzle=throat": {
+      "model": "feedback:block/thruster_throat",
+      "x": 90,
+      "y": 180
+    },
+    "facing=west,nozzle=bell": {
+      "model": "feedback:block/thruster",
+      "x": 90,
+      "y": 270
+    },
+    "facing=west,nozzle=cone": {
+      "model": "feedback:block/thruster_cone",
+      "x": 90,
+      "y": 270
+    },
+    "facing=west,nozzle=throat": {
+      "model": "feedback:block/thruster_throat",
+      "x": 90,
+      "y": 270
+    },
+    "facing=east,nozzle=bell": {
+      "model": "feedback:block/thruster",
+      "x": 90,
+      "y": 90
+    },
+    "facing=east,nozzle=cone": {
+      "model": "feedback:block/thruster_cone",
+      "x": 90,
+      "y": 90
+    },
+    "facing=east,nozzle=throat": {
+      "model": "feedback:block/thruster_throat",
+      "x": 90,
+      "y": 90
+    }
   }
 }
