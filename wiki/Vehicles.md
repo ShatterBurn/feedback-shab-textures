@@ -138,11 +138,14 @@ Air thins with height in the Overworld, and wings, [propellers](Propeller.md) an
 ## The Driver's Seat
 
 ```
-W
-S
+R S R
+  W
+  L
 ```
 
-W is any Wool and S is any Wooden Slab.
+R is a Wrought Iron Rod, S is a Shaft, W is any Wool and L is any Wooden Slab.
+
+The seat is a plank base with a wool cushion at the back and a bronze column at the front carrying a steering wheel. It faces the way you look when you place it, so the wheel is ahead of the sitter.
 
 Place it on the vehicle and right-click it to sit. **While you're seated, the keyboard is the seat's**: every key you press goes to the seat instead of the game (sneak, Escape, chat and the F-keys still work). Each key held **ramps from 0 to 1 over a second**, and falls back the same way when you let go: tap for a little, hold for full.
 
