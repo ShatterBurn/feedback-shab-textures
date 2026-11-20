@@ -163,6 +163,9 @@ public class MicroCellRenderer implements BlockEntityRenderer<MicroCellBlockEnti
                     BlockState state = cell.get(x, y, z);
                     if (state == null)
                         continue;
+                    // A hosted machine whose block is drawn by its renderer (not by a model) has no model quads of its own to draw here.
+                    if (state.getRenderShape() != RenderShape.MODEL && cell.hosted(MicroCellBlockEntity.index(x, y, z)) != null)
+                        continue;
                     poseStack.pushPose();
                     poseStack.translate(x * s, y * s, z * s);
                     poseStack.scale(s, s, s);
@@ -269,12 +272,26 @@ public class MicroCellRenderer implements BlockEntityRenderer<MicroCellBlockEnti
         int nx = x + side.getStepX(), ny = y + side.getStepY(), nz = z + side.getStepZ();
         BlockState next;
         if (nx < 0 || ny < 0 || nz < 0 || nx >= N || ny >= N || nz >= N) {
-            // On the cell's edge: the voxel across it is in the next cell, if that is one.
-            if (cell.getLevel() == null || !(cell.getLevel().getBlockEntity(cell.getBlockPos().relative(side)) instanceof MicroCellBlockEntity other))
+            // On the cell's edge: the voxel across it is in the next cell, if that is one; else the block there hides the face if it is opaque and whole.
+            if (cell.getLevel() == null)
                 return false;
-            next = other.get(Math.floorMod(nx, N), Math.floorMod(ny, N), Math.floorMod(nz, N));
-        } else
+            BlockPos beside = cell.getBlockPos().relative(side);
+            if (!(cell.getLevel().getBlockEntity(beside) instanceof MicroCellBlockEntity other)) {
+                BlockState block = cell.getLevel().getBlockState(beside);
+                return block.canOcclude() && block.getRenderShape() == RenderShape.MODEL
+                        && Block.isFaceFull(block.getOcclusionShape(cell.getLevel(), beside), side.getOpposite());
+            }
+            int at = MicroCellBlockEntity.index(Math.floorMod(nx, N), Math.floorMod(ny, N), Math.floorMod(nz, N));
+            // A hosted machine is drawn by its own renderer and may not fill its voxel: it hides nothing.
+            if (other.hosted(at) != null)
+                return false;
+            next = other.get(at);
+        } else {
+            // A hosted machine is drawn by its own renderer and may not fill its voxel: it hides nothing.
+            if (cell.hosted(MicroCellBlockEntity.index(nx, ny, nz)) != null)
+                return false;
             next = cell.get(nx, ny, nz);
+        }
         return next != null && (state.skipRendering(next, side)
                 || next.canOcclude() && Block.isFaceFull(next.getOcclusionShape(EmptyBlockGetter.INSTANCE, BlockPos.ZERO), side.getOpposite()));
     }
