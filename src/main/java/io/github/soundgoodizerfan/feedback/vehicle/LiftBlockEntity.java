@@ -392,6 +392,17 @@ public class LiftBlockEntity extends BlockEntity {
         hold = null;
     }
 
+    /** What the lift holds is a body at an address in the shipyard, not part of the block: a lift copied into an item (creative pick-block) must come out bare, or the copy claims the same body. */
+    @Override
+    public void removeComponentsFromTag(CompoundTag tag) {
+        super.removeComponentsFromTag(tag);
+        tag.remove("Body");
+        tag.remove("Height");
+        tag.remove("AnchorX");
+        tag.remove("AnchorY");
+        tag.remove("AnchorZ");
+    }
+
     @Override
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);

@@ -18,6 +18,10 @@ public final class VehicleTuning {
 
     private VehicleTuning() {
     }
+    /** Placeholder. Blocks the driver sits back from the seat block's centre, away from the wheel (the cushion's centre is 3/16 back). */
+    public static final double SEAT_RIDER_BACK = 3.0 / 16;
+    /** Placeholder. Blocks the driver sits lower than the seat entity's default riding height. */
+    public static final double SEAT_RIDER_DROP = 3.0 / 16;
     /** Placeholder. The most voxels a micro bearing turns: a quarter of a full-size bearing's block cap, in voxels. */
     public static final int ROTARY_BEARING_MAX_VOXELS = 16384;
 

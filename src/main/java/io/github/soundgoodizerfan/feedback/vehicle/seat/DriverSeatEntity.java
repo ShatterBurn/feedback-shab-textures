@@ -40,7 +40,13 @@ public class DriverSeatEntity extends Entity {
         if (!hasPassenger(rider))
             return;
         double offset = getPassengerRidingPosition(rider).y - rider.getVehicleAttachmentPoint(this).y;
-        move.accept(rider, getX(), offset + 1.0 / 16, getZ());
+        net.minecraft.core.Direction back = level().getBlockState(blockPosition()).getBlock() instanceof DriverSeatBlock
+                ? level().getBlockState(blockPosition()).getValue(DriverSeatBlock.FACING).getOpposite()
+                : net.minecraft.core.Direction.SOUTH;
+        double backBlocks = io.github.soundgoodizerfan.feedback.vehicle.VehicleTuning.SEAT_RIDER_BACK;
+        move.accept(rider, getX() + back.getStepX() * backBlocks,
+                offset + 1.0 / 16 - io.github.soundgoodizerfan.feedback.vehicle.VehicleTuning.SEAT_RIDER_DROP,
+                getZ() + back.getStepZ() * backBlocks);
     }
 
     @Override
