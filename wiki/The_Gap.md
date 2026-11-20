@@ -14,6 +14,19 @@ Air in the Overworld thins with height and is gone by y 312 (see [air density](V
 - **Radiation.** Your dose rate gains the sky's own. See below.
 - **Map.** Below the craft the explored Overworld shows as a flat map at the chunks' real places, one pixel for each chunk, in the colors of the map.
 
+## The sky
+
+The Gap has its own sky. A hard sun lights the scene, and the planets are lit from its side. About six thousand stars fill the dark, with a milky band across them. The Overworld's air shows as a blue glow along the limb, at and below the horizon; the explored map (see Living in it) draws below that.
+
+Four planets hang at fixed bearings, so each one is a landmark to steer toward:
+
+- **Acid-cloud world.** Ochre and hazy.
+- **Frozen moon.** Pale blue-white.
+- **Crystal world.** Violet and teal.
+- **The End's gas giant.** Banded, low on the horizon and small.
+
+Their size does not change as you travel.
+
 ## Radiation
 
 In the Gap the sky's radiation adds to the [dose](Radiation.md) you carry, once a second. Armor shields it by density, as for any source, and so do the dense plates of a hull around you: more open sides to the sky means more dose.
