@@ -426,6 +426,17 @@ public class ControllerCore implements Container, Fittable {
         return current.clone();
     }
 
+    /** Per sensor card of the running program, in the order {@link #readings} uses: whether no bound node matches its request (it reads 0). */
+    public boolean[] unmatched() {
+        List<SensorNode> sensors = lastGraph.nodes().stream().filter(SensorNode.class::isInstance).map(SensorNode.class::cast).toList();
+        boolean[] out = new boolean[sensors.size()];
+        for (int i = 0; i < out.length; i++) {
+            SensorNode s = sensors.get(i);
+            out[i] = locals == null && s.signal() != null && level() != null && matches(s.id(), s.request()).isEmpty();
+        }
+        return out;
+    }
+
     /** Whether this host takes the medium at all: a mechanical Controller takes the Punch Card only. */
     public boolean takesMedium(ItemStack stack) {
         return takes.test(stack);

@@ -59,6 +59,8 @@ public class ComputerBlockEntity extends ElectricNode implements ControllerHost,
     private int watchers;
     /** The running program's last sensor readings, as the server sent them; for the monitor. */
     private float[] readings = new float[0];
+    /** Per sensor card, as the server sent it: no bound node matches the card's request. */
+    private boolean[] unmatched = new boolean[0];
     /** Whether the cable was delivering at the last push; for the desktop's power lamp (the client does not simulate it). */
     private boolean poweredSeen;
     private ComputerSettings settings = ComputerSettings.DEFAULT;
@@ -236,6 +238,10 @@ public class ComputerBlockEntity extends ElectricNode implements ControllerHost,
 
     public ComputerBays bays() {
         return bays;
+    }
+
+    public boolean[] unmatched() {
+        return unmatched;
     }
 
     public float[] readings() {
@@ -737,6 +743,7 @@ public class ComputerBlockEntity extends ElectricNode implements ControllerHost,
         }
         if (watchers > 0 && level != null && level.getGameTime() % 5 == 0) {
             readings = core.readings();
+            unmatched = core.unmatched();
             attached = readAttached();
             poweredSeen = powered();
             packetSeen = getPacketEu();
@@ -897,6 +904,10 @@ public class ComputerBlockEntity extends ElectricNode implements ControllerHost,
         for (float r : readings)
             seen.add(net.minecraft.nbt.FloatTag.valueOf(r));
         tag.put("Readings", seen);
+        byte[] none = new byte[unmatched.length];
+        for (int i = 0; i < none.length; i++)
+            none[i] = (byte) (unmatched[i] ? 1 : 0);
+        tag.putByteArray("Unmatched", none);
         net.minecraft.nbt.ListTag att = new net.minecraft.nbt.ListTag();
         for (Attached a : attached) {
             CompoundTag c = new CompoundTag();
@@ -972,6 +983,10 @@ public class ComputerBlockEntity extends ElectricNode implements ControllerHost,
         readings = new float[seen.size()];
         for (int i = 0; i < readings.length; i++)
             readings[i] = seen.getFloat(i);
+        byte[] none = tag.getByteArray("Unmatched");
+        unmatched = new boolean[none.length];
+        for (int i = 0; i < none.length; i++)
+            unmatched[i] = none[i] != 0;
         java.util.List<Attached> att = new java.util.ArrayList<>();
         for (net.minecraft.nbt.Tag t : tag.getList("Attached", net.minecraft.nbt.Tag.TAG_COMPOUND)) {
             CompoundTag c = (CompoundTag) t;

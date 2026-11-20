@@ -104,7 +104,7 @@ Each app disk is researched at the [Research Table](Research_Table.md#apps): a b
 
 A Computer with power shows sensors linked straight to it (made with the [Data Connector](Data_Connector.md): Sensor fittings, Flight Sensors, channel sources such as a Driver's Seat) in the Monitor, Diagram and Scope apps with no program running. These reads travel the data wire like an Input card's: wire reach, a poor wire's rounding and circuit read noise all apply.
 
-- **Monitor**: the running program's variables and the last reading of each of its Input cards. A **Linked sensors** section lists the sensors [linked](Data_Connector.md) straight to the Computer, up to 8, whether or not a program reads them.
+- **Monitor**: the running program's variables and the last reading of each of its Input cards. A card whose request matches no linked sensor shows a dimmed *no match* in place of a reading. A **Linked sensors** section lists the sensors [linked](Data_Connector.md) straight to the Computer, up to 8, whether or not a program reads them.
 - **Links**: the blocks linked to the Computer, with their positions and link colors.
 - **Diagram**: the [Contraption Diagram](Instruments.md#contraption-diagram) of the vehicle a Flight Sensor is on, for any Flight Sensor linked straight to the Computer. **Next sensor** steps between linked sensors; the angle, merge and assembly controls are the same as on the sensor's own screen.
 - **Console**: a log of what the Computer did, newest at the bottom: programs started and stopped, things its program switched on and off, switches you flipped over an endernet pair (*flipped over the pair*), power lost and back, media ejected, edited or copied, and media it refused.

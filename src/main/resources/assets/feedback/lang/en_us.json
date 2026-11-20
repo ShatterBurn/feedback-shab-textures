@@ -8149,6 +8149,7 @@
   "gui.feedback.computer.nothing_running": "Nothing is running.",
   "gui.feedback.computer.variables": "Variables",
   "gui.feedback.computer.no_variables": "None declared.",
+  "gui.feedback.computer.no_match": "no match",
   "gui.feedback.computer.sensors": "Sensors",
   "gui.feedback.computer.linked_sensors": "Linked sensors",
   "gui.feedback.computer.no_links": "Nothing is linked to this Computer.",

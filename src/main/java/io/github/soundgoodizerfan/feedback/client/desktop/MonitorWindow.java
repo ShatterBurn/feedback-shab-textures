@@ -73,8 +73,10 @@ final class MonitorWindow extends DesktopWindow {
                 continue;
             Quantity q = sensor.quantity() == null ? Quantity.FIGURE : sensor.quantity();
             float v = index < seen.length ? seen[index] : 0f;
-            String text = q == Quantity.STATE ? (v > 0.5f ? "on" : "off") : Readout.figure(q, v);
-            ui.row(4, y, inner - 4, q.getSerializedName(), text, skin.accent());
+            boolean none = computer != null && index < computer.unmatched().length && computer.unmatched()[index];
+            String text = none ? Component.translatable("gui.feedback.computer.no_match").getString()
+                    : q == Quantity.STATE ? (v > 0.5f ? "on" : "off") : Readout.figure(q, v);
+            ui.row(4, y, inner - 4, q.getSerializedName(), text, none ? skin.dim() : skin.accent());
             y += Ui.LINE;
             index++;
         }

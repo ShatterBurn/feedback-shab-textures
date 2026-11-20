@@ -32,7 +32,7 @@ Lightning striking within 3 blocks of a pen with a creeper makes it charged for 
 
 - **A full reserve blows.** At the cap the pen swells and hisses for 30 seconds; sculk sensors hear it. Shearing during that time empties the pen and cancels the blast. After 30 seconds it explodes with a power that grows with the reserve: 8 at full, 12 at most. A pen whose warning ran out while its chunk was unloaded blows when the chunk loads.
 - **Sparks set it off.** An electrical spark within 16 blocks detonates a pen holding at least 1 unit.
-- **Shearing can go wrong.** Shearing a loaded pen can set the reserve off, more often the fuller it is. Sneaking halves the chance, so do padded hands (any hand protection above bare hands) and the careful-hands skill ([Skills](Skills.md)).
+- **Shearing can go wrong.** Shearing a loaded pen can set the reserve off, more often the fuller it is. Sneaking halves the chance, so do padded hands (gloves or another worn or held insulator rated to hold a burning piece, see [Hazards](Hazards.md); toughened bare skin does not count) and the careful-hands skill ([Skills](Skills.md)).
 
 ## Creeper Sac
 

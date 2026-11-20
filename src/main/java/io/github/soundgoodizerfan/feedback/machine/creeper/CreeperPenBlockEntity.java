@@ -174,7 +174,8 @@ public class CreeperPenBlockEntity extends BlockEntity implements GameEventListe
         float risk = PetrochemTuning.CREEPER_SHEAR_SHOCK * fill * fill;
         if (player.isShiftKeyDown())
             risk *= PetrochemTuning.CREEPER_SHEAR_SNEAK;
-        if (Protection.handlesUpToTu(player) > HazardTuning.CONTACT_BURN_TU.value())
+        // padded hands are a worn or held insulator (gloves), not bare skin made tough by a skill or a potion
+        if (Protection.insulatedFrom(player, HazardTuning.CONTACT_BURN_TU.value()))
             risk *= PetrochemTuning.CREEPER_SHEAR_PADDED;
         if (Skills.modifier(player, SkillTree.Figure.CHARGE_TAMP) != 0f)
             risk *= PetrochemTuning.CREEPER_SHEAR_CAREFUL;
