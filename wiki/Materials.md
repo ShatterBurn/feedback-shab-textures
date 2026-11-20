@@ -10,12 +10,12 @@ Amounts of metal and other stuff are counted in **Qu**. See [Units](Units.md#amo
 
 | Metal | Hardness | Density | Yield strength | Melts at | Notes |
 | --- | --- | --- | --- | --- | --- |
-| Lead | 0.5 | 11.3 | 0.5 | 327 Tu | Dense: the classic bullet metal. Useless for guns. |
-| Silver | 2.5 | 10.5 | 3 | 962 Tu | Soft and bright; the best conductor. Its [smite](Material_Perks.md) hurts the undead. |
+| Lead | 0.5 | 11.34 | 0.5 | 327 Tu | Dense: the classic bullet metal. Useless for guns. |
+| Silver | 2.5 | 10.49 | 3 | 962 Tu | Soft and bright; the best conductor. Its [smite](Material_Perks.md) hurts the undead. |
 | Gold | 2.5 | 19.3 | 1.5 | 1064 Tu | Soft and dense. |
-| Tin | 1 | 7.3 | 1 | 232 Tu | For bronze. |
-| Copper | 4 | 9.0 | 3.5 | 1085 Tu | The first metal you'll work. Wire, cable, plates, foil. |
-| Zinc | 3.5 | 7.1 | 5 | 420 Tu | For brass and the [Galvanic Cell](Galvanic_Cell.md). |
+| Tin | 1 | 7.29 | 1 | 232 Tu | For bronze. |
+| Copper | 4 | 8.96 | 3.5 | 1085 Tu | The first metal you'll work. Wire, cable, plates, foil. |
+| Zinc | 3.5 | 7.14 | 5 | 420 Tu | For brass and the [Galvanic Cell](Galvanic_Cell.md). |
 | Brass | 8 | 8.5 | 6 | 930 Tu | 65% copper, 35% zinc. Good cartridge cases. |
 | Bronze | 10 | 8.8 | 10 | 1000 Tu | 90% copper, 10% tin. |
 | Iron | 8 | 7.87 | 7.5 | 1538 Tu | **Magnetic.** Pure iron. Softer and weaker than wrought iron. |
@@ -43,7 +43,7 @@ Amounts of metal and other stuff are counted in **Qu**. See [Units](Units.md#amo
 | Cadmium | 2 | 8.65 | 1 | 321 Tu | Soft and toxic. A byproduct of leaching sphalerite. |
 | Vanadium | 6.5 | 6.11 | 7.5 | 1910 Tu | Tough; stands 600 Tu. For high-speed steel and titanium 6Al-4V. Comes from vanadinite. |
 | Indium | 0.1 | 7.31 | 0.2 | 157 Tu | Very soft and ductile, melts low. A byproduct of leaching sphalerite. For galinstan. |
-| Mercury | 0.2 | 13.53 | 0.1 | -39 Tu | **Liquid at room temperature** and toxic. Its items are the frozen metal. Comes from cinnabar. |
+| Mercury | 0.2 | 13.53 | 0.1 | -38.8 Tu | **Liquid at room temperature** and toxic. Its items are the frozen metal. Comes from cinnabar. |
 | Thorium | 4 | 11.7 | 5 | 1750 Tu | **Radioactive**, weaker than uranium. See [Thorium](#thorium). |
 | Stainless Steel | 20 | 7.9 | 14 | 1400 Tu | Steel with chromium and nickel. Barely corrodes. |
 | Manganese Steel | 22 | 7.8 | 18 | 1400 Tu | Steel with manganese. Hardens as it is worked. |
@@ -73,7 +73,7 @@ Amounts of metal and other stuff are counted in **Qu**. See [Units](Units.md#amo
 | Electrum | 5 | 15.9 | 3 | 1040 Tu | Gold and silver. Soft and dense; conducts well. |
 | Amethyst Bronze | 12.5 | 7.4 | 12 | 1000 Tu | A mixture of bronze with a little amethyst. The best conductor of XP, at a conductance of 4 ([Experience](Experience.md)). |
 | Uranium | 20 | 19.1 | 10 | 1132 Tu | **Radioactive.** Nearly as dense as gold and tungsten. See [Uranium](#uranium). |
-| [Osmium](Heavy_Core.md) | 39 | 22.6 | 30 | 3033 Tu | The densest metal. Its only forms are powder, sponge, compact and the [Heavy Core](Heavy_Core.md). |
+| [Osmium](Heavy_Core.md) | 39 | 22.59 | 30 | 3033 Tu | The densest metal. Its only forms are powder, sponge, compact and the [Heavy Core](Heavy_Core.md). |
 | [Netherite](Netherite.md) | 130 | 7.5 | 100 | 2200 Tu | **Magnetic.** Harder than a drill bit; only a lathe bit or a grinding wheel cuts it. |
 | Cast Netherite | 83 | 7.5 | 60 | 1380 Tu | **Magnetic.** The ingot before soul quenching ([Netherite](Netherite.md#soul-quenching)). |
 
@@ -321,7 +321,7 @@ Plain **tin** is a solder: a Tin Ingot pastes a board as it is, no alloying need
 | --- | --- | --- | --- | --- |
 | Tin | pure tin | 232 Tu | 20 Tu above | none |
 | Leaded Solder | tin and lead | 183 Tu | 60 Tu above | poisons while hot |
-| Lead-Free Solder | tin and a little copper | 227 Tu | 30 Tu above | none |
+| Lead-Free Solder | tin and a little copper | 217 Tu | 30 Tu above | none |
 
 The **window** is how far above its melting point a joint is still good. A thinner melt wets better, so lead solder forgives more; lead-free is cleaner but wants a steadier hand or a better oven. Pure tin skins over with oxide and gives the narrowest window of the three: the iron has to be held close to the melting point. A printed board's traces lift at 260 Tu, so on one the tin window leaves little room above it.
 
@@ -339,15 +339,15 @@ Plastics and rubbers. They are light, soft, poor conductors and cheap to shape, 
 
 | Polymer | Hardness | Density | Melts at | Stands | Grip friction | Insulates |
 | --- | --- | --- | --- | --- | --- | --- |
-| Polyethylene | 0.59 | 0.95 | 130 Tu | 80 Tu | 0.3 | HV |
-| Polypropylene | 0.98 | 0.9 | 165 Tu | 100 Tu | 0.3 | MV |
+| Polyethylene | 0.5 | 0.95 | 130 Tu | 80 Tu | 0.3 | HV |
+| Polypropylene | 1 | 0.9 | 165 Tu | 100 Tu | 0.3 | MV |
 | Polyester | 2 | 1.38 | 255 Tu | 115 Tu | 0.25 | HV |
 | Natural Rubber | 0.3 | 0.92 | 200 Tu | 70 Tu | 1.4 | HV |
-| PTFE | 0.49 | 2.2 | does not flow | 260 Tu | 0.05 | Trunk |
-| Synthetic Rubber | 0.39 | 1.1 | 200 Tu | 90 Tu | 1.2 | HV |
-| PVC | 1.47 | 1.4 | 180 Tu | 60 Tu | 0.4 | MV |
-| Soul Resin | 2.45 | 1.1 | 343 Tu | 160 Tu | 0.4 | MV |
-| Bitumen | 0.49 | 1.05 | 100 Tu | 50 Tu | 0.5 | LV |
+| PTFE | 0.5 | 2.2 | does not flow | 260 Tu | 0.05 | Trunk |
+| Synthetic Rubber | 0.5 | 1.1 | 200 Tu | 90 Tu | 1.2 | HV |
+| PVC | 1.5 | 1.4 | 180 Tu | 60 Tu | 0.4 | MV |
+| Soul Resin | 2.5 | 1.1 | 343 Tu | 160 Tu | 0.4 | MV |
+| Bitumen | 0.5 | 1.05 | 100 Tu | 50 Tu | 0.5 | LV |
 | Bakelite | 3 | 1.35 | 300 Tu | 150 Tu | 0.4 | |
 | Aramid | 2 | 1.44 | 450 Tu | 250 Tu | 0.4 | |
 | Amber | 2.5 | 1.08 | 300 Tu | 80 Tu | 0.3 | HV |
