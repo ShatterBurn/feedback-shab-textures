@@ -39,8 +39,12 @@ public final class FigureTint {
         return Map.of(
                 FBlocks.LEYDEN_JAR.get(), new String[]{"S", "F"},        // 0 the glass, 1 the foil
                 FBlocks.ELECTROMAGNET.get(), new String[]{"S"},          // 0 the core and winding metal
-                FBlocks.LAMP.get(), new String[]{"S"});                  // 0 the whole panel: the filament's colour
+                FBlocks.LAMP.get(), new String[]{"S"},                   // 0 the whole panel: the filament's colour
+                FBlocks.MODULAR_PISTON.get(), PISTON);                   // 0 the cylinder, 1 the rod
     }
+
+    /** The piston's tint roles: index 0 the cylinder's metal, index 1 the rod's (also the head plate and the rod blocks). */
+    private static final String[] PISTON = {"S", "R"};
 
     private FigureTint() {
     }
@@ -63,6 +67,19 @@ public final class FigureTint {
                     ? holder.figures().design() : null;
             return colour(design, roles, tintIndex, block == FBlocks.LAMP.get());
         }, block));
+        // The head and the rod blocks hold no design: they take the rod metal of the cylinder at the end of the line behind them.
+        event.register((state, level, pos, tintIndex) -> {
+            ModularDesign design = null;
+            if (level != null && pos != null) {
+                var back = state.getValue(io.github.soundgoodizerfan.feedback.machine.piston.ModularPistonHeadBlock.FACING).getOpposite();
+                var at = pos.relative(back);
+                for (int i = 0; i < 64 && level.getBlockState(at).is(FBlocks.MODULAR_PISTON_HEAD.get()); i++)
+                    at = at.relative(back);
+                if (level.getBlockEntity(at) instanceof FigureHolder holder)
+                    design = holder.figures().design();
+            }
+            return colour(design, PISTON, tintIndex, false);
+        }, FBlocks.MODULAR_PISTON_HEAD.get());
     }
 
     @SubscribeEvent

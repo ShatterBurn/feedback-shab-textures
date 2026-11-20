@@ -1,6 +1,98 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "feedback:item/modular/grey/part_metal_box_large"
-  }
+    "layer0": "feedback:item/modular/grey/part_voice_harp"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "feedback:variant": 2
+      },
+      "model": "feedback:item/noisemaker_basedrum"
+    },
+    {
+      "predicate": {
+        "feedback:variant": 3
+      },
+      "model": "feedback:item/noisemaker_snare"
+    },
+    {
+      "predicate": {
+        "feedback:variant": 4
+      },
+      "model": "feedback:item/noisemaker_hat"
+    },
+    {
+      "predicate": {
+        "feedback:variant": 5
+      },
+      "model": "feedback:item/noisemaker_bass"
+    },
+    {
+      "predicate": {
+        "feedback:variant": 6
+      },
+      "model": "feedback:item/noisemaker_flute"
+    },
+    {
+      "predicate": {
+        "feedback:variant": 7
+      },
+      "model": "feedback:item/noisemaker_bell"
+    },
+    {
+      "predicate": {
+        "feedback:variant": 8
+      },
+      "model": "feedback:item/noisemaker_guitar"
+    },
+    {
+      "predicate": {
+        "feedback:variant": 9
+      },
+      "model": "feedback:item/noisemaker_chime"
+    },
+    {
+      "predicate": {
+        "feedback:variant": 10
+      },
+      "model": "feedback:item/noisemaker_xylophone"
+    },
+    {
+      "predicate": {
+        "feedback:variant": 11
+      },
+      "model": "feedback:item/noisemaker_iron_xylophone"
+    },
+    {
+      "predicate": {
+        "feedback:variant": 12
+      },
+      "model": "feedback:item/noisemaker_cow_bell"
+    },
+    {
+      "predicate": {
+        "feedback:variant": 13
+      },
+      "model": "feedback:item/noisemaker_didgeridoo"
+    },
+    {
+      "predicate": {
+        "feedback:variant": 14
+      },
+      "model": "feedback:item/noisemaker_bit"
+    },
+    {
+      "predicate": {
+        "feedback:variant": 15
+      },
+      "model": "feedback:item/noisemaker_banjo"
+    },
+    {
+      "predicate": {
+        "feedback:variant": 16
+      },
+      "model": "feedback:item/noisemaker_pling"
+    }
+  ]
 }
