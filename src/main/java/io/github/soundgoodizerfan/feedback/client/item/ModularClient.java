@@ -52,7 +52,6 @@ public final class ModularClient {
         event.registerItem(new MoteRenderer.Extension(), io.github.soundgoodizerfan.feedback.registry.FItems.MOTE.get());
         event.registerItem(new GearModels.Extension(), FModular.HELMET.get(), FModular.CHESTPLATE.get(), FModular.LEGGINGS.get(), FModular.BOOTS.get());
         event.registerItem(new io.github.soundgoodizerfan.feedback.client.robot.RobotItemRenderer.Extension(), FModular.ROBOT.get());
-        event.registerItem(new MoteRenderer.Extension(), io.github.soundgoodizerfan.feedback.registry.FItems.MOTE.get());
         event.registerItem(new io.github.soundgoodizerfan.feedback.client.gun.GunRenderer.Extension(),
                 io.github.soundgoodizerfan.feedback.registry.FWeapons.GUN.get(), io.github.soundgoodizerfan.feedback.registry.FWeapons.FLINTLOCK.get(),
                 io.github.soundgoodizerfan.feedback.registry.FModular.ELECTRIC_GUN.get(), io.github.soundgoodizerfan.feedback.registry.FModular.LAUNCHER.get(), io.github.soundgoodizerfan.feedback.registry.FModular.CASTER.get());
