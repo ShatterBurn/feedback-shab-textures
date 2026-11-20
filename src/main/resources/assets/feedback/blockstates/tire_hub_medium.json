@@ -1,7 +1,16 @@
 {
   "variants": {
-    "axis=y": { "model": "feedback:block/tire_hub" },
-    "axis=x": { "model": "feedback:block/tire_hub", "x": 90, "y": 90 },
-    "axis=z": { "model": "feedback:block/tire_hub", "x": 90 }
+    "axis=y": {
+      "model": "feedback:block/tire_hub_medium"
+    },
+    "axis=x": {
+      "model": "feedback:block/tire_hub_medium",
+      "x": 90,
+      "y": 90
+    },
+    "axis=z": {
+      "model": "feedback:block/tire_hub_medium",
+      "x": 90
+    }
   }
 }

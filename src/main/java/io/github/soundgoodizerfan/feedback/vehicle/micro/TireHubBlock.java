@@ -131,10 +131,11 @@ public class TireHubBlock extends Block implements EntityBlock {
 
     @Override
     protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        // Mirrors models/block/tire_hub_*.json: the flange (taken as its bounding square) and the stub axle through it.
         return switch (state.getValue(AXIS)) {
-            case X -> box(5, 3, 3, 11, 13, 13);
-            case Y -> box(3, 5, 3, 13, 11, 13);
-            case Z -> box(3, 3, 5, 13, 13, 11);
+            case X -> net.minecraft.world.phys.shapes.Shapes.or(box(7, 2, 2, 9, 14, 14), box(2, 6, 6, 14, 10, 10));
+            case Y -> net.minecraft.world.phys.shapes.Shapes.or(box(2, 7, 2, 14, 9, 14), box(6, 2, 6, 10, 14, 10));
+            case Z -> net.minecraft.world.phys.shapes.Shapes.or(box(2, 2, 7, 14, 14, 9), box(6, 6, 2, 10, 10, 14));
         };
     }
 
