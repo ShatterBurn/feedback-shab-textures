@@ -292,8 +292,14 @@ public class LiftBlockEntity extends BlockEntity {
 
     /** Tells the clients how high the lift stands, so the renderer can draw the column up to the lifted body. */
     private void sync() {
-        if (level != null)
-            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+        if (level == null)
+            return;
+        BlockState state = getBlockState();
+        boolean raised = height > 0;
+        if (state.getValue(LiftBlock.RAISED) != raised) // the block's own shape and model drop the platform while it rides up
+            level.setBlock(worldPosition, state.setValue(LiftBlock.RAISED, raised), 3);
+        else
+            level.sendBlockUpdated(worldPosition, state, state, 3);
     }
 
     @Override

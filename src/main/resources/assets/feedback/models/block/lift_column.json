@@ -1,13 +1,16 @@
 {
   "parent": "minecraft:block/block",
   "textures": {
-    "particle": "feedback:block/bronze_sheet",
-    "bronze": "feedback:block/bronze_sheet",
-    "plate": "feedback:block/housing_iron"
+    "particle": "feedback:block/housing_iron",
+    "plate": "feedback:block/housing_iron",
+    "tube": "feedback:block/lift_tube",
+    "brass": "feedback:block/lift_brass",
+    "ram": "feedback:block/bronze_sheet",
+    "display": "feedback:block/lift_console"
   },
   "elements": [
     {
-      "name": "shaft",
+      "name": "ram",
       "from": [
         6,
         0,
@@ -20,55 +23,22 @@
       ],
       "faces": {
         "north": {
-          "texture": "#bronze"
+          "texture": "#ram"
         },
         "south": {
-          "texture": "#bronze"
+          "texture": "#ram"
         },
         "east": {
-          "texture": "#bronze"
+          "texture": "#ram"
         },
         "west": {
-          "texture": "#bronze"
+          "texture": "#ram"
         },
         "up": {
-          "texture": "#bronze"
+          "texture": "#ram"
         },
         "down": {
-          "texture": "#bronze"
-        }
-      }
-    },
-    {
-      "name": "collar",
-      "from": [
-        5,
-        6,
-        5
-      ],
-      "to": [
-        11,
-        8,
-        11
-      ],
-      "faces": {
-        "north": {
-          "texture": "#bronze"
-        },
-        "south": {
-          "texture": "#bronze"
-        },
-        "east": {
-          "texture": "#bronze"
-        },
-        "west": {
-          "texture": "#bronze"
-        },
-        "up": {
-          "texture": "#bronze"
-        },
-        "down": {
-          "texture": "#bronze"
+          "texture": "#ram"
         }
       }
     }

@@ -1,26 +1,15 @@
 {
   "type": "feedback:engineering",
   "key": {
-    "P": { "item": "feedback:wrought_iron_plate" },
-    "R": { "item": "feedback:wrought_iron_rod" },
-    "S": { "item": "feedback:shaft" }
+    "P": {"item": "feedback:wrought_iron_plate"},
+    "B": {"item": "feedback:brass_ingot"},
+    "T": {"item": "feedback:copper_tubing"},
+    "S": {"item": "feedback:shaft"},
+    "G": {"item": "feedback:pressure_gauge"}
   },
-  "pattern": [
-    "PPP",
-    "RSR",
-    "R R"
-  ],
-  "result": {
-    "count": 1,
-    "id": "feedback:lift"
-  },
-  "tool": [
-    { "ability": "feedback:hammer", "wear": 1 }
-  ],
-  "fasteners": {
-    "count": 3,
-    "floor": 1,
-    "forms": ["machine_bolt"]
-  },
+  "pattern": ["PPP", "BTB", "PSG"],
+  "result": {"count": 1, "id": "feedback:lift"},
+  "tool": [{"ability": "feedback:hammer", "wear": 1}],
+  "fasteners": {"count": 4, "floor": 1, "forms": ["machine_bolt"]},
   "school": "mechanical:1"
 }
