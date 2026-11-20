@@ -24,7 +24,7 @@ import net.minecraft.world.phys.BlockHitResult;
  * A manual or controller-driven cutoff on an air line or a fluid line (steam included) -- one
  * block for both, since a cutoff is the same shape either way. See {@code ValveBlockEntity}.
  */
-public class ValveBlock extends Block implements EntityBlock {
+public class ValveBlock extends Block implements EntityBlock, io.github.soundgoodizerfan.feedback.vehicle.micro.FineHosts.Routed {
 
     public static final DirectionProperty FACING = BlockStateProperties.FACING;
     public static final BooleanProperty OPEN = BooleanProperty.create("open");

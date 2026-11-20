@@ -41,7 +41,8 @@ import net.minecraft.world.phys.BlockHitResult;
  * Mirrors {@code FireboxBlock}'s shape (plain {@code Block implements EntityBlock}), plus facing
  * because these, unlike the firebox, have a door that should point somewhere.
  */
-public class ThermalVesselBlock extends Block implements EntityBlock, io.github.soundgoodizerfan.feedback.core.rotation.Rotatable {
+public class ThermalVesselBlock extends Block implements EntityBlock, io.github.soundgoodizerfan.feedback.core.rotation.Rotatable,
+        io.github.soundgoodizerfan.feedback.vehicle.micro.FineHosts.Routed {
 
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     public static final BooleanProperty LIT = BlockStateProperties.LIT;

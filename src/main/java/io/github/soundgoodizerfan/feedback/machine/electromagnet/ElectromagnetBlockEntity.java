@@ -134,7 +134,7 @@ public class ElectromagnetBlockEntity extends ElectricNode implements ThermalBod
             MagnetField.set(level, worldPosition, field);
             BlockState shown = getBlockState();
             if (shown.hasProperty(ElectromagnetBlock.LIT) && shown.getValue(ElectromagnetBlock.LIT) != field > 0f)
-                level.setBlock(worldPosition, shown.setValue(ElectromagnetBlock.LIT, field > 0f), 3);
+                io.github.soundgoodizerfan.feedback.vehicle.micro.FineHosts.setState(this, shown.setValue(ElectromagnetBlock.LIT, field > 0f), 3);
             // A sleeved shaft or bearing touching this magnet reads its drag at the next rebuild of its run: ask for one when the field has moved a step.
             if (Math.abs(field - fieldNotified) >= ElectricMachineTuning.ELECTROMAGNET_SLEEVE_STEP || (field <= 0f) != (fieldNotified <= 0f)) {
                 fieldNotified = field;

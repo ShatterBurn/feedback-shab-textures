@@ -19,7 +19,7 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
  * The glowstone lamp: an electroluminescent panel on a power line. Brightness is the {@link #GLOW}
  * block state, so block light follows the state and the client needs no block entity data.
  */
-public class LampBlock extends Block implements EntityBlock {
+public class LampBlock extends Block implements EntityBlock, io.github.soundgoodizerfan.feedback.vehicle.micro.FineHosts.Routed {
 
     /** Off, three lit steps, and burnt out (dark for good, replaced by hand). */
     public enum Glow implements StringRepresentable {

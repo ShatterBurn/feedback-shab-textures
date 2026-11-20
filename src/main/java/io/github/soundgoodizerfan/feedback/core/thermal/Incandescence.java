@@ -48,4 +48,11 @@ public final class Incandescence {
         if (state.hasProperty(GLOW) && state.getValue(GLOW) != level_)
             level.setBlock(pos, state.setValue(GLOW, level_), 3);
     }
+
+    /** As {@link #apply(Level, BlockPos, int)} for a block entity, which may be hosted in a finespace voxel: its own state is read and written. */
+    public static void apply(net.minecraft.world.level.block.entity.BlockEntity be, int level_) {
+        BlockState state = be.getBlockState();
+        if (be.getLevel() != null && state.hasProperty(GLOW) && state.getValue(GLOW) != level_)
+            io.github.soundgoodizerfan.feedback.vehicle.micro.FineHosts.setState(be, state.setValue(GLOW, level_), 3);
+    }
 }

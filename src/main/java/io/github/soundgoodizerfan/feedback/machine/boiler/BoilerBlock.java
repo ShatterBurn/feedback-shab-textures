@@ -25,7 +25,7 @@ import net.neoforged.neoforge.fluids.FluidUtil;
  * Sits on a firebox (or lava) exactly like a crucible does -- see {@link BoilerBlockEntity}.
  * Right click with a water bucket to fill it; there is no other input and no other output.
  */
-public class BoilerBlock extends Block implements EntityBlock {
+public class BoilerBlock extends Block implements EntityBlock, io.github.soundgoodizerfan.feedback.vehicle.micro.FineHosts.Routed {
 
     public BoilerBlock(Properties properties) {
         super(properties);

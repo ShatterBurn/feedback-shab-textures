@@ -101,7 +101,7 @@ public class LampBlockEntity extends ElectricNode implements Wearing, io.github.
     }
 
     private void setGlow(BlockState state, LampBlock.Glow glow) {
-        level.setBlock(worldPosition, state.setValue(LampBlock.GLOW, glow), Block.UPDATE_CLIENTS);
+        io.github.soundgoodizerfan.feedback.vehicle.micro.FineHosts.setState(this, state.setValue(LampBlock.GLOW, glow), Block.UPDATE_CLIENTS);
     }
 
     /** The step for a fraction, given the current one: rise past a threshold plus the gap, fall below it minus the gap. */

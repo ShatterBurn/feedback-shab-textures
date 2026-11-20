@@ -23,7 +23,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.fluids.FluidUtil;
 
 /** The fluid-fuel burner: lit while it burns, a bucket fills it, a pipe does the same. */
-public class BurnerBlock extends Block implements EntityBlock {
+public class BurnerBlock extends Block implements EntityBlock, io.github.soundgoodizerfan.feedback.vehicle.micro.FineHosts.Routed {
 
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
 

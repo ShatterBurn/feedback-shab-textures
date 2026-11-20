@@ -229,6 +229,24 @@ public class MicroCellBlockEntity extends BlockEntity implements BlockEntitySubL
 
     private int hostedCount;
 
+    /**
+     * A hosted machine wrote its own block state (lit, open, glowing): its voxel takes it, as a block's own state would change in place.
+     * False if {@code machine} is not hosted here.
+     */
+    boolean hostedState(net.minecraft.world.level.block.entity.BlockEntity machine, BlockState state) {
+        for (int i = 0; i < VOXELS; i++)
+            if (hosted[i] == machine) {
+                if (voxels[i] == state)
+                    return true;
+                voxels[i] = state;
+                machine.setBlockState(state);
+                shape = null;
+                synced();
+                return true;
+            }
+        return false;
+    }
+
     /** A hosted machine changed through its own use: save the cell and send it to the players watching. */
     void synced() {
         setChanged();

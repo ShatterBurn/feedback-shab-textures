@@ -46,7 +46,7 @@ public class DamperBlockEntity extends BlockEntity implements Switchable, DataNo
         if (level == null || level.isClientSide || isEngaged() == engaged)
             return;
 
-        level.setBlockAndUpdate(worldPosition, getBlockState().setValue(DamperBlock.OPEN, engaged));
+        io.github.soundgoodizerfan.feedback.vehicle.micro.FineHosts.setState(this, getBlockState().setValue(DamperBlock.OPEN, engaged), 3);
         level.playSound(null, worldPosition,
                 engaged ? SoundEvents.WOODEN_TRAPDOOR_OPEN : SoundEvents.WOODEN_TRAPDOOR_CLOSE,
                 SoundSource.BLOCKS, 0.4f, 0.8f);

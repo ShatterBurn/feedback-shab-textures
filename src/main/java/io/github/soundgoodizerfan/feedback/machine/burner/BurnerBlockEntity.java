@@ -93,7 +93,7 @@ public class BurnerBlockEntity extends BlockEntity implements HeatSource {
                 fuel.drain(drawn, IFluidHandler.FluidAction.EXECUTE);
         }
         if ((before > 0f) != (flameTu > 0f) && getBlockState().hasProperty(BurnerBlock.LIT))
-            level.setBlock(worldPosition, getBlockState().setValue(BurnerBlock.LIT, flameTu > 0f), 3);
+            io.github.soundgoodizerfan.feedback.vehicle.micro.FineHosts.setState(this, getBlockState().setValue(BurnerBlock.LIT, flameTu > 0f), 3);
     }
 
     private void pull() {

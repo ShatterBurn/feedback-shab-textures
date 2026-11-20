@@ -21,7 +21,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 /** A coil on an iron core: the first thing that runs on what the resolver gives it. */
-public class ElectromagnetBlock extends Block implements EntityBlock {
+public class ElectromagnetBlock extends Block implements EntityBlock, io.github.soundgoodizerfan.feedback.vehicle.micro.FineHosts.Routed {
 
     /** True while the field is above zero (set by the block entity): the coil glows and the pole faces show the field. */
     public static final BooleanProperty LIT = BlockStateProperties.LIT;

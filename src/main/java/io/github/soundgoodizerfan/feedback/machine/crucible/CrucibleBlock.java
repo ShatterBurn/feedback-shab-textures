@@ -30,7 +30,7 @@ import net.minecraft.world.phys.BlockHitResult;
  * Right click to put something in, empty-handed to take the last thing back out. What comes out
  * is at the vessel's temperature, and starts cooling the moment it does.
  */
-public class CrucibleBlock extends Block implements EntityBlock {
+public class CrucibleBlock extends Block implements EntityBlock, io.github.soundgoodizerfan.feedback.vehicle.micro.FineHosts.Routed {
 
     private final ThermalMass thermalMass;
     private final int slots;

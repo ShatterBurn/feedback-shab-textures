@@ -42,18 +42,44 @@ public final class FineHosts {
 
     /**
      * Whether {@code stack} is a modular machine a cell hosts: a modular block item whose block has a block entity of its own, is not a part
-     * the cell already knows, and whose block state is only its orientation. A machine that toggles its own state (lit, open, glowing)
-     * writes it to its position, which in a cell is the cell's, and would replace the cell; routing such writes is later work
-     * ({@code docs/specs/finespace_hosting_spec.md}).
+     * the cell already knows, and whose block state is only its orientation or which is {@link Routed}. A machine that toggles its own
+     * state (lit, open, glowing) writes it through {@link #setState}, which gives the write to its voxel; one that writes it any other way would
+     * replace the cell with its own block.
      */
     public static boolean hostable(ItemStack stack) {
         if (!(stack.getItem() instanceof BlockItem item) || !(stack.getItem() instanceof Modular))
             return false;
         var block = item.getBlock();
         return block instanceof EntityBlock && !(block instanceof MicroRotation) && !(block instanceof JointPart) && !(block instanceof TireHubBlock)
-                && block.getStateDefinition().getProperties().stream()
+                && (block instanceof Routed || block.getStateDefinition().getProperties().stream()
                 .allMatch(p -> p instanceof net.minecraft.world.level.block.state.properties.DirectionProperty
-                        || p.getValueClass() == net.minecraft.core.Direction.Axis.class);
+                        || p.getValueClass() == net.minecraft.core.Direction.Axis.class));
+    }
+
+    /**
+     * A block whose block entity writes its own state (lit, open, glowing) only through {@link #setState}, so it can be hosted: the cell takes
+     * the write as its voxel's new state instead of letting the machine's block replace the cell. A block that writes its state any other way
+     * must not carry this.
+     */
+    public interface Routed {
+    }
+
+    /** The cell whose {@link #as} call is running a hosted machine, which stands in the chunk's map in the cell's place for the call. */
+    @Nullable
+    private static MicroCellBlockEntity running;
+
+    /**
+     * A machine's own state write ({@code level.setBlock(worldPosition, state, flags)} for an ordinary block): a hosted machine's voxel takes
+     * {@code state} and the machine keeps its place; anything else is the plain write.
+     */
+    public static void setState(BlockEntity self, BlockState state, int flags) {
+        Level level = self.getLevel();
+        if (level == null)
+            return;
+        BlockPos pos = self.getBlockPos();
+        MicroCellBlockEntity cell = running != null ? running : level.getBlockEntity(pos) instanceof MicroCellBlockEntity c ? c : null;
+        if (cell == null || !cell.hostedState(self, state))
+            level.setBlock(pos, state, flags);
     }
 
     /** The stack with its figures back at full size: what a machine taken out of a voxel is, with whatever condition it has kept. */
@@ -95,11 +121,14 @@ public final class FineHosts {
     private static <R> R as(Level level, BlockPos pos, BlockEntity machine, java.util.function.Supplier<R> use) {
         var map = level.getChunkAt(pos).getBlockEntities();
         BlockEntity cell = map.get(pos);
+        MicroCellBlockEntity before = running;
+        running = cell instanceof MicroCellBlockEntity c ? c : null;
         map.put(pos, machine);
         try {
             return use.get();
         } finally {
             map.put(pos, cell);
+            running = before;
         }
     }
 

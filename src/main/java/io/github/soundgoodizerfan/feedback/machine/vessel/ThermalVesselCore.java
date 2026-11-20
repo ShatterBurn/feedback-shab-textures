@@ -111,7 +111,7 @@ public abstract class ThermalVesselCore extends io.github.soundgoodizerfan.feedb
     protected void glow() {
         if (level == null)
             return;
-        io.github.soundgoodizerfan.feedback.core.thermal.Incandescence.apply(level, worldPosition,
+        io.github.soundgoodizerfan.feedback.core.thermal.Incandescence.apply(this,
                 !darkened() ? io.github.soundgoodizerfan.feedback.core.thermal.Incandescence.light(temperature) : 0);
     }
 

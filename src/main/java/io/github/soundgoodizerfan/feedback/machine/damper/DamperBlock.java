@@ -27,7 +27,7 @@ import net.minecraft.world.phys.BlockHitResult;
  * never grew a neighbour-scan for insulation either, and this follows that existing line rather
  * than drawing a new one.
  */
-public class DamperBlock extends Block implements EntityBlock {
+public class DamperBlock extends Block implements EntityBlock, io.github.soundgoodizerfan.feedback.vehicle.micro.FineHosts.Routed {
 
     public static final BooleanProperty OPEN = BooleanProperty.create("open");
 

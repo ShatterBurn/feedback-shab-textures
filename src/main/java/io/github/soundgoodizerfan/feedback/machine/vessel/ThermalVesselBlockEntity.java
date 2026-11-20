@@ -271,7 +271,7 @@ public class ThermalVesselBlockEntity extends ThermalVesselCore
 
         BlockState state = getBlockState();
         if (state.hasProperty(ThermalVesselBlock.LIT) && state.getValue(ThermalVesselBlock.LIT) != lit)
-            level.setBlock(worldPosition, state.setValue(ThermalVesselBlock.LIT, lit), 3);
+            io.github.soundgoodizerfan.feedback.vehicle.micro.FineHosts.setState(this, state.setValue(ThermalVesselBlock.LIT, lit), 3);
         glow();
 
         setChanged();
