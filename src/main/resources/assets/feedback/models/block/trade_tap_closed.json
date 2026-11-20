@@ -1,0 +1,260 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "particle": "feedback:block/housing_iron",
+    "plate": "feedback:block/housing_iron",
+    "front": "minecraft:block/emerald_block",
+    "cobble": "minecraft:block/cobblestone",
+    "handle": "minecraft:block/oak_planks",
+    "wire": "feedback:block/copper_sheet",
+    "baked": "feedback:block/trade_tap_closed_faces"
+  },
+  "elements": [
+    {
+      "name": "body",
+      "from": [
+        1,
+        0,
+        2
+      ],
+      "to": [
+        15,
+        12,
+        14
+      ],
+      "faces": {
+        "north": {
+          "texture": "#baked",
+          "uv": [
+            0.0,
+            0.0,
+            1.75,
+            16.0
+          ]
+        },
+        "south": {
+          "texture": "#baked",
+          "uv": [
+            1.875,
+            0.0,
+            3.625,
+            16.0
+          ]
+        },
+        "east": {
+          "texture": "#baked",
+          "uv": [
+            3.75,
+            0.0,
+            5.25,
+            16.0
+          ]
+        },
+        "west": {
+          "texture": "#baked",
+          "uv": [
+            5.375,
+            0.0,
+            6.875,
+            16.0
+          ]
+        },
+        "up": {
+          "texture": "#baked",
+          "uv": [
+            7.0,
+            0.0,
+            8.75,
+            16.0
+          ]
+        },
+        "down": {
+          "texture": "#baked",
+          "uv": [
+            8.875,
+            0.0,
+            10.625,
+            16.0
+          ]
+        }
+      }
+    },
+    {
+      "name": "lever_base",
+      "from": [
+        6,
+        12,
+        10
+      ],
+      "to": [
+        10,
+        14,
+        12
+      ],
+      "faces": {
+        "north": {
+          "texture": "#cobble"
+        },
+        "south": {
+          "texture": "#cobble"
+        },
+        "east": {
+          "texture": "#cobble"
+        },
+        "west": {
+          "texture": "#cobble"
+        },
+        "up": {
+          "texture": "#cobble"
+        },
+        "down": {
+          "texture": "#cobble"
+        }
+      }
+    },
+    {
+      "name": "outlet",
+      "from": [
+        6,
+        2,
+        14
+      ],
+      "to": [
+        10,
+        6,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#baked",
+          "uv": [
+            10.75,
+            0.0,
+            11.25,
+            5.333333333333333
+          ]
+        },
+        "south": {
+          "texture": "#baked",
+          "uv": [
+            11.375,
+            0.0,
+            11.875,
+            5.333333333333333
+          ]
+        },
+        "east": {
+          "texture": "#baked",
+          "uv": [
+            12.0,
+            0.0,
+            12.25,
+            5.333333333333333
+          ]
+        },
+        "west": {
+          "texture": "#baked",
+          "uv": [
+            12.375,
+            0.0,
+            12.625,
+            5.333333333333333
+          ]
+        },
+        "up": {
+          "texture": "#baked",
+          "uv": [
+            12.75,
+            0.0,
+            13.25,
+            2.6666666666666665
+          ]
+        },
+        "down": {
+          "texture": "#baked",
+          "uv": [
+            13.375,
+            0.0,
+            13.875,
+            2.6666666666666665
+          ]
+        }
+      }
+    },
+    {
+      "name": "front",
+      "from": [
+        3,
+        2,
+        0
+      ],
+      "to": [
+        13,
+        10,
+        2
+      ],
+      "faces": {
+        "north": {
+          "texture": "#front"
+        },
+        "south": {
+          "texture": "#front"
+        },
+        "east": {
+          "texture": "#front"
+        },
+        "west": {
+          "texture": "#front"
+        },
+        "up": {
+          "texture": "#front"
+        },
+        "down": {
+          "texture": "#front"
+        }
+      }
+    },
+    {
+      "name": "lever_handle",
+      "from": [
+        7,
+        14,
+        10
+      ],
+      "to": [
+        9,
+        16,
+        12
+      ],
+      "faces": {
+        "north": {
+          "texture": "#handle"
+        },
+        "south": {
+          "texture": "#handle"
+        },
+        "east": {
+          "texture": "#handle"
+        },
+        "west": {
+          "texture": "#handle"
+        },
+        "up": {
+          "texture": "#handle"
+        },
+        "down": {
+          "texture": "#handle"
+        }
+      },
+      "rotation": {
+        "angle": 45,
+        "axis": "x",
+        "origin": [
+          8,
+          14,
+          11
+        ]
+      }
+    }
+  ]
+}

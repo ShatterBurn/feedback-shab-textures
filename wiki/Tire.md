@@ -1,6 +1,6 @@
 # Tire
 
-A ring of rubber that is fitted to a [Tire Hub](Tire_Hub.md). Each rubber makes its own tire, such as a *Natural Rubber Tire* or a *Synthetic Rubber Tire*, and the wheel grips, wears and rolls by that rubber's figures.
+A ring of rubber that is fitted to a [Tire Hub](Tire_Hub.md). Each rubber makes its own tire, such as a *Natural Rubber Tire* or a *Synthetic Rubber Tire*, and the wheel grips, wears and rolls by that rubber's figures. The item is a ring, tinted by the rubber.
 
 ## Obtaining
 

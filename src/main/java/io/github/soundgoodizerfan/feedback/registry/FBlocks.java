@@ -1154,30 +1154,35 @@ public class FBlocks {
             () -> new io.github.soundgoodizerfan.feedback.machine.sculk.CatalystTapBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.COLOR_CYAN)
                     .strength(2.0f)
-                    .sound(SoundType.SCULK_CATALYST)));
+                    .sound(SoundType.SCULK_CATALYST)
+                    .noOcclusion()));
     public static final DeferredBlock<io.github.soundgoodizerfan.feedback.machine.xp.XpTapBlock> ORB_ABSORBER = BLOCKS.register("orb_absorber",
             () -> new io.github.soundgoodizerfan.feedback.machine.xp.XpTapBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.COLOR_CYAN)
                     .strength(2.0f)
-                    .sound(SoundType.METAL),
+                    .sound(SoundType.METAL)
+                    .noOcclusion(),
                     io.github.soundgoodizerfan.feedback.machine.xp.XpTapBlock.Kind.ORB));
     public static final DeferredBlock<io.github.soundgoodizerfan.feedback.machine.xp.XpTapBlock> ORE_TAP = BLOCKS.register("ore_tap",
             () -> new io.github.soundgoodizerfan.feedback.machine.xp.XpTapBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.LAPIS)
                     .strength(2.0f)
-                    .sound(SoundType.METAL),
+                    .sound(SoundType.METAL)
+                    .noOcclusion(),
                     io.github.soundgoodizerfan.feedback.machine.xp.XpTapBlock.Kind.ORE));
     public static final DeferredBlock<io.github.soundgoodizerfan.feedback.machine.xp.XpTapBlock> TRADE_TAP = BLOCKS.register("trade_tap",
             () -> new io.github.soundgoodizerfan.feedback.machine.xp.XpTapBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.EMERALD)
                     .strength(2.0f)
-                    .sound(SoundType.METAL),
+                    .sound(SoundType.METAL)
+                    .noOcclusion(),
                     io.github.soundgoodizerfan.feedback.machine.xp.XpTapBlock.Kind.TRADE));
     public static final DeferredBlock<io.github.soundgoodizerfan.feedback.machine.xp.XpTapBlock> SMELTER_TAP = BLOCKS.register("smelter_tap",
             () -> new io.github.soundgoodizerfan.feedback.machine.xp.XpTapBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.COLOR_GRAY)
                     .strength(2.0f)
-                    .sound(SoundType.METAL),
+                    .sound(SoundType.METAL)
+                    .noOcclusion(),
                     io.github.soundgoodizerfan.feedback.machine.xp.XpTapBlock.Kind.SMELTER));
     public static final DeferredBlock<io.github.soundgoodizerfan.feedback.machine.xp.DisenchantStoneBlock> DISENCHANT_STONE = BLOCKS.register("disenchant_stone",
             () -> new io.github.soundgoodizerfan.feedback.machine.xp.DisenchantStoneBlock(BlockBehaviour.Properties.of()
@@ -1267,7 +1272,7 @@ public class FBlocks {
             () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GRAY).strength(5.0f).sound(SoundType.METAL)));
     public static final DeferredBlock<io.github.soundgoodizerfan.feedback.machine.reactor.StarSeatBlock> STAR_SEAT = BLOCKS.register("star_seat",
             () -> new io.github.soundgoodizerfan.feedback.machine.reactor.StarSeatBlock(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.COLOR_BLACK).strength(5.0f).sound(SoundType.METAL)));
+                    .mapColor(MapColor.COLOR_BLACK).strength(5.0f).sound(SoundType.METAL).noOcclusion()));
     public static final DeferredBlock<io.github.soundgoodizerfan.feedback.machine.reactor.SpentFuelPoolBlock> SPENT_FUEL_POOL = BLOCKS.register("spent_fuel_pool",
             () -> new io.github.soundgoodizerfan.feedback.machine.reactor.SpentFuelPoolBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.COLOR_BLUE).strength(5.0f).sound(SoundType.METAL)));
@@ -1368,6 +1373,7 @@ public class FBlocks {
                     .mapColor(MapColor.METAL)
                     .strength(3.0f)
                     .sound(SoundType.METAL)
+                    .noOcclusion()
                     .lightLevel(state -> state.getValue(net.minecraft.world.level.block.state.properties.BlockStateProperties.LIT) ? 12 : 0)));
 
     public static final DeferredBlock<io.github.soundgoodizerfan.feedback.machine.compressor.CompressorBlock> COMPRESSOR = BLOCKS.register("compressor",
@@ -1423,7 +1429,7 @@ public class FBlocks {
     public static final DeferredBlock<io.github.soundgoodizerfan.feedback.machine.tube.JunctionBlock> PROGRAMMED_JUNCTION = BLOCKS.register("programmed_junction",
             () -> new io.github.soundgoodizerfan.feedback.machine.tube.JunctionBlock(tubeProps(), true));
     public static final DeferredBlock<io.github.soundgoodizerfan.feedback.machine.tube.TubeStationBlock> TUBE_STATION = BLOCKS.register("tube_station",
-            () -> new io.github.soundgoodizerfan.feedback.machine.tube.TubeStationBlock(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(3.0f).sound(SoundType.METAL), false));
+            () -> new io.github.soundgoodizerfan.feedback.machine.tube.TubeStationBlock(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(3.0f).sound(SoundType.METAL).noOcclusion(), false));
     public static final DeferredBlock<io.github.soundgoodizerfan.feedback.machine.tube.TubeStationBlock> SORTING_STATION = BLOCKS.register("sorting_station",
             () -> new io.github.soundgoodizerfan.feedback.machine.tube.TubeStationBlock(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(3.5f).sound(SoundType.METAL), true));
     public static final DeferredBlock<io.github.soundgoodizerfan.feedback.machine.tube.VacuumPumpBlock> VACUUM_PUMP = BLOCKS.register("vacuum_pump",

@@ -31,6 +31,42 @@ public class TubeStationBlock extends Block implements EntityBlock {
 
     public static final DirectionProperty FACING = BlockStateProperties.FACING;
 
+    /** Mirrors models/block/tube_station.json drawn facing north: the plate body and the tube mouth on the front. */
+    private static final int[][] BOXES = {{2, 2, 2, 14, 14, 14}, {5, 5, 0, 11, 11, 2}};
+
+    /** BOXES turned to each facing like the blockstate's rotations (north none, y 90 east, y 180 south, y 270 west, x 270 up, x 90 down). */
+    private static final net.minecraft.world.phys.shapes.VoxelShape[] SHAPES = new net.minecraft.world.phys.shapes.VoxelShape[6];
+
+    static {
+        for (net.minecraft.core.Direction d : net.minecraft.core.Direction.values()) {
+            net.minecraft.world.phys.shapes.VoxelShape s = net.minecraft.world.phys.shapes.Shapes.empty();
+            for (int[] b : BOXES) {
+                double[] p = turn(d, b[0], b[1], b[2]), q = turn(d, b[3], b[4], b[5]);
+                s = net.minecraft.world.phys.shapes.Shapes.or(s, Block.box(Math.min(p[0], q[0]), Math.min(p[1], q[1]), Math.min(p[2], q[2]),
+                        Math.max(p[0], q[0]), Math.max(p[1], q[1]), Math.max(p[2], q[2])));
+            }
+            SHAPES[d.get3DDataValue()] = s;
+        }
+    }
+
+    private static double[] turn(net.minecraft.core.Direction d, int x, int y, int z) {
+        return switch (d) {
+            case SOUTH -> new double[]{16 - x, y, 16 - z};
+            case EAST -> new double[]{16 - z, y, x};
+            case WEST -> new double[]{z, y, 16 - x};
+            case UP -> new double[]{x, 16 - z, y};
+            case DOWN -> new double[]{x, z, 16 - y};
+            default -> new double[]{x, y, z};
+        };
+    }
+
+    @Override
+    protected net.minecraft.world.phys.shapes.VoxelShape getShape(BlockState state,
+            net.minecraft.world.level.BlockGetter level, BlockPos pos,
+            net.minecraft.world.phys.shapes.CollisionContext ctx) {
+        return multiStage ? super.getShape(state, level, pos, ctx) : SHAPES[state.getValue(FACING).get3DDataValue()];
+    }
+
     private final boolean multiStage;
 
     public TubeStationBlock(Properties properties, boolean multiStage) {

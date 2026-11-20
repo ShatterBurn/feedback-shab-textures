@@ -1,7 +1,10 @@
 {
   "variants": {
-    "": {
+    "open=true": {
       "model": "feedback:block/ore_tap"
+    },
+    "open=false": {
+      "model": "feedback:block/ore_tap_closed"
     }
   }
 }

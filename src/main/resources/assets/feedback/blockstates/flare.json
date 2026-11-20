@@ -4,7 +4,7 @@
       "model": "feedback:block/flare"
     },
     "lit=true": {
-      "model": "feedback:block/flare"
+      "model": "feedback:block/flare_lit"
     }
   }
 }

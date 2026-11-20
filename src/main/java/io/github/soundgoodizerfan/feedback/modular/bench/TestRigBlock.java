@@ -35,7 +35,19 @@ public class TestRigBlock extends Block {
 
     public static final MapCodec<TestRigBlock> CODEC = simpleCodec(p -> new TestRigBlock(p, Kind.PENDULUM));
 
+    /** Mirrors models/block/impact_pendulum.json: two plate cheeks, the bearing axle, the rod and the bob. */
+    private static final net.minecraft.world.phys.shapes.VoxelShape PENDULUM_SHAPE = net.minecraft.world.phys.shapes.Shapes.or(
+            Block.box(1, 0, 6, 3, 16, 10), Block.box(13, 0, 6, 15, 16, 10), Block.box(3, 12, 7, 13, 14, 9),
+            Block.box(7, 4, 7, 9, 12, 9), Block.box(5, 2, 6, 11, 4, 10));
+
     private final Kind kind;
+
+    @Override
+    protected net.minecraft.world.phys.shapes.VoxelShape getShape(BlockState state,
+            net.minecraft.world.level.BlockGetter level, BlockPos pos,
+            net.minecraft.world.phys.shapes.CollisionContext ctx) {
+        return kind == Kind.PENDULUM ? PENDULUM_SHAPE : super.getShape(state, level, pos, ctx);
+    }
 
     public TestRigBlock(Properties properties, Kind kind) {
         super(properties);

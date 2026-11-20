@@ -26,8 +26,20 @@ import org.jetbrains.annotations.Nullable;
  */
 public class DerrickBaseBlock extends Block implements EntityBlock, Rotatable {
 
+    /** Mirrors models/block/derrick_base.json: the body, the shaft through it on X, the collar ring on top. */
+    private static final net.minecraft.world.phys.shapes.VoxelShape SHAPE = net.minecraft.world.phys.shapes.Shapes.or(
+            Block.box(2, 0, 0, 14, 12, 16), Block.box(0, 6, 6, 16, 10, 10), Block.box(0, 12, 0, 16, 16, 2),
+            Block.box(0, 12, 14, 16, 16, 16), Block.box(0, 12, 2, 2, 16, 14), Block.box(14, 12, 2, 16, 16, 14));
+
     public DerrickBaseBlock(Properties properties) {
         super(properties);
+    }
+
+    @Override
+    protected net.minecraft.world.phys.shapes.VoxelShape getShape(BlockState state,
+            net.minecraft.world.level.BlockGetter level, BlockPos pos,
+            net.minecraft.world.phys.shapes.CollisionContext ctx) {
+        return SHAPE;
     }
 
     @Override

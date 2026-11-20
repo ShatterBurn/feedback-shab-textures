@@ -44,8 +44,19 @@ import net.minecraft.world.phys.BlockHitResult;
  */
 public class GrindingWheelBlock extends Block implements EntityBlock, Rotatable {
 
+    /** Mirrors models/block/grinding_wheel.json: bearing base, shaft, octagonal disc flush with the top (the workpiece lies on it). */
+    private static final net.minecraft.world.phys.shapes.VoxelShape SHAPE = net.minecraft.world.phys.shapes.Shapes.or(
+            Block.box(4, 0, 4, 12, 4, 12), Block.box(6, 4, 6, 10, 12, 10), Block.box(1, 12, 1, 15, 16, 15));
+
     public GrindingWheelBlock(Properties properties) {
         super(properties);
+    }
+
+    @Override
+    protected net.minecraft.world.phys.shapes.VoxelShape getShape(BlockState state,
+            net.minecraft.world.level.BlockGetter level, BlockPos pos,
+            net.minecraft.world.phys.shapes.CollisionContext ctx) {
+        return SHAPE;
     }
 
     @Override

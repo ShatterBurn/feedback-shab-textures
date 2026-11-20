@@ -29,6 +29,14 @@ public class CatalystTapBlock extends Block implements EntityBlock {
         builder.add(XpTapBlock.OPEN);
     }
 
+    /** The XP taps' shared body (models/block/catalyst_tap.json). */
+    @Override
+    protected net.minecraft.world.phys.shapes.VoxelShape getShape(BlockState state,
+            net.minecraft.world.level.BlockGetter level, BlockPos pos,
+            net.minecraft.world.phys.shapes.CollisionContext ctx) {
+        return XpTapBlock.TAP_SHAPE;
+    }
+
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
         return XpTapBlock.flip(state, level, pos);

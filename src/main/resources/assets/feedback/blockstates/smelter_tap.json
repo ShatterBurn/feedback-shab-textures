@@ -1,7 +1,10 @@
 {
   "variants": {
-    "": {
+    "open=true": {
       "model": "feedback:block/smelter_tap"
+    },
+    "open=false": {
+      "model": "feedback:block/smelter_tap_closed"
     }
   }
 }

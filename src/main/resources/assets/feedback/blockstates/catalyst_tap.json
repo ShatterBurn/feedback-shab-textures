@@ -1,7 +1,10 @@
 {
   "variants": {
-    "": {
+    "open=true": {
       "model": "feedback:block/catalyst_tap"
+    },
+    "open=false": {
+      "model": "feedback:block/catalyst_tap_closed"
     }
   }
 }

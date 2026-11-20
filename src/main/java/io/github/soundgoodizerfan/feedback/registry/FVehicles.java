@@ -50,7 +50,8 @@ public class FVehicles {
             () -> new LiftBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.METAL)
                     .strength(3.0f)
-                    .sound(SoundType.METAL)));
+                    .sound(SoundType.METAL)
+                    .noOcclusion()));
 
     /** Places a lift, and picks a whole creation up into itself (spec section 4). */
     public static final DeferredItem<LiftItem> LIFT_ITEM = ITEMS.register("lift",

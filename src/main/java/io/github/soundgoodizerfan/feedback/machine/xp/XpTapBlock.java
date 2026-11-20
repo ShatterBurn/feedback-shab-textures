@@ -38,7 +38,26 @@ public class XpTapBlock extends Block implements EntityBlock {
     /** The valve: a tap draws only while its lever is open and no redstone signal holds it shut. */
     public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
 
+    /** Mirrors models/block/orb_absorber.json: the shrieker core, four iron corner plates, two crystals, the lever, the wire outlet. The other taps are cubes. */
+    private static final net.minecraft.world.phys.shapes.VoxelShape ORB_SHAPE = net.minecraft.world.phys.shapes.Shapes.or(
+            Block.box(2, 0, 2, 14, 10, 14), Block.box(0, 0, 0, 4, 12, 4), Block.box(12, 0, 0, 16, 12, 4),
+            Block.box(0, 0, 12, 4, 12, 16), Block.box(12, 0, 12, 16, 12, 16), Block.box(4, 10, 7, 6, 14, 9),
+            Block.box(10, 10, 7, 12, 14, 9), Block.box(6, 10, 11, 10, 12, 13), Block.box(7, 12, 11, 9, 15, 13),
+            Block.box(6, 0, 0, 10, 4, 2));
+
+    /** Mirrors models/block/ore_tap.json (and trade, catalyst and smelter): the iron body, the front part, the lever and the wire outlet at the back. */
+    public static final net.minecraft.world.phys.shapes.VoxelShape TAP_SHAPE = net.minecraft.world.phys.shapes.Shapes.or(
+            Block.box(1, 0, 2, 15, 12, 14), Block.box(3, 2, 0, 13, 10, 2), Block.box(6, 12, 10, 10, 14, 12),
+            Block.box(7, 14, 10, 9, 16, 12), Block.box(6, 2, 14, 10, 6, 16));
+
     private final Kind kind;
+
+    @Override
+    protected net.minecraft.world.phys.shapes.VoxelShape getShape(BlockState state,
+            net.minecraft.world.level.BlockGetter level, BlockPos pos,
+            net.minecraft.world.phys.shapes.CollisionContext ctx) {
+        return kind == Kind.ORB ? ORB_SHAPE : TAP_SHAPE;
+    }
 
     public XpTapBlock(Properties properties, Kind kind) {
         super(properties);

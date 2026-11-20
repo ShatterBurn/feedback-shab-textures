@@ -1,6 +1,6 @@
 {
-  "parent": "item/generated",
+  "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "feedback:item/part_electronic_circuit_integrated"
+    "layer0": "feedback:item/usb_port"
   }
 }

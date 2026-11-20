@@ -2,6 +2,8 @@
 
 The part that makes a body turned by a [Rotary Bearing](Rotary_Bearing.md) a wheel. It comes in three sizes, **Small**, **Medium** and **Large Tire Hub**, and sets the wheel's radius.
 
+The hub is a round flange on a short bronze stub axle along its axis, with a ring of bolt heads painted on the flange: four on the small, six on the medium, eight on the large. The large flange is steel, the others iron. The outline follows the flange and axle.
+
 ## Crafting
 
 Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, machine bolts ([Fasteners](Fasteners.md)) and Mechanical Treatise I: Engines, Flywheels and Dynamotors ([Treatise](Treatise.md)).
