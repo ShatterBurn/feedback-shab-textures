@@ -191,6 +191,7 @@ public class LiftBlockEntity extends BlockEntity {
         height = next;
         letGo(level);
         setChanged();
+        sync();
         return "height";
     }
 
@@ -253,6 +254,7 @@ public class LiftBlockEntity extends BlockEntity {
         body = null;
         height = 0;
         setChanged();
+        sync();
         return "lowered";
     }
 
@@ -285,6 +287,25 @@ public class LiftBlockEntity extends BlockEntity {
         body = null;
         height = 0;
         setChanged();
+        sync();
+    }
+
+    /** Tells the clients how high the lift stands, so the renderer can draw the column up to the lifted body. */
+    private void sync() {
+        if (level != null)
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+    }
+
+    @Override
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        CompoundTag tag = super.getUpdateTag(registries);
+        tag.putInt("Height", height);
+        return tag;
+    }
+
+    @Override
+    public net.minecraft.network.protocol.Packet<net.minecraft.network.protocol.game.ClientGamePacketListener> getUpdatePacket() {
+        return net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket.create(this);
     }
 
     private void letGo(ServerLevel level) {
