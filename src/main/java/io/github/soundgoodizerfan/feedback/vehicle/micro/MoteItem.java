@@ -61,9 +61,17 @@ public class MoteItem extends Item {
         if (state.is(FORCED))
             return true;
         Block block = state.getBlock();
+        // A rotation part, a joint or a hub cut into motes is a fine shaft, a fine cog: placed by the same click, one mote one voxel.
+        if (part(block))
+            return true;
         return !(block instanceof MicroRotation) && !(block instanceof MicroWedgeBlock) && !state.hasBlockEntity()
                 && state.getRenderShape() == RenderShape.MODEL && state.getDestroySpeed(EmptyBlockGetter.INSTANCE, net.minecraft.core.BlockPos.ZERO) >= 0
                 && state.isCollisionShapeFullBlock(EmptyBlockGetter.INSTANCE, net.minecraft.core.BlockPos.ZERO);
+    }
+
+    /** Whether {@code block} is a part that lives in finespace as a voxel of itself: a rotation part, a joint or a tire hub. */
+    public static boolean part(Block block) {
+        return block instanceof MicroRotation || block instanceof io.github.soundgoodizerfan.feedback.machine.bearing.JointPart || block instanceof TireHubBlock;
     }
 
     @Override

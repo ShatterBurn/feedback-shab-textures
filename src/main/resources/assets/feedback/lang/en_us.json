@@ -346,7 +346,6 @@
   "feedback.channel.brake": "Brake",
   "feedback.channel.clutch": "Engaged",
   "feedback.channel.joint_angle": "Angle",
-  "message.feedback.micro.credit": "%s voxels left of the last block.",
   "message.feedback.micro.mode.single": "One voxel at a time.",
   "message.feedback.micro.mode.line": "Line: click a start, then an end.",
   "message.feedback.micro.mode.box": "Box: click one corner, then the other.",
