@@ -30,7 +30,7 @@ A strong base. It is left in the Electrolyser's cell when brine is split; draw i
 
 ## Battery Electrolyte
 
-A flammable liquid: a lithium salt in an organic carbonate. Make it in a [Reactor](Reactor.md) from a lithium ingot with ethylene, carbon dioxide and hydrofluoric acid; it also gives off hydrogen. It fills the cells of a lithium-ion [Battery](Battery.md). Lithium comes from spodumene concentrate smelted with charcoal ([Materials](Materials.md#the-metals)).
+A flammable liquid: a lithium salt in an organic carbonate. Make it in a [Reactor](Reactor.md) from a lithium ingot with ethylene, carbon dioxide and hydrofluoric acid; it also gives off hydrogen. It fills the cells of a lithium-ion [Battery](Battery.md#the-electrolyte), which take a non-water electrolyte. Lithium comes from spodumene concentrate smelted with charcoal ([Materials](Materials.md#the-metals)).
 
 ## Chlorine
 
@@ -38,7 +38,7 @@ A heavy toxic gas from the anode (front) of an Electrolyser running on brine. It
 
 ## Acids
 
-**Hydrochloric Acid** is made in a Reactor from hydrogen and chlorine. **Sulfuric Acid** is made from sulfur dioxide, oxygen and water over a catalyst bed. Both work as the electrolyte of an Electrolytic Cell, where an ore item hung as the anode dissolves as the metals it bears.
+**Hydrochloric Acid** is made in a Reactor from hydrogen and chlorine. **Sulfuric Acid** is made from sulfur dioxide, oxygen and water over a catalyst bed. Both work as the electrolyte of a [Battery](Battery.md#the-electrolyte) and of an Electrolytic Cell, where an ore item hung as the anode dissolves as the metals it bears.
 
 ## Sulfur dioxide
 

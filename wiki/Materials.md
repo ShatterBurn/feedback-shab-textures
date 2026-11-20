@@ -109,6 +109,7 @@ Beyond the table, every material carries figures JEI's *Material Stats* page sho
 - **Hydrogen uptake and release temperature**: palladium, magnesium, titanium and titanium 6Al-4V soak up hydrogen and give it back when hot. See the [Hydride Bed](Hydride_Bed.md).
 - **Shock limit** (Tu): glass, ceramic, brick, concrete and obsidian crack when dipped into a bath whose temperature differs from the part's by more than this. See [Thermal shock](Heat.md#thermal-shock). Obsidian 50, mud brick 60, glass, optical glass, uranium glass, terracotta and concrete 100, ceramic and glazed ceramic 120, brick 150, borosilicate glass 170, alumina and nether brick 200, silica glass and quartz glass 1000.
 - **Toxicity**: how harmful it is swallowed, a log scale of the real lethal dose. 0 is harmless; each step is ten times deadlier.
+- **pH**: shown on a fluid in the material stats and on the probe. Under 7 is an acid, over 7 a base, 7 neutral. A fluid that carries ions, an electrolyte, can fill a [Battery](Battery.md#the-electrolyte).
 - **Corrosivity**: how hard an acid or a base burns flesh and eats metal on contact, its pH distance from neutral. 0 is neutral; a strong acid or a strong base is about 7. A [Fluid Caster](Fluid_Caster.md#what-the-stream-does) stream of it burns what it hits.
 - **Shear thickening**: how much thicker it gets the faster it is pushed. Soul oil has it: a [pump](Pump.md) turned fast on it moves less and labours.
 
@@ -183,10 +184,6 @@ A hard, transparent crystal (hardness 140, density 3.58) that stands 1243 Tu and
 ## Feather down and rabbit hide
 
 **Feather Down** (from a feather) and **Rabbit Hide** (from a rabbit hide) are animal materials, both fibrous, so both work as the padding of a [bed](Bed.md) and as an armor lining. Feather down is the lightest and warmest padding and weak in every other way; rabbit hide is warm and tough. Both burn.
-
-## Nickel-iron
-
-A magnetic alloy of about half nickel and half iron, melting at 1440 Tu. Melt equal parts nickel and iron together in a [crucible](Crucible.md) and cast ingots like any alloy (a [Mixer](Mixer.md#alloying-with-heat) gives the molten alloy too) ([Casting and Alloys](Casting.md)). Its plates make the cells of a [nickel-iron battery](Battery.md): a lower strength per cell than lead, filled with lye, with no gassing, good in the cold and a lower return than lead.
 
 ## Graphite
 

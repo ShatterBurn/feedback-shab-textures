@@ -1,4 +1,4 @@
-// 1.21.1	2026-11-15T20:54:38.659695121	Block States: feedback
+// 1.21.1	2026-11-20T09:26:58.751007974	Block States: feedback
 0a87f2bb026369e040cdeed32dd5071ea4e35b44 assets/feedback/blockstates/alnico_block.json
 50ce162472eb5d1ced5989c7d098f6ea1a570ccf assets/feedback/blockstates/alnico_pipe.json
 4a4a4f3dba74d39a8a934c2874f25fc8932a02e5 assets/feedback/blockstates/alumina_deepslate_ore.json
@@ -183,8 +183,6 @@ aebd64adeef76d32ccfa1ab850b61e492a897fc6 assets/feedback/blockstates/nacre_lamin
 c9c4429ec9a87667ccde433eb055af783b0162b2 assets/feedback/blockstates/nichrome_block.json
 50ce162472eb5d1ced5989c7d098f6ea1a570ccf assets/feedback/blockstates/nichrome_pipe.json
 f2c848b2857d40ae43a451fe5d442215bbbcad6d assets/feedback/blockstates/nickel_block.json
-6fc5d0ebbd06877bba3ccbb91300386a912faf3a assets/feedback/blockstates/nickel_iron_block.json
-50ce162472eb5d1ced5989c7d098f6ea1a570ccf assets/feedback/blockstates/nickel_iron_pipe.json
 50ce162472eb5d1ced5989c7d098f6ea1a570ccf assets/feedback/blockstates/nickel_pipe.json
 e2e684ed94aa6ceea32fcc88ea002e49b6e5dda1 assets/feedback/blockstates/optical_glass_block.json
 4b7a00cbc497e86eac94aa161183f3a79e75983a assets/feedback/blockstates/osmiridium_deepslate_ore.json
@@ -440,7 +438,6 @@ a25a6fdf9eae81c710624b79e3dd9f7d6181a9dd assets/feedback/models/block/natural_ru
 a25a6fdf9eae81c710624b79e3dd9f7d6181a9dd assets/feedback/models/block/netherite_blend_block.json
 a25a6fdf9eae81c710624b79e3dd9f7d6181a9dd assets/feedback/models/block/nichrome_block.json
 a25a6fdf9eae81c710624b79e3dd9f7d6181a9dd assets/feedback/models/block/nickel_block.json
-a25a6fdf9eae81c710624b79e3dd9f7d6181a9dd assets/feedback/models/block/nickel_iron_block.json
 a25a6fdf9eae81c710624b79e3dd9f7d6181a9dd assets/feedback/models/block/optical_glass_block.json
 6974550804162d82149d67ef91a5e8c1d95cf0ec assets/feedback/models/block/osmiridium_deepslate_ore.json
 a7bc49b65068f3c835cd5ee5b0d3e704923b6ef3 assets/feedback/models/block/osmiridium_loose_rock.json
@@ -709,8 +706,6 @@ e73aa8f1039ceb51f7b35963dbe3b2611016a161 assets/feedback/models/item/netherite_b
 587244d0963db882ba964819b2055ac804e25c25 assets/feedback/models/item/nichrome_block.json
 220c3a56bd41c563f0690f6c2070049e10f96e54 assets/feedback/models/item/nichrome_pipe.json
 a34d50d13ef46a1c2e0c224125a92aff1966444d assets/feedback/models/item/nickel_block.json
-349f35c48df7b87ae62674cf0d3b66af540f0659 assets/feedback/models/item/nickel_iron_block.json
-220c3a56bd41c563f0690f6c2070049e10f96e54 assets/feedback/models/item/nickel_iron_pipe.json
 220c3a56bd41c563f0690f6c2070049e10f96e54 assets/feedback/models/item/nickel_pipe.json
 c6b05c20a7d0dcf4368197ccb6ee2a95e0f3d9a7 assets/feedback/models/item/optical_glass_block.json
 286f2ca61d1c6a2c760480628ee5bfdf6d026a2a assets/feedback/models/item/osmiridium_deepslate_ore.json

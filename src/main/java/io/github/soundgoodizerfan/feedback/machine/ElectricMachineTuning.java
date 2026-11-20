@@ -356,6 +356,9 @@ public final class ElectricMachineTuning {
     /** Eu one ingot of plate holds per volt of the electrode gap, for a chemistry that states no figure of its own (placeholder). */
     public static final float BATTERY_EU_PER_INGOT_PER_VOLT = 30000f;
 
+    /** Placeholder. The share of an acid's bite a base has on a battery's plates (an acid eats an active metal faster than a base does). */
+    public static final float BATTERY_BASE_BITE = 0.25f;
+
     /**
      * Thermal runaway (placeholders): share of a cell's Eu burnt a tick at the trigger and how fast that grows per Tu over it, Work
      * per Eu burnt (scaled by the material's {@code runaway_heat}), condition lost a tick, the Tu a cell must cool under the trigger

@@ -256,7 +256,7 @@ public final class ModularStacks {
         tag.putFloat("ColdFactor", c.plates().coldFactor());
         tag.putFloat("ChargeEfficiency", c.plates().chargeEfficiency());
         tag.putBoolean("Gassing", c.plates().gassing());
-        tag.putString("Electrolyte", c.plates().electrolyte().toString());
+        tag.putFloat("PlateResistance", c.plateResistance());
         tag.putString("CaseBand", c.caseBand().getSerializedName());
         tag.putFloat("RunawayTu", c.runawayTu());
         tag.putFloat("RunawayHeat", c.runawayHeat());

@@ -19,7 +19,7 @@ Quality is a figure from 1 to 5 read from the metal; a screw, a bolt and a rivet
 | --- | --- |
 | 1 | Cast iron, copper, gold, lead, silver, tin, zinc |
 | 2 | Aluminum, brass, bronze, iron, wrought iron |
-| 3 | Chromium, manganese steel, nickel, nickel iron, steel |
+| 3 | Chromium, manganese steel, nickel, steel |
 | 4 | Cobalt, osmium, tungsten |
 | 5 | Netherite, stainless steel, titanium |
 

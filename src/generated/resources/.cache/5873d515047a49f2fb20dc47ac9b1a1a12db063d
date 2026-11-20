@@ -1,4 +1,4 @@
-// 1.21.1	2026-11-20T06:25:04.965008441	Tags for minecraft:item mod id feedback
+// 1.21.1	2026-11-20T09:26:58.770871188	Tags for minecraft:item mod id feedback
 3073a61ba898ee96262dfccbc399f1d5818039eb data/c/tags/item/birdshots/alnico.json
 574ad0a0f2ff288ea1128b7267ecde3cdd2af387 data/c/tags/item/birdshots/aluminium.json
 3b858b2b1f82950d60df7edc28f511d16bcaa4d0 data/c/tags/item/birdshots/aluminium_foam.json
@@ -51,7 +51,6 @@ e3b484df368a6e9945a6d574b360d4b363a42623 data/c/tags/item/birdshots/natural_rubb
 6711627792d267227e277ffee80841091d115ad4 data/c/tags/item/birdshots/netherite_blend.json
 7d9f0544b82d2c09c8fb2109b2ed3742a98ea3f4 data/c/tags/item/birdshots/nichrome.json
 a8b7ad48e4b4373e8aa310ac1c95d6ee98edc7b8 data/c/tags/item/birdshots/nickel.json
-84ec67c14b097851d2180155767b561e86d3b2e9 data/c/tags/item/birdshots/nickel_iron.json
 c19a86a0cc2df057dadec9eff4a0fbb3975d483e data/c/tags/item/birdshots/osmium.json
 346a2e9d47d318590b2a3c31aef9cc3fee7e5cf5 data/c/tags/item/birdshots/palladium.json
 40c70a34b0985ea56869cc2eeb513d179a7ea50f data/c/tags/item/birdshots/pewter.json
@@ -142,7 +141,6 @@ cca35c1c4558f52d114e38103e86557258079fe9 data/c/tags/item/bullets/netherite.json
 98bb7a97d9703e05bd4c0a40f32c7d5a67c73d18 data/c/tags/item/bullets/netherite_blend.json
 a6635be64cffde04b6e188f7c0d883ea3ebb4fbf data/c/tags/item/bullets/nichrome.json
 1a52affcbaabbe5c2cf66177a69ccf9e5e05328a data/c/tags/item/bullets/nickel.json
-f8bce016d03edc48abffca1d52ee8d5263da7daa data/c/tags/item/bullets/nickel_iron.json
 8aa454e5d509aefccc0eec4de66370203199ef90 data/c/tags/item/bullets/palladium.json
 28d2dd6ddcbf07dd2d1fd470022411e62cf2aaf5 data/c/tags/item/bullets/pewter.json
 be424b2a2645f816f26e18144564f7c5029f3122 data/c/tags/item/bullets/platinum.json
@@ -259,7 +257,6 @@ ebbe260ac32356b7df448e30f53955517b85fe66 data/c/tags/item/cases/netherite.json
 fc4fc6defb7cfcce2ce64443381451e5dcb6611d data/c/tags/item/cases/netherite_blend.json
 8470fc5e1876613a673d601e1458bdc2f95d92a4 data/c/tags/item/cases/nichrome.json
 f832fe8a3b36e01631ab2b7ba2f283ea76f3a4ab data/c/tags/item/cases/nickel.json
-0c8e09ab0b76b637fa70879e1ac045234544c6a3 data/c/tags/item/cases/nickel_iron.json
 2b3d259897303849e71b21a9af7a10c916815d48 data/c/tags/item/cases/palladium.json
 8934e5448381477d77e4e17e0e87b9dce68f0a97 data/c/tags/item/cases/pewter.json
 ee3a372c08f956296a2b3e6c067ce7f4cf2f33f6 data/c/tags/item/cases/platinum.json
@@ -335,7 +332,6 @@ d33bf9af068ba2991b119f619b4bfdbaf681e415 data/c/tags/item/coil_springs/molybdenu
 03b47e3b7761b7d5d292f5377190ee3272cd5f0d data/c/tags/item/coil_springs/netherite_blend.json
 d5ad0874ebca9947807350afeabccb311371980e data/c/tags/item/coil_springs/nichrome.json
 a6200b3bbed1d0488efccad59a0477896f6b6ed6 data/c/tags/item/coil_springs/nickel.json
-5ec91ff79aaea6c4de01bc8434f36357bc3f7d95 data/c/tags/item/coil_springs/nickel_iron.json
 e0c8496ca719d3bbba766a2affb0c1f8528fff87 data/c/tags/item/coil_springs/osmium.json
 5349d335b1567ce36ea4d1bd4ea1a1373a602f4a data/c/tags/item/coil_springs/palladium.json
 f8882a4801aab0a5c60276b40dcd489bf0cd4662 data/c/tags/item/coil_springs/pewter.json
@@ -415,7 +411,6 @@ ea6a2837c590f709234f8419ce33aaa491f94ec9 data/c/tags/item/coins/mercury.json
 45575aa482bb3977f37b3d696588079901516cf1 data/c/tags/item/coins/netherite.json
 f35dd6057c4e3f4161dd6c4b974946cd611ee105 data/c/tags/item/coins/nichrome.json
 424c7b202c4d9ae5ac73a7b81c59f491fb328948 data/c/tags/item/coins/nickel.json
-47184951898c9ad8485b9431161ead97a1f5ff77 data/c/tags/item/coins/nickel_iron.json
 4a3ca87bf11c7cb365a38ad585bd05ea5081e6b5 data/c/tags/item/coins/palladium.json
 a978c887e1f7332e977fbc5f880c804f996e1b76 data/c/tags/item/coins/pewter.json
 73f3ef4492689e4aaf9d08650c36c734a24ae732 data/c/tags/item/coins/platinum.json
@@ -616,7 +611,6 @@ d6f116f2540540c936b94c9bf1ac265be69d4e0f data/c/tags/item/drilled_plates/molybde
 9fa939b1c3b9df4d02223401a9e40d8c4700caff data/c/tags/item/drilled_plates/netherite_blend.json
 9059a615e279ab3372d5a718eaef80792f9d97af data/c/tags/item/drilled_plates/nichrome.json
 e6a276d5c4f1a1569a546ddfd84befe5783a2af7 data/c/tags/item/drilled_plates/nickel.json
-2e6f1c6e6fa1ed57c9601dd003bd5bf1815a43da data/c/tags/item/drilled_plates/nickel_iron.json
 1b6345c289541c179fa7237fe0699a4d916dcd6d data/c/tags/item/drilled_plates/palladium.json
 655bd80059a18709d31c2e1c0c17e7af7bb9c891 data/c/tags/item/drilled_plates/pewter.json
 99501cae75387f3895391c078fd1f1d25ddfb861 data/c/tags/item/drilled_plates/platinum.json
@@ -743,7 +737,6 @@ bc0b95a64b76dce7f498f5a60085e1531a1e329d data/c/tags/item/dusts/netherite.json
 213864e44ebf3b71f7d225df33beba01269c4997 data/c/tags/item/dusts/netherrack.json
 a6142ecfb511b6d1528a5011c01783aab1a51882 data/c/tags/item/dusts/nichrome.json
 7d166cec4abf150f8b66417e5b8c5522b4dcf355 data/c/tags/item/dusts/nickel.json
-5e05c5009e283929ccd474f101ef00f8706c4f9b data/c/tags/item/dusts/nickel_iron.json
 e10dcf4aa351f93757c8042e38ad904613e5f9b2 data/c/tags/item/dusts/obsidian.json
 3b18c093f4c933c811c45d2d380caeec21997932 data/c/tags/item/dusts/optical_glass.json
 8b77e40efcf46d70cd5ea312b1d8a1aebc9b08cd data/c/tags/item/dusts/osmiridium.json
@@ -861,7 +854,6 @@ b642e7fac8434ae8ec6c4caefa99e4bbb5cdd9cc data/c/tags/item/fine_wires/molybdenum.
 a6dbd5d25ef101ddf3a4d19d9a03a354177a80d7 data/c/tags/item/fine_wires/netherite.json
 bf9e5b7eddfdcd282decbd7bdfd7a08c4bb5cda4 data/c/tags/item/fine_wires/nichrome.json
 0473795da1b72ffbceb11c2ee005379c5b9c1d55 data/c/tags/item/fine_wires/nickel.json
-e6fb9046b1752560d58ca90da5510993565ae841 data/c/tags/item/fine_wires/nickel_iron.json
 67c98f87cabee620cfa7ac1fa8c57d260da4864e data/c/tags/item/fine_wires/palladium.json
 9b5106f7927fb557d68bd27c815cdbc93f713482 data/c/tags/item/fine_wires/pewter.json
 049ff68da739bd7b8730d910cb10894b6155af77 data/c/tags/item/fine_wires/platinum.json
@@ -937,7 +929,6 @@ f1e6ec7405f0d69be200a16588100f870683b54b data/c/tags/item/flat_nose_bullets/iron
 f1e4ed75eca35b9a12bfb19c0ab95506f8245ca1 data/c/tags/item/flat_nose_bullets/netherite_blend.json
 9b276c9e33449bfd6003de8b820f80940010b043 data/c/tags/item/flat_nose_bullets/nichrome.json
 1752630870fd78b1d7e7eadd0d78b4faa08f8896 data/c/tags/item/flat_nose_bullets/nickel.json
-cefd384ced735e7934614c075d23c1f65f9e6ae1 data/c/tags/item/flat_nose_bullets/nickel_iron.json
 cc72ddb4d6e129c6328b70bf69058dc975e19eb0 data/c/tags/item/flat_nose_bullets/osmium.json
 d50fd2ca7553b6aa90b219b3e5c4dc7b74516247 data/c/tags/item/flat_nose_bullets/palladium.json
 d4bae11dc116e8f8faca2c63c0a3f9661c3b6d96 data/c/tags/item/flat_nose_bullets/pewter.json
@@ -1028,7 +1019,6 @@ d80b9fe1aba47005dc3decce61463b47feceb159 data/c/tags/item/flechettes/natural_rub
 cb9db1564de6445a2a304fd5a4c22e1efbda3e7f data/c/tags/item/flechettes/netherite_blend.json
 b256264efd371ad661e0e9890d102bce353a5b58 data/c/tags/item/flechettes/nichrome.json
 b5b25b196693aacf7569e208fd900a77eb97fd12 data/c/tags/item/flechettes/nickel.json
-65eca08395b92b94d429c76524f653b4a8530f87 data/c/tags/item/flechettes/nickel_iron.json
 e94646d1a631b6ee43553171c0c5368295033fe5 data/c/tags/item/flechettes/osmium.json
 192b812278c0a58859e717fe16d02c3de33c0882 data/c/tags/item/flechettes/palladium.json
 d1967cb97c4c7976c424569c07ad2ee9019b799d data/c/tags/item/flechettes/pewter.json
@@ -1111,7 +1101,6 @@ c8c5f4d3e535bfcc5ebfbff3cf84e08b52e39d54 data/c/tags/item/foils/molybdenum.json
 bfef7a5176b27b719ff53fec06f187b3ff032e98 data/c/tags/item/foils/netherite.json
 d46007dc2c8518d17287465ca80e0fb9ebdd2298 data/c/tags/item/foils/nichrome.json
 f6aec77554619a6aa0e353c1e0cf8dfa30b9f50e data/c/tags/item/foils/nickel.json
-12e53d4756aab550b7aabc27447fe15a69cba619 data/c/tags/item/foils/nickel_iron.json
 a32dfcd2d63d12d466a7de2f35217640aa9b1233 data/c/tags/item/foils/palladium.json
 2c6a8bbb7d2ea1e26a92950525b192b078e43bab data/c/tags/item/foils/pewter.json
 489c20860e833153daafddb40fece6977d689700 data/c/tags/item/foils/platinum.json
@@ -1202,7 +1191,6 @@ dbc52b15a701a46b0f6a1714e8cda90ec1955b75 data/c/tags/item/grips/mercury.json
 d30483086ceaaad481e984594675519e17f4b72e data/c/tags/item/grips/netherite_blend.json
 ba19694164e17af10109fd2e6f2d8bcd48308cb8 data/c/tags/item/grips/nichrome.json
 9cfe532ab8881f2daed7b375f8475f26f9e04b78 data/c/tags/item/grips/nickel.json
-b4b72630401bb41a4497be240e29d544e40ec32d data/c/tags/item/grips/nickel_iron.json
 92862fad53147e4e007c67abbea4d2542b1e1e63 data/c/tags/item/grips/oak.json
 d183efd06403e3dd5dd243b655deabf4e7b91a77 data/c/tags/item/grips/palladium.json
 8dfd10b9521a53bcdf8fae9cd8023b51cfa278d0 data/c/tags/item/grips/pewter.json
@@ -1285,7 +1273,6 @@ c2e16977a507cddb8d504e99b64f33cfe4c77c24 data/c/tags/item/ground_ingots/manganes
 51f91f1e768d695cfe7aae3940c4a820b121203d data/c/tags/item/ground_ingots/netherite_blend.json
 9739d1a6380c46fc44489540d300e00f8430beca data/c/tags/item/ground_ingots/nichrome.json
 7bbd188e008cb59cac97be15e2527cd1b40dce55 data/c/tags/item/ground_ingots/nickel.json
-d04c04bbcb38cda14ca7c9dbf6e816cfa14e6ef0 data/c/tags/item/ground_ingots/nickel_iron.json
 efff2b0af404f44c79dcad962ac07ccf8fcadaac data/c/tags/item/ground_ingots/palladium.json
 456a937b645b3fb8c4523213478a341354b0496b data/c/tags/item/ground_ingots/pewter.json
 ddbf42169d04f376679ee8e2911ab9d561089434 data/c/tags/item/ground_ingots/platinum.json
@@ -1366,7 +1353,6 @@ f0e03616dd1c058260139a773086c8f53c18bbd8 data/c/tags/item/hollow_point_bullets/m
 24b9263507a2cbf367371b5539b28109485b10b4 data/c/tags/item/hollow_point_bullets/netherite_blend.json
 6eea1c7df5fd3474e761e1b1dfce3a3ae7938c67 data/c/tags/item/hollow_point_bullets/nichrome.json
 277459be0390cde648613f2dd0d140f9561659c4 data/c/tags/item/hollow_point_bullets/nickel.json
-e7913cfb5aa73899666010741ac3daee6ae1bf20 data/c/tags/item/hollow_point_bullets/nickel_iron.json
 d102b9a7f6d27fe8b845083548577e19ed2aeb31 data/c/tags/item/hollow_point_bullets/osmium.json
 fa6ee7b22975cf9b6e0575146151c8a180b5b949 data/c/tags/item/hollow_point_bullets/palladium.json
 5d864e671b502864f6556094171b0983d3439eaa data/c/tags/item/hollow_point_bullets/pewter.json
@@ -1468,7 +1454,6 @@ aa397113b01e1985363641d1fc7a22949514e15e data/c/tags/item/ingots/netherite.json
 71f165f8460d7dc2af27d96df69939ea4741e796 data/c/tags/item/ingots/netherite_blend.json
 bb8085535d629d39b754cef42ec51164485ac809 data/c/tags/item/ingots/nichrome.json
 bc4cd7ed30f6674f216300431a0d1276af3098ee data/c/tags/item/ingots/nickel.json
-4ac2d5a2af5ab856dfa70388e1c9cced23817862 data/c/tags/item/ingots/nickel_iron.json
 0062daf6c48d76e70cbba9d839288c9c4a5ed8a0 data/c/tags/item/ingots/optical_glass.json
 4ab622e0c6a02d25f947fce19f3f2725952208bc data/c/tags/item/ingots/palladium.json
 b2b200b3daf0434e0e24d4a12da098ada96626e1 data/c/tags/item/ingots/pewter.json
@@ -1582,7 +1567,6 @@ e7e35195aa8a2a63c95347e5b2b6500f83611044 data/c/tags/item/large_shots/molybdenum
 f1ad8c54f5477f39cfb9374352c5947e76294932 data/c/tags/item/large_shots/netherite_blend.json
 94a884d0a21cab110fd0e44ba15831d1c890072f data/c/tags/item/large_shots/nichrome.json
 efdb2d6815d27f91df9c352284b72d5dd3703359 data/c/tags/item/large_shots/nickel.json
-b5cf0ca67207c0d50150bf1abc2dbe762f4bb61f data/c/tags/item/large_shots/nickel_iron.json
 6349001d58863d87427f0e1975f16a71125e63ca data/c/tags/item/large_shots/osmium.json
 e50592a8add3c6479e1e9a90c321c23c4749cfbb data/c/tags/item/large_shots/palladium.json
 da395e75bd6c63431330ceed9466f0458b824ba1 data/c/tags/item/large_shots/pewter.json
@@ -1761,7 +1745,6 @@ ac2bd5343c04a7cb6d4a456bb5f32fea5307af4e data/c/tags/item/machine_bolts/netherit
 fc377cb160a56f9191bfd93b4c6ac343b83293f4 data/c/tags/item/machine_bolts/netherite_blend.json
 d0a54b81b557eb5d3d0b87e4e758b14c484cb89c data/c/tags/item/machine_bolts/nichrome.json
 c508901dde546cf733159d3710217f2135037f86 data/c/tags/item/machine_bolts/nickel.json
-d9e97d6ecf80a1ef6f1e50729beb587cc0afa1d7 data/c/tags/item/machine_bolts/nickel_iron.json
 9ec403de7fbb5101eccc5eef1cd4a585f379fc6f data/c/tags/item/machine_bolts/osmium.json
 e2c1ddc5de33db7fc5d28e2a9636802d45888b80 data/c/tags/item/machine_bolts/palladium.json
 299a452c9eb16cc9c982ea21e010c8a148a74819 data/c/tags/item/machine_bolts/pewter.json
@@ -1846,7 +1829,6 @@ fd76efc7537db0aa1e2f9f6842e956529ca3c664 data/c/tags/item/nuggets/netherite.json
 2e8263fd5a0ef1e9d76eb292be4617299ac54e23 data/c/tags/item/nuggets/netherite_blend.json
 b37fe82af69769823a63bb36bce7e0782c1d125c data/c/tags/item/nuggets/nichrome.json
 6b4e134e4d6b5874949ef13afeb6d923ef153168 data/c/tags/item/nuggets/nickel.json
-3c80aa82abf0b57388b38356abeab472d7172ebd data/c/tags/item/nuggets/nickel_iron.json
 bcd4b2daf631937bf767651f58ec7c58d2307703 data/c/tags/item/nuggets/palladium.json
 b70690654be68cfa2da7b9ce98d9cc3d8849a2f0 data/c/tags/item/nuggets/pewter.json
 566d0995c1129c10746a312365b874662cac9c79 data/c/tags/item/nuggets/platinum.json
@@ -1975,7 +1957,6 @@ c23e4f1cef09284e1728a538151bd1224a4d9f4c data/c/tags/item/pipes/natural_rubber.j
 8e217eafbe5c0d4b25144cac4f0dedf95d549447 data/c/tags/item/pipes/netherite_blend.json
 2e328fc1c93e46e85fc3c29b1fd4bcc31fe8e831 data/c/tags/item/pipes/nichrome.json
 96daf2f30988423020fcd63dd5a597730a178519 data/c/tags/item/pipes/nickel.json
-b45ba3ea54c158eaf3eed52714ef9f67df575f69 data/c/tags/item/pipes/nickel_iron.json
 1430b078d07655f30723d3a8702e3a6b9c9b62e8 data/c/tags/item/pipes/palladium.json
 0db8295dfea38cb596419981003d98b40ab5b597 data/c/tags/item/pipes/pewter.json
 d4ae45a51f226680fa24ebaca5c282e56c96f0fa data/c/tags/item/pipes/platinum.json
@@ -2061,7 +2042,6 @@ d9b1b84656f29c2e676ea7fefa647e030342e35c data/c/tags/item/plates/nacre_laminate.
 3723339eaa8c7981b32282490ff92cc080ffb555 data/c/tags/item/plates/netherite_blend.json
 bd416c4f18a1224ccc4abd6b834cfe56b6e16d39 data/c/tags/item/plates/nichrome.json
 00efe7b79c9510c9218fb486925e3b49f74543a8 data/c/tags/item/plates/nickel.json
-311b46eff2d531b70cf12bb4a7dd0d209783e49f data/c/tags/item/plates/nickel_iron.json
 7e6b4dc0a557c8c3e8e896a3dd715b3aab111d01 data/c/tags/item/plates/optical_glass.json
 d0cee2e7c8e35084fb23490c6c768849b024a791 data/c/tags/item/plates/palladium.json
 178568c7f0b9c2ee90262dfc79a9da29989a76df data/c/tags/item/plates/pewter.json
@@ -2147,7 +2127,6 @@ b5bc48fd960e9a1cd3fcbef00232969c272b5bb8 data/c/tags/item/pointed_bullets/natura
 2c3520b3c35cb85442fe8022fbd63f40b8c3ecfa data/c/tags/item/pointed_bullets/netherite_blend.json
 03232398f6c3171681f37d67b51e66ee519cf3ae data/c/tags/item/pointed_bullets/nichrome.json
 ff37b15a64aae9cf531feabeed5f8d41f4ac4b0d data/c/tags/item/pointed_bullets/nickel.json
-45c0e190e1a8e51a44ecd23904e493f6c8de0737 data/c/tags/item/pointed_bullets/nickel_iron.json
 77b3708dfcffa5b0974340f0a8b22d768d68ee76 data/c/tags/item/pointed_bullets/osmium.json
 aab270f385e1c5a0a84e436d4f57a558e8a82ef9 data/c/tags/item/pointed_bullets/palladium.json
 9cb2084ab95c18d2e2728ae94cd4fde015cf44c0 data/c/tags/item/pointed_bullets/pewter.json
@@ -2233,7 +2212,6 @@ b3bb42ef9da0c63eab2035d4156a66bc5b9db572 data/c/tags/item/rivets/netherite.json
 bfc8bd6a1272907e6b96f76aa32a1423aa6cce55 data/c/tags/item/rivets/netherite_blend.json
 5d69fd845784ae8a17b000b28d03c04b6eabae69 data/c/tags/item/rivets/nichrome.json
 01f79571af9c1478b2852789ca605e051fda932e data/c/tags/item/rivets/nickel.json
-cc402c643d25547c80cf7b96029195a86b5c4daa data/c/tags/item/rivets/nickel_iron.json
 fff967d48aecdc6c1e03e4499ebb3d41cc2af272 data/c/tags/item/rivets/osmium.json
 d73dfc114865a3e535360fd2d42965ea425c68a3 data/c/tags/item/rivets/palladium.json
 04fd8105caadd2d62ab84ec35f0782dea76250b5 data/c/tags/item/rivets/pewter.json
@@ -2324,7 +2302,6 @@ afde75f9c85c56059e4951a5421532fcc464eefd data/c/tags/item/rods/nacre_laminate.js
 a53a2b221a535eb2427c8b1e8ab6cf74616bd58c data/c/tags/item/rods/netherite_blend.json
 bd40f2a9307a698674783795909ca85827c2ff0e data/c/tags/item/rods/nichrome.json
 3f05ee7847751ee7ab03e369fc7a9c35116343df data/c/tags/item/rods/nickel.json
-039f13cb1d2f39c2fbc78bd3c510aa38b283d082 data/c/tags/item/rods/nickel_iron.json
 64f1c0f47da6478b2d9179c99afc9b8a3019ef2d data/c/tags/item/rods/optical_glass.json
 62dbe238ccd0765c3e1fedda4c0a8c417d9b64a6 data/c/tags/item/rods/palladium.json
 04f82b468bb204718cdf5a47f293915f114ea2d4 data/c/tags/item/rods/pewter.json
@@ -2417,7 +2394,6 @@ cea3b7064b787a0b60446de4d6f3119188409a3b data/c/tags/item/round_balls/netherite.
 06245a8622835bb07e0952a4129097a55ddc3f70 data/c/tags/item/round_balls/netherite_blend.json
 6e09be8e754836427f6e2b67b791b68bb639de33 data/c/tags/item/round_balls/nichrome.json
 efe45a8f09710203641146b48a53922f3cf41e8b data/c/tags/item/round_balls/nickel.json
-a934f9980556692999dd6d4c5ae8c79edacd5d2d data/c/tags/item/round_balls/nickel_iron.json
 f0628e4864037795fc4f4a7df59764b6f2168f71 data/c/tags/item/round_balls/osmium.json
 ee5bb604554605317eb8307dca5cbb8a184a873b data/c/tags/item/round_balls/palladium.json
 899ad29411fb2ad395da3c380ebd0a5d8d28e2e6 data/c/tags/item/round_balls/pewter.json
@@ -2495,7 +2471,6 @@ baf4b8f3487565fe7e956cac68a5926432143f7a data/c/tags/item/scraps/manganese.json
 fd1536557fc9f00aa449d0240667ef368aea1bbf data/c/tags/item/scraps/netherite_blend.json
 1170afd404d106a2f7d2e6f92837b5645ff4c6b1 data/c/tags/item/scraps/nichrome.json
 4484d6f7b5b0576d4ea2610d475ace4a54e65b66 data/c/tags/item/scraps/nickel.json
-49702d2133bf581fab636144311a2938c1a4c7f4 data/c/tags/item/scraps/nickel_iron.json
 774e309df732f61f10d70badd055d76d2343bae1 data/c/tags/item/scraps/palladium.json
 fa06f44b6b403c0e05e97bdd326598f55e64c2b1 data/c/tags/item/scraps/pewter.json
 417277939d9f4177066d6af03af734cc88ce8d2f data/c/tags/item/scraps/platinum.json
@@ -2567,7 +2542,6 @@ fe29ed3901b3587a8dda4b8eaace76af737555d2 data/c/tags/item/screws/molybdenum.json
 57f64b05bd767aea4af62fbdf269446d46fe4e85 data/c/tags/item/screws/netherite_blend.json
 940d7b02ec456c3c38bbe56d094382fa4358d147 data/c/tags/item/screws/nichrome.json
 c87297516242dfeda9a910e55507ab23a7d87d1b data/c/tags/item/screws/nickel.json
-55391416ee40c21cb725dfa96ba5344198dc0dde data/c/tags/item/screws/nickel_iron.json
 9a7c70da423fb24a8b9131963be78f0d1e82a1ba data/c/tags/item/screws/osmium.json
 3799d0c502781e1cad10f9ac7fd9dbe661defc02 data/c/tags/item/screws/palladium.json
 66382610b90bb17bb0eef7c74b3d6766ef710065 data/c/tags/item/screws/pewter.json
@@ -2703,7 +2677,6 @@ eaf5cf9c966136a289e7accc9b456fbce752f907 data/c/tags/item/storage_blocks/netheri
 8e8e3734ec2301c2d890909d51e6b0d043d38c50 data/c/tags/item/storage_blocks/netherrack.json
 068ceea67427e8f26bc9b040b6583a296c87ffdf data/c/tags/item/storage_blocks/nichrome.json
 d076aca0a100ea6d9d86ce0c84701a191da6ee8d data/c/tags/item/storage_blocks/nickel.json
-8e1be2ea4aa1ce77e830690f871c5a2e5b7b5a76 data/c/tags/item/storage_blocks/nickel_iron.json
 bd9a7bf50242f154caf9d19698be92a7b73e2ec1 data/c/tags/item/storage_blocks/obsidian.json
 127de84b74e226d3fb9a1d33b83e812061600f24 data/c/tags/item/storage_blocks/optical_glass.json
 390480f646924540d3caee00f71823b54aa024cf data/c/tags/item/storage_blocks/palladium.json
@@ -2828,7 +2801,6 @@ dc12d1e04df015df0b6fb00c6b17f90e9c28084b data/c/tags/item/swarfs/molybdenum.json
 0429c58290e8d9b785acac5aded0720aca1b3fa4 data/c/tags/item/swarfs/netherite_blend.json
 64d7a0d14caeeef3be93f84ad1a474ac1763ca07 data/c/tags/item/swarfs/nichrome.json
 0a81f6097b0f113e21da76c88f8e067ff8ae5ba0 data/c/tags/item/swarfs/nickel.json
-6ffe108052f232754bcd3dafe80cc1aee8e4d02a data/c/tags/item/swarfs/nickel_iron.json
 393b6b22cc92c0bcd01e0b7e8861849e143b5a46 data/c/tags/item/swarfs/palladium.json
 ba68fa854955c1b14a5bcd14b83f21068dc67e5d data/c/tags/item/swarfs/pewter.json
 85adc58a44b06b8145c2f3e82849a5bd1a812845 data/c/tags/item/swarfs/platinum.json
@@ -2932,7 +2904,6 @@ d6d185f7d6fba0ac7ccd527bcec4da2de1528771 data/c/tags/item/turned_rods/netherite.
 4709d34cdb57991f6dbedd7ecdae734daf048efc data/c/tags/item/turned_rods/netherite_blend.json
 f0579a96c272a4aa17925ebbc02f2a5260a564eb data/c/tags/item/turned_rods/nichrome.json
 5923db04db7d0aed46426d68b180e8e84e07c141 data/c/tags/item/turned_rods/nickel.json
-d6d2485c075c05dd06ee4988d2a2327b7a59d00a data/c/tags/item/turned_rods/nickel_iron.json
 21166aa97acd87aa2100a55502c2e0ae52832f76 data/c/tags/item/turned_rods/palladium.json
 ec137445db36228f7e7d98b753b0893982ae3489 data/c/tags/item/turned_rods/pewter.json
 5f4d79d576dd8066ce2dc038a180d16095d5cea8 data/c/tags/item/turned_rods/platinum.json
@@ -2995,7 +2966,6 @@ d742035b07ebc89b223df058b95d30096c73cc05 data/c/tags/item/wires/iron.json
 3f96ec35198f50f0bed582bdd75be883eb303e7a data/c/tags/item/wires/netherite.json
 b630c28d107cde442b4dce85297c1693d9cf4d38 data/c/tags/item/wires/nichrome.json
 42cfb313ad53202423117d50addc92c377615004 data/c/tags/item/wires/nickel.json
-3434b13494529b98ecf7f6843747eeb5e5764161 data/c/tags/item/wires/nickel_iron.json
 665175ee611f5dd68804a0f80ff7abe413f730d8 data/c/tags/item/wires/palladium.json
 5801c9a9d0f07ba80bc74ecbd8986f6c8107d844 data/c/tags/item/wires/pewter.json
 93a8560e3d7aa6f8e9b5586e915a08d674135a54 data/c/tags/item/wires/platinum.json

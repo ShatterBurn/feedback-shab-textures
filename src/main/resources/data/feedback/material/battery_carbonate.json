@@ -1,7 +1,8 @@
 {
   "kind": "fluid",
   "traits": [
-    "flammable"
+    "flammable",
+    "electrolyte"
   ],
   "hardness": 1,
   "density": 1.28,

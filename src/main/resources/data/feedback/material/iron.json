@@ -40,7 +40,14 @@
     "drop": 0.294,
     "core_loss": 0.06,
     "electrode_potential": -0.44,
-    "seebeck": 18.9
+    "seebeck": 18.9,
+    "secondary_cell": {
+      "empty_share": 0.75,
+      "eu_per_ingot": 24000,
+      "cold_factor": 0.85,
+      "charge_efficiency": 0.65,
+      "gassing": false
+    }
   },
   "ampacity": 0.31,
   "corrosion_resistance": 0.37,

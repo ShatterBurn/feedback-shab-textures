@@ -164,7 +164,7 @@ public final class PartBenchShaping {
     private static boolean holdsExperience(Option option, Material.Located what) {
         ModularType type = ModularTypes.known(option.type());
         if (type != null && type.family() == ModularType.Family.CELL)
-            return what.material().electrical().secondaryCell().isPresent();
+            return ModularBake.isElectrode(what.material());
         if (type != null && type.family() == ModularType.Family.BELT)
             return type.roles().entrySet().stream()
                     .filter(r -> r.getValue().part().filter(s -> s.item().equals(option.shaping().item())).isPresent())

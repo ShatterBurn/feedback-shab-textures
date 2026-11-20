@@ -68,15 +68,15 @@ import org.jetbrains.annotations.NotNull;
  */
 public class BatteryBlockEntity extends ElectricNode implements ThermalBody, Weldable {
 
-    /** The fluid tag of lead-acid's sulfuric acid; a chemistry names its own through {@code secondary_cell.electrolyte}. */
-    public static final ResourceLocation ACID = ResourceLocation.fromNamespaceAndPath(io.github.soundgoodizerfan.feedback.Feedback.MOD_ID, "battery_acid");
-
     private int cells = 1;
     private float capacity = 48000f * FTuning.BATTERY_INGOTS_PER_CELL;
     private float emptyShare = 0.8f, coldFactor = 0.5f;
     private float chargeEfficiency = FTuning.BATTERY_CHARGE_EFFICIENCY;
     private boolean gassing = true;
-    private TagKey<Fluid> electrolyte = TagKey.create(net.minecraft.core.registries.Registries.FLUID, ACID);
+    /** The fluid the cells were first filled with (null while dry): any ion-carrying fluid the chemistry takes, and it stays until the cell is empty. */
+    private ResourceLocation electrolyte;
+    /** How well the worse plate resists a corrosive electrolyte, 0 to 1 ({@code corrosion_resistance}). */
+    private float plateResistance = 1f;
     /** Whether a powered Rectifier touches it, re-read every {@link ElectricMachineTuning#RECTIFIER_SCAN_TICKS} ticks. */
     private boolean rectified;
     private VoltageBand caseBand = VoltageBand.LV;
@@ -338,6 +338,8 @@ public class BatteryBlockEntity extends ElectricNode implements ThermalBody, Wel
         if (now - lastTime >= 200) {
             if (charge > 0f)
                 charge *= (float) Math.pow(1.0 - ElectricMachineTuning.BATTERY_SELF_DISCHARGE_PER_DAY, (now - lastTime) / 24000.0);
+            // An electrolyte the plates do not resist eats them, a misuse the player can read off the condition.
+            condition = Math.max(ElectricMachineTuning.BATTERY_CONDITION_FLOOR, condition - corrosionPerSecond() * (now - lastTime) / 20f);
             lastTime = now;
             setChanged();
         }
@@ -482,10 +484,34 @@ public class BatteryBlockEntity extends ElectricNode implements ThermalBody, Wel
         setChanged();
     }
 
-    /** The first fluid of the electrolyte tag, what the tank shows. */
+    /** What the tank shows: the electrolyte the cells hold, sulfuric acid while dry. */
     private Fluid electrolyteFluid() {
-        return net.minecraft.core.registries.BuiltInRegistries.FLUID.getTag(electrolyte)
-                .flatMap(t -> t.stream().findFirst()).map(h -> h.value()).orElse(FFluids.SULFURIC_ACID.get());
+        return electrolyte == null ? FFluids.SULFURIC_ACID.get() : net.minecraft.core.registries.BuiltInRegistries.FLUID.get(electrolyte);
+    }
+
+    /**
+     * Whether {@code stack} can fill the cells: it carries ions and, unless the chemistry is sealed against water, is a water solution (a sealed
+     * cell takes only a non-aqueous one). Once filled, only the fluid already in.
+     */
+    private boolean takes(FluidStack stack) {
+        net.minecraft.world.level.material.Fluid f = stack.getFluid();
+        ResourceLocation id = net.minecraft.core.registries.BuiltInRegistries.FLUID.getKey(f);
+        if (acid > 0f && electrolyte != null)
+            return id.equals(electrolyte);
+        io.github.soundgoodizerfan.feedback.process.Material m = io.github.soundgoodizerfan.feedback.process.MaterialTable.get().materials().get(id);
+        return m != null && m.traits().contains(io.github.soundgoodizerfan.feedback.process.Material.Trait.ELECTROLYTE) && m.ph().isPresent() != sealed;
+    }
+
+    /** Condition lost per second to the electrolyte eating the plates: its pH distance from neutral, the plates' shortfall in resistance, and a base biting a share of an acid. */
+    private float corrosionPerSecond() {
+        if (acid <= 0f || electrolyte == null)
+            return 0f;
+        io.github.soundgoodizerfan.feedback.process.Material m = io.github.soundgoodizerfan.feedback.process.MaterialTable.get().materials().get(electrolyte);
+        if (m == null || m.ph().isEmpty())
+            return 0f;
+        float ph = m.ph().get();
+        return io.github.soundgoodizerfan.feedback.core.hazard.Corrosion.wearPerSecond(plateResistance) * Math.abs(ph - 7f) / 7f
+                * (ph > 7f ? ElectricMachineTuning.BATTERY_BASE_BITE : 1f);
     }
 
     // --- filling: the acid, then water -----------------------------------------------------------
@@ -510,20 +536,23 @@ public class BatteryBlockEntity extends ElectricNode implements ThermalBody, Wel
 
         @Override
         public boolean isFluidValid(int tank, @NotNull FluidStack stack) {
-            return tank == 0 ? stack.is(electrolyte) : !sealed && stack.is(FluidTags.WATER);
+            return tank == 0 ? takes(stack) : !sealed && stack.is(FluidTags.WATER);
         }
 
         @Override
         public int fill(FluidStack resource, FluidAction action) {
-            boolean isAcid = resource.is(electrolyte);
+            boolean isAcid = takes(resource);
             if (!isAcid && (sealed || !resource.is(FluidTags.WATER)))
                 return 0;
             float have = isAcid ? acid : water;
             int cap = getTankCapacity(isAcid ? 0 : 1);
             int take = Math.min(resource.getAmount(), Math.max(0, cap - (int) Math.ceil(have)));
             if (take > 0 && action.execute()) {
-                if (isAcid)
+                if (isAcid) {
+                    if (acid <= 0f)
+                        electrolyte = net.minecraft.core.registries.BuiltInRegistries.FLUID.getKey(resource.getFluid());
                     acid += take;
+                }
                 else
                     water += take;
                 setChanged();
@@ -601,7 +630,9 @@ public class BatteryBlockEntity extends ElectricNode implements ThermalBody, Wel
         tag.putString("CaseBand", caseBand.getSerializedName());
         tag.putFloat("ChargeEfficiency", chargeEfficiency);
         tag.putBoolean("Gassing", gassing);
-        tag.putString("Electrolyte", electrolyte.location().toString());
+        if (electrolyte != null)
+            tag.putString("Electrolyte", electrolyte.toString());
+        tag.putFloat("PlateResistance", plateResistance);
         tag.putFloat("RunawayTu", runawayTu);
         tag.putFloat("RunawayHeat", runawayHeat);
         tag.putBoolean("Sealed", sealed);
@@ -627,8 +658,8 @@ public class BatteryBlockEntity extends ElectricNode implements ThermalBody, Wel
         coldFactor = tag.contains("ColdFactor") ? tag.getFloat("ColdFactor") : coldFactor;
         chargeEfficiency = tag.contains("ChargeEfficiency") ? tag.getFloat("ChargeEfficiency") : FTuning.BATTERY_CHARGE_EFFICIENCY;
         gassing = !tag.contains("Gassing") || tag.getBoolean("Gassing");
-        electrolyte = TagKey.create(net.minecraft.core.registries.Registries.FLUID,
-                tag.contains("Electrolyte") ? ResourceLocation.parse(tag.getString("Electrolyte")) : ACID);
+        electrolyte = tag.contains("Electrolyte") ? ResourceLocation.parse(tag.getString("Electrolyte")) : null;
+        plateResistance = tag.contains("PlateResistance") ? tag.getFloat("PlateResistance") : 1f;
         caseBand = VoltageBand.CODEC.parse(NbtOps.INSTANCE, StringTag.valueOf(tag.getString("CaseBand"))).result().orElse(VoltageBand.LV);
         runawayTu = tag.contains("RunawayTu") ? tag.getFloat("RunawayTu") : Float.MAX_VALUE;
         runawayHeat = tag.getFloat("RunawayHeat");

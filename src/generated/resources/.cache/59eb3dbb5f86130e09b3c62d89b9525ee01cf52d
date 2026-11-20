@@ -1,4 +1,4 @@
-// 1.21.1	2026-11-17T06:03:02.835632455	Loot Tables
+// 1.21.1	2026-11-20T09:26:58.767260934	Loot Tables
 3ec2d8235a145e9ecd4bc49404e31bff70407cfb data/feedback/loot_table/blocks/alnico_block.json
 7ceaa2b8bfe1b647eb0a2c985f24c7b8138994b8 data/feedback/loot_table/blocks/alnico_pipe.json
 3dbf826722fc8d036ed34e23303ae65d958687ca data/feedback/loot_table/blocks/alumina_deepslate_ore.json
@@ -183,8 +183,6 @@ f50829b578b35fb66dcfc492f4f26b8c60ef4e05 data/feedback/loot_table/blocks/netheri
 513be83ac33172e1cad10fc283d04329a54a8667 data/feedback/loot_table/blocks/nichrome_block.json
 bcc01571290d4385ff8bc2d62b9038a2bafce110 data/feedback/loot_table/blocks/nichrome_pipe.json
 91bbeb797db66e04a53c064e341d4fa50562effc data/feedback/loot_table/blocks/nickel_block.json
-6d4a2b6de330451064a84351b30718d87174c18e data/feedback/loot_table/blocks/nickel_iron_block.json
-ad0b4685d9d0f1acf8629abf9ac62675ca0ac645 data/feedback/loot_table/blocks/nickel_iron_pipe.json
 b9bac0f08dccc3b6187aa6dddd3c103a1cd6ee98 data/feedback/loot_table/blocks/nickel_pipe.json
 62c7ab75f529bc817b69646b8a4ebc3cb9669d11 data/feedback/loot_table/blocks/optical_glass_block.json
 b01005fae408374650153d6ea516563361522902 data/feedback/loot_table/blocks/osmiridium_deepslate_ore.json

@@ -20,5 +20,8 @@
   "separation": {
     "reflectivity": 0.02
   },
-  "corrosion_resistance": 1.0
+  "corrosion_resistance": 1.0,
+  "traits": [
+    "electrolyte"
+  ]
 }

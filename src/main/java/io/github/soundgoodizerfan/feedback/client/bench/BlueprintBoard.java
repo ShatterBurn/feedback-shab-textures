@@ -745,7 +745,9 @@ public final class BlueprintBoard {
             PartBenchShaping.Option at = shapeAt(base, shapeIdx);
             // A slot after the first is drawn in what its own stock forms and traits take, not the part's role.
             List<Material.Located> slotted = base.equals(role) || at == null ? null
-                    : at.shaping().slot(role.substring(base.length() + 1)).filter(ModularType.PartSlot::chosen).map(sl -> ToolDesigns.slotMaterials(sl, at.shaping(), all)).orElse(List.of());
+                    : at.shaping().slot(role.substring(base.length() + 1)).filter(ModularType.PartSlot::chosen).map(sl -> ToolDesigns.slotMaterials(sl, at.shaping(), all).stream()
+                            // A battery's electrode is one that states a potential or cell figures; the rest would only fail to print.
+                            .filter(l -> t.family() != ModularType.Family.CELL || ModularBake.isElectrode(l.material())).toList()).orElse(List.of());
             List<Material.Located> out = new ArrayList<>(slotted != null ? slotted : ToolDesigns.materials(t, role, at, all));
             out.sort(java.util.Comparator.<Material.Located>comparingInt(l -> l.material().kind().map(Enum::ordinal).orElse(99))
                     .thenComparing(l -> l.id().toString()));
@@ -779,7 +781,7 @@ public final class BlueprintBoard {
             fit.forEach(l -> ids.add(l.id()));
             fitSets.put(k, ids);
             List<Material.Located> out = new ArrayList<>(fit.stream().filter(this::matches).toList());
-            if (sortId != null && !role.contains("#")) {
+            if (sortId != null) {
                 int shape = shapeIndex(role);
                 String by = sortId;
                 Fig fig = ModularMeasures.fig(by).orElse(null);
@@ -909,7 +911,8 @@ public final class BlueprintBoard {
             for (int i = 0; i < picks.size(); i++) {
                 String name = picks.get(i).name();
                 String sk = slotKey(role, name);
-                choice(sk, si).filter(l -> !l.id().equals(c.get().id()))
+                (sk.equals(ovRole) && ovMat != null ? materials(sk, si).stream().filter(l -> l.id().equals(ovMat)).findFirst() : choice(sk, si))
+                        .filter(l -> !l.id().equals(c.get().id()))
                         .ifPresent(l -> slots.put(name, new io.github.soundgoodizerfan.feedback.process.Measures.Slot(l.id(), l.form())));
             }
             parts.add(slots.isEmpty() ? full : full.withMeasures(full.measures().withSlots(slots)));

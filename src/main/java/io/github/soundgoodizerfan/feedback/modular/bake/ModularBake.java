@@ -234,7 +234,7 @@ public final class ModularBake {
                 return false;
         }
         return switch (type.family()) {
-            case CELL -> wear ? material.electrical().secondaryCell().isPresent() : material.electrical().insulation().isPresent();
+            case CELL -> wear ? isElectrode(material) : material.electrical().insulation().isPresent();
             case MACHINE -> switch (roleKey) {
                 case MACHINE_WINDING -> material.ampacity().isPresent();
                 case MACHINE_HOUSING -> material.thermal().conductivity().isPresent();
@@ -274,9 +274,18 @@ public final class ModularBake {
         };
     }
 
-    /** What a battery design is: its cell count, one cell's capacity in Eu, the plates' figures and the band the case rates the battery. */
+    /** A material states what a battery electrode needs: its own cell figures, or a potential against which a gap is read. */
+    public static boolean isElectrode(Material m) {
+        return m.electrical().secondaryCell().isPresent() || m.electrical().electrodePotential().isPresent();
+    }
+
+    /** What a plate of no stated chemistry does: no cliff, acid, gassing, no runaway. Its capacity comes from the potential gap alone. */
+    private static final Material.SecondaryCell PLAIN_PLATE = new Material.SecondaryCell(1f, Optional.empty(), 1f, FTuning.BATTERY_CHARGE_EFFICIENCY, true,
+            Optional.empty(), Optional.empty(), 0f, false, Optional.empty());
+
+    /** What a battery design is: its cell count, one cell's capacity in Eu, the plates' figures, the band the case rates the battery, and how well the worse of the two plates resists a corrosive electrolyte. */
     public record CellSpec(int cells, float capacity, Material.SecondaryCell plates, VoltageBand caseBand,
-                           float runawayTu, float runawayHeat, boolean sealed, float chargeFloorTu) {
+                           float runawayTu, float runawayHeat, boolean sealed, float chargeFloorTu, float plateResistance) {
     }
 
     /**
@@ -289,24 +298,25 @@ public final class ModularBake {
         Part shell = design.parts().stream().filter(p -> !p.role().equals(type.wearRole())).findFirst().orElse(null);
         Material pm = plates == null ? null : materials.get(plates.material());
         Material cm = shell == null ? null : materials.get(shell.material());
-        if (pm == null || cm == null || pm.electrical().secondaryCell().isEmpty() || cm.electrical().insulation().isEmpty())
+        if (pm == null || cm == null || !isElectrode(pm) || cm.electrical().insulation().isEmpty())
             return Optional.empty();
         ModularType.Role role = type.roles().get(plates.role());
         // Size and count are axes: a cell is this many ingots of plate, and there are this many cells.
         int perCell = Math.max(1, Math.round(role.axis(plates, "cell_size")));
         int cells = Math.max(1, Math.round(role.axis(plates, "cell_count")));
-        Material.SecondaryCell sc = pm.electrical().secondaryCell().get();
-        // The cathode is the second electrode (the anode is the main material): a cell holds the mean of the pair's charge per ingot.
+        Material.SecondaryCell sc = pm.electrical().secondaryCell().orElse(PLAIN_PLATE);
+        // The cathode is the second electrode (the anode is the main material): the pair's charge per ingot follows the gap between their potentials
+        // (the anode's host potential when it states one), or the mean of the two stated figures when there is no gap to read.
         Material cathode = slotMaterial(role, plates, "cathode", materials);
-        if (cathode == null || cathode.electrical().secondaryCell().isEmpty())
+        if (cathode == null || !isElectrode(cathode))
             return Optional.empty();
-        Material.SecondaryCell cc = cathode.electrical().secondaryCell().get();
+        Material.SecondaryCell cc = cathode.electrical().secondaryCell().orElse(PLAIN_PLATE);
+        java.util.Optional<Float> anodeV = sc.hostPotential().or(pm.electrical()::electrodePotential);
         float euPerIngot;
         if (sc.euPerIngot().isPresent() && cc.euPerIngot().isPresent())
             euPerIngot = (sc.euPerIngot().get() + cc.euPerIngot().get()) / 2f;
-        else if (sc.hostPotential().isPresent() && cathode.electrical().electrodePotential().isPresent())
-            // No figure stated: the pair's charge per ingot follows the gap between the anode's host potential and the cathode's.
-            euPerIngot = Math.max(0f, cathode.electrical().electrodePotential().get() - sc.hostPotential().get()) * io.github.soundgoodizerfan.feedback.machine.ElectricMachineTuning.BATTERY_EU_PER_INGOT_PER_VOLT;
+        else if (anodeV.isPresent() && cathode.electrical().electrodePotential().isPresent())
+            euPerIngot = Math.abs(cathode.electrical().electrodePotential().get() - anodeV.get()) * io.github.soundgoodizerfan.feedback.machine.ElectricMachineTuning.BATTERY_EU_PER_INGOT_PER_VOLT;
         else
             return Optional.empty();
         if (euPerIngot <= 0f)
@@ -316,7 +326,8 @@ public final class ModularBake {
         float runawayHeat = Math.max(sc.runawayHeat(), cc.runawayHeat());
         float floor = Math.max(sc.chargeFloorTu().orElse(-Float.MAX_VALUE), cc.chargeFloorTu().orElse(-Float.MAX_VALUE));
         return Optional.of(new CellSpec(cells, euPerIngot * perCell, sc, cm.electrical().insulation().get(),
-                runawayTu, runawayHeat, sc.sealed() || cc.sealed(), floor));
+                runawayTu, runawayHeat, sc.sealed() || cc.sealed(), floor,
+                Math.min(pm.corrosionResistance().orElse(1f), cathode.corrosionResistance().orElse(1f))));
     }
 
     /**

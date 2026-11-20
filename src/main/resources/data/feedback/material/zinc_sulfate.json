@@ -2,7 +2,8 @@
   "color": "#c9d6c9",
   "kind": "fluid",
   "traits": [
-    "corrosive"
+    "corrosive",
+    "electrolyte"
   ],
   "hardness": 1,
   "density": 1.2,
@@ -28,5 +29,6 @@
   "separation": {
     "reflectivity": 0.02
   },
-  "corrosion_resistance": 1.0
+  "corrosion_resistance": 1.0,
+  "ph": 5
 }

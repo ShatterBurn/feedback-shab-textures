@@ -131,7 +131,7 @@ public record Material(St hardness, Tu minTemperature, Tu maxTemperature,
                        Map<ResourceLocation, Float> bears, Optional<Ru> radioactivity, Optional<Catalyst> catalyst,
                        Optional<Potion> potion, Optional<XpCapacity> xpStore,
                        Optional<Integer> luminance, boolean phosphor, Optional<Neutron> neutron, Optional<Integer> fastener,
-                       Optional<Float> toxicity, Optional<Float> corrosivity, Optional<Float> abundance) {
+                       Optional<Float> toxicity, Optional<Float> corrosivity, Optional<Float> abundance, Optional<Float> ph) {
 
     /**
      * How a material meets neutrons in a reactor core (fission spec 2.5): {@code fissile} is what a rod of it gives per neutron
@@ -246,6 +246,8 @@ public record Material(St hardness, Tu minTemperature, Tu maxTemperature,
         INCANDESCENT, FIBROUS, POROUS, STICKY,
         /** An acid or a base: eats a vessel whose corrosion resistance is below {@code HazardTuning.CORROSIVE_BITE} (core/hazard/Corrosion). */
         CORROSIVE,
+        /** Carries ions (a dissolved salt, acid or base, or an ionic organic solvent): what a battery's electrolyte must be. Whether it is a water solution is {@code ph}. */
+        ELECTROLYTE,
         /** A joining alloy: its melting point is a joint's liquidus (basic electronics phase 3). */
         SOLDER,
         /** A dust that sets as a conductive trace when printed on a substrate (phase 3). */
@@ -662,7 +664,6 @@ public record Material(St hardness, Tu minTemperature, Tu maxTemperature,
      *
      * @param emptyShare       the share of its rated current a cell still gives when empty: it holds full to the knee, ten per cent charge, then falls to this (the cliff).
      * @param coldFactor       the share of capacity left at the coldest ambient; 1 at room temperature.
-     * @param electrolyte      the fluid tag (id) the cell is filled with: sulfuric acid for lead, lye for an alkaline cell.
      * @param chargeEfficiency the share of charged work kept; the rest heats the case.
      * @param gassing          whether overcharge electrolyses water into hydrogen; false for a cell that shrugs it off.
      * @param euPerIngot       charge one ingot of plate holds per cell, in Eu, when the chemistry states it. Absent, the pair's capacity is
@@ -675,14 +676,13 @@ public record Material(St hardness, Tu minTemperature, Tu maxTemperature,
      * @param chargeFloorTu    the body temperature under which a charge plates the cell instead of filling it; absent for a cell that does not mind.
      */
     public record SecondaryCell(float emptyShare, Optional<Float> euPerIngot, float coldFactor,
-                                ResourceLocation electrolyte, float chargeEfficiency, boolean gassing,
+                                float chargeEfficiency, boolean gassing,
                                 Optional<Float> hostPotential, Optional<Float> runawayTu, float runawayHeat,
                                 boolean sealed, Optional<Float> chargeFloorTu) {
         static final Codec<SecondaryCell> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 Codec.FLOAT.optionalFieldOf("empty_share", 1f).forGetter(SecondaryCell::emptyShare),
                 Codec.FLOAT.optionalFieldOf("eu_per_ingot").forGetter(SecondaryCell::euPerIngot),
                 Codec.FLOAT.optionalFieldOf("cold_factor", 1f).forGetter(SecondaryCell::coldFactor),
-                ResourceLocation.CODEC.optionalFieldOf("electrolyte", ResourceLocation.fromNamespaceAndPath("feedback", "battery_acid")).forGetter(SecondaryCell::electrolyte),
                 Codec.FLOAT.optionalFieldOf("charge_efficiency", FTuning.BATTERY_CHARGE_EFFICIENCY).forGetter(SecondaryCell::chargeEfficiency),
                 Codec.BOOL.optionalFieldOf("gassing", true).forGetter(SecondaryCell::gassing),
                 Codec.FLOAT.optionalFieldOf("host_potential").forGetter(SecondaryCell::hostPotential),
@@ -727,12 +727,12 @@ public record Material(St hardness, Tu minTemperature, Tu maxTemperature,
             Combustion.CODEC.optionalFieldOf("combustion").forGetter(Material::combustion),
             // Sixteen is RecordCodecBuilder's ceiling, so the last keys ride as one group. The
             // JSON is unchanged: they stay plain top-level keys.
-            Tail.CODEC.forGetter(m -> new Tail(m.electrical(), m.composition(), m.enchantability(), m.color(), m.perks(), m.attunement(), m.food(), m.bears(), m.radioactivity(), m.catalyst(), m.potion(), m.xpStore(), m.neutron(), new Extras(m.luminance(), m.phosphor(), m.fastener(), m.toxicity(), m.corrosivity(), m.abundance())))
+            Tail.CODEC.forGetter(m -> new Tail(m.electrical(), m.composition(), m.enchantability(), m.color(), m.perks(), m.attunement(), m.food(), m.bears(), m.radioactivity(), m.catalyst(), m.potion(), m.xpStore(), m.neutron(), new Extras(m.luminance(), m.phosphor(), m.fastener(), m.toxicity(), m.corrosivity(), m.abundance(), m.ph())))
     ).apply(instance, (hardness, min, max, forms, exclude, density, kind, traits, thermal, mechanical,
                        molten, separation, ampacity, corrosion, combustion, tail) -> new Material(
             hardness, min, max, forms, exclude, density, kind, traits, thermal, mechanical, molten,
             separation, ampacity, corrosion, combustion, tail.electrical(), tail.composition(),
-            tail.enchantability(), tail.color(), tail.perks(), tail.attunement(), tail.food().map(f -> f.heated(thermal.specificHeat())), tail.bears(), tail.radioactivity(), tail.catalyst(), tail.potion(), tail.xpStore(), tail.luminance(), tail.phosphor(), tail.neutron(), tail.fastener(), tail.toxicity(), tail.corrosivity(), tail.abundance())));
+            tail.enchantability(), tail.color(), tail.perks(), tail.attunement(), tail.food().map(f -> f.heated(thermal.specificHeat())), tail.bears(), tail.radioactivity(), tail.catalyst(), tail.potion(), tail.xpStore(), tail.luminance(), tail.phosphor(), tail.neutron(), tail.fastener(), tail.toxicity(), tail.corrosivity(), tail.abundance(), tail.ph())));
 
     /**
      * The keys that did not fit the codec's sixteen.
@@ -756,6 +756,7 @@ public record Material(St hardness, Tu minTemperature, Tu maxTemperature,
         Optional<Float> toxicity() { return extras.toxicity(); }
         Optional<Float> corrosivity() { return extras.corrosivity(); }
         Optional<Float> abundance() { return extras.abundance(); }
+        Optional<Float> ph() { return extras.ph(); }
 
         static final com.mojang.serialization.MapCodec<Tail> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
                 Electrical.CODEC.optionalFieldOf("electrical", Electrical.NONE).forGetter(Tail::electrical),
@@ -783,20 +784,23 @@ public record Material(St hardness, Tu minTemperature, Tu maxTemperature,
      * @param corrosivity how hard it eats flesh and metal on contact: the distance of a working solution's pH from neutral (7), so
      *                    0 is neutral and a strong acid or a strong base is about 7. Not how poisonous it is: hydrofluoric acid
      *                    is a weak acid and a deadly poison. The index is in {@code docs/material_figures.md}.
+     * @param ph the pH of a working aqueous solution, 0 (strong acid) to 14 (strong base), 7 neutral; absent for a fluid that is not a water solution
+     *           (an organic electrolyte, an oil). {@code corrosivity} is its distance from 7; this says which way. A battery's fluid reads it with {@link Trait#ELECTROLYTE}.
      * @param abundance how much of the crust is this stuff, in parts per million by mass (Earth's crust, bent for play where
      *                  the game's rock differs). Only on a material a vein yields: it sets the default weight of that
      *                  material's deposits ({@code worldgen/OreVein}), so a common ore is common and a rare one rare without a
      *                  hand-set number per file. Absent on a material that is not mined.
      */
     private record Extras(Optional<Integer> luminance, boolean phosphor, Optional<Integer> fastener, Optional<Float> toxicity,
-                          Optional<Float> corrosivity, Optional<Float> abundance) {
+                          Optional<Float> corrosivity, Optional<Float> abundance, Optional<Float> ph) {
         static final com.mojang.serialization.MapCodec<Extras> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
                 Codec.intRange(0, 15).optionalFieldOf("luminance").forGetter(Extras::luminance),
                 Codec.BOOL.optionalFieldOf("phosphor", false).forGetter(Extras::phosphor),
                 Codec.intRange(1, 5).optionalFieldOf("fastener").forGetter(Extras::fastener),
                 Codec.floatRange(0f, Float.MAX_VALUE).optionalFieldOf("toxicity").forGetter(Extras::toxicity),
                 Codec.floatRange(0f, 14f).optionalFieldOf("corrosivity").forGetter(Extras::corrosivity),
-                Codec.floatRange(0f, 1_000_000f).optionalFieldOf("abundance").forGetter(Extras::abundance)
+                Codec.floatRange(0f, 1_000_000f).optionalFieldOf("abundance").forGetter(Extras::abundance),
+                Codec.floatRange(0f, 14f).optionalFieldOf("ph").forGetter(Extras::ph)
         ).apply(instance, Extras::new));
     }
 

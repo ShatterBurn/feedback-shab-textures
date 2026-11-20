@@ -56,7 +56,6 @@
     "secondary_cell": {
       "empty_share": 0.9,
       "cold_factor": 0.6,
-      "electrolyte": "feedback:battery_carbonate",
       "charge_efficiency": 0.95,
       "gassing": false,
       "host_potential": -3.04,

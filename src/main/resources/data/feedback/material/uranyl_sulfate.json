@@ -2,7 +2,8 @@
   "color": "#c8d830",
   "kind": "fluid",
   "traits": [
-    "corrosive"
+    "corrosive",
+    "electrolyte"
   ],
   "perks": {
     "toxic": 2
@@ -32,5 +33,6 @@
   "separation": {
     "reflectivity": 0.02
   },
-  "corrosion_resistance": 0.5
+  "corrosion_resistance": 0.5,
+  "ph": 3
 }
