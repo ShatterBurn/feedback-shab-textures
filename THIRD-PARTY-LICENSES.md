@@ -995,7 +995,7 @@ Animation clip (2026-10-23, same licence as above, copied unmodified): `assets/f
 
 ### cleannrooster/forg-cleannrooster-assets (skill icons, batch 2, 2026-10-24)
 
-Same source and licence as the batch above (free for any use, attribution appreciated, credit cleannrooster). Copied unmodified, one icon per skill node that had none. Node icons for the seven trees.
+Same source and licence as the batch above (free for any use, attribution appreciated, credit cleannrooster). Copied unmodified, one icon per skill node that had none. Node icons for the seven trees. A third batch (2026-11-20) gave the last 89 nodes an icon from the repo's unused `spell/` files; related nodes share an icon when they share a figure (fine_eye and sharper_eye).
 
 | Feedback file | Source path |
 | --- | --- |
@@ -1114,6 +1114,95 @@ Same source and licence as the batch above (free for any use, attribution apprec
 | `textures/gui/skill/far_roll.png` | `spell/legacy/disengage.png` |
 | `textures/gui/skill/wall_run.png` | `spell/legacy/echoes1.png` |
 | `textures/gui/skill/wall_rebound.png` | `spell/legacy/echoes2.png` |
+| `textures/gui/skill/braced_draw.png` | `spell/deprecated/copy/sniper.png` |
+| `textures/gui/skill/plant_feet.png` | `spell/soulwarden/bind.png` |
+| `textures/gui/skill/dig_in.png` | `spell/soulwarden/maelstromtotem.png` |
+| `textures/gui/skill/crank_beat.png` | `spell/deprecated/copy/resonance.png` |
+| `textures/gui/skill/bench_stance.png` | `spell/deprecated/copy/inexorable.png` |
+| `textures/gui/skill/plate_up.png` | `spell/deprecated/copy/resonating_shield.png` |
+| `textures/gui/skill/phalanx.png` | `spell/deprecated/copy/divine_intervention.png` |
+| `textures/gui/skill/pavise.png` | `spell/deprecated/copy/shield_throw.png` |
+| `textures/gui/skill/lee_side.png` | `spell/deprecated/malformed/whirling_64.png` |
+| `textures/gui/skill/point_blank_draw.png` | `spell/deprecated/copy/mark_of_vengeance.png` |
+| `textures/gui/skill/shove.png` | `spell/64/sharedsuffering.png` |
+| `textures/gui/skill/momentum.png` | `spell/deprecated/copy/advancing_strike.png` |
+| `textures/gui/skill/heavy_lift.png` | `spell/deprecated/copy/dragon_slam.png` |
+| `textures/gui/skill/deadlift.png` | `spell/deprecated/copy/advancing_slam.png` |
+| `textures/gui/skill/rising_uppercut.png` | `spell/deprecated/copy/skyward_strike.png` |
+| `textures/gui/skill/roll_with_kick.png` | `spell/deprecated/copy/phoenixdive.png` |
+| `textures/gui/skill/rend.png` | `spell/deprecated/copy/amethystslash.png` |
+| `textures/gui/skill/careful_hands.png` | `spell/invocation/wild.png` |
+| `textures/gui/skill/clean_strip.png` | `spell/projectile/feathertexture.png` |
+| `textures/gui/skill/shaped_charge.png` | `spell/deprecated/malformed/1_placemine.png` |
+| `textures/gui/skill/sunder.png` | `spell/legacy/devastating_cut.png` |
+| `textures/gui/skill/kindle.png` | `spell/deprecated/copy/flickering_flame.png` |
+| `textures/gui/skill/barge.png` | `spell/deprecated/copy/overpower.png` |
+| `textures/gui/skill/stampede.png` | `spell/deprecated/copy/seismic_cry.png` |
+| `textures/gui/skill/powder_burn.png` | `spell/deprecated/copy/flame_burst.png` |
+| `textures/gui/skill/barbed_shaft.png` | `spell/deprecated/copy/exploding_feathers.png` |
+| `textures/gui/skill/gouge.png` | `spell/deprecated/copy/searingblade.png` |
+| `textures/gui/skill/tear_straps.png` | `spell/legacy/xslash.png` |
+| `textures/gui/skill/burning_ground.png` | `spell/deprecated/copy/flaming_cascade.png` |
+| `textures/gui/skill/overwatch.png` | `spell/invocation/gon.png` |
+| `textures/gui/skill/suppressing_fire.png` | `spell/deprecated/copy/spitfire.png` |
+| `textures/gui/skill/crack_vial.png` | `spell/legacy/place_mortar.png` |
+| `textures/gui/skill/fume.png` | `spell/soulwarden/tendrils.png` |
+| `textures/gui/skill/cascade.png` | `spell/projectile/wave.png` |
+| `textures/gui/skill/tainted_wound.png` | `spell/legacy/arcaneflourish.png` |
+| `textures/gui/skill/quarry_mark.png` | `spell/invocation/gon2.png` |
+| `textures/gui/skill/size_up.png` | `spell/64/runic_invocation.png` |
+| `textures/gui/skill/hardness_gap.png` | `spell/64/shatter.png` |
+| `textures/gui/skill/right_tool.png` | `spell/deprecated/copy/magnify.png` |
+| `textures/gui/skill/soft_spot.png` | `spell/deprecated/copy/shatter.png` |
+| `textures/gui/skill/opening.png` | `spell/deprecated/copy/frostblink.png` |
+| `textures/gui/skill/exploit.png` | `spell/deprecated/copy/fireoverdrive.png` |
+| `textures/gui/skill/tell.png` | `spell/invocation/heo.png` |
+| `textures/gui/skill/pressure_point.png` | `spell/deprecated/copy/sonic_strike.png` |
+| `textures/gui/skill/culling.png` | `spell/battlemage/drain_essence.png` |
+| `textures/gui/skill/edge.png` | `spell/deprecated/copy/gleamingblade.png` |
+| `textures/gui/skill/quench.png` | `spell/deprecated/copy/mass_hypothermia.png` |
+| `textures/gui/skill/conductor.png` | `spell/deprecated/copy/lightningoverdrive.png` |
+| `textures/gui/skill/case_file.png` | `spell/deprecated/copy/echoes.png` |
+| `textures/gui/skill/pattern.png` | `spell/invocation/deathchill.png` |
+| `textures/gui/skill/herd_read.png` | `spell/invocation/heo2.png` |
+| `textures/gui/skill/read_the_room.png` | `spell/invocation/rah.png` |
+| `textures/gui/skill/spoor.png` | `spell/invocation/rah2.png` |
+| `textures/gui/skill/read_the_draw.png` | `spell/deprecated/copy/echofall.png` |
+| `textures/gui/skill/far_sight.png` | `spell/soulwarden/soulfirebastion.png` |
+| `textures/gui/skill/steady_walk.png` | `spell/deprecated/copy/phase_dash.png` |
+| `textures/gui/skill/fine_eye.png` | `spell/deprecated/copy/frostlotus.png` |
+| `textures/gui/skill/sharper_eye.png` | `spell/deprecated/copy/frostlotus.png` |
+| `textures/gui/skill/called_draw.png` | `spell/deprecated/copy/dagger_toss64.png` |
+| `textures/gui/skill/held_draw.png` | `spell/deprecated/copy/frostvert.png` |
+| `textures/gui/skill/tipping_point.png` | `spell/deprecated/copy/sigil_of_hope.png` |
+| `textures/gui/skill/thread_the_gap.png` | `spell/deprecated/malformed/floujrish.png` |
+| `textures/gui/skill/pummel_pin.png` | `spell/deprecated/copy/grandstanding.png` |
+| `textures/gui/skill/twin_reload.png` | `spell/legacy/frost_spellstrike.png` |
+| `textures/gui/skill/running_bolt.png` | `spell/deprecated/malformed/maelstrom.png` |
+| `textures/gui/skill/cadence.png` | `spell/deprecated/copy/onefire.png` |
+| `textures/gui/skill/cadence_deep.png` | `spell/deprecated/copy/threefire.png` |
+| `textures/gui/skill/cadence_steady.png` | `spell/deprecated/copy/twofire.png` |
+| `textures/gui/skill/practised_reload.png` | `spell/invocation/onearcane.png` |
+| `textures/gui/skill/quick_draw.png` | `spell/deprecated/copy/voltaic_burst.png` |
+| `textures/gui/skill/quarry_breath.png` | `spell/deprecated/copy/lesser_divine_smite.png` |
+| `textures/gui/skill/tend.png` | `spell/deprecated/copy/healing_feathers.png` |
+| `textures/gui/skill/cut_loose.png` | `spell/deprecated/malformed/arcane_force.png` |
+| `textures/gui/skill/fume_ward.png` | `spell/64/armageddon.png` |
+| `textures/gui/skill/slow_dose.png` | `spell/invocation/freezeaura.png` |
+| `textures/gui/skill/iron_stomach.png` | `spell/deprecated/copy/oath_of_grace.png` |
+| `textures/gui/skill/snap_shot.png` | `spell/deprecated/copy/seraph_strike.png` |
+| `textures/gui/skill/hushed_step.png` | `spell/deprecated/malformed/frostbloom0.png` |
+| `textures/gui/skill/muffled_boots.png` | `spell/invocation/twoarcane.png` |
+| `textures/gui/skill/soft_hands.png` | `spell/deprecated/copy/snuffout.png` |
+| `textures/gui/skill/quiet_drag.png` | `spell/legacy/chill.png` |
+| `textures/gui/skill/light_foot.png` | `spell/deprecated/copy/frostflourish.png` |
+| `textures/gui/skill/running_start.png` | `spell/deprecated/copy/flourish.png` |
+| `textures/gui/skill/fleet.png` | `spell/deprecated/malformed/tempest.png` |
+| `textures/gui/skill/concealed_carry.png` | `spell/deprecated/copy/frostoverdrive.png` |
+| `textures/gui/skill/hush_the_kill.png` | `spell/invocation/nullinvoke.png` |
+| `textures/gui/skill/dull_edge.png` | `spell/deprecated/copy/frozenblade.png` |
+| `textures/gui/skill/clawhold.png` | `spell/battlemage/devastation.png` |
+| `textures/gui/skill/opening_cut.png` | `spell/deprecated/copy/flameslash.png` |
 
 ### KosmX/minecraftPlayerAnimator (`1.21` branch, `../PlayerAnimator-reference`)
 
