@@ -56,7 +56,7 @@ public final class SuitServer {
 
     /** One wearer's live state. */
     private static final class Run {
-        float heat, pending, draw, carry = 1f, coldMult = 1f, lastSpeed, owed;
+        float heat, pending, draw, carry = 1f, coldMult = 1f, lastSpeed, owed, owedCoolant;
         boolean cut, dash, hopped, powered, plating, jumpOn, nv, asked, jet, cloak;
         /** Ticks left before each pulse ability may fire again, by ability ordinal. */
         final int[] cool = new int[Ability.values().length];
@@ -195,7 +195,9 @@ public final class SuitServer {
         if (p.tickCount % 20 == 0)
             r.coldMult = p.level().getBiome(p.blockPosition()).value().coldEnoughToSnow(p.blockPosition()) ? SuitTuning.COOL_COLD : 1f;
         float mult = p.isInWater() ? SuitTuning.COOL_WATER : p.isInWaterOrRain() ? SuitTuning.COOL_RAIN : r.coldMult;
-        heat -= (heat - amb) * SuitTuning.COOL_RATE * mult * SuitModules.cooling(rig.mod());
+        float loop = SuitModules.loop(rig.mod());
+        float coolantGain = loop > 0f && heat > amb ? coolant(p, r, loop, (heat - amb) * SuitTuning.COOL_RATE * mult) : 0f;
+        heat -= (heat - amb) * SuitTuning.COOL_RATE * mult * (SuitModules.cooling(rig.mod()) + coolantGain);
         float limit = SuitTuning.LIMIT_TU;
         if (!r.cut && heat > limit)
             r.cut = true;
@@ -264,6 +266,43 @@ public final class SuitServer {
         r.cool[a.ordinal()] = SuitPulses.cooldown(a);
         r.pending += cost;
         r.heat += cost * rig.lossChest() * SuitTuning.HEAT_PER_WASTE;
+    }
+
+    /**
+     * What a carried coolant adds to the plate's cooling multiplier this tick: the first fluid container the wearer carries holding a fluid
+     * cool enough to carry heat off and with a specific heat, paid for per Tu removed (drained from the container, as a thruster's fuel is).
+     * 0 when none is carried or it is empty. {@code shed} is the suit's heat shed this tick without the coolant.
+     */
+    private static float coolant(ServerPlayer p, Run r, float loop, float shed) {
+        for (ItemStack s : p.getInventory().items) {
+            var h = s.getCapability(net.neoforged.neoforge.capabilities.Capabilities.FluidHandler.ITEM);
+            if (h == null || h.getTanks() == 0 || h.getFluidInTank(0).isEmpty())
+                continue;
+            var fluid = h.getFluidInTank(0);
+            if (fluid.getFluidType().getTemperature(fluid) > SuitTuning.COOLANT_MAX_FLUID_KELVIN)
+                continue;
+            var m = io.github.soundgoodizerfan.feedback.process.MaterialTable.get().materials()
+                    .get(net.minecraft.core.registries.BuiltInRegistries.FLUID.getKey(fluid.getFluid()));
+            // plain water has no material file; the water tag stands for it with its real figure
+            float cp = m != null ? m.thermal().specificHeat().map(c -> c.workPerMuPerTu()).orElse(0f)
+                    : fluid.is(net.minecraft.tags.FluidTags.WATER) ? SuitTuning.WATER_SPECIFIC_HEAT : 0f;
+            if (cp <= 0f)
+                continue;
+            float gain = SuitTuning.COOLANT_GAIN * cp * loop;
+            float mb = shed * gain * SuitTuning.COOLANT_MB_PER_WORK / cp;
+            if (mb <= 0f)
+                return 0f;
+            r.owedCoolant += mb;
+            int want = (int) r.owedCoolant;
+            if (want > 0) {
+                int got = h.drain(want, net.neoforged.neoforge.fluids.capability.IFluidHandler.FluidAction.EXECUTE).getAmount();
+                if (got <= 0)
+                    continue;
+                r.owedCoolant -= got;
+            }
+            return gain;
+        }
+        return 0f;
     }
 
     /**

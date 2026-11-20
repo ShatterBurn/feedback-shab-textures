@@ -80,6 +80,17 @@ final class SuitPulses {
                 level.playSound(null, p.blockPosition(), SoundEvents.FIRECHARGE_USE, SoundSource.PLAYERS, 0.8f, 1f);
             }
             default -> {
+                // a charged Leyden jar carried (a jar baton) is a bigger capacitor than the coil's own: the pulse dumps all of it
+                float jar = 0f;
+                for (net.minecraft.world.item.ItemStack s : p.getInventory().items) {
+                    float eu = io.github.soundgoodizerfan.feedback.item.JarBatonItem.charge(s);
+                    if (eu > 0f) {
+                        jar = Math.min(SuitTuning.EMP_JAR_MAX_BOOST, eu / SuitTuning.EMP_JAR_REFERENCE_EU);
+                        io.github.soundgoodizerfan.feedback.item.JarBatonItem.discharge(s);
+                        break;
+                    }
+                }
+                power *= 1f + jar;
                 double r = SuitTuning.EMP_RADIUS * (0.6 + 0.4 * power);
                 int ticks = Math.round(SuitTuning.EMP_TICKS * power);
                 for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, p.getBoundingBox().inflate(r), x -> target(p, x))) {

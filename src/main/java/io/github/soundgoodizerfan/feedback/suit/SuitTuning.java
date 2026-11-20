@@ -17,6 +17,16 @@ public final class SuitTuning {
     public static final float HEAT_PER_WASTE = 0.25f;
     /** Share of the gap to ambient shed each tick in still air; water, rain and cold multiply it. */
     public static final float COOL_RATE = 0.002f, COOL_WATER = 6f, COOL_RAIN = 2f, COOL_COLD = 1.5f;
+
+    /**
+     * A coolant carried in a fluid container runs through the heat plate's thin conductor: it carries off heat in proportion to its
+     * specific heat ({@code COOLANT_GAIN} times it times the loop share, added to the plate's cooling multiplier), and every Tu of the
+     * suit's heat it removes costs {@code COOLANT_MB_PER_WORK} mB divided by its specific heat. Only a fluid at or below
+     * {@code COOLANT_MAX_FLUID_KELVIN} cools; lava and molten metal do not.
+     */
+    public static final float COOLANT_GAIN = 0.5f, COOLANT_MB_PER_WORK = 0.5f, COOLANT_MAX_FLUID_KELVIN = 400f,
+            /** Water's specific heat (kJ/(kg K)) for a bucket of plain water, which has no material file. */
+            WATER_SPECIFIC_HEAT = 4.2f;
     /** The suit cuts its servos out above this and comes back below the resume figure (a hysteresis, so it does not flicker). */
     public static final float LIMIT_TU = 110f, RESUME_TU = 80f;
     /** Ticks between wearing a servo while overheated and still asked to work. */
@@ -66,6 +76,8 @@ public final class SuitTuning {
     public static final float VENT_SHARE = 0.7f, BURST_PUSH = 1.3f, BURST_LIFT = 0.3f;
     public static final float SHOCK_RADIUS = 4f, SHOCK_DAMAGE = 5f, SHOCK_PUSH = 1.4f, SCAN_RADIUS = 28f, EMP_RADIUS = 7f;
     /** Ticks a scanned thing glows and a jammed mob stays slowed and blind. */
+    /** A carried charged jar baton dumped into an EMP pulse: Eu that doubles the pulse's power, and the most it adds. */
+    public static final float EMP_JAR_REFERENCE_EU = 400f, EMP_JAR_MAX_BOOST = 1f;
     public static final int SCAN_GLOW_TICKS = 160, EMP_TICKS = 140;
 
     /**

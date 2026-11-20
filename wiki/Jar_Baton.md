@@ -16,6 +16,10 @@ The next melee hit spends everything. The target takes a [shock](Hazards.md) of 
 
 How hard it hurts depends on what the victim is wearing and standing in, never on what it is, exactly as for the [Electrified Fence](Electrified_Fence.md): wet, metal armor and a metal floor make it worse; leather, wool and wood make it better; off the ground halves it.
 
+## In the exosuit
+
+A charged baton carried in your pack is emptied into the [Exosuit](Exosuit.md)'s EMP pulse (Module Coil with a cell), which then hits harder, reaches farther and lasts longer; a baton holding more Eu adds more, up to a limit. Only one baton is spent per pulse.
+
 ## Careful
 
 The handle is rated for **HV**. Draw a jar of a higher band, or swing it while standing in water, and the discharge shocks **you** too. Insulating [gloves](Hazards.md) still protect a player. Used within its rating and dry, the baton wears nothing.

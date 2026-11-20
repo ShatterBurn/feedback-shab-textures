@@ -312,6 +312,11 @@ public final class SuitModules {
 
     // --- physics of the plate and the bus (read whether or not the suit is powered) -----------------------
 
+    /** Share of the heat plate that is a thin conductor a coolant can run through (0 with no plate). */
+    static float loop(float[] m) {
+        return p(m, THERMAL) * (1f - arg(m, THERMAL));
+    }
+
     /** Multiplier on the rate the suit sheds heat: a thin conductor spreads its heat to the air. */
     static float cooling(float[] m) {
         return cooling(p(m, THERMAL), arg(m, THERMAL));

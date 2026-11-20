@@ -43,7 +43,7 @@ Charge the battery by taking the suit's battery out and seating it in a [Charger
 | **Burst** | Module Thruster | A pulse: a single burst of thrust along the direction you look. |
 | **Ram** | Module Actuator | A pulse: a shockwave that knocks back and hurts everything near. |
 | **Scan** | Module Optic with a controller | A pulse: every living thing in a wide ring glows for a while. |
-| **EMP** | Module Coil with a cell | A pulse: nearby creatures are slowed, weakened and blinded. |
+| **EMP** | Module Coil with a cell | A pulse: nearby creatures are slowed, weakened and blinded. A charged [Jar Baton](Jar_Baton.md) in your pack makes it stronger. |
 | **Electromagnet** | Module Coil | A switch: pulls loose magnetic items to you while on. |
 | **Stride** | Module Actuator | A switch: a short stroke walks faster, a long stroke steps up higher, while on. |
 | **Optic** | Module Optic | A switch: a short focal length gives longer reach for blocks and attacks, a long one extends the thermal view, while on. |
@@ -79,13 +79,13 @@ Upgrades work whenever the suit is powered. Some upgrades draw charge as they ac
 | --- | --- | --- |
 | Module Optic | controller for the Scan pulse | One tuned part: a focal length of 20 cm or less gives longer reach for blocks and attacks, a longer one extends the thermal view, while switched on. Glass clarity sets the power; reflective glass clears blindness and darkness. With a live controller held, Scan is a pulse that makes nearby living things glow. |
 | Module Filter | none | A cartridge with a porous media slot (charcoal or brick) and a bed depth. A thin bed (3 cm or less) lengthens breath; a deep bed clears poison, nausea and hunger, only while the suit is powered. |
-| Module Thermal | none; motor for Vent; controller for Thermal mask | A heat exchanger plate, tuned by thickness. A thin plate (3 mm or less) sheds the suit's heat faster; a thick one cuts fire damage and, while the suit is powered, keeps frost off. The better the metal conducts heat, the harder it works. Held motor: Vent is a pulse that vents most of the suit's heat at once. Held controller: Thermal mask is a switch that hides the wearer from other wearers' thermal view, at a steady draw. |
+| Module Thermal | none; motor for Vent; controller for Thermal mask | A heat exchanger plate, tuned by thickness. A thin plate (3 mm or less) sheds the suit's heat faster, and sheds more again while a coolant is carried (see below); a thick one cuts fire damage and, while the suit is powered, keeps frost off. The better the metal conducts heat, the harder it works. Held motor: Vent is a pulse that vents most of the suit's heat at once. Held controller: Thermal mask is a switch that hides the wearer from other wearers' thermal view, at a steady draw. |
 | Module Plating | none | An armored insert, tuned by thickness. A thin plate (3 mm or less) cuts projectile damage; a thick one cuts blast damage, resists knockback and lets a [Backpack](Backpack.md) carry more before it slows you. A harder, tougher metal works better. |
 | Module Actuator | motor | Stroke and bore are tuned. A short stroke (8 cm or less) speeds walking while switched on and draws charge while you move; a long one lifts you over steps. Ram is a pulse: a shockwave that knocks back and hurts everything near. |
 | Module Spring | none | Stroke is tuned; the stock must have yield strength. A short stroke kicks the jump higher; a long one adds safe fall and a landing rebound that hurts nearby mobs after a fall of 3 or more blocks. |
 | Module Tread | none | Span is tuned. Narrow grips soft ground and webs; wide swims better. |
 | Module Thruster | none | A nozzle tuned by bore (8 to 40 mm). It burns fuel drawn from the first fluid container in your pack whose fluid burns, such as a bucket of fuel; the hotter the flame, the harder it pushes. A wide bore pushes harder and burns faster; a nozzle metal with a higher melting point works better. It needs air or a fuel that carries its own oxygen, and with no fuel in the pack nothing fires. Thrust lifts you while `G` is held; Burst is a pulse: a single lump of fuel fired along your look. |
-| Module Coil | cell for EMP | An electromagnet tuned by core length. Electromagnet is a switch that pulls only magnetic loose items (iron, steel and the like) to you; an iron-like core carries the field best. A long core (over 8 cm) reaches farther, a short one pulls harder. With a power cell held, EMP is a pulse that slows, weakens and blinds nearby creatures. |
+| Module Coil | cell for EMP | An electromagnet tuned by core length. Electromagnet is a switch that pulls only magnetic loose items (iron, steel and the like) to you; an iron-like core carries the field best. A long core (over 8 cm) reaches farther, a short one pulls harder. With a power cell held, EMP is a pulse that slows, weakens and blinds nearby creatures. A charged [Jar Baton](Jar_Baton.md) carried in the pack is emptied into the pulse, which then hits harder, reaches farther and lasts longer; the baton is left empty. |
 | Module Dispenser | none | A dosing pump tuned by dose (50 to 500 mB). Dose is a pulse that drinks the first potion bottle in your pack for you and returns the empty bottle; a larger dose lasts longer. A metal that resists corrosion works better. It draws a little charge. |
 
 ### Reading a drawing
@@ -122,6 +122,8 @@ Use an [Endernet Upgrade](Endernet_Upgrade.md) in the air while wearing the suit
 The suit's mass slows you like heavy armor; strength cancels the slowdown.
 
 The servos waste a share of what they draw as heat, and the suit warms. It sheds heat to the air, faster in water, rain and cold biomes, slower in the Nether. Above **110 Tu** the servos cut out until the suit falls under **80 Tu**; see [Heat](Heat.md).
+
+A thin Module Thermal plate also runs a **coolant**: the first fluid container in your pack holding a cool fluid that has a specific heat (water, glycol, brine and the like) makes the suit shed heat faster, the more so the higher the fluid's specific heat. The fluid drains slowly, in proportion to the heat it carries off. Lava and molten metal do not work as coolant.
 
 ## HUD
 

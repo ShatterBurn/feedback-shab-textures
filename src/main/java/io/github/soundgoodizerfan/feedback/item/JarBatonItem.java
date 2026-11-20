@@ -44,6 +44,17 @@ public class JarBatonItem extends Item {
         super(properties);
     }
 
+    /** The charge a jar baton holds, in Eu (0 when empty or not a baton). */
+    public static float charge(ItemStack stack) {
+        return stack.getItem() instanceof JarBatonItem ? eu(stack) : 0f;
+    }
+
+    /** Empties a baton: a capacitor given up to a pulse keeps nothing. */
+    public static void discharge(ItemStack stack) {
+        stack.remove(FDataComponents.BATON_EU.get());
+        stack.remove(FDataComponents.BATON_BAND.get());
+    }
+
     private static float eu(ItemStack stack) {
         return stack.getOrDefault(FDataComponents.BATON_EU.get(), 0f);
     }
