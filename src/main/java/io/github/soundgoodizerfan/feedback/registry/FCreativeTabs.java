@@ -291,6 +291,9 @@ public class FCreativeTabs {
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MATERIALS = tab("materials",
             () -> new ItemStack(FItems.STEEL_INGOT.get()), FCreativeTabs::fillMaterials);
 
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MOTES = tab("motes",
+            () -> io.github.soundgoodizerfan.feedback.vehicle.micro.MoteItem.of(net.minecraft.world.level.block.Blocks.STONE, 1), FCreativeTabs::fillMotes);
+
     private FCreativeTabs() {
     }
 
@@ -483,7 +486,10 @@ public class FCreativeTabs {
         FAutomation.fill(out);
         all(out, VEHICLE_PARTS);
         FVehicles.TIRE_HUB_ITEMS.forEach(hub -> out.accept(hub.get()));
-        // A mote per block that can be cut into motes (the creative tab takes single stacks only).
+    }
+
+    /** A mote per block that can be cut into motes (the creative tab takes single stacks only). */
+    private static void fillMotes(CreativeModeTab.Output out) {
         net.minecraft.core.registries.BuiltInRegistries.BLOCK.stream()
                 .filter(b -> b.asItem() != net.minecraft.world.item.Items.AIR && io.github.soundgoodizerfan.feedback.vehicle.micro.MoteItem.eligible(b.defaultBlockState()))
                 .forEach(b -> out.accept(io.github.soundgoodizerfan.feedback.vehicle.micro.MoteItem.of(b, 1)));
