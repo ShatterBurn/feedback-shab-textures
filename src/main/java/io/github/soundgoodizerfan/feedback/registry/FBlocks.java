@@ -1263,7 +1263,7 @@ public class FBlocks {
             () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GRAY).strength(5.0f).sound(SoundType.METAL)));
     public static final DeferredBlock<io.github.soundgoodizerfan.feedback.machine.reactor.StarSeatBlock> STAR_SEAT = BLOCKS.register("star_seat",
             () -> new io.github.soundgoodizerfan.feedback.machine.reactor.StarSeatBlock(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.COLOR_BLACK).strength(5.0f).sound(SoundType.METAL)));
+                    .mapColor(MapColor.COLOR_BLACK).strength(5.0f).sound(SoundType.METAL).noOcclusion()));
     public static final DeferredBlock<io.github.soundgoodizerfan.feedback.machine.reactor.SpentFuelPoolBlock> SPENT_FUEL_POOL = BLOCKS.register("spent_fuel_pool",
             () -> new io.github.soundgoodizerfan.feedback.machine.reactor.SpentFuelPoolBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.COLOR_BLUE).strength(5.0f).sound(SoundType.METAL)));

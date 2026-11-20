@@ -100,7 +100,7 @@ L is a Lead Plate, G is smooth stone.
 
 ### Star Seat
 
-A **Star Seat** is a lattice cell that seats one Nether star (right-click with it; an empty hand takes it back). The star is never used up. Every live fuel cell multiplies more, the heat throttle starts about 300 Tu later, and a core with no fuel at all holds a low idle and a little heat. Taking the star out of a running core drops its power back to the fuel's own.
+A **Star Seat** is a lattice cell that seats one Nether star (right-click with it; an empty hand takes it back). It looks like an open obsidian cradle with four stainless steel corner posts and a funnel inside where the star sits. The star is never used up. Every live fuel cell multiplies more, the heat throttle starts about 300 Tu later, and a core with no fuel at all holds a low idle and a little heat. Taking the star out of a running core drops its power back to the fuel's own.
 
 ```
 S O S
