@@ -56,7 +56,7 @@ A bullet has a shape. Each shape trades one thing for another and none is best; 
 
 Low drag keeps a bullet's speed over distance. *Armor and stone* is how hard the bullet presents itself, so it decides what it goes through. A hollow point opens on a soft target and hurts more, but armor stops it.
 
-A pointed bullet in a lever's tube chain-fires the round ahead of it ([Guns](Guns.md#traits)).
+A pointed bullet in a lever's tube chain-fires the round ahead of it ([Guns](Guns.md#frames-barrels-traits-and-names)).
 
 The shape is the bullet you seat: each shape is its own item, a Round Ball, a Flat-Nose Bullet, a Pointed Bullet or a Hollow-Point Bullet of some metal, and the press reads it off the bullet slot. Two ways to get one:
 

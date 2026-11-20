@@ -19,7 +19,7 @@ P is a Wrought Iron Plate, S is a [Shaft](Shaft.md), G is a [Gearbox](Cogs.md#ge
 | Pivot Arm (Long), 8 blocks | two rows of three rods |
 | Cutting Tip | two wrought iron rods and a wrought iron plate in a row, the plate at the right |
 | Breaking Tip | a wrought iron plate above two wrought iron rods |
-| Striking Tip | a [Joint Link](Joint_Link.md) between two wrought iron plates, in a column |
+| Striking Tip | a [Joint Link](Joints.md#joint-link) between two wrought iron plates, in a column |
 | Planting Tip | a [Hopper](Hopper.md) above a wrought iron rod |
 | Feeding Tip | a [Dispenser](Dropper_and_Dispenser.md) above a wrought iron rod |
 | Collecting Tip | a [Hopper](Hopper.md) above a wrought iron plate |

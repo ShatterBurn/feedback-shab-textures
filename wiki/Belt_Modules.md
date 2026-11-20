@@ -1,6 +1,6 @@
 # Belt Modules
 
-Seventeen fittings that give a [Conveyor Belt](Conveyor_Belt.md) cell a job: loading, unloading, sorting, dropping, counting and conditioning cargo. A cell holds one module. This page lists them in the order a line needs them: moving cargo on and off, sorting, then conditioning. The output funnel, chute, diverter, splitter and gate also fit on the [Belt Head Roller](Belt_Head_Roller.md) at the end of a run.
+Seventeen fittings that give a [Conveyor Belt](Conveyor_Belt.md) cell a job: loading, unloading, sorting, dropping, counting and conditioning cargo. A cell holds one module. This page lists them in the order a line needs them: moving cargo on and off, sorting, then conditioning. The output funnel, chute, diverter, splitter and gate also fit on the [Belt Head Roller](Conveyor_Belt.md#belt-head-roller) at the end of a run.
 
 ## Fitting and using
 
@@ -50,7 +50,7 @@ Crafting: 2 Wrought Iron Plates + Wrought Iron Rod + Escapement. Engineering Tab
 
 Holds cargo at its cell while engaged. Release it with an empty hand or a controller.
 
-Crafting: 2 Wrought Iron Plates + Wrought Iron Rod + [Ball Joint](Ball_Joint.md). Engineering Table, screwdriver, 2 screws, Mechanical Treatise I.
+Crafting: 2 Wrought Iron Plates + Wrought Iron Rod + [Ball Joint](Joints.md#ball-joint). Engineering Table, screwdriver, 2 screws, Mechanical Treatise I.
 
 ## Sorting
 

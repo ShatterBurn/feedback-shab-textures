@@ -25,6 +25,6 @@ The bellows can only make things **hotter**. Without a damper, the only way to c
 With dampers you can:
 
 - **Cool on demand**, so you don't overshoot.
-- **Temper steel**, which only counts while the metal is **cooling** through its band. Heat past the band, then open the dampers and let it fall through slowly. See [Heat Treatment](Heat_Treatment.md).
+- **Temper steel**, which only counts while the metal is **cooling** through its band. Heat past the band, then open the dampers and let it fall through slowly. See [Guide: Heat Treatment](Guide_Heat_Treatment.md).
 
 A damper is open or shut, nothing in between. To cool slowly, open and close it in a rhythm (by hand, or with a controller).

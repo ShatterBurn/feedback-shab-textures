@@ -39,7 +39,7 @@ A **metacarpal plate** (shaped from ingot or plate stock, laid over the back of 
 
 - adds damage to **barehanded swings only** (weapons get nothing, and the fist moves scale with it);
 - adds **armor** while worn, by hardness;
-- lets a bare hand **parry** a melee blow (the same tight window as the [Feedbacker](Feedbacker.md); projectiles are not parried), wearing the glove as it does;
+- lets a bare hand **parry** a melee blow (the same tight window as the [Feedbacker](Special_Loot.md#feedbacker); projectiles are not parried), wearing the glove as it does;
 - **slows your swing** in proportion to its weight: a heavy plate costs attack speed.
 
 The plate comes in three shapes. The **knuckle plate** (a bar of four ingots) punches much harder but covers little of the hand, so it adds little armor. The **claw plate** (three prongs from six ingots, ground light) weighs little so it slows the swing least and adds almost no armor. Its blow lands a little softer than a plain plate's, but a barehanded hit opens a bleed (1 damage a second for 5 seconds, not stacking) that counts as your damage, kills included. The [Veil](Skills.md#veil) nodes Clawhold and Opening cut and the [Chaos](Skills.md#chaos) nodes Gouge and Tear straps build on claws.
@@ -48,4 +48,4 @@ The plate keeps no heat off the hand; the body and lining do that. A broken glov
 
 ## Granting techniques
 
-A piece of gear can also carry a **grants** list: techniques it gives you while worn, the same as buying the node in the [skill tree](Skills.md#skills-from-gear). The [Feedbacker](Feedbacker.md), the [Knuckleblaster](Knuckleblaster.md) and the [Whiplash](Whiplash.md) do so.
+A piece of gear can also carry a **grants** list: techniques it gives you while worn, the same as buying the node in the [skill tree](Skills.md#skills-from-gear). The [Feedbacker](Special_Loot.md#feedbacker), the [Knuckleblaster](Special_Loot.md#knuckleblaster) and the [Whiplash](Special_Loot.md#whiplash) do so.

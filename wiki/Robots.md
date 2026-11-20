@@ -79,7 +79,7 @@ A **Robot Radio** is the robot's end of a link to a [Radio Mast](Radio_Mast.md).
 
 ## The brain
 
-A live [circuit](Basic_Electronic_Circuit.md) seated in a robot when it is assembled at the [Engineering Table](Engineering_Table.md) is its brain. A robot with no circuit still works, only worse; nothing is refused. A [Robot Arm](Robot_Arm.md) takes a circuit by hand and uses it the same way.
+A live [circuit](Basic_Electronic_Circuit.md) seated in a robot when it is assembled at the [Engineering Table](Engineering_Table.md) is its brain. A robot with no circuit still works, only worse; nothing is refused. A [Robot Arm](Robots.md#robot-arm) takes a circuit by hand and uses it the same way.
 
 - **Dexterity.** A faster, quieter circuit is better, and a cold joint halves it. Dexterity decides how steadily the hand lands when the robot uses a held item (see *Use held item ahead* below).
 - **Heater.** A circuit with a [tube](Vacuum_Tube.md) draws its heater's current from the robot's battery, which is how a robot keeps it warm; a cold tube gives less speed and gain.
@@ -136,8 +136,8 @@ Readings (an *Input* card reads them):
 | Distance ahead | Blocks to the first solid thing in front (rangefinder) |
 | Hardness ahead | How hard the block in front is (probe) |
 | Heading | Which way it faces, in quarter turns from south (inertial unit) |
-| Beacon near | Whether a [Robot Beacon](Robot_Beacon.md) is within reach |
-| Dock ahead | Whether a [Robot Dock](Robot_Dock.md) or Tether Reel is the block in front |
+| Beacon near | Whether a [Robot Beacon](#robot-beacon) is within reach |
+| Dock ahead | Whether a [Robot Dock](#robot-dock) or Tether Reel is the block in front |
 | Position east | Blocks east of where it was set down, by dead reckoning |
 | Position south | Blocks south of where it was set down, by dead reckoning |
 | Height above start | Blocks above the block it was set down on |
@@ -149,7 +149,7 @@ Readings (an *Input* card reads them):
 
 ### Using the held item
 
-*Use held item ahead* lays food in a [Skillet](Skillet.md), flips it with a [Spatula](Spatula.md), or does whatever a right-click with that item does on the block in front. A clumsy hand lands off the center of the face, so it may act on the wrong spot; a better brain lands closer to the center.
+*Use held item ahead* lays food in a [Skillet](Skillet.md), flips it with a [Spatula](Hand_Tools.md#spatula), or does whatever a right-click with that item does on the block in front. A clumsy hand lands off the center of the face, so it may act on the wrong spot; a better brain lands closer to the center.
 
 ## How it works
 
@@ -162,15 +162,86 @@ Readings (an *Input* card reads them):
 
 ### Position
 
-A robot tracks where it is by counting what it rolls. The error grows with every block, so *Position east* and *Position south* drift. A [Robot Beacon](Robot_Beacon.md) within a few blocks wipes it.
+A robot tracks where it is by counting what it rolls. The error grows with every block, so *Position east* and *Position south* drift. A [Robot Beacon](#robot-beacon) within a few blocks wipes it.
 
 ### Charging
 
-A [Robot Dock](Robot_Dock.md) charges the robot standing on it, and a [Tether Reel](Tether_Reel.md) feeds a robot tied to it, both off an electrical line. A [Robot Arm](Robot_Arm.md) is a robot fixed in place and run off a line.
+A [Robot Dock](#robot-dock) charges the robot standing on it, and a [Tether Reel](Tether_Reel.md) feeds a robot tied to it, both off an electrical line. A [Robot Arm](Robots.md#robot-arm) is a robot fixed in place and run off a line.
 
 ### Server limits
 
 The server holds a limit on robots per chunk, robots per dimension and chunks kept loaded by robots, set in `feedback-server.toml`.
+
+## Robot Beacon
+
+A landmark that corrects a robot's idea of where it is.
+
+### Crafting
+
+```
+  G  
+  W  
+ P P P
+```
+
+G is Glass, W is [Copper Wire](Wire_Drawer.md) and P is a [Copper Plate](Mechanical_Hammer.md). Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 2 [fasteners](Fasteners.md), holding Robotics Treatise II: Robots ([Treatise](Treatise.md)).
+
+### How it works
+
+A robot counts the blocks it rolls to know its position, and the error grows with every block. A robot within a few blocks of a beacon has that error wiped. A robot reads *Beacon near* while it is within reach. See [Position](#position).
+
+## Robot Dock
+
+A pad on an [electrical](Electricity.md) line that charges the robot standing on it.
+
+### Crafting
+
+```
+ W P W
+ P P P
+```
+
+W is [Copper Wire](Wire_Drawer.md) and P is a [Copper Plate](Mechanical_Hammer.md). Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 2 [fasteners](Fasteners.md), holding Robotics Treatise II: Robots ([Treatise](Treatise.md)).
+
+### Using it
+
+Join the dock to an electrical line and stand a robot on it. The robot's [Battery](Battery.md) is charged the way a [Charger](Charger.md) charges one: the dock asks for the battery's charge current while the line is at its band or above. A robot with no battery takes nothing.
+
+### Reading it
+
+A robot reads *Dock ahead* when a dock is the block in front, so a program can drive onto it to recharge. A [Tether Reel](Tether_Reel.md) charges a robot that stays away from the pad.
+
+## Robot Arm
+
+A robot fixed on a mount and run off an [electrical](Electricity.md) line instead of a battery. It works the space it faces.
+
+### Crafting
+
+```
+ P W P
+   P  
+ P P P
+```
+
+W is [Copper Wire](Wire_Drawer.md) and P is a [Copper Plate](Mechanical_Hammer.md). Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 2 [fasteners](Fasteners.md), holding Robotics Treatise II: Robots ([Treatise](Treatise.md)).
+
+### Using it
+
+It faces the way you looked when you placed it.
+
+- **Right-click with a Punch Card** to load a program.
+- **Sneak and right-click with a Punch Card** to take the loaded program back out into your inventory.
+- **Right-click with a circuit** to seat it as the arm's brain. It gives the arm dexterity and sets its program size as on a [robot](#the-brain); an arm with no circuit is clumsy and runs a short program. A circuit already seated comes back to you.
+- **Right-click with any other item** to put it in its cargo.
+- **Sneak and right-click with an empty hand** to take the last stack out.
+
+Breaking the block drops its cargo and its circuit.
+
+### How it works
+
+It breaks, places, picks up and drops, uses the first carried stack on the block ahead ([Using the held item](#using-the-held-item)), puts items into and takes them out of a container or machine, and switches a machine on or off, with the same channels and program as a robot. Turning swings it a quarter on its mount. It shares the readings *Blocked ahead*, *Breakable ahead*, *Items ahead*, *Cargo full* and *Dock ahead*. Its tool head has a fixed strength.
+
+It acts only while its line feeds it.
 
 ## Tips and automation
 

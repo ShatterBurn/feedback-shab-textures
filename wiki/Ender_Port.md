@@ -14,7 +14,7 @@ Put one Ender Pearl or [Synthetic Pearl](Synthetic_Pearl.md) and two metal plate
 - A pair moves only so much mass per minute. A stack heavier than the whole allowance is handed back.
 - Each crossing costs [Liquid Teleportant](Liquid_Teleportant.md) from the port's tank, which a pipe fills (the page says how to make it): more for heavier items and for longer distances.
 - Shulker boxes, items that hold fluid and [pods](Carrier.md#pod) never cross.
-- A shulker box or [Shulker Shell](Shulker.md) beside a port blocks pairing.
+- A shulker box or [Shulker Shell](Vanilla_Changes.md#shulker) beside a port blocks pairing.
 
 ## Running dry
 

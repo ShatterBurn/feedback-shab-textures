@@ -16,7 +16,7 @@ A very light, flammable gas. The Electrolyser makes it from water.
 A gas that makes fire burn harder and that a lung can breathe at full strength. The Electrolyser makes it from water.
 
 - **Oxidizer.** Oxygen carries oxygen of its own, so a fuel burned with it burns as if blown on. See [Fuels](Fuels.md).
-- **Breathable.** Its oxygen share is 1: all of it is usable. Open air has about a fifth of that. A [Culture Dish](Sculk_Culture.md) breathes it at full rate.
+- **Breathable.** Its oxygen share is 1: all of it is usable. Open air has about a fifth of that. A [Culture Dish](Sculk.md) breathes it at full rate.
 
 JEI's Material Stats page lists the figure as **Oxygen share**.
 
@@ -26,7 +26,7 @@ Salt water. Dissolve Salt in water in a [Reactor](Reactor.md). The [Electrolyser
 
 ## Lye
 
-A strong base. It is left in the Electrolyser's cell when brine is split; draw it off a side face. It dissolves bauxite in the Reactor ([Making Aluminum](Making_Aluminum.md)), turns chlorine into bleach, and can serve as the electrolyte of an [Electrolytic Cell](Electrolytic_Cell.md). It bites vessels that are not lined for it ([Hazards](Hazards.md)).
+A strong base. It is left in the Electrolyser's cell when brine is split; draw it off a side face. It dissolves bauxite in the Reactor ([Guide: Making Aluminum](Guide_Making_Aluminum.md)), turns chlorine into bleach, and can serve as the electrolyte of an [Electrolytic Cell](Electrolytic_Cell.md). It bites vessels that are not lined for it ([Hazards](Hazards.md)).
 
 ## Battery Electrolyte
 
@@ -83,7 +83,7 @@ An inert gas from the last cold cut of air. It does the work of nitrogen as a si
 
 The lightest noble gas, and a lift gas for an [airship](Airship.md) that never burns. It has two sources:
 
-- **End stone.** Heating [End Stone](End_Stone.md) in a Reactor releases 100 mB of helium along with the hydrogen.
+- **End stone.** Heating [End Stone](Reactor.md#the-reactions) in a Reactor releases 100 mB of helium along with the hydrogen.
 - **Cold cut.** 100 mB of nitrogen in a Reactor at **-196 to -189 Tu** (best -193) gives 4 mB of helium and returns 96 mB of nitrogen. Too warm and the nitrogen comes back unchanged.
 
 Store it in a [Gas Tank](Gas_Tank.md) and carry it by [Pipe](Pipe.md) like any gas.
@@ -127,4 +127,4 @@ Amounts and windows are in the Reactor table; the melt is poured as described un
 
 ## Cryolite bath
 
-Cryolite Ore melted in a Reactor at 1010 Tu gives this molten liquid. At 950 Tu or hotter it is the solvent in which an Electrolyser splits alumina into aluminum. It is not used up. See [Making Aluminum](Making_Aluminum.md).
+Cryolite Ore melted in a Reactor at 1010 Tu gives this molten liquid. At 950 Tu or hotter it is the solvent in which an Electrolyser splits alumina into aluminum. It is not used up. See [Guide: Making Aluminum](Guide_Making_Aluminum.md).

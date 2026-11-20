@@ -33,4 +33,4 @@ Each science's first study hangs on the age that provides its tools. Once the ag
 
 Each [Treatise](Treatise.md) volume names the age its types belong to. Reading is never gated by age.
 
-See the [Progression Guide](Progression_Guide.md) for the order of play.
+See the [Guide: Progression](Guide_Progression.md) for the order of play.

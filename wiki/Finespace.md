@@ -4,13 +4,73 @@ The inside of a block, divided into 4 by 4 by 4 voxels, each a quarter of a bloc
 
 ## Making finespace
 
-[Cut](Mote.md#obtaining) a whole block into motes, then right-click a block or an empty spot with a [Mote](Mote.md). Where there was only air, the click makes the **Finespace** block there and puts the mote in the voxel in front of the face you clicked. A Finespace block holds up to 64 voxels.
+[Cut](#motes) a whole block into motes, then right-click a block or an empty spot with a [Mote](#motes). Where there was only air, the click makes the **Finespace** block there and puts the mote in the voxel in front of the face you clicked. A Finespace block holds up to 64 voxels.
 
 - **Mine a voxel** with the right tool for its block to take it out and get its mote back. Mining Finespace takes one voxel at a time, the one you look at.
 - A face on the edge of a block of Finespace is hidden when the voxel in the next block covers it.
 - A block of Finespace weighs its voxels by what they are made of; a hosted machine weighs by its design (see [Machines in finespace](#machines-in-finespace)). A build in finespace lifts on a [Lift](Vehicles.md#the-lift) like any other.
 
-The [Fine Gauge](Fine_Gauge.md) sets single, line, box, mirror or wedge placement. The [Fine Wedge](Fine_Wedge.md) is a four-step ramp voxel.
+The [Fine Gauge](#fine-gauge) sets single, line, box, mirror or wedge placement. The [Fine Wedge](#fine-wedge) is a four-step ramp voxel.
+
+## Motes
+
+A **Mote** is one voxel of a block: a 64th of it, a quarter of a block on a side. Motes are what you build with in finespace.
+
+Cut a whole block into 64 motes at the [Engineering Table](Engineering_Table.md) with a [Sawblade](Sawblade.md) in a tool slot. No fasteners are needed, and it needs Mechanical Treatise I: Engines, Flywheels and Dynamotors ([Treatise](Treatise.md)).
+
+```
+B
+```
+
+B is any plain, solid, whole block: stone, planks, a metal block, wool. A block with a menu or machinery, a half block, a fluid or anything that is not a full cube cannot be cut. The motes are named for their block ("Stone Mote") and motes of one block stack. Mining a voxel with the right tool gives its mote back.
+
+Right-click any block or any piece of finespace with a mote in hand. It goes in the voxel in front of the face you clicked, at the exact spot you pointed. While you hold a mote, an outline shows the voxel it will fill. Blocks place the way they do full size: a log lies along its axis, a stair takes the half you clicked. Each voxel is drawn as its block's own model at a quarter of the size, and you walk on and bump into the exact voxels. A glowing block lights the space around it.
+
+Parts that work in finespace ([shafts](Shaft.md), [cogs](Cogs.md), [joints](Joints.md), [bearings](Bearing.md)) are placed as themselves, not cut into motes. So are [modular machines](#machines-in-finespace), clicked onto a cell that already exists.
+
+## Fine Gauge
+
+A gauge for building in finespace. It places nothing itself: held in either hand while you place or mine motes, it sets how they go.
+
+```
+RP
+PR
+```
+
+R is a Wrought Iron Rod and P is a Wrought Iron Plate. Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, holding Electrical Treatise III: Circuits ([Treatise](Treatise.md)).
+
+**Sneak-use** the gauge, on a block or in the air, to cycle the mode. A strip under the crosshair lists every mode with the current one lit, and a line says what it does.
+
+| Mode | What a click does |
+| --- | --- |
+| Single | Places one voxel. |
+| Line | Click a start, then an end: a line of voxels joins them. |
+| Box | Click one corner, then the other: the box between them fills. At most 4096 voxels in one go. |
+| Mirror | Use the gauge on a face of the build to set a mirror plane through it; use it on the same plane again to remove it. Up to 3 planes. |
+| Wedge | The mote in your other hand is placed as a ramp of itself; see [Wedge mode](#wedge-mode). |
+
+With mirror planes set, every voxel you place is copied across each plane, with its facing flipped.
+
+Line and box modes also work for mining. The first mining click marks a corner and the second removes the span between. Mirror planes remove the mirrored voxels too.
+
+## Fine Wedge
+
+A four-step ramp voxel, a quarter of a block long, falling away from you.
+
+```
+S 
+SS
+```
+
+S is a Smooth Stone Slab. The recipe makes 2.
+
+Hold it and right-click a block or a piece of finespace as you would place a mote. The ramp falls away from you. Click the upper half of a face to hang it from above instead.
+
+Each of the four steps is 1/16 of a block. What you see is what collides and what the outline shows: the same four steps. The wedge has a single look.
+
+### Wedge mode
+
+Set a Fine Gauge to **Wedge** mode, hold it in one hand and a mote in the other, and the mote goes in as a ramp of itself. It takes each face's own texture and tint (a grass wedge is green on top), and mining it gives the mote back. Rotation parts and joints cannot be cut to a wedge.
 
 ## Rotation in finespace
 
@@ -20,7 +80,7 @@ Only a [Rotation Adapter](Rotation_Adapter.md) joins rotation in finespace to fu
 
 ## Machines in finespace
 
-Any modular machine item, such as a dynamotor, thruster, jet, gas tank, heat exchanger, water wheel or gas centrifuge, can be a voxel. Start finespace with a [Mote](Mote.md), then right-click an existing finespace cell with the machine. It takes one voxel, and that voxel is the machine: the design it was built with, drawn at a quarter of a block. A thruster in a voxel pushes its body. One machine item pays for one voxel.
+Any modular machine item, such as a dynamotor, thruster, jet, gas tank, heat exchanger, water wheel or gas centrifuge, can be a voxel. Start finespace with a [Mote](Finespace.md#motes), then right-click an existing finespace cell with the machine. It takes one voxel, and that voxel is the machine: the design it was built with, drawn at a quarter of a block. A thruster in a voxel pushes its body. One machine item pays for one voxel.
 
 The machine is scaled to a voxel's volume when placed. Figures that follow volume are a 64th of the full-size machine: mass, power, force, burn, capacity, tank, flow, push, pull, lift, current, supply, stored energy, slots, heat, work, intake, leak and seep. Rotational inertia is a 1024th. Figures that belong to the material, such as temperatures, speeds, efficiencies and voltage bands, stay as built.
 
@@ -42,7 +102,7 @@ A machine that toggles its own state shows it on its voxel: a burner lit, a lamp
 
 ## Joints
 
-The [Ball Joint](Ball_Joint.md), [Locked Joint](Locked_Joint.md), [Slider Joint](Slider_Joint.md), [Piston Joint](Piston_Joint.md), Rotary Bearing and Ring Gear are used with an empty hand once placed as voxels. Clicking a joint voxel to choose its joint, or a bearing voxel to choose its role, shows a strip under the crosshair with every option and the current one lit; see [Vehicles](Vehicles.md#joints).
+The [Ball Joint](Joints.md#ball-joint), [Locked Joint](Joints.md#locked-joint), [Slider Joint](Joints.md#slider-joint), [Piston Joint](Joints.md#piston-joint), Rotary Bearing and Ring Gear are used with an empty hand once placed as voxels. Clicking a joint voxel to choose its joint, or a bearing voxel to choose its role, shows a strip under the crosshair with every option and the current one lit; see [Vehicles](Vehicles.md#joints).
 
 ## See also
 

@@ -4,7 +4,7 @@ The village's notice board. It shows every open order around it, the contracts t
 
 ## Obtaining
 
-Ledger Boards stand in the plazas of generated villages (see [Village Stalls](Village_Stalls.md)). A broken board drops itself and can be placed anywhere.
+Ledger Boards stand in the plazas of generated villages (see [Village Stalls](Villages.md#stalls-and-plazas)). A broken board drops itself and can be placed anywhere.
 
 ## Using it
 
@@ -23,7 +23,7 @@ A [Counter](Counter.md) within 12 blocks of the board fills contracts from what 
 ### Notices
 
 - Your standing tier with the village and what the next tier gives: more contracts each day, then a bigger bonus for finishing, then a blueprint for every contract.
-- The market countdown (see [Market Cross](Market_Cross.md)).
+- The market countdown (see [Market Cross](Villages.md#market-cross)).
 - A raid warning.
 - The banner bounty.
 
@@ -37,5 +37,5 @@ A won raid leaves the village owing one **banner bounty**: put an illager banner
 
 ## See also
 
-- [Village Guilds](Village_Guilds.md) for the daily guild order.
+- [Village Guilds](Villages.md#guilds) for the daily guild order.
 - [Villagers](Villagers.md) for standing with one villager.

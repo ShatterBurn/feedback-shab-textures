@@ -19,16 +19,16 @@ Amounts of metal and other stuff are counted in **Qu**. See [Units](Units.md#amo
 | Brass | 8 | 8.5 | 6 | 930 Tu | 65% copper, 35% zinc. Good cartridge cases. |
 | Bronze | 10 | 8.8 | 10 | 1000 Tu | 90% copper, 10% tin. |
 | Iron | 8 | 7.87 | 7.5 | 1538 Tu | **Magnetic.** Pure iron. Softer and weaker than wrought iron. |
-| Wrought Iron | 10 | 7.8 | 10 | 1500 Tu | **Magnetic.** Vanilla's iron: soft, tough, worked cold. Made by hammering the slag out of a bloom ([Making Wrought Iron](Making_Wrought_Iron.md)). |
+| Wrought Iron | 10 | 7.8 | 10 | 1500 Tu | **Magnetic.** Vanilla's iron: soft, tough, worked cold. Made by hammering the slag out of a bloom ([Guide: Making Wrought Iron](Guide_Making_Wrought_Iron.md)). |
 | Cast Iron | 20 | 7.2 | 10 | 1200 Tu | **Magnetic.** Too brittle for plates, rods or wire; good for steelmaking. |
-| Steel | 15 | 7.85 | 12 | 1450 Tu | **Magnetic.** Only moves between **900 and 1100 Tu**. See [Making Steel](Steel.md). |
+| Steel | 15 | 7.85 | 12 | 1450 Tu | **Magnetic.** Only moves between **900 and 1100 Tu**. See [Guide: Making Steel](Guide_Making_Steel.md). |
 | Hardened Steel | 69 | 7.85 | 75 | 1450 Tu | **Magnetic.** No blow moves it; only a drill bit, a lathe bit or the [Grinding Wheel](Grinding_Wheel.md) cuts it. |
-| Tempered Steel | 44 | 7.85 | 55 | 1450 Tu | **Magnetic.** [Tempered](Heat_Treatment.md#tempering) hardened steel: tough again. Worked cold, never hot. Springs, blades, gun parts. |
+| Tempered Steel | 44 | 7.85 | 55 | 1450 Tu | **Magnetic.** [Tempered](Guide_Heat_Treatment.md#tempering) hardened steel: tough again. Worked cold, never hot. Springs, blades, gun parts. |
 | Chromium | 20 | 7.19 | 15 | 1907 Tu | Hard and stainless. For stainless steel and the redstone alloy. |
 | Nickel | 9 | 8.91 | 3.5 | 1455 Tu | **Magnetic.** For stainless steel and cermet. |
 | Cobalt | 18 | 8.9 | 12 | 1495 Tu | **Magnetic.** The binder in cermet. |
 | Manganese | 20 | 7.21 | 10 | 1246 Tu | Brittle alone. For manganese steel. |
-| Aluminum | 2.5 | 2.7 | 2 | 660 Tu | Light and soft; conducts well for its weight. Made from bauxite by [electrolysis](Making_Aluminum.md). |
+| Aluminum | 2.5 | 2.7 | 2 | 660 Tu | Light and soft; conducts well for its weight. Made from bauxite by [electrolysis](Guide_Making_Aluminum.md). |
 | Titanium | 15 | 4.51 | 20 | 1668 Tu | Light, strong, stands the heat. For cermet. |
 | Tungsten | 34 | 19.25 | 38 | 3422 Tu | The highest melting point of any metal. |
 | Magnesium | 4.5 | 1.74 | 4.5 | 650 Tu | Very light. Burns hot, at a flame temperature of 3100 Tu. |
@@ -84,7 +84,7 @@ What the columns mean in play:
 - **Yield strength** (in St: steel is 12) decides how much pressure a gun chamber or a cartridge case holds, and how fast an engine can rev. A 9 mm chamber with a 3 mm wall holds 0.67 × yield strength in Pu. See [Gun Parts](Gun_Parts.md#the-chamber).
 - **Melting point** is where a crucible melts it, and where a [Fuse](Fuse.md) wire or a pair of [tongs](Hazards.md#tongs) gives out. Stuff that melts above lava's 1200 Tu is fire resistant ([Lava](Lava.md)).
 - **Magnetic** metals are pulled by the [Electromagnet](Electromagnet.md).
-- **Diamagnetism** (0 to 1) is how strongly a material is pushed away by a magnet's field. It sets how hard an Electromagnet shoves a dropped item away, and how well a [Levitation Plate](Levitation_Plate.md) or [Levitation Sleeve](Levitation_Sleeve.md) made of it works.
+- **Diamagnetism** (0 to 1) is how strongly a material is pushed away by a magnet's field. It sets how hard an Electromagnet shoves a dropped item away, and how well a [Levitation Plate](Levitation.md#levitation-plate) or [Levitation Sleeve](Levitation.md#levitation-sleeve) made of it works.
 
 | Material | Diamagnetism |
 | --- | --- |
@@ -260,7 +260,7 @@ The walls of the reactor shell must be dense: density 7 or more in the table abo
 A late-game wire that carries current with no loss from the packet up to a limit. It is made in four steps.
 
 1. **Purify.** Purify Redstone dust in a [Reactor](Reactor.md) with sulfuric or hydrochloric acid to get Purified Redstone.
-2. **Blend and calcine.** Blend 62 to 70% Purified Redstone with 28 to 36% chromium in the [Mixer](Mixer.md) for Superconductor Blend. Calcine it in a [Crucible](Crucible.md) or [Kiln zone](Kiln_Zone.md) at 780 to 920 Tu for Calcined Blend. Hotter ruins it into redstone dust.
+2. **Blend and calcine.** Blend 62 to 70% Purified Redstone with 28 to 36% chromium in the [Mixer](Mixer.md) for Superconductor Blend. Calcine it in a [Crucible](Crucible.md) or [Kiln zone](Furnaces.md#kiln-zone) at 780 to 920 Tu for Calcined Blend. Hotter ruins it into redstone dust.
 3. **Sheath.** Four Calcined Blend and a Silver Ingot, shapeless, make a Sheathed Billet.
 4. **Draw it.** Roll the billet to a rod, draw it to a wire, draw that to a fine wire. The filament takes **one cold stage per anneal**, so anneal it (heat to 600 Tu in a Crucible or Kiln zone) after every stage. Each anneal taken at the limit adds one cycle of **texture** (tooltip *Texture: n*); an anneal taken early adds nothing. See [Work hardening](Metalworking.md#work-hardening).
 5. **Reaction anneal.** Put the fine wire in a Reactor at 840 to 920 Tu (best 880) with oxygen held at 3.8 to 4.6 Pu; burst danger starts at 5 Pu ([Pressure](Reactor.md#pressure)). Texture 3 gives Redstone Superconductor Wire, texture 2 a fair grade, texture 1 a poor grade, texture 0 nothing. Too hot gives redstone dust.
@@ -308,7 +308,7 @@ A glass that is almost all air: density 0.1, hardness 0.2, yield strength 0.02, 
 
 ## High-speed steel
 
-Steel alloyed with tungsten, molybdenum, chromium and a little vanadium, melted in a [crucible](Casting.md#alloys). Throw an ingot into water at **1220 Tu or more** and it becomes **Hardened High-Speed Steel**, which, unlike hardened steel, keeps its edge to 600 Tu. Only the [Grinding Wheel](Grinding_Wheel.md) shapes it, and it has only the ingot, ground ingot and swarf. See [Heat Treatment](Heat_Treatment.md#hardening-quenching) for the quench.
+Steel alloyed with tungsten, molybdenum, chromium and a little vanadium, melted in a [crucible](Casting.md#alloys). Throw an ingot into water at **1220 Tu or more** and it becomes **Hardened High-Speed Steel**, which, unlike hardened steel, keeps its edge to 600 Tu. Only the [Grinding Wheel](Grinding_Wheel.md) shapes it, and it has only the ingot, ground ingot and swarf. See [Guide: Heat Treatment](Guide_Heat_Treatment.md#hardening-quenching) for the quench.
 
 ## Solders
 
@@ -501,7 +501,7 @@ Dust reacts and melts faster than a lump or ingot of the same material. A finer 
 
 ## Where to find them
 
-Copper and gold come from vanilla's ores. Iron ore, raw iron and the iron minerals hematite, limonite and magnetite ([Ore Deposits](Ore_Deposits.md)) melt to **cast iron**; **wrought iron** comes from an Iron Bloom ([Making Wrought Iron](Making_Wrought_Iron.md)). Brass and bronze are [alloyed](Casting.md#alloys). Steel and cast iron are made in a [crucible](Steel.md). Pure copper can also be refined out of brass or scrap in the [Electrolytic Cell](Electrolytic_Cell.md).
+Copper and gold come from vanilla's ores. Iron ore, raw iron and the iron minerals hematite, limonite and magnetite ([Ore Deposits](Ore_Deposits.md)) melt to **cast iron**; **wrought iron** comes from an Iron Bloom ([Guide: Making Wrought Iron](Guide_Making_Wrought_Iron.md)). Brass and bronze are [alloyed](Casting.md#alloys). Steel and cast iron are made in a [crucible](Guide_Making_Steel.md). Pure copper can also be refined out of brass or scrap in the [Electrolytic Cell](Electrolytic_Cell.md).
 
 Tin, zinc and lead are ores in the ground. **Silver** comes from **argentite**, which fills its own silver lode ([Ore Deposits](Ore_Deposits.md)) and shows up in a thin scatter through galena veins. Argentite gives silver by roasting and leaching ([Ore Processing](Ore_Processing.md)). Silver comes as ingots, nuggets and blocks.
 

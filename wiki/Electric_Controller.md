@@ -44,7 +44,7 @@ An Electric Programmer and an Electric Controller in one block, with a desktop. 
 
 It looks like a 1990s desktop PC: a beige case with drive slots and lamps, a CRT monitor with a blinking cursor, and a keyboard and mouse on the desk in front. The screen faces you when you place it.
 
-The Computer takes the Electric Controller's circuit, which is built in and works as the Electric Controller's [circuit](#circuit-slot). It takes an [Endernet Upgrade](#endernet-upgrade) and a [USB Port](USB_Port.md).
+The Computer takes the Electric Controller's circuit, which is built in and works as the Electric Controller's [circuit](#circuit-slot). It takes an [Endernet Upgrade](#endernet-upgrade) and a [USB Port](#usb-port).
 
 Its drive bays, running slot and editor take the Floppy Disk, and the USB Drive once a USB Port is fitted. A Punch Card or a Memory Board does not go in; the Computer runs programs from its internal disk through a card it makes itself.
 
@@ -145,3 +145,14 @@ Media have a capacity (Punch Card 1, USB Drive 4, Floppy Disk 8), but a medium s
 - **Icons right**: moves the drive icons to the right side; it takes effect when the desktop is reopened.
 
 Right-click with a medium in hand puts it straight into the RUN slot; the drive way takes it out. The editor works without power; the program runs only while the cable delivers.
+
+### USB Port
+
+A socket you fit to a Computer. With it fitted, the Computer's drive bays, running slot and editor take [USB Drives](Programming.md#media) as well as Floppy Disks.
+
+```
+K K K
+K P K
+```
+
+K is a Ceramic and P is a Copper Plate. Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, 2 machine bolts ([Fasteners](Fasteners.md)) and Electrical Treatise III: Circuits ([Treatise](Treatise.md)). Use it on a Computer to fit it. A Computer carries one USB Port.

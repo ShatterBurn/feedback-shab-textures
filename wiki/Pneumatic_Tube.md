@@ -45,7 +45,29 @@ Tubes that touch join into one run. **Right-click** a tube with an empty hand to
 
 If an evacuated run's pressure rises past the level that holds the vacuum (a leak outruns the pump, or a stopped pump lets the seals leak in), air rushes in. Every capsule in an evacuated tube stalls for about three seconds, creatures within about 3 blocks of an evacuated tube are pulled toward it and hurt, and the run fills with air. Keep the pump running and the shaft up to speed.
 
-[Junctions](Tube_Junction.md) split a run by address, and a [Tube Station](Tube_Station.md) is the door where items go in and come out.
+[Junctions](#tube-junction) split a run by address, and a [Tube Station](Tube_Station.md) is the door where items go in and come out.
+
+## Tube Junction
+
+Routes [carriers](Carrier.md) in a tube run by their address color, never by what they hold.
+
+```
+  T
+T W T
+  T
+```
+
+T is Copper Tubing and W is a Wide-Bore Tube.
+
+- **Use a dye on a face** to name the color that leaves that way. The same dye on the same face clears it.
+- **Sneak with an empty hand** to clear every face.
+- A carrier with no matching color leaves by the first open face.
+
+### Programmed Junction
+
+A junction that returns what it cannot place. A [circuit](Basic_Electronic_Circuit.md) above a Tube Junction, with a Copper Wire on each side of the junction. Craft it at the Engineering Table with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and Electrical Treatise III: Circuits ([Treatise](Treatise.md)); it spends no fasteners.
+
+Dye a face to name its color, and **click a face with an empty hand** to make it the return line. A carrier with no matching color goes to the return line, and waits while that line is full rather than going astray.
 
 ## Vacuum Pump
 

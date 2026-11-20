@@ -51,7 +51,7 @@ The turned grip is a blank. A gun takes it as a **Gun Grip**, shaped at a bench 
 
 ## The stock
 
-A stock is made at a bench from a plate (any metal, polymer or organic material that comes as one) or from planks, in one of three shapes: **fixed**, **skeleton** or **folding**. It takes the kick into your shoulder while you are crouched and still, so the gun kicks less and groups tighter ([Guns](Guns.md#frames)). It is optional, and fits any frame.
+A stock is made at a bench from a plate (any metal, polymer or organic material that comes as one) or from planks, in one of three shapes: **fixed**, **skeleton** or **folding**. It takes the kick into your shoulder while you are crouched and still, so the gun kicks less and groups tighter ([Guns](Guns.md#frames-barrels-traits-and-names)). It is optional, and fits any frame.
 
 A stock has a **core** and a **pad**, each a choice of material. The cut it makes shows on the Blueprint Table as **Braced kick** and **Braced spread**. The core holds by its yield strength: a stiffer core carries more of the kick. The pad cushions by being soft and tough. The shape sets the stock's length, and a longer stock cuts more.
 

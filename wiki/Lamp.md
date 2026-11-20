@@ -1,6 +1,6 @@
 # Glowstone Lamp
 
-A panel of glowstone that lights by how well a power line feeds it. It replaces the vanilla [Redstone Lamp](Redstone_Lamp.md).
+A panel of glowstone that lights by how well a power line feeds it. It replaces the vanilla [Redstone Lamp](Vanilla_Changes.md#redstone-lamp).
 
 ## Building it
 

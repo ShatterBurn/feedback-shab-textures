@@ -1,6 +1,6 @@
-# Making Wrought Iron
+# Guide: Making Wrought Iron
 
-A path from iron ore to wrought iron, the soft tough iron that plates, rods and most machine parts are made of. Iron ore, raw iron and vanilla's [iron ore](Iron_Ore.md) do not smelt to an ingot in any furnace or crucible: the ore first becomes a spongy **Iron Bloom** full of slag, and the slag is hammered out.
+A path from iron ore to wrought iron, the soft tough iron that plates, rods and most machine parts are made of. Iron ore, raw iron and vanilla's [iron ore](Vanilla_Changes.md#iron-ore) do not smelt to an ingot in any furnace or crucible: the ore first becomes a spongy **Iron Bloom** full of slag, and the slag is hammered out.
 
 ## What you need
 
@@ -51,4 +51,4 @@ A cast iron batch becomes a bloom with little slag in the [Puddling Furnace](Pud
 - **Limonite** dehydrates to **hematite** of the same form between **300 and 600 Tu**.
 - **Iron loose rock** on the surface drops cast iron nuggets.
 
-After this: [Making Steel](Steel.md).
+After this: [Guide: Making Steel](Guide_Making_Steel.md).

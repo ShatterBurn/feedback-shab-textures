@@ -22,7 +22,7 @@ The piece can hold up to 1024 blocks. A bigger build, or one touching the ground
 
 ## How it works
 
-The piece speeds up and slows down with the network: a heavy piece makes the whole line slower to change speed, and the bearing is what holds it to the shaft's turn. A [Coupling Sleeve](Coupling_Sleeve.md) fitted to a full-size bearing takes the piece out of the line's inertia and gears it to the shaft instead, so the piece and the line push on each other. The bearing costs the network **0.2 Su per RPM** of friction. A [Levitation Sleeve](Levitation_Sleeve.md) fitted to it cuts that friction, and a free bearing's damping, by up to 90 percent while a powered [Electromagnet](Electromagnet.md) touches it.
+The piece speeds up and slows down with the network: a heavy piece makes the whole line slower to change speed, and the bearing is what holds it to the shaft's turn. A [Coupling Sleeve](Coupling_Sleeve.md) fitted to a full-size bearing takes the piece out of the line's inertia and gears it to the shaft instead, so the piece and the line push on each other. The bearing costs the network **0.2 Su per RPM** of friction. A [Levitation Sleeve](Levitation.md#levitation-sleeve) fitted to it cuts that friction, and a free bearing's damping, by up to 90 percent while a powered [Electromagnet](Electromagnet.md) touches it.
 
 A bearing also works on something that moves. Put one on a car or on the arm of another bearing and the part it turns pushes back on what carries it. Put back the outermost arm first.
 
@@ -32,7 +32,7 @@ Breaking the bearing puts its piece back into the world as blocks, as a click wo
 
 A Rotary Bearing can be a voxel of [finespace](Finespace.md), used with an empty hand. It turns the voxels joined to its front face; the rest of their cell stays. Putting back lands the voxels at the nearest quarter turn. A piece can hold up to 16384 voxels. Several spinning arms fit in one block as long as their voxels never meet. Breaking the voxel puts its voxels back, as a click would.
 
-When the bearing is inside a body, full-size blocks touching the arm join it. Putting back lands them only at turns that put them on the grid; otherwise the message says to turn it back first. A [Joint Link](Joint_Link.md) holds another lifted body to a bearing voxel.
+When the bearing is inside a body, full-size blocks touching the arm join it. Putting back lands them only at turns that put them on the grid; otherwise the message says to turn it back first. A [Joint Link](Joints.md#joint-link) holds another lifted body to a bearing voxel.
 
 ### Roles
 
@@ -42,13 +42,13 @@ Before assembling, **sneak-use** the bearing with an empty hand to cycle its rol
 | --- | --- |
 | 0 | Turns at the shaft's speed. A card can brake it through the **Brake** channel. |
 | 1 | Steers: a card sets its angle through the **Angle** channel. |
-| 2, 3, 4 | Roll, pitch and yaw [control surface](Control_Surfaces.md): a card sets its angle. |
+| 2, 3, 4 | Roll, pitch and yaw [control surface](Vehicles.md#control-surfaces): a card sets its angle. |
 
 A bearing that is stopped and undriven holds its angle and does not sag. While it is driven or turning, an arm off the hinge's center is a load going up and a help coming down on the rotation run; a held arm pushes nothing.
 
 A hinge drive that sits at its torque cap while the arm does not turn is stalled, and a stalled drive loses condition down to a floor of 30%, which cuts its torque. Time spent running costs nothing. A drive pushing against a held brake wears the brake pad and lowers the brake's grip. See [Wear](Vehicles.md#wear).
 
-A role 0 bearing whose piece holds a [Tire Hub](Tire_Hub.md) is a wheel; see [Wheels](Vehicles.md#wheels).
+A role 0 bearing whose piece holds a [Tire Hub](Tire.md#tire-hub) is a wheel; see [Wheels](Vehicles.md#wheels).
 
 ## See also
 

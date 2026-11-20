@@ -72,7 +72,7 @@ Gearing trades speed for force. Slow a line down with [cogs](Cogs.md) and each t
 ## Stopping things
 
 - A [Clutch](Clutch.md) disconnects everything past it.
-- An [Overspeed Trip](Overspeed_Trip.md) disconnects automatically above 48 RPM.
+- An [Overspeed Trip](Clutch.md#overspeed-trip) disconnects automatically above 48 RPM.
 - A [Flywheel](Flywheel.md) smooths a line out and makes it coast longer.
 - A [Timer](Timer.md) or [Controller](Controller.md) can work a clutch for you.
 

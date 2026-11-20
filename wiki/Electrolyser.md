@@ -1,6 +1,6 @@
 # Electrolyser
 
-Runs electric current through a liquid and collects what comes apart at each electrode. It splits water into [hydrogen](Chemicals.md#hydrogen) and [oxygen](Chemicals.md#oxygen), [brine](Chemicals.md#brine) into hydrogen, [chlorine](Chemicals.md#chlorine) and [lye](Chemicals.md#lye), the [leach liquors](Chemicals.md#leach-liquors) of copper, zinc, nickel and cobalt into metal plated on the cathode and oxygen, and a molten [cryolite bath](Chemicals.md#cryolite-bath) into [aluminum](Making_Aluminum.md) and oxygen. It is a different machine from the [Electrolytic Cell](Electrolytic_Cell.md), which dissolves and plates metal.
+Runs electric current through a liquid and collects what comes apart at each electrode. It splits water into [hydrogen](Chemicals.md#hydrogen) and [oxygen](Chemicals.md#oxygen), [brine](Chemicals.md#brine) into hydrogen, [chlorine](Chemicals.md#chlorine) and [lye](Chemicals.md#lye), the [leach liquors](Chemicals.md#leach-liquors) of copper, zinc, nickel and cobalt into metal plated on the cathode and oxygen, and a molten [cryolite bath](Chemicals.md#cryolite-bath) into [aluminum](Guide_Making_Aluminum.md) and oxygen. It is a different machine from the [Electrolytic Cell](Electrolytic_Cell.md), which dissolves and plates metal.
 
 ## Crafting
 
@@ -16,7 +16,7 @@ W is [Copper Wire](Wire_Drawer.md), G is Glass and P is a Wrought Iron Plate. Cr
 
 1. **Fill it with the liquid** from any side face: right-click with a bucket or run a [Pipe](Pipe.md) in. It holds 2000 mB, and takes only a liquid that can be split.
 2. **Connect power** with [cable](Copper_Cable.md). It asks for **8 A** and needs the liquid's splitting band; below that it does nothing. It is rated for **MV**.
-3. **Take the products off.** What collects at the **anode** leaves the **front** face and what collects at the **cathode** the **back** face. Each has its own 2000 mB tank. Put a [Gas Tank](Gas_Tank.md) or pipe against a face, or a [Culture Dish](Sculk_Culture.md) against the front.
+3. **Take the products off.** What collects at the **anode** leaves the **front** face and what collects at the **cathode** the **back** face. Each has its own 2000 mB tank. Put a [Gas Tank](Gas_Tank.md) or pipe against a face, or a [Culture Dish](Sculk.md) against the front.
 
 ## Seeing what it can split
 

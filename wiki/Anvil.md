@@ -28,7 +28,7 @@ A forged variant is played in the Anvil's screen: put the stock in the center an
 
 ## Shingling
 
-A hot **Iron Bloom** in the center of the Anvil, with a hammer in the hammer slot, is not shaped but **shingled**: press **Shingle**. Left click strikes lightly, right click strikes heavily, `R` turns the piece a quarter and Space puts the hammer down. The piece is drawn with its slag pockets, and the blows squeeze them out through the edges before the piece cools. A good job gives a Wrought Iron Ingot and Bloomery Slag; an unfinished bloom comes back with its slag. A heavy blow can split the piece, which costs iron, and a piece held over about 1400 Tu burns. The Hearth beside the Anvil keeps it hot. The full walk-through is in [Making Wrought Iron](Making_Wrought_Iron.md#shingling-at-the-anvil).
+A hot **Iron Bloom** in the center of the Anvil, with a hammer in the hammer slot, is not shaped but **shingled**: press **Shingle**. Left click strikes lightly, right click strikes heavily, `R` turns the piece a quarter and Space puts the hammer down. The piece is drawn with its slag pockets, and the blows squeeze them out through the edges before the piece cools. A good job gives a Wrought Iron Ingot and Bloomery Slag; an unfinished bloom comes back with its slag. A heavy blow can split the piece, which costs iron, and a piece held over about 1400 Tu burns. The Hearth beside the Anvil keeps it hot. The full walk-through is in [Guide: Making Wrought Iron](Guide_Making_Wrought_Iron.md#shingling-at-the-anvil).
 
 ## Crushing ore
 

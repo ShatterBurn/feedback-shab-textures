@@ -31,7 +31,7 @@ The winding's turns pick a **band** and a **rated speed**, and the choice is dis
 
 No winding makes Trunk. The band does not change with shaft speed; to turn a shaft into a different band, change the winding. A generator on a shaft below the rated speed still makes its band, but fewer packets each tick: the output scales with speed up to the rated speed. A stopped shaft gives nothing.
 
-The conductor must carry current: the winding's wire material sets how many amps it holds (copper is the reference; [aluminum](Making_Aluminum.md) carries less). **Rated amps** are the smaller of two limits: what the frame's torque allows at that band and what the wire can carry, which grows with the winding's size. A large frame on a heavy winding is held to the frame's limit; a small frame on one is held to almost nothing.
+The conductor must carry current: the winding's wire material sets how many amps it holds (copper is the reference; [aluminum](Guide_Making_Aluminum.md) carries less). **Rated amps** are the smaller of two limits: what the frame's torque allows at that band and what the wire can carry, which grows with the winding's size. A large frame on a heavy winding is held to the frame's limit; a small frame on one is held to almost nothing.
 
 The winding also has a **hand**, chosen at the Smithing Table when the winding is shaped: **Right-wound** (the default) or **Left-wound**. The hand sets which way a motor drives its shaft: a right-wound motor drives it forward, a left-wound one backward. The band, the speed and the amps are the same either way.
 
@@ -77,7 +77,7 @@ Misuse heats the machine more and wears it:
 - as a motor, being fed a band above the one its winding makes, or drawing more current than its winding carries;
 - running hotter than the housing metal's service temperature.
 
-**Ward** on its frame, winding, core, housing or bearing slows this wear ([Enchanting Table](Enchanting_Table.md#on-a-machine)). Wear takes condition down to **half** and no further. A machine built by hand starts at 100%. One built at the [Engineering Table](Engineering_Table.md#hand-work) starts between 80% (lowest fitting score) and 120% (perfect score); the extra fifth is a buffer that wear spends first, and welding repair restores only up to 100%. Condition shows as a percentage on the [calipers](Instruments.md#calipers). The machine never refuses a line and is never destroyed; a worn one delivers less. An [Overspeed Trip](Overspeed_Trip.md) on the shaft protects a motor that is fed too high a band and spins too fast.
+**Ward** on its frame, winding, core, housing or bearing slows this wear ([Enchanting Table](Enchanting_Table.md#on-a-machine)). Wear takes condition down to **half** and no further. A machine built by hand starts at 100%. One built at the [Engineering Table](Engineering_Table.md#hand-work) starts between 80% (lowest fitting score) and 120% (perfect score); the extra fifth is a buffer that wear spends first, and welding repair restores only up to 100%. Condition shows as a percentage on the [calipers](Instruments.md#calipers). The machine never refuses a line and is never destroyed; a worn one delivers less. An [Overspeed Trip](Clutch.md#overspeed-trip) on the shaft protects a motor that is fed too high a band and spins too fast.
 
 ## Uses
 

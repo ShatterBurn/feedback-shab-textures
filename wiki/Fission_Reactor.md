@@ -14,14 +14,14 @@ L S L
 
 L is a Lead Plate, S is a Stainless Steel Plate and T is a [Thermometer](Instruments.md#thermometer). Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 2 [fasteners](Fasteners.md), holding Nuclear Treatise I: Reactors and Fuel ([Treatise](Treatise.md)).
 
-The parts of the lattice have their own recipes: the [Fuel Channel](#fuel-channel) and [Graphite Moderator](#graphite-moderator) below, the [Control Rod Assembly](Control_Rod.md#crafting), the [Scram Trip](Scram_Trip.md#crafting) and the fuel rods ([Nuclear Fuel](Nuclear_Fuel.md#crafting)).
+The parts of the lattice have their own recipes: the [Fuel Channel](#fuel-channel) and [Graphite Moderator](#graphite-moderator) below, the [Control Rod Assembly](Control_Rod.md#crafting), the [Scram Trip](#scram-trip) and the fuel rods ([Nuclear Fuel](Nuclear_Fuel.md#crafting)).
 
 ## Building it
 
 The reactor is a hollow cube **7 blocks on a side**. The core sits in the **middle of the top face**.
 
 - **The shell.** The six faces of the cube must be made of dense material: a block whose material has a **density of 7 or more** (lead, steel and iron do; see the density column of [Materials](Materials.md)). The twelve edges of the cube can stay empty or hold anything.
-- **Things that count as shell.** A [Heat Exchanger](Heat_Exchanger.md), a [Boiler](Boiler.md) or any other block with a temperature, and a [Scram Trip](Scram_Trip.md), can stand in a face in place of a wall block. Put a heat exchanger in the lid beside the core, with a boiler on its far side.
+- **Things that count as shell.** A [Heat Exchanger](Heat_Exchanger.md), a [Boiler](Boiler.md) or any other block with a temperature, and a [Scram Trip](#scram-trip), can stand in a face in place of a wall block. Put a heat exchanger in the lid beside the core, with a boiler on its far side.
 - **The lattice.** The **5 by 5 by 5 space** inside the cube under the core is where the fuel goes. Fill it with [Fuel Channels](#fuel-channel), [Control Rod Assemblies](Control_Rod.md) and [Graphite Moderators](#graphite-moderator). Everything else in it does nothing, except that other blocks of moderating material count as moderator.
 
 The core checks its shell about once a second. Jade shows the core's power, temperature, number of live fuel cells and whether the shell is sealed or has holes. A core with holes in its shell still runs, but it smokes. Jade lists the flaws, up to eight wall positions.
@@ -52,6 +52,22 @@ G G
 ```
 
 A moderator slows neutrons, so a fuel cell touching one runs hotter. The block works because graphite's material says it moderates, not because of its name: any block of a moderating material in the lattice does the same.
+
+## Scram Trip
+
+A passive safety block that drops every control rod the moment the core runs too hot. It needs no power and no signal.
+
+```
+P P P
+P B P
+P P P
+```
+
+P is a Steel Plate and B is a [Bimetallic Strip](Bimetallic_Strip.md).
+
+Build it into the shell of the reactor in place of one wall block. It counts as shell. One is enough; more do no harm. When the core passes **850 Tu**, every [Control Rod Assembly](Control_Rod.md) drops all the way in at once. The core lets the rods out again to their targets once it has fallen to **650 Tu**.
+
+A scram ends the chain, not the heat. The fuel keeps heating the core as decay heat afterward ([Stopping it](#stopping-it)), so the cooling loop must keep working. A core without a scram trip is stopped only by hand or by a [Controller](Controller.md).
 
 ## How it works
 
@@ -118,7 +134,7 @@ The core is heavy: it warms and cools slowly. A [Heat Exchanger](Heat_Exchanger.
 Dropping the control rods in ends the chain, but a shut-down core is not cold.
 
 - **Decay heat.** After the rods go in, the fuel keeps heating the core at **6% of the last power**, falling away over about **30 minutes**. Keep the heat exchanger and boiler working through that time.
-- A [Scram Trip](Scram_Trip.md) in the shell drops every rod by itself when the core passes **850 Tu**, and the core lets the rods out again after it falls to 650 Tu. Without one, nothing drops the rods but you or a [Controller](Controller.md).
+- A [Scram Trip](#scram-trip) in the shell drops every rod by itself when the core passes **850 Tu**, and the core lets the rods out again after it falls to 650 Tu. Without one, nothing drops the rods but you or a [Controller](Controller.md).
 - A core in a chunk nobody has loaded keeps running for up to an hour of the time away: power, fuel burn, coolant and damage carry on, and a core with nobody to scram it can still overheat and burst. Time beyond the hour settles as cooling and decay heat.
 
 ## Misuse and hazards

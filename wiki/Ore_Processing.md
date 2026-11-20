@@ -77,7 +77,9 @@ Leaching dissolves the metal out of a concentrate into a **liquor**, a fluid nam
 | End Stone | lye | Sodium Tungstate | nothing | precipitate tungsten with hydrogen |
 | Uraninite | sulfuric acid and oxygen | Uranyl Sulfate | 2 lead nuggets | precipitate uranium with hydrogen |
 | Monazite | lye | Thorium Hydroxide | Silicate Slag, Rare Earth Residue | precipitate thorium with hydrogen |
-| Bauxite | lye | Sodium Aluminate | Red Mud; a gallium nugget (10%) | precipitate alumina (see [Making Aluminum](Making_Aluminum.md)) |
+| Bauxite | lye | Sodium Aluminate | Red Mud; a gallium nugget (10%) | precipitate alumina (see [Guide: Making Aluminum](Guide_Making_Aluminum.md)) |
+
+**End Stone** is a low-grade tungsten ore. Hammer a block of it to Crushed End Stone ([Mechanical Hammer](Mechanical_Hammer.md#crushing-ore) or by hand on an [Anvil](Anvil.md)), then wash it in the [Mixer](Mixer.md#washing-ore), draw it with an [Electromagnet](Electromagnet.md#separating-ore) or sort it with a [Belt Optical Reader](Belt_Modules.md#belt-optical-reader) for End Stone Concentrate and Tailings. In the [Reactor](Reactor.md) at **150 to 250 Tu**, 200 mB of lye leaches the concentrate into **33 mB** of sodium tungstate and the tailings into **10 mB**. Heating End Stone itself gives hydrogen and helium ([Reactor](Reactor.md#the-reactions)).
 
 Tailings of each of these leach too, at a lower yield. Rows and windows are on the Reactor's JEI cards; the Reactor page has the layout of a reaction.
 

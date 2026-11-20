@@ -10,7 +10,7 @@ E M C
 S S S
 ```
 
-S is a Steel Plate, A is a [Robot Arm](Robot_Arm.md), E is an Engineering Table and M is a [Dynamotor](Dynamotor.md) and C is a [Basic Electronic Circuit](Basic_Electronic_Circuit.md), which the finished machine keeps. Craft it at the Engineering Table with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 6 machine bolts ([Fasteners](Fasteners.md)). It needs Robotics Treatise II: Robots ([Treatise](Treatise.md)).
+S is a Steel Plate, A is a [Robot Arm](Robots.md#robot-arm), E is an Engineering Table and M is a [Dynamotor](Dynamotor.md) and C is a [Basic Electronic Circuit](Basic_Electronic_Circuit.md), which the finished machine keeps. Craft it at the Engineering Table with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 6 machine bolts ([Fasteners](Fasteners.md)). It needs Robotics Treatise II: Robots ([Treatise](Treatise.md)).
 
 ## Recording
 

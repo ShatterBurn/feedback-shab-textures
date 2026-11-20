@@ -53,7 +53,7 @@ An Input card reads any node linked to the Controller that offers the signal it 
 
 A *Switch* card drives every linked node of the kind it asks for. These turn on and off:
 
-- [Clutch](Clutch.md) and [Overspeed Trip](Overspeed_Trip.md)
+- [Clutch](Clutch.md) and [Overspeed Trip](Clutch.md#overspeed-trip)
 - [Valve](Valve.md)
 - [Damper](Damper.md)
 - [Engine](Engine.md)

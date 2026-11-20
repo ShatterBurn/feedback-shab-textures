@@ -51,7 +51,7 @@ W is Copper Fine Wire, C is Ceramic and S is a Steel Plate. Craft it at the [Eng
 - Unpowered, the piece cools in the slot as it would anywhere.
 - Only metals heat.
 
-See [Heat Treatment](Heat_Treatment.md) and [Smithing Table](Smithing_Table.md) for the forging windows.
+See [Guide: Heat Treatment](Guide_Heat_Treatment.md) and [Smithing Table](Smithing_Table.md) for the forging windows.
 
 ## Automation
 

@@ -1,6 +1,6 @@
 # Skillet
 
-A pan for cooking food in the world, a few pieces at a time. Set it on a lit [Firebox](Firebox.md) (or over lava), lay food in it, and flip the food with a [Spatula](Spatula.md) and lift the pan with [Tongs](Hazards.md#lifting-a-skillet).
+A pan for cooking food in the world, a few pieces at a time. Set it on a lit [Firebox](Firebox.md) (or over lava), lay food in it, and flip the food with a [Spatula](Hand_Tools.md#spatula) and lift the pan with [Tongs](Hazards.md#lifting-a-skillet).
 
 ## Crafting
 
@@ -15,7 +15,7 @@ P is any plate of a metal that conducts heat (three of the same metal) and T is 
 
 - **Place it** on a lit fire (a Firebox or lava) or on an [Induction Stove](Induction.md#induction-stove). The stove heats the pan only when its plate metal is magnetic; copper and aluminum pans get nothing.
 - **Lay food in:** right-click with a food. It goes in the quarter your crosshair is on. The pan holds up to four pieces, one per quarter. A cold pan accepts food.
-- **Flip a piece:** right-click the piece with a [Spatula](Spatula.md).
+- **Flip a piece:** right-click the piece with a [Spatula](Hand_Tools.md#spatula).
 - **Lift the pan off the fire:** hold right-click on the pan with [Tongs](Hazards.md#lifting-a-skillet). Release to set it down.
 - **Take a piece out:** right-click the piece you are aiming at with a bowl or plate, which takes it safely with no burn. With a bare hand you take it, and it burns you by the usual [hot contact](Hazards.md) bands if it is hot. Sneak and right-click a hot pan with a bare hand to burn yourself on it.
 

@@ -20,7 +20,7 @@ Dig, as before. Each ore sits where it always did.
 - **Spodumene** (lithium) in the upper rock between y 16 and 128, **beryl** (beryllium) between y 32 and 256 in the same mountain and windswept biomes as emerald, **molybdenite** (molybdenum) low, between y -16 and 48, and **dolomite** (magnesium) in broad veins between y 0 and 96.
 - **Osmiridium** in river biomes between y 36 and 64 as placer veins, and in an underground sulfide band between y -32 and 40, with loose rock above. It is the source of [heavy core](Heavy_Core.md#making-it).
 - **Stibnite** (antimony) in the Overworld between y -8 and 64 and **vanadinite** (vanadium) between y -24 and 40, each in veins with a loose rock above. **Cinnabar** (mercury) in the Nether between y 10 and 117, in the netherrack, with a loose rock above.
-- **Cryolite**, rare, in the overworld between y -20 and 60. It melts into the bath for [aluminum](Making_Aluminum.md).
+- **Cryolite**, rare, in the overworld between y -20 and 60. It melts into the bath for [aluminum](Guide_Making_Aluminum.md).
 - **Saltpetre** in cave deposits from Y -16 to 64, with a loose rock on the surface.
 - **Nether ores**: **pentlandite**, **wolframite**, **chromite**, **cobaltite**, **uraninite** and **monazite** grow in the netherrack all through the Nether, richer in the hot Nether belt, with the same signs as their Overworld kin. Uraninite and monazite are [radioactive](Radiation.md).
 - **Bastion Rubble** in small, rare patches in the Nether between y 30 and 110. Each block breaks into 1 to 3 Worn Netherite Bits, the scrap of [Netherite](Netherite.md#getting-the-scrap).
@@ -110,7 +110,7 @@ Gems grow in veins of their own, each marked by a loose rock. Mined, the ore blo
 
 Same tools, same drops. Coal ore gives coal, iron ore raw iron, copper ore several raw copper, gold ore raw gold, lapis ore a handful of lapis, redstone ore a few redstone dust, diamond ore a diamond, emerald ore an emerald, nether gold ore a few gold nuggets and nether quartz ore a quartz. Fortune gives more, and Silk Touch gives the ore block itself. Coal, lapis, diamond, emerald and the Nether's two also drop a little experience, and redstone too. Redstone ore lights up and glows when you touch or mine it, as before.
 
-What a mined ore is worth as metal depends on how far you process it; the raw rock gives the least ([Ore Processing](Ore_Processing.md)). Iron ore does not smelt to an ingot ([Making Wrought Iron](Making_Wrought_Iron.md)).
+What a mined ore is worth as metal depends on how far you process it; the raw rock gives the least ([Ore Processing](Ore_Processing.md)). Iron ore does not smelt to an ingot ([Guide: Making Wrought Iron](Guide_Making_Wrought_Iron.md)).
 
 Iron, copper and lapis want at least a stone pickaxe; gold, redstone, diamond and emerald want an iron one; coal and the Nether's two take any pickaxe.
 
@@ -118,6 +118,6 @@ JEI's **Ore Vein** page lists every vein: its dimension, depth, size and richnes
 
 ## What did not change
 
-Vanilla's two huge veins, the ones that hold raw iron and raw copper blocks, still form in the ground and still hold vanilla's ore blocks. Ancient debris is still vanilla's ([Ancient Debris](Ancient_Debris.md)), and so are the other Nether deposits (gravel, magma, soul sand, blackstone).
+Vanilla's two huge veins, the ones that hold raw iron and raw copper blocks, still form in the ground and still hold vanilla's ore blocks. Ancient debris is still vanilla's ([Ancient Debris](Vanilla_Changes.md#ancient-debris)), and so are the other Nether deposits (gravel, magma, soul sand, blackstone).
 
-See also [Ore Processing](Ore_Processing.md), [Making Wrought Iron](Making_Wrought_Iron.md), [Graphite](Materials.md#graphite), [Materials](Materials.md) and [Heat](Heat.md).
+See also [Ore Processing](Ore_Processing.md), [Guide: Making Wrought Iron](Guide_Making_Wrought_Iron.md), [Graphite](Materials.md#graphite), [Materials](Materials.md) and [Heat](Heat.md).

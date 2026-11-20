@@ -2,7 +2,7 @@
 
 A soldered board with parts on it. It is not a tier or a key: it carries **properties**, and a machine that can use them works better with a good one. A detector with no circuit works, just with more noise.
 
-Any item in the circuits tag counts as a circuit wherever a recipe asks for one: the [Recipe Data Stick](Data_Stick.md), [USB Drive](Programming.md#media), [Electric Programmer](Electric_Controller.md#electric-programmer), [Programmed Junction](Tube_Junction.md), [Analog Adapter](Redstone_Bridges.md#analog-adapter), [Dark Cell](Dark_Cell.md), the [Temperature Sensor, Current Sensor](Instruments.md) and [Fill Gauge and other sensors](Sensors.md#crafting), the Oscilloscope and the [Sorting Station](Tube_Station.md#sorting-station). The Basic Electronic Circuit is in that tag.
+Any item in the circuits tag counts as a circuit wherever a recipe asks for one: the [Recipe Data Stick](Data_Stick.md), [USB Drive](Programming.md#media), [Electric Programmer](Electric_Controller.md#electric-programmer), [Programmed Junction](Pneumatic_Tube.md#tube-junction), [Analog Adapter](Redstone_Bridges.md#analog-adapter), [Dark Cell](Dark_Cell.md), the [Temperature Sensor, Current Sensor](Instruments.md) and [Fill Gauge and other sensors](Sensors.md#crafting), the Oscilloscope and the [Sorting Station](Tube_Station.md#sorting-station). The Basic Electronic Circuit is in that tag.
 
 ## What it carries
 
@@ -53,7 +53,7 @@ A host that has power warms the circuit it holds with the tube's heater and pays
 
 Right-click a [Cat's Whisker Detector](Cats_Whisker_Detector.md) (it hears [sparks](Redstone_Coherer.md#what-a-spark-is) without a wire to them) with it to fit it on the contact: the hunt report gets quieter, it hears further, and it lets go sooner. Sneak-right-click with an empty hand takes it out (crystal first).
 
-A [Controller](Controller.md#circuit-slot), [Data Port](Data_Port.md#circuit), [Electrolytic Cell](Electrolytic_Cell.md#circuit), [Wire Drawer](Wire_Drawer.md#circuit) and [Drill Press](Drill_Press.md#circuit) each take one in a circuit slot. A [Power Cutter](Power_Cutter.md#circuit), [Auto Engineer](Auto_Engineer.md#circuit), [Electric Controller](Electric_Controller.md#circuit-slot), [Computer](Electric_Controller.md#circuit-slot), [Converter](Converter.md#the-circuit), [Ripeness Probe and Fill Gauge](Sensors.md#crafting) are crafted with one built in. A [gun](Gun_Parts.md#fire-control), [launcher](Launcher.md#fuse-control) or [suit module](Exosuit.md#the-circuit-in-a-module) clips one on, and a [Robot](Robots.md#the-brain) or [Robot Arm](Robot_Arm.md) uses one as its brain.
+A [Controller](Controller.md#circuit-slot), [Data Port](Data_Port.md#circuit), [Electrolytic Cell](Electrolytic_Cell.md#circuit), [Wire Drawer](Wire_Drawer.md#circuit) and [Drill Press](Drill_Press.md#circuit) each take one in a circuit slot. A [Power Cutter](Power_Cutter.md#circuit), [Auto Engineer](Auto_Engineer.md#circuit), [Electric Controller](Electric_Controller.md#circuit-slot), [Computer](Electric_Controller.md#circuit-slot), [Converter](Converter.md#the-circuit), [Ripeness Probe and Fill Gauge](Sensors.md#crafting) are crafted with one built in. A [gun](Gun_Parts.md#fire-control), [launcher](Launcher.md#fuse-control) or [suit module](Exosuit.md#the-circuit-in-a-module) clips one on, and a [Robot](Robots.md#the-brain) or [Robot Arm](Robots.md#robot-arm) uses one as its brain.
 
 ## Overrun
 

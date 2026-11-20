@@ -83,7 +83,7 @@ Breaking an engine keeps its design (compression included) and the wear of its s
 ## Tips
 
 - Want speed? Short stroke, light strong metal. Want pulling power? Big bore, lots of cylinders.
-- Engine speed is easily fast enough to trip an [Overspeed Trip](Overspeed_Trip.md) if you gear it up, so put one inline to protect anything delicate.
+- Engine speed is easily fast enough to trip an [Overspeed Trip](Clutch.md#overspeed-trip) if you gear it up, so put one inline to protect anything delicate.
 
 ## Attunements
 

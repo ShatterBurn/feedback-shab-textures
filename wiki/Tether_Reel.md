@@ -27,4 +27,4 @@ The cable is crafted the same way, with no fasteners.
 2. Use the cable on the robot. The bar shows *"Robot tied to the reel"*.
 3. Sneak and use the cable on the robot to untie it (*"Robot untied"*).
 
-A tied robot is charged off the line like a robot on a [Robot Dock](Robot_Dock.md), and may roam only so far from the reel; it stops rolling at the end of the cable. A removed reel leaves the robot untied. Using the cable on a robot before taking a reel's end shows *"Use the cable on a reel first"*.
+A tied robot is charged off the line like a robot on a [Robot Dock](Robots.md#robot-dock), and may roam only so far from the reel; it stops rolling at the end of the cable. A removed reel leaves the robot untied. Using the cable on a robot before taking a reel's end shows *"Use the cable on a reel first"*.

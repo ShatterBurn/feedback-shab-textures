@@ -16,4 +16,4 @@ S M S
 S   S
 ```
 
-S is a [Shulker Shell](Shulker.md) and M is a Phantom Membrane. Gliding works as in vanilla, but a firework rocket used while gliding does nothing and stays in your hand.
+S is a [Shulker Shell](Vanilla_Changes.md#shulker) and M is a Phantom Membrane. Gliding works as in vanilla, but a firework rocket used while gliding does nothing and stays in your hand.

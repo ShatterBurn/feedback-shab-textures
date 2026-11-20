@@ -31,7 +31,7 @@ A [Valve](Valve.md) between the boiler and the turbine shuts the steam off. **Sh
 
 ## Overspeed Trip
 
-An [Overspeed Trip](Overspeed_Trip.md) opens above 48 RPM, so one on a turbine's shaft opens at once at 240 RPM. Leave it off the turbine's own line, or put it after gearing that brings the speed down below 48 RPM.
+An [Overspeed Trip](Clutch.md#overspeed-trip) opens above 48 RPM, so one on a turbine's shaft opens at once at 240 RPM. Leave it off the turbine's own line, or put it after gearing that brings the speed down below 48 RPM.
 
 ## Driving a generator
 

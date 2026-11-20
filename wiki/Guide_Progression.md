@@ -1,4 +1,4 @@
-# Progression Guide
+# Guide: Progression
 
 A loose order of play, from the first fire to oil and circuits. Each stage names what you do and the problem that sends you to the next. Nothing is locked: if you can reach the temperature, strength or hardness, you can skip ahead. The guide only says where the problems usually show up first. The [Ages](Ages.md) mark the spine: Stone, Bronze, Iron, Steel, Machine and Alloy, each entered by making your first tool or part of its material.
 
@@ -13,7 +13,7 @@ The Survival tab has four branches, each ending in a capstone:
 - **Body**: **Burn Notice** for taking hot-contact or scald damage, **Live Wire** for surviving a shock, **Cough** for breathing fume from hot toxic metal or a fume cloud, and the capstone **Cool Hand** for holding a glowing piece with insulation, tongs or a glove and taking no damage. See [Hazards](Hazards.md).
 - **Camp**: **Fire at Dusk** for putting food to a [Campfire](Campfire.md), **Roughing It** for building a bedroll and **Off the Floor** for building a [bed](Bed.md) with a frame (each earned when you take the built bed from the Engineering Table or the crafting grid), **Slept Through** for waking in a bed you placed, **Warm Room** for standing within 24 blocks of a lit [Hearth](Hearth.md), and the capstone **Winter Store** for eating food that was kept cold, below 8 Tu, and is still sound.
 - **Hands**: **Handy** for building a hafted tool, **Taking Hold** for a [grapple](Grapple.md) line that bites something, **Pack Mule** for wearing a pack past its rating, and the capstone **Fit for Purpose** for breaking a block that needs the right tool with a hafted tool that is correct for it.
-- **Village**: **Piece Work** for a commission accepted, **Master's Mark** for an Exceptional delivery, **Fair Trade** for your first buy or sale at the villager screen, **Open for Business** for a villager buying from a [Counter](Counter.md) you keep, **Market Day** for being near a [Market Cross](Market_Cross.md) when the market opens, **Recovered Goods** for killing a raider that carried off goods, and the capstone **Well Regarded** for the top standing tier, earned when you open a [Ledger Board](Ledger_Board.md). See [Villagers](Villagers.md).
+- **Village**: **Piece Work** for a commission accepted, **Master's Mark** for an Exceptional delivery, **Fair Trade** for your first buy or sale at the villager screen, **Open for Business** for a villager buying from a [Counter](Counter.md) you keep, **Market Day** for being near a [Market Cross](Villages.md#market-cross) when the market opens, **Recovered Goods** for killing a raider that carried off goods, and the capstone **Well Regarded** for the top standing tier, earned when you open a [Ledger Board](Ledger_Board.md). See [Villagers](Villagers.md).
 
 Hidden entries branch off for odd things you can do along the way: burst a boiler, wear a machine out, let an overspeed trip earn its keep, fire a flintlock, a gun with the longest barrel or a round the chamber was never built for, get thrown by your own recoil, burn yourself, carry a creeper charge into a fire, leave a batch in the heat far too long, put a phosphor screen on a controller, die to your own heat, steam or shock, eat spoiled or burnt food, have the same villager reject your work three times running, or sell a villager something from its own shop.
 
@@ -31,9 +31,9 @@ Read: [Heat](Heat.md), [Metalworking](Metalworking.md), [Casting and Alloys](Cas
 
 Your first wrought or cast iron tool or part enters the Iron Age, and electricity, heat and blaze, and XP and sculk open.
 
-Iron needs a hotter fire that also strips the oxygen from the ore. Feed the fire air with bellows by hand, then with a [Powered Bellows](Powered_Bellows.md). Wrap the chamber in [Insulation](Insulation.md), line it with [Refractory Lining](Refractory_Lining.md) and trim the draft with a [Damper](Damper.md). The [Furnaces](Furnaces.md) page covers the vessels that take the place of the vanilla furnace. Iron ore does not smelt to an ingot: it becomes a spongy bloom that you hammer clean into wrought iron ([Making Wrought Iron](Making_Wrought_Iron.md)), or melts to cast iron, and charcoal steel appears when the iron stays in a narrow temperature window.
+Iron needs a hotter fire that also strips the oxygen from the ore. Feed the fire air with bellows by hand, then with a [Powered Bellows](Powered_Bellows.md). Wrap the chamber in [Insulation](Insulation.md), line it with [Refractory Lining](Refractory_Lining.md) and trim the draft with a [Damper](Damper.md). The [Furnaces](Furnaces.md) page covers the vessels that take the place of the vanilla furnace. Iron ore does not smelt to an ingot: it becomes a spongy bloom that you hammer clean into wrought iron ([Guide: Making Wrought Iron](Guide_Making_Wrought_Iron.md)), or melts to cast iron, and charcoal steel appears when the iron stays in a narrow temperature window.
 
-Read: [Furnaces](Furnaces.md), [Making Wrought Iron](Making_Wrought_Iron.md), [Ore Processing](Ore_Processing.md), [Making Steel](Steel.md), [Fuels](Fuels.md), [Materials](Materials.md).
+Read: [Furnaces](Furnaces.md), [Guide: Making Wrought Iron](Guide_Making_Wrought_Iron.md), [Ore Processing](Ore_Processing.md), [Guide: Making Steel](Guide_Making_Steel.md), [Fuels](Fuels.md), [Materials](Materials.md).
 
 **The wall:** a tool of fresh steel is either brittle or soft. Look for how heat and cooling change the hardness of a finished part.
 
@@ -43,13 +43,13 @@ Your first steel tool or part enters the Steel Age, and chemistry and ender open
 
 Quench and temper steel to the hardness a job needs. A hotter [kiln or furnace](Furnaces.md), a [Heat Exchanger](Heat_Exchanger.md) and a [Fluid Burner](Fluid_Burner.md) give finer control of heat. Alloys such as stainless steel and manganese steel, and hard carbides and cermet, are mixed and cast with the [Mixer](Mixer.md). A [Heating Coil](Heating_Coil.md) heats without fuel and smoke.
 
-Read: [Heat Treatment](Heat_Treatment.md), [Casting and Alloys](Casting.md), [Mixer](Mixer.md), [Material Perks](Material_Perks.md).
+Read: [Guide: Heat Treatment](Guide_Heat_Treatment.md), [Casting and Alloys](Casting.md), [Mixer](Mixer.md), [Material Perks](Material_Perks.md).
 
 **The wall:** all of this is hand work, and your own arm is the only source of power. Look for a way to make a machine do the swinging.
 
 ## 4. Rotation
 
-Turn a [Hand Crank](Hand_Crank.md) and carry the motion along a [Shaft](Shaft.md) with [Bearings](Bearing.md), [Cogs and Gearbox](Cogs.md) and [Pulleys](Pulleys.md). A [Crank Linkage](Crank_Linkage.md) drives a hammer from a shaft. A [Water Wheel](Water_Wheel.md) runs a mill unattended, a [Flywheel](Flywheel.md) smooths the load, and a [Clutch](Clutch.md) and an [Overspeed Trip](Overspeed_Trip.md) stop it. Where there is no river, a [Boiler](Boiler.md), [Steam Engine](Steam_Engine.md) and [Condenser](Condenser.md) turn fire into a turning shaft. Steam can hurt you, so read [Hazards](Hazards.md).
+Turn a [Hand Crank](Hand_Crank.md) and carry the motion along a [Shaft](Shaft.md) with [Bearings](Bearing.md), [Cogs and Gearbox](Cogs.md) and [Pulleys](Pulleys.md). A [Crank Linkage](Crank_Linkage.md) drives a hammer from a shaft. A [Water Wheel](Water_Wheel.md) runs a mill unattended, a [Flywheel](Flywheel.md) smooths the load, and a [Clutch](Clutch.md) and an [Overspeed Trip](Clutch.md#overspeed-trip) stop it. Where there is no river, a [Boiler](Boiler.md), [Steam Engine](Steam_Engine.md) and [Condenser](Condenser.md) turn fire into a turning shaft. Steam can hurt you, so read [Hazards](Hazards.md).
 
 Read: [Rotation](Rotation.md), [Units](Units.md), [Transmission](Transmission.md).
 
@@ -83,9 +83,9 @@ Read: [Programming](Programming.md), [Controller](Controller.md), [Instruments](
 
 ## 8. Chemistry and oil
 
-Split water and brine in the [Electrolyser](Electrolyser.md) into hydrogen, oxygen, chlorine and lye. The [Reactor](Reactor.md) and [Pressure Vessel](Pressure_Vessel.md) make acids, ammonia and [Fertilizer](Fertilizer.md) from what the electrolyser gives. [Oil](Oil.md) comes up from the ground and is split by the [Fractionating Column](Fractionating_Column.md) into [Fuels](Fuels.md) for engines and for the [Thruster](Thruster.md), with a [Flare Stack](Flare_Stack.md) to burn off waste gas and [Gas Tanks](Gas_Tank.md) and a [Gas Compressor](Gas_Compressor.md) to store it. Polymers give insulation and synthetic rubber. [Making Aluminum](Making_Aluminum.md) takes an electrolytic bath.
+Split water and brine in the [Electrolyser](Electrolyser.md) into hydrogen, oxygen, chlorine and lye. The [Reactor](Reactor.md) and [Pressure Vessel](Pressure_Vessel.md) make acids, ammonia and [Fertilizer](Fertilizer.md) from what the electrolyser gives. [Oil](Oil.md) comes up from the ground and is split by the [Fractionating Column](Fractionating_Column.md) into [Fuels](Fuels.md) for engines and for the [Thruster](Thruster.md), with a [Flare Stack](Flare_Stack.md) to burn off waste gas and [Gas Tanks](Gas_Tank.md) and a [Gas Compressor](Gas_Compressor.md) to store it. Polymers give insulation and synthetic rubber. [Guide: Making Aluminum](Guide_Making_Aluminum.md) takes an electrolytic bath.
 
-Read: [Chemicals](Chemicals.md), [Oil](Oil.md), [Pipe](Pipe.md), [Making Aluminum](Making_Aluminum.md).
+Read: [Chemicals](Chemicals.md), [Oil](Oil.md), [Pipe](Pipe.md), [Guide: Making Aluminum](Guide_Making_Aluminum.md).
 
 ## Alongside the machines
 

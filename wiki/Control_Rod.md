@@ -20,7 +20,7 @@ The assembly is empty until you load it. It does nothing, in or out, without abs
 - **Right-click with an empty hand** to step its **target** one place: 0 (out) to 4 (in), then back to 0. A line shows the rods' current position, out of 4, and the target. The assembly moves toward the target one position about each second.
 - **Sneak and right-click with an empty hand** to take the absorber back out. Breaking the block drops it.
 - A [Controller](Controller.md) switch sets the target: on is all the way in, off is all the way out.
-- On a [SCRAM](Scram_Trip.md) the core drops every assembly all the way in at once.
+- On a [SCRAM](Fission_Reactor.md#scram-trip) the core drops every assembly all the way in at once.
 
 ## How it works
 

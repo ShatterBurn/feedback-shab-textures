@@ -10,7 +10,7 @@ J
 P K P
 ```
 
-P is a Steel Plate, T is a [Lined Tube](Pneumatic_Tube.md), V is a [Valve](Valve.md), J is a [Piston Joint](Piston_Joint.md) and K is a [Crank Linkage](Crank_Linkage.md). Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 4 rivets ([Fasteners](Fasteners.md)). It needs Mechanical Treatise I: Engines, Flywheels and Dynamotors ([Treatise](Treatise.md)).
+P is a Steel Plate, T is a [Lined Tube](Pneumatic_Tube.md), V is a [Valve](Valve.md), J is a [Piston Joint](Joints.md#piston-joint) and K is a [Crank Linkage](Crank_Linkage.md). Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 4 rivets ([Fasteners](Fasteners.md)). It needs Mechanical Treatise I: Engines, Flywheels and Dynamotors ([Treatise](Treatise.md)).
 
 ## Using it
 
@@ -34,4 +34,4 @@ Put a [Valve](Valve.md) between the boiler and the engine to shut the steam off.
 
 **Shutting the steam off traps it in the boiler.** On a hot fire a shut boiler builds pressure and can burst. Turn the fire down (or let it run out) when you shut an engine off for long. See [Boiler](Boiler.md#pressure).
 
-At 16 RPM a steam engine never trips an [Overspeed Trip](Overspeed_Trip.md) (48 RPM) unless you gear it up threefold. It's also the speed the coarse (LV) and fine (MV) windings of a [Dynamotor](Dynamotor.md) are rated for.
+At 16 RPM a steam engine never trips an [Overspeed Trip](Clutch.md#overspeed-trip) (48 RPM) unless you gear it up threefold. It's also the speed the coarse (LV) and fine (MV) windings of a [Dynamotor](Dynamotor.md) are rated for.

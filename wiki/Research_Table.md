@@ -16,7 +16,7 @@ P is paper, W is any plank, L is a lectern.
 
 The screen is an open book. The left page is a list with three tabs, **Treatises**, **Rites** and **Apps**; each entry has a spinning icon. Click an entry to pick it. The right page shows the picked entry's two-line blurb, what it asks for, its slots and the **Research** button, which costs 40 experience points. It opens the notebook page for a treatise, the purify grid for an attunement and the terminal for an app.
 
-A volume has a slot for one Blank Treatise. It needs the volume before it held, in your pack or on a [Treatise Shelf](Treatise_Binder_and_Shelf.md) beside the table, and 40 experience points. An attunement has a slot for an **offering**, a slot for a **reagent** and a slot for a **Blank Rite**. The text on the right page says what is missing.
+A volume has a slot for one Blank Treatise. It needs the volume before it held, in your pack or on a [Treatise Shelf](Treatise.md#treatise-binder-and-shelf) beside the table, and 40 experience points. An attunement has a slot for an **offering**, a slot for a **reagent** and a slot for a **Blank Rite**. The text on the right page says what is missing.
 
 Some volumes also need volumes of other schools held before they can be researched; the list is under [Treatise](Treatise.md#study-prerequisites).
 

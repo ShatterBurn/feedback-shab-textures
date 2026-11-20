@@ -42,7 +42,7 @@ Four blocks put the world's experience into the run they sit on. Each joins the 
 | **Trade Tap** | the XP a villager's trade pays, and the XP a [Counter](Counter.md) transaction pays (3 points per point of villager experience earned; with no tap in reach a Counter pays no XP at all) | 8 blocks |
 | **Smelter Tap** | the XP a furnace or other vessel beside it earned from smelting, smoking and blasting recipes, 20 points a second | touching the vessel |
 
-Each tap has a **lever** on it. Right-click the tap with an empty hand to open or shut its draw; a redstone signal on it holds it shut. This holds for the four blocks above and the [Catalyst Tap](Sculk_Culture.md#catalyst-tap).
+Each tap has a **lever** on it. Right-click the tap with an empty hand to open or shut its draw; a redstone signal on it holds it shut. This holds for the four blocks above and the [Catalyst Tap](Sculk.md#catalyst-tap).
 
 The taps share one look: an iron-plated body, the lever on top, a copper XP-wire outlet low on the back and a front plate that shows the sensing part (amethyst on the Ore Tap, emerald on the Trade Tap, a sculk catalyst on the Catalyst Tap, a hopper on the Smelter Tap). The lever leans one way when the draw is open and the other when it is shut.
 
@@ -50,7 +50,7 @@ A vessel with no Smelter Tap keeps what it earned, up to a cap, and spills it as
 
 ### Crafting the taps
 
-All are crafted at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver). The Orb Absorber takes 3 screws and Experience Treatise I: Orbs and Vessels ([Treatise](Treatise.md)); the Ore, Trade and Smelter Taps take 3 screws and Experience Treatise II: Taps. The [Catalyst Tap and Sculk Relay](Sculk_Culture.md) are crafted there too.
+All are crafted at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver). The Orb Absorber takes 3 screws and Experience Treatise I: Orbs and Vessels ([Treatise](Treatise.md)); the Ore, Trade and Smelter Taps take 3 screws and Experience Treatise II: Taps. The [Catalyst Tap and Sculk Relay](Sculk.md) are crafted there too.
 
 ```
 P L P      Orb Absorber
@@ -76,7 +76,7 @@ P is a wrought iron plate, L a lever, X an XP wire and T the tap's part:
 | Trade Tap | Token Reader |
 | Smelter Tap | Vessel Port |
 
-The [Catalyst Tap](Sculk_Culture.md#catalyst-tap) takes the same body with a Sculk Charge Cell.
+The [Catalyst Tap](Sculk.md#catalyst-tap) takes the same body with a Sculk Charge Cell.
 
 ### Tap parts
 
@@ -112,7 +112,7 @@ Sneak-use a [Reservoir](Enchanting_Table.md) tool on any node of a run: the lowe
 
 ## Sculk
 
-A [Culture Dish](Sculk_Culture.md) is a node that grows its own sculk store from XP on the run; a Catalyst Tap feeds a run from deaths nearby, and Sculk Relays join runs across distance.
+A [Culture Dish](Sculk.md) is a node that grows its own sculk store from XP on the run; a Catalyst Tap feeds a run from deaths nearby, and Sculk Relays join runs across distance.
 
 ## Where to see it
 

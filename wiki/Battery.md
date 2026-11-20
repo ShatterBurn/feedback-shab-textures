@@ -27,7 +27,7 @@ The charge per plate of a lithium-ion cell follows the pairing: the further apar
 Place the battery and fill it from a bucket or a [pipe](Pipe.md):
 
 - **Electrolyte**: 250 mB per cell of any fluid that carries ions (see [The electrolyte](#the-electrolyte)). Without it the battery is dry and does nothing.
-- **Water**: a 1000 mB tank, topped up the same way, for every cell that takes a water solution. A sealed lithium-ion battery has no water tank and takes no water. See [Water](Water.md).
+- **Water**: a 1000 mB tank, topped up the same way, for every cell that takes a water solution. A sealed lithium-ion battery has no water tank and takes no water. See [Water](Vanilla_Changes.md#water).
 
 A lithium-ion battery is sealed. Keep rain off its top and water out of the blocks beside it.
 
@@ -83,7 +83,7 @@ A cell running away burns its charge as heat, faster the hotter it gets, so a fu
 
 A charged battery with a case rated MV or more shocks whoever touches it; see [Hazards](Hazards.md#shock).
 
-An [Arc Welder](Arc_Welder.md) draws its charge from a Battery in your inventory. A [Charger](Charger.md) takes one Battery item, and the chestplate of an [Exosuit](Exosuit.md) holds the Battery that runs the suit; a [Charging Gantry](Charging_Gantry.md) charges it while worn.
+An [Arc Welder](Arc_Welder.md) draws its charge from a Battery in your inventory. A [Charger](Charger.md) takes one Battery item, and the chestplate of an [Exosuit](Exosuit.md) holds the Battery that runs the suit; a [Charging Gantry](Charger.md#charging-gantry) charges it while worn.
 
 ## Attunements
 

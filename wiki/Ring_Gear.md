@@ -27,7 +27,20 @@ See [Cogs](Cogs.md#how-cogs-work) for the full meshing rules. It costs the netwo
 
 A Ring Gear can also be a voxel of [finespace](Finespace.md), used with an empty hand: it turns the voxels joined to its front face, and putting back lands them at the nearest quarter turn. See [Vehicles](Vehicles.md#joints).
 
+## Large Ring Gear
+
+A Ring Gear with the teeth of a large cog. A small cog driving it turns what it carries at half the speed a small Ring Gear would turn it.
+
+```
+  C
+CBC
+  C
+```
+
+C is a Large Cog and B is a [Rotary Bearing](Rotary_Bearing.md). The corners are empty.
+
+It is placed, assembled and put back the way a Ring Gear is: build in front of it and right-click with an empty hand. It can also be a voxel of [finespace](Finespace.md). Its rim meshes with cogs as a Large Cog's does: a Small Cog driving it turns it at half the speed a small Ring Gear would turn; a Large Cog beside it turns it as it would turn another large cog.
+
 ## See also
 
 - [Rotary Bearing](Rotary_Bearing.md): the shaft-driven version.
-- [Large Ring Gear](Large_Ring_Gear.md): the same with a large cog's teeth.

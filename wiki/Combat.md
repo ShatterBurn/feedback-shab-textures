@@ -29,7 +29,7 @@ Each extra target takes the weapon's damage scaled by the swing's charge, as van
 
 Press **G** to open a short window in which a blow aimed at you is turned aside.
 
-**What can parry:** a blade, mace or spear that isn't broken, in the main hand or else the off hand. A **buckler** parries too, and a **kite shield** turns projectiles back (see [Shields](#shields)). A bow, a tool, a gun or a plain shield does not. With a [Feedbacker](Feedbacker.md) worn you can parry bare-handed, and so can a bare hand in a [fighting glove](Combat_Gear.md#glove) (blows only, not projectiles). The Feedbacker's window is a fixed **5 ticks** with **20 ticks** of recovery and a 75° cone, and it punches any projectile back at 2.5× its speed.
+**What can parry:** a blade, mace or spear that isn't broken, in the main hand or else the off hand. A **buckler** parries too, and a **kite shield** turns projectiles back (see [Shields](#shields)). A bow, a tool, a gun or a plain shield does not. With a [Feedbacker](Special_Loot.md#feedbacker) worn you can parry bare-handed, and so can a bare hand in a [fighting glove](Combat_Gear.md#glove) (blows only, not projectiles). The Feedbacker's window is a fixed **5 ticks** with **20 ticks** of recovery and a 75° cone, and it punches any projectile back at 2.5× its speed.
 
 **Window and recovery come from the weapon's heft** (its mass, lengthened by its reach):
 
@@ -159,7 +159,7 @@ Operator-only testing commands:
 
 ## See also
 
-[Skills](Skills.md) · [Combat Gear](Combat_Gear.md) · [Feedbacker](Feedbacker.md) · [Knuckleblaster](Knuckleblaster.md) · [Whiplash](Whiplash.md) · [Grapple](Grapple.md) · [Material Perks](Material_Perks.md) · [Tools and Weapons](Tools_and_Weapons.md) · [Guns](Guns.md) · [Jar Baton](Jar_Baton.md)
+[Skills](Skills.md) · [Combat Gear](Combat_Gear.md) · [Feedbacker](Special_Loot.md#feedbacker) · [Knuckleblaster](Special_Loot.md#knuckleblaster) · [Whiplash](Special_Loot.md#whiplash) · [Grapple](Grapple.md) · [Material Perks](Material_Perks.md) · [Tools and Weapons](Tools_and_Weapons.md) · [Guns](Guns.md) · [Jar Baton](Jar_Baton.md)
 
 
 ## Better Combat (required)

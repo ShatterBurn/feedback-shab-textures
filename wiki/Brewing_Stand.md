@@ -1,6 +1,6 @@
 # Brewing Stand
 
-The stand brews plants into potions: a pot of water over a heat source, loaded with plants and cooked into bottles. Its recipe needs a [Mortar](Mortar.md).
+The stand brews plants into potions: a pot of water over a heat source, loaded with plants and cooked into bottles. Its recipe needs a [Mortar](#mortar).
 
 ## Crafting
 
@@ -9,7 +9,7 @@ The stand brews plants into potions: a pot of water over a heat source, loaded w
 CMC
 ```
 
-B is a Blaze Rod, C is any stone crafting material (cobblestone and its kin), and M is a [Mortar](Mortar.md).
+B is a Blaze Rod, C is any stone crafting material (cobblestone and its kin), and M is a [Mortar](#mortar).
 
 ## What vanilla does
 
@@ -26,7 +26,7 @@ The stand is a pot of water over a heat source: a [Firebox](Firebox.md), a [Camp
 Right-clicking the stand with anything, or nothing, opens its screen: a parchment map in the middle, a status panel on the left, and on the right a water slot, six ingredient slots, three bottle slots and the Cook button. Your inventory is below. Everything moves in and out by the screen's slots; clicking the block with an item does nothing else.
 
 1. **Fill it.** A water bucket in the water slot fills the pot with three bottles' worth, 250 mB a bottle, and leaves the empty bucket. Nothing dilutes.
-2. **Add plants.** Put up to six in the ingredient slots. Only plants go in: a flower, herb, fern, berry, fruit, vegetable, root, mushroom, kelp or nether wart. Food does not steer: a steak, a loaf, salt or honey is refused, and so is anything cooked. Each plant adds a **curve** to the end of the path, in the order you added them, and you can add more at any time, even while stirring. A plant carries a **heading** (the way its curve goes overall), a **reach** (how far it takes the flask from end to end) and a **shape** (how it gets there: straight, bowed, waving, zigzag, looping, spiralling or hooked). What a plant does is read from the material it is made of, never from what the item is, so a modded flower with the same properties behaves the same. Each also belongs to a **family** of compounds, which colors a dud draught and sets its taste. Plants are crushed in the bowl of the [Mortar](Mortar.md), a speckled stone basin with a tall stone pestle, and every plant in it shows its crushed percent. The crushed percentage sets how much surface the water gets: more crushed means a faster compound and a longer curve. A whole plant gives about a third of that, so its curve is shorter. Crushing changes how far the curve goes, never how it twists. A rotten plant reaches less and drifts the brew toward a hazard. Hovering a plant, in your inventory, in a slot or in the JEI item list, draws a ghost curve on the map from the end of the path to where adding it would take the flask, with the same crushing and the pot's heat at that moment. A whole plant's curve is dashed and a crushed one's is solid. Every plant in the grinding bowl is always drawn this way, from the end of the path, and its curve lengthens as it is ground; taking the plant out removes its curve. The curves and what carries each are listed in JEI under Potion Shapes, one card per shape with a dot tracing it.
+2. **Add plants.** Put up to six in the ingredient slots. Only plants go in: a flower, herb, fern, berry, fruit, vegetable, root, mushroom, kelp or nether wart. Food does not steer: a steak, a loaf, salt or honey is refused, and so is anything cooked. Each plant adds a **curve** to the end of the path, in the order you added them, and you can add more at any time, even while stirring. A plant carries a **heading** (the way its curve goes overall), a **reach** (how far it takes the flask from end to end) and a **shape** (how it gets there: straight, bowed, waving, zigzag, looping, spiralling or hooked). What a plant does is read from the material it is made of, never from what the item is, so a modded flower with the same properties behaves the same. Each also belongs to a **family** of compounds, which colors a dud draught and sets its taste. Plants are crushed in the bowl of the [Mortar](#mortar), a speckled stone basin with a tall stone pestle, and every plant in it shows its crushed percent. The crushed percentage sets how much surface the water gets: more crushed means a faster compound and a longer curve. A whole plant gives about a third of that, so its curve is shorter. Crushing changes how far the curve goes, never how it twists. A rotten plant reaches less and drifts the brew toward a hazard. Hovering a plant, in your inventory, in a slot or in the JEI item list, draws a ghost curve on the map from the end of the path to where adding it would take the flask, with the same crushing and the pot's heat at that moment. A whole plant's curve is dashed and a crushed one's is solid. Every plant in the grinding bowl is always drawn this way, from the end of the path, and its curve lengthens as it is ground; taking the plant out removes its curve. The curves and what carries each are listed in JEI under Potion Shapes, one card per shape with a dot tracing it.
 3. **Stir.** Moving the mouse in circles over the map walks the marker along the curve. The white flask starts at the center. Each plant is a curve from where the marker stands: the crushing and the pot's heat at the moment it goes in set its reach, and from then the curve is fixed and never grows. Below about 30 Tu nothing comes out at all. The flask moves only when you stir, pour, hit the wall or ride a vortex, and when stirring it follows the drawn curve exactly, by the distance it walks, so a zigzag takes more stirring than a straight line of the same reach and a spiral the most. Zones and vortices are met along the curve, so it can graze one its two ends clear and swing round one a straight line would cross. The curve the flask has walked stays behind it. You can stop short of the end; a plant you do not reach is spent and adds nothing. When the flask has walked a whole curve, that plant is in the water and its slot empties, free for another. Only the plant being stirred in is dimmed and cannot be taken back; any other can be taken out, and its curve leaves the path.
 4. **Cook.** The Cook button ends the brew where the flask is. The pot must be at least 70 Tu. A flask inside an effect node makes that potion, and a flask anywhere else makes a **dud draught**. Either way the water and every ingredient are spent. Tip out empties the pot and spends what is in it.
 5. **Take the bottles.** The finished bottles appear in the three bottle slots.
@@ -118,3 +118,51 @@ Each effect sits at a fixed place on the map, given as a direction from the cent
 | Water Breathing | south | Water Breathing for about three minutes. |
 | Weakness | southwest | Weakness up to level II for about ninety seconds. A tool soaked in it carries it into its blows. |
 | Wither | south-south-west | Wither up to level II for about thirty seconds. A tool soaked in it carries it into its next two blows. |
+
+## Mortar
+
+The Mortar is the bowl and pestle built into the stand, where plants are crushed before they go into the water. A crushed plant gives the water more surface than a whole one, so its compound comes out faster and its path runs longer.
+
+### Crafting
+
+```
+  S
+C C
+ C
+```
+
+S is a Stick and C is any stone crafting material (cobblestone and its kin).
+
+The Mortar item is an ingredient of the Brewing Stand. Crushing happens in the stand's bowl.
+
+### Using it
+
+Open a Brewing Stand. The bowl sits at the bottom left, under the **Tip out** and **Pour** buttons.
+
+1. **Put plants in.** Click the bowl with a plant on the cursor. Left or right click puts in one at a time. Or Ctrl-click a plant in your inventory. The bowl holds up to 4 plants. Anything that is not a plant is ignored.
+2. **Watch them fall.** Plants drop into the bowl and bounce about under a little gravity.
+3. **Carry a plant.** Left-click and hold on a plant to carry it. Release to drop it or throw it. Tall flowers are dropped, never thrown: they fall where you let go.
+4. **Smash.** Grab the pestle anywhere on it. It is one solid stone block and heavy. Pound it down fast onto a plant to smash it. A hard fall when you let go over a plant also counts.
+5. **Grind.** While the pestle is pressed on a plant, rub it side to side to grind. Gentle rubbing gives a finer, more precise crush.
+6. **Read the progress.** Each plant shows its crushed percentage at its foot, always, beside a shrinking icon with a gold arc.
+7. **Take plants out.** Release a plant outside the bowl, over the inventory or anywhere else, to take it out at its current crushed percentage. Closing the screen returns everything, each plant with its percentage. A crushed plant can be put back in and ground further.
+
+Crushed percentages move in 5% steps. Stacks with different percentages do not merge. Anything that has been ground shows **Ground N%** in its tooltip, wherever it is.
+
+The bowl is a speckled stone basin with a flared lip. The pestle is a short, stout block of stone, and while you hold it a small hand shows gripping it. A faint shelf with bottles stands behind the bowl.
+
+Plants are drawn at their real size in the bowl. A flower is about as big as the pestle, and a tall flower (sunflower, lilac, rose bush, peony) stands taller than it. Tall flowers are the heaviest of them.
+
+Every plant in the bowl shows its path on the [map](#the-map), as if you were hovering it. Each path lengthens as you grind its plant, and it disappears when you take the plant out.
+
+#### The heap
+
+Each plant breaks into single-pixel grains in its own colors, taken from the plant itself: a rose bush gives red petals and green leaves, a fern green fronds. Every grain falls under its own gravity from where you grind, slides off other grains and settles into the curved floor of the bowl, so the crushed matter fills the bowl from the bottom up. Each grain belongs to its plant: take the plant out and its grains leave with it. As the plant's icon shrinks the grains pile up, and a plant ground to 100% is only its grains: press on the grains to pick the plant up and carry it out of the bowl. Its grains stay in the bowl until you put the plant into your inventory, and then they all leave together. The pestle is solid to the sand: grains rest on it, pounding it into the pile plows the sand aside, and dragging it bulldozes the heap. A hard blow of the pestle kicks a few grains up. In your inventory a ground plant keeps its normal icon and its **Ground N%** line.
+
+### Hard and soft plants
+
+Hard materials, such as crystals and minerals, barely respond to rubbing and need hard smashes. Soft herbs grind easily.
+
+### How it works
+
+The crushed percentage sets how fast a compound comes out in the brew and how long its path runs. More crushed means more surface, a faster and longer path. A whole plant gives about a third of that. See [The map](#the-map) for the path itself.

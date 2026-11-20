@@ -307,7 +307,7 @@ An **Unlearning Token** (paper, an ink sac and an iron nugget, shapeless) un-buy
 
 ## Skills from gear
 
-A worn curio can **grant** a technique directly, as if you'd bought it. The [Feedbacker](Feedbacker.md) grants its projectile punch and the [Knuckleblaster](Knuckleblaster.md) its heavy punch this way.
+A worn curio can **grant** a technique directly, as if you'd bought it. The [Feedbacker](Special_Loot.md#feedbacker) grants its projectile punch and the [Knuckleblaster](Special_Loot.md#knuckleblaster) its heavy punch this way.
 
 ## Datapacks
 

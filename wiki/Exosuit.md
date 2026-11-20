@@ -20,7 +20,7 @@ A servo's drive and waste come from its motor's rated amps: a motor rated higher
 
 Open the **Suit diagnostic** screen (key `J`) and use **Fit battery** or **Take battery** to seat or remove a [Battery](Battery.md) from your inventory. The diagnostic shows each piece, the charge, the draw, the suit's mass, each servo's drive and loss, and the condition. Without a battery, or with it flat, the suit is dead weight and the plate is plain armor; it never locks you.
 
-Charge the battery by taking the suit's battery out and seating it in a [Charger](Charger.md), or by standing in a [Charging Gantry](Charging_Gantry.md) with the suit on.
+Charge the battery by taking the suit's battery out and seating it in a [Charger](Charger.md), or by standing in a [Charging Gantry](Charger.md#charging-gantry) with the suit on.
 
 ## Controls
 
@@ -94,7 +94,7 @@ The [Blueprint Table](Blueprint_Table.md#suit-modules) shows what a module drawi
 
 ### Learning a module
 
-A module is drawn at the [Blueprint Table](Blueprint_Table.md), and assembled at the Engineering Table, only while you hold Robotics Treatise I: Suit Modules ([Treatise](Treatise.md)). A blueprint is not required to assemble one; it judges the fit against the drawing, and a [Blueprint Book](Blueprint_Book.md) in the blueprint slot offers every sheet inside it.
+A module is drawn at the [Blueprint Table](Blueprint_Table.md), and assembled at the Engineering Table, only while you hold Robotics Treatise I: Suit Modules ([Treatise](Treatise.md)). A blueprint is not required to assemble one; it judges the fit against the drawing, and a [Blueprint Book](Blueprint_Table.md#blueprint-book) in the blueprint slot offers every sheet inside it.
 
 Blueprints come from:
 

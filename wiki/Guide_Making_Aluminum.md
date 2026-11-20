@@ -1,4 +1,4 @@
-# Making Aluminum
+# Guide: Making Aluminum
 
 A path from bauxite to molten aluminum: dissolve the ore in lye, then split the alumina in a molten cryolite bath. Bauxite does not smelt into aluminum directly.
 

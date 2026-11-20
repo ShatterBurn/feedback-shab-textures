@@ -30,7 +30,7 @@ Taking a built bedroll from the Engineering Table or the crafting grid earns the
 
 **With a frame**, right-click a block to place the bed: it takes two blocks, head and foot, like a vanilla bed. Right-click it at night to sleep, or any time to set your respawn point. It skips the night as a vanilla bed does. You wake healed by half the bed's comfort (softer padding and cover, a thicker mattress and a lifted frame give more), scaled by its warmth in cold places. Each night slept wears it a little, and a worn-through bed refuses to be slept in until you take it up and rework it. Breaking either half returns the whole bed as one item, with its parts and materials as they were.
 
-Villagers sleep in a placed bed and claim it as their home, as they do a vanilla bed. Vanilla beds cannot be crafted; the ones found in villages and structures are Feedback beds with a random frame and mattress ([Vanilla Beds](Vanilla_Beds.md)).
+Villagers sleep in a placed bed and claim it as their home, as they do a vanilla bed. Vanilla beds cannot be crafted; the ones found in villages and structures are Feedback beds with a random frame and mattress ([Vanilla Beds](Vanilla_Changes.md#beds)).
 
 **With no frame**, a bedroll cannot be placed. Use it from your hand on firm ground at night or in a storm. It needs no hostile creature within 8 blocks; otherwise it refuses. A night's sleep:
 

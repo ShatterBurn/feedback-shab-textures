@@ -1,6 +1,6 @@
 # Conveyor Belt
 
-A strip of moving band that carries items, dropped stacks and creatures along a straight run. A [Belt Head Roller](Belt_Head_Roller.md) on a [shaft](Shaft.md) drives it, and [belt modules](Belt_Modules.md) fitted into its cells load, sort, drop and condition what rides. The belt between two pulleys that carries rotation is a different thing: see [Pulleys and Belt](Pulleys.md).
+A strip of moving band that carries items, dropped stacks and creatures along a straight run. A [Belt Head Roller](#belt-head-roller) on a [shaft](Shaft.md) drives it, and [belt modules](Belt_Modules.md) fitted into its cells load, sort, drop and condition what rides. The belt between two pulleys that carries rotation is a different thing: see [Pulleys and Belt](Pulleys.md).
 
 ## Crafting
 
@@ -16,7 +16,7 @@ The [Blueprint Table](Blueprint_Table.md) shows a drawing's **grip on cargo** an
 
 ## Laying a run
 
-Place cells end to end facing the same way, and finish the run with a [Belt Head Roller](Belt_Head_Roller.md) at the exit end. A cell fed from the side or round a corner ends its run and hands its cargo to the middle of the next belt cell.
+Place cells end to end facing the same way, and finish the run with a [Belt Head Roller](#belt-head-roller) at the exit end. A cell fed from the side or round a corner ends its run and hands its cargo to the middle of the next belt cell.
 
 - **Sneak and use a belt item on a cell** to step it level, up one block, or down one block.
 - **Sneak with an empty hand** on a bare cell to turn it a quarter turn.
@@ -30,7 +30,24 @@ Place cells end to end facing the same way, and finish the run with a [Belt Head
 - A run carries a limited mass of cargo, and a single unit is capped too: a heavy stack rides as several units, and heavier cargo spaces itself further apart.
 - **Look.** The band moves while the run moves and stands still when it stops. A cleated band shows its cleat bars sliding along the run.
 - **Away from you.** Cargo on a run in an unloaded chunk catches up when the chunk loads: the run moves on by the time it waited, at most about a minute of travel.
-- **Speed** follows the head roller's RPM; a head turning the other way runs the belt backward. The roller loads its shaft with its own weight plus the cargo on the run, so a weak shaft slows a heavily loaded belt.
+- **Speed** follows the [head roller](#belt-head-roller)'s RPM.
+
+## Belt Head Roller
+
+The driven roller at the exit end of a run. Every other cell of the run is an idler; the head turns the band.
+
+```
+W W W
+W S W
+```
+
+W is a Wrought Iron Plate and S is a [Shaft](Shaft.md).
+
+Feed it a shaft from either side across the belt. The shaft's speed sets the belt's speed: cargo moves faster the higher the RPM. A shaft turning the other way runs the belt backward, toward the tail. The roller is seen to turn with its shaft.
+
+The head also carries the **end-of-run modules**: a [funnel (output)](Belt_Modules.md#belt-funnel-output), [chute](Belt_Modules.md#belt-chute), [gate](Belt_Modules.md#belt-gate), [diverter](Belt_Modules.md#belt-diverter) or [splitter](Belt_Modules.md#belt-splitter) fits on it as it does on a cell. Use the module item on the roller; sneak with an empty hand to pull it. [Jade](https://modrinth.com/mod/jade) shows the module.
+
+The roller loads the shaft with its own weight plus the weight of the cargo on the run, so an undersized shaft slows the whole belt. See [Rotation](Rotation.md) for what an overloaded line does.
 
 ## Slopes
 

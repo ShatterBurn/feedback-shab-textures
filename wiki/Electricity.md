@@ -42,7 +42,7 @@ Bands don't lock anything. A machine is *rated* for a band; feed it a higher ban
 | [Heating Coil](Heating_Coil.md) | Electricity in, heat out, under a vessel. |
 | [Electrolytic Cell](Electrolytic_Cell.md) | Refines and plates metal. |
 | [Charger](Charger.md) | Charges one battery. |
-| [Charging Gantry](Charging_Gantry.md) | Charges the battery of a worn exosuit. |
+| [Charging Gantry](Charger.md#charging-gantry) | Charges the battery of a worn exosuit. |
 | [Glowstone Lamp](Lamp.md) | Light in four steps, by how well it is fed. |
 | [Rectifier](Rectifier.md) | Makes a battery beside it charge about three times faster. |
 | **Measuring** | |

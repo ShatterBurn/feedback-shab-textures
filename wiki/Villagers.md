@@ -42,7 +42,7 @@ A dish order's stated term reads "Noun: word", for example "Richness: at least r
 
 The **Hint** button on the Orders tab explains a selected dish order; tool orders state their materials outright and have no hint. Hints are free and stay until you press **Back** or pick another order.
 
-- For a dish order, each stated term gets a line saying how to move it: more animal parts, delivering it hot, salted food, smoking, a sealed container and so on. Under it, a line reading "Try building with ..." names up to four foods to build the dish from: foods of the matching kind or cuisine for meat, seafood, plant, starch and cuisine terms, and the foods highest (or lowest, when the term wants low) in the figure for fat, fibre and moisture terms. A closing line points to the [Tasting Spoon](Tasting_Spoon.md).
+- For a dish order, each stated term gets a line saying how to move it: more animal parts, delivering it hot, salted food, smoking, a sealed container and so on. Under it, a line reading "Try building with ..." names up to four foods to build the dish from: foods of the matching kind or cuisine for meat, seafood, plant, starch and cuisine terms, and the foods highest (or lowest, when the term wants low) in the figure for fat, fibre and moisture terms. A closing line points to the [Tasting Spoon](Hand_Tools.md#tasting-spoon).
 
 ### Delivering
 
@@ -64,7 +64,7 @@ Farmers, butchers, fishermen and shepherds also order dishes made at the [Prep T
 
 A dish order states terms on some of: heartiness, richness, chew, moisture, doneness, char, saltiness, smokiness, freshness, warmth, and the share of meat, fish, greens and grain. Put the dish in the delivery slot and press **Deliver**. The dish is judged as it arrives, so rot, cooling and drying count. It is graded **Rejected** to **Exceptional**, paid in emeralds, and the villager names the single worst quality in an adjective, such as "burnt".
 
-Each villager also has tastes of its own. The biome type it comes from (taiga, desert, plains, savanna, snow, swamp, jungle) leans it toward certain cuisines and foods. These tastes count for less than the stated terms and are never said; the complaint is how you find them out. The [Tasting Spoon](Tasting_Spoon.md) reads a dish before you deliver it.
+Each villager also has tastes of its own. The biome type it comes from (taiga, desert, plains, savanna, snow, swamp, jungle) leans it toward certain cuisines and foods. These tastes count for less than the stated terms and are never said; the complaint is how you find them out. The [Tasting Spoon](Hand_Tools.md#tasting-spoon) reads a dish before you deliver it.
 
 ## Standing
 
@@ -147,7 +147,7 @@ Six professions also sell **treatises**, one of each volume per day, at a high t
 
 Blueprints for tools and armor carry the type's default design. Gun blueprints carry that gun's design. A recipe card carries a dish layout: open it to read the layout and the predicted figures.
 
-The wandering trader sells a small fixed list with a daily stock and no standing. On market day it sets up at a [Market Cross](Market_Cross.md).
+The wandering trader sells a small fixed list with a daily stock and no standing. On market day it sets up at a [Market Cross](Villages.md#market-cross).
 
 ### Standards stall
 
@@ -156,9 +156,9 @@ The cartographer sells calibrated reference instruments: calipers, thermometer, 
 ## Beyond the screen
 
 - A villager also buys from a stocked [Counter](Counter.md) and delivers at the [Ledger Board](Ledger_Board.md), which lists every open order nearby and posts contracts.
-- Villagers of one profession working close together form a [guild](Village_Guilds.md).
+- Villagers of one profession working close together form a [guild](Villages.md#guilds).
 - Buy lines pay differently by the village's biome type: snow and taiga villages pay more for food, wool and coal, desert villages less. Some shop lines are sold only in certain biome types. Food pays by freshness: fresh in full, going off half, rotten refused.
-- Villagers who are farmers plant and harvest the mod's [crops](Crops.md). Generated villages can contain [stalls, a plaza and guild yards](Village_Stalls.md).
+- Villagers who are farmers plant and harvest the mod's [crops](Crops.md). Generated villages can contain [stalls, a plaza and guild yards](Villages.md#stalls-and-plazas).
 
 ## See also
 

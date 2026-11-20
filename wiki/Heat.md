@@ -62,7 +62,7 @@ Because the cooling is steady, you can work out your time. Steel straight out of
 
 Ways to change an item's heat by hand:
 
-- **Drop it in water**: it's cooled instantly. For hot steel this is [quenching](Heat_Treatment.md).
+- **Drop it in water**: it's cooled instantly. For hot steel this is [quenching](Guide_Heat_Treatment.md).
 - **Right-click water** with it in hand: it snaps to room temperature.
 - **Right-click lava** with it in hand: it's heated to lava temperature instantly. It's crude and uncontrolled, but it needs no machine.
 
@@ -149,6 +149,6 @@ What isn't caught up is **progress**. A batch in the crucible doesn't finish whi
 
 ## Guides
 
-- [Making Steel](Steel.md)
-- [Heat Treatment](Heat_Treatment.md): hardening and tempering
+- [Guide: Making Steel](Guide_Making_Steel.md)
+- [Guide: Heat Treatment](Guide_Heat_Treatment.md): hardening and tempering
 - [Casting and Alloys](Casting.md)

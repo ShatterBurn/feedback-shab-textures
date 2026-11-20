@@ -132,7 +132,7 @@ A drawing with a motor, controller or cell predicts power as if a middling one w
 
 ## Schools
 
-Some **parts** and **shapes** belong to a school too (the servos of a powered suit need Robotics Treatise I): they are offered only while you hold the volume. A type that belongs to a **school** is drawn here only while you hold the right numbered volume of that school's [treatise](Treatise.md); each volume is a subject of its own. Press **Print** without it and the table says which volume the type takes. A volume's types are left out of the type row and list while you do not hold it, and the treatise's tooltip lists what it opens. A treatise counts as held when it lies loose in your inventory, sits inside a [Treatise Binder](Treatise_Binder_and_Shelf.md) in your inventory, or sits in a [Treatise Shelf](Treatise_Binder_and_Shelf.md) touching the table. It is kept, never used up.
+Some **parts** and **shapes** belong to a school too (the servos of a powered suit need Robotics Treatise I): they are offered only while you hold the volume. A type that belongs to a **school** is drawn here only while you hold the right numbered volume of that school's [treatise](Treatise.md); each volume is a subject of its own. Press **Print** without it and the table says which volume the type takes. A volume's types are left out of the type row and list while you do not hold it, and the treatise's tooltip lists what it opens. A treatise counts as held when it lies loose in your inventory, sits inside a [Treatise Binder](Treatise.md#treatise-binder-and-shelf) in your inventory, or sits in a [Treatise Shelf](Treatise.md#treatise-binder-and-shelf) touching the table. It is kept, never used up.
 
 | Volume | Types |
 | --- | --- |
@@ -164,7 +164,7 @@ Every other type (tools, armor, backpack, bed, water wheel, thermal store, pump,
 
 A blueprint is a **drawn fit**: a specification that the [Engineering Table](Engineering_Table.md) judges an assembly against. It is never required to build anything.
 
-- Put it in the Engineering Table's blueprint slot (a [Blueprint Book](Blueprint_Book.md) works too) with the parts in the grid. A part whose material lies inside the properties the drawing names (strength, hardness, conductivity, insulation, density) fits clean. Another material still builds, and the item is marked **off the drawing**.
+- Put it in the Engineering Table's blueprint slot (a [Blueprint Book](#blueprint-book) works too) with the parts in the grid. A part whose material lies inside the properties the drawing names (strength, hardness, conductivity, insulation, density) fits clean. Another material still builds, and the item is marked **off the drawing**.
 - Each axis (a bore, a wall, a length) has a target. Parts built to a blueprint may be off by 5% of the axis range; past that the item takes a **fit flaw** (looser joints, and for a gun a wider spread). Without a blueprint the parts are judged against each other at 20%.
 - A blueprint skips the hand-work game and counts as a small bonus to the start. See [Fit and head start](Engineering_Table.md#fit-and-head-start).
 - The dimension of a machine (diameter, bore, turns, size, gauge, wall, area, buckets) is set here on the drawing. The [Water Wheel](Water_Wheel.md), [Thermal Store](Thermal_Store.md), [Leyden Jar](Leyden_Jar.md), [Pump](Pump.md), [Fluid Burner](Fluid_Burner.md), [Electromagnet](Electromagnet.md), [Galvanic Cell](Galvanic_Cell.md), [Crucible](Crucible.md), [Gas Centrifuge](Gas_Centrifuge.md), [Column Tray](Fractionating_Column.md#building-a-tray), [Glowstone Lamp](Lamp.md), [Boiler](Boiler.md), [Flywheel](Flywheel.md), [Pressure Vessel](Pressure_Vessel.md), [Heat Exchanger](Heat_Exchanger.md), [Gas Tank](Gas_Tank.md), [Gas Compressor](Gas_Compressor.md), [Thruster](Thruster.md), [engine](Engine.md), [transmission](Transmission.md), [propeller](Propeller.md), [jet](Jet.md), [suit module](Exosuit.md#learning-a-module) and [crossbow](Tools_and_Weapons.md#crossbow) are complex types: only the Engineering Table assembles them. Some need a treatise to draw and to assemble. The [Hand Crank](Hand_Crank.md) needs neither.
@@ -192,3 +192,11 @@ A pulse gun's drawing also shows how it fires, in three rows (hover a row for th
 - **Bounces off stone: N:** with a coherence lens fitted, how many bounces the pulse makes off stone. Each bounce keeps only the share the surface reflects, and a pulse that has fallen very low stops, so the lining's own bounce count is cut short; stone keeps little, so a pulse survives at most one stone bounce.
 
 The real-world name of the build you are drawing shows beside the type's name: a gun is named by its action and barrel, and armor, blades, shields, bows and electric guns by their shape and the ranges their axes sit in (a cuirass, a rapier, a tower shield, a Railcannon). A build with no recognised name shows none here; the item itself still gets a name from its size, shape and material.
+
+## Blueprint Book
+
+Carries up to sixteen blueprints, the way a bundle carries items. The [Engineering Table](Engineering_Table.md) reads every sheet inside the book from its blueprint slot.
+
+Craft it from Leather + 3 Paper + String (shapeless).
+
+Click a blueprint onto the book to put it in. Click the book on an empty slot to take a sheet out. Only blueprints go in. The sheets in a book count exactly as if each lay in the blueprint slot on its own; see [Learning a module](Exosuit.md#learning-a-module).

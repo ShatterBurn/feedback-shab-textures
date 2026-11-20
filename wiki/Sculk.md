@@ -1,4 +1,6 @@
-# Sculk Culture
+# Sculk
+
+Sculk in Feedback is a living material you can keep, tap and listen through. A warden's drops start a culture you grow in a dish, the Catalyst Tap and Sculk Relay join sculk to the [XP network](Experience.md), the Data Sensor reads what sculk hears, and what you do (and what your gear does) decides how far sculk hears you.
 
 A warden leaves a **Culture Seed**: the starter for a living sculk culture you keep in a dish. The culture is wetware, fed **XP** and **air**. Fed, it grows and holds a small, high-level store of XP that grows with it. Neglected, it goes quiet, then wastes, and a culture left ripe for long enough calls a warden.
 
@@ -15,6 +17,7 @@ Made from glass, a sculk block and wrought iron plates. Use a Culture Seed on an
 - **Air.** The dish breathes any gas from a neighboring block that holds it (a [Gas Tank](Gas_Tank.md), a pipe, the front of a [Electrolyser](Electrolyser.md)), by its oxygen share: [pure oxygen](Chemicals.md#oxygen) at full rate, air at about a fifth as well. It draws a trickle a second; without breathable gas the culture goes pale. The dish's look shows empty, growing, ripe, or ailing (any starved, pale, clotted or shrieking stage).
 - **Relay organ.** A ripe culture that sits in the dark (light 3 or less at the dish), in ambient temperature between 10 and 30 Tu (so not in the Nether or the End), breathing and fed, grows a **Relay Organ** and eats extra XP while it does. The organ is ready after about 5 minutes. A hoe cut within about 3 minutes after that also gives the Relay Organ; left longer it overgrows and is spent, and only a cut clears it. While a condition fails an unformed organ slowly shrinks back. Jade shows the organ as forming, ready to cut or overgrown.
 - **Ripe.** A full culture is ripe. Use a hoe on a ripe dish to cut it: two sculk blocks, two sculk veins and an Echo Shard, and the culture falls back to a third of its size. A well-fed culture cut before it clots may also bud a spare Culture Seed. XP held above the smaller store spills out as orbs.
+- **Where to see it.** Jade names the dish's stage. With an [XP Meter](Instruments.md#xp-meter) carried it also shows mass, air and the store.
 
 ## Neglect
 
@@ -53,6 +56,11 @@ V is a Sculk Vein, O is a Relay Organ and P is a Wrought Iron Plate. Every relay
 
 Made at the [Engineering Table](Engineering_Table.md) from a Sculk Sensor, two Copper Plates, two Copper Fine Wire and a circuit ([Basic Electronic Circuit](Basic_Electronic_Circuit.md)), in the same grid as the [Sensors](Sensors.md#crafting), with a [screwdriver](Hand_Tools.md#screwdriver), 2 screws and Electrical Treatise III: Circuits ([Treatise](Treatise.md)). Copper plating frames a sculk window. Listens like one (8 blocks, the same vibration frequencies) and holds the last frequency for two seconds. Link it to a [Controller](Controller.md) with a Data Connector and read it with an Input card: channel 0 is the frequency over 15, channels 1 to 15 are on while that exact frequency was just heard. It has no wool dampening and no sneak filter.
 
-## Where to see it
+## What sculk hears
 
-Jade names the dish's stage. With an [XP Meter](Instruments.md#xp-meter) carried it also shows mass, air and the store.
+Sculk sensors, Data Sensors and wardens react to vibrations. Footsteps, blows, breaking and placing blocks, opening containers and pressing buttons all make them, and a machine part carrying **Ring** makes one every few seconds.
+
+Ways to be heard less or more:
+
+- **Hush** on a tool, weapon, armor piece or machine part silences the vibrations it makes. **Ring** does the opposite: a blow rings, so sculk and wandering hostile mobs notice it. Both are on the [Enchanting Table](Enchanting_Table.md#effects) page.
+- The [Veil skill tree](Skills.md#veil) holds the perks that quiet you: Hushed step (footsteps), Soft hands (breaking, placing, containers, buttons), Dull edge (soft, dull weapons clank less) and Hush the kill (a blow that kills an unaware creature makes no vibration). The Quiet hand limb shrinks how far your steps and hands are heard.

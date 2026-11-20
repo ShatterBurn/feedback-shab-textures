@@ -21,7 +21,7 @@ Set it on a lit [Firebox](Firebox.md) or an [Induction Stove](Induction.md#induc
 - **A food:** add one (up to six). Raw or cooked, any food a [Skillet](Skillet.md) or [Furnace](Furnaces.md) would cook.
 - **Salt:** shake a pinch into a pot that has something in it. It adds no volume and no food, only salt (as much as one salted food) and salt's own *Brine Tolerance* perk, so the servings tolerate more of what is live in them. A pot can only be so salty: past a saturated brine more salt buys nothing.
 - **A bowl:** ladle one serving.
-- **A [Spoon](Spoon.md):** hold to stir, tap to skim (below).
+- **A [Spoon](Hand_Tools.md#spoon):** hold to stir, tap to skim (below).
 - **Empty hand:** read the pot (how many servings, how far along). Sneak with an empty hand to tip it out; a hot pot burns the hand.
 
 The pot shows its contents. The water surface rises and falls with the water and shifts in color from broth to burnt. Pale blobs of scum float on top, swirl marks show while it is stirred, and food lies on the floor of the pot tinted raw, cooked or burnt. Stirring, skimming and simmering each make a sound. Jade shows the pot's temperature.
@@ -43,6 +43,6 @@ The pot goes on cooking while you work it.
 - **Scum** rises as pale blobs while raw meat cooks. **Tap use with the spoon to skim it off.** Any scum left in the pot ends up in your servings as something live, and stirring while it is still there folds it in for good, which skimming cannot fix. So skim first, then stir.
 - A pot with no raw meat makes no scum. The pot left alone on a gentle fire is the slow, safe, unskilled way; the spoon buys a harder fire and a cleaner stew.
 
-Stirring a pot hotter than the handle stands burns your hand; see [Spoon](Spoon.md#wear-and-hazards).
+Stirring a pot hotter than the handle stands burns your hand; see [Spoon](Hand_Tools.md#spoon).
 
 A serving is a **Broth** (mostly water), a **Stew**, or a **Scorched Stew**. Eating it gives vanilla hunger and saturation; anything live or toxic left in it gives Hunger or Poison as in raw food.

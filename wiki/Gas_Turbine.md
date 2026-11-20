@@ -19,7 +19,7 @@ It spools up slowly after that, and when the fuel runs out it **coasts down very
 
 The blades take two kinds of punishment. Both only wear them (down to 20% condition, with output falling with it); neither ever stops the turbine outright.
 
-- **Speed.** The faster the shaft turns, and the heavier the blade metal, the harder the blades are pulled apart. The blade metal's **strength** has to hold: a light, strong metal survives a higher speed. A hot flame cuts that strength. A turbine geared up so its shaft spins too fast wears its blades; an [Overspeed Trip](Overspeed_Trip.md) on the shaft is what prevents it.
+- **Speed.** The faster the shaft turns, and the heavier the blade metal, the harder the blades are pulled apart. The blade metal's **strength** has to hold: a light, strong metal survives a higher speed. A hot flame cuts that strength. A turbine geared up so its shaft spins too fast wears its blades; an [Overspeed Trip](Clutch.md#overspeed-trip) on the shaft is what prevents it.
 - **Heat.** A fuel whose flame is hotter than the blade material's *service temperature* wears the blades, faster the further over. Check the fuel's flame temperature against the metal ([Materials](Materials.md)): naphtha burns at 1400 Tu, well over what iron stands.
 
 ## Flameout

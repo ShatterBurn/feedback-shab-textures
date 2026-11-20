@@ -56,3 +56,16 @@ The firebox holds a little air: about **half a second** of full burn. A full fir
 ## Lava instead
 
 You can skip the firebox and put a crucible or boiler straight over **lava**. It's a fixed, perfectly steady fire, but it's not hot enough for steel and you can't blow it hotter.
+
+## Stoker
+
+A screw feed that pushes solid fuel into the firebox in front of it, driven by a vertical shaft.
+
+```
+P X P
+P H P
+```
+
+P is a Wrought Iron Plate, X is a [Shaft](Shaft.md) and H is a [Hopper](Hopper.md). Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 2 [fasteners](Fasteners.md), screws or machine bolts. It needs Mechanical Treatise I: Engines, Flywheels and Dynamotors ([Treatise](Treatise.md)).
+
+A hopper or belt fills it from any side but the front. Three drum sizes, stepped by right-clicking with an empty hand (a strip under the crosshair lists the sizes with the current one lit), set how much each turn moves. A full firebox refuses the fuel and the feed stalls; the stoker costs only its own power while it waits. It starts and stops from a [Controller](Controller.md) or redstone. A [Kiln Zone](Furnaces.md#kiln-zone) is kept hot the same way.

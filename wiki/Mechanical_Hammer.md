@@ -41,7 +41,7 @@ Put raw ore or a lump on the anvil and the hammer breaks it into **Crushed** ore
 
 ## Blooms
 
-A hot **Iron Bloom** on the anvil is driven into a Wrought Iron Ingot with a lump of Bloomery Slag beside it, unattended, as long as the bloom is between **900 and 1500 Tu**. A cooled bloom is left alone. See [Making Wrought Iron](Making_Wrought_Iron.md#under-the-mechanical-hammer).
+A hot **Iron Bloom** on the anvil is driven into a Wrought Iron Ingot with a lump of Bloomery Slag beside it, unattended, as long as the bloom is between **900 and 1500 Tu**. A cooled bloom is left alone. See [Guide: Making Wrought Iron](Guide_Making_Wrought_Iron.md#under-the-mechanical-hammer).
 
 ## What it makes
 

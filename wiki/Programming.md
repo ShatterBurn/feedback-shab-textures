@@ -109,7 +109,7 @@ A printed Punch Card is **read-only**: *"Printed -- read only."* To change a pro
 
 ## Media
 
-Each host takes its own media. The mechanical Controller and Programmer take the Punch Card only. The [Electric Controller and Electric Programmer](Electric_Controller.md) take the Memory Board and the Floppy Disk. The [Computer's](Electric_Controller.md#computer) drive bays, running slot and editor take the Floppy Disk, and the USB Drive once a [USB Port](USB_Port.md) is fitted. A Computer takes neither a Punch Card nor a Memory Board.
+Each host takes its own media. The mechanical Controller and Programmer take the Punch Card only. The [Electric Controller and Electric Programmer](Electric_Controller.md) take the Memory Board and the Floppy Disk. The [Computer's](Electric_Controller.md#computer) drive bays, running slot and editor take the Floppy Disk, and the USB Drive once a [USB Port](Electric_Controller.md#usb-port) is fitted. A Computer takes neither a Punch Card nor a Memory Board.
 
 The USB Drive has its own icon.
 
@@ -123,7 +123,7 @@ The USB Drive has its own icon.
   ```
 
   P is paper, D is a Punch Card, M is Magnetite Dust and H is a Wrought Iron Plate. It spends no fasteners. Put a printed disk in the Programmer and press **Erase**: the program comes back into the editor, the disk is blank, and Print writes the new program onto the same disk.
-- **USB Drive**: a Copper Plate above a [circuit](Basic_Electronic_Circuit.md) above a Ceramic, made at the Engineering Table with a screwdriver in the tool row and Electrical Treatise III: Circuits, with no fasteners. Rewritten the same way as a Floppy Disk. It goes only into a Computer fitted with a [USB Port](USB_Port.md).
+- **USB Drive**: a Copper Plate above a [circuit](Basic_Electronic_Circuit.md) above a Ceramic, made at the Engineering Table with a screwdriver in the tool row and Electrical Treatise III: Circuits, with no fasteners. Rewritten the same way as a Floppy Disk. It goes only into a Computer fitted with a [USB Port](Electric_Controller.md#usb-port).
 
 ## Text form
 

@@ -1,6 +1,6 @@
 # Carrier
 
-The capsule that rides a [Pneumatic Tube](Pneumatic_Tube.md). A carrier holds four stacks of items and a color **address** that [junctions](Tube_Junction.md) route by. The Magnetic Carrier and the Pod are its variants.
+The capsule that rides a [Pneumatic Tube](Pneumatic_Tube.md). A carrier holds four stacks of items and a color **address** that [junctions](Pneumatic_Tube.md#tube-junction) route by. The Magnetic Carrier and the Pod are its variants.
 
 ## Crafting
 

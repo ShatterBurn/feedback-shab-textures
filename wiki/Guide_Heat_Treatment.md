@@ -1,13 +1,14 @@
-# Heat Treatment
+# Guide: Heat Treatment
 
 What happens to steel depends not only on how hot it is, but on **how it got there**.
 
 ## Hardening (quenching)
 
-Take a [Steel Ingot](Steel.md) out of the crucible while it's still **very hot** and **throw it into water**. If it's at **1400 Tu or more** when it lands, it becomes **Hardened Steel**. You'll hear the hiss.
+Take a [Steel Ingot](Guide_Making_Steel.md) out of the crucible while it's still **very hot** and **throw it into water**. If it's at **1400 Tu or more** when it lands, it becomes **Hardened Steel**. You'll hear the hiss.
 
 - The ingot cools at about 28 Tu a second (steel's own rate) from the moment it leaves the crucible. Steel's band tops out at 1410, so pulled from the middle of the band it's already too cool. **Heat the finished ingot higher first** (it's done; the spoil line does not apply to it), and **have water right next to the crucible**: from 1460 Tu you have two seconds.
 - Any water works: a pool, a river, a single water block.
+- **Right-clicking** a water source with a hot piece in hand also cools it, to room temperature ([Heat](Heat.md#room-temperature)). Dropping the piece in the water cools it the same way, and is the quench.
 - A steel ingot that's too cool just gets cooled. Nothing is lost except the heat, so reheat and try again.
 
 Hardened steel is extremely hard, too hard for the [Drill Press](Drill_Press.md) or [Lathe](Lathe.md). Only the [Grinding Wheel](Grinding_Wheel.md) can shape it.

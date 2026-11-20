@@ -1,6 +1,6 @@
 # Airship
 
-A [vehicle](Vehicles.md) that floats on a lift gas. Its envelope is a block of [Gas Cells](Gas_Cell.md) filled with a gas lighter than air; [Propellers](Propeller.md) or [Thrusters](Thruster.md) push it along, [Control Surfaces](Control_Surfaces.md) steer it, and a [Ballast Tank](Ballast_Tank.md) and [Vent Valve](Vent_Valve.md) set how high it sits.
+A [vehicle](Vehicles.md) that floats on a lift gas. Its envelope is a block of [Gas Cells](Gas_Cell.md) filled with a gas lighter than air; [Propellers](Propeller.md) or [Thrusters](Thruster.md) push it along, [Control Surfaces](Vehicles.md#control-surfaces) steer it, and a [Ballast Tank](Ballast_Tank.md) and [Vent Valve](Vent_Valve.md) set how high it sits.
 
 ## Parts
 
@@ -12,11 +12,11 @@ A [vehicle](Vehicles.md) that floats on a lift gas. Its envelope is a block of [
 | [Propeller](Propeller.md) | Pulls the craft along its facing from a turning shaft. |
 | [Jet](Jet.md) | Burns fuel in drawn air and pushes the craft along its facing. |
 | [Thruster](Thruster.md) | Pushes the craft along its facing by burning fuel. |
-| [Control Surfaces](Control_Surfaces.md) | Hinged wing plates that roll, pitch and yaw the craft. |
+| [Control Surfaces](Vehicles.md#control-surfaces) | Hinged wing plates that roll, pitch and yaw the craft. |
 
 ## Lift gases
 
-- **Hydrogen**: from the [Electrolyser](Electrolyser.md) or from heating [End Stone](End_Stone.md). It burns.
+- **Hydrogen**: from the [Electrolyser](Electrolyser.md) or from heating [End Stone](Reactor.md#the-reactions). It burns.
 - **Wisp gas**: it burns.
 - **[Helium](Chemicals.md#helium)**: the lightest noble gas, from heating End Stone or a cold cut of nitrogen. It never burns.
 

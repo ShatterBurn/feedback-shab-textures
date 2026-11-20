@@ -1,6 +1,6 @@
 # Puddling Furnace
 
-A furnace with a stirring rod, turned by a shaft into its back. It turns cast iron into a clean **Iron Bloom** with little slag in it. See [Making Wrought Iron](Making_Wrought_Iron.md).
+A furnace with a stirring rod, turned by a shaft into its back. It turns cast iron into a clean **Iron Bloom** with little slag in it. See [Guide: Making Wrought Iron](Guide_Making_Wrought_Iron.md).
 
 ## Crafting
 

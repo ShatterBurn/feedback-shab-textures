@@ -10,7 +10,7 @@ A face is a head, a blade or a point made at a bench like any part ([Tools and W
 - **Two or three faces** make a tool nobody wrote down. The first face in reading order (top row first, left to right) is the **front**, the one the swing lands with; the next is the **back**, the third the **top**.
 - A **hammer head with no haft** is the head a machine takes ([Mechanical Hammer](Mechanical_Hammer.md), [Mechanical Press](Mechanical_Press.md)); it is the only face that is a tool on its own.
 
-Everything else is optional and added afterwards on the Fit tab of the Engineering Table: a **binding** where head meets haft (it makes the joint stronger), a **guard**, a **pommel**, a **tip**, a **spring**, a **lanyard**, an **edge guard**. Each sits on a mount the item offers (see [Engineering Table](Engineering_Table.md#fit)).
+Everything else is optional and added afterwards on the Fit tab of the Engineering Table: a **binding** where head meets haft (it makes the joint stronger), a **guard**, a **pommel**, a **tip**, a **spring**, a **lanyard**, an **edge guard**. Each sits on a mount the item offers (see [Engineering Table](Engineering_Table.md#fit-tab)).
 
 ## What it does
 

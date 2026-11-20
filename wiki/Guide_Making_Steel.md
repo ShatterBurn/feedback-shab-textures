@@ -1,4 +1,4 @@
-# Making Steel
+# Guide: Making Steel
 
 Steel is the first big wall in Feedback. Nothing locks it away, but you have to hold a crucible inside a **narrow, hot temperature window** for a while, and that's hard. Everything you learn about [heat](Heat.md) comes together here.
 
@@ -8,7 +8,7 @@ Check JEI's *Thermal process* page for **Steel Ingot** for the exact figures; th
 
 - A **[Crucible](Crucible.md)** on a **[Firebox](Firebox.md)**. A **small** crucible climbs too fast on a full fire; a **large** one stays in the band (see below).
 - **Charcoal** to burn, and a **[Powered Bellows](Powered_Bellows.md)** on the firebox. Charcoal alone isn't hot enough.
-- A **Wrought Iron Ingot** ([how to make it](Making_Wrought_Iron.md)) and a piece of **Charcoal** to put *in* the crucible.
+- A **Wrought Iron Ingot** ([how to make it](Guide_Making_Wrought_Iron.md)) and a piece of **Charcoal** to put *in* the crucible.
 - Ideally a **[Thermometer](Instruments.md#thermometer)**.
 
 ## The process
@@ -41,10 +41,10 @@ What that means in practice:
 
 ## Other routes
 
-- **Cast Iron + Charcoal** also makes steel, in a shorter hold. Cast iron comes from a **Wrought Iron Ingot + Coal** held at a lower, wider band (check JEI), or straight from melting iron ore ([Making Wrought Iron](Making_Wrought_Iron.md)). Cast iron as dust or swarf holds for less than an ingot: a finer form carburizes sooner.
+- **Cast Iron + Charcoal** also makes steel, in a shorter hold. Cast iron comes from a **Wrought Iron Ingot + Coal** held at a lower, wider band (check JEI), or straight from melting iron ore ([Guide: Making Wrought Iron](Guide_Making_Wrought_Iron.md)). Cast iron as dust or swarf holds for less than an ingot: a finer form carburizes sooner.
 - **Four Steel Swarf** (from [drilling](Drill_Press.md), [turning](Lathe.md) or [grinding](Grinding_Wheel.md) steel) can be melted back into a steel ingot in the same band, with an even shorter hold. Nothing has to go to waste.
 
 ## After steel
 
 - Hammer it into [Steel Plate](Mechanical_Hammer.md) for [boilers](Boiler.md) and [steam engines](Steam_Engine.md). Steel only moves between **900 and 1100 Tu**, so it has to be hot, and a fresh ingot at 1400 Tu burns your hands: carry it with [tongs](Hazards.md#tongs).
-- [Harden and temper it](Heat_Treatment.md).
+- [Harden and temper it](Guide_Heat_Treatment.md).

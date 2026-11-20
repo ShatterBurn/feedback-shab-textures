@@ -42,6 +42,24 @@ It's heavy, so a network with a water wheel on it is slow to spin up but steady 
 
 - Its speed wanders with the water, which is why a [Timer](Timer.md) run off a water wheel doesn't always give the same result twice.
 
+## Creel
+
+A wicker basket trap for fish, with a narrow funnel mouth, set under water.
+
+```
+S S S
+S . S      S stick
+S S S
+```
+
+Place it so it sits in a body of water; a puddle catches nothing. Every couple of minutes it draws a catch from the fish and junk the water gives a rod, never treasure. Bait in the top slot shortens the wait and is spent; rotten flesh, spider eyes, bone meal and raw meat and fish are bait. An empty hand empties the basket, and a hopper can take from it. A full basket stops.
+
+## Fish Wheel
+
+A Water Wheel with baskets on its blades. It turns in a current as any wheel does, gives half the power, and catches fish while it turns.
+
+Craft it with a [Creel](#creel) directly above a Water Wheel. Place and drive it like a Water Wheel; where the Water Wheel is a bucketed drum, it is a spar carrying two scoop baskets on a small frame. It draws a catch from the same fish the water gives a rod, never treasure, and more blades in the current catch faster. An empty hand empties the baskets, and a hopper can take from them. A full basket stops the catch, not the wheel.
+
 ## Attunements
 
 **Ward** and **Mend** on the rim or rim ring handle the wear a wheel takes when held still in flowing water; a worn wheel turns less. **Impulse** on the rim pushes harder from the flow, **Momentum** carries more momentum, and **Bloom**, **Reap**, **Bane**, **Kin**, **Mark** and **Dowse** work on the land and creatures around it. See the [Enchanting Table](Enchanting_Table.md#on-a-machine) page.

@@ -37,11 +37,11 @@ Whatever is inside sits at the crucible's temperature. The crucible doesn't know
 
 ### Making things
 
-Put in the ingredients and hold the temperature inside the band. For example, a **Wrought Iron Ingot + Charcoal** becomes a **Steel Ingot**. See [Making Steel](Steel.md). Let it get too hot and the batch is **ruined** into a single item: *Burnt Iron* for steel and cast iron, otherwise what the first ingredient leaves (see [Failed batches](Heat.md#failed-batches)).
+Put in the ingredients and hold the temperature inside the band. For example, a **Wrought Iron Ingot + Charcoal** becomes a **Steel Ingot**. See [Guide: Making Steel](Guide_Making_Steel.md). Let it get too hot and the batch is **ruined** into a single item: *Burnt Iron* for steel and cast iron, otherwise what the first ingredient leaves (see [Failed batches](Heat.md#failed-batches)).
 
 ### Melting
 
-Ores, raw metal and ingots melt into the crucible's **tank** once they're hot enough. Fill an [Ingot Mold or Bullet Mold](Casting.md) by right-clicking the crucible with it, or set the crucible above a [Casting Basin](Casting_Basin.md) to pour into molds there. Melt two metals in the right proportions and you get an alloy. See [Casting and Alloys](Casting.md).
+Ores, raw metal and ingots melt into the crucible's **tank** once they're hot enough. Fill an [Ingot Mold or Bullet Mold](Casting.md) by right-clicking the crucible with it, or set the crucible above a [Casting Basin](Casting.md#casting-basin) to pour into molds there. Melt two metals in the right proportions and you get an alloy. See [Casting and Alloys](Casting.md).
 
 Scrap, swarf and a whole made part melt back too. Swarf pours nine tenths of its volume (a part of metal filed down at a bench sheds it, and so do the [Lathe](Lathe.md) and other cutting machines); a whole made part pours nineteen twentieths of the metal it holds, a filed part less.
 

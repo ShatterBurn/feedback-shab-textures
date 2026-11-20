@@ -72,5 +72,5 @@ Put a bar (rod, ingot or lump) of a material that can take more heat than the el
 
 - **Flash and splash.** A bath above **3000 Tu** that holds metal now and then splashes and flashes. Anything within 6 blocks takes heat damage, and a player without a helmet is blinded. A snapping electrode flashes the same way.
 - **Boiling metal.** Molten metal in any vessel that is held past its boiling point boils away a share each tick, giving off a poisonous metal fume. The alloy drifts as it does: zinc, lead and tin go first. See [Hazards](Hazards.md).
-- **Steel left hot** is ruined like any steel batch held past its spoil line ([Making Steel](Steel.md)).
+- **Steel left hot** is ruined like any steel batch held past its spoil line ([Guide: Making Steel](Guide_Making_Steel.md)).
 - The line is EHV, the strongest shock band ([Hazards](Hazards.md#shock)).

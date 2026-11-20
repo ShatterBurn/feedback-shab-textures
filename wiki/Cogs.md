@@ -41,7 +41,7 @@ When placed, a cog takes the axis of whatever you placed it against. **Sneak** w
 
 Slower and stronger is how you get a [hammer](Mechanical_Hammer.md) to hit hard enough for hard metals without switching to a short throw. Every metal has a hardness, and a blow below it does nothing. See [Metalworking](Metalworking.md).
 
-Gearing **up** makes things faster, but the fast branch costs more power to friction. Gear up far enough and you can trip an [Overspeed Trip](Overspeed_Trip.md).
+Gearing **up** makes things faster, but the fast branch costs more power to friction. Gear up far enough and you can trip an [Overspeed Trip](Clutch.md#overspeed-trip).
 
 ## Gearbox
 

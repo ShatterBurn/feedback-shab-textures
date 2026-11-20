@@ -9,10 +9,10 @@ A vehicle is a build of [finespace](Finespace.md) and full-size blocks that a [L
 | Item | Use |
 | --- | --- |
 | **[Lift](#the-lift)** | The stand you build on. Turns what is on it into a single moving object. |
-| **[Mote](Mote.md)** | A 64th of a block, cut from a whole block; what finespace is built from. |
-| **[Fine Gauge](Fine_Gauge.md)** | Sets single, line, box, mirror or wedge placement of motes. |
-| **[Fine Wedge](Fine_Wedge.md)** | A four-step ramp voxel. |
-| **[Joints](#joints)** | [Rotary Bearing](Rotary_Bearing.md), [Ring Gear](Ring_Gear.md), [Large Ring Gear](Large_Ring_Gear.md), [Ball Joint](Ball_Joint.md), [Locked Joint](Locked_Joint.md), [Slider Joint](Slider_Joint.md) and [Piston Joint](Piston_Joint.md), each placed against a block or as a voxel of finespace. |
+| **[Mote](Finespace.md#motes)** | A 64th of a block, cut from a whole block; what finespace is built from. |
+| **[Fine Gauge](Finespace.md#fine-gauge)** | Sets single, line, box, mirror or wedge placement of motes. |
+| **[Fine Wedge](Finespace.md#fine-wedge)** | A four-step ramp voxel. |
+| **[Joints](#joints)** | [Rotary Bearing](Rotary_Bearing.md), [Ring Gear](Ring_Gear.md), [Large Ring Gear](Ring_Gear.md#large-ring-gear), [Ball Joint](Joints.md#ball-joint), [Locked Joint](Joints.md#locked-joint), [Slider Joint](Joints.md#slider-joint) and [Piston Joint](Joints.md#piston-joint), each placed against a block or as a voxel of finespace. |
 | **[Engine](Engine.md)** | Power. Drawn at the Blueprint Table, built at the [Engineering Table](Engineering_Table.md). |
 | **[Transmission](Transmission.md)** | Gears and a clutch. Drawn at the Blueprint Table, built at the [Engineering Table](Engineering_Table.md). |
 | **[Clutch](Clutch.md)** | Can be a voxel of finespace that a card switches. |
@@ -50,7 +50,7 @@ Right-click any creation with a **Lift item** and the whole thing goes *into the
 
 ## Building in finespace
 
-Cut a block into [motes](Mote.md) and place them with right-click: each mote is a voxel a quarter of a block on a side, up to 64 to a block of [Finespace](Finespace.md). Mine a voxel to take it out and get its mote back. A [Fine Gauge](Fine_Gauge.md) in either hand changes how motes go in: a line, a filled box, a ramp, or mirrored across up to three planes. A block of Finespace weighs its voxels by what they are made of, and a hosted machine by its design. Bodies collide voxel by voxel, so several spinning arms fit in one block as long as their voxels never meet.
+Cut a block into [motes](Finespace.md#motes) and place them with right-click: each mote is a voxel a quarter of a block on a side, up to 64 to a block of [Finespace](Finespace.md). Mine a voxel to take it out and get its mote back. A [Fine Gauge](Finespace.md#fine-gauge) in either hand changes how motes go in: a line, a filled box, a ramp, or mirrored across up to three planes. A block of Finespace weighs its voxels by what they are made of, and a hosted machine by its design. Bodies collide voxel by voxel, so several spinning arms fit in one block as long as their voxels never meet.
 
 Shafts, cogs and bearings in finespace join full-size rotation through a [Rotation Adapter](Rotation_Adapter.md). [Pulleys](Pulleys.md#pulleys-in-finespace) in finespace join each other by belt. A [Differential](Differential.md) shares a drive shaft between two axles.
 
@@ -64,15 +64,15 @@ A joint is a block you place against a block or in finespace, with its **front**
 | --- | --- |
 | [Rotary Bearing](Rotary_Bearing.md) | Turns about its axis. Its role sets whether the shaft turns it, a card steers it, or a card sets it as a roll, pitch or yaw surface. |
 | [Ring Gear](Ring_Gear.md) | Turns about its axis, driven from the side by a cog. |
-| [Large Ring Gear](Large_Ring_Gear.md) | Turns about its axis, driven from the side by a cog with a large cog's teeth. |
-| [Ball Joint](Ball_Joint.md) | Swings inside a cone. |
-| [Locked Joint](Locked_Joint.md) | Holds two bodies as one rigid piece; can anchor to a world block. |
-| [Slider Joint](Slider_Joint.md) | Slides along its front axis against a spring: suspension. |
-| [Piston Joint](Piston_Joint.md) | Slides to a level a card sets. |
+| [Large Ring Gear](Ring_Gear.md#large-ring-gear) | Turns about its axis, driven from the side by a cog with a large cog's teeth. |
+| [Ball Joint](Joints.md#ball-joint) | Swings inside a cone. |
+| [Locked Joint](Joints.md#locked-joint) | Holds two bodies as one rigid piece; can anchor to a world block. |
+| [Slider Joint](Joints.md#slider-joint) | Slides along its front axis against a spring: suspension. |
+| [Piston Joint](Joints.md#piston-joint) | Slides to a level a card sets. |
 
-The [Ball](Ball_Joint.md), [Locked](Locked_Joint.md), [Slider](Slider_Joint.md) and [Piston](Piston_Joint.md) Joints work the same as full-size blocks and as voxels. A joint can sit on a body that another joint turned, so an arm can carry a wheel. Put the outermost body back first.
+The [Ball](Joints.md#ball-joint), [Locked](Joints.md#locked-joint), [Slider](Joints.md#slider-joint) and [Piston](Joints.md#piston-joint) Joints work the same as full-size blocks and as voxels. A joint can sit on a body that another joint turned, so an arm can carry a wheel. Put the outermost body back first.
 
-Breaking an assembled bearing, as a voxel of finespace or as a full-size block, puts its body back into the world as voxels or blocks, as a click would. The body is let go only if something blocks the put-back or it carries a body of its own. A [Joint Link](Joint_Link.md) holds a lifted body to a joint voxel without making a new body; a Lift refuses a vehicle that has a link until it is let go.
+Breaking an assembled bearing, as a voxel of finespace or as a full-size block, puts its body back into the world as voxels or blocks, as a click would. The body is let go only if something blocks the put-back or it carries a body of its own. A [Joint Link](Joints.md#joint-link) holds a lifted body to a joint voxel without making a new body; a Lift refuses a vehicle that has a link until it is let go.
 
 Full-size blocks touching an arm in finespace join it when its bearing is inside a body. Putting such an arm back lands them only at turns that put them on the grid; otherwise the message says to turn it back first.
 
@@ -80,14 +80,14 @@ A [Data Connector](Data_Connector.md) picks a single joint voxel, so a [Controll
 
 ## Floating on a magnet
 
-A [Levitation Plate](Levitation_Plate.md) in a vehicle floats above a powered [Electromagnet](Electromagnet.md).
+A [Levitation Plate](Levitation.md#levitation-plate) in a vehicle floats above a powered [Electromagnet](Electromagnet.md).
 
 ## Wheels
 
-A [Rotary Bearing](Rotary_Bearing.md) with role 0 whose turned body holds a [Tire Hub](Tire_Hub.md) is a wheel. The hub is placed on the axle, as a block or as a voxel, and a [tire](Tire.md) is fitted to it. The tire has no collision; the wheel finds the ground with a ray from the axle, and a ring of rays round the rim keeps it out of walls.
+A [Rotary Bearing](Rotary_Bearing.md) with role 0 whose turned body holds a [Tire Hub](Tire.md#tire-hub) is a wheel. The hub is placed on the axle, as a block or as a voxel, and a [tire](Tire.md) is fitted to it. The tire has no collision; the wheel finds the ground with a ray from the axle, and a ring of rays round the rim keeps it out of walls.
 
 - **Radius.** The hub's size sets the wheel's radius, from the axle to the tread.
-- **Springing.** The hub has no suspension, so the wheel is wherever it is mounted. Build a [Slider Joint](Slider_Joint.md) into the mount to make the ride smoother.
+- **Springing.** The hub has no suspension, so the wheel is wherever it is mounted. Build a [Slider Joint](Joints.md#slider-joint) into the mount to make the ride smoother.
 - **Grip.** The tire pushes the vehicle as hard as the tire's friction against the ground's allows. A wheel pushed past its grip slips.
 - **Tire wear.** A tire wears by distance rolled on the ground, and faster while it skids past its grip. A softer tire material wears faster. Grip falls with the wear, to a floor of 30% of a new tire's. Sneak and right-click the wheel's hinge to read the tire's condition, with the joint and brake pad. Use a [tire](Tire.md) on the hinge to replace the tire, which resets the wear.
 - **Brake and rolling resistance.** A card brakes the wheel through the bearing's **Brake** channel. Rolling costs speed: a soft tire and loose or sinking ground roll harder, and ice wastes none.
@@ -103,7 +103,19 @@ A ball joint at the edge of its cone, a slider bottomed out or a piston that can
 
 Any voxel with nothing on either side along one axis and neighbors in its plane belongs to a **sheet**, and a sheet is a wing. A slab 1 to 4 voxel layers thick is a wing; a thicker slab stalls later and drags more. A column over 4 voxels thick is not a wing. Moving through air, a wing pushes the vehicle sideways to its own face (lift) and slows it (drag), both stronger the faster you go and the thinner the air. Lift grows as the sheet tilts into the wind, up to a stall angle; tilt past that and lift collapses while drag climbs, so a nose pitched too high mushes and sinks. Because the force acts at the sheet, a wing behind the center of mass steadies the nose and one off to a side rolls the vehicle. Wings work in air only. The sheets of a vehicle are found again about every 2 seconds, so a wing finished mid-flight starts to work after a short wait.
 
-A sheet on a hinged part turns with it, so a rotary bearing set as a roll, pitch or yaw surface changes the lift on its own sheet. See [Control Surfaces](Control_Surfaces.md).
+A sheet on a hinged part turns with it, so a rotary bearing set as a roll, pitch or yaw surface changes the lift on its own sheet. See [Control surfaces](#control-surfaces).
+
+### Control surfaces
+
+Hinged wing sheets roll, pitch or yaw a flying vehicle. A deflected surface changes the lift on its own sheet, and the force on that sheet turns the craft.
+
+Build a wing sheet in front of a [Rotary Bearing](Rotary_Bearing.md) voxel and set the bearing's **role** before assembling: sneak-use it with an empty hand until the message names the role you want.
+
+- **Roll surface** (aileron)
+- **Pitch surface** (elevator)
+- **Yaw surface** (rudder)
+
+Then use the bearing with an empty hand to assemble the sheet as the turning part. A [Controller](Controller.md) card sets the bearing's **Angle**: link the bearing voxel to the Controller with a [Data Connector](Data_Connector.md), add a *Switch* card for it, and feed the card from the [Driver's Seat](#the-drivers-seat) keys, a sensor or any program.
 
 ## Air drag
 

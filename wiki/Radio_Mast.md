@@ -42,6 +42,6 @@ A mast boxed in on four or more sides by lead-lined chests does not hear noise a
 
 ## Tips and automation
 
-Read *Battery charge* and have the card for *Roll forward* go off below a threshold, so the robot stops in range of a [Robot Dock](Robot_Dock.md) before its battery runs flat. Read *Distance ahead* to keep it from running into a wall.
+Read *Battery charge* and have the card for *Roll forward* go off below a threshold, so the robot stops in range of a [Robot Dock](Robots.md#robot-dock) before its battery runs flat. Read *Distance ahead* to keep it from running into a wall.
 
 See [Controller](Controller.md#reading-another-controllers-variables) for how a second Controller reads the first one's variables, so several robots share state.

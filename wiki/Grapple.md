@@ -61,7 +61,7 @@ The line also lets go if it parts, if it has been out for ten seconds, or if eit
 
 A [Tether](Combat.md#tethers) holds the body on the line, and a creature held that way takes extra damage as with a barbed spear.
 
-The [Whiplash](Whiplash.md) arm throws a barbed spear on a lanyard of this kind from the wrist.
+The [Whiplash](Special_Loot.md#whiplash) arm throws a barbed spear on a lanyard of this kind from the wrist.
 
 ## What the hook bites into
 
