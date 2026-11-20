@@ -11,6 +11,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -33,8 +34,20 @@ public class LiftBlock extends BaseEntityBlock {
 
     public static final MapCodec<LiftBlock> CODEC = simpleCodec(LiftBlock::new);
 
+    /** Mirrors models/block/lift.json: the platform, four legs and the centre column (the legs and column merge in the outline). */
+    private static final net.minecraft.world.phys.shapes.VoxelShape SHAPE = net.minecraft.world.phys.shapes.Shapes.or(
+            Block.box(0, 12, 0, 16, 16, 16), Block.box(1, 0, 1, 3, 12, 3), Block.box(13, 0, 1, 15, 12, 3),
+            Block.box(1, 0, 13, 3, 12, 15), Block.box(13, 0, 13, 15, 12, 15), Block.box(6, 0, 6, 10, 12, 10));
+
     public LiftBlock(Properties properties) {
         super(properties);
+    }
+
+    @Override
+    protected net.minecraft.world.phys.shapes.VoxelShape getShape(BlockState state,
+            net.minecraft.world.level.BlockGetter level, BlockPos pos,
+            net.minecraft.world.phys.shapes.CollisionContext ctx) {
+        return SHAPE;
     }
 
     @Override
