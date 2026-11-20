@@ -194,7 +194,7 @@ public final class BowCraft {
         if (dist >= SkillTuning.OBSERVE_RANGE)
             SkillEarning.award(p, SkillEarning.OBSERVATION, target.getStringUUID(), SkillTuning.GUN_HIT);
         if (dist >= SkillTuning.OBSERVE_RANGE && Skills.unlocked(p, "quarry_mark") && !target.isDeadOrDying()) {
-            Billhook.open(target, Math.min(WOUND_MAX_SECONDS, work * WOUND_SECONDS_PER_WORK), WOUND_DAMAGE);
+            Billhook.open(target, p, Math.min(WOUND_MAX_SECONDS, work * WOUND_SECONDS_PER_WORK), WOUND_DAMAGE);
             TRAILS.putIfAbsent(target.getUUID(), new Trail(p.getUUID(), new java.util.ArrayDeque<>(), new java.util.ArrayDeque<>()));
         }
         if (dist <= CLOSE && !target.isDeadOrDying()) {

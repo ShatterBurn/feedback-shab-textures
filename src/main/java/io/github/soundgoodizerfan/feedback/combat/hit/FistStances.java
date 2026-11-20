@@ -114,7 +114,7 @@ public final class FistStances {
                         io.github.soundgoodizerfan.feedback.combat.cast.Vials.draw(p, io.github.soundgoodizerfan.feedback.potion.PotionTuning.SPRAY_DOSE_MB / 2));
             }
             else
-                Billhook.open(target, seconds, bleed);
+                Billhook.open(target, p, seconds, bleed);
             // Tear straps: the claws rake the target's armour, and wear on their own points.
             if (Skills.unlocked(p, "tear_straps")) {
                 Disorder.wearArmour(target, ModularTuning.IRON_CLASS_HARDNESS * FistTuning.TEAR_HARDNESS_SHARE);
