@@ -4,8 +4,6 @@ package io.github.soundgoodizerfan.feedback.worldgen;
 
 import java.util.Map;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.SectionPos;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.chunk.LevelChunk;
@@ -29,19 +27,25 @@ public final class VanillaVeinStrip {
     public static void onChunkLoad(ChunkEvent.Load event) {
         if (!event.isNewChunk() || !(event.getChunk() instanceof LevelChunk chunk))
             return;
-        var at = new BlockPos.MutableBlockPos();
         for (int i = 0; i < chunk.getSectionsCount(); i++) {
             var section = chunk.getSection(i);
             if (section.hasOnlyAir() || !section.maybeHas(state -> STRIP.containsKey(state.getBlock())))
                 continue;
-            int y0 = SectionPos.sectionToBlockCoord(chunk.getSectionYFromSectionIndex(i));
+            boolean changed = false;
             for (int x = 0; x < 16; x++)
                 for (int y = 0; y < 16; y++)
                     for (int z = 0; z < 16; z++) {
                         Block filler = STRIP.get(section.getBlockState(x, y, z).getBlock());
-                        if (filler != null)
-                            chunk.setBlockState(at.set(chunk.getPos().getMinBlockX() + x, y0 + y, chunk.getPos().getMinBlockZ() + z), filler.defaultBlockState(), false);
+                        if (filler != null) {
+                            // Straight into the section: chunk.setBlockState here (inside the load event, before the chunk is
+                            // registered) pokes the light engine and heightmaps, and can stall the chunk promotion. Ore and
+                            // filler are both opaque full blocks, so nothing they feed needs an update.
+                            section.setBlockState(x, y, z, filler.defaultBlockState(), false);
+                            changed = true;
+                        }
                     }
+            if (changed)
+                chunk.setUnsaved(true);
         }
     }
 }
