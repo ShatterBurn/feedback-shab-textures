@@ -47,17 +47,8 @@ public class FItems {
             () -> new io.github.soundgoodizerfan.feedback.machine.bearing.SliderJointItem(FBlocks.SLIDER_JOINT.get(), new net.minecraft.world.item.Item.Properties()));
     public static final DeferredItem<BlockItem> PISTON_JOINT = ITEMS.registerSimpleBlockItem(FBlocks.PISTON_JOINT);
     public static final DeferredItem<BlockItem> CAMPFIRE = ITEMS.registerSimpleBlockItem(FBlocks.CAMPFIRE);
-    public static final DeferredItem<BlockItem> NOTE_BLOCK = ITEMS.registerSimpleBlockItem(FBlocks.NOTE_BLOCK);
-    /** One noisemaker per instrument a note block can play. */
-    public static final java.util.Map<net.minecraft.world.level.block.state.properties.NoteBlockInstrument, DeferredItem<io.github.soundgoodizerfan.feedback.machine.note.NoisemakerItem>> NOISEMAKERS =
-            new java.util.EnumMap<>(net.minecraft.world.level.block.state.properties.NoteBlockInstrument.class);
-
-    static {
-        for (var instrument : io.github.soundgoodizerfan.feedback.machine.note.NoisemakerItem.INSTRUMENTS)
-            NOISEMAKERS.put(instrument, ITEMS.register("noisemaker_" + instrument.getSerializedName(),
-                    () -> new io.github.soundgoodizerfan.feedback.machine.note.NoisemakerItem(instrument, new Item.Properties().stacksTo(16))));
-    }
-
+    /** A fitting a dispenser takes: its released spring uses the item in the first slot on the block in front, instead of throwing it. */
+    public static final DeferredItem<Item> DISPENSER_ACTUATOR = ITEMS.registerSimpleItem("dispenser_actuator");
     public static final DeferredItem<BlockItem> DROPPER = ITEMS.registerSimpleBlockItem(FBlocks.DROPPER);
     public static final DeferredItem<BlockItem> DISPENSER = ITEMS.registerSimpleBlockItem(FBlocks.DISPENSER);
     public static final DeferredItem<BlockItem> HOPPER = ITEMS.registerSimpleBlockItem(FBlocks.HOPPER);

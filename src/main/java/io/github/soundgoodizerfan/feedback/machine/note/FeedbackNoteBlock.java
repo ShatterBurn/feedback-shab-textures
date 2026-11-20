@@ -2,15 +2,19 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.machine.note;
 
+import org.jetbrains.annotations.Nullable;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -20,56 +24,37 @@ import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.phys.BlockHitResult;
 
 /**
- * The note block, built from a noisemaker. It makes no sound of its own: the sound comes from the {@link NoisemakerItem} fitted into it (one per
- * instrument, each made of a different material), and a block with none fitted is silent. Pitch is the note, 0 to 24. Use with a noisemaker
- * fits it (a fitted one is returned); sneak with an empty hand takes it out; an empty hand otherwise steps the pitch and plays it; a rising signal
- * or a punch plays it. Vanilla takes the instrument from the block below; here it is the part. Vanilla's block is swapped for it, keeping its pitch.
+ * The note block, built from parts ({@code modular_type/note_block}): a body cut to a pitch and one or two noisemakers, each an instrument made of
+ * its own material, which sound together when it is struck or signalled. It makes no sound of its own: a block with no noisemaker is silent.
+ * Pitch is the note, 0 to 24, set by the body and stepped by hand (an empty hand steps it and plays it); a rising signal or a punch plays it.
+ * Vanilla takes the instrument from the block below; here it is the part. Vanilla's block is swapped for it, keeping its pitch and instrument.
  */
-public class FeedbackNoteBlock extends Block {
+public class FeedbackNoteBlock extends Block implements EntityBlock {
 
     public static final IntegerProperty NOTE = BlockStateProperties.NOTE;
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
-    /** Which instrument the fitted noisemaker plays; meaningful only while {@link #FITTED}. */
-    public static final net.minecraft.world.level.block.state.properties.EnumProperty<NoteBlockInstrument> INSTRUMENT = BlockStateProperties.NOTEBLOCK_INSTRUMENT;
-    public static final BooleanProperty FITTED = BooleanProperty.create("fitted");
 
     public FeedbackNoteBlock(Properties properties) {
         super(properties);
-        registerDefaultState(stateDefinition.any().setValue(NOTE, 0).setValue(POWERED, false).setValue(INSTRUMENT, NoteBlockInstrument.HARP).setValue(FITTED, false));
+        registerDefaultState(stateDefinition.any().setValue(NOTE, 0).setValue(POWERED, false));
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(NOTE, POWERED, INSTRUMENT, FITTED);
+        builder.add(NOTE, POWERED);
     }
 
+    /** A block placed from its item starts on the pitch its body was cut to. */
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, net.minecraft.world.InteractionHand hand, BlockHitResult hit) {
-        if (stack.getItem() instanceof NoisemakerItem maker) {
-            if (!level.isClientSide) {
-                if (state.getValue(FITTED))
-                    popOut(level, pos, state);
-                level.setBlock(pos, state.setValue(INSTRUMENT, maker.instrument()).setValue(FITTED, true), Block.UPDATE_ALL);
-                if (!player.getAbilities().instabuild)
-                    stack.shrink(1);
-                play(level, pos, level.getBlockState(pos));
-            }
-            return ItemInteractionResult.sidedSuccess(level.isClientSide);
-        }
-        return super.useItemOn(stack, state, level, pos, player, hand, hit);
+    public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
+        if (!level.isClientSide && level.getBlockEntity(pos) instanceof NoteBlockEntity note)
+            level.setBlock(pos, state.setValue(NOTE, Math.max(0, Math.min(24, note.pitch()))), Block.UPDATE_ALL);
     }
 
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
         if (level.isClientSide)
             return InteractionResult.SUCCESS;
-        if (player.isShiftKeyDown()) {
-            if (!state.getValue(FITTED))
-                return InteractionResult.PASS;
-            popOut(level, pos, state);
-            level.setBlock(pos, state.setValue(FITTED, false), Block.UPDATE_ALL);
-            return InteractionResult.CONSUME;
-        }
         BlockState next = state.cycle(NOTE);
         level.setBlock(pos, next, Block.UPDATE_ALL);
         play(level, pos, next);
@@ -92,18 +77,28 @@ public class FeedbackNoteBlock extends Block {
         }
     }
 
-    private static void popOut(Level level, BlockPos pos, BlockState state) {
-        Block.popResource(level, pos, new ItemStack(NoisemakerItem.of(state.getValue(INSTRUMENT))));
+    /** One note from every fitted noisemaker: nothing at all if none is fitted. */
+    public static void play(Level level, BlockPos pos, BlockState state) {
+        if (!level.getBlockState(pos.above()).isAir() || !(level.getBlockEntity(pos) instanceof NoteBlockEntity note))
+            return;
+        int n = state.getValue(NOTE);
+        boolean sounded = false;
+        for (int i = 0; i < NoteTuning.VOICES; i++) {
+            NoteBlockInstrument instrument = note.instrument(i);
+            if (instrument == null)
+                continue;
+            float pitch = (float) Math.pow(2.0, (n - 12) / 12.0 + note.shift(i));
+            level.playSeededSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, instrument.getSoundEvent(), SoundSource.RECORDS,
+                    note.volume(i), pitch, level.random.nextLong());
+            sounded = true;
+        }
+        if (sounded && level instanceof net.minecraft.server.level.ServerLevel server)
+            server.sendParticles(ParticleTypes.NOTE, pos.getX() + 0.5, pos.getY() + 1.2, pos.getZ() + 0.5, 0, n / 24.0, 0, 0, 1);
     }
 
-    /** One note of the fitted noisemaker: nothing at all if none is fitted. */
-    public static void play(Level level, BlockPos pos, BlockState state) {
-        if (!state.getValue(FITTED) || !level.getBlockState(pos.above()).isAir())
-            return;
-        int note = state.getValue(NOTE);
-        float pitch = (float) Math.pow(2.0, (note - 12) / 12.0);
-        level.playSeededSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, state.getValue(INSTRUMENT).getSoundEvent(), SoundSource.RECORDS, 3.0f, pitch, level.random.nextLong());
-        if (level instanceof net.minecraft.server.level.ServerLevel server)
-            server.sendParticles(ParticleTypes.NOTE, pos.getX() + 0.5, pos.getY() + 1.2, pos.getZ() + 0.5, 0, note / 24.0, 0, 0, 1);
+    @Nullable
+    @Override
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new NoteBlockEntity(pos, state);
     }
 }

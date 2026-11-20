@@ -39,6 +39,10 @@ public final class BlockFigures {
                 case "heat_exchanger/F" -> material.thermal().conductivity().isPresent();
                 case "water_wheel/R", "pump/V", "compressor/I", "burner/F", "thruster/J", "hand_crank/G", "electromagnet/Y", "boiler/B", "flywheel/B", "flywheel/G", "lamp/B" -> material.density().muPerMb() > 0;
                 case "jet/B", "jet/T", "jet/A" -> material.thermal().serviceTemperature().isPresent() && material.density().muPerMb() > 0;
+                case "note_block/N", "note_block/O" -> material.density().muPerMb() > 0;
+                case "piston/R" -> material.kind().orElse(null) == Material.Kind.METAL && material.density().muPerMb() > 0;
+                case "piston/L" -> true;
+                case "piston/F" -> material.traits().contains(Material.Trait.STICKY);
                 case "thermal_store/I" -> true;
                 case "thermal_store/F" -> material.density().muPerMb() > 0;
                 case "leyden_jar/F" -> material.ampacity().isPresent();
@@ -61,6 +65,8 @@ public final class BlockFigures {
             case "heating_coil" -> material.kind().orElse(null) == Material.Kind.METAL && material.density().muPerMb() > 0 && material.thermal().serviceTemperature().isPresent()
                     && material.ampacity().isPresent();
             case "tray" -> material.kind().orElse(null) == Material.Kind.METAL && material.density().muPerMb() > 0;
+            case "note_block" -> material.density().muPerMb() > 0;
+            case "piston" -> material.kind().orElse(null) == Material.Kind.METAL && material.density().muPerMb() > 0 && material.mechanical().yieldStrength().isPresent();
             case "gas_centrifuge" -> material.kind().orElse(null) == Material.Kind.METAL && material.density().muPerMb() > 0 && material.mechanical().yieldStrength().isPresent();
             case "electromagnet" -> material.kind().orElse(null) == Material.Kind.METAL && material.density().muPerMb() > 0;
             case "thermal_store" -> material.thermal().conductivity().isPresent() && material.density().muPerMb() > 0;
@@ -257,6 +263,46 @@ float leak = ModularBake.param(type, part, "leak", 1f) * ModularTuning.JAR_LEAK 
                 out.putFloat("MbPerRpm", 0.5f * d * d * flow * volute);
                 out.putFloat("Load", 8f * d * d * flow * volute);
                 out.putFloat("Lift", 6f / ModularBake.param(type, part, "lift", 1f));
+            }
+            // Note block: the body is cut to a pitch; each noisemaker is an instrument (its shape) whose material sets how loud it rings (harder is louder)
+            // and which way it is pitched (a heavy one plays lower). The per-voice figures start with an underscore, so the item's tooltip lists the count only.
+            case "note_block" -> {
+                out.putFloat("Pitch", role.axis(part, "pitch"));
+                int voices = 0;
+                String[] letters = {"N", "O"}, inst = {"_i0", "_i1"}, loud = {"_v0", "_v1"}, shift = {"_s0", "_s1"};
+                for (int i = 0; i < letters.length; i++) {
+                    Part voice = design.part(letters[i]);
+                    Material vm = voice == null ? null : materials.get(voice.material());
+                    if (vm == null) {
+                        out.putFloat(inst[i], -1f);
+                        continue;
+                    }
+                    voices++;
+                    out.putFloat(inst[i], ModularBake.param(type, voice, "instrument", 0f));
+                    out.putFloat(loud[i], Math.max(io.github.soundgoodizerfan.feedback.machine.note.NoteTuning.MIN_VOLUME, Math.min(io.github.soundgoodizerfan.feedback.machine.note.NoteTuning.MAX_VOLUME,
+                            io.github.soundgoodizerfan.feedback.machine.note.NoteTuning.LOUD_BASE + io.github.soundgoodizerfan.feedback.machine.note.NoteTuning.LOUD_PER_ST * vm.hardness().value())));
+                    float octaves = -io.github.soundgoodizerfan.feedback.machine.note.NoteTuning.SHIFT_OCTAVES_PER_DOUBLING
+                            * (float) (Math.log((double) vm.density().muPerMb() / io.github.soundgoodizerfan.feedback.machine.note.NoteTuning.REF_DENSITY) / Math.log(2));
+                    out.putFloat(shift[i], Math.max(-io.github.soundgoodizerfan.feedback.machine.note.NoteTuning.MAX_SHIFT_OCTAVES,
+                            Math.min(io.github.soundgoodizerfan.feedback.machine.note.NoteTuning.MAX_SHIFT_OCTAVES, octaves)));
+                }
+                if (voices == 0)
+                    return Optional.empty();
+                out.putFloat("Voices", voices);
+            }
+            // Cylinder: the bore sets the area the gas pushes on; the shell's yield over its wall against the bore sets the pressure it bursts at; the rod's
+            // length is the reach; the seal's hardness is how much gas slips by (a soft leather seals better than a hard plastic); a sticky face pulls back.
+            case "piston" -> {
+                float bore = role.axis(part, "bore"), wall = role.axis(part, "wall");
+                float r = bore / 20f;
+                out.putFloat("Area", (float) Math.PI * r * r);
+                float danger = io.github.soundgoodizerfan.feedback.machine.piston.PistonTuning.CYLINDER_PU_PER_STRESS * m.mechanical().yieldStrength().get().value() * (wall / 10f) / r;
+                out.putFloat("Danger", danger);
+                Part rod = design.part("R");
+                out.putFloat("Reach", rod == null ? 1f : type.roles().get("R").axis(rod, "reach"));
+                Material seal = addon(design, materials, "L");
+                out.putFloat("Slip", io.github.soundgoodizerfan.feedback.machine.piston.PistonTuning.LEAK_BASE * (seal == null ? io.github.soundgoodizerfan.feedback.machine.piston.PistonTuning.LEAK_REF_HARDNESS : seal.hardness().value()) / io.github.soundgoodizerfan.feedback.machine.piston.PistonTuning.LEAK_REF_HARDNESS);
+                out.putFloat("Sticky", design.part("F") == null ? 0f : 1f);
             }
             // Rotor: a bigger rotor moves more and takes more; the variant trades flow against heat (staging cools the charge); an intercooler (an addon) takes heat out between stages.
             case "compressor" -> {

@@ -673,6 +673,7 @@
     "feedback:phantom_ripstop_block",
     "feedback:phosphor_screen",
     "feedback:photocell",
+    "feedback:piston",
     "feedback:piston_joint",
     "feedback:pivot_mast",
     "feedback:platinum_block",

@@ -47,6 +47,8 @@ public final class VanillaVesselSwap {
             Map.entry(Blocks.DROPPER, FBlocks.DROPPER.get()),
             Map.entry(Blocks.NOTE_BLOCK, FBlocks.NOTE_BLOCK.get()),
             Map.entry(Blocks.DISPENSER, FBlocks.DISPENSER.get()),
+            Map.entry(Blocks.PISTON, FBlocks.MODULAR_PISTON.get()),
+            Map.entry(Blocks.STICKY_PISTON, FBlocks.MODULAR_PISTON.get()),
             Map.entry(Blocks.OBSERVER, io.github.soundgoodizerfan.feedback.registry.FAutomation.SENSORS.get(
                     io.github.soundgoodizerfan.feedback.machine.sensor.SensorKind.OBSERVER).get())));
 
@@ -126,6 +128,14 @@ public final class VanillaVesselSwap {
                 swapBed(p.level(), p.pos(), state, vanilla, ours);
                 continue;
             }
+            if (ours instanceof io.github.soundgoodizerfan.feedback.machine.note.FeedbackNoteBlock) {
+                swapNote(p.level(), p.pos(), state);
+                continue;
+            }
+            if (ours instanceof io.github.soundgoodizerfan.feedback.machine.piston.ModularPistonBlock) {
+                swapPiston(p.level(), p.pos(), state);
+                continue;
+            }
             var swapped = ours.defaultBlockState();
             if (swapped.hasProperty(ThermalVesselBlock.FACING) && state.hasProperty(BlockStateProperties.HORIZONTAL_FACING))
                 swapped = swapped.setValue(ThermalVesselBlock.FACING, state.getValue(BlockStateProperties.HORIZONTAL_FACING));
@@ -134,6 +144,32 @@ public final class VanillaVesselSwap {
                 swapped = copy(swapped, state, prop);
             p.level().setBlock(p.pos(), swapped, Block.UPDATE_ALL);
         }
+    }
+
+    /** A vanilla note block keeps its note and plays its instrument through one noisemaker; its figures are the fixed block's (no design). */
+    private static void swapNote(ServerLevel level, BlockPos pos, net.minecraft.world.level.block.state.BlockState state) {
+        level.setBlock(pos, FBlocks.NOTE_BLOCK.get().defaultBlockState()
+                .setValue(io.github.soundgoodizerfan.feedback.machine.note.FeedbackNoteBlock.NOTE, state.getValue(BlockStateProperties.NOTE))
+                .setValue(io.github.soundgoodizerfan.feedback.machine.note.FeedbackNoteBlock.POWERED, state.getValue(BlockStateProperties.POWERED)), Block.UPDATE_ALL);
+        if (level.getBlockEntity(pos) instanceof io.github.soundgoodizerfan.feedback.machine.note.NoteBlockEntity note) {
+            var instrument = state.getValue(BlockStateProperties.NOTEBLOCK_INSTRUMENT);
+            note.figures().put("_i0", instrument.isTunable() ? instrument.ordinal() : net.minecraft.world.level.block.state.properties.NoteBlockInstrument.HARP.ordinal());
+        }
+    }
+
+    /**
+     * A vanilla piston becomes the modular one retracted: an extended one loses its vanilla head (the blocks it pushed stay), and a sticky one
+     * gets a sticky face. Its figures are the fixed block's, an iron cylinder with a leather seal and one block of reach.
+     */
+    private static void swapPiston(ServerLevel level, BlockPos pos, net.minecraft.world.level.block.state.BlockState state) {
+        var facing = state.getValue(net.minecraft.world.level.block.piston.PistonBaseBlock.FACING);
+        if (state.getValue(net.minecraft.world.level.block.piston.PistonBaseBlock.EXTENDED)
+                && level.getBlockState(pos.relative(facing)).getBlock() instanceof net.minecraft.world.level.block.piston.PistonHeadBlock)
+            level.setBlock(pos.relative(facing), Blocks.AIR.defaultBlockState(), Block.UPDATE_CLIENTS);
+        level.setBlock(pos, FBlocks.MODULAR_PISTON.get().defaultBlockState()
+                .setValue(io.github.soundgoodizerfan.feedback.machine.piston.ModularPistonBlock.FACING, facing), Block.UPDATE_ALL);
+        if (state.is(Blocks.STICKY_PISTON) && level.getBlockEntity(pos) instanceof io.github.soundgoodizerfan.feedback.machine.piston.ModularPistonBlockEntity piston)
+            piston.figures().put("Sticky", 1f);
     }
 
     /**

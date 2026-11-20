@@ -36,3 +36,17 @@ Redstone only carries a **signal**; it cannot push an item out. A signal **relea
 A dispenser is a dropper with a fitting that uses the item: arrows are fired and buckets emptied, as in vanilla.
 
 Vanilla droppers and dispensers found in the world turn into these.
+
+### Dispenser Actuator
+
+A **Dispenser Actuator** fits into a spring dispenser: use it on the dispenser. When the spring releases, the dispenser then uses the first item in it on the block in front, or on the block beyond an empty cell, the way a hand would, instead of throwing it. It applies bone meal, strikes flint and steel, empties or fills a bucket, shears and places a block. The actuator comes back as an item when the dispenser breaks.
+
+Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, 2 screws ([Fasteners](Fasteners.md)) and Mechanical Treatise I: Engines, Flywheels and Dynamotors ([Treatise](Treatise.md)):
+
+```
+P R P
+  K
+P P P
+```
+
+P is a Wrought Iron Plate, R is a Wrought Iron Rod and K is a [Coil Spring](Lathe.md#what-it-makes) of any metal.

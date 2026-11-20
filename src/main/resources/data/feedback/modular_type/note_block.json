@@ -1,0 +1,292 @@
+{
+  "family": "block",
+  "measures": {
+    "show": [
+      "block.Pitch",
+      "block.Voices"
+    ]
+  },
+  "required": [
+    "S",
+    "N"
+  ],
+  "slot": "mainhand",
+  "wear_litres": 0.3,
+  "wear_role": "S",
+  "primary": "S",
+  "blueprint": true,
+  "roles": {
+    "S": {
+      "name": "note_body",
+      "class": "housing",
+      "forms": [
+        "note_body"
+      ],
+      "litres": 0.3,
+      "layer": 0,
+      "axes": {
+        "pitch": {
+          "min": 0,
+          "max": 24,
+          "unit": "semitones",
+          "default": 12,
+          "step": 1
+        }
+      },
+      "part": {
+        "item": "feedback:note_body",
+        "cells": 4,
+        "stock": [
+          "@board",
+          "plate"
+        ],
+        "base": "body_plain",
+        "variants": [
+          {
+            "name": "body_plain",
+            "params": {}
+          }
+        ]
+      }
+    },
+    "N": {
+      "name": "noisemaker",
+      "class": "working_face",
+      "forms": [
+        "noisemaker"
+      ],
+      "litres": 0.1,
+      "layer": 1,
+      "part": {
+        "item": "feedback:noisemaker",
+        "cells": 1,
+        "stock": [
+          "plate"
+        ],
+        "base": "voice_harp",
+        "variants": [
+          {
+            "name": "voice_harp",
+            "params": {
+              "instrument": 0.0
+            }
+          },
+          {
+            "name": "voice_basedrum",
+            "params": {
+              "instrument": 1.0
+            }
+          },
+          {
+            "name": "voice_snare",
+            "params": {
+              "instrument": 2.0
+            }
+          },
+          {
+            "name": "voice_hat",
+            "params": {
+              "instrument": 3.0
+            }
+          },
+          {
+            "name": "voice_bass",
+            "params": {
+              "instrument": 4.0
+            }
+          },
+          {
+            "name": "voice_flute",
+            "params": {
+              "instrument": 5.0
+            }
+          },
+          {
+            "name": "voice_bell",
+            "params": {
+              "instrument": 6.0
+            }
+          },
+          {
+            "name": "voice_guitar",
+            "params": {
+              "instrument": 7.0
+            }
+          },
+          {
+            "name": "voice_chime",
+            "params": {
+              "instrument": 8.0
+            }
+          },
+          {
+            "name": "voice_xylophone",
+            "params": {
+              "instrument": 9.0
+            }
+          },
+          {
+            "name": "voice_iron_xylophone",
+            "params": {
+              "instrument": 10.0
+            }
+          },
+          {
+            "name": "voice_cow_bell",
+            "params": {
+              "instrument": 11.0
+            }
+          },
+          {
+            "name": "voice_didgeridoo",
+            "params": {
+              "instrument": 12.0
+            }
+          },
+          {
+            "name": "voice_bit",
+            "params": {
+              "instrument": 13.0
+            }
+          },
+          {
+            "name": "voice_banjo",
+            "params": {
+              "instrument": 14.0
+            }
+          },
+          {
+            "name": "voice_pling",
+            "params": {
+              "instrument": 15.0
+            }
+          }
+        ]
+      }
+    },
+    "O": {
+      "name": "second_noisemaker",
+      "class": "working_face",
+      "forms": [
+        "second_noisemaker"
+      ],
+      "litres": 0.1,
+      "layer": 2,
+      "part": {
+        "item": "feedback:second_noisemaker",
+        "cells": 1,
+        "stock": [
+          "plate"
+        ],
+        "base": "voice_harp",
+        "variants": [
+          {
+            "name": "voice_harp",
+            "params": {
+              "instrument": 0.0
+            }
+          },
+          {
+            "name": "voice_basedrum",
+            "params": {
+              "instrument": 1.0
+            }
+          },
+          {
+            "name": "voice_snare",
+            "params": {
+              "instrument": 2.0
+            }
+          },
+          {
+            "name": "voice_hat",
+            "params": {
+              "instrument": 3.0
+            }
+          },
+          {
+            "name": "voice_bass",
+            "params": {
+              "instrument": 4.0
+            }
+          },
+          {
+            "name": "voice_flute",
+            "params": {
+              "instrument": 5.0
+            }
+          },
+          {
+            "name": "voice_bell",
+            "params": {
+              "instrument": 6.0
+            }
+          },
+          {
+            "name": "voice_guitar",
+            "params": {
+              "instrument": 7.0
+            }
+          },
+          {
+            "name": "voice_chime",
+            "params": {
+              "instrument": 8.0
+            }
+          },
+          {
+            "name": "voice_xylophone",
+            "params": {
+              "instrument": 9.0
+            }
+          },
+          {
+            "name": "voice_iron_xylophone",
+            "params": {
+              "instrument": 10.0
+            }
+          },
+          {
+            "name": "voice_cow_bell",
+            "params": {
+              "instrument": 11.0
+            }
+          },
+          {
+            "name": "voice_didgeridoo",
+            "params": {
+              "instrument": 12.0
+            }
+          },
+          {
+            "name": "voice_bit",
+            "params": {
+              "instrument": 13.0
+            }
+          },
+          {
+            "name": "voice_banjo",
+            "params": {
+              "instrument": 14.0
+            }
+          },
+          {
+            "name": "voice_pling",
+            "params": {
+              "instrument": 15.0
+            }
+          }
+        ]
+      }
+    }
+  },
+  "patterns": [
+    [
+      "SN"
+    ]
+  ],
+  "defaults": {
+    "S": "feedback:oak",
+    "N": "feedback:gold"
+  }
+}

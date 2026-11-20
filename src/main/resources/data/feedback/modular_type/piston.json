@@ -1,0 +1,139 @@
+{
+  "family": "block",
+  "measures": {
+    "show": [
+      "block.Area",
+      "block.Reach",
+      "block.Danger",
+      "block.Slip",
+      "block.Sticky"
+    ],
+    "addons": {
+      "F": [
+        "block.Sticky"
+      ]
+    }
+  },
+  "required": [
+    "S",
+    "R",
+    "L"
+  ],
+  "slot": "mainhand",
+  "wear_litres": 0.6,
+  "wear_role": "S",
+  "primary": "S",
+  "blueprint": true,
+  "roles": {
+    "S": {
+      "name": "piston_cylinder",
+      "class": "housing",
+      "forms": [
+        "piston_cylinder"
+      ],
+      "litres": 0.5,
+      "layer": 0,
+      "axes": {
+        "bore": {
+          "min": 20,
+          "max": 80,
+          "unit": "mm",
+          "default": 40,
+          "step": 5,
+          "scales": true
+        },
+        "wall": {
+          "min": 2,
+          "max": 10,
+          "unit": "mm",
+          "default": 4,
+          "step": 1
+        }
+      },
+      "part": {
+        "item": "feedback:piston_cylinder",
+        "cells": 6,
+        "stock": [
+          "plate"
+        ],
+        "base": "cylinder_plain",
+        "variants": [
+          {
+            "name": "cylinder_plain",
+            "params": {}
+          }
+        ]
+      }
+    },
+    "R": {
+      "name": "piston_rod",
+      "class": "mount",
+      "forms": [
+        "piston_rod"
+      ],
+      "litres": 0.2,
+      "layer": 1,
+      "axes": {
+        "reach": {
+          "min": 1,
+          "max": 3,
+          "unit": "blocks",
+          "default": 1,
+          "step": 1,
+          "scales": true
+        }
+      },
+      "part": {
+        "item": "feedback:piston_rod",
+        "cells": 2,
+        "stock": [
+          "rod"
+        ],
+        "base": "rod_plain",
+        "variants": [
+          {
+            "name": "rod_plain",
+            "params": {}
+          }
+        ]
+      }
+    },
+    "L": {
+      "name": "piston_seal",
+      "class": "housing",
+      "forms": [
+        "@skin",
+        "@sheet"
+      ],
+      "traits": [
+        "cushioning"
+      ],
+      "litres": 0.02,
+      "layer": 2,
+      "bulk": 1
+    },
+    "F": {
+      "name": "sticky_face",
+      "class": "working_face",
+      "forms": [
+        "ball"
+      ],
+      "traits": [
+        "sticky"
+      ],
+      "litres": 0.02,
+      "layer": 3,
+      "bulk": 1
+    }
+  },
+  "patterns": [
+    [
+      "SRL"
+    ]
+  ],
+  "defaults": {
+    "S": "feedback:iron",
+    "R": "feedback:iron",
+    "L": "feedback:leather"
+  }
+}

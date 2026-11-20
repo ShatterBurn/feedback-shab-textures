@@ -92,6 +92,8 @@
     "minecraft:brown_bed",
     "minecraft:green_bed",
     "minecraft:red_bed",
-    "minecraft:black_bed"
+    "minecraft:black_bed",
+    "minecraft:piston",
+    "minecraft:sticky_piston"
   ]
 }

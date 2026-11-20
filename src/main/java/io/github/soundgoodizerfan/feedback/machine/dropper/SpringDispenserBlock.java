@@ -12,17 +12,19 @@ import net.minecraft.world.level.block.DispenserBlock;
 public class SpringDispenserBlock extends DispenserBlock {
 
     public static final net.minecraft.world.level.block.state.properties.BooleanProperty COCKED = SpringFeed.COCKED;
+    /** A dispenser actuator is fitted: the released spring uses the first item on the block in front instead of throwing it. */
+    public static final net.minecraft.world.level.block.state.properties.BooleanProperty ACTUATED = net.minecraft.world.level.block.state.properties.BooleanProperty.create("actuated");
 
     public SpringDispenserBlock(Properties properties) {
         super(properties);
-        registerDefaultState(defaultBlockState().setValue(COCKED, false));
+        registerDefaultState(defaultBlockState().setValue(COCKED, false).setValue(ACTUATED, false));
     }
 
     @Override
     protected void createBlockStateDefinition(net.minecraft.world.level.block.state.StateDefinition.Builder<net.minecraft.world.level.block.Block,
             net.minecraft.world.level.block.state.BlockState> builder) {
         super.createBlockStateDefinition(builder);
-        builder.add(COCKED);
+        builder.add(COCKED, ACTUATED);
     }
 
     /** Releases only a cocked spring; the spring is then spent. */
@@ -33,8 +35,36 @@ public class SpringDispenserBlock extends DispenserBlock {
             level.levelEvent(1001, pos, 0); // the dry click of a dispenser with nothing to push
             return;
         }
-        super.dispenseFrom(level, state, pos);
+        if (state.getValue(ACTUATED))
+            Actuation.use(level, pos, state);
+        else
+            super.dispenseFrom(level, state, pos);
         SpringFeed.release(level, pos);
+    }
+
+    /** An actuator in hand is fitted once; the fitting comes back out as an item when the dispenser is broken. */
+    @Override
+    protected net.minecraft.world.ItemInteractionResult useItemOn(net.minecraft.world.item.ItemStack stack, net.minecraft.world.level.block.state.BlockState state,
+            net.minecraft.world.level.Level level, net.minecraft.core.BlockPos pos, net.minecraft.world.entity.player.Player player,
+            net.minecraft.world.InteractionHand hand, net.minecraft.world.phys.BlockHitResult hit) {
+        if (stack.is(io.github.soundgoodizerfan.feedback.registry.FItems.DISPENSER_ACTUATOR.get()) && !state.getValue(ACTUATED)) {
+            if (!level.isClientSide) {
+                level.setBlock(pos, state.setValue(ACTUATED, true), net.minecraft.world.level.block.Block.UPDATE_ALL);
+                level.playSound(null, pos, net.minecraft.sounds.SoundEvents.IRON_TRAPDOOR_CLOSE, net.minecraft.sounds.SoundSource.BLOCKS, 0.8f, 1.2f);
+                if (!player.getAbilities().instabuild)
+                    stack.shrink(1);
+            }
+            return net.minecraft.world.ItemInteractionResult.sidedSuccess(level.isClientSide);
+        }
+        return super.useItemOn(stack, state, level, pos, player, hand, hit);
+    }
+
+    @Override
+    protected void onRemove(net.minecraft.world.level.block.state.BlockState state, net.minecraft.world.level.Level level, net.minecraft.core.BlockPos pos,
+                            net.minecraft.world.level.block.state.BlockState newState, boolean moved) {
+        if (!state.is(newState.getBlock()) && state.getValue(ACTUATED))
+            net.minecraft.world.level.block.Block.popResource(level, pos, new net.minecraft.world.item.ItemStack(io.github.soundgoodizerfan.feedback.registry.FItems.DISPENSER_ACTUATOR.get()));
+        super.onRemove(state, level, pos, newState, moved);
     }
 
     @Override

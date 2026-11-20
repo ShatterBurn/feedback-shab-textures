@@ -296,10 +296,11 @@ public class FeedbackJeiPlugin implements IModPlugin {
                 registration.addIngredientInfo(form.item().get(), Component.translatable("feedback.jei.info.fastener"));
         }
         registration.addIngredientInfo(FItems.HOPPER.get(), Component.translatable("feedback.jei.info.hopper"));
-        registration.addIngredientInfo(java.util.List.of(new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.PISTON), new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.STICKY_PISTON)), mezz.jei.api.constants.VanillaTypes.ITEM_STACK, Component.translatable("feedback.jei.info.piston"));
-        registration.addIngredientInfo(FItems.NOTE_BLOCK.get(), Component.translatable("feedback.jei.info.note_block"));
+        registration.addIngredientInfo(FModular.PISTON.get(), Component.translatable("feedback.jei.info.piston_block"));
+        registration.addIngredientInfo(FModular.NOTE_BLOCK.get(), Component.translatable("feedback.jei.info.note_block"));
         registration.addIngredientInfo(FItems.DROPPER.get(), Component.translatable("feedback.jei.info.dropper"));
         registration.addIngredientInfo(FItems.DISPENSER.get(), Component.translatable("feedback.jei.info.dispenser"));
+        registration.addIngredientInfo(FItems.DISPENSER_ACTUATOR.get(), Component.translatable("feedback.jei.info.dispenser_actuator"));
         registration.addIngredientInfo(FItems.MICRO_WEDGE.get(), Component.translatable("feedback.jei.info.micro_wedge"));
         registration.addIngredientInfo(FItems.LARGE_RING_GEAR.get(), Component.translatable("feedback.jei.info.large_ring_gear"));
         registration.addIngredientInfo(FItems.JOINT_LINK.get(), Component.translatable("feedback.jei.info.joint_link"));

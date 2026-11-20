@@ -1,4 +1,4 @@
-// 1.21.1	2026-11-19T15:26:26.78549755	Item Models: feedback
+// 1.21.1	2026-11-20T06:25:04.951108549	Item Models: feedback
 65f5ba7f72e4fca87b13d4ce890377b47b0160dd assets/feedback/models/item/acacia_grip.json
 73e726da459876a2f12985c5cd3247f952c6eb88 assets/feedback/models/item/alnico_birdshot.json
 49daa5676c97ca3e81e097077fcde704793d52a1 assets/feedback/models/item/alnico_bullet.json
@@ -964,6 +964,7 @@ ecea29d296fea14e23e84fd85988b769c9a17560 assets/feedback/models/item/gold_rivet.
 45b92b867fd674f9299593d0fc5b99feac2976b0 assets/feedback/models/item/gold_wire.json
 94405843f6403f879bec90012bcb581772bbbf76 assets/feedback/models/item/granite_dust.json
 94405843f6403f879bec90012bcb581772bbbf76 assets/feedback/models/item/graphite_dust.json
+261c86b92d63c259f06949eaf52e371f2deab1cf assets/feedback/models/item/graphite_plate.json
 94405843f6403f879bec90012bcb581772bbbf76 assets/feedback/models/item/gravel_dust.json
 73e726da459876a2f12985c5cd3247f952c6eb88 assets/feedback/models/item/hardened_high_speed_steel_birdshot.json
 49daa5676c97ca3e81e097077fcde704793d52a1 assets/feedback/models/item/hardened_high_speed_steel_bullet.json

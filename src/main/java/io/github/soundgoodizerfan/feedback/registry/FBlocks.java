@@ -1376,6 +1376,23 @@ public class FBlocks {
                     .noOcclusion()
                     .lightLevel(state -> state.getValue(net.minecraft.world.level.block.state.properties.BlockStateProperties.LIT) ? 12 : 0)));
 
+    /** The piston: a cylinder built from parts. Vanilla's pistons are swapped for it. */
+    public static final DeferredBlock<io.github.soundgoodizerfan.feedback.machine.piston.ModularPistonBlock> MODULAR_PISTON = BLOCKS.register("piston",
+            () -> new io.github.soundgoodizerfan.feedback.machine.piston.ModularPistonBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.METAL)
+                    .strength(1.5f)
+                    .sound(SoundType.METAL)
+                    .isRedstoneConductor((state, level, pos) -> false)
+                    .pushReaction(net.minecraft.world.level.material.PushReaction.BLOCK)));
+    /** A piston's head or a length of its rod; only ever placed by the piston. */
+    public static final DeferredBlock<io.github.soundgoodizerfan.feedback.machine.piston.ModularPistonHeadBlock> MODULAR_PISTON_HEAD = BLOCKS.register("piston_head",
+            () -> new io.github.soundgoodizerfan.feedback.machine.piston.ModularPistonHeadBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.METAL)
+                    .strength(-1f, 3600000f)
+                    .sound(SoundType.METAL)
+                    .noLootTable()
+                    .noOcclusion()
+                    .pushReaction(net.minecraft.world.level.material.PushReaction.BLOCK)));
     public static final DeferredBlock<io.github.soundgoodizerfan.feedback.machine.compressor.CompressorBlock> COMPRESSOR = BLOCKS.register("compressor",
             () -> new io.github.soundgoodizerfan.feedback.machine.compressor.CompressorBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.METAL)

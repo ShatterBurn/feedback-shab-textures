@@ -132,7 +132,7 @@ public class FCreativeTabs {
     // ---- Control & Vehicles ----
 
     /** Signals: a note, a redstone line, then sensors by what they sense. */
-    private static final List<DeferredItem<?>> SIGNALS = of(FItems.NOTE_BLOCK, FItems.REDSTONE_EMITTER, FItems.REDSTONE_RECEIVER,
+    private static final List<DeferredItem<?>> SIGNALS = of(FItems.REDSTONE_EMITTER, FItems.REDSTONE_RECEIVER,
             FItems.ANALOG_ADAPTER, FItems.TEMPERATURE_SENSOR, FItems.CURRENT_SENSOR, FItems.DATA_SENSOR);
 
     /** Controllers: mechanical, electric, then computing; media and cards last. */
@@ -187,7 +187,7 @@ public class FCreativeTabs {
             FItems.WELLHEAD);
 
     /** Handling: hand-fed blocks, then belts, tubes and pods, then the ender ports. */
-    private static final List<DeferredItem<?>> HANDLING = of(FItems.HOPPER, FItems.DROPPER, FItems.DISPENSER,
+    private static final List<DeferredItem<?>> HANDLING = of(FItems.HOPPER, FItems.DROPPER, FItems.DISPENSER, FItems.DISPENSER_ACTUATOR,
             FItems.LEAD_CHEST, FModular.CONVEYOR_BELT);
 
     private static final List<DeferredItem<?>> TUBES = of(FItems.TUBE, FItems.LINED_TUBE, FItems.WIDE_TUBE,
@@ -477,7 +477,6 @@ public class FCreativeTabs {
 
     private static void fillControl(CreativeModeTab.Output out) {
         all(out, SIGNALS);
-        FItems.NOISEMAKERS.values().forEach(m -> out.accept(m.get()));
         all(out, CONTROLLERS);
         for (String app : io.github.soundgoodizerfan.feedback.control.computer.ComputerApps.DISK_APPS)
             out.accept(io.github.soundgoodizerfan.feedback.control.computer.ComputerApps.disk(app));

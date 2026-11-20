@@ -627,6 +627,12 @@ public class FBlockEntities {
             BLOCK_ENTITIES.register("flare", () -> BlockEntityType.Builder
                     .of(io.github.soundgoodizerfan.feedback.machine.flare.FlareBlockEntity::new, FBlocks.FLARE.get()).build(null));
 
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<io.github.soundgoodizerfan.feedback.machine.note.NoteBlockEntity>> NOTE_BLOCK =
+            BLOCK_ENTITIES.register("note_block", () -> BlockEntityType.Builder
+                    .of(io.github.soundgoodizerfan.feedback.machine.note.NoteBlockEntity::new, FBlocks.NOTE_BLOCK.get()).build(null));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<io.github.soundgoodizerfan.feedback.machine.piston.ModularPistonBlockEntity>> MODULAR_PISTON =
+            BLOCK_ENTITIES.register("piston", () -> BlockEntityType.Builder
+                    .of(io.github.soundgoodizerfan.feedback.machine.piston.ModularPistonBlockEntity::new, FBlocks.MODULAR_PISTON.get()).build(null));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<io.github.soundgoodizerfan.feedback.machine.compressor.CompressorBlockEntity>> COMPRESSOR =
             BLOCK_ENTITIES.register("compressor", () -> BlockEntityType.Builder
                     .of(io.github.soundgoodizerfan.feedback.machine.compressor.CompressorBlockEntity::new, FBlocks.COMPRESSOR.get()).build(null));

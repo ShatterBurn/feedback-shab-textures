@@ -100,7 +100,6 @@ public class Feedback {
                     net.neoforged.neoforge.client.gui.ConfigurationScreen::new);
 
         NeoForge.EVENT_BUS.addListener(Feedback::onAddReloadListeners);
-        NeoForge.EVENT_BUS.addListener(io.github.soundgoodizerfan.feedback.machine.piston.PneumaticPistons::onPistonPre);
         NeoForge.EVENT_BUS.addListener(io.github.soundgoodizerfan.feedback.process.CropClimate::onGrow);
         NeoForge.EVENT_BUS.addListener(io.github.soundgoodizerfan.feedback.modular.item.ModularEvents::onPlayerTick);
         NeoForge.EVENT_BUS.addListener(io.github.soundgoodizerfan.feedback.modular.item.ModularEvents::onEntityJoin);
