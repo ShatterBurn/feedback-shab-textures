@@ -1,6 +1,6 @@
 # Creel
 
-A basket trap for fish, set under water.
+A wicker basket trap for fish, with a narrow funnel mouth, set under water.
 
 ```
 S S S

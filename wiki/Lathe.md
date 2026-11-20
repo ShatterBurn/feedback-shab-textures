@@ -20,12 +20,12 @@ The bit is a [machine head](Machine_Heads.md): draw it at the Blueprint Table an
 
 ## Setting it up
 
-The lathe sits **directly on a shaft line**; connect it from any side. The faster it turns, the faster it cuts. It's a **40 Su** load.
+The lathe is a vertical lathe that sits **directly on a shaft line**; connect it from any side. The faster it turns, the faster it cuts. It's a **40 Su** load.
 
 It has two slots:
 
 - **Right-click with a Lathe Bit** to seat it; the bit it replaces comes back.
-- **Right-click with anything else** to chuck a workpiece (or swap it).
+- **Right-click with anything else** to chuck a workpiece (or swap it). It lies on the chuck table, under the tail bearing.
 - **Right-click with an empty hand** to take the workpiece out, then the bit.
 - **Sneak-right-click with an empty hand** switches between a **light** and a **heavy** cut.
 

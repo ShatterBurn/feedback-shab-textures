@@ -18,9 +18,9 @@ The bit is a [machine head](Machine_Heads.md): draw it at the Blueprint Table an
 
 ## Using it
 
-1. Put it on a shaft line (any side) and get it turning. It's a **35 Su** load.
+1. Put it on a shaft line (a bronze shaft stub shows on each side; any side couples) and get it turning. It's a **35 Su** load.
 2. **Right-click with a Drill Bit** to seat it; the bit it replaces comes back.
-3. **Right-click with a workpiece** to put it under the bit.
+3. **Right-click with a workpiece** to lay it on the base plate under the bit.
 4. **Right-click with an empty hand** to push the bit down once. Each push cuts a little.
 5. **Right-click with an item** on an occupied press to take the workpiece back. With the workpiece out, an empty hand takes the bit.
 
