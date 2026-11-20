@@ -37,6 +37,16 @@ public final class SpaceTuning {
     public static final double END_DESCENT_DEG = 10;
     /** Blocks short of the End (along its bearing, outside the capture sphere) where a craft arrives back in the Gap. */
     public static final double END_RETURN_CLEARANCE = 2;
+    /** Ticks between looks at the heat on a fast body's leading face. */
+    public static final int REENTRY_INTERVAL_TICKS = 20;
+    /** Air density times speed cubed (full-size blocks a second) under which a body does not heat: aircraft speeds in thick air, and slow passes in thin. Placeholder. */
+    public static final double REENTRY_FLUX_FLOOR = 1.0e6;
+    /** Tu of wall temperature for each unit of that flux above the floor. Placeholder: a metal that fails at 1500 Tu (iron melts there) goes at a flux of about 1.6e7. */
+    public static final double REENTRY_TU_PER_FLUX = 1.0e-4;
+    /** Full-size blocks a second a body's speed must change in one physics step to count as a hit; no engine does it. */
+    public static final double IMPACT_MIN_SPEED_CHANGE = 8;
+    /** Blocks of fall (of the fall that would stop a person as fast) that hurt nobody: vanilla's three. */
+    public static final double IMPACT_FREE_FALL_BLOCKS = 3;
     /** Ticks the crossing overlay takes to clear. */
     public static final int FADE_TICKS = 60;
 
