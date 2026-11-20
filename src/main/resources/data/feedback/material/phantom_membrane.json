@@ -15,5 +15,6 @@
       "sedative": 0.03
     }
   },
-  "parent": "_kind_animal"
+  "parent": "_kind_animal",
+  "perks": {"featherlight": 1}
 }

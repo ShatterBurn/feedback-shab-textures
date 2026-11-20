@@ -46,5 +46,6 @@
     "insulation": "hv"
   },
   "toxicity": 0,
-  "radioactivity": 0.01
+  "radioactivity": 0.01,
+  "perks": {"radiant": 1}
 }

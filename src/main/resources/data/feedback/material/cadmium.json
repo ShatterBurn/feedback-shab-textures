@@ -44,5 +44,6 @@
   "toxicity": 1.6,
   "exclude": [
     "lump"
-  ]
+  ],
+  "perks": {"toxic": 1}
 }

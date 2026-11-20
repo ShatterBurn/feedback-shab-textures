@@ -10,16 +10,17 @@ A weapon's tooltip lists its perks in gold. All numbers are per level.
 | --- | --- | --- |
 | Silver | **Smite** | +2.5 damage against the undead |
 | Prismarine | **Impaling** | +2.5 damage against water-based mobs (guardians, squid, fish, dolphins and the like): prismarine's guardian-born resonance disturbs aquatic nervous tissue. Modded water mobs count when a pack adds them to the `minecraft:sensitive_to_impaling` entity-type tag |
-| Blaze rod | **Fire aspect** | sets the target alight for 4 seconds. **Costs you:** the part is a flame in your hand, so it [burns](Hazards.md#holding-a-hot-piece) you at the blaze rod's flame temperature unless your gloves or tongs are rated for that heat |
-| Echo shard | **Echo** | the target glows for 3 seconds |
-| Lead | **Toxic** | poisons the target for 3 seconds |
-| Slime | **Bounce** | pops the target upward |
-| Honey | **Cling** | slows the target for 3 seconds |
-| Ice, blue ice | **Chill** | builds freezing on the target (about 3.5 seconds of powder-snow chill) if it can freeze |
+| Blaze rod, blaze powder | **Fire aspect** | sets the target alight for 4 seconds. **Costs you:** the part is a flame in your hand, so it [burns](Hazards.md#holding-a-hot-piece) you at the blaze rod's flame temperature unless your gloves or tongs are rated for that heat |
+| Blaze powder | **Warming** | stops the cold of powder snow from building up for a while; gives nothing against fire |
+| Echo shard, amethyst | **Echo** | the target glows for 3 seconds |
+| Lead, mercury, cadmium, antimony, stibnite, cinnabar, galena, vanadinite, chloroform, beryllium | **Toxic** | poisons the target for 3 seconds |
+| Slime, natural rubber, synthetic rubber | **Bounce** | pops the target upward |
+| Honey, bitumen, soul resin | **Cling** | slows the target for 3 seconds |
+| Ice, blue ice, snow, liquid air, liquid oxygen | **Chill** | builds freezing on the target (about 3.5 seconds of powder-snow chill) if it can freeze |
 | Sculk | **Siphon** | a melee kill drops 3 extra experience |
 | Ender pearl | **Blink** | a melee kill within 6 blocks steps you into the victim's place |
-| Uranium | **Radiant** | a struck target withers for 3 seconds and glows for 5 (and the part is [radioactive](Radiation.md)) |
-| Breeze rod | **Featherlight** | the swing feels **40% less** of that part's mass (never below a fifth). The real mass is unchanged, so a [balance scale](Instruments.md#balance-scale) still reads it in full; the weapon swings quicker |
+| Uranium, thorium, uraninite, monazite, uranium glass, fuel rod, enriched fuel rod, breeder rod, thorium fuel rod, spent fuel rod | **Radiant** | a struck target withers for 3 seconds and glows for 5 (and the part is [radioactive](Radiation.md)) |
+| Breeze rod, feather down, phantom membrane, aluminum foam, silica aerogel | **Featherlight** | the swing feels **40% less** of that part's mass (never below a fifth). The real mass is unchanged, so a [balance scale](Instruments.md#balance-scale) still reads it in full; the weapon swings quicker |
 
 Not every material suits every part role.
 

@@ -42,5 +42,6 @@
     "density": 6.75,
     "shear_thickening": 0
   },
-  "enchantability": 10
+  "enchantability": 10,
+  "perks": {"toxic": 1}
 }

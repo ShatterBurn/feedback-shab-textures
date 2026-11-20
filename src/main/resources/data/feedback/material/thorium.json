@@ -43,5 +43,6 @@
   "corrosion_resistance": 0.5,
   "enchantability": 8,
   "radioactivity": 0.25,
-  "toxicity": 1.0
+  "toxicity": 1.0,
+  "perks": {"radiant": 1}
 }

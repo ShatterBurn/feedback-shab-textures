@@ -38,5 +38,6 @@
     "density": 0.99,
     "shear_thickening": 0
   },
-  "enchantability": 8
+  "enchantability": 8,
+  "perks": {"bounce": 1}
 }

@@ -58,5 +58,6 @@
     "density": 1.08,
     "shear_thickening": 0
   },
-  "enchantability": 1
+  "enchantability": 1,
+  "perks": {"fire_aspect": 1, "warming": 1}
 }

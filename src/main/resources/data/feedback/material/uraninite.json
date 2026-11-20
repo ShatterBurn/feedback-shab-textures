@@ -39,5 +39,6 @@
     "density": 8.01,
     "shear_thickening": 0
   },
-  "enchantability": 5
+  "enchantability": 5,
+  "perks": {"radiant": 1}
 }

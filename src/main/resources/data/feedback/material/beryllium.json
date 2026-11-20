@@ -46,5 +46,6 @@
   ],
   "neutron": {
     "moderation": 0.9
-  }
+  },
+  "perks": {"toxic": 1}
 }

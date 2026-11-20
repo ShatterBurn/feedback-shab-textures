@@ -39,5 +39,6 @@
     "foam",
     "mat",
     "fibre"
-  ]
+  ],
+  "perks": {"cling": 1}
 }

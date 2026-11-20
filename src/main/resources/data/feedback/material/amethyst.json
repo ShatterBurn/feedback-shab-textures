@@ -51,5 +51,6 @@
     "viscosity": 100,
     "density": 2.38,
     "shear_thickening": 0
-  }
+  },
+  "perks": {"echo": 1}
 }

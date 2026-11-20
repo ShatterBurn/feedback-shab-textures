@@ -35,5 +35,6 @@
   },
   "corrosion_resistance": 0.8,
   "toxicity": 0,
-  "enchantability": 1
+  "enchantability": 1,
+  "perks": {"chill": 1}
 }

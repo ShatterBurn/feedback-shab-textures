@@ -45,5 +45,6 @@
   "electrical": {
     "insulation": "hv"
   },
-  "toxicity": 0
+  "toxicity": 0,
+  "perks": {"featherlight": 1}
 }

@@ -20,5 +20,6 @@
   "separation": {
     "reflectivity": 0.02
   },
-  "corrosion_resistance": 0.5
+  "corrosion_resistance": 0.5,
+  "perks": {"toxic": 1}
 }

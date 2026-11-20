@@ -52,5 +52,6 @@
     "lump",
     "ore",
     "deepslate_ore"
-  ]
+  ],
+  "perks": {"featherlight": 1}
 }

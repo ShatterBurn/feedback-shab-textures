@@ -59,5 +59,6 @@
     "drop": 1.0,
     "electrode_potential": 0
   },
-  "ampacity": 0.293
+  "ampacity": 0.293,
+  "perks": {"radiant": 1}
 }

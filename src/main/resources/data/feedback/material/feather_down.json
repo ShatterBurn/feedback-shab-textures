@@ -37,5 +37,6 @@
   "electrical": {
     "insulation": "lv"
   },
-  "parent": "_kind_animal"
+  "parent": "_kind_animal",
+  "perks": {"featherlight": 1}
 }
