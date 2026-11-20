@@ -109,6 +109,8 @@ public final class EngineeringRework {
     public static Outcome repair(Container table, ServerPlayer server, ModularRework.Mode mode) {
         Level level = server.level();
         ItemStack item = table.getItem(EngineeringTableBlockEntity.REPAIR_ITEM);
+        if (mode == ModularRework.Mode.MEND && typeOf(item, level) == null)
+            return refit(table, server, item);
         ModularDesign design = ModularStacks.design(item);
         ModularType type = typeOf(item, level);
         if (type == null)
@@ -163,6 +165,36 @@ public final class EngineeringRework {
         table.setItem(EngineeringTableBlockEntity.REPAIR_ITEM, best.get());
         wear(table);
         return Outcome.of(mode == ModularRework.Mode.SWAP ? SWAPPED : REPAIRED);
+    }
+
+    /**
+     * Replaces a dead circuit built into the Repair slot's machine with a live one from the stock grid; the dead one goes to the player.
+     * A machine whose circuit still lives is left alone ({@link #NOTHING}), so a good circuit is never swapped away by mistake.
+     */
+    private static Outcome refit(Container table, ServerPlayer server, ItemStack item) {
+        var component = io.github.soundgoodizerfan.feedback.registry.FDataComponents.CIRCUIT_STACK.get();
+        ItemStack built = item.get(component);
+        if (built == null || built.isEmpty())
+            return Outcome.of(NOT_MODULAR);
+        if (io.github.soundgoodizerfan.feedback.process.Circuit.of(built).live())
+            return Outcome.of(NOTHING);
+        int tool = hammer(table);
+        if (tool != 0)
+            return Outcome.of(tool);
+        for (int i = 0; i < 9; i++) {
+            int slot = EngineeringTableBlockEntity.REPAIR_STOCK + i;
+            ItemStack s = table.getItem(slot);
+            if (!(s.getItem() instanceof io.github.soundgoodizerfan.feedback.item.CircuitItem)
+                    || !io.github.soundgoodizerfan.feedback.process.Circuit.of(s).live())
+                continue;
+            item.set(component, s.copyWithCount(1));
+            s.shrink(1);
+            table.setItem(slot, s.isEmpty() ? ItemStack.EMPTY : s);
+            server.getInventory().placeItemBackInInventory(built.copy());
+            wear(table);
+            return Outcome.of(REPAIRED);
+        }
+        return Outcome.of(NOTHING);
     }
 
     /** Takes the Repair slot's item apart: its parts go to the player (a worn wearing part short by its wear, a held item whole). */
@@ -248,7 +280,8 @@ public final class EngineeringRework {
 
     /** Whether a stack may sit in the Fit grid or the Repair stock grid: a shaped part, a held module or stock of some material. */
     public static boolean isStock(ItemStack stack, Level level) {
-        return stack.getItem() instanceof ModularPartItem || ModularNest.holdable(stack) || Material.find(ClientMaterials.on(level), stack).isPresent();
+        return stack.getItem() instanceof ModularPartItem || stack.getItem() instanceof io.github.soundgoodizerfan.feedback.item.CircuitItem
+                || ModularNest.holdable(stack) || Material.find(ClientMaterials.on(level), stack).isPresent();
     }
 
     // --- Treatise tab -------------------------------------------------------------------------
