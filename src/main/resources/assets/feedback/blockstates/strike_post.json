@@ -1,1 +1,16 @@
-{ "variants": { "": { "model": "feedback:block/strike_post" } } }
+{
+  "variants": {
+    "facing=north": {
+      "model": "feedback:block/strike_post"
+    },
+    "facing=east": {
+      "model": "feedback:block/strike_post"
+    },
+    "facing=south": {
+      "model": "feedback:block/strike_post"
+    },
+    "facing=west": {
+      "model": "feedback:block/strike_post"
+    }
+  }
+}

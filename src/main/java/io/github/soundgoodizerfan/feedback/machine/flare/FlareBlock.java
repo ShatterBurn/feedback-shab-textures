@@ -21,26 +21,43 @@ public class FlareBlock extends Block implements EntityBlock {
 
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
 
-    /** Mirrors models/block/flare.json: base plate, stack, open mouth, feed pipe with its drop. */
-    private static final net.minecraft.world.phys.shapes.VoxelShape SHAPE = net.minecraft.world.phys.shapes.Shapes.or(
-            Block.box(4, 0, 4, 12, 2, 12), Block.box(6, 2, 6, 10, 14, 10), Block.box(5, 14, 5, 11, 16, 11),
-            Block.box(10, 2, 7, 14, 4, 9), Block.box(12, 0, 7, 14, 2, 9));
+    /** The feed pipe is on the front. */
+    public static final net.minecraft.world.level.block.state.properties.DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+
+    /** Mirrors models/block/flare.json drawn facing north: base plate, stack, open mouth, feed pipe with its drop. */
+    private static final net.minecraft.world.phys.shapes.VoxelShape[] SHAPES = io.github.soundgoodizerfan.feedback.core.FacingShapes.horizontal(new int[][]{
+            {4, 0, 4, 12, 2, 12}, {6, 2, 6, 10, 14, 10}, {5, 14, 5, 11, 16, 11}, {7, 2, 0, 9, 4, 6}, {7, 0, 0, 9, 2, 2}});
 
     @Override
     protected net.minecraft.world.phys.shapes.VoxelShape getShape(BlockState state,
             net.minecraft.world.level.BlockGetter level, BlockPos pos,
             net.minecraft.world.phys.shapes.CollisionContext ctx) {
-        return SHAPE;
+        return SHAPES[state.getValue(FACING).get2DDataValue()];
     }
 
     public FlareBlock(Properties properties) {
         super(properties);
-        registerDefaultState(defaultBlockState().setValue(LIT, false));
+        registerDefaultState(defaultBlockState().setValue(LIT, false).setValue(FACING, net.minecraft.core.Direction.NORTH));
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(LIT);
+        builder.add(LIT, FACING);
+    }
+
+    @Override
+    public BlockState getStateForPlacement(net.minecraft.world.item.context.BlockPlaceContext context) {
+        return defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
+    }
+
+    @Override
+    protected BlockState rotate(BlockState state, net.minecraft.world.level.block.Rotation rotation) {
+        return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
+    }
+
+    @Override
+    protected BlockState mirror(BlockState state, net.minecraft.world.level.block.Mirror mirror) {
+        return state.rotate(mirror.getRotation(state.getValue(FACING)));
     }
 
     @Nullable

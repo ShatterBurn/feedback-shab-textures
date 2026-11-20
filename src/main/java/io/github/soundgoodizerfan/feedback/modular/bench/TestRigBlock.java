@@ -35,10 +35,13 @@ public class TestRigBlock extends Block {
 
     public static final MapCodec<TestRigBlock> CODEC = simpleCodec(p -> new TestRigBlock(p, Kind.PENDULUM));
 
-    /** Mirrors models/block/impact_pendulum.json: two plate cheeks, the bearing axle, the rod and the bob. */
-    private static final net.minecraft.world.phys.shapes.VoxelShape PENDULUM_SHAPE = net.minecraft.world.phys.shapes.Shapes.or(
-            Block.box(1, 0, 6, 3, 16, 10), Block.box(13, 0, 6, 15, 16, 10), Block.box(3, 12, 7, 13, 14, 9),
-            Block.box(7, 4, 7, 9, 12, 9), Block.box(5, 2, 6, 11, 4, 10));
+    /** The pendulum's frame faces along this (the post is a cube and ignores it). */
+    public static final net.minecraft.world.level.block.state.properties.DirectionProperty FACING =
+            net.minecraft.world.level.block.state.properties.BlockStateProperties.HORIZONTAL_FACING;
+
+    /** Mirrors models/block/impact_pendulum.json drawn facing north: two plate cheeks, the bearing axle, the rod and the bob. */
+    private static final net.minecraft.world.phys.shapes.VoxelShape[] PENDULUM_SHAPES = io.github.soundgoodizerfan.feedback.core.FacingShapes.horizontal(new int[][]{
+            {1, 0, 6, 3, 16, 10}, {13, 0, 6, 15, 16, 10}, {3, 12, 7, 13, 14, 9}, {7, 4, 7, 9, 12, 9}, {5, 2, 6, 11, 4, 10}});
 
     private final Kind kind;
 
@@ -46,12 +49,33 @@ public class TestRigBlock extends Block {
     protected net.minecraft.world.phys.shapes.VoxelShape getShape(BlockState state,
             net.minecraft.world.level.BlockGetter level, BlockPos pos,
             net.minecraft.world.phys.shapes.CollisionContext ctx) {
-        return kind == Kind.PENDULUM ? PENDULUM_SHAPE : super.getShape(state, level, pos, ctx);
+        return kind == Kind.PENDULUM ? PENDULUM_SHAPES[state.getValue(FACING).get2DDataValue()] : super.getShape(state, level, pos, ctx);
     }
 
     public TestRigBlock(Properties properties, Kind kind) {
         super(properties);
         this.kind = kind;
+        registerDefaultState(stateDefinition.any().setValue(FACING, net.minecraft.core.Direction.NORTH));
+    }
+
+    @Override
+    protected void createBlockStateDefinition(net.minecraft.world.level.block.state.StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(FACING);
+    }
+
+    @Override
+    public BlockState getStateForPlacement(net.minecraft.world.item.context.BlockPlaceContext context) {
+        return defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
+    }
+
+    @Override
+    protected BlockState rotate(BlockState state, net.minecraft.world.level.block.Rotation rotation) {
+        return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
+    }
+
+    @Override
+    protected BlockState mirror(BlockState state, net.minecraft.world.level.block.Mirror mirror) {
+        return state.rotate(mirror.getRotation(state.getValue(FACING)));
     }
 
     @Override

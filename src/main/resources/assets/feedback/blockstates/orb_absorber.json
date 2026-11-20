@@ -1,10 +1,34 @@
 {
   "variants": {
-    "open=true": {
+    "facing=north,open=true": {
       "model": "feedback:block/orb_absorber"
     },
-    "open=false": {
+    "facing=north,open=false": {
       "model": "feedback:block/orb_absorber_closed"
+    },
+    "facing=east,open=true": {
+      "model": "feedback:block/orb_absorber",
+      "y": 90
+    },
+    "facing=east,open=false": {
+      "model": "feedback:block/orb_absorber_closed",
+      "y": 90
+    },
+    "facing=south,open=true": {
+      "model": "feedback:block/orb_absorber",
+      "y": 180
+    },
+    "facing=south,open=false": {
+      "model": "feedback:block/orb_absorber_closed",
+      "y": 180
+    },
+    "facing=west,open=true": {
+      "model": "feedback:block/orb_absorber",
+      "y": 270
+    },
+    "facing=west,open=false": {
+      "model": "feedback:block/orb_absorber_closed",
+      "y": 270
     }
   }
 }
