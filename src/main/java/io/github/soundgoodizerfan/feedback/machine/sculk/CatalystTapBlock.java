@@ -21,12 +21,27 @@ public class CatalystTapBlock extends Block implements EntityBlock {
 
     public CatalystTapBlock(Properties properties) {
         super(properties);
-        registerDefaultState(stateDefinition.any().setValue(XpTapBlock.OPEN, true));
+        registerDefaultState(stateDefinition.any().setValue(XpTapBlock.OPEN, true).setValue(XpTapBlock.FACING, net.minecraft.core.Direction.NORTH));
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(XpTapBlock.OPEN);
+        builder.add(XpTapBlock.OPEN, XpTapBlock.FACING);
+    }
+
+    @Override
+    public BlockState getStateForPlacement(net.minecraft.world.item.context.BlockPlaceContext context) {
+        return defaultBlockState().setValue(XpTapBlock.FACING, context.getHorizontalDirection().getOpposite());
+    }
+
+    @Override
+    protected BlockState rotate(BlockState state, net.minecraft.world.level.block.Rotation rotation) {
+        return state.setValue(XpTapBlock.FACING, rotation.rotate(state.getValue(XpTapBlock.FACING)));
+    }
+
+    @Override
+    protected BlockState mirror(BlockState state, net.minecraft.world.level.block.Mirror mirror) {
+        return state.rotate(mirror.getRotation(state.getValue(XpTapBlock.FACING)));
     }
 
     /** The XP taps' shared body (models/block/catalyst_tap.json). */
@@ -34,7 +49,7 @@ public class CatalystTapBlock extends Block implements EntityBlock {
     protected net.minecraft.world.phys.shapes.VoxelShape getShape(BlockState state,
             net.minecraft.world.level.BlockGetter level, BlockPos pos,
             net.minecraft.world.phys.shapes.CollisionContext ctx) {
-        return XpTapBlock.TAP_SHAPE;
+        return XpTapBlock.TAP_SHAPES[state.getValue(XpTapBlock.FACING).get2DDataValue()];
     }
 
     @Override

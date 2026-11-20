@@ -20,24 +20,42 @@ public class DerrickCasingBlock extends Block implements EntityBlock {
             {14, 0, 2, 16, 2, 14}, {14, 7, 2, 16, 9, 14}, {14, 14, 2, 16, 16, 14},
             {2, 0, 0, 14, 2, 2}, {2, 14, 0, 14, 16, 2}, {2, 0, 14, 14, 2, 16}, {2, 14, 14, 14, 16, 16}};
 
-    private static final net.minecraft.world.phys.shapes.VoxelShape SHAPE;
+    /** The cage's open ends face this way (the side frames are the other pair), drawn facing north. */
+    public static final net.minecraft.world.level.block.state.properties.DirectionProperty FACING =
+            net.minecraft.world.level.block.state.properties.BlockStateProperties.HORIZONTAL_FACING;
 
-    static {
-        net.minecraft.world.phys.shapes.VoxelShape s = net.minecraft.world.phys.shapes.Shapes.empty();
-        for (int[] b : BOXES)
-            s = net.minecraft.world.phys.shapes.Shapes.or(s, Block.box(b[0], b[1], b[2], b[3], b[4], b[5]));
-        SHAPE = s;
-    }
+    private static final net.minecraft.world.phys.shapes.VoxelShape[] SHAPES = io.github.soundgoodizerfan.feedback.core.FacingShapes.horizontal(BOXES);
 
     public DerrickCasingBlock(Properties properties) {
         super(properties);
+        registerDefaultState(stateDefinition.any().setValue(FACING, net.minecraft.core.Direction.NORTH));
+    }
+
+    @Override
+    protected void createBlockStateDefinition(net.minecraft.world.level.block.state.StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(FACING);
+    }
+
+    @Override
+    public BlockState getStateForPlacement(net.minecraft.world.item.context.BlockPlaceContext context) {
+        return defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
+    }
+
+    @Override
+    protected BlockState rotate(BlockState state, net.minecraft.world.level.block.Rotation rotation) {
+        return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
+    }
+
+    @Override
+    protected BlockState mirror(BlockState state, net.minecraft.world.level.block.Mirror mirror) {
+        return state.rotate(mirror.getRotation(state.getValue(FACING)));
     }
 
     @Override
     protected net.minecraft.world.phys.shapes.VoxelShape getShape(BlockState state,
             net.minecraft.world.level.BlockGetter level, BlockPos pos,
             net.minecraft.world.phys.shapes.CollisionContext ctx) {
-        return SHAPE;
+        return SHAPES[state.getValue(FACING).get2DDataValue()];
     }
 
     @Nullable

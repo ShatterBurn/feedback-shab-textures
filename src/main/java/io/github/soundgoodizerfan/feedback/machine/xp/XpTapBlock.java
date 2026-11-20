@@ -38,17 +38,17 @@ public class XpTapBlock extends Block implements EntityBlock {
     /** The valve: a tap draws only while its lever is open and no redstone signal holds it shut. */
     public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
 
-    /** Mirrors models/block/orb_absorber.json: the shrieker core, four iron corner plates, two crystals, the lever, the wire outlet. The other taps are cubes. */
-    private static final net.minecraft.world.phys.shapes.VoxelShape ORB_SHAPE = net.minecraft.world.phys.shapes.Shapes.or(
-            Block.box(2, 0, 2, 14, 10, 14), Block.box(0, 0, 0, 4, 12, 4), Block.box(12, 0, 0, 16, 12, 4),
-            Block.box(0, 0, 12, 4, 12, 16), Block.box(12, 0, 12, 16, 12, 16), Block.box(4, 10, 7, 6, 14, 9),
-            Block.box(10, 10, 7, 12, 14, 9), Block.box(6, 10, 11, 10, 12, 13), Block.box(7, 12, 11, 9, 15, 13),
-            Block.box(6, 0, 0, 10, 4, 2));
+    /** The front: the sensing part (the Orb Absorber's wire outlet) faces this way, drawn facing north. */
+    public static final net.minecraft.world.level.block.state.properties.DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+
+    /** Mirrors models/block/orb_absorber.json: the shrieker core, four iron corner plates, two crystals, the lever, the wire outlet. */
+    private static final net.minecraft.world.phys.shapes.VoxelShape[] ORB_SHAPES = io.github.soundgoodizerfan.feedback.core.FacingShapes.horizontal(new int[][]{
+            {2, 0, 2, 14, 10, 14}, {0, 0, 0, 4, 12, 4}, {12, 0, 0, 16, 12, 4}, {0, 0, 12, 4, 12, 16}, {12, 0, 12, 16, 12, 16},
+            {4, 10, 7, 6, 14, 9}, {10, 10, 7, 12, 14, 9}, {6, 10, 11, 10, 12, 13}, {7, 12, 11, 9, 15, 13}, {6, 0, 0, 10, 4, 2}});
 
     /** Mirrors models/block/ore_tap.json (and trade, catalyst and smelter): the iron body, the front part, the lever and the wire outlet at the back. */
-    public static final net.minecraft.world.phys.shapes.VoxelShape TAP_SHAPE = net.minecraft.world.phys.shapes.Shapes.or(
-            Block.box(1, 0, 2, 15, 12, 14), Block.box(3, 2, 0, 13, 10, 2), Block.box(6, 12, 10, 10, 14, 12),
-            Block.box(7, 14, 10, 9, 16, 12), Block.box(6, 2, 14, 10, 6, 16));
+    public static final net.minecraft.world.phys.shapes.VoxelShape[] TAP_SHAPES = io.github.soundgoodizerfan.feedback.core.FacingShapes.horizontal(new int[][]{
+            {1, 0, 2, 15, 12, 14}, {3, 2, 0, 13, 10, 2}, {6, 12, 10, 10, 14, 12}, {7, 14, 10, 9, 16, 12}, {6, 2, 14, 10, 6, 16}});
 
     private final Kind kind;
 
@@ -56,18 +56,34 @@ public class XpTapBlock extends Block implements EntityBlock {
     protected net.minecraft.world.phys.shapes.VoxelShape getShape(BlockState state,
             net.minecraft.world.level.BlockGetter level, BlockPos pos,
             net.minecraft.world.phys.shapes.CollisionContext ctx) {
-        return kind == Kind.ORB ? ORB_SHAPE : TAP_SHAPE;
+        int f = state.getValue(FACING).get2DDataValue();
+        return kind == Kind.ORB ? ORB_SHAPES[f] : TAP_SHAPES[f];
     }
 
     public XpTapBlock(Properties properties, Kind kind) {
         super(properties);
         this.kind = kind;
-        registerDefaultState(stateDefinition.any().setValue(OPEN, true));
+        registerDefaultState(stateDefinition.any().setValue(OPEN, true).setValue(FACING, net.minecraft.core.Direction.NORTH));
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(OPEN);
+        builder.add(OPEN, FACING);
+    }
+
+    @Override
+    public BlockState getStateForPlacement(net.minecraft.world.item.context.BlockPlaceContext context) {
+        return defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
+    }
+
+    @Override
+    protected BlockState rotate(BlockState state, net.minecraft.world.level.block.Rotation rotation) {
+        return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
+    }
+
+    @Override
+    protected BlockState mirror(BlockState state, net.minecraft.world.level.block.Mirror mirror) {
+        return state.rotate(mirror.getRotation(state.getValue(FACING)));
     }
 
     /** Whether the tap at {@code pos} (this block or the Catalyst Tap) draws: its lever open and no redstone signal on it. */

@@ -1,10 +1,34 @@
 {
   "variants": {
-    "open=true": {
+    "facing=north,open=true": {
       "model": "feedback:block/ore_tap"
     },
-    "open=false": {
+    "facing=north,open=false": {
       "model": "feedback:block/ore_tap_closed"
+    },
+    "facing=east,open=true": {
+      "model": "feedback:block/ore_tap",
+      "y": 90
+    },
+    "facing=east,open=false": {
+      "model": "feedback:block/ore_tap_closed",
+      "y": 90
+    },
+    "facing=south,open=true": {
+      "model": "feedback:block/ore_tap",
+      "y": 180
+    },
+    "facing=south,open=false": {
+      "model": "feedback:block/ore_tap_closed",
+      "y": 180
+    },
+    "facing=west,open=true": {
+      "model": "feedback:block/ore_tap",
+      "y": 270
+    },
+    "facing=west,open=false": {
+      "model": "feedback:block/ore_tap_closed",
+      "y": 270
     }
   }
 }
