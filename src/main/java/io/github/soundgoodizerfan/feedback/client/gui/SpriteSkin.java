@@ -94,6 +94,10 @@ final class SpriteSkin extends GuiSkin {
         if (d.shadow())
             g.fill(x + 3, y + 4, x + w + 3, y + h + 4, 0x50000000);
         g.blitSprite(d.panel(), x, y, w, h);
+        if (d.wash() != 0)
+            g.fill(x, y, x + w, y + h, d.wash());
+        if (have(d.frame()))
+            g.blitSprite(d.frame(), x, y, w, h);
         for (SkinDef.Decor layer : d.decor())
             decor(g, layer, x, y, w, h);
         Effect effect = d.effect() == null ? null : EFFECTS.get(d.effect());

@@ -1,0 +1,44 @@
+{
+  "colours": {
+    "ink": "#F2E8D6",
+    "dim": "#C9AE8A",
+    "accent": "#FFC15A",
+    "warn": "#FF6A50",
+    "well": "#24150C",
+    "trim": "#B8873A",
+    "plate": "#5A3A24"
+  },
+  "panel": {
+    "sprite": "feedback:skin/improved_furnace/tile",
+    "wash": "#58180C06",
+    "frame": "feedback:skin/improved_furnace/frame",
+    "shadow": true
+  },
+  "slot": "feedback:skin/improved_furnace/slot",
+  "button": {
+    "normal": "feedback:skin/improved_furnace/button",
+    "hover": "feedback:skin/improved_furnace/button_hover",
+    "down": "feedback:skin/improved_furnace/button_down",
+    "off": "feedback:skin/improved_furnace/button_off",
+    "primary": "feedback:skin/improved_furnace/button_primary",
+    "primary_hover": "feedback:skin/improved_furnace/button_primary"
+  },
+  "sounds": {
+    "click": "minecraft:block.stone.hit",
+    "open": null,
+    "close": null,
+    "cues": {}
+  },
+  "reveal": "none",
+  "decor": [
+    {
+      "sprite": "feedback:skin/improved_furnace/thermowell",
+      "anchor": "left",
+      "x": 0,
+      "y": 36,
+      "w": 8,
+      "h": 24,
+      "heat": false
+    }
+  ]
+}

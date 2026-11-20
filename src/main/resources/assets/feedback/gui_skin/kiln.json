@@ -1,16 +1,34 @@
 {
   "colours": {
-    "ink": "#F2DCC4", "dim": "#B08A6A", "accent": "#FFC070", "warn": "#FF6A50",
-    "well": "#1E100A", "trim": "#7A4A30", "plate": "#5A2E1C"
+    "ink": "#F6E6D0",
+    "dim": "#D2B08E",
+    "accent": "#FFC070",
+    "warn": "#FF6A50",
+    "well": "#2A140A",
+    "trim": "#B5683F",
+    "plate": "#6A3A20"
   },
-  "panel": { "sprite": "minecraft:tooltip/background", "shadow": true },
-  "slot": "minecraft:container/slot",
+  "panel": {
+    "sprite": "feedback:skin/kiln/tile",
+    "wash": "#5A1A0C06",
+    "frame": "feedback:skin/kiln/frame",
+    "shadow": true
+  },
+  "slot": "feedback:skin/kiln/slot",
   "button": {
-    "normal": "minecraft:widget/button",
-    "hover": "minecraft:widget/button_highlighted",
-    "off": "minecraft:widget/button_disabled"
+    "normal": "feedback:skin/kiln/button",
+    "hover": "feedback:skin/kiln/button_hover",
+    "down": "feedback:skin/kiln/button_down",
+    "off": "feedback:skin/kiln/button_off",
+    "primary": "feedback:skin/kiln/button_primary",
+    "primary_hover": "feedback:skin/kiln/button_primary"
   },
-  "sounds": { "click": "minecraft:block.calcite.hit", "open": null, "close": null, "cues": {} },
+  "sounds": {
+    "click": "minecraft:block.calcite.hit",
+    "open": null,
+    "close": null,
+    "cues": {}
+  },
   "reveal": "none",
   "decor": []
 }

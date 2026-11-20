@@ -64,6 +64,9 @@ public class ThermalVesselScreen extends SkinnedScreen<ThermalVesselMenu> {
         return switch (menu.getKind()) {
             case SMOKER -> GuiSkin.SMOKE;
             case BLAST_FURNACE, PUDDLING_FURNACE -> GuiSkin.SLAG;
+            case KILN -> GuiSkin.KILN;
+            case ANNEALING_FURNACE -> GuiSkin.ANNEALING_FURNACE;
+            case IMPROVED_FURNACE -> GuiSkin.IMPROVED_FURNACE;
             default -> GuiSkin.STONE;
         };
     }
@@ -102,8 +105,9 @@ public class ThermalVesselScreen extends SkinnedScreen<ThermalVesselMenu> {
 
     @Override
     protected void renderBg(GuiGraphics graphics, float partialTicks, int mouseX, int mouseY) {
-        skin.panel(graphics, leftPos, topPos, imageWidth, imageHeight);
         int gaugeTu = menu.getGaugeTu();
+        skin.heat(gaugeTu); // a data skin's heat decor glows with the chamber
+        skin.panel(graphics, leftPos, topPos, imageWidth, imageHeight);
         int band = gaugeTu >= (int) ThermalTuning.MAX_VISIBLE_TU.value()
                 ? BAND_COLORS.length - 1
                 : firstBandAbove(gaugeTu);

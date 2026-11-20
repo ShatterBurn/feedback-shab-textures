@@ -1,0 +1,44 @@
+{
+  "colours": {
+    "ink": "#E6E2D8",
+    "dim": "#A8A8AC",
+    "accent": "#E8A24A",
+    "warn": "#FF6A50",
+    "well": "#0E0D0F",
+    "trim": "#5C5F66",
+    "plate": "#26282C"
+  },
+  "panel": {
+    "sprite": "feedback:skin/annealing_furnace/tile",
+    "wash": "#30000000",
+    "frame": "feedback:skin/annealing_furnace/frame",
+    "shadow": true
+  },
+  "slot": "feedback:skin/annealing_furnace/slot",
+  "button": {
+    "normal": "feedback:skin/annealing_furnace/button",
+    "hover": "feedback:skin/annealing_furnace/button_hover",
+    "down": "feedback:skin/annealing_furnace/button_down",
+    "off": "feedback:skin/annealing_furnace/button_off",
+    "primary": "feedback:skin/annealing_furnace/button_primary",
+    "primary_hover": "feedback:skin/annealing_furnace/button_primary"
+  },
+  "sounds": {
+    "click": "minecraft:block.iron_trapdoor.close",
+    "open": null,
+    "close": null,
+    "cues": {}
+  },
+  "reveal": "none",
+  "decor": [
+    {
+      "sprite": "feedback:skin/annealing_furnace/damper",
+      "anchor": "top_right",
+      "x": -8,
+      "y": 8,
+      "w": 24,
+      "h": 10,
+      "heat": false
+    }
+  ]
+}

@@ -1464,6 +1464,10 @@ public abstract class GuiSkin {
 
     /** The Kiln's fired clay, a data skin: everything it is lives in {@code gui_skin/kiln.json} and its sprites. */
     public static final GuiSkin KILN = new SpriteSkin("kiln");
+    /** The Annealing Furnace's dull cast iron, a data skin. */
+    public static final GuiSkin ANNEALING_FURNACE = new SpriteSkin("annealing_furnace");
+    /** The Improved Furnace's stone with brass fittings and its thermowell, a data skin. */
+    public static final GuiSkin IMPROVED_FURNACE = new SpriteSkin("improved_furnace");
 
     /**
      * A phosphor terminal: black glass with a faint glow, scanlines, one slow bright band rolling down it, light-on-black text. Buttons

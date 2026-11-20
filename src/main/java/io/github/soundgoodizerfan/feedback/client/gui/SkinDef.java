@@ -16,11 +16,12 @@ import net.minecraft.resources.ResourceLocation;
 /**
  * A data skin as its JSON describes it ({@code assets/feedback/gui_skin/<name>.json}, format in {@code docs/gui/gui_skins.md}): the
  * seven colours, the GUI sprites for the panel, slot and button states, sounds by id, the reveal kind, decor layers and an optional
- * named code effect. Immutable; a reload replaces it. Sprites are vanilla GUI sprites ({@code textures/gui/sprites/<path>.png}, with
+ * named code effect. The panel is a tiled or nine-slice sprite, optionally dimmed by a {@code wash} colour so ink reads on it and
+ * edged by a {@code frame} sprite (nine-slice, transparent centre). Immutable; a reload replaces it. Sprites are vanilla GUI sprites ({@code textures/gui/sprites/<path>.png}, with
  * a {@code .mcmeta} for nine-slice borders or tiling), so the sprite atlas does the slicing.
  */
 record SkinDef(int ink, int dim, int accent, int warn, int well, int trim, int plate,
-               ResourceLocation panel, boolean shadow, ResourceLocation slot, Map<String, ResourceLocation> buttons,
+               ResourceLocation panel, boolean shadow, int wash, ResourceLocation frame, ResourceLocation slot, Map<String, ResourceLocation> buttons,
                String click, String open, String close, Map<String, String> cues, String reveal, List<Decor> decor, String effect) {
 
     /** One sprite laid over the panel: {@code anchor} names the panel point it hangs from, (x, y) is the offset, w by h its size. */
@@ -48,6 +49,8 @@ record SkinDef(int ink, int dim, int accent, int warn, int well, int trim, int p
                 colour(c, "plate"),
                 panel.has("sprite") ? ResourceLocation.parse(panel.get("sprite").getAsString()) : null,
                 !panel.has("shadow") || panel.get("shadow").getAsBoolean(),
+                panel.has("wash") ? colour(panel, "wash") : 0,
+                panel.has("frame") ? ResourceLocation.parse(panel.get("frame").getAsString()) : null,
                 json.has("slot") ? ResourceLocation.parse(json.get("slot").getAsString()) : null, Map.copyOf(button),
                 str(sounds, "click", null), str(sounds, "open", null), str(sounds, "close", null), Map.copyOf(cues),
                 str(json, "reveal", "none"), List.copyOf(decor), str(json, "effect", null));
