@@ -47,6 +47,11 @@ public class FormBlock extends Block {
         return BlockBehaviour.Properties.of().mapColor(MapColor.NONE).strength(0.3f).sound(SoundType.GLASS).noOcclusion();
     }
 
+    /** The material this block is made of. */
+    public ResourceLocation material() {
+        return material;
+    }
+
     /** Whether this is a block of foodstuff. */
     public boolean food() {
         return food;

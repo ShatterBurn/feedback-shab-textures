@@ -20,6 +20,7 @@ A vehicle is a build of [finespace](Finespace.md) and full-size blocks that a [L
 | **[Propeller](Propeller.md)** | Pulls the whole body along its facing from a turning shaft. |
 | **[Gas Cell](Gas_Cell.md)** | Holds a lift gas; an [Airship](Airship.md) floats on a block of them. |
 | **[Flight Sensor](Instruments.md#flight-sensor)** | Reads altitude, airspeed, pitch, roll, vertical speed or air density for a program; right-click opens the [Contraption Diagram](Instruments.md#contraption-diagram) of every force on the vehicle. |
+| **[Bearing Sensor](Bearing_Sensor.md)** | In the [Gap](The_Gap.md), reads the turn, tip or distance to the End for a program. |
 | **[Driver's Seat](#the-drivers-seat)** | Sit in it; your keyboard becomes the car's controls. |
 
 An engine, transmission, propeller, jet or thruster weighs on a vehicle what the **mass** bar of its drawing on the Blueprint Table shows, and the total mass the lift reports includes it.

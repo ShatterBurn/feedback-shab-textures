@@ -51,13 +51,13 @@ public final class SpaceTravel {
         if (from.dimension().equals(GAP)) return -1;
         ServerLevel gap = from.getServer().getLevel(GAP);
         if (gap == null) return -2;
-        return cross(from, gap, body, SpaceTuning.ENTRY_Y, true);
+        return cross(from, gap, body, flat(body, SpaceTuning.ENTRY_Y), true, SpaceTuning.GAP_SCALE, v -> v);
     }
 
     /** Bodies moved, or -1 when {@code body} is not in the Gap. Arrives where the Overworld's air is thin but not zero. */
     public static int back(ServerLevel from, ServerSubLevel body) {
         if (!from.dimension().equals(GAP)) return -1;
-        return cross(from, from.getServer().overworld(), body, SpaceTuning.RETURN_Y, false);
+        return cross(from, from.getServer().overworld(), body, flat(body, SpaceTuning.RETURN_Y), false, 1.0, v -> v);
     }
 
     /**
@@ -80,6 +80,7 @@ public final class SpaceTravel {
             p.fallDistance = fall;
             p.hurtMarked = true;
             p.setRemainingFireTicks(SpaceTuning.REENTRY_FIRE_TICKS);
+            ScaleAboard.set(p, 1.0);
             fade(java.util.List.of(p), false);
         }
     }
@@ -119,12 +120,21 @@ public final class SpaceTravel {
         return new Rider(p, on.getUniqueId(), local, new Vec3(v.x / 20, v.y / 20, v.z / 20));
     }
 
+    /** The body's own x and z at height {@code y}. */
+    private static Vector3d flat(ServerSubLevel body, double y) {
+        var p = body.logicalPose().position();
+        return new Vector3d(p.x(), y, p.z());
+    }
+
     /**
-     * Moves {@code body} and its chain to {@code target} at height {@code y}. Dimensional Sable carries what stands inside each
+     * Moves {@code body} and its chain to {@code target} at {@code at}, to scale {@code scale}; its velocity is converted by the scale
+     * ratio and then passed through {@code bend} (blocks a second in and out, the same for everyone carried). Dimensional Sable carries what stands inside each
      * body's box; a craft moving several blocks a tick leaves a rider trailing outside it, so everyone Sable has tracked on the chain
      * is also brought across to the same place on the body afterwards, if the move left them behind.
      */
-    private static int cross(ServerLevel from, ServerLevel target, ServerSubLevel body, double y, boolean up) {
+    static int cross(ServerLevel from, ServerLevel target, ServerSubLevel body, Vector3d at, boolean up, double scale,
+            java.util.function.UnaryOperator<Vector3d> bend) {
+        double ratio = scale / BodyScale.of(body);
         var chain = SubLevelWarper.getSubLevelGroup(body);
         var ids = new java.util.HashSet<java.util.UUID>();
         for (ServerSubLevel b : chain)
@@ -149,11 +159,23 @@ public final class SpaceTravel {
             for (ServerSubLevel b : fromContainer.getAllSubLevels())
                 for (ServerPlayer p : seeing)
                     b.getTrackingPlayers().remove(p.getUUID());
-        Vector3d at = new Vector3d(body.logicalPose().position());
-        int n = SubLevelWarper.warpConnectedSubLevels(body, target, at.set(at.x, y, at.z));
+        int n = SubLevelWarper.warpConnectedSubLevels(body, target, at);
         if (n <= 0)
             return n;
         var container = dev.ryanhcode.sable.api.sublevel.ServerSubLevelContainer.getContainer(target);
+        // The craft is scaled on the far side: lengths scale by k and time does not, so every speed scales by k with them.
+        if (container.getSubLevel(body.getUniqueId()) instanceof ServerSubLevel moved) {
+            SubLevelScale.apply(moved, scale);
+            for (ServerSubLevel b : SubLevelWarper.getSubLevelGroup(moved)) {
+                var handle = dev.ryanhcode.sable.api.physics.handle.RigidBodyHandle.of(b);
+                Vector3d v = handle.getLinearVelocity(new Vector3d());
+                handle.addLinearAndAngularVelocity(bend.apply(new Vector3d(v).mul(ratio)).sub(v), new Vector3d());
+                var bb = b.boundingBox();
+                for (net.minecraft.world.entity.LivingEntity e : target.getEntitiesOfClass(net.minecraft.world.entity.LivingEntity.class,
+                        new net.minecraft.world.phys.AABB(bb.minX(), bb.minY(), bb.minZ(), bb.maxX(), bb.maxY(), bb.maxZ()).inflate(2)))
+                    ScaleAboard.set(e, scale);
+            }
+        }
         for (Rider r : riders) {
             if (container.getSubLevel(r.body()) instanceof ServerSubLevel moved) {
                 Vec3 w = moved.logicalPose().transformPosition(r.local());
@@ -161,10 +183,13 @@ public final class SpaceTravel {
             }
             // The craft keeps its speed across, so its rider must, or it leaves them behind.
             if (r.player().level() == target) {
-                r.player().setDeltaMovement(r.velocity());
+                Vector3d v = bend.apply(new Vector3d(r.velocity().x * 20 * ratio, r.velocity().y * 20 * ratio, r.velocity().z * 20 * ratio));
+                r.player().setDeltaMovement(v.x / 20, v.y / 20, v.z / 20);
                 r.player().hurtMarked = true;
             }
         }
+        for (ServerPlayer p : seeing)
+            ScaleAboard.set(p, scale);
         fade(seeing, up);
         return n;
     }
