@@ -1,0 +1,353 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "particle": "feedback:block/creative_tool_table_bottom",
+    "bottom": "feedback:block/creative_tool_table_bottom",
+    "top": "feedback:block/creative_tool_table_top",
+    "side": "feedback:block/creative_tool_table_side",
+    "saw": "feedback:block/creative_tool_table_saw",
+    "wood": "feedback:block/creative_housing",
+    "metal": "feedback:block/creative_steel",
+    "baked": "feedback:block/creative_tool_table_faces"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        9,
+        16
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#bottom",
+          "cullface": "down"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#top"
+        },
+        "north": {
+          "uv": [
+            0,
+            7,
+            16,
+            16
+          ],
+          "texture": "#side"
+        },
+        "south": {
+          "uv": [
+            0,
+            7,
+            16,
+            16
+          ],
+          "texture": "#side"
+        },
+        "west": {
+          "uv": [
+            0,
+            7,
+            16,
+            16
+          ],
+          "texture": "#side"
+        },
+        "east": {
+          "uv": [
+            0,
+            7,
+            16,
+            16
+          ],
+          "texture": "#side"
+        }
+      }
+    },
+    {
+      "from": [
+        1,
+        9,
+        8
+      ],
+      "to": [
+        15,
+        16,
+        8
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            1,
+            9,
+            15,
+            16
+          ],
+          "texture": "#saw"
+        },
+        "south": {
+          "uv": [
+            15,
+            9,
+            1,
+            16
+          ],
+          "texture": "#saw"
+        }
+      }
+    },
+    {
+      "name": "hammer_handle",
+      "from": [
+        2,
+        9,
+        3
+      ],
+      "to": [
+        9,
+        11,
+        5
+      ],
+      "faces": {
+        "north": {
+          "texture": "#baked",
+          "uv": [
+            0.0,
+            0.0,
+            0.875,
+            16.0
+          ]
+        },
+        "south": {
+          "texture": "#baked",
+          "uv": [
+            1.0,
+            0.0,
+            1.875,
+            16.0
+          ]
+        },
+        "east": {
+          "texture": "#baked",
+          "uv": [
+            2.0,
+            0.0,
+            2.25,
+            16.0
+          ]
+        },
+        "west": {
+          "texture": "#baked",
+          "uv": [
+            2.375,
+            0.0,
+            2.625,
+            16.0
+          ]
+        },
+        "up": {
+          "texture": "#baked",
+          "uv": [
+            2.75,
+            0.0,
+            3.625,
+            16.0
+          ]
+        },
+        "down": {
+          "texture": "#baked",
+          "uv": [
+            3.75,
+            0.0,
+            4.625,
+            16.0
+          ]
+        }
+      }
+    },
+    {
+      "name": "hammer_head",
+      "from": [
+        8,
+        9,
+        2
+      ],
+      "to": [
+        12,
+        12,
+        6
+      ],
+      "faces": {
+        "north": {
+          "texture": "#metal"
+        },
+        "south": {
+          "texture": "#metal"
+        },
+        "east": {
+          "texture": "#metal"
+        },
+        "west": {
+          "texture": "#metal"
+        },
+        "up": {
+          "texture": "#metal"
+        },
+        "down": {
+          "texture": "#metal"
+        }
+      }
+    },
+    {
+      "name": "axe_handle",
+      "from": [
+        2,
+        9,
+        11
+      ],
+      "to": [
+        9,
+        11,
+        13
+      ],
+      "faces": {
+        "north": {
+          "texture": "#baked",
+          "uv": [
+            4.75,
+            0.0,
+            5.625,
+            16.0
+          ]
+        },
+        "south": {
+          "texture": "#baked",
+          "uv": [
+            5.75,
+            0.0,
+            6.625,
+            16.0
+          ]
+        },
+        "east": {
+          "texture": "#baked",
+          "uv": [
+            6.75,
+            0.0,
+            7.0,
+            16.0
+          ]
+        },
+        "west": {
+          "texture": "#baked",
+          "uv": [
+            7.125,
+            0.0,
+            7.375,
+            16.0
+          ]
+        },
+        "up": {
+          "texture": "#baked",
+          "uv": [
+            7.5,
+            0.0,
+            8.375,
+            16.0
+          ]
+        },
+        "down": {
+          "texture": "#baked",
+          "uv": [
+            8.5,
+            0.0,
+            9.375,
+            16.0
+          ]
+        }
+      }
+    },
+    {
+      "name": "axe_head_a",
+      "from": [
+        8,
+        9,
+        9
+      ],
+      "to": [
+        10,
+        11,
+        15
+      ],
+      "faces": {
+        "north": {
+          "texture": "#metal"
+        },
+        "south": {
+          "texture": "#metal"
+        },
+        "east": {
+          "texture": "#metal"
+        },
+        "west": {
+          "texture": "#metal"
+        },
+        "up": {
+          "texture": "#metal"
+        },
+        "down": {
+          "texture": "#metal"
+        }
+      }
+    },
+    {
+      "name": "axe_head_b",
+      "from": [
+        10,
+        9,
+        10
+      ],
+      "to": [
+        12,
+        11,
+        14
+      ],
+      "faces": {
+        "north": {
+          "texture": "#metal"
+        },
+        "south": {
+          "texture": "#metal"
+        },
+        "east": {
+          "texture": "#metal"
+        },
+        "west": {
+          "texture": "#metal"
+        },
+        "up": {
+          "texture": "#metal"
+        },
+        "down": {
+          "texture": "#metal"
+        }
+      }
+    }
+  ]
+}

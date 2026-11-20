@@ -29,10 +29,15 @@ public class StationBlock extends PartBenchBlock {
 
     private static final net.minecraft.world.phys.shapes.VoxelShape STONECUTTER_SHAPE = net.minecraft.world.level.block.Block.box(0, 0, 0, 16, 9, 16);
 
+    /** Mirrors models/block/creative_tool_table.json: the stonecutter's low table with the hammer and the axe laid on it (the saw is a flat plane, as vanilla's). */
+    private static final net.minecraft.world.phys.shapes.VoxelShape CREATIVE_SHAPE = net.minecraft.world.phys.shapes.Shapes.or(
+            STONECUTTER_SHAPE, net.minecraft.world.level.block.Block.box(2, 9, 3, 9, 11, 5), net.minecraft.world.level.block.Block.box(8, 9, 2, 12, 12, 6),
+            net.minecraft.world.level.block.Block.box(2, 9, 11, 9, 11, 13), net.minecraft.world.level.block.Block.box(8, 9, 9, 12, 11, 15));
+
     @Override
     protected net.minecraft.world.phys.shapes.VoxelShape getShape(BlockState state, net.minecraft.world.level.BlockGetter level,
             BlockPos pos, net.minecraft.world.phys.shapes.CollisionContext context) {
-        return station == Station.STONECUTTING ? STONECUTTER_SHAPE : super.getShape(state, level, pos, context);
+        return station == Station.STONECUTTING ? STONECUTTER_SHAPE : station == Station.CREATIVE ? CREATIVE_SHAPE : super.getShape(state, level, pos, context);
     }
 
     @Override
