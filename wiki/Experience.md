@@ -57,6 +57,8 @@ P X P      X XP wire, A amethyst shard
 ```
 P is a wrought iron plate. The shrieker draws orbs in, the amethyst focuses the pull, and the XP wire carries what is gathered into the run.
 
+The block shows its parts: a sculk shrieker core with an iron plate standing at each corner, two amethyst crystals and the lever on top, and a copper XP-wire outlet at the foot of the front. The lever leans one way when the draw is open and the other when it is shut.
+
 The Ore, Trade and Smelter Taps share one body, with a part in the middle:
 
 ```

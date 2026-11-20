@@ -1,7 +1,10 @@
 {
   "variants": {
-    "": {
+    "open=true": {
       "model": "feedback:block/orb_absorber"
+    },
+    "open=false": {
+      "model": "feedback:block/orb_absorber_closed"
     }
   }
 }

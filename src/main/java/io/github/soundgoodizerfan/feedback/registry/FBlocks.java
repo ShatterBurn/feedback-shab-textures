@@ -1154,7 +1154,8 @@ public class FBlocks {
             () -> new io.github.soundgoodizerfan.feedback.machine.xp.XpTapBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.COLOR_CYAN)
                     .strength(2.0f)
-                    .sound(SoundType.METAL),
+                    .sound(SoundType.METAL)
+                    .noOcclusion(),
                     io.github.soundgoodizerfan.feedback.machine.xp.XpTapBlock.Kind.ORB));
     public static final DeferredBlock<io.github.soundgoodizerfan.feedback.machine.xp.XpTapBlock> ORE_TAP = BLOCKS.register("ore_tap",
             () -> new io.github.soundgoodizerfan.feedback.machine.xp.XpTapBlock(BlockBehaviour.Properties.of()
