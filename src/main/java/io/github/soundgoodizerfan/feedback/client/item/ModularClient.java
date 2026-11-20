@@ -71,6 +71,12 @@ public final class ModularClient {
             // The hafted tool is drawn as its front face's tool: 1 plus the place of the face's head kind in ModularFaces.KINDS.
             net.minecraft.client.renderer.item.ItemProperties.register(FModular.HAFTED_TOOL.get(), Feedback.id("face"),
                     (stack, level, entity, seed) -> face(stack));
+            // The XP vial shows liquid in its glass once it holds any (1), an empty glass otherwise (0).
+            net.minecraft.client.renderer.item.ItemProperties.register(FModular.XP_CONTAINER.get(), Feedback.id("xp_filled"),
+                    (stack, level, entity, seed) -> {
+                        var store = stack.get(io.github.soundgoodizerfan.feedback.registry.FDataComponents.XP_STORE.get());
+                        return store != null && store.points() > 0 ? 1f : 0f;
+                    });
             registerDraw();
         });
     }
