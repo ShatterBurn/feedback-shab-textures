@@ -6,6 +6,20 @@ The Gap is the dimension above the Overworld's sky: a void with no gravity, no a
 
 Air in the Overworld thins with height and is gone by y 312 (see [air density](Vehicles.md#air-density)). A [vehicle](Vehicles.md) that stays in air of zero density for about a second leaves for the Gap, and the screen clears from black. Below the Gap's floor the vehicle returns to the Overworld, and the screen clears from white-orange. Below the floor, a player standing on no vehicle falls out into the Overworld too: same x and z, at y 300 in thin air, with the same speed and fall distance, and on fire for 10 s. A player on a vehicle goes with it. Wings, [propellers](Propeller.md) and air-breathing [thrusters](Thruster.md) fade as the air thins and give nothing at the top.
 
+## Size
+
+A craft that enters the Gap shrinks to a hundredth of its size, with everything alive aboard: your size, reach, step, jump, walking speed and fall distance shrink with it. The craft and everyone aboard grow back on the return. Speeds and distances shrink too, so a long trip is short in blocks and takes the same time.
+
+## The End by rocket
+
+The End is a point in the Gap along a fixed bearing, the gas giant in the sky (see below), about 120 blocks from the Gap's origin point (x 0, z 0). A craft that comes within 15 blocks of it while heading toward it arrives in the End at full size, over the main island, coming in fast and descending. A craft that misses has no rim to stop it and coasts on. A [Bearing Sensor](Bearing_Sensor.md) reads the turn and the distance to the End.
+
+The End's air is very thin and holds no oxygen, and is gone above y 320. A [thruster](Thruster.md) that carries its own oxidiser works there; an air-breathing one does not. Leaving upward out of the End's air, as in the Overworld climb, returns the craft to the Gap just short of the End, shrunk again.
+
+## Coming back
+
+A body moving fast through air heats on its leading face. Material blocks on the windward side burn off a voxel at a time when the heat passes what the material can take: burnable ones oxidize and metals melt. Thick burnable layers last longer, and refractory plates hold. Blocks that are only touching are not broken. A hard landing hurts everyone aboard like a fall of the speed change.
+
 ## Living in it
 
 - **Weight.** You have no weight, and you keep your speed.
@@ -25,7 +39,7 @@ Four planets hang at fixed bearings, so each one is a landmark to steer toward:
 - **Crystal world.** Violet and teal.
 - **The End's gas giant.** Banded, low on the horizon and small.
 
-Their size does not change as you travel.
+The other three keep their size as you travel. The gas giant starts small and grows as you close on the End.
 
 ## Radiation
 
