@@ -1,6 +1,6 @@
 # Chemicals
 
-The gases and liquids of the chemical chain: hydrogen and oxygen from the [Electrolyser](Electrolyser.md), brine, lye, acids, carbon dioxide, leach liquors, liquid teleportant, heavy water, fluorine compounds, bleach, nitrogen, argon, helium, ammonia, ethylene, the polyester chain and the molten cryolite bath. Gases are stored in a [Gas Tank](Gas_Tank.md), carried by a [Pipe](Pipe.md) and compressed by a [Gas Compressor](Gas_Compressor.md). Most are made in the [Reactor](Reactor.md).
+The gases and liquids of the chemical chain: hydrogen and oxygen from the [Electrolyser](Electrolyser.md), brine, lye, battery electrolyte, acids, carbon dioxide, leach liquors, liquid teleportant, heavy water, fluorine compounds, bleach, nitrogen, argon, helium, ammonia, ethylene, the polyester chain and the molten cryolite bath. Gases are stored in a [Gas Tank](Gas_Tank.md), carried by a [Pipe](Pipe.md) and compressed by a [Gas Compressor](Gas_Compressor.md). Most are made in the [Reactor](Reactor.md).
 
 ## Hydrogen
 
@@ -27,6 +27,10 @@ Salt water. Dissolve Salt in water in a [Reactor](Reactor.md). The [Electrolyser
 ## Lye
 
 A strong base. It is left in the Electrolyser's cell when brine is split; draw it off a side face. It dissolves bauxite in the Reactor ([Making Aluminum](Making_Aluminum.md)), turns chlorine into bleach, and can serve as the electrolyte of an [Electrolytic Cell](Electrolytic_Cell.md). It bites vessels that are not lined for it ([Hazards](Hazards.md)).
+
+## Battery Electrolyte
+
+A flammable liquid: a lithium salt in an organic carbonate. Make it in a [Reactor](Reactor.md) from a lithium ingot with ethylene, carbon dioxide and hydrofluoric acid; it also gives off hydrogen. It fills the cells of a lithium-ion [Battery](Battery.md). Lithium comes from spodumene concentrate smelted with charcoal ([Materials](Materials.md#the-metals)).
 
 ## Chlorine
 

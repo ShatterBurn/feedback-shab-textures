@@ -1,12 +1,12 @@
 # Battery
 
-A rechargeable battery, lead-acid or nickel-iron: cells in series, rated a band, that store charge in Eu. It charges from a line in its band or a higher one and gives its own band back when the line is lower, at full current until almost empty.
+A rechargeable battery, lead-acid, nickel-iron or lithium-ion: cells in series, rated a band, that store charge in Eu. It charges from a line in its band or a higher one and gives its own band back when the line is lower, at full current until almost empty.
 
 ## Crafting
 
 Shape the parts at a bench and put them together as for any [modular tool](Tools_and_Weapons.md); drawing and assembling a battery take Electrical Treatise I: Cells and Static Charge ([Treatise](Treatise.md)). It has two parts:
 
-- **Battery Plates**, shaped from plates of a metal that takes a charge: lead or [nickel-iron](Materials.md#nickel-iron). The plates have an **anode** and a **cathode** slot, so the two electrodes can be different metals; both must take a charge, and a cell holds the mean of the pair's charge per ingot. Two steppers set the size: **cell size** (1 to 4), how much each cell holds, and **cell count** (1 to 12), how many cells sit in series.
+- **Battery Plates**, shaped from plates of a metal that takes a charge: lead, [nickel-iron](Materials.md#nickel-iron), or for a lithium-ion cell [graphite](Materials.md#graphite) as the anode with [cobalt](Materials.md#the-metals), [manganese](Materials.md#the-metals) or [vanadium](Materials.md#the-metals) as the cathode. The plates have an **anode** and a **cathode** slot, so the two electrodes can be different metals; both must take a charge, and a cell holds the mean of the pair's charge per ingot. Two steppers set the size: **cell size** (1 to 4), how much each cell holds, and **cell count** (1 to 12), how many cells sit in series.
 
 - **A case**: a pane, shard or sheet of an insulating material such as glass, ceramic or a polymer. The highest band the case holds off is the band the battery is **rated**: it charges from a line of that band or higher, and a line above it wears the battery.
 
@@ -16,13 +16,18 @@ The plate metal sets how much charge a plate holds, how it fares in the cold, ho
 | --- | --- | --- | --- | --- | --- |
 | Lead | standard | about 85% | half the capacity at 0 Tu | yes | sulfuric acid |
 | Nickel-iron | half | about 65% | most of it kept at 0 Tu | none | lye |
+| Lithium-ion (graphite anode, cobalt, manganese or vanadium cathode) | set by the pair of metals | about 95% | most of it kept at 0 Tu | none | [Battery Electrolyte](Chemicals.md#battery-electrolyte) |
+
+The charge per plate of a lithium-ion cell follows the pairing: the further apart the two metals sit in the reactivity order, the more an ingot holds. The cathode metal also sets how hot the case may get before the cell runs away (see below): cobalt 120 Tu, manganese 180 Tu, vanadium 320 Tu.
 
 ## Setting up
 
 Place the battery and fill it from a bucket or a [pipe](Pipe.md):
 
-- **Sulfuric acid** for lead plates, or [**lye**](Chemicals.md#lye) for nickel-iron: 250 mB per cell. Without it the battery is dry and does nothing. Each battery takes only its own liquid.
-- **Water**: a 1000 mB tank, topped up the same way. See [Water](Water.md).
+- **Sulfuric acid** for lead plates, [**lye**](Chemicals.md#lye) for nickel-iron, or [**Battery Electrolyte**](Chemicals.md#battery-electrolyte) for lithium-ion: 250 mB per cell. Without it the battery is dry and does nothing. Each battery takes only its own liquid.
+- **Water**: a 1000 mB tank, topped up the same way, for lead and nickel-iron. A lithium-ion battery has no water tank and takes no water. See [Water](Water.md).
+
+A lithium-ion battery is sealed. Keep rain off its top and water out of the blocks beside it.
 
 Wire it to a line like any other electrical block; see [Electricity](Electricity.md). Breaking it keeps its charge, water, electrolyte and condition in the item.
 
@@ -53,8 +58,19 @@ See [Hazards](Hazards.md) for the general rules.
 - **Wear.** **Ward** on the plates or case slows all of the wear below ([Enchanting Table](Enchanting_Table.md#on-a-machine)).
 - **Overdraw.** Drawing more than the limit heats the case and costs condition.
 - **Heat.** A case over 50 Tu costs condition. See [Heat](Heat.md).
+- **Water on a lithium-ion cell.** Rain falling on an open top, or water beside the case, makes hydrogen and costs condition. If the cell holds charge, it starts a runaway.
 - **Too high a band.** A line above the case's insulation band costs condition.
 - **Cold.** Capacity falls as the body cools below 20 Tu, to half at 0 Tu for lead and much less for nickel-iron, as in an [Ice Box](Ice_Box.md).
+
+### Thermal runaway
+
+A lithium-ion cell that is misused can run away. Jade shows *Running away*. Three things set it off:
+
+- The case reaches the cathode's limit (cobalt 120 Tu, manganese 180 Tu, vanadium 320 Tu).
+- Overcharge, or a line over the case's band: the excess turns to heat.
+- A heavy draw from a cell that was charged while below 0 Tu.
+
+A cell running away burns its charge as heat, faster the hotter it gets, so a full cell burns longest. It lights the air beside it and passes heat to neighboring batteries, so a stack of cells cascades. Sand beside it eases it. Water makes hydrogen and makes it worse. It ends when the charge is gone, and costs condition meanwhile. Keep cells cool, on a line in their band, and spaced apart or walled with sand.
 
 A charged battery with a case rated MV or more shocks whoever touches it; see [Hazards](Hazards.md#shock).
 

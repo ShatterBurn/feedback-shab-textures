@@ -661,21 +661,35 @@ public record Material(St hardness, Tu minTemperature, Tu maxTemperature,
      * Plate figures of a secondary (rechargeable) cell, per cell. A chemistry is one more material file with this block.
      *
      * @param emptyShare       the share of its rated current a cell still gives when empty: it holds full to the knee, ten per cent charge, then falls to this (the cliff).
-     * @param euPerIngot       charge one ingot of plate holds per cell, in Eu.
      * @param coldFactor       the share of capacity left at the coldest ambient; 1 at room temperature.
      * @param electrolyte      the fluid tag (id) the cell is filled with: sulfuric acid for lead, lye for an alkaline cell.
      * @param chargeEfficiency the share of charged work kept; the rest heats the case.
      * @param gassing          whether overcharge electrolyses water into hydrogen; false for a cell that shrugs it off.
+     * @param euPerIngot       charge one ingot of plate holds per cell, in Eu, when the chemistry states it. Absent, the pair's capacity is
+     *                         derived from the gap between the anode's {@code hostPotential} and the cathode's electrode potential.
+     * @param hostPotential    the potential the anode effectively sits at (graphite hosting lithium sits at lithium's), volts; absent for an
+     *                         anode whose own plate is the active metal.
+     * @param runawayTu        the case temperature at which the cell heats itself; absent for a cell that never runs away.
+     * @param runawayHeat      the share of stored Eu that leaves as heat once a cell runs away (0 for none).
+     * @param sealed           whether water in the case ruins the cell (rain, flooding, a bucket).
+     * @param chargeFloorTu    the body temperature under which a charge plates the cell instead of filling it; absent for a cell that does not mind.
      */
-    public record SecondaryCell(float emptyShare, float euPerIngot, float coldFactor,
-                                ResourceLocation electrolyte, float chargeEfficiency, boolean gassing) {
+    public record SecondaryCell(float emptyShare, Optional<Float> euPerIngot, float coldFactor,
+                                ResourceLocation electrolyte, float chargeEfficiency, boolean gassing,
+                                Optional<Float> hostPotential, Optional<Float> runawayTu, float runawayHeat,
+                                boolean sealed, Optional<Float> chargeFloorTu) {
         static final Codec<SecondaryCell> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 Codec.FLOAT.optionalFieldOf("empty_share", 1f).forGetter(SecondaryCell::emptyShare),
-                Codec.FLOAT.fieldOf("eu_per_ingot").forGetter(SecondaryCell::euPerIngot),
+                Codec.FLOAT.optionalFieldOf("eu_per_ingot").forGetter(SecondaryCell::euPerIngot),
                 Codec.FLOAT.optionalFieldOf("cold_factor", 1f).forGetter(SecondaryCell::coldFactor),
                 ResourceLocation.CODEC.optionalFieldOf("electrolyte", ResourceLocation.fromNamespaceAndPath("feedback", "battery_acid")).forGetter(SecondaryCell::electrolyte),
                 Codec.FLOAT.optionalFieldOf("charge_efficiency", FTuning.BATTERY_CHARGE_EFFICIENCY).forGetter(SecondaryCell::chargeEfficiency),
-                Codec.BOOL.optionalFieldOf("gassing", true).forGetter(SecondaryCell::gassing)
+                Codec.BOOL.optionalFieldOf("gassing", true).forGetter(SecondaryCell::gassing),
+                Codec.FLOAT.optionalFieldOf("host_potential").forGetter(SecondaryCell::hostPotential),
+                Codec.FLOAT.optionalFieldOf("runaway_tu").forGetter(SecondaryCell::runawayTu),
+                Codec.FLOAT.optionalFieldOf("runaway_heat", 0f).forGetter(SecondaryCell::runawayHeat),
+                Codec.BOOL.optionalFieldOf("sealed", false).forGetter(SecondaryCell::sealed),
+                Codec.FLOAT.optionalFieldOf("charge_floor_tu").forGetter(SecondaryCell::chargeFloorTu)
         ).apply(instance, SecondaryCell::new));
     }
 

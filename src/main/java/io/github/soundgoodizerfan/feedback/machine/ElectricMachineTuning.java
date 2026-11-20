@@ -353,6 +353,26 @@ public final class ElectricMachineTuning {
 
     public static final float BATTERY_MASS_PER_CELL = 40f, BATTERY_LEAK_PER_CELL = 0.2f;
 
+    /** Eu one ingot of plate holds per volt of the electrode gap, for a chemistry that states no figure of its own (placeholder). */
+    public static final float BATTERY_EU_PER_INGOT_PER_VOLT = 30000f;
+
+    /**
+     * Thermal runaway (placeholders): share of a cell's Eu burnt a tick at the trigger and how fast that grows per Tu over it, Work
+     * per Eu burnt (scaled by the material's {@code runaway_heat}), condition lost a tick, the Tu a cell must cool under the trigger
+     * before it settles, the share of heat a neighbouring sand block takes, and the water a doused fire turns to hydrogen mB.
+     */
+    public static final float RUNAWAY_BURN_SHARE = 0.004f, RUNAWAY_TEMP_SCALE = 60f, RUNAWAY_WORK_PER_EU = 0.4f,
+            RUNAWAY_WEAR = 0.002f, RUNAWAY_SETTLE_TU = 30f, RUNAWAY_SMOTHER_SHARE = 0.6f, RUNAWAY_WATER_GAS_MB = 40f;
+
+    /** Cold plating: condition lost per Eu charged under the floor, and the share of the rated limit a draw must reach to set a plated cell off. */
+    public static final float BATTERY_PLATING_WEAR_PER_PACKET = 0.0004f, BATTERY_PLATED_TRIP_SHARE = 0.9f, BATTERY_WET_WEAR = 0.05f;
+
+    /** Heat link between touching batteries while one runs away, and the chance a tick-of-flame lights a free neighbouring block. */
+    public static final float RUNAWAY_LINK = 0.8f, RUNAWAY_FIRE_CHANCE = 0.15f;
+
+    /** Ticks between the checks for water in a sealed case and for a flame to light the vapour of a cell running away. */
+    public static final int BATTERY_SEAL_CHECK_TICKS = 20, RUNAWAY_FLAME_TICKS = 10;
+
     /** Overvoltage past the case's insulation band: condition lost per share over, per tick. */
     public static final float BATTERY_OVERVOLT_WEAR = 0.00005f;
 

@@ -264,6 +264,10 @@ public final class FFluids {
             FLUIDS.register("lye", () -> new BaseFlowingFluid.Source(petro(FFluidTypes.LYE, FFluids.LYE, FFluids.LYE_FLOWING)));
     public static final DeferredHolder<Fluid, Fluid> LYE_FLOWING =
             FLUIDS.register("lye_flowing", () -> new BaseFlowingFluid.Flowing(petro(FFluidTypes.LYE, FFluids.LYE, FFluids.LYE_FLOWING)));
+    public static final DeferredHolder<Fluid, Fluid> BATTERY_CARBONATE =
+            FLUIDS.register("battery_carbonate", () -> new BaseFlowingFluid.Source(petro(FFluidTypes.BATTERY_CARBONATE, FFluids.BATTERY_CARBONATE, FFluids.BATTERY_CARBONATE_FLOWING)));
+    public static final DeferredHolder<Fluid, Fluid> BATTERY_CARBONATE_FLOWING =
+            FLUIDS.register("battery_carbonate_flowing", () -> new BaseFlowingFluid.Flowing(petro(FFluidTypes.BATTERY_CARBONATE, FFluids.BATTERY_CARBONATE, FFluids.BATTERY_CARBONATE_FLOWING)));
     public static final DeferredHolder<Fluid, Fluid> METHANE =
             FLUIDS.register("methane", () -> new BaseFlowingFluid.Source(petro(FFluidTypes.METHANE, FFluids.METHANE, FFluids.METHANE_FLOWING)));
     public static final DeferredHolder<Fluid, Fluid> METHANE_FLOWING =

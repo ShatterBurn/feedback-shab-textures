@@ -40,6 +40,10 @@
   "electrical": {
     "drop": 0.185,
     "electrode_potential": -0.28,
+    "secondary_cell": {
+      "runaway_tu": 120,
+      "runaway_heat": 0.6
+    },
     "conductivity": 0.27
   },
   "ampacity": 0.612,
