@@ -74,6 +74,21 @@ Each of the four steps is 1/16 of a block. What you see is what collides and wha
 
 Set a Fine Gauge to **Wedge** mode, hold it in one hand and a mote in the other, and the mote goes in as a ramp of itself. It takes each face's own texture and tint (a grass wedge is green on top), and mining it gives the mote back. Rotation parts and joints cannot be cut to a wedge.
 
+## Voxel Case
+
+A hinged iron case that carries one whole block of finespace, with everything in it.
+
+```
+PP
+RP
+```
+
+R is a Wrought Iron Rod and P is a Wrought Iron Plate. Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, holding Electrical Treatise III: Circuits ([Treatise](Treatise.md)).
+
+Use it empty on a block of Finespace: every voxel, its look, wear and spin, and every hosted machine with the item it was made from, goes into the case and the block becomes air. Use it full on the clicked block if it can be replaced, otherwise on the spot beside the face you clicked: the block comes back exactly as it was. The case holds one block and does not stack. A full case glints, and its tooltip says how many voxels and machines it holds.
+
+A block with a joint or a belt cannot be carried: the message says it is tied to something outside the block.
+
 ## Rotation in finespace
 
 A [Shaft](Shaft.md), [Bearing](Bearing.md), [Cog](Cogs.md), Gearbox, [Clutch](Clutch.md#fine-clutch), [Flywheel](Flywheel.md), [Rotary Bearing](Rotary_Bearing.md) or [Ring Gear](Ring_Gear.md) can be a voxel. Hold the part's mote and right-click. A shaft lies along the face you click and joins the voxels it touches end to end. A cog takes the axis of the shaft you click it onto. Cogs mesh by the same rules as full-size [Cogs](Cogs.md), at a quarter of the size.
