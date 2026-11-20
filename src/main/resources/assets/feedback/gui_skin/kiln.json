@@ -1,0 +1,16 @@
+{
+  "colours": {
+    "ink": "#F2DCC4", "dim": "#B08A6A", "accent": "#FFC070", "warn": "#FF6A50",
+    "well": "#1E100A", "trim": "#7A4A30", "plate": "#5A2E1C"
+  },
+  "panel": { "sprite": "minecraft:tooltip/background", "shadow": true },
+  "slot": "minecraft:container/slot",
+  "button": {
+    "normal": "minecraft:widget/button",
+    "hover": "minecraft:widget/button_highlighted",
+    "off": "minecraft:widget/button_disabled"
+  },
+  "sounds": { "click": "minecraft:block.calcite.hit", "open": null, "close": null, "cues": {} },
+  "reveal": "none",
+  "decor": []
+}

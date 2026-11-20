@@ -844,10 +844,10 @@ public class BenchScreen extends SkinnedScreen<PartBenchMenu> {
         if (ClientSettings.reduceMotion())
             return;
         float t = GuiStyle.time();
-        switch (skin) {
-            case WOOD -> drift(g, x, y, w, h, t, 9, 0xEBD9AE, false, 5, 1, 120);
-            case STONE -> drift(g, x, y, w, h, t, 8, 0x9C9890, false, 0, 1, 130);
-            case BRICK -> {
+        switch (skin.name()) {
+            case "WOOD" -> drift(g, x, y, w, h, t, 9, 0xEBD9AE, false, 5, 1, 120);
+            case "STONE" -> drift(g, x, y, w, h, t, 8, 0x9C9890, false, 0, 1, 130);
+            case "BRICK" -> {
                 if (!menu.centreStack().isEmpty())
                     drift(g, x, y, w, h, t, 6, 0xFFFFFF, true, 2, 2, 70);
             }

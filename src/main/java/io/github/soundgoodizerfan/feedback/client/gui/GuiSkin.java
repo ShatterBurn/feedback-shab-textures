@@ -23,14 +23,17 @@ import java.util.concurrent.ThreadLocalRandom;
  * the block picks it (a forge-era vessel is iron, a drafting stand is paper). Everything is drawn
  * with fills, so there is nothing to license and every screen on a skin moves when this file does.
  */
-public enum GuiSkin {
+public abstract class GuiSkin {
+
+    private static final java.util.List<GuiSkin> ALL = new java.util.ArrayList<>();
+
 
     /**
      * Cyanotype on a drafting stand: white ink on blue paper, a grid, a ruled double border. Buttons
      * are drawn boxes that firm up under the pointer; the primary one is a red rubber stamp. The
      * sheet unrolls from the left when the screen opens and rolls back up when it closes.
      */
-    BLUEPRINT(0xFFE8F1FF, 0xFF8FB3DA, 0xFFFFE070, 0xFFFF7A6E, 0x38000000, 0x90E8F1FF, 0x28FFFFFF) {
+    public static final GuiSkin BLUEPRINT = new GuiSkin("BLUEPRINT", 0xFFE8F1FF, 0xFF8FB3DA, 0xFFFFE070, 0xFFFF7A6E, 0x38000000, 0x90E8F1FF, 0x28FFFFFF) {
         private static final int PAPER = 0xFF1B4C86, STAMP = 0xFFE85A4F;
         /** Fibres in the paper, fixed so the sheet does not crawl. Fractions of the sheet, x then y. */
         private static final float[] SPECKLE = speckle();
@@ -131,14 +134,14 @@ public enum GuiSkin {
             g.fill(rx + 1, y - 2, rx + 3, y + h + 2, 0xFF6A9CD8);
             g.fill(rx + 5, y - 2, rx + 6, y + h + 2, 0xFF143A66);
         }
-    },
+    };
 
     /**
      * The forge's: blackened iron lit only by its fire. Soot-dark at the top, a coal glow rising from the bottom edge,
      * dull scale on the plate, edges that catch the firelight. Buttons are cold iron that warm under the pointer; the
      * primary one is metal heated to glowing. The screen opens like a hatch, two iron shutters parting from the middle.
      */
-    FORGE(0xFFE6D2B4, 0xFF9A8470, 0xFFFF9A3C, 0xFFFF5A3C, 0xFF0A0807, 0xFF5A2E18, 0xFF2A201C) {
+    public static final GuiSkin FORGE = new GuiSkin("FORGE", 0xFFE6D2B4, 0xFF9A8470, 0xFFFF9A3C, 0xFFFF5A3C, 0xFF0A0807, 0xFF5A2E18, 0xFF2A201C) {
         private static final int IRON = 0xFF1C1816, EDGE = 0xFF070504, GLOW = 0xFFFF6A1E;
         /** Scale pitting on the plate, fixed: x, y, size, as fractions of the plate. */
         private static final float[] SCALE = scale();
@@ -261,7 +264,7 @@ public enum GuiSkin {
                 g.fill(x + 1, mid + gap, x + w - 1, mid + gap + 2, 0xFF5A2E18);
             }
         }
-    },
+    };
 
     /**
      * Atomic-age laboratory enamel: a dusty sage hammered-enamel cabinet face, never white, stencilled in dark ink. Cut corners, a cream
@@ -269,7 +272,7 @@ public enum GuiSkin {
      * printed scale ruler along the bottom edge. Buttons are putty push-plates; the primary one is rust enamel. The calm light sibling
      * of {@link #CONSOLE}. Fills and a fixed-seed dimple table, so nothing crawls but the lamp.
      */
-    ENAMEL(0xFF18211B, 0xFF3F4C43, 0xFF9A3A12, 0xFFA81C1C, 0xFF7F8B7C, 0xFF3B463E, 0xFFA7B1A1) {
+    public static final GuiSkin ENAMEL = new GuiSkin("ENAMEL", 0xFF18211B, 0xFF3F4C43, 0xFF9A3A12, 0xFFA81C1C, 0xFF7F8B7C, 0xFF3B463E, 0xFFA7B1A1) {
         private static final int FACE = 0xFF97A392, EDGE = 0xFF27302A, CREAM = 0xFFCFC9A8, RUST = 0xFFA8481A, CHROME = 0xFFC2C8BE;
         private static final float[] DIMPLE = dimples();
 
@@ -395,14 +398,14 @@ public enum GuiSkin {
         public SoundEvent close() {
             return FSounds.UI_TOGGLE.get();
         }
-    },
+    };
 
     /**
      * The same atomic-age laboratory after dark: a charcoal-teal enamel console with brass corner brackets and rails, a row of
      * indicator lamps along the foot (one breathing, the rest steady), and a slow glint of light drifting across the glass. Buttons are
      * brass-bezelled; the primary one is a lit amber lamp. Cream ink. The machine-room sibling of {@link #ENAMEL}.
      */
-    CONSOLE(0xFFE8DEC0, 0xFF8EA098, 0xFFFFB84A, 0xFFFF5A3C, 0xFF0C1719, 0xFF7A6330, 0xFF2A3C3F) {
+    public static final GuiSkin CONSOLE = new GuiSkin("CONSOLE", 0xFFE8DEC0, 0xFF8EA098, 0xFFFFB84A, 0xFFFF5A3C, 0xFF0C1719, 0xFF7A6330, 0xFF2A3C3F) {
         private static final int FACE = 0xFF1B2A2D, EDGE = 0xFF080F11, BRASS = 0xFFB08A3C, BRASS_LO = 0xFF6E5624;
 
         private static void bracket(GuiGraphics g, int x, int y, int sx, int sy) {
@@ -503,14 +506,14 @@ public enum GuiSkin {
         public SoundEvent close() {
             return FSounds.UI_TOGGLE.get();
         }
-    },
+    };
 
     /**
      * The first hearth: cobblestone, dimmed and flattened under a smoke-grey wash so it reads as
      * old masonry and not as a block face. No trim, no hardware; buttons are cut slabs. It opens
      * and closes with no ceremony. Vanilla's cobblestone is drawn in place, not copied.
      */
-    STONE(0xFFDCD6C8, 0xFF9C968A, 0xFFFFB05A, 0xFFFF6A50, 0xFF161411, 0x50FFFFFF, 0xFF3A3630) {
+    public static final GuiSkin STONE = new GuiSkin("STONE", 0xFFDCD6C8, 0xFF9C968A, 0xFFFFB05A, 0xFFFF6A50, 0xFF161411, 0x50FFFFFF, 0xFF3A3630) {
         private static final ResourceLocation COBBLE = ResourceLocation.withDefaultNamespace("textures/block/cobblestone.png");
         private static final int MORTAR = 0xFF14120F;
 
@@ -568,14 +571,14 @@ public enum GuiSkin {
         public SoundEvent close() {
             return SoundEvents.STONE_HIT;
         }
-    },
+    };
 
     /**
      * The enchanting table's: deep indigo going to violet, a faint noise of glyphs, trimmed in gold leaf with
      * a diamond at each corner. Buttons are violet with a gold rim that glows under the pointer; the primary one
      * is gold leaf. Opens with the table's own sound and has no ceremony beyond it.
      */
-    MYSTIC(0xFFE6DCFF, 0xFF9C8CC4, 0xFFF2CC5A, 0xFFFF6A8A, 0xFF0C0818, 0x90C9A44A, 0xFF2A1A52) {
+    public static final GuiSkin MYSTIC = new GuiSkin("MYSTIC", 0xFFE6DCFF, 0xFF9C8CC4, 0xFFF2CC5A, 0xFFFF6A8A, 0xFF0C0818, 0x90C9A44A, 0xFF2A1A52) {
         private static final int DEEP = 0xFF150C30, VIOLET = 0xFF2E1A66, GOLD = 0xFFC9A44A, GOLD_HI = 0xFFF6DD8A;
         /** Glyph fragments, fixed so nothing crawls: x, y as fractions of the panel, then a shape 0..2 (bar, stroke, tick). */
         private static final float[] GLYPHS = glyphs();
@@ -708,14 +711,14 @@ public enum GuiSkin {
         public SoundEvent open() {
             return SoundEvents.ENCHANTMENT_TABLE_USE;
         }
-    },
+    };
 
     /**
      * The look of vanilla's own inventory: light grey with a white bevel up-left and a dark one down-right, notched
      * black corners, sunken grey slots, plain grey buttons. For what sits over the world rather than in a block's
      * screen (the HUD), so it reads as the game's own and not a machine's. It opens with no ceremony.
      */
-    VANILLA(0xFF404040, 0xFF707070, 0xFF2E7D32, 0xFFB02020, 0xFF8B8B8B, 0xFF373737, 0xFFC6C6C6) {
+    public static final GuiSkin VANILLA = new GuiSkin("VANILLA", 0xFF404040, 0xFF707070, 0xFF2E7D32, 0xFFB02020, 0xFF8B8B8B, 0xFF373737, 0xFFC6C6C6) {
         private static final int BODY = 0xFFC6C6C6, LIGHT = 0xFFFFFFFF, SHADE = 0xFF555555, BLACK = 0xFF000000;
 
         @Override
@@ -763,14 +766,14 @@ public enum GuiSkin {
         public SoundEvent click() {
             return SoundEvents.UI_BUTTON_CLICK.value();
         }
-    },
+    };
 
     /**
      * The kitchen's: vanilla's bricks drawn in place under a warm wash (as STONE does cobblestone), a calcite-cream
      * trim round the panel and its sunken areas, brick buttons with the primary one a cream calcite slab. Opens and closes with calcite's
      * own sounds and no ceremony. Sunken areas stay dark so the cream text on them reads; the sockets are calcite.
      */
-    BRICK(0xFFF4EAD2, 0xFFD2B79A, 0xFFFFE08A, 0xFFFF4A30, 0xFF2B1511, 0xFFE8DCC4, 0xFF8A4632) {
+    public static final GuiSkin BRICK = new GuiSkin("BRICK", 0xFFF4EAD2, 0xFFD2B79A, 0xFFFFE08A, 0xFFFF4A30, 0xFF2B1511, 0xFFE8DCC4, 0xFF8A4632) {
         private static final ResourceLocation BRICKS = ResourceLocation.withDefaultNamespace("textures/block/bricks.png");
         private static final int CALCITE = 0xFFE8DCC4, SOCKET = 0xFFD6CBB4;
 
@@ -834,13 +837,13 @@ public enum GuiSkin {
         public SoundEvent close() {
             return SoundEvents.CALCITE_HIT;
         }
-    },
+    };
 
     /**
      * The woodworking table's: vanilla's oak planks drawn in place under a dark wash, a pale-grain trim round the panel,
      * sockets cut into the board, buttons of darker board with the primary one a bright cut face. Wood's own sounds, no ceremony.
      */
-    WOOD(0xFFF2E4C8, 0xFFC4A878, 0xFFFFD27A, 0xFFFF6A50, 0xFF1F160D, 0xFFB08850, 0xFF5A4126) {
+    public static final GuiSkin WOOD = new GuiSkin("WOOD", 0xFFF2E4C8, 0xFFC4A878, 0xFFFFD27A, 0xFFFF6A50, 0xFF1F160D, 0xFFB08850, 0xFF5A4126) {
         private static final ResourceLocation PLANKS = ResourceLocation.withDefaultNamespace("textures/block/oak_planks.png");
         private static final int EDGE = 0xFF1F160D;
 
@@ -899,13 +902,13 @@ public enum GuiSkin {
         public SoundEvent close() {
             return SoundEvents.WOOD_HIT;
         }
-    },
+    };
 
     /**
      * The anvil's: vanilla's anvil texture drawn in place under a cold wash, a polished-steel trim round the panel (the anvil's
      * worked face), hammer-dimple sockets, buttons of dark cast iron with the primary one bright struck steel. Anvil sounds only.
      */
-    ANVIL(0xFFE6E9EC, 0xFF9AA2AA, 0xFFFFC66A, 0xFFFF5A44, 0xFF0D0F11, 0xFFAEB8C2, 0xFF3A4046) {
+    public static final GuiSkin ANVIL = new GuiSkin("ANVIL", 0xFFE6E9EC, 0xFF9AA2AA, 0xFFFFC66A, 0xFFFF5A44, 0xFF0D0F11, 0xFFAEB8C2, 0xFF3A4046) {
         private static final ResourceLocation IRON = ResourceLocation.withDefaultNamespace("textures/block/anvil.png");
         private static final int EDGE = 0xFF0D0F11, FACE = 0xFFAEB8C2;
 
@@ -964,13 +967,13 @@ public enum GuiSkin {
         public SoundEvent close() {
             return SoundEvents.ANVIL_HIT;
         }
-    },
+    };
 
     /**
      * The smoker's: smoke-cured hickory, dark and warm. Broad boards with seams and grain, soot gathering at the top, a low
      * ember glow at the bottom edge. Buttons are dark wood that warms under the pointer; the primary one is a live coal.
      */
-    SMOKE(0xFFEBD3A6, 0xFFA88A60, 0xFFFFA64A, 0xFFFF5A3C, 0xFF1B1008, 0xFF553A1F, 0xFF3B2713) {
+    public static final GuiSkin SMOKE = new GuiSkin("SMOKE", 0xFFEBD3A6, 0xFFA88A60, 0xFFFFA64A, 0xFFFF5A3C, 0xFF1B1008, 0xFF553A1F, 0xFF3B2713) {
         private static final int EDGE = 0xFF1B1008, BOARD = 0xFF3B2713; // spruce log bark: 3B2713 body, 4D3317 light, 2E1C0A dark, 553A1F highlight
         /** Grain, fixed: x, y, length as fractions of the panel. */
         private static final float[] GRAIN = grain();
@@ -1057,13 +1060,13 @@ public enum GuiSkin {
         public SoundEvent close() {
             return SoundEvents.WOODEN_TRAPDOOR_CLOSE;
         }
-    },
+    };
 
     /**
      * The crude blast furnace's: heavy gunmetal plate in a plain riveted casing, and the cracks of cooling slag glowing at
      * the bottom edge. Buttons are cast iron; the primary one is molten orange.
      */
-    SLAG(0xFFDAD6D0, 0xFF8E8780, 0xFFFF8A2A, 0xFFFF4A2A, 0xFF0E0C0B, 0xFF3C3633, 0xFF2A2523) {
+    public static final GuiSkin SLAG = new GuiSkin("SLAG", 0xFFDAD6D0, 0xFF8E8780, 0xFFFF8A2A, 0xFFFF4A2A, 0xFF0E0C0B, 0xFF3C3633, 0xFF2A2523) {
         private static final int EDGE = 0xFF0A0807, PLATE = 0xFF211D1B;
         /** Cracks in the slag, fixed: x fraction, height, wobble seed. */
         private static final float[] CRACKS = cracks();
@@ -1155,185 +1158,17 @@ public enum GuiSkin {
         public SoundEvent close() {
             return SoundEvents.IRON_DOOR_CLOSE;
         }
-    },
+    };
 
-    /**
-     * A phosphor terminal: black glass with a faint glow, scanlines, one slow bright band rolling down it, light-on-black text. Buttons
-     * are outlined boxes that invert under the pointer; the primary one is double-ruled. It opens as a CRT does, a bright line at the
-     * middle that grows to the full screen. The Computer's desktop, in one of four phosphors (the Computer's settings pick which);
-     * the drawing is {@link TerminalLook}, the same for all four.
-     */
-    TERMINAL(0xFF5CFF7A, 0xFF2E9E48, 0xFFC4FFCE, 0xFFFFB02E, 0xFF020804, 0xFF1F6B33, 0xFF07140B) {
-        @Override
-        public void panel(GuiGraphics g, int x, int y, int w, int h) {
-            TerminalLook.panel(this, g, x, y, w, h);
-        }
 
-        @Override
-        public void slot(GuiGraphics g, int x, int y) {
-            TerminalLook.slot(this, g, x, y);
-        }
-
-        @Override
-        void button(GuiGraphics g, int x, int y, int w, int h, Component label, float glow, boolean down, boolean active,
-                    boolean primary) {
-            TerminalLook.button(this, g, x, y, w, h, label, glow, down, active, primary);
-        }
-
-        @Override
-        public SoundEvent click() {
-            return SoundEvents.COMPARATOR_CLICK;
-        }
-
-        @Override
-        public SoundEvent open() {
-            return SoundEvents.BEACON_ACTIVATE;
-        }
-
-        @Override
-        public SoundEvent close() {
-            return SoundEvents.BEACON_DEACTIVATE;
-        }
-
-        @Override
-        public void beginReveal(GuiGraphics g, int x, int y, int w, int h, float t) {
-            TerminalLook.beginReveal(this, g, x, y, w, h, t);
-        }
-
-        @Override
-        public void endReveal(GuiGraphics g, int x, int y, int w, int h, float t) {
-            TerminalLook.endReveal(this, g, x, y, w, h, t);
-        }
-    },
+    /** The phosphor terminal in green: see {@link Terminal}. */
+    public static final GuiSkin TERMINAL = new Terminal("TERMINAL", 0xFF5CFF7A, 0xFF2E9E48, 0xFFC4FFCE, 0xFFFFB02E, 0xFF020804, 0xFF1F6B33, 0xFF07140B);
     /** The terminal in amber phosphor. */
-    TERMINAL_AMBER(0xFFFFB347, 0xFF9E6A1F, 0xFFFFE2A8, 0xFFFF5A3C, 0xFF080502, 0xFF6B4210, 0xFF140D05) {
-        @Override
-        public void panel(GuiGraphics g, int x, int y, int w, int h) {
-            TerminalLook.panel(this, g, x, y, w, h);
-        }
-
-        @Override
-        public void slot(GuiGraphics g, int x, int y) {
-            TerminalLook.slot(this, g, x, y);
-        }
-
-        @Override
-        void button(GuiGraphics g, int x, int y, int w, int h, Component label, float glow, boolean down, boolean active,
-                    boolean primary) {
-            TerminalLook.button(this, g, x, y, w, h, label, glow, down, active, primary);
-        }
-
-        @Override
-        public SoundEvent click() {
-            return SoundEvents.COMPARATOR_CLICK;
-        }
-
-        @Override
-        public SoundEvent open() {
-            return SoundEvents.BEACON_ACTIVATE;
-        }
-
-        @Override
-        public SoundEvent close() {
-            return SoundEvents.BEACON_DEACTIVATE;
-        }
-
-        @Override
-        public void beginReveal(GuiGraphics g, int x, int y, int w, int h, float t) {
-            TerminalLook.beginReveal(this, g, x, y, w, h, t);
-        }
-
-        @Override
-        public void endReveal(GuiGraphics g, int x, int y, int w, int h, float t) {
-            TerminalLook.endReveal(this, g, x, y, w, h, t);
-        }
-    },
+    public static final GuiSkin TERMINAL_AMBER = new Terminal("TERMINAL_AMBER", 0xFFFFB347, 0xFF9E6A1F, 0xFFFFE2A8, 0xFFFF5A3C, 0xFF080502, 0xFF6B4210, 0xFF140D05);
     /** The terminal in white phosphor. */
-    TERMINAL_WHITE(0xFFE6EAE6, 0xFF8C928C, 0xFFFFFFFF, 0xFFFFB02E, 0xFF050605, 0xFF4F544F, 0xFF101210) {
-        @Override
-        public void panel(GuiGraphics g, int x, int y, int w, int h) {
-            TerminalLook.panel(this, g, x, y, w, h);
-        }
-
-        @Override
-        public void slot(GuiGraphics g, int x, int y) {
-            TerminalLook.slot(this, g, x, y);
-        }
-
-        @Override
-        void button(GuiGraphics g, int x, int y, int w, int h, Component label, float glow, boolean down, boolean active,
-                    boolean primary) {
-            TerminalLook.button(this, g, x, y, w, h, label, glow, down, active, primary);
-        }
-
-        @Override
-        public SoundEvent click() {
-            return SoundEvents.COMPARATOR_CLICK;
-        }
-
-        @Override
-        public SoundEvent open() {
-            return SoundEvents.BEACON_ACTIVATE;
-        }
-
-        @Override
-        public SoundEvent close() {
-            return SoundEvents.BEACON_DEACTIVATE;
-        }
-
-        @Override
-        public void beginReveal(GuiGraphics g, int x, int y, int w, int h, float t) {
-            TerminalLook.beginReveal(this, g, x, y, w, h, t);
-        }
-
-        @Override
-        public void endReveal(GuiGraphics g, int x, int y, int w, int h, float t) {
-            TerminalLook.endReveal(this, g, x, y, w, h, t);
-        }
-    },
+    public static final GuiSkin TERMINAL_WHITE = new Terminal("TERMINAL_WHITE", 0xFFE6EAE6, 0xFF8C928C, 0xFFFFFFFF, 0xFFFFB02E, 0xFF050605, 0xFF4F544F, 0xFF101210);
     /** The terminal in blue phosphor. */
-    TERMINAL_BLUE(0xFF5CC8FF, 0xFF2E7A9E, 0xFFC4EBFF, 0xFFFFB02E, 0xFF020608, 0xFF1F4F6B, 0xFF07101A) {
-        @Override
-        public void panel(GuiGraphics g, int x, int y, int w, int h) {
-            TerminalLook.panel(this, g, x, y, w, h);
-        }
-
-        @Override
-        public void slot(GuiGraphics g, int x, int y) {
-            TerminalLook.slot(this, g, x, y);
-        }
-
-        @Override
-        void button(GuiGraphics g, int x, int y, int w, int h, Component label, float glow, boolean down, boolean active,
-                    boolean primary) {
-            TerminalLook.button(this, g, x, y, w, h, label, glow, down, active, primary);
-        }
-
-        @Override
-        public SoundEvent click() {
-            return SoundEvents.COMPARATOR_CLICK;
-        }
-
-        @Override
-        public SoundEvent open() {
-            return SoundEvents.BEACON_ACTIVATE;
-        }
-
-        @Override
-        public SoundEvent close() {
-            return SoundEvents.BEACON_DEACTIVATE;
-        }
-
-        @Override
-        public void beginReveal(GuiGraphics g, int x, int y, int w, int h, float t) {
-            TerminalLook.beginReveal(this, g, x, y, w, h, t);
-        }
-
-        @Override
-        public void endReveal(GuiGraphics g, int x, int y, int w, int h, float t) {
-            TerminalLook.endReveal(this, g, x, y, w, h, t);
-        }
-    },
+    public static final GuiSkin TERMINAL_BLUE = new Terminal("TERMINAL_BLUE", 0xFF5CC8FF, 0xFF2E7A9E, 0xFFC4EBFF, 0xFFFFB02E, 0xFF020608, 0xFF1F4F6B, 0xFF07101A);
 
     /**
      * The powered suit's own material: matte carbon weave under armour plate, cyan hairlines where it is lit, amber where it warns. Corners
@@ -1341,7 +1176,7 @@ public enum GuiSkin {
      * armour plates draw apart from the middle with a servo's push, and closes the same way in reverse. Built from fills and a fixed-seed
      * speckle, so nothing crawls.
      */
-    SUIT(0xFFE4F1F6, 0xFF7C99A6, 0xFF4FE3FF, 0xFFFFA52E, 0xFF06090B, 0x9035B6D0, 0xFF1B2328) {
+    public static final GuiSkin SUIT = new GuiSkin("SUIT", 0xFFE4F1F6, 0xFF7C99A6, 0xFF4FE3FF, 0xFFFFA52E, 0xFF06090B, 0x9035B6D0, 0xFF1B2328) {
         private static final int FACE = 0xFF14181B, WEAVE = 0xFF191F23, EDGE = 0xFF05080A, CYAN = 0xFF4FE3FF, AMBER = 0xFFFFA52E;
         private static final float[] SPECK = speck();
 
@@ -1492,7 +1327,7 @@ public enum GuiSkin {
                     g.fill(mid + gap + 3, cy, mid + gap + 8, cy + 3, AMBER);
             }
         }
-    },
+    };
 
     /**
      * A sleek console menu, for the combat skill chart: no frame, only dark glass. Panels are a translucent dark gradient with a hairline
@@ -1500,7 +1335,7 @@ public enum GuiSkin {
      * dark text. {@link #backdrop} lays a soft shaft of light from the top left and slow drifting specks of light over the view, as a
      * console's home screen does. Cool white ink, a pale blue accent. Fixed-seed specks, nothing but fills.
      */
-    GLASS(0xFFF2F3F6, 0xFF9496A2, 0xFFA9CBFF, 0xFFFF7A6B, 0xFF08090C, 0xFF3A3D48, 0xFF15171C) {
+    public static final GuiSkin GLASS = new GuiSkin("GLASS", 0xFFF2F3F6, 0xFF9496A2, 0xFFA9CBFF, 0xFFFF7A6B, 0xFF08090C, 0xFF3A3D48, 0xFF15171C) {
         private static final float[] SPECK = specks();
 
         private static float[] specks() {
@@ -1627,14 +1462,122 @@ public enum GuiSkin {
         }
     };
 
+    /** The Kiln's fired clay, a data skin: everything it is lives in {@code gui_skin/kiln.json} and its sprites. */
+    public static final GuiSkin KILN = new SpriteSkin("kiln");
+
+    /**
+     * A phosphor terminal: black glass with a faint glow, scanlines, one slow bright band rolling down it, light-on-black text. Buttons
+     * are outlined boxes that invert under the pointer; the primary one is double-ruled. It opens as a CRT does, a bright line at the
+     * middle that grows to the full screen. The Computer's desktop, in one of four phosphors (the Computer's settings pick which): one
+     * class, the palette is its only difference; the drawing is {@link TerminalLook}. {@link #tinted} makes any other phosphor.
+     */
+    private static final class Terminal extends GuiSkin {
+
+        Terminal(String name, int ink, int dim, int accent, int warn, int well, int trim, int plate) {
+            super(name, ink, dim, accent, warn, well, trim, plate);
+        }
+
+        @Override
+        public void panel(GuiGraphics g, int x, int y, int w, int h) {
+            TerminalLook.panel(this, g, x, y, w, h);
+        }
+
+        @Override
+        public void slot(GuiGraphics g, int x, int y) {
+            TerminalLook.slot(this, g, x, y);
+        }
+
+        @Override
+        void button(GuiGraphics g, int x, int y, int w, int h, Component label, float glow, boolean down, boolean active,
+                    boolean primary) {
+            TerminalLook.button(this, g, x, y, w, h, label, glow, down, active, primary);
+        }
+
+        @Override
+        public SoundEvent click() {
+            return SoundEvents.COMPARATOR_CLICK;
+        }
+
+        @Override
+        public SoundEvent open() {
+            return SoundEvents.BEACON_ACTIVATE;
+        }
+
+        @Override
+        public SoundEvent close() {
+            return SoundEvents.BEACON_DEACTIVATE;
+        }
+
+        @Override
+        public void beginReveal(GuiGraphics g, int x, int y, int w, int h, float t) {
+            TerminalLook.beginReveal(this, g, x, y, w, h, t);
+        }
+
+        @Override
+        public void endReveal(GuiGraphics g, int x, int y, int w, int h, float t) {
+            TerminalLook.endReveal(this, g, x, y, w, h, t);
+        }
+    }
+
+    /**
+     * The terminal in any phosphor colour {@code ink} (0xRRGGBB): every other colour is the ink scaled toward black, so a new tint
+     * needs one number. Not registered in {@link #values()}.
+     */
+    public static GuiSkin tinted(int ink) {
+        int rgb = ink & 0xFFFFFF;
+        GuiSkin skin = new Terminal("TERMINAL_" + Integer.toHexString(rgb), 0xFF000000 | rgb, TerminalLook.shade(rgb, 0.6f), lerp(0xFF000000 | rgb, 0xFFFFFFFF, 0.6f),
+                0xFFFFB02E, TerminalLook.shade(rgb, 0.02f), TerminalLook.shade(rgb, 0.4f), TerminalLook.shade(rgb, 0.08f));
+        ALL.remove(skin); // the constructor lists every skin; a tint is made on demand
+        return skin;
+    }
+
+    /** Tell the skin how hot the opened thing is (Tu) so a data skin's heat decor can glow; code-drawn skins ignore it. */
+    public void heat(float tu) {
+    }
+
     /** Light laid over a view before its contents: nothing unless a skin has some. */
     public void backdrop(GuiGraphics g, int x, int y, int w, int h, long ms) {
     }
 
-    private final int ink, dim, accent, warn, well, trim, plate;
+    private final String name;
+    private int ink, dim, accent, warn, well, trim, plate;
+
+    /** Every skin, in declaration order. */
+    public static GuiSkin[] values() {
+        return ALL.toArray(new GuiSkin[0]);
+    }
+
+    public static GuiSkin valueOf(String name) {
+        for (GuiSkin skin : ALL)
+            if (skin.name.equals(name))
+                return skin;
+        throw new IllegalArgumentException("no GUI skin " + name);
+    }
+
+    public final String name() {
+        return name;
+    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 
     /** {@code well}: the floor of a sunken area; {@code trim}: its rim; {@code plate}: a raised label plate. */
-    GuiSkin(int ink, int dim, int accent, int warn, int well, int trim, int plate) {
+    protected GuiSkin(String name, int ink, int dim, int accent, int warn, int well, int trim, int plate) {
+        this.name = name;
+        ALL.add(this);
+        this.ink = ink;
+        this.dim = dim;
+        this.accent = accent;
+        this.warn = warn;
+        this.well = well;
+        this.trim = trim;
+        this.plate = plate;
+    }
+
+    /** Sets every colour again, for a data skin whose JSON has just reloaded. */
+    final void recolour(int ink, int dim, int accent, int warn, int well, int trim, int plate) {
         this.ink = ink;
         this.dim = dim;
         this.accent = accent;
@@ -1884,8 +1827,8 @@ public enum GuiSkin {
 
     /** The vanilla sound standing in for {@code cue} on this skin (null for none). */
     public SoundEvent sound(Cue cue) {
-        return switch (this) {
-            case BLUEPRINT -> switch (cue) {
+        return switch (name) {
+            case "BLUEPRINT" -> switch (cue) {
                 case SEAT -> SoundEvents.BOOK_PAGE_TURN;
                 case REJECT -> SoundEvents.BOOK_PUT;
                 case STAGE -> FSounds.UI_UNROLL.get();
@@ -1893,7 +1836,7 @@ public enum GuiSkin {
                 case FINISH -> FSounds.UI_STAMP.get();
                 case ABORT -> FSounds.UI_ROLL.get();
             };
-            case FORGE -> switch (cue) {
+            case "FORGE" -> switch (cue) {
                 case SEAT -> SoundEvents.CHAIN_PLACE;
                 case REJECT -> SoundEvents.ANVIL_LAND;
                 case STAGE -> FSounds.UI_HATCH_OPEN.get();
@@ -1901,7 +1844,7 @@ public enum GuiSkin {
                 case FINISH -> SoundEvents.ANVIL_USE;
                 case ABORT -> FSounds.UI_HATCH_CLOSE.get();
             };
-            case ENAMEL, CONSOLE -> switch (cue) {
+            case "ENAMEL", "CONSOLE" -> switch (cue) {
                 case SEAT -> FSounds.UI_DETENT.get();
                 case REJECT -> SoundEvents.DISPENSER_FAIL;
                 case STAGE -> FSounds.UI_TOGGLE.get();
@@ -1909,7 +1852,7 @@ public enum GuiSkin {
                 case FINISH -> SoundEvents.COMPARATOR_CLICK;
                 case ABORT -> FSounds.UI_TOGGLE.get();
             };
-            case STONE -> switch (cue) {
+            case "STONE" -> switch (cue) {
                 case SEAT -> SoundEvents.STONE_PLACE;
                 case REJECT -> SoundEvents.STONE_HIT;
                 case STAGE -> SoundEvents.UI_STONECUTTER_SELECT_RECIPE;
@@ -1917,21 +1860,21 @@ public enum GuiSkin {
                 case FINISH -> SoundEvents.UI_STONECUTTER_TAKE_RESULT;
                 case ABORT -> SoundEvents.STONE_BREAK;
             };
-            case MYSTIC -> switch (cue) {
+            case "MYSTIC" -> switch (cue) {
                 case SEAT -> SoundEvents.AMETHYST_BLOCK_CHIME;
                 case REJECT -> SoundEvents.AMETHYST_BLOCK_HIT;
                 case STAGE, START -> SoundEvents.ENCHANTMENT_TABLE_USE;
                 case FINISH -> SoundEvents.AMETHYST_BLOCK_RESONATE;
                 case ABORT -> SoundEvents.AMETHYST_BLOCK_BREAK;
             };
-            case BRICK -> switch (cue) {
+            case "BRICK" -> switch (cue) {
                 case SEAT, START -> SoundEvents.CALCITE_PLACE;
                 case REJECT -> SoundEvents.CALCITE_HIT;
                 case STAGE -> SoundEvents.CALCITE_FALL;
                 case FINISH -> SoundEvents.CALCITE_HIT;
                 case ABORT -> SoundEvents.CALCITE_BREAK;
             };
-            case WOOD -> switch (cue) { // vanilla wood events until real ones are edited from existing assets
+            case "WOOD" -> switch (cue) { // vanilla wood events until real ones are edited from existing assets
                 case SEAT -> SoundEvents.WOODEN_BUTTON_CLICK_ON;
                 case REJECT -> SoundEvents.BAMBOO_WOOD_HIT;
                 case STAGE -> SoundEvents.BAMBOO_WOOD_BUTTON_CLICK_ON;
@@ -1939,7 +1882,7 @@ public enum GuiSkin {
                 case FINISH -> SoundEvents.BAMBOO_WOOD_PLACE;
                 case ABORT -> SoundEvents.CHEST_CLOSE;
             };
-            case ANVIL -> switch (cue) {
+            case "ANVIL" -> switch (cue) {
                 case SEAT -> SoundEvents.ANVIL_PLACE;
                 case REJECT -> SoundEvents.ANVIL_LAND;
                 case STAGE -> SoundEvents.ANVIL_HIT;
@@ -1947,28 +1890,28 @@ public enum GuiSkin {
                 case FINISH -> SoundEvents.ANVIL_USE;
                 case ABORT -> SoundEvents.ANVIL_BREAK;
             };
-            case SMOKE -> switch (cue) {
+            case "SMOKE" -> switch (cue) {
                 case SEAT -> SoundEvents.WOODEN_BUTTON_CLICK_ON;
                 case REJECT -> SoundEvents.BAMBOO_WOOD_HIT;
                 case STAGE, START -> SoundEvents.CAMPFIRE_CRACKLE;
                 case FINISH -> SoundEvents.BAMBOO_WOOD_PLACE;
                 case ABORT -> SoundEvents.WOODEN_TRAPDOOR_CLOSE;
             };
-            case SLAG -> switch (cue) {
+            case "SLAG" -> switch (cue) {
                 case SEAT -> SoundEvents.IRON_TRAPDOOR_CLOSE;
                 case REJECT -> SoundEvents.ANVIL_LAND;
                 case STAGE, START -> SoundEvents.FIRECHARGE_USE;
                 case FINISH -> SoundEvents.IRON_DOOR_OPEN;
                 case ABORT -> SoundEvents.IRON_DOOR_CLOSE;
             };
-            case TERMINAL, TERMINAL_AMBER, TERMINAL_WHITE, TERMINAL_BLUE -> switch (cue) {
+            case "TERMINAL", "TERMINAL_AMBER", "TERMINAL_WHITE", "TERMINAL_BLUE" -> switch (cue) {
                 case SEAT -> SoundEvents.COMPARATOR_CLICK;
                 case REJECT -> SoundEvents.NOTE_BLOCK_BASS.value();
                 case STAGE, START -> SoundEvents.UI_BUTTON_CLICK.value();
                 case FINISH -> SoundEvents.BEACON_POWER_SELECT;
                 case ABORT -> SoundEvents.BEACON_DEACTIVATE;
             };
-            case SUIT -> switch (cue) {
+            case "SUIT" -> switch (cue) {
                 case SEAT -> SoundEvents.IRON_TRAPDOOR_CLOSE;
                 case REJECT -> SoundEvents.DISPENSER_FAIL;
                 case STAGE -> SoundEvents.PISTON_EXTEND;
@@ -1976,14 +1919,15 @@ public enum GuiSkin {
                 case FINISH -> SoundEvents.BEACON_ACTIVATE;
                 case ABORT -> SoundEvents.PISTON_CONTRACT;
             };
-            case GLASS -> switch (cue) {
+            case "GLASS" -> switch (cue) {
                 case SEAT -> SoundEvents.UI_BUTTON_CLICK.value();
                 case REJECT -> SoundEvents.NOTE_BLOCK_BASS.value();
                 case STAGE, START -> SoundEvents.AMETHYST_BLOCK_CHIME;
                 case FINISH -> SoundEvents.AMETHYST_CLUSTER_PLACE;
                 case ABORT -> SoundEvents.UI_BUTTON_CLICK.value();
             };
-            case VANILLA -> cue == Cue.REJECT ? SoundEvents.DISPENSER_FAIL : click();
+            case "VANILLA" -> cue == Cue.REJECT ? SoundEvents.DISPENSER_FAIL : click();
+            default -> click();
         };
     }
 
