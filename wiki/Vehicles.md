@@ -28,11 +28,13 @@ An engine, transmission, propeller, jet or thruster weighs on a vehicle what the
 
 ```
 P P P
-R S R
-R   R
+B T B
+P S G
 ```
 
-P is a Wrought Iron Plate, R is a Wrought Iron Rod and S is a [Shaft](Shaft.md). Craft it at the [Engineering Table](Engineering_Table.md) with a [hammer](Hammer.md) in the tool row, 3 machine bolts ([Fasteners](Fasteners.md)) and Mechanical Treatise I: Engines, Flywheels and Dynamotors ([Treatise](Treatise.md)).
+P is a Wrought Iron Plate, B is a Brass Ingot, T is Copper Tubing, S is a [Shaft](Shaft.md) and G is a Pressure Gauge. Craft it at the [Engineering Table](Engineering_Table.md) with a [hammer](Hammer.md) in the tool row, 4 machine bolts ([Fasteners](Fasteners.md)) and Mechanical Treatise I: Engines, Flywheels and Dynamotors ([Treatise](Treatise.md)).
+
+It is a broad light-gray housing with a mounting block at each corner, a verdigris-teal cylinder, and a platform with brass brackets under its edges. A front console with a dark display of small blue and green indicator lights faces the player who placed it.
 
 1. Place a **Lift** and build on top of it. Everything that touches the lift, block to block, becomes the vehicle: finespace, bearings and other joints, adapters, thrusters, seats. **It mustn't touch the ground or anything else**, or the lift complains *"Too big -- is it touching something besides the lift?"*
 2. **Right-click** the lift. Everything on it becomes one object, held still: *"Lifted."*
@@ -42,7 +44,7 @@ P is a Wrought Iron Plate, R is a Wrought Iron Rod and S is a [Shaft](Shaft.md).
 4. **Sneak-right-click at the bottom** (step 0) to put the vehicle back into the world as ordinary blocks, where it stands: *"Back in the world as blocks."* Every hanging body is put back first, the outermost first, each at the nearest quarter turn, and then the finespace and blocks return. If anything is in the way you get *"Something is in the way..."* and nothing moves.
 5. **Break the lift** to drop the vehicle into the world, where gravity takes over. A [Wrench](Wrench.md) takes a lift apart quickly.
 
-While the vehicle is raised, the lift shows a central shaft as a column up to the lifted body, with the platform riding on top. A lift that is part of a vehicle itself cannot lift anything. A [Controller](Controller.md) card that targets a block of the vehicle follows that block when the vehicle is lifted or lowered.
+While the vehicle is raised, the platform and its brackets rise with the vehicle, joined to the cylinder by a bronze ram. A lift that is part of a vehicle itself cannot lift anything. A [Controller](Controller.md) card that targets a block of the vehicle follows that block when the vehicle is lifted or lowered.
 
 ### Carrying a creation
 
