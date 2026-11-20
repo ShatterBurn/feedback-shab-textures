@@ -1,1 +1,7 @@
-{ "parent": "block/cube_all", "textures": { "all": "minecraft:block/stripped_oak_log" } }
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "feedback:block/strike_post_end",
+    "side": "feedback:block/strike_post_side"
+  }
+}

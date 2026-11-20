@@ -2,7 +2,7 @@
   "parent": "minecraft:block/cube_bottom_top",
   "textures": {
     "top": "feedback:block/engineering_table_top",
-    "bottom": "minecraft:block/oak_planks",
-    "side": "minecraft:block/oak_planks"
+    "bottom": "feedback:block/plank_plywood",
+    "side": "feedback:block/research_table_side"
   }
 }

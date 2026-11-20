@@ -1,8 +1,8 @@
 {
   "parent": "minecraft:block/cube_bottom_top",
   "textures": {
-    "top": "minecraft:block/smooth_stone",
+    "top": "feedback:block/prep_table_top",
     "bottom": "feedback:block/plank_plywood",
-    "side": "feedback:block/plank_plywood"
+    "side": "feedback:block/prep_table_side"
   }
 }

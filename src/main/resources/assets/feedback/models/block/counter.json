@@ -3,6 +3,6 @@
   "textures": {
     "top": "feedback:block/device_barrel_sides",
     "side": "feedback:block/device_barrel_sides",
-    "front": "minecraft:block/fletching_table_front"
+    "front": "feedback:block/counter_front"
   }
 }
