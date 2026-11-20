@@ -19,7 +19,10 @@ import io.github.soundgoodizerfan.feedback.client.gui.GuiStyle;
 import io.github.soundgoodizerfan.feedback.client.gui.SkinnedScreen;
 import io.github.soundgoodizerfan.feedback.client.tooltip.Readout;
 
+import io.github.soundgoodizerfan.feedback.client.ClientSettings;
+
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.util.Mth;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -90,9 +93,38 @@ public class MixerScreen extends SkinnedScreen<MixerMenu> {
         return Component.translatable(key);
     }
 
+    /** The drum's window (relative to the panel), between the output slot and the heat gauge. */
+    private static final int DRUM_X = 102, DRUM_Y = 20, DRUM_W = 22;
+
+    /** The paddle's angle in degrees, this tick and last, so the drawing turns smoothly between ticks. */
+    private float angle, lastAngle;
+
+    @Override
+    protected void containerTick() {
+        super.containerTick();
+        lastAngle = angle;
+        // Turns at the drum's real speed (a full turn a second at 60 RPM), stepped at most 40 degrees a tick so a fast drum does not alias.
+        angle += Math.max(-40f, Math.min(40f, menu.rpm() * 6f / 20f));
+    }
+
+    /** The drum seen end-on: its paddle turns at the live speed and stands still when the drum does; the mix shows in its colour. */
+    private void drum(GuiGraphics g, float partial) {
+        int x = leftPos + DRUM_X, y = topPos + DRUM_Y;
+        skin.inset(g, x, y, DRUM_W, DRUM_W);
+        int cx = x + DRUM_W / 2, cy = y + DRUM_W / 2;
+        GuiStyle.disc(g, cx, cy, 9, parts().isEmpty() && menu.productMb() <= 0 ? skin.dim() : tankColour());
+        float a = ClientSettings.reduceMotion() ? 0.3f : (float) Math.toRadians(Mth.lerp(partial, lastAngle, angle));
+        for (int blade = 0; blade < 3; blade++) {
+            float t = a + blade * Mth.TWO_PI / 3f;
+            GuiStyle.line(g, cx, cy, cx + Math.round(Mth.cos(t) * 8f), cy + Math.round(Mth.sin(t) * 8f), skin.ink());
+        }
+        GuiStyle.disc(g, cx, cy, 2, skin.ink());
+    }
+
     @Override
     protected void renderBg(GuiGraphics graphics, float partialTicks, int mouseX, int mouseY) {
         skin.panel(graphics, leftPos, topPos, imageWidth, imageHeight);
+        drum(graphics, partialTicks);
         for (int slot = 0; slot < FTuning.MIXER_INPUT_SLOTS; slot++)
             skin.slot(graphics, leftPos + MixerMenu.SLOTS_X + slot * MixerMenu.SLOT_PX, topPos + MixerMenu.SLOTS_Y);
         skin.slot(graphics, leftPos + MixerMenu.OUT_X, topPos + MixerMenu.SLOTS_Y);

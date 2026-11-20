@@ -37,7 +37,7 @@ public class MixerMenu extends AbstractContainerMenu {
     private final Player player;
 
     public MixerMenu(int id, Inventory inventory, RegistryFriendlyByteBuf buf) {
-        this(id, inventory, buf.readBlockPos(), new SimpleContainer(FTuning.MIXER_INPUT_SLOTS + 1), new SimpleContainerData(7));
+        this(id, inventory, buf.readBlockPos(), new SimpleContainer(FTuning.MIXER_INPUT_SLOTS + 1), new SimpleContainerData(8));
     }
 
     public MixerMenu(int id, Inventory inventory, MixerBlockEntity mixer) {
@@ -52,6 +52,7 @@ public class MixerMenu extends AbstractContainerMenu {
                     case 4 -> mixer.product().getAmount();
                     case 5 -> mixer.overmixed() ? 1 : 0;
                     case 6 -> mixer.frozen() ? 1 : 0;
+                    case 7 -> Math.round(mixer.getRpm().value());
                     default -> 0;
                 };
             }
@@ -61,7 +62,7 @@ public class MixerMenu extends AbstractContainerMenu {
 
             @Override
             public int getCount() {
-                return 7;
+                return 8;
             }
         });
     }
@@ -100,6 +101,11 @@ public class MixerMenu extends AbstractContainerMenu {
 
     public int uniformityPermille() {
         return data.get(0);
+    }
+
+    /** The drum's speed in RPM, signed; the screen turns its drum at it. */
+    public int rpm() {
+        return data.get(7);
     }
 
     public int temperatureTu() {
