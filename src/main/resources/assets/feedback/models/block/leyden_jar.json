@@ -40,10 +40,6 @@
         "up": {
           "texture": "#glass",
           "tintindex": 0
-        },
-        "down": {
-          "texture": "#glass",
-          "tintindex": 0
         }
       }
     },

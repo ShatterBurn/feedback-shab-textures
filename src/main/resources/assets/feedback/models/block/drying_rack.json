@@ -151,12 +151,6 @@
         "south": {
           "texture": "#side"
         },
-        "west": {
-          "texture": "#side"
-        },
-        "east": {
-          "texture": "#side"
-        },
         "up": {
           "texture": "#side"
         },
@@ -181,12 +175,6 @@
           "texture": "#side"
         },
         "south": {
-          "texture": "#side"
-        },
-        "west": {
-          "texture": "#side"
-        },
-        "east": {
           "texture": "#side"
         },
         "up": {
