@@ -42,12 +42,12 @@ public class WaterWheelBlock extends RotatedPillarBlock implements EntityBlock, 
     }
 
     /**
-     * The wheel's turning disc (the paddles stand 8 units wide across the rim) with the axle through it, one shape per axle axis.
+     * The wheel's bucketed drum (rims at 2..4 and 12..14 of the axle, buckets between) with the axle through it, one shape per axle axis.
      * Mirrors models/block/water_wheel.json (scripts/water_wheel_model.py); the shape does not turn with the wheel.
      */
-    private static final VoxelShape SHAPE_X = Shapes.or(Block.box(4, 0, 0, 12, 16, 16), Block.box(0, 6, 6, 16, 10, 10));
-    private static final VoxelShape SHAPE_Y = Shapes.or(Block.box(0, 4, 0, 16, 12, 16), Block.box(6, 0, 6, 10, 16, 10));
-    private static final VoxelShape SHAPE_Z = Shapes.or(Block.box(0, 0, 4, 16, 16, 12), Block.box(6, 6, 0, 10, 10, 16));
+    private static final VoxelShape SHAPE_X = Shapes.or(Block.box(2, 0, 0, 14, 16, 16), Block.box(0, 6, 6, 16, 10, 10));
+    private static final VoxelShape SHAPE_Y = Shapes.or(Block.box(0, 2, 0, 16, 14, 16), Block.box(6, 0, 6, 10, 16, 10));
+    private static final VoxelShape SHAPE_Z = Shapes.or(Block.box(0, 0, 2, 16, 16, 14), Block.box(6, 6, 0, 10, 10, 16));
 
     @Override
     protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
