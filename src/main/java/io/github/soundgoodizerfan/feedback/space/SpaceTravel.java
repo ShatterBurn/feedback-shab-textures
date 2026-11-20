@@ -51,13 +51,13 @@ public final class SpaceTravel {
         if (from.dimension().equals(GAP)) return -1;
         ServerLevel gap = from.getServer().getLevel(GAP);
         if (gap == null) return -2;
-        return cross(from, gap, body, SpaceTuning.ENTRY_Y, true);
+        return cross(from, gap, body, SpaceTuning.ENTRY_Y, true, SpaceTuning.GAP_SCALE);
     }
 
     /** Bodies moved, or -1 when {@code body} is not in the Gap. Arrives where the Overworld's air is thin but not zero. */
     public static int back(ServerLevel from, ServerSubLevel body) {
         if (!from.dimension().equals(GAP)) return -1;
-        return cross(from, from.getServer().overworld(), body, SpaceTuning.RETURN_Y, false);
+        return cross(from, from.getServer().overworld(), body, SpaceTuning.RETURN_Y, false, 1.0);
     }
 
     /**
@@ -80,6 +80,7 @@ public final class SpaceTravel {
             p.fallDistance = fall;
             p.hurtMarked = true;
             p.setRemainingFireTicks(SpaceTuning.REENTRY_FIRE_TICKS);
+            ScaleAboard.set(p, 1.0);
             fade(java.util.List.of(p), false);
         }
     }
@@ -124,7 +125,8 @@ public final class SpaceTravel {
      * body's box; a craft moving several blocks a tick leaves a rider trailing outside it, so everyone Sable has tracked on the chain
      * is also brought across to the same place on the body afterwards, if the move left them behind.
      */
-    private static int cross(ServerLevel from, ServerLevel target, ServerSubLevel body, double y, boolean up) {
+    private static int cross(ServerLevel from, ServerLevel target, ServerSubLevel body, double y, boolean up, double scale) {
+        double ratio = scale / BodyScale.of(body);
         var chain = SubLevelWarper.getSubLevelGroup(body);
         var ids = new java.util.HashSet<java.util.UUID>();
         for (ServerSubLevel b : chain)
@@ -154,6 +156,18 @@ public final class SpaceTravel {
         if (n <= 0)
             return n;
         var container = dev.ryanhcode.sable.api.sublevel.ServerSubLevelContainer.getContainer(target);
+        // The craft is scaled on the far side: lengths scale by k and time does not, so every speed scales by k with them.
+        if (container.getSubLevel(body.getUniqueId()) instanceof ServerSubLevel moved) {
+            SubLevelScale.apply(moved, scale);
+            for (ServerSubLevel b : SubLevelWarper.getSubLevelGroup(moved)) {
+                var handle = dev.ryanhcode.sable.api.physics.handle.RigidBodyHandle.of(b);
+                handle.addLinearAndAngularVelocity(handle.getLinearVelocity(new Vector3d()).mul(ratio - 1), new Vector3d());
+                var bb = b.boundingBox();
+                for (net.minecraft.world.entity.LivingEntity e : target.getEntitiesOfClass(net.minecraft.world.entity.LivingEntity.class,
+                        new net.minecraft.world.phys.AABB(bb.minX(), bb.minY(), bb.minZ(), bb.maxX(), bb.maxY(), bb.maxZ()).inflate(2)))
+                    ScaleAboard.set(e, scale);
+            }
+        }
         for (Rider r : riders) {
             if (container.getSubLevel(r.body()) instanceof ServerSubLevel moved) {
                 Vec3 w = moved.logicalPose().transformPosition(r.local());
@@ -161,10 +175,12 @@ public final class SpaceTravel {
             }
             // The craft keeps its speed across, so its rider must, or it leaves them behind.
             if (r.player().level() == target) {
-                r.player().setDeltaMovement(r.velocity());
+                r.player().setDeltaMovement(r.velocity().scale(ratio));
                 r.player().hurtMarked = true;
             }
         }
+        for (ServerPlayer p : seeing)
+            ScaleAboard.set(p, scale);
         fade(seeing, up);
         return n;
     }

@@ -50,6 +50,8 @@ public final class SpaceTrigger {
         boolean gap = level.dimension().equals(SpaceTravel.GAP);
         if (gap)
             SpaceTravel.dropStrays(level); // every tick: a person in free fall covers the floor in a few checks
+        if (gap && level.getGameTime() % ScaleAboard.SWEEP_TICKS == 0)
+            ScaleAboard.sweep(level);
         if (level.getGameTime() % SpaceTuning.CHECK_INTERVAL != 0)
             return;
         if (!gap && !level.dimension().equals(Level.OVERWORLD))

@@ -51,7 +51,7 @@ public final class AirDrag {
             ForceTotal force = new ForceTotal();
             double drag = VehicleTuning.AIR_DRAG * area(body, back);
             if (density > 0) {
-                Vector3d pushed = new Vector3d(back).mul(Math.min(drag * density * speed * speed * dt, mass * speed));
+                Vector3d pushed = new Vector3d(back).mul(Math.min(drag * density * speed * speed * dt * io.github.soundgoodizerfan.feedback.space.BodyScale.drag(body), mass * speed));
                 force.applyLinearImpulse(pushed);
                 var com = ForceLedger.watching(body) ? body.getMassTracker().getCenterOfMass() : null;
                 if (com != null)

@@ -184,7 +184,7 @@ public class ThrusterBlockEntity extends BlockEntity implements BlockEntitySubLe
         Direction thrust = getBlockState().getValue(ThrusterBlock.FACING);
         Vector3d at = new Vector3d(worldPosition.getX() + 0.5, worldPosition.getY() + 0.5, worldPosition.getZ() + 0.5);
         Vector3d impulse = new Vector3d(thrust.getStepX(), thrust.getStepY(), thrust.getStepZ())
-                .mul(force() * p * timeStep);
+                .mul(force() * p * timeStep * io.github.soundgoodizerfan.feedback.space.BodyScale.force(subLevel));
         ForceTotal one = new ForceTotal();
         one.applyImpulseAtPoint(subLevel.getMassTracker(), at, impulse);
         ForceLedger.record(subLevel, ForceLedger.Cause.PROPULSION, at.x, at.y, at.z, impulse.x, impulse.y, impulse.z);

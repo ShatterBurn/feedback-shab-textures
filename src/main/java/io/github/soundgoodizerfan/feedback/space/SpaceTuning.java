@@ -21,6 +21,8 @@ public final class SpaceTuning {
     public static final int CHECK_INTERVAL = 5;
     /** A body in the Gap slower than Sable's sleep threshold (0.15 b/s) but faster than this is woken each tick so it keeps coasting. */
     public static final double DRIFT_MIN_SPEED = 0.005;
+    /** Scale a body takes in the Gap (1 outside): its speeds and distances shrink with it, so a long trip is short in blocks and takes the same time. */
+    public static final double GAP_SCALE = 0.01;
     /** Ticks the crossing overlay takes to clear. */
     public static final int FADE_TICKS = 60;
 
