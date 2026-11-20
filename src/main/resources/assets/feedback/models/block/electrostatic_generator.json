@@ -4,8 +4,8 @@
     "particle": "feedback:block/wimshurst_base",
     "wood": "feedback:block/wimshurst_base",
     "disc": "feedback:block/wimshurst_disc",
-    "metal": "feedback:block/metal_tank_sides",
-    "rim": "feedback:block/metal_tank_sides"
+    "metal": "feedback:block/wimshurst_metal",
+    "rim": "feedback:block/wimshurst_metal"
   },
   "elements": [
     {
