@@ -29,6 +29,46 @@ public class ValveBlock extends Block implements EntityBlock {
     public static final DirectionProperty FACING = BlockStateProperties.FACING;
     public static final BooleanProperty OPEN = BooleanProperty.create("open");
 
+    /** Mirrors models/block/valve_open.json and valve_closed.json drawn facing north: pipe, body, stem, then the T handle (open: along the pipe, closed: across). */
+    private static final int[][] BOXES = {{6, 6, 0, 10, 10, 16}, {4, 4, 5, 12, 12, 11}, {7, 12, 7, 9, 14, 9}};
+    private static final int[] HANDLE_OPEN = {7, 14, 3, 9, 16, 13}, HANDLE_CLOSED = {3, 14, 7, 13, 16, 9};
+
+    /** Index: facing data value times two, plus one when open. Turned like the blockstate (north none, y 90 east, y 180 south, y 270 west, x 270 up, x 90 down). */
+    private static final net.minecraft.world.phys.shapes.VoxelShape[] SHAPES = new net.minecraft.world.phys.shapes.VoxelShape[12];
+
+    static {
+        for (Direction d : Direction.values())
+            for (int open = 0; open < 2; open++) {
+                net.minecraft.world.phys.shapes.VoxelShape s = net.minecraft.world.phys.shapes.Shapes.empty();
+                java.util.List<int[]> all = new java.util.ArrayList<>(java.util.Arrays.asList(BOXES));
+                all.add(open == 1 ? HANDLE_OPEN : HANDLE_CLOSED);
+                for (int[] b : all) {
+                    double[] p = turn(d, b[0], b[1], b[2]), q = turn(d, b[3], b[4], b[5]);
+                    s = net.minecraft.world.phys.shapes.Shapes.or(s, Block.box(Math.min(p[0], q[0]), Math.min(p[1], q[1]), Math.min(p[2], q[2]),
+                            Math.max(p[0], q[0]), Math.max(p[1], q[1]), Math.max(p[2], q[2])));
+                }
+                SHAPES[d.get3DDataValue() * 2 + open] = s;
+            }
+    }
+
+    private static double[] turn(Direction d, int x, int y, int z) {
+        return switch (d) {
+            case SOUTH -> new double[]{16 - x, y, 16 - z};
+            case EAST -> new double[]{16 - z, y, x};
+            case WEST -> new double[]{z, y, 16 - x};
+            case UP -> new double[]{x, 16 - z, y};
+            case DOWN -> new double[]{x, z, 16 - y};
+            default -> new double[]{x, y, z};
+        };
+    }
+
+    @Override
+    protected net.minecraft.world.phys.shapes.VoxelShape getShape(BlockState state,
+            net.minecraft.world.level.BlockGetter level, BlockPos pos,
+            net.minecraft.world.phys.shapes.CollisionContext ctx) {
+        return SHAPES[state.getValue(FACING).get3DDataValue() * 2 + (state.getValue(OPEN) ? 1 : 0)];
+    }
+
     public ValveBlock(Properties properties) {
         super(properties);
         registerDefaultState(defaultBlockState()

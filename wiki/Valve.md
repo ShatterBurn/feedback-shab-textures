@@ -24,8 +24,8 @@ Typical uses:
 
 **Right-click** to open or close it. You'll hear a trapdoor-like clunk. A valve is placed **open**.
 
-- **Open**: everything passes straight through.
-- **Closed**: air blown into it is simply lost, and anything trying to draw fluid through it gets nothing.
+- **Open**: everything passes straight through. The T-shaped handle on top lies along the pipe.
+- **Closed**: air blown into it is simply lost, and anything trying to draw fluid through it gets nothing. The handle lies across the pipe.
 
 The valve doesn't hold anything itself, so there's nothing to drain and nothing to lose when you break it.
 
