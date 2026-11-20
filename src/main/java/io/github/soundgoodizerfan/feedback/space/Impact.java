@@ -37,7 +37,11 @@ public final class Impact {
     private record Hit(ResourceKey<Level> level, UUID body, double fall) {
     }
 
-    private static final Map<UUID, Vector3d> LAST = new ConcurrentHashMap<>();
+    /** A body's velocity and scale as of the last step: a crossing rewrites both, which is not a hit. */
+    private record Step(Vector3d velocity, double scale) {
+    }
+
+    private static final Map<UUID, Step> LAST = new ConcurrentHashMap<>();
     private static final Queue<Hit> HITS = new ConcurrentLinkedQueue<>();
 
     private Impact() {
@@ -53,10 +57,11 @@ public final class Impact {
             if (body.isRemoved())
                 continue;
             Vector3d v = event.getPhysicsSystem().getPhysicsHandle(body).getLinearVelocity(new Vector3d());
-            Vector3d was = LAST.put(body.getUniqueId(), v);
-            if (was == null)
+            double scale = BodyScale.of(body);
+            Step was = LAST.put(body.getUniqueId(), new Step(v, scale));
+            if (was == null || was.scale() != scale)
                 continue;
-            double dv = v.distance(was) / BodyScale.of(body);
+            double dv = v.distance(was.velocity()) / scale;
             if (dv < SpaceTuning.IMPACT_MIN_SPEED_CHANGE)
                 continue;
             HITS.add(new Hit(level.dimension(), body.getUniqueId(), dv * dv / (2 * G)));
