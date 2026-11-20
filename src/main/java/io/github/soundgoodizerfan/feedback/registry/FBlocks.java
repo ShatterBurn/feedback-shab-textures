@@ -1419,7 +1419,7 @@ public class FBlocks {
     public static final DeferredBlock<io.github.soundgoodizerfan.feedback.machine.tube.JunctionBlock> PROGRAMMED_JUNCTION = BLOCKS.register("programmed_junction",
             () -> new io.github.soundgoodizerfan.feedback.machine.tube.JunctionBlock(tubeProps(), true));
     public static final DeferredBlock<io.github.soundgoodizerfan.feedback.machine.tube.TubeStationBlock> TUBE_STATION = BLOCKS.register("tube_station",
-            () -> new io.github.soundgoodizerfan.feedback.machine.tube.TubeStationBlock(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(3.0f).sound(SoundType.METAL), false));
+            () -> new io.github.soundgoodizerfan.feedback.machine.tube.TubeStationBlock(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(3.0f).sound(SoundType.METAL).noOcclusion(), false));
     public static final DeferredBlock<io.github.soundgoodizerfan.feedback.machine.tube.TubeStationBlock> SORTING_STATION = BLOCKS.register("sorting_station",
             () -> new io.github.soundgoodizerfan.feedback.machine.tube.TubeStationBlock(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(3.5f).sound(SoundType.METAL), true));
     public static final DeferredBlock<io.github.soundgoodizerfan.feedback.machine.tube.VacuumPumpBlock> VACUUM_PUMP = BLOCKS.register("vacuum_pump",

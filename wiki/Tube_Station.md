@@ -14,6 +14,8 @@ S is a Wrought Iron Plate and T is a Pneumatic Tube.
 
 ## Using it
 
+The station is a wrought iron plate box with an open copper tube mouth on the side it faces. It faces the tube it loads into, in any of the six directions.
+
 - **Feed it** with a hopper or the end of a [belt](Conveyor_Belt.md). The station packs a carrier when its buffer is full, or when it has stood idle for a moment.
 - **Stock it**: use carriers on the station. It keeps carriers and pods separately.
 - **Use a dye** to set the address, the color stamped on every carrier it sends. **Sneak with an empty hand** to clear it.
