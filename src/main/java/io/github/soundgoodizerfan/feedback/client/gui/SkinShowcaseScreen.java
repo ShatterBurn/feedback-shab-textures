@@ -36,7 +36,8 @@ public final class SkinShowcaseScreen extends Screen {
 
     // demo state, kept across skin flips so a flip shows the same values on a new face
     private boolean toggled = true, checked = true;
-    private int steps = 3, tab = 0, folder = 0, picked = 1, scroll = 2;
+    private int steps = 3, tab = 0, folder = 0, picked = 3;
+    private final GuiStyle.RowList list = new GuiStyle.RowList(12, 36);
     private double slid = 6;
     private long stampAt = -10_000;
 
@@ -152,13 +153,17 @@ public final class SkinShowcaseScreen extends Screen {
 
         // list rows: normal, picked, hovered
         s.inset(g, x, y + 48, 126, 40);
-        for (int i = 0; i < 3; i++) {
-            int ry = y + 50 + i * 12;
-            boolean hover = mx >= x + 1 && mx < x + 125 && my >= ry && my < ry + 12;
-            s.row(g, x + 1, ry, 124, 12, i == picked, hover);
-            g.drawString(font, "Row " + (i + 1 + scroll), x + 5, ry + 2, i == picked ? s.accent() : s.ink(), false);
+        list.size(10);
+        list.update(s);
+        list.begin(g, x + 1, y + 50, 124);
+        for (int i = 0; i < list.drawn(); i++) {
+            int idx = list.first() + i, ry = y + 50 + i * 12 - list.offset();
+            boolean hover = list.rowAt(my, y + 50) == idx && mx >= x + 1 && mx < x + 125;
+            s.row(g, x + 1, ry, 124, 12, idx == picked, hover);
+            g.drawString(font, "Row " + (idx + 1), x + 5, ry + 2, idx == picked ? s.accent() : s.ink(), false);
         }
-        s.scrollbar(g, x + 130, y + 48, 40, 10, 3, scroll);
+        list.end(g);
+        list.bar(g, s, x + 130, y + 48, 40);
 
         // slot
         s.slot(g, x + 8, y + 96);
@@ -194,7 +199,7 @@ public final class SkinShowcaseScreen extends Screen {
             return true;
         int x = left() + 172, y = top() + 26;
         if (mx >= x + 1 && mx < x + 125 && my >= y + 50 && my < y + 86) {
-            picked = (int) ((my - (y + 50)) / 12);
+            picked = Math.max(0, list.rowAt(my, y + 50));
             skin().cue(GuiSkin.Cue.SEAT);
             return true;
         }
@@ -205,7 +210,7 @@ public final class SkinShowcaseScreen extends Screen {
     public boolean mouseScrolled(double mx, double my, double dx, double dy) {
         if (!opening.settled())
             return true;
-        scroll = Math.max(0, Math.min(7, scroll - (int) Math.signum(dy)));
+        list.wheel(dy);
         return true;
     }
 
