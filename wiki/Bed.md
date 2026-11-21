@@ -14,7 +14,7 @@ The **Bed Mattress** is the part you lie on. It comes in two shapes:
 Its stock is leather or carpet, the **cover**. It has three materials:
 
 - **Cover**: the leather or carpet you lie on. It is the part's main stock.
-- **Padding**: stuffing chosen in its own stock slot: moss, wool, leather, rabbit hide, grass or feather down. A pad takes [cushioning materials](What_a_Part_Slot_Takes.md#uses), so planks and heavy metals do not fit. The softer it is, the better the sleep. [Feather down](Materials.md#feather-down-and-rabbit-hide) is the lightest and warmest; rabbit hide is warm and tough.
+- **Padding**: stuffing chosen in its own stock slot: moss, wool, leather, rabbit hide, grass, straw, chaff, wood shavings or feather down. A pad takes [cushioning materials](What_a_Part_Slot_Takes.md#uses), so planks and heavy metals do not fit. The softer it is, the better the sleep. [Feather down](Materials.md#feather-down-and-rabbit-hide) is the lightest and warmest; rabbit hide is warm and tough. A mattress padded with straw is a straw bed.
 - **Shell**: a leather case, fixed; it takes a share of the same stock.
 
 The **Bed Frame** lifts the mattress off the cold ground. Its stock is planks, rods or ingots. It comes in two shapes:

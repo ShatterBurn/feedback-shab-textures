@@ -9,3 +9,5 @@ Cast a **Saw Blade** in a [Saw Blade Mold](Casting.md#tool-part-molds) from one 
 ## Using it
 
 Put the sawblade in the saw slot of the Stonecutter. Every act there costs it a point of wear: shaping a part, breaking stock down, or a cut on the Cut tab (stone cuts, and wood cuts when a plank or log is in the center). With the slot empty the screen reads "Put a sawblade in the saw slot."
+
+The [Woodworking Table](Woodworking_Table.md) also takes a sawblade in its tool slot. The blade has a **thickness** setting at the part bench: a thicker blade sheds more of each cut as wood shavings.

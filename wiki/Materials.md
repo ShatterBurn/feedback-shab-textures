@@ -164,6 +164,12 @@ Each tree species is a material of its own: its logs, stripped logs, wood blocks
 
 A plank burns a quarter as long as a log ([Firebox](Firebox.md#fuels)). Each wood has its own color, and a heavier wood makes a heavier part, such as a [water wheel](Water_Wheel.md) rim. The plain **Wood** above is what sticks, bowls, vanilla tool items, bows, crossbows and shields are made of.
 
+## Straw and chaff
+
+**Straw** and **Chaff** are what a [Threshing Machine](Threshing_Machine.md) leaves when it beats wheat apart. Both are loose fibers that burn and insulate heat. Straw, chaff and wood shavings can pad a [bed](Bed.md).
+
+Every wood species also has **Shavings**, a loose form: the sawdust the [Woodworking Table](Woodworking_Table.md)'s Saw tab sheds.
+
 ## Gems
 
 **Ruby**, **Jade**, **Garnet**, **Tourmaline** and **Beryl** are gems: their ore block drops the cut stone (*Ruby*, *Jade*, *Garnet*, *Tourmaline*, *Beryl*). They have no ingot, and no ore stage (crushed, concentrate, tailings). Each is mined from its own vein ([Ore Deposits](Ore_Deposits.md#gems)).

@@ -27,6 +27,7 @@ New here? Start with [Metalworking](Metalworking.md), then [Heat](Heat.md). Want
 ## Life, food and magic
 
 - [Food](Food.md) and [Crops](Crops.md): growing, cooking and keeping food
+- [Threshing Machine](Threshing_Machine.md): wheat into seed, straw and chaff
 - [Brewing Stand](Brewing_Stand.md), [Potion Salts](Potion_Salts.md) and [Thrown and Imbued Potions](Thrown_and_Imbued_Potions.md): potions are built from parts too
 - [Enchanting Table](Enchanting_Table.md): attunements laid onto single parts
 - [Experience](Experience.md) and [Sculk](Sculk.md)
@@ -71,7 +72,7 @@ New here? Start with [Metalworking](Metalworking.md), then [Heat](Heat.md). Want
 
 **Systems and processes:** [Ages](Ages.md) · [Ore Processing](Ore_Processing.md) · [Casting and Alloys](Casting.md) · [Ammunition](Ammunition.md)
 
-**Power and transmission:** [Hand Crank](Hand_Crank.md) · [Water Wheel](Water_Wheel.md) · [Steam Engine](Steam_Engine.md) · [Steam Turbine](Steam_Turbine.md) · [Engine](Engine.md) · [Differential](Differential.md) · [Dynamotor](Dynamotor.md) · [Shaft](Shaft.md) · [Bearing](Bearing.md) · [Rotary Bearing](Rotary_Bearing.md) · [Coupling Sleeve](Coupling_Sleeve.md) · [Ring Gear](Ring_Gear.md) · [Rotation Adapter](Rotation_Adapter.md) · [Flywheel](Flywheel.md) · [Cogs and Gearbox](Cogs.md) · [Pulleys and Belt](Pulleys.md) · [Clutch](Clutch.md) · [Pump](Pump.md) · [Transmission](Transmission.md)
+**Power and transmission:** [Hand Crank](Hand_Crank.md) · [Water Wheel](Water_Wheel.md) · [Steam Engine](Steam_Engine.md) · [Steam Turbine](Steam_Turbine.md) · [Engine](Engine.md) · [Differential](Differential.md) · [Dynamotor](Dynamotor.md) · [Shaft](Shaft.md) · [Bearing](Bearing.md) · [Rotary Bearing](Rotary_Bearing.md) · [Coupling Sleeve](Coupling_Sleeve.md) · [Ring Gear](Ring_Gear.md) · [Rotation Adapter](Rotation_Adapter.md) · [Flywheel](Flywheel.md) · [Cogs and Gearbox](Cogs.md) · [Pulleys and Belt](Pulleys.md) · [Clutch](Clutch.md) · [Pump](Pump.md) · [Threshing Machine](Threshing_Machine.md) · [Transmission](Transmission.md)
 
 **Finespace and vehicles:** [Finespace](Finespace.md) · [Joints](Joints.md) · [Rotary Bearing](Rotary_Bearing.md) · [Ring Gear](Ring_Gear.md) · [Tire](Tire.md) · [Vehicles](Vehicles.md)
 

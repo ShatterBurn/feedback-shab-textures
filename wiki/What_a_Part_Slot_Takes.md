@@ -47,7 +47,7 @@ A use is a named bundle of properties that slots ask for.
 | cordage | it is tough; not food, explosive, corrosive or a fluid |
 | inert fill | it is medium weight or heavier; not food, explosive, corrosive or a fluid |
 
-Soft metals such as tin and lead are not cushioning: they are heavy and conduct heat. A [bed](Bed.md) pad takes moss, wool, down, grass and leather, and does not take planks.
+Soft metals such as tin and lead are not cushioning: they are heavy and conduct heat. A [bed](Bed.md) pad takes moss, wool, down, grass, straw, chaff, shavings and leather, and does not take planks.
 
 ## Examples
 
