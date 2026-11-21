@@ -1,8 +1,8 @@
 {
   "textures": {
-    "housing": "feedback:block/housing_wood",
+    "housing": "feedback:block/steel_sheet",
     "shaft": "feedback:block/bronze_sheet",
-    "particle": "feedback:block/housing_wood",
+    "particle": "feedback:block/steel_sheet",
     "baked": "feedback:block/gearbox_stub_faces"
   },
   "elements": [

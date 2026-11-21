@@ -1,9 +1,9 @@
 {
   "parent": "block/block",
   "textures": {
-    "body": "feedback:block/copper_coil_side",
+    "body": "feedback:block/bronze_sheet",
     "rod": "feedback:block/metal_steel_block",
-    "particle": "feedback:block/copper_coil_side"
+    "particle": "feedback:block/bronze_sheet"
   },
   "elements": [
     {

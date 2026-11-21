@@ -3,7 +3,7 @@
   "textures": {
     "particle": "feedback:block/housing_iron",
     "plate": "feedback:block/housing_iron",
-    "pipe": "feedback:block/metal_pipes_copper",
+    "pipe": "feedback:block/brass_sheet",
     "baked": "feedback:block/valve_open_faces"
   },
   "elements": [

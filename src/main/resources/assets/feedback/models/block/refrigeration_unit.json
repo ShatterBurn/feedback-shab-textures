@@ -1,7 +1,7 @@
 {
-  "parent": "block/cube_column",
+  "parent": "minecraft:block/cube_column",
   "textures": {
-    "end": "feedback:block/metal_tank_ends",
-    "side": "feedback:block/metal_tank_sides"
+    "end": "feedback:block/refrigeration_unit_end",
+    "side": "feedback:block/refrigeration_unit_side"
   }
 }
