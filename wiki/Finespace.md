@@ -111,11 +111,13 @@ A hosted machine weighs a 64th of the mass figure of its design, not the stuff i
 
 A hosted rotation machine, such as a dynamotor on a shaft or a flywheel-driven or water-driven machine, joins the finespace rotation network. It couples to the shafts and cogs beside its voxel by the same shaft and tooth rules as the full-size block, so a finespace shaft can turn it or be turned by it.
 
-A hosted electric machine, such as a dynamotor or motor, joins the cable run: the cell is on the cable it touches like the full-size block at that spot. A hosted heat source, such as a heater or coil, heats the blocks and vessels round the cell the way the full-size block would.
+Every hosted electric machine is its own point on the cable run. It connects to the voxel beside it, whether that is in the same cell, in the next cell or a whole block's face, so two machines in one cell are each on the line. Every hosted heat source, such as a heater, coil or burner, is likewise its own: two heaters in one cell heat separately, and a hosted burner heats the voxel beside it.
 
-A cell takes part in the electric network and in heating through one machine each: the first electric machine it holds and the first heat source it holds. A second electric machine in the same cell is not on the cable. A hosted machine reaches what the cell's block touches, not the voxel beside it. When a hosted machine's figures ride the machine's standard figures they are a 64th of the full-size ones; a dynamotor's and a pressure vessel's own figures stay as the full-size machine's.
+A hosted crucible, boiler or thermal store reads fire from the voxels round it: the voxel beside it, a voxel of the next cell, or a whole burner beside the cell. Only a voxel on the cell's bottom row has lava under it. When a hosted machine's figures ride the machine's standard figures they are a 64th of the full-size ones; a dynamotor's and a pressure vessel's own figures stay as the full-size machine's.
 
-A machine that toggles its own state shows it on its voxel: a burner lit, a lamp, a crucible or a boiler glowing, an electromagnet lit, a damper or a valve open. A machine in an assembled arm blocks the joint from assembling or putting back; the message says to take it out first. A machine that opens a screen is unchecked.
+A machine that toggles its own state shows it on its voxel: a burner lit, a lamp, a crucible or a boiler glowing, an electromagnet lit, a damper or a valve open. Hosted machines keep animating while they run. A machine that opens a screen, such as a crucible or a thermal vessel, opens it and keeps it open.
+
+A machine in a cell that a [Rotary Bearing](Rotary_Bearing.md) or joint turns travels with the arm's voxels and lands in the voxel the arm puts it in when the arm is put back, keeping its contents.
 
 ## Joints
 
