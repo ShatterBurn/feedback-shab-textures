@@ -726,6 +726,7 @@ public class BenchScreen extends SkinnedScreen<PartBenchMenu> {
     @Override
     protected void renderBg(GuiGraphics g, float partialTick, int mouseX, int mouseY) {
         partial = partialTick;
+        skin.heat(menu.trim() ? 0f : menu.heat(level())); // a fired skin's firelight follows the stock
         skin.panel(g, leftPos, topPos, imageWidth, imageHeight);
         if (drafting()) {
             blueprint.draw(g, leftPos, topPos, mouseX, mouseY, partialTick);
@@ -978,6 +979,23 @@ public class BenchScreen extends SkinnedScreen<PartBenchMenu> {
 
     @Override
     public void render(GuiGraphics g, int mouseX, int mouseY, float partialTick) {
+        renderBench(g, mouseX, mouseY, partialTick);
+        // The tool is the cursor over the work area (not over a slot or a control, where the plain pointer stays): drawn last, above all.
+        boolean work = settled() && !closing() && !drafting() && inCanvas(mouseX, mouseY) && hoveredSlot == null && getChildAt(mouseX, mouseY).isEmpty()
+                && menu.station().usesTool();
+        if (work)
+            io.github.soundgoodizerfan.feedback.client.gui.ToolCursor.hold(g, menu.hammer(), mouseX, mouseY);
+        else
+            io.github.soundgoodizerfan.feedback.client.gui.ToolCursor.release();
+    }
+
+    @Override
+    public void removed() {
+        io.github.soundgoodizerfan.feedback.client.gui.ToolCursor.release();
+        super.removed();
+    }
+
+    private void renderBench(GuiGraphics g, int mouseX, int mouseY, float partialTick) {
         followFan();
         partial = partialTick;
         super.render(g, mouseX, mouseY, partialTick);

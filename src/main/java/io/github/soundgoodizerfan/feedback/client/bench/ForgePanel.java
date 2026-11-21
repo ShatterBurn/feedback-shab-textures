@@ -180,6 +180,9 @@ final class ForgePanel implements WorkPanel {
         grade(tick, heavy);
         boolean dead = tick < live[0] || tick > live[1];
         GuiSkin.play(dead ? SoundEvents.ANVIL_PLACE : SoundEvents.ANVIL_LAND, heavy ? 0.7f : 1.15f);
+        // The blow rings the whole bench: a heavy blow more than a light one, a clean one more than a dead one.
+        boolean clean = flashText.endsWith("clean"), loose = flashText.endsWith("loose");
+        host.impact((heavy ? 2.4f : 1.5f) * (clean ? 1f : loose ? 0.75f : 0.45f));
     }
 
     private void burst(float x, float y, int n, float speed, int life, int... colors) {

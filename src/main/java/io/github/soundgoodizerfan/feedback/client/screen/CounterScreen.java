@@ -55,9 +55,14 @@ public class CounterScreen extends SkinnedScreen<CounterMenu> {
     @Override
     protected void slotClicked(Slot slot, int slotId, int mouseButton, ClickType type) {
         if (menu.mode() == CounterMenu.BUY && slot != null && slot.index < menu.shelfSlotCount()) {
-            if (slot.hasItem())
+            if (slot.hasItem()) {
                 minecraft.gameMode.handleInventoryButtonClick(menu.containerId,
                         (Screen.hasShiftDown() ? CounterMenu.BUY_STACK : CounterMenu.BUY_ONE) + slot.index);
+                // The goods land on the counter: a wooden knock, a heavier thud and a bigger thump for a stack.
+                GuiSkin.play(Screen.hasShiftDown() ? net.minecraft.sounds.SoundEvents.CHEST_CLOSE : net.minecraft.sounds.SoundEvents.WOODEN_BUTTON_CLICK_ON,
+                        Screen.hasShiftDown() ? 0.8f : 1.1f);
+                impact(Screen.hasShiftDown() ? 2f : 0.9f);
+            }
             return;
         }
         super.slotClicked(slot, slotId, mouseButton, type);
@@ -66,8 +71,15 @@ public class CounterScreen extends SkinnedScreen<CounterMenu> {
     @Override
     protected void renderBg(GuiGraphics g, float partial, int mx, int my) {
         skin.panel(g, leftPos, topPos, imageWidth, imageHeight);
-        for (int i = 0; i < CounterBlockEntity.SHELF; i++)
-            skin.slot(g, leftPos + CounterMenu.SHELF_X + i * 18, topPos + CounterMenu.SHELF_Y);
+        for (int i = 0; i < CounterBlockEntity.SHELF; i++) {
+            int sx = leftPos + CounterMenu.SHELF_X + i * 18, sy = topPos + CounterMenu.SHELF_Y;
+            skin.slot(g, sx, sy);
+            if (menu.getSlot(i).hasItem()) { // a price tag hanging off the shelf edge on its string
+                int ty = topPos + (menu.mode() == CounterMenu.KEEPER ? CounterMenu.PRICE_TEXT_Y : CounterMenu.PRICE_BTN_Y);
+                g.fill(sx + 8, sy + 17, sx + 9, ty - 1, 0x90000000 | skin.dim() & 0xFFFFFF);
+                skin.plaque(g, sx, ty - 2, 16, 11);
+            }
+        }
         if (menu.mode() == CounterMenu.KEEPER) {
             for (int i = 0; i < 9; i++) {
                 skin.slot(g, leftPos + CounterMenu.SHELF_X + i * 18, topPos + CounterMenu.TILL_Y);

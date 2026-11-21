@@ -87,7 +87,7 @@ Two advancements belong to rubber rounds:
 
 ## Charges
 
-The charge is loose powder. The press takes **everything** in its charge slots, so the size of the stack you put in is how much powder goes into the round. A case holds only as much charge as its room allows, and the room grows quickly with the bore: **at most 3** items at 5 mm, **8** at 9 mm, **12** at 12 mm and **27** at 20 mm. The "standard" charge the spec sheets are read against grows with it: about **2** at 5 mm, **4** at 9 mm, **6** at 12 mm and **13** at 20 mm. The same count in a wider case makes less pressure, because the powder has more room.
+The charge is loose powder. The press takes **everything** in its charge slots, so the size of the stack you put in is how much powder goes into the round. A case holds only as much charge as its room allows, and the room grows quickly with the bore: **at most 3** items at 5 mm, **8** at 9 mm, **12** at 12 mm and **27** at 20 mm, never more than **40**. The "standard" charge the spec sheets are read against grows with it: about **2** at 5 mm, **4** at 9 mm, **6** at 12 mm and **13** at 20 mm. The same count in a wider case makes less pressure, because the powder has more room.
 
 The powder also caps what a shot can do. A wider bore or a longer barrel could throw a bullet harder, but never with more energy than the powder holds, so a big gun costs a lot of powder.
 

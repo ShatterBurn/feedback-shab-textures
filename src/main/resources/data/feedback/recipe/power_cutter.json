@@ -10,6 +10,6 @@
   "result": { "count": 1, "id": "feedback:power_cutter" },
   "tool": [ { "ability": "feedback:driver", "wear": 1 } ],
   "fasteners": { "count": 3, "floor": 1, "forms": [ "machine_bolt" ] },
-  "school": "electrical:2",
+  "school": "electrical:3",
   "carries_circuit": true
 }

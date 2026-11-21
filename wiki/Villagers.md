@@ -47,7 +47,7 @@ The **Hint** button on the Orders tab explains a selected dish order; tool order
 ### Delivering
 
 1. Make the piece the order asks for. See [Tools and Weapons](Tools_and_Weapons.md) and [Armor](Armor.md).
-2. Put it in the delivery slot and press **Deliver**.
+2. Put it in the delivery slot and press **Deliver**. The delivery thumps the counter and coins fly up, more of them for a better grade.
 3. The villager grades it as **Rejected**, **Poor**, **Fair**, **Good** or **Exceptional**, pays emeralds by grade, and names the one thing furthest off, for example "Not enough bite." or "Too much weight."
 
 Worn pieces are graded as worn. On a dish, missing the hard requirement costs a grade. An order can be delivered once a day, and then shows as done. A piece of the wrong type is refused and nothing happens.

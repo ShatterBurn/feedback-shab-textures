@@ -12,7 +12,7 @@ C E C
 P S P
 ```
 
-P is a [Copper Plate](Mechanical_Hammer.md), W is a Wrought Iron Rod, C is a [Small Cog](Cogs.md), E is an [Escapement](#crafting-the-parts) and S is a [Shaft](Shaft.md). Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 4 screws ([Fasteners](Fasteners.md)). It needs Mechanical Treatise II: Transmission ([Treatise](Treatise.md)).
+P is a Steel Plate, W is a Steel Rod, C is a [Small Cog](Cogs.md), E is an [Escapement](#crafting-the-parts) and S is a [Shaft](Shaft.md). Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 4 screws ([Fasteners](Fasteners.md)). It needs Mechanical Treatise II: Transmission ([Treatise](Treatise.md)).
 
 ## Setting it up
 

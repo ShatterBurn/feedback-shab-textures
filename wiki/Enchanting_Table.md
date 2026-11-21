@@ -51,6 +51,8 @@ Flaws make a part weaker, as with [forging](Hammer.md). Some effects also add a 
 
 A word written **reversed** (Flip) that fits better than the normal one is judged as the mirror and gives the effect's **mirror**: the same coupling reversed (Bane's mirror is Kin, attraction to the undead). An effect with no mirror takes nothing there.
 
+A successful inscription flares the book with a warm flash, thumps the panel and rings a rising chime that climbs with the level taken.
+
 ### How strong and how many
 
 The highest level you can write comes from the rite (see [Rites](#rites)). The material's **enchantability** (shown on the part's figures) sets how many effects a part holds, and scales each level's strength: lead's level 3 is weaker than gold's.

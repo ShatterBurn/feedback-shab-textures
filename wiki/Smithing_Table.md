@@ -36,6 +36,8 @@ Two folder tabs stand above the panel. **Forge** is the bench described above. *
 
 **Filter:** with stock in the center, type any letter, digit, space or minus and a small **Filter** box opens in the fan's top-right corner, no click needed. The fan (shapes and cuts) narrows as you type; every word you type must match the shape's name, part, type or variant. Backspace deletes, Esc clears. Typing does nothing while a minigame plays.
 
-The bench top behind the fan is lit by a fire that follows the stock's heat: low embers for cold stock, taller and whiter as it heats.
+The bench top behind the fan is lit by a fire that follows the stock's heat: low embers for cold stock, taller and whiter as it heats; the same firelight runs along the panel's bottom edge.
+
+Inside the work area (not over slots or buttons) the pointer is the bench's hand tool: the hammer, axe or saw, tipping forward while you hold the button. Every forging blow shakes the whole panel, heavier blows more, and a clean strike more than a dead one.
 
 Every part of every modular type is made at the bench for its stock: metal here, [wood, bone and leather](Woodworking_Table.md) at the Woodworking Table, and cold stock (stone, ceramic, glass, crystal) at the [Stonecutter](Stonecutter.md). That includes the parts of a [gun](Gun_Parts.md), once you hold its treatise volume. Parts are put together at the [Crafting Table](Crafting_Table.md) or the [Engineering Table](Engineering_Table.md).

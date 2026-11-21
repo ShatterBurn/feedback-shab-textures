@@ -36,7 +36,7 @@ P X P
 W C W
 ```
 
-P is a Wrought Iron Plate and C is a [circuit](Basic_Electronic_Circuit.md), which the finished sensor keeps. X is a Copper Plate and W is Copper Wire for the Fill Gauge; X is a Copper Rod and W is Copper Fine Wire for the Ripeness Probe.
+P is a Steel Plate for the Fill Gauge and a Wrought Iron Plate for the Ripeness Probe, and C is a [circuit](Basic_Electronic_Circuit.md), which the finished sensor keeps. X is a Brass Plate and W is Copper Wire for the Fill Gauge; X is a Copper Rod and W is Copper Fine Wire for the Ripeness Probe.
 
 **Presence Plate and Observer**, at the Engineering Table:
 
@@ -47,4 +47,4 @@ W   W
 
 P is a Wrought Iron Plate and W is Copper Fine Wire. X is a Pivot Arm (Short) for the Presence Plate and a Photocell for the Observer.
 
-Each of the four takes a screwdriver in the tool row, 2 screws ([Fasteners](Fasteners.md)) and Electrical Treatise III: Circuits ([Treatise](Treatise.md)). The [Data Sensor](Sculk.md#data-sensor) is made the same way, with a Copper Plate for P and a Sculk Sensor for X.
+Each of the four takes a screwdriver in the tool row, 2 screws ([Fasteners](Fasteners.md)) and Electrical Treatise III: Circuits ([Treatise](Treatise.md)). The [Data Sensor](Sculk.md#data-sensor) has its own grid and takes Electrical Treatise II: Coils and Magnets.

@@ -15,14 +15,20 @@ import net.minecraft.world.entity.player.Inventory;
  */
 public class StationMenu extends PartBenchMenu {
 
-    /** Client-side open: the position comes in the open packet, and the block there says which bench it is. */
+    /** Client-side open: the open packet carries the position and which bench it is (the client's copy of the block may be stale). */
     public StationMenu(int id, Inventory inventory, RegistryFriendlyByteBuf buf) {
-        this(id, inventory, buf.readBlockPos());
+        this(id, inventory, buf.readBlockPos(), station(buf.readUtf()));
     }
 
-    private StationMenu(int id, Inventory inventory, BlockPos pos) {
-        super(FMenus.STATION.get(), ModularAssembly.Kind.TOOL, id, inventory, new SimpleContainer(PartBenchBlockEntity.SIZE), pos,
-                inventory.player.level().getBlockState(pos).getBlock() instanceof StationBlock b ? b.station : Station.TOOL);
+    private static Station station(String name) {
+        for (Station station : Station.values())
+            if (station.getSerializedName().equals(name))
+                return station;
+        return Station.TOOL;
+    }
+
+    private StationMenu(int id, Inventory inventory, BlockPos pos, Station station) {
+        super(FMenus.STATION.get(), ModularAssembly.Kind.TOOL, id, inventory, new SimpleContainer(PartBenchBlockEntity.SIZE), pos, station);
     }
 
     /** Server-side open. */

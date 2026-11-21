@@ -111,6 +111,8 @@ B is any brick.
 
 With molds set, the melt fills them in order, first slot to last: each mold takes its [full 144 mB](#molds), then the next. Each is an ordinary filled mold, as hot as the pour, cooling by itself; you can lift it out and use it by hand instead of knocking it out. Mold slots that hold a different melt are skipped.
 
+In the basin's screen a hot ingot glows in its mold, sparks lift off glowing stock and steam rises off warm ingots. A ring runs across a bar, and a clink sounds when an ingot sets.
+
 With no molds, the basin is an **open pool** that takes one block's worth, **1296 mB**, and cools as a single heap. Once it has set, knocking it out gives the block of that metal, or nine ingots where the metal has no block.
 
 The basin keeps pouring into whatever has room and does not know whether the last pour has set. Leave a pour in and the next one lands on top of it.

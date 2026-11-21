@@ -1,8 +1,8 @@
 {
   "type": "feedback:engineering",
   "key": {
-    "P": { "item": "feedback:copper_plate" },
-    "R": { "item": "feedback:wrought_iron_rod" }
+    "P": { "item": "feedback:steel_plate" },
+    "R": { "item": "feedback:steel_rod" }
   },
   "pattern": [
     "P P",

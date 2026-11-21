@@ -10,7 +10,7 @@ W C W
 S D S
 ```
 
-S is a Steel Plate, W is [Copper Wire](Wire_Drawer.md), C is Ceramic and D is a [Basic Electronic Circuit](Basic_Electronic_Circuit.md), which the finished cutter keeps. Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, 3 machine bolts ([Fasteners](Fasteners.md)) and Electrical Treatise II: Coils and Magnets ([Treatise](Treatise.md)).
+S is a Steel Plate, W is [Copper Wire](Wire_Drawer.md), C is Ceramic and D is a [Basic Electronic Circuit](Basic_Electronic_Circuit.md), which the finished cutter keeps. Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, 3 machine bolts ([Fasteners](Fasteners.md)) and Electrical Treatise III: Circuits ([Treatise](Treatise.md)).
 
 ### Heads
 

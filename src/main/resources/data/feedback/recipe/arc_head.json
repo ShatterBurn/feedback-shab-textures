@@ -18,5 +18,5 @@
     { "ability": "feedback:driver", "wear": 1 }
   ],
   "fasteners": { "count": 3, "floor": 2, "forms": ["machine_bolt"] },
-  "school": "electrical:2"
+  "school": "electrical:3"
 }

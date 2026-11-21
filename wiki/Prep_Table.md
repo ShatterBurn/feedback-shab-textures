@@ -76,7 +76,7 @@ The table's screen is fired brick with pale calcite trim.
 
 ### The reveal
 
-When you let go of the pour the result is already decided, but you are not told yet. The dish is covered and music plays for how it went (a bright tune for a clean pour, a steady one for a shaky one, a sad one for a failed one), so you can hear it before you see it. Then the cover lifts, with a fanfare for a good pour or a failed one. Click or press Esc to skip the music. Kneading ends the same way, with the dough resting under a cloth, and so does the cut: on Done the board is covered with a cloth while the music of how even the cut was plays (a bright tune for even, a steady one for mixed, a sad one for ragged), then the cloth lifts with the fanfare and the pieces wobble apart.
+When you let go of the pour the result is already decided, but you are not told yet. The dish is covered and music plays for how it went (a bright tune for a clean pour, a steady one for a shaky one, a sad one for a failed one), so you can hear it before you see it. Then the cover lifts, with a fanfare for a good pour or a failed one. Click or press Esc to skip the music. Kneading ends the same way, with the dough resting under a cloth, and so does the cut: on Done the board is covered with a cloth while the music of how even the cut was plays (a bright tune for even, a steady one for mixed, a sad one for ragged), then the cloth lifts with the fanfare and the pieces wobble apart. When the cloth comes off, the room dims to one lamp over the board: steady for a good cut, flickering and weak for a ragged one.
 
 ### Recipe tab
 

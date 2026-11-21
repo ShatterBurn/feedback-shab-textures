@@ -53,6 +53,9 @@ final class SuitScreen extends Screen {
     private float camX, camY, zoom = 1f;
     private boolean dragging, moved;
     private Node picked = CHEST;
+    /** The first open of a session plays a short assembly (nodes slide in, 16 ticks, any click skips); later opens cost nothing. */
+    private static boolean assembled;
+    private float assembleAt = Float.NEGATIVE_INFINITY;
     private final GuiStyle.Flash flash = new GuiStyle.Flash(1);
 
     SuitScreen() {
@@ -69,6 +72,11 @@ final class SuitScreen extends Screen {
 
     @Override
     protected void init() {
+        if (!assembled && !io.github.soundgoodizerfan.feedback.client.ClientSettings.reduceMotion()) {
+            assembleAt = io.github.soundgoodizerfan.feedback.client.gui.GuiStyle.time();
+            io.github.soundgoodizerfan.feedback.client.gui.GuiSkin.play(net.minecraft.sounds.SoundEvents.PISTON_EXTEND, 1.2f, 0.6f);
+        }
+        assembled = true;
         opening.start();
         int x = px() + COL_X, y = py() + H - 12 - 5 * 16;
         Ability[] all = SuitClient.shown();
@@ -140,7 +148,9 @@ final class SuitScreen extends Screen {
         g.pose().scale(zoom, zoom, 1);
         float flow = s.draw() > 0.05f ? now / 600f : 0f;
         int trace = s.cut() ? 0xFF << 24 | 0xFFA52E : 0xFF << 24 | 0x4FE3FF;
-        for (Node[] l : LINKS) {
+        float asm = Mth.clamp((io.github.soundgoodizerfan.feedback.client.gui.GuiStyle.time() - assembleAt) / 16f, 0f, 1f);
+        float away = (1f - asm) * (1f - asm) * (1f - asm) * 170f; // canvas units still to slide, easing out
+        for (Node[] l : asm < 0.85f ? new Node[0][] : LINKS) {
             int ax = l[0].x + l[0].w / 2, ay = l[0].y + l[0].h / 2, bx = l[1].x + l[1].w / 2, by = l[1].y + l[1].h / 2;
             GuiStyle.line(g, ax, ay, bx, by, 0x60 << 24 | 0x35B6D0);
             if (s.draw() > 0.05f)
@@ -149,8 +159,13 @@ final class SuitScreen extends Screen {
                     g.fill((int) dx - 1, (int) dy - 1, (int) dx + 1, (int) dy + 1, trace);
                 }
         }
-        for (Node n : NODES)
+        for (Node n : NODES) {
+            g.pose().pushPose();
+            if (away > 0.5f) // each node flies in from its own side
+                g.pose().translate(n == BAY ? -away : n == LEGS ? -away : n == CHEST ? away : 0f, n == HEAD ? -away : n == FEET ? away : 0f, 0);
             node(g, n, s, now);
+            g.pose().popPose();
+        }
         g.pose().popPose();
         g.disableScissor();
 
@@ -272,6 +287,7 @@ final class SuitScreen extends Screen {
 
     @Override
     public boolean mouseClicked(double mx, double my, int button) {
+        assembleAt = Float.NEGATIVE_INFINITY; // a click skips the first-open assembly
         if (!opening.settled())
             return true;
         if (super.mouseClicked(mx, my, button))

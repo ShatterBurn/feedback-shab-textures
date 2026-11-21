@@ -19,6 +19,7 @@ import io.github.soundgoodizerfan.feedback.registry.FSounds;
 import io.github.soundgoodizerfan.feedback.client.gui.GuiSkin;
 import io.github.soundgoodizerfan.feedback.client.gui.GuiStyle;
 import io.github.soundgoodizerfan.feedback.client.gui.Opening;
+import io.github.soundgoodizerfan.feedback.client.ClientSettings;
 import io.github.soundgoodizerfan.feedback.client.gui.Specks;
 
 import net.minecraft.client.Minecraft;
@@ -44,6 +45,24 @@ public class PrepCutScreen extends Screen {
     private static final GuiSkin SKIN = GuiSkin.BRICK;
     private static final int PW = 300, PH = 204, BAR_W = 240, BAR_H = 26, ICON = 64, FLOURISH = 18, REVEAL_HOLD = 40, STROKE = 6;
     private static final int PLAY = 0, JUDGE = 1, REVEAL = 2;
+    /**
+     * The plating: when the cloth is off the room dims to one lamp over the board, warm and steady for a good cut, a flickering weak one for a
+     * ragged cut. Draw only; it eases in over the first eight ticks of the reveal and is gone with the screen.
+     */
+    private void plating(GuiGraphics g) {
+        if (phase != REVEAL || ClientSettings.reduceMotion())
+            return;
+        float ease = Mth.clamp((revealTicks + partial) / 8f, 0f, 1f);
+        int bx = barX - 8, by = py + 22, bw = BAR_W + 16, bh = BAR_H + 110;
+        float lamp = cut.grade() == FoodCut.RAGGED ? 0.45f + 0.25f * Mth.sin((ticks + partial) * 1.7f) : cut.grade() == FoodCut.EVEN ? 1f : 0.75f;
+        int dark = (int) (0x70 * ease) << 24;
+        g.fill(px, py, px + PW, by, dark); // the dim room round the lit board
+        g.fill(px, by + bh, px + PW, py + PH, dark);
+        g.fill(px, by, bx, by + bh, dark);
+        g.fill(bx + bw, by, px + PW, by + bh, dark);
+        g.fillGradient(bx, by, bx + bw, by + bh / 2, (int) (0x38 * ease * lamp) << 24 | 0xFFD890, 0x00FFD890); // the lamp's pool on the board
+    }
+
     /** The cloth over the board while it is judged (screen-local colours: the cloth is the subject). */
     private static final int CLOTH = 0xFFEADFC8, CLOTH_CHECK = 0x60B04040;
 
@@ -55,7 +74,7 @@ public class PrepCutScreen extends Screen {
     private final int rgb;
     /** Where each stroke was aimed (what the server is sent) and where it landed, in placing order; {@code sorted} is the landed ones in line order. */
     private final int[] aimed = new int[ModularTuning.CUT_MAX_MARKS], landed = new int[ModularTuning.CUT_MAX_MARKS], sorted = new int[ModularTuning.CUT_MAX_MARKS];
-    private int count, stroke, flourish, phase, judge, ticks;
+    private int count, stroke, flourish, phase, judge, ticks, revealTicks;
     private SimpleSoundInstance bgm;
     private FoodCut cut = new FoodCut(0, FoodCut.EVEN);
     private boolean sent;
@@ -174,8 +193,11 @@ public class PrepCutScreen extends Screen {
         specks.tick(0.18f);
         if (phase == JUDGE && --judge <= 0)
             reveal();
-        else if (phase == REVEAL && --flourish <= 0)
-            opening.close();
+        else if (phase == REVEAL) {
+            revealTicks++;
+            if (--flourish <= 0)
+                opening.close();
+        }
     }
 
     /**
@@ -298,6 +320,7 @@ public class PrepCutScreen extends Screen {
         SKIN.inset(g, barX - 8, py + 22, BAR_W + 16, BAR_H + 110);
         slab(g);
         cloth(g);
+        plating(g);
         int hy = py + PH - 54;
         for (var l : hint) {
             g.drawString(font, l, px + 12, hy, SKIN.dim(), false);

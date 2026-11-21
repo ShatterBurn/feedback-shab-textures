@@ -48,6 +48,8 @@ public class VillagerScreen extends SkinnedScreen<VillagerMenu> {
     private int tab = -1;
     private int order, good, want, orderScroll, goodScroll, wantScroll;
     private Button deliver, buy, sell, hintBtn;
+    /** Coins thrown up when a commission is accepted (panel-relative). */
+    private final io.github.soundgoodizerfan.feedback.client.gui.Specks coins = new io.github.soundgoodizerfan.feedback.client.gui.Specks(48);
     private boolean hintOpen;
     private VillagerView seen = VillagerView.EMPTY;
     private long stampedAt = -1;
@@ -106,6 +108,7 @@ public class VillagerScreen extends SkinnedScreen<VillagerMenu> {
 
     @Override
     protected void containerTick() {
+        coins.tick(0.22f);
         VillagerView v = menu.view();
         if (v != seen) {
             if (v.grade() != VillagerView.NONE && v.grade() >= -7) {
@@ -113,8 +116,13 @@ public class VillagerScreen extends SkinnedScreen<VillagerMenu> {
                 int g = v.grade();
                 if (g == CommissionJudge.Grade.REJECTED.ordinal() || g < 0)
                     skin.cue(GuiSkin.Cue.REJECT);
-                else
+                else {
                     skin.cue(GuiSkin.Cue.FINISH, null, g >= CommissionJudge.Grade.GOOD.ordinal() ? 1.15f : g <= CommissionJudge.Grade.POOR.ordinal() ? 0.88f : 1f);
+                    // The deal: the counter thumps and the payment's coins fly up and fall, more for a better grade.
+                    int pay = g >= CommissionJudge.Grade.GOOD.ordinal() ? 18 : g <= CommissionJudge.Grade.POOR.ordinal() ? 4 : 9;
+                    impact(pay > 10 ? 1.8f : 1f);
+                    coins.burst(DETAIL_X + 60, 36, pay, 1.8f, 4.2f, 0xF4D35E, 44, 2);
+                }
             }
             seen = v;
             if (v.hint().isEmpty())
@@ -273,6 +281,7 @@ public class VillagerScreen extends SkinnedScreen<VillagerMenu> {
     @Override
     protected void renderLabels(GuiGraphics g, int mx, int my) {
         g.drawString(font, title, titleLabelX, titleLabelY, skin.ink(), false);
+        coins.draw(g, net.minecraft.client.Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false));
     }
 
     @Override

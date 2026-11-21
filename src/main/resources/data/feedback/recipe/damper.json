@@ -2,7 +2,7 @@
   "type": "feedback:engineering",
   "key": {
     "I": { "item": "feedback:wrought_iron_plate" },
-    "C": { "item": "feedback:copper_plate" },
+    "C": { "item": "feedback:bronze_plate" },
     "S": { "item": "feedback:shaft" },
     "K": { "type": "feedback:material", "form": "coil_spring" }
   },

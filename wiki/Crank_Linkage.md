@@ -9,7 +9,7 @@ C P
 P S
 ```
 
-C is a [Small Cog](Cogs.md), P is a [Copper Plate](Mechanical_Hammer.md) and S is a [Shaft](Shaft.md).
+C is a [Small Cog](Cogs.md), P is a [Bronze Plate](Mechanical_Hammer.md) and S is a [Shaft](Shaft.md).
 
 ## Placing
 

@@ -21,4 +21,4 @@ What the stock offers here:
 
 The Saw tab reads the recipe book, so a modded recipe made of planks and sticks joins the list. It does not do recipes that need anything else (a barrel's slabs, a ladder's sticks alone).
 
-Metal parts are made at the [Smithing Table](Smithing_Table.md); stone, ceramic, glass and crystal at the [Stonecutter](Stonecutter.md). Parts are put together at the [Crafting Table](Crafting_Table.md) or the [Engineering Table](Engineering_Table.md). The screen is oak planks and dark board.
+Metal parts are made at the [Smithing Table](Smithing_Table.md); stone, ceramic, glass and crystal at the [Stonecutter](Stonecutter.md). Parts are put together at the [Crafting Table](Crafting_Table.md) or the [Engineering Table](Engineering_Table.md). The screen is oak planks and dark board. The pointer over the work area is the axe or saw.

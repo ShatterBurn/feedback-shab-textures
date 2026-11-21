@@ -1,7 +1,7 @@
 {
   "type": "feedback:engineering",
   "key": {
-    "P": { "item": "feedback:copper_plate" },
+    "P": { "item": "feedback:brass_plate" },
     "X": { "item": "minecraft:sculk_sensor" },
     "W": { "item": "feedback:copper_fine_wire" }
   },

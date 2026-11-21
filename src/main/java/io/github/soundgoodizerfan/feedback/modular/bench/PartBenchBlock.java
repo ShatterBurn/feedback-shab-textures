@@ -34,7 +34,11 @@ public abstract class PartBenchBlock extends BaseEntityBlock {
         if (!(level.getBlockEntity(pos) instanceof PartBenchBlockEntity table))
             return InteractionResult.PASS;
         if (!level.isClientSide)
-            player.openMenu(table, buf -> buf.writeBlockPos(pos));
+            // The open packet says which bench this is: the client's own copy of the block may not have caught up with the server's yet.
+            player.openMenu(table, buf -> {
+                buf.writeBlockPos(pos);
+                buf.writeUtf(state.getBlock() instanceof StationBlock b ? b.station.getSerializedName() : "");
+            });
         return InteractionResult.sidedSuccess(level.isClientSide);
     }
 

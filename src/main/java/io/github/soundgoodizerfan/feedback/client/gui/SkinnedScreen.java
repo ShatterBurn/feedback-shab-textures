@@ -9,6 +9,7 @@ import java.util.function.IntConsumer;
 import java.util.function.IntSupplier;
 
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.util.Mth;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
@@ -59,14 +60,31 @@ public abstract class SkinnedScreen<M extends AbstractContainerMenu> extends Abs
         return opening.closing();
     }
 
+    /** A decaying shake of the whole panel (hammer blow, press, stamp): {@code amplitude} pixels at the start, gone in about seven ticks; none under reduce motion. */
+    public void impact(float amplitude) {
+        impactAt = GuiStyle.time();
+        impactAmp = amplitude;
+    }
+
+    private static final float IMPACT_TICKS = 7f;
+    private float impactAt = Float.NEGATIVE_INFINITY, impactAmp;
+
     @Override
     public void render(GuiGraphics g, int mouseX, int mouseY, float partialTick) {
         if (opening.shut()) {
             super.onClose();
             return;
         }
-        opening.render(g, width, height, leftPos, topPos, imageWidth, imageHeight,
-                () -> super.render(g, mouseX, mouseY, partialTick));
+        opening.render(g, width, height, leftPos, topPos, imageWidth, imageHeight, () -> {
+            g.pose().pushPose();
+            float age = GuiStyle.time() - impactAt;
+            if (age >= 0 && age < IMPACT_TICKS && !io.github.soundgoodizerfan.feedback.client.ClientSettings.reduceMotion()) { // the whole panel, not the world behind it
+                float fall = 1f - age / IMPACT_TICKS;
+                g.pose().translate(Math.round(Mth.sin(age * 2.6f) * impactAmp * fall), Math.round(Mth.sin(age * 3.4f + 1f) * impactAmp * fall * 0.7f), 0);
+            }
+            super.render(g, mouseX, mouseY, partialTick);
+            g.pose().popPose();
+        });
         drawStatus(g);
         if (settled())
             renderTooltip(g, mouseX, mouseY);

@@ -95,7 +95,7 @@ public class EnchantScreen extends SkinnedScreen<EnchantMenu> {
     private int resultLevel;
     /** When the result landed (ms, for the stamp) and in motion-clock ticks (for the shake). */
     private long resultAt = -10_000;
-    private float shakeAt = Float.NEGATIVE_INFINITY;
+    private float shakeAt = Float.NEGATIVE_INFINITY, flareAt = Float.NEGATIVE_INFINITY;
     private final Specks specks = new Specks(96);
     /** Ticks since the screen opened, for the ambient motes over the pad. */
     private int ambient;
@@ -416,6 +416,10 @@ public class EnchantScreen extends SkinnedScreen<EnchantMenu> {
             int rgb = v.flaw() > 0 ? AMBER : GOLD_HI;
             specks.burst(cx, cy, 20 + 10 * Math.abs(v.level()), 2.4f, 3.2f, rgb, 34, 2);
             specks.burst(cx, cy, 10, 1.2f, 1.8f, 0xFFFFFF, 40, 1);
+            // The discharge: the book flares, the whole panel thumps, and the chime rises with the level taken.
+            flareAt = GuiStyle.time();
+            impact(v.flaw() > 0 ? 1.2f : 2f + Math.min(3, Math.abs(v.level())) * 0.6f);
+            GuiSkin.play(net.minecraft.sounds.SoundEvents.AMETHYST_BLOCK_RESONATE, 0.9f + 0.12f * Math.min(4, Math.abs(v.level())));
         }
         PacketDistributor.sendToServer(new EnchantFinishPayload(menu.containerId, e.id(), startTemperature, List.copyOf(samples)));
     }
@@ -537,6 +541,10 @@ public class EnchantScreen extends SkinnedScreen<EnchantMenu> {
         super.render(g, mouseX, mouseY, partialTick);
         if (!ClientSettings.reduceMotion())
             specks.draw(g, partialTick);
+        float flare = (GuiStyle.time() - flareAt) / 12f;
+        if (flare >= 0f && flare < 1f && !ClientSettings.reduceMotion()) { // a short warm flash over the book
+            g.fill(leftPos, topPos, leftPos + imageWidth, topPos + imageHeight, (int) ((1f - flare) * (1f - flare) * 0x50) << 24 | 0xFFE8A0);
+        }
         long age = net.minecraft.Util.getMillis() - resultAt;
         if (!result.isEmpty() && age < 1600) {
             String key = resultLevel == 0 ? "none" : result.endsWith("flawed") ? "flawed" : "clean";

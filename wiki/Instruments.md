@@ -59,7 +59,7 @@ P   P
   R
 ```
 
-P is a Copper Plate and R is a Wrought Iron Rod. Craft it at the [Engineering Table](Engineering_Table.md) with a [file](Hand_Tools.md#file) in the tool row, holding Materials Treatise I: Machine-Shop Consumables ([Treatise](Treatise.md)); it spends no fasteners.
+P is a Steel Plate and R is a Steel Rod. Craft it at the [Engineering Table](Engineering_Table.md) with a [file](Hand_Tools.md#file) in the tool row, holding Materials Treatise I: Machine-Shop Consumables ([Treatise](Treatise.md)); it spends no fasteners.
 
 **Work in progress.** Without calipers, a half-worked item tells you what it **needs** as a number (*"Needs 14 Wu"*) but only roughly how far it has got: *Barely marked*, *Taking shape*, *Visibly worked*, *Nearly there*. Carry calipers anywhere in your inventory and that changes to an exact figure, like *"Calipers: 9 / 14 Wu"*, on the item's tooltip and in Jade, on whatever is sitting in a hammer, press, mill, drawer, drill, lathe or grinder. You do not need calipers to make a plate; the words are enough to avoid ruining one. You need them to **aim** at something that only lasts a blow or two, like copper foil, and hit it every time.
 
@@ -155,7 +155,7 @@ F
 P
 ```
 
-G is a Glass Pane, F is [Copper Foil](Mechanical_Hammer.md) and P is a [Copper Plate](Mechanical_Hammer.md).
+G is a Glass Pane, F is [Copper Foil](Mechanical_Hammer.md) and P is a [Brass Plate](Mechanical_Hammer.md).
 
 Carry it anywhere in your inventory; you do not need to hold it.
 
@@ -193,7 +193,7 @@ T
 P
 ```
 
-G is a Glass Pane, T is a Copper Tubing and P is a [Copper Plate](Mechanical_Hammer.md).
+G is a Glass Pane, T is a Copper Tubing and P is a [Brass Plate](Mechanical_Hammer.md).
 
 **Right-click** a Boiler, a Pressure Vessel, a [Pipe](Pipe.md) or a [Gas Tank](Gas_Tank.md) to read its pressure in Pu on the card. It only reads; it cannot vent or relieve anything. It reads in steps of **0.5 Pu**. A boiler's danger line is 5 Pu, its critical pressure 7, and it starts to seep at 3.5, so you can see the danger line coming without the exact figure. A circuit can narrow the step ([below](#fitting-a-circuit)). Reading a holder above **8 Pu** strains it; see [Drift](#drift).
 

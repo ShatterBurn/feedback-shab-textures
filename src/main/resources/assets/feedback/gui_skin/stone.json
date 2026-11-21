@@ -42,7 +42,7 @@
       "sprite": "feedback:skin/stone/keystone",
       "anchor": "top_right",
       "x": -26,
-      "y": 4,
+      "y": -12,
       "w": 24,
       "h": 18,
       "heat": false

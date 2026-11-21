@@ -14,9 +14,11 @@ P is a Wrought Iron Plate, S is a [Shaft](Shaft.md) and B is a [Bearing](Bearing
 
 ## Using it
 
+The Mixer is a plate-iron drum standing one and a half blocks tall, open at the top, with a cross brace and a bearing collar near the rim. Its outline is one block, but the drum rises half a block above the space and blocks you like a fence. Inside, a shaft with three paddles turns at the shaft's real speed: the faster the shaft, the faster the paddles, and they coast to a stop with it. The item in your hand shows the same drum.
+
 - **Right click with any item that is a material** pours one in, up to a full load of **40 parts**.
 - **Right click empty-handed** opens the screen.
-- **A pipe** fills the drum with any fluid that has a material (molten metals among them). **144 mB** counts as one part, and fluid shares the 8-part limit with items. Buckets cannot fill it.
+- **A pipe** fills the drum with any fluid that has a material (molten metals among them). **144 mB** counts as one part, and fluid shares the 40-part limit with items. Buckets cannot fill it.
 
 The screen has three input slots, an output slot, a **Draw** button, a tank gauge, and readings. Items in the input slots pour in one at a time while there is room. Share bars show what each part makes up of the drum, in quarters. A word reading gives how well it is mixed, and a banded heat gauge shows the drum's temperature (hover for the reading in Tu). A small drum window between the output slot and the heat gauge shows three paddles turning at the drum's real speed over a disc colored by the mix; the paddles stand still when the drum is stopped, and the disc is dim when it is empty.
 

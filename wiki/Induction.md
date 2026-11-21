@@ -14,7 +14,7 @@ W C W
 W S W
 ```
 
-W is Copper Fine Wire, S is a Steel Plate and C is Ceramic. Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, 2 screws ([Fasteners](Fasteners.md)) and Electrical Treatise II: Coils and Magnets ([Treatise](Treatise.md)).
+W is Copper Fine Wire, S is a Steel Plate and C is Ceramic. Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, 2 screws ([Fasteners](Fasteners.md)) and Electrical Treatise III: Circuits ([Treatise](Treatise.md)).
 
 - It faces away from the face you click when placing it, like the [Heating Coil](Heating_Coil.md). The block it faces gets its full heat; see [Heat](Heat.md#heat-sources-have-a-facing).
 - It draws **8 A** in the MV band while there is metal to heat.
@@ -28,7 +28,7 @@ C W C
 S S S
 ```
 
-C is Ceramic, W is Copper Fine Wire and S is a Steel Plate. Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, 2 screws ([Fasteners](Fasteners.md)) and Electrical Treatise II: Coils and Magnets ([Treatise](Treatise.md)).
+C is Ceramic, W is Copper Fine Wire and S is a Steel Plate. Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, 2 screws ([Fasteners](Fasteners.md)) and Electrical Treatise III: Circuits ([Treatise](Treatise.md)).
 
 - It heats only the block above it, up to **600 Tu**.
 - It draws **4 A** in the MV band, and only while magnetic cookware sits on it.
@@ -43,7 +43,7 @@ C   C
 S S S
 ```
 
-W is Copper Fine Wire, C is Ceramic and S is a Steel Plate. Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, 2 screws ([Fasteners](Fasteners.md)) and Electrical Treatise II: Coils and Magnets ([Treatise](Treatise.md)).
+W is Copper Fine Wire, C is Ceramic and S is a Steel Plate. Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, 2 screws ([Fasteners](Fasteners.md)) and Electrical Treatise III: Circuits ([Treatise](Treatise.md)).
 
 - **Right-click** with a piece to lay it in the coil; **right-click** empty-handed to take it back.
 - **Right-click** empty-handed on an empty coil, or **sneak and right-click** with a piece in it, to step the target temperature: off, then 600, 800, 1,000, 1,200, 1,400, 1,600 and 1,800 Tu. The target shows on the reading card and on the Jade readout.

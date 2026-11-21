@@ -127,6 +127,9 @@ A thin Module Thermal plate also runs a **coolant**: the first fluid container i
 
 ## HUD
 
+The suit's diagnostic screen slides its parts in the first time it opens in a session; any click skips that. Every other opening shows everything at once.
+
+
 A card at the bottom left shows five lamps (ST, JP, PL, NV, TH) for the abilities, one more lamp for each fitted module ability, a charge bar and a heat bar. **PACK OVERLOAD** shows when the [Backpack](Backpack.md) is heavier than you can carry.
 
 ## Misuse and hazards

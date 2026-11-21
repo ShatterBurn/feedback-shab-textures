@@ -8,7 +8,9 @@
   "volumes": [
     "weapons:2",
     "mechanical:1",
-    "chemical:1",
-    "electrical:1"
+    "electrical:1",
+    "electrical:2",
+    "experience:1",
+    "experience:2"
   ]
 }

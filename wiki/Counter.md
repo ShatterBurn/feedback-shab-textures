@@ -11,7 +11,7 @@ A Counter has a facing. Its front is the customer side and its back is the keepe
 
 ## Using it
 
-- **Front or top, right-click:** the buy menu. Click a shelf item to buy one, Shift-click to buy a stack. You pay in emeralds from your inventory, and they go into the Counter's till.
+- **Front or top, right-click:** the buy menu. Click a shelf item to buy one, Shift-click to buy a stack. A price tag hangs on a string under each shelf item, and a purchase knocks on the counter: a heavier thud and a bigger thump for a whole stack. You pay in emeralds from your inventory, and they go into the Counter's till.
 - **Back, right-click:** the keeper menu. Stock the shelf, set a price in emeralds for each slot with the **+** and **-** buttons (Shift changes it by 8), and take emeralds from the till slots and goods from the returns slots. A slot's tooltip shows the market price, the highest price any villager pays for that item.
 - **Either side, right-click:** the catchment readout: villagers in reach, how many want something here, errands pending and villagers out of reach.
 
