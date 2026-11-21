@@ -200,13 +200,17 @@ public final class ModularConvert {
             parts.add(made);
         }
         ResourceLocation target = hit.getKey();
+        float carried = vanilla.isDamageableItem() ? vanilla.getDamageValue() / (float) vanilla.getMaxDamage() : 0f;
         if (type.face()) {
             // A face definition builds nothing itself: the vanilla tool is a haft with that face on it, each part in the plan's own letter.
             target = ModularFaces.PLAN;
             List<Part> mapped = new ArrayList<>();
             for (Part p : parts) {
                 ModularType.Role r = type.roles().get(p.role());
-                mapped.add(new Part(ModularFaces.haftRole(r), p.material(), p.form(), p.count(), p.kind(), p.variant(), p.flaw(), p.measures()));
+                // The face's own wear is what the bar follows (ModularFaces#wear), so the vanilla wear goes on the face that carries it.
+                boolean wearing = r.part().isPresent() && !r.rod();
+                mapped.add(new Part(ModularFaces.haftRole(r), p.material(), p.form(), p.count(), p.kind(), p.variant(), p.flaw(),
+                        wearing ? p.measures().withState(ModularFaces.WORN, Math.min(0.99f, carried)) : p.measures()));
             }
             parts = mapped;
         }
