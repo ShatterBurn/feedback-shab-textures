@@ -363,7 +363,6 @@
   "message.feedback.rotary_bearing.disassembled": "Put back as blocks",
   "message.feedback.rotary_bearing.empty": "Nothing in front of it to turn",
   "message.feedback.rotary_bearing.too_big": "Too big, or it touches the ground",
-  "message.feedback.rotary_bearing.machine": "A machine in finespace is in the way: take it out first",
   "message.feedback.rotary_bearing.blocked": "Something stands where a block would go back",
   "message.feedback.rotary_bearing.misaligned": "Turn it back first: the blocks on it would not line up with the grid",
   "message.feedback.rotary_bearing.not_loaded": "Its body is not loaded",

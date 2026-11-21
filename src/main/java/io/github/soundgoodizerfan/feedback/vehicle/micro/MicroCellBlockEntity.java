@@ -212,6 +212,35 @@ public class MicroCellBlockEntity extends BlockEntity implements BlockEntitySubL
         var be = FineHosts.make(level, worldPosition, voxels[index], stack);
         if (be == null)
             return false;
+        install(index, be, stack);
+        return true;
+    }
+
+    /** A machine lifted out of its voxel with everything it holds, to be landed in another (a joint's arm turning it into the world and back). */
+    public record Lifted(net.minecraft.world.item.ItemStack item, CompoundTag save) {
+    }
+
+    /** The machine in voxel {@code index} as it stands, or null; it stays where it is. */
+    @Nullable
+    public Lifted lift(int index) {
+        if (level == null || hosted[index] == null || hostedItems[index] == null)
+            return null;
+        return new Lifted(hostedItems[index].copy(), hosted[index].saveWithFullMetadata(level.registryAccess()));
+    }
+
+    /** Voxel {@code index}, just set to the state the machine now stands in, becomes {@code machine} again; call {@link #commit} after. */
+    public boolean land(int index, Lifted machine) {
+        if (level == null || voxels[index] == null)
+            return false;
+        var be = net.minecraft.world.level.block.entity.BlockEntity.loadStatic(worldPosition, voxels[index], machine.save(), level.registryAccess());
+        if (be == null)
+            return false;
+        be.setLevel(level);
+        install(index, be, machine.item());
+        return true;
+    }
+
+    private void install(int index, net.minecraft.world.level.block.entity.BlockEntity be, net.minecraft.world.item.ItemStack stack) {
         hosted[index] = be;
         hostedItems[index] = stack.copyWithCount(1);
         hostedCount++;
@@ -224,7 +253,6 @@ public class MicroCellBlockEntity extends BlockEntity implements BlockEntitySubL
         }
         if (be instanceof io.github.soundgoodizerfan.feedback.core.electric.ElectricNode && !level.isClientSide)
             io.github.soundgoodizerfan.feedback.core.electric.ElectricPropagator.requeue(level, worldPosition);
-        return true;
     }
 
     private int hostedCount;

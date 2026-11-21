@@ -129,10 +129,16 @@ public final class MicroBearings {
                         if (c.skin(i) != null)
                             skins.put(voxel(e.getKey(), i), c.skin(i));
                     }
-        // A machine does not travel with the voxels split out of a cell, so a cell with one is not split.
-        for (BlockPos c : staying.keySet())
-            if (level.getBlockEntity(c) instanceof MicroCellBlockEntity w && w.hasHosted())
-                return "machine";
+        // A machine in a voxel that stays is lifted out now and landed where the voxel is put back; the whole cell goes into the body with its
+        // machines, and the body's copy of a staying voxel is let go below without dropping the machine.
+        Map<BlockPos, MicroCellBlockEntity.Lifted> staysWith = new LinkedHashMap<>();
+        for (var e : staying.entrySet())
+            if (level.getBlockEntity(e.getKey()) instanceof MicroCellBlockEntity w)
+                for (int i : e.getValue().keySet()) {
+                    var lifted = w.lift(i);
+                    if (lifted != null)
+                        staysWith.put(voxel(e.getKey(), i), lifted);
+                }
         List<BlockPos> cells = new ArrayList<>(staying.keySet());
         // Inside a body, the full-size blocks the arm touches (an engine, a chest) go with it. Not in the world: the ground would come too.
         if (parent != null) {
@@ -180,8 +186,10 @@ public final class MicroBearings {
                 // The copies of the staying voxels' bearings go first: set would let them go and
                 // clear the world bearings' clearances, which the copies name too.
                 inBody.bearings().keySet().removeAll(e.getValue().keySet());
-                for (int i : e.getValue().keySet())
+                for (int i : e.getValue().keySet()) {
+                    inBody.releaseHosted(i);
                     inBody.set(i, null);
+                }
                 inBody.commit();
                 inBody.setClear(bodyClear.getOrDefault(e.getKey(), 0));
             }
@@ -192,6 +200,9 @@ public final class MicroBearings {
                     put.setSkin(v.getKey(), skins.get(w));
                     put.commit();
                 }
+                var machine = staysWith.get(w);
+                if (machine != null && level.getBlockEntity(e.getKey()) instanceof MicroCellBlockEntity put && put.land(v.getKey(), machine))
+                    put.commit();
             }
         }
         // The cells made anew keep what they carried (other bearings, their clearances), minus what moved.
@@ -299,11 +310,6 @@ public final class MicroBearings {
             return "not_loaded";
         if (Joint.carriesChild(level, s))
             return "has_child";
-        // A machine does not travel with the voxels put back (they move as states), so the body is put back only once it holds none.
-        var bodyBox = s.getPlot().getBoundingBox();
-        for (BlockPos p : BlockPos.betweenClosed(bodyBox.minX(), bodyBox.minY(), bodyBox.minZ(), bodyBox.maxX(), bodyBox.maxY(), bodyBox.maxZ()))
-            if (level.getBlockEntity(p) instanceof MicroCellBlockEntity inBody && inBody.hasHosted())
-                return "machine";
         Direction.Axis axis = f.getAxis();
         float sign = f.getAxisDirection() == Direction.AxisDirection.POSITIVE ? 1 : -1;
         // The body's angle about the axis's positive direction, to the nearest quarter turn; any other
@@ -315,6 +321,8 @@ public final class MicroBearings {
         BlockPos offset = joint.homeTo().subtract(joint.homeFrom());
         Map<BlockPos, BlockState> moves = new LinkedHashMap<>();
         Map<BlockPos, BlockState> skinMoves = new LinkedHashMap<>();
+        // The machines move as the voxels do: lifted from the body now (its cells go with it), landed in the voxel each one turns into.
+        Map<BlockPos, MicroCellBlockEntity.Lifted> machineMoves = new LinkedHashMap<>();
         var box = s.getPlot().getBoundingBox();
         for (BlockPos p : BlockPos.betweenClosed(box.minX(), box.minY(), box.minZ(), box.maxX(), box.maxY(), box.maxZ()))
             if (level.getBlockEntity(p) instanceof MicroCellBlockEntity inBody)
@@ -324,6 +332,9 @@ public final class MicroBearings {
                         moves.put(to, hinge ? turn(inBody.get(i), axis, k) : turn(inBody.get(i), snapped));
                         if (inBody.skin(i) != null)
                             skinMoves.put(to, inBody.skin(i));
+                        var lifted = inBody.lift(i);
+                        if (lifted != null)
+                            machineMoves.put(to, lifted);
                     }
         // The full-size blocks of the body: each lands on the grid only if the turn puts its voxels on whole cells; else it must be turned back first.
         Map<BlockPos, BlockPos> fullTargets = new LinkedHashMap<>();
@@ -373,6 +384,10 @@ public final class MicroBearings {
                 put.setSkin(indexOf(m.getKey()), skin);
                 put.commit();
             }
+            var machine = machineMoves.get(m.getKey());
+            if (machine != null && level.getBlockEntity(MicroPlacer.cellOf(m.getKey().getX(), m.getKey().getY(), m.getKey().getZ())) instanceof MicroCellBlockEntity put
+                    && put.land(indexOf(m.getKey()), machine))
+                put.commit();
         }
         RotationPropagator.rebuildFrom(level, cell.getBlockPos());
         return "disassembled";
