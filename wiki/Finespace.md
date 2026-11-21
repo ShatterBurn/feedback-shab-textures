@@ -119,6 +119,14 @@ A machine that toggles its own state shows it on its voxel: a burner lit, a lamp
 
 A machine in a cell that a [Rotary Bearing](Rotary_Bearing.md) or joint turns travels with the arm's voxels and lands in the voxel the arm puts it in when the arm is put back, keeping its contents.
 
+## Fine wire
+
+A **Fine Wire** of a conductor metal ([Wire Drawer](Wire_Drawer.md)) is a bare conductor of one voxel. Right-click a finespace cell with it: one fine wire fills one voxel. The voxel is drawn whole in the metal's color.
+
+A wire voxel joins the electric run to every electric voxel beside it, in the same cell or the next. It carries like a [standard cable](Copper_Cable.md#how-much-it-carries) and loses a quarter of a standard cable's loss per voxel. It is bare: it arcs across exactly one empty voxel to another fine wire in a straight line, across cell edges too ([Bare cable arcs](Copper_Cable.md#bare-cable-arcs)), but not to a full-size cable. It gives no shock to a hand.
+
+Overload heats it ([Overloading](Copper_Cable.md#overloading)); when it burns out, only its voxel is emptied. Mine it to get the fine wire back.
+
 ## Joints
 
 The [Ball Joint](Joints.md#ball-joint), [Locked Joint](Joints.md#locked-joint), [Slider Joint](Joints.md#slider-joint), [Piston Joint](Joints.md#piston-joint), Rotary Bearing and Ring Gear are used with an empty hand once placed as voxels. Clicking a joint voxel to choose its joint, or a bearing voxel to choose its role, shows a strip under the crosshair with every option and the current one lit; see [Vehicles](Vehicles.md#joints).

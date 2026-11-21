@@ -45,6 +45,8 @@ Copper figures, per gauge:
 | Heavy | **16 A** | **0.1** |
 | Bus bar | **64 A** | **0.025** |
 
+A [fine wire voxel](Finespace.md#fine-wire) carries like standard and loses **0.1** per voxel.
+
 Other metals scale these by their own ampacity and loss: a metal that carries half as much as copper has half the rating at every gauge.
 
 Up to its rating a cable stays at room temperature forever and never wears out, no matter how long it runs. A standard copper cable's 4 A is four [Electromagnets](Electromagnet.md), or two [Heating Coils](Heating_Coil.md), but only a fraction of what a coarse [Dynamotor](Dynamotor.md) can deliver; heavy cable and bus bar are for that.
