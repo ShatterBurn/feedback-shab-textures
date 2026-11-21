@@ -8,7 +8,6 @@ import io.github.soundgoodizerfan.feedback.machine.MachineTuning;
 import io.github.soundgoodizerfan.feedback.process.ClientMaterials;
 import io.github.soundgoodizerfan.feedback.process.Material;
 import io.github.soundgoodizerfan.feedback.registry.FBlockEntities;
-import io.github.soundgoodizerfan.feedback.registry.FItems;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -133,9 +132,9 @@ public class ThresherBlockEntity extends RotationNode {
         if (!(level instanceof ServerLevel server) || jammed || items.getStackInSlot(IN).isEmpty())
             return;
         float rpm = Math.abs(getRpm().value());
-        if (rpm < MachineTuning.THRESHER_MIN_RPM)
+        if (rpm < MachineTuning.THRESHER_MIN_RPM.value())
             return;
-        progress += rpm / MachineTuning.THRESHER_REFERENCE_RPM / MachineTuning.THRESHER_TICKS_PER_PLANT * teeth;
+        progress += rpm / MachineTuning.THRESHER_REFERENCE_RPM.value() / MachineTuning.THRESHER_TICKS_PER_PLANT * teeth;
         if (progress < 1f)
             return;
         if (thresh(server, rpm))
@@ -152,21 +151,22 @@ public class ThresherBlockEntity extends RotationNode {
                 .flatMap(l -> l.material().item(l.id(), "seed")).orElse(null);
         if (seed == null) {
             // Not a grain: soft things are shredded (spoiled), a hard one jams the drum and the excess wears the teeth.
-            float hardness = found.map(l -> l.material().hardness().value()).orElse(1f);
-            if (hardness > MachineTuning.THRESHER_TEETH_HARDNESS) {
+            // How many times harder than the teeth the piece is (a ratio, not a unit); 0 for an unknown thing, which the drum treats as soft.
+            float excess = found.map(l -> l.material().hardness().value() / MachineTuning.THRESHER_TEETH_HARDNESS.value() - 1f).orElse(0f);
+            if (excess > 0f) {
                 jammed = true;
-                teeth = Math.max(MachineTuning.THRESHER_TEETH_FLOOR,
-                        teeth - (hardness / MachineTuning.THRESHER_TEETH_HARDNESS - 1f) * MachineTuning.THRESHER_JAM_WEAR);
+                teeth = Math.max(MachineTuning.THRESHER_TEETH_FLOOR, teeth - excess * MachineTuning.THRESHER_JAM_WEAR);
                 server.playSound(null, worldPosition, SoundEvents.ANVIL_LAND, SoundSource.BLOCKS, 0.4f, 0.6f);
             } else
                 items.extractItem(IN, 1, false);
             setChanged();
             return true;
         }
-        boolean fling = rpm > MachineTuning.THRESHER_FLING_RPM;
+        boolean fling = rpm > MachineTuning.THRESHER_FLING_RPM.value();
         ItemStack seeds = new ItemStack(seed, MachineTuning.THRESHER_SEEDS_PER_PLANT);
-        ItemStack straw = new ItemStack(FItems.STRAW.get());
-        ItemStack chaff = new ItemStack(FItems.CHAFF.get());
+        // The husks are the grain's own: the forms its material names, none if it names none.
+        ItemStack straw = found.flatMap(l -> l.material().item(l.id(), "straw")).map(ItemStack::new).orElse(ItemStack.EMPTY);
+        ItemStack chaff = found.flatMap(l -> l.material().item(l.id(), "chaff")).map(ItemStack::new).orElse(ItemStack.EMPTY);
         if (!(fling || items.insertItem(SEED, seeds, true).isEmpty()) || !items.insertItem(STRAW, straw, true).isEmpty()
                 || !items.insertItem(CHAFF, chaff, true).isEmpty())
             return false;

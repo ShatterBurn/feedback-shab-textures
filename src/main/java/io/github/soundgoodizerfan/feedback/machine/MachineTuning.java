@@ -357,12 +357,15 @@ public final class MachineTuning {
     /** Invented. The threshing drum's load; it threshes from {@link #THRESHER_MIN_RPM}, one plant a {@link #THRESHER_TICKS_PER_PLANT} ticks at {@link #THRESHER_REFERENCE_RPM}
      * (faster in proportion), and flings its seed out of the tray past {@link #THRESHER_FLING_RPM}. */
     public static final Su THRESHER_LOAD_SU = new Su(40f);
-    public static final float THRESHER_MIN_RPM = 16f, THRESHER_REFERENCE_RPM = 32f, THRESHER_FLING_RPM = 64f;
+    public static final io.github.soundgoodizerfan.feedback.core.unit.Rpm THRESHER_MIN_RPM = new io.github.soundgoodizerfan.feedback.core.unit.Rpm(16f),
+            THRESHER_REFERENCE_RPM = new io.github.soundgoodizerfan.feedback.core.unit.Rpm(32f),
+            THRESHER_FLING_RPM = new io.github.soundgoodizerfan.feedback.core.unit.Rpm(64f);
     public static final float THRESHER_TICKS_PER_PLANT = 20f;
     /** Invented. Seeds a threshed plant gives (a plant also gives one straw and one chaff). */
     public static final int THRESHER_SEEDS_PER_PLANT = 2;
     /** Invented. What the drum's teeth cut through: harder than this jams it. A jam costs the teeth this much condition per multiple of the excess, never below the floor. */
-    public static final float THRESHER_TEETH_HARDNESS = 4f, THRESHER_TEETH_FLOOR = 0.4f, THRESHER_JAM_WEAR = 0.1f;
+    public static final io.github.soundgoodizerfan.feedback.core.unit.St THRESHER_TEETH_HARDNESS = new io.github.soundgoodizerfan.feedback.core.unit.St(4f);
+    public static final float THRESHER_TEETH_FLOOR = 0.4f, THRESHER_JAM_WEAR = 0.1f;
 
     /** Invented. Light/heavy pass -- same shape as every other discrete throw in the mod: heavy
      * cuts faster and coarser, light is slower and controllable. Neither risks the bit; only
