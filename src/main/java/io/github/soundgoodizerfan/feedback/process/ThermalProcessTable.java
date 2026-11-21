@@ -71,9 +71,10 @@ public class ThermalProcessTable extends SimpleJsonResourceReloadListener {
                 .ifPresent(process -> loaded.put(id, process)));
         List<PhaseChange> boils = new ArrayList<>();
         List<ThermalProcess> boilRows = new ArrayList<>();
+        var tableMaterials = MaterialTable.get().materials();
         loaded.values().removeIf(row -> {
             row.phase().ifPresent(p -> {
-                boils.add(PhaseChange.of(row, p));
+                boils.add(PhaseChange.of(row, p, tableMaterials));
                 boilRows.add(row);
             });
             return row.phase().isPresent();

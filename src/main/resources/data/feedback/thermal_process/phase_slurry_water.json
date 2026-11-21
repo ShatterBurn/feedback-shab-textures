@@ -12,7 +12,7 @@
     },
     "liquid_fluid": "minecraft:water",
     "gas_fluid": "feedback:steam",
-    "latent": 20,
+    "material": "feedback:water",
     "light_share": 0.6
   }
 }

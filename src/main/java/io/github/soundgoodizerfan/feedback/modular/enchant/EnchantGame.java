@@ -59,8 +59,9 @@ public final class EnchantGame {
     }
 
     /** Ticks from a start at {@code temperature} until the part locks, capped at a session's length. */
-    public static int lockTick(Material.Attuning p, float temperature) {
-        float rate = ThermalTuning.ITEM_COOLING_TU_PER_TICK.tuPerTick();
+    public static int lockTick(Material material, Material.Attuning p, float temperature) {
+        // The part cools as its own material does, not at the stock rate.
+        float rate = material.looseCooling().tuPerTick();
         return Math.min(ModularTuning.ENCHANT_MAX_TICKS, (int) Math.ceil(Math.max(0, temperature - p.lock().value()) / rate));
     }
 

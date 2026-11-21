@@ -6966,6 +6966,8 @@
   "material.feedback.enriched_water": "Enriched Water",
   "fluid.feedback.heavy_water": "Heavy Water",
   "material.feedback.heavy_water": "Heavy Water",
+  "material.feedback.water": "Water",
+  "material.feedback.steam": "Steam",
   "block.feedback.redstone_emitter": "Redstone Emitter",
   "block.feedback.redstone_receiver": "Redstone Receiver",
   "feedback.analog.opening": "Opening",

@@ -34,20 +34,29 @@ public record PhaseChange(FluidIngredient liquid, FluidIngredient gas, ResourceL
 
     /** The {@code phase} block of a thermal process row: what boils, what it becomes, the Work per mB, and a distillation share. */
     public record Phase(FluidIngredient liquid, FluidIngredient gas, ResourceLocation liquidFluid, ResourceLocation gasFluid,
-                        float latent, Optional<Float> lightShare) {
+                        Optional<ResourceLocation> material, Optional<Float> latent, Optional<Float> lightShare) {
         public static final Codec<Phase> CODEC = RecordCodecBuilder.create(i -> i.group(
                 FluidIngredient.CODEC.fieldOf("liquid").forGetter(Phase::liquid),
                 FluidIngredient.CODEC.fieldOf("gas").forGetter(Phase::gas),
                 ResourceLocation.CODEC.fieldOf("liquid_fluid").forGetter(Phase::liquidFluid),
                 ResourceLocation.CODEC.fieldOf("gas_fluid").forGetter(Phase::gasFluid),
-                Codec.FLOAT.fieldOf("latent").forGetter(Phase::latent),
+                ResourceLocation.CODEC.optionalFieldOf("material").forGetter(Phase::material),
+                Codec.FLOAT.optionalFieldOf("latent").forGetter(Phase::latent),
                 Codec.FLOAT.optionalFieldOf("light_share").forGetter(Phase::lightShare)
         ).apply(i, Phase::new));
     }
 
-    /** The view of a thermal process row's phase block, with its boiling point (the row's {@code min_temperature}). */
-    public static PhaseChange of(ThermalProcess row, Phase p) {
-        return new PhaseChange(p.liquid(), p.gas(), p.liquidFluid(), p.gasFluid(), row.minTemperature(), p.latent(), p.lightShare());
+    /**
+     * The view of a thermal process row's phase block, with its boiling point (the row's {@code min_temperature}). The Work per mB is the
+     * row's {@code material}'s latent heat of vaporisation times its density times
+     * {@link io.github.soundgoodizerfan.feedback.core.FTuning#BOIL_LATENT_SCALE}; a row that names no material (or one the table lacks)
+     * carries its own {@code latent}.
+     */
+    public static PhaseChange of(ThermalProcess row, Phase p, java.util.Map<ResourceLocation, Material> materials) {
+        float latent = p.material().map(materials::get).flatMap(m -> m.thermal().latentHeatVaporisation().map(h ->
+                h.workPerMu() * m.density().muPerMb() * io.github.soundgoodizerfan.feedback.core.FTuning.BOIL_LATENT_SCALE))
+                .orElse(p.latent().orElse(0f));
+        return new PhaseChange(p.liquid(), p.gas(), p.liquidFluid(), p.gasFluid(), row.minTemperature(), latent, p.lightShare());
     }
 
     public static final Codec<PhaseChange> CODEC = RecordCodecBuilder.create(i -> i.group(

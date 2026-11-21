@@ -280,6 +280,14 @@ public final class FTuning {
     public static final float JOULES_PER_WORK = 1000f;
 
     /**
+     * Placeholder (invented, one number). A boil row's latent Work per mB is its material's {@code latent_heat_vaporisation} (Work per Mu)
+     * times its density (Mu per mB) times this: at the real figures a mB of water would cost 2257 Work to boil, about a hundred times
+     * what a fire and a vessel this size deal in, so one factor brings every liquid's boil to the game's scale and the differences
+     * between liquids stay the real ones. Set so water costs about 20 Work per mB.
+     */
+    public static final float BOIL_LATENT_SCALE = 0.0089f;
+
+    /**
      * Invented. The flow, in mB per tick through one pipe or pump, at which a fluid's {@code shear_thickening} figure is
      * the multiplier its viscosity has reached (read by the pump; the pipe's own flow does not read it).
      */

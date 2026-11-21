@@ -89,7 +89,8 @@ public class HearthBlockEntity extends BlockEntity implements ThermalBody, HeatS
 
     @Override
     public ThermalMass getThermalMass() {
-        return VesselTuning.HEARTH_MASS;
+        // A hearth is brick: 72 Mu of it, about the 60 Work a Tu it always had.
+        return io.github.soundgoodizerfan.feedback.machine.vessel.VesselWalls.of("brick", 72f, VesselTuning.HEARTH_MASS);
     }
 
     @Override

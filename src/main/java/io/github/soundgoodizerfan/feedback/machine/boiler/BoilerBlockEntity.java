@@ -151,9 +151,14 @@ public class BoilerBlockEntity extends io.github.soundgoodizerfan.feedback.machi
 
     // --- thermal ----------------------------------------------------------------------------
 
+    /** The boiler's walls as Work per Tu: a wrought iron tank of 90 Mu, about the 40 it always had. */
+    private static float wall() {
+        return io.github.soundgoodizerfan.feedback.machine.vessel.VesselWalls.of("wrought_iron", 90f, VesselTuning.BOILER_MASS).workPerTu();
+    }
+
     @Override
     public ThermalMass getThermalMass() {
-        return new ThermalMass(VesselTuning.BOILER_MASS.workPerTu() * scale());
+        return new ThermalMass(wall() * scale());
     }
 
     @Override
@@ -208,7 +213,7 @@ public class BoilerBlockEntity extends io.github.soundgoodizerfan.feedback.machi
     /** Only the heat above the boiling point can boil anything, and a boiler turns a fixed quantity a tick, not a share of its tank. */
     @Override
     protected int boilAmount(PhaseChange cut, float wanted) {
-        int affordable = (int) ((temperature - cut.boil().value()) * VesselTuning.BOILER_MASS.workPerTu() * scale() / cut.latent());
+        int affordable = (int) ((temperature - cut.boil().value()) * wall() * scale() / cut.latent());
         return Math.min(VesselTuning.BOILER_STEAM_PER_TICK_MB * scale(), affordable);
     }
 
@@ -216,7 +221,7 @@ public class BoilerBlockEntity extends io.github.soundgoodizerfan.feedback.machi
     protected float boilCost(PhaseChange cut, int mB) {
         // Water that comes in hot (condensate returned, a preheated line) needs less lifting to the boiling point: cold feed pays for the climb.
         float climb = Math.max(0f, cut.boil().value() - tank.temperature().value());
-        return mB * cut.latent() * (1f + climb * VesselTuning.FEED_SENSIBLE_PER_TU) / (VesselTuning.BOILER_MASS.workPerTu() * scale());
+        return mB * cut.latent() * (1f + climb * VesselTuning.FEED_SENSIBLE_PER_TU) / (wall() * scale());
     }
 
     @Override

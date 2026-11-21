@@ -12,7 +12,7 @@
     },
     "liquid_fluid": "feedback:unstable_spatial_solvent",
     "gas_fluid": "feedback:unstable_solvent_vapour",
-    "latent": 14,
+    "material": "feedback:unstable_spatial_solvent",
     "light_share": 0.4
   }
 }

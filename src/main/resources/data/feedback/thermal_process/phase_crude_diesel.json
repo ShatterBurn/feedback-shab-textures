@@ -12,7 +12,7 @@
     },
     "liquid_fluid": "feedback:diesel",
     "gas_fluid": "feedback:diesel_vapour",
-    "latent": 7,
+    "material": "feedback:diesel",
     "light_share": 0.8
   }
 }

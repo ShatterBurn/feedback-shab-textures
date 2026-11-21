@@ -12,7 +12,7 @@
     },
     "liquid_fluid": "feedback:kerosene",
     "gas_fluid": "feedback:kerosene_vapour",
-    "latent": 6,
+    "material": "feedback:kerosene",
     "light_share": 0.7
   }
 }
