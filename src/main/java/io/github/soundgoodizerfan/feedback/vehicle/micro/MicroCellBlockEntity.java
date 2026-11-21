@@ -666,6 +666,9 @@ public class MicroCellBlockEntity extends BlockEntity implements BlockEntitySubL
         }
         gone.clear();
         rotorAdded = false;
+        // A voxel edit can open or close the gap a bare wire arcs over (arcs are found only when a run is rebuilt).
+        if (!level.isClientSide && hostedCount > 0 && !hostedElectrics().isEmpty())
+            io.github.soundgoodizerfan.feedback.core.electric.ElectricPropagator.requeue(level, worldPosition);
         int lit = light();
         boolean relit = lit != light;
         light = lit;

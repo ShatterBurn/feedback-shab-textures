@@ -161,6 +161,9 @@ final class CodeRecipeExamples {
         if (materials.containsKey(copper)) {
             List<ItemStack> gaugedCables = new ArrayList<>(), breakers = new ArrayList<>();
             for (io.github.soundgoodizerfan.feedback.machine.cable.CableGauge gauge : io.github.soundgoodizerfan.feedback.machine.cable.CableGauge.values()) {
+                // A finespace wire voxel is not a cable item or a breaker gauge.
+                if (gauge == io.github.soundgoodizerfan.feedback.machine.cable.CableGauge.FINE)
+                    continue;
                 gaugedCables.add(CableItem.of(copper, 1, null, gauge));
                 ItemStack breaker = new ItemStack(FItems.BREAKER.get());
                 if (gauge != io.github.soundgoodizerfan.feedback.machine.cable.CableGauge.STANDARD)

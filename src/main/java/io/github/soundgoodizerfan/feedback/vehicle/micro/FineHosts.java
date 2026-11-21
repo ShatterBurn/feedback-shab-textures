@@ -213,6 +213,9 @@ public final class FineHosts {
         // A wire voxel is of the material its fine wire is: found as the cable recipe finds it, not read off a component.
         if (be instanceof CableBlockEntity wire && wire.material() == null)
             Material.find(MaterialIngredient.materialsNow(), stack).map(Material.Located::id).ifPresent(wire::setMaterial);
+        // A wire of no material carries nothing: refuse it, and the item is kept.
+        if (be instanceof CableBlockEntity wire && wire.material() == null)
+            return null;
         return be;
     }
 }

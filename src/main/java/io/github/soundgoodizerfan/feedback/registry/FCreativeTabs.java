@@ -437,7 +437,7 @@ public class FCreativeTabs {
             for (VoltageBand band : VoltageBand.values())
                 out.accept(CableItem.of(id, 1, band));
             for (CableGauge gauge : CableGauge.values()) {
-                if (gauge == CableGauge.STANDARD)
+                if (gauge == CableGauge.STANDARD || gauge == CableGauge.FINE)
                     continue;
                 out.accept(CableItem.of(id, 1, null, gauge));
                 out.accept(CableItem.of(id, 1, VoltageBand.LV, gauge));
@@ -445,7 +445,7 @@ public class FCreativeTabs {
             out.accept(madeOf(FItems.FENCE, id, "wire"));
         });
         for (CableGauge gauge : CableGauge.values()) {
-            if (gauge == CableGauge.STANDARD)
+            if (gauge == CableGauge.STANDARD || gauge == CableGauge.FINE)
                 continue;
             ItemStack breaker = new ItemStack(FItems.BREAKER.get());
             breaker.set(FDataComponents.CABLE_GAUGE.get(), gauge);

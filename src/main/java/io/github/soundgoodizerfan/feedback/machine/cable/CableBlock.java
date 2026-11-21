@@ -101,6 +101,9 @@ public class CableBlock extends Block implements EntityBlock {
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         CableGauge gauge = context.getItemInHand().getOrDefault(FDataComponents.CABLE_GAUGE.get(), CableGauge.STANDARD);
+        // The fine gauge is a finespace voxel, never a whole block.
+        if (gauge == CableGauge.FINE)
+            gauge = CableGauge.STANDARD;
         return armed(context.getLevel(), context.getClickedPos(), defaultBlockState().setValue(GAUGE, gauge));
     }
 
