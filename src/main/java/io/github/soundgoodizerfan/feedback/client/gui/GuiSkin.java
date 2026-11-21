@@ -615,6 +615,10 @@ public abstract class GuiSkin {
         return skin;
     }
 
+    /** Tell the skin how fast the opened thing turns (RPM) so a data skin's spinning decor can turn with it; code-drawn skins ignore it. */
+    public void spin(float rpm) {
+    }
+
     /** Tell the skin how hot the opened thing is (Tu) so a data skin's heat decor can glow; code-drawn skins ignore it. */
     public void heat(float tu) {
     }

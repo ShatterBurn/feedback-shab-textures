@@ -173,7 +173,19 @@ public final class SkinShowcaseScreen extends Screen {
         long age = System.currentTimeMillis() - stampAt;
         if (age < 1700)
             GuiStyle.stamp(g, Component.literal("DONE"), x + 80, y + 150, age, s.warn() & 0xFFFFFF);
+
+        // spinners: the rake at several speeds (RPM), the last turning the other way; the smear trails behind the turn only
+        for (int i = 0; i < SPIN_RPM.length; i++) {
+            int sx = x + 30 + i * 46, sy = y + 190;
+            s.inset(g, sx - 15, sy - 15, 30, 30);
+            SPINNERS[i].draw(g, Feedback.id("spin/rabble_rake"), sx, sy, 24, 24, SPIN_RPM[i]);
+            String rpm = Integer.toString(SPIN_RPM[i]);
+            g.drawString(font, rpm, sx - font.width(rpm) / 2, sy + 18, s.dim(), false);
+        }
     }
+
+    private static final int[] SPIN_RPM = {20, 60, 150, 400, -150};
+    private static final Spinner[] SPINNERS = {new Spinner(), new Spinner(), new Spinner(), new Spinner(), new Spinner()};
 
     @Override
     public boolean mouseClicked(double mx, double my, int button) {

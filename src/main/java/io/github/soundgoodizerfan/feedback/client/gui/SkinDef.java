@@ -25,7 +25,7 @@ record SkinDef(int ink, int dim, int accent, int warn, int well, int trim, int p
                String click, String open, String close, Map<String, String> cues, String reveal, List<Decor> decor, List<Glow> glow, Glint glint, String effect) {
 
     /** One sprite laid over the panel: {@code anchor} names the panel point it hangs from, (x, y) is the offset, w by h its size. */
-    record Decor(ResourceLocation sprite, String anchor, int x, int y, int w, int h, boolean heat, float cold, float breathe) {
+    record Decor(ResourceLocation sprite, String anchor, int x, int y, int w, int h, boolean heat, float cold, float breathe, float spin) {
     }
 
     /** A soft diagonal band of light that crosses the panel in a quick pass once every {@code period} ticks and rests between (a pass takes a quarter of it). */
@@ -50,7 +50,7 @@ record SkinDef(int ink, int dim, int accent, int warn, int well, int trim, int p
             JsonObject d = e.getAsJsonObject();
             decor.add(new Decor(ResourceLocation.parse(d.get("sprite").getAsString()), str(d, "anchor", "top_left"),
                     num(d, "x", 0), num(d, "y", 0), d.get("w").getAsInt(), d.get("h").getAsInt(),
-                    d.has("heat") && d.get("heat").getAsBoolean(), d.has("cold") ? d.get("cold").getAsFloat() : 0f, d.has("breathe") ? d.get("breathe").getAsFloat() : 0f));
+                    d.has("heat") && d.get("heat").getAsBoolean(), d.has("cold") ? d.get("cold").getAsFloat() : 0f, d.has("breathe") ? d.get("breathe").getAsFloat() : 0f, d.has("spin") ? d.get("spin").getAsFloat() : 0f));
         }
         List<Glow> glow = new ArrayList<>();
         if (json.has("glow"))

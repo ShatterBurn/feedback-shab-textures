@@ -42,6 +42,9 @@ final class SpriteSkin extends GuiSkin {
 
     /** The live heat the thing opened is at, Tu, for decor layers marked {@code heat}: set by the screen, 0 for cold. */
     private float heatTu;
+    /** How fast the opened thing turns, RPM: set by the screen, 0 at rest; decor with `spin` turns at its factor times this. */
+    private float spinRpm;
+    private final java.util.IdentityHashMap<SkinDef.Decor, Spinner> spinners = new java.util.IdentityHashMap<>();
 
     private final String file;
 
@@ -63,6 +66,7 @@ final class SpriteSkin extends GuiSkin {
     }
 
     private void refresh() {
+        spinners.clear();
         SkinDef d = def();
         if (d != null)
             recolour(d.ink(), d.dim(), d.accent(), d.warn(), d.well(), d.trim(), d.plate());
@@ -70,6 +74,11 @@ final class SpriteSkin extends GuiSkin {
 
     private SkinDef def() {
         return SkinDefs.get(file);
+    }
+
+    @Override
+    public void spin(float rpm) {
+        spinRpm = rpm;
     }
 
     @Override
@@ -162,6 +171,13 @@ final class SpriteSkin extends GuiSkin {
         if (alpha < 1f) {
             RenderSystem.enableBlend();
             g.setColor(1f, 1f, 1f, alpha);
+        }
+        if (layer.spin() != 0f) { // turns about its own centre at the screen's speed
+            spinners.computeIfAbsent(layer, k -> new Spinner()).draw(g, layer.sprite(), ax + layer.x() + layer.w() / 2, ay + layer.y() + layer.h() / 2,
+                    layer.w(), layer.h(), spinRpm * layer.spin());
+            if (alpha < 1f)
+                g.setColor(1f, 1f, 1f, 1f);
+            return;
         }
         g.blitSprite(layer.sprite(), ax + layer.x(), ay + layer.y(), layer.w(), layer.h());
         if (alpha < 1f)

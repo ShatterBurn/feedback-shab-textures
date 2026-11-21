@@ -20,7 +20,9 @@ import io.github.soundgoodizerfan.feedback.client.gui.SkinnedScreen;
 import io.github.soundgoodizerfan.feedback.client.gui.Specks;
 
 import io.github.soundgoodizerfan.feedback.client.ClientSettings;
+import io.github.soundgoodizerfan.feedback.Feedback;
 import io.github.soundgoodizerfan.feedback.client.gui.GuiStyle;
+import io.github.soundgoodizerfan.feedback.client.gui.Spinner;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -84,8 +86,9 @@ public class ThermalVesselScreen extends SkinnedScreen<ThermalVesselMenu> {
         inventoryLabelY = ThermalVesselMenu.INV_Y - 12;
     }
 
-    /** The rabble's rake angle in degrees, this tick and last, so it turns smoothly between ticks. */
-    private float rake, lastRake;
+    private final Spinner rake = new Spinner();
+    private static final ResourceLocation RAKE = Feedback.id("spin/rabble_rake"), BED = Feedback.id("spin/hearth_bed"),
+            HEARTH = Feedback.id("spin/hearth_rim");
 
     /** The rabble window, right of the gauge (relative to the panel): the rake end-on, a speed dial under it. */
     private static final int ROD_X = ThermalVesselMenu.GAUGE_X + 18, ROD_Y = ThermalVesselMenu.GAUGE_Y, ROD_W = 28;
@@ -93,10 +96,6 @@ public class ThermalVesselScreen extends SkinnedScreen<ThermalVesselMenu> {
     @Override
     protected void containerTick() {
         super.containerTick();
-        if (menu.getKind().rotates()) {
-            lastRake = rake;
-            rake += Math.max(-40f, Math.min(40f, menu.rabbleRpm() * 6f / 20f)); // a turn a second at 60 RPM, stepped so a fast rod does not alias
-        }
         specks.tick(0f);
         int tu = menu.getGaugeTu();
         for (int slot = 0; slot < ThermalVesselBlockEntity.SLOTS; slot++) {
@@ -171,7 +170,7 @@ public class ThermalVesselScreen extends SkinnedScreen<ThermalVesselMenu> {
                 .render(graphics, skin, leftPos + ThermalVesselMenu.GAUGE_X, topPos + ThermalVesselMenu.GAUGE_Y,
                         GAUGE_WIDTH, ThermalVesselMenu.GAUGE_HEIGHT);
         if (menu.getKind().rotates())
-            rabble(graphics, partialTicks);
+            rabble(graphics);
         inventory(graphics, 8, ThermalVesselMenu.INV_Y);
     }
 
@@ -180,19 +179,17 @@ public class ThermalVesselScreen extends SkinnedScreen<ThermalVesselMenu> {
      * the running row marked and a needle at the rod's speed. The needle is the accent inside the band and the warning colour outside
      * it, so a charge that is not changing shows why, in place.
      */
-    private void rabble(GuiGraphics g, float partial) {
+    private void rabble(GuiGraphics g) {
         int x = leftPos + ROD_X, y = topPos + ROD_Y;
         skin.inset(g, x, y, ROD_W, ROD_W);
         int cx = x + ROD_W / 2, cy = y + ROD_W / 2;
-        GuiStyle.disc(g, cx, cy, 11, 0xFF2A1A12); // the charge in the hearth
-        float a = ClientSettings.reduceMotion() ? 0.5f : (float) Math.toRadians(Mth.lerp(partial, lastRake, rake));
-        for (int arm = 0; arm < 2; arm++) {
-            float t = a + arm * Mth.PI;
-            GuiStyle.line(g, cx, cy, cx + Math.round(Mth.cos(t) * 10f), cy + Math.round(Mth.sin(t) * 10f), skin.ink());
-            GuiStyle.line(g, cx + Math.round(Mth.cos(t) * 10f), cy + Math.round(Mth.sin(t) * 10f),
-                    cx + Math.round(Mth.cos(t + 0.9f) * 9f), cy + Math.round(Mth.sin(t + 0.9f) * 9f), skin.ink()); // the rake's tooth
-        }
-        GuiStyle.disc(g, cx, cy, 2, skin.ink());
+        // The charge in the hearth: a grey cinder sprite tinted from dark brown to glowing by the chamber's heat.
+        int bed = io.github.soundgoodizerfan.feedback.client.render.GlowColours.heated(0x2A1C14, menu.getGaugeTu());
+        g.setColor((bed >> 16 & 0xFF) / 255f, (bed >> 8 & 0xFF) / 255f, (bed & 0xFF) / 255f, 1f);
+        g.blitSprite(BED, cx - 12, cy - 12, 24, 24);
+        g.setColor(1f, 1f, 1f, 1f);
+        rake.draw(g, RAKE, cx, cy, 24, 24, menu.rabbleRpm());
+        g.blitSprite(HEARTH, cx - 12, cy - 12, 24, 24);
 
         int dy = y + ROD_W + 4, dh = 12;
         skin.inset(g, x, dy, ROD_W, dh);

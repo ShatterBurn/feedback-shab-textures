@@ -1,0 +1,287 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "iron": "feedback:block/housing_iron",
+    "bronze": "feedback:block/bronze_sheet",
+    "particle": "feedback:block/housing_iron",
+    "baked": "feedback:block/mixer_spinner_faces"
+  },
+  "elements": [
+    {
+      "name": "shaft",
+      "from": [
+        6,
+        2,
+        6
+      ],
+      "to": [
+        10,
+        24,
+        10
+      ],
+      "faces": {
+        "north": {
+          "texture": "#baked",
+          "uv": [
+            0.0,
+            0.0,
+            0.5,
+            14.08
+          ]
+        },
+        "south": {
+          "texture": "#baked",
+          "uv": [
+            0.625,
+            0.0,
+            1.125,
+            14.08
+          ]
+        },
+        "east": {
+          "texture": "#baked",
+          "uv": [
+            1.25,
+            0.0,
+            1.75,
+            14.08
+          ]
+        },
+        "west": {
+          "texture": "#baked",
+          "uv": [
+            1.875,
+            0.0,
+            2.375,
+            14.08
+          ]
+        },
+        "up": {
+          "texture": "#baked",
+          "uv": [
+            2.5,
+            0.0,
+            3.0,
+            2.56
+          ]
+        },
+        "down": {
+          "texture": "#baked",
+          "uv": [
+            3.125,
+            0.0,
+            3.625,
+            2.56
+          ]
+        }
+      }
+    },
+    {
+      "name": "paddle_low",
+      "from": [
+        4,
+        4,
+        7
+      ],
+      "to": [
+        12,
+        6,
+        9
+      ],
+      "faces": {
+        "north": {
+          "texture": "#baked",
+          "uv": [
+            3.75,
+            0.0,
+            4.75,
+            1.28
+          ]
+        },
+        "south": {
+          "texture": "#baked",
+          "uv": [
+            4.875,
+            0.0,
+            5.875,
+            1.28
+          ]
+        },
+        "east": {
+          "texture": "#baked",
+          "uv": [
+            6.0,
+            0.0,
+            6.25,
+            1.28
+          ]
+        },
+        "west": {
+          "texture": "#baked",
+          "uv": [
+            6.375,
+            0.0,
+            6.625,
+            1.28
+          ]
+        },
+        "up": {
+          "texture": "#baked",
+          "uv": [
+            6.75,
+            0.0,
+            7.75,
+            1.28
+          ]
+        },
+        "down": {
+          "texture": "#baked",
+          "uv": [
+            7.875,
+            0.0,
+            8.875,
+            1.28
+          ]
+        }
+      }
+    },
+    {
+      "name": "paddle_mid",
+      "from": [
+        7,
+        10,
+        4
+      ],
+      "to": [
+        9,
+        12,
+        12
+      ],
+      "faces": {
+        "north": {
+          "texture": "#baked",
+          "uv": [
+            9.0,
+            0.0,
+            9.25,
+            1.28
+          ]
+        },
+        "south": {
+          "texture": "#baked",
+          "uv": [
+            9.375,
+            0.0,
+            9.625,
+            1.28
+          ]
+        },
+        "east": {
+          "texture": "#baked",
+          "uv": [
+            9.75,
+            0.0,
+            10.75,
+            1.28
+          ]
+        },
+        "west": {
+          "texture": "#baked",
+          "uv": [
+            10.875,
+            0.0,
+            11.875,
+            1.28
+          ]
+        },
+        "up": {
+          "texture": "#baked",
+          "uv": [
+            12.0,
+            0.0,
+            12.25,
+            5.12
+          ]
+        },
+        "down": {
+          "texture": "#baked",
+          "uv": [
+            12.375,
+            0.0,
+            12.625,
+            5.12
+          ]
+        }
+      }
+    },
+    {
+      "name": "paddle_high",
+      "from": [
+        4,
+        16,
+        7
+      ],
+      "to": [
+        12,
+        18,
+        9
+      ],
+      "faces": {
+        "north": {
+          "texture": "#baked",
+          "uv": [
+            12.75,
+            0.0,
+            13.75,
+            1.28
+          ]
+        },
+        "south": {
+          "texture": "#baked",
+          "uv": [
+            13.875,
+            0.0,
+            14.875,
+            1.28
+          ]
+        },
+        "east": {
+          "texture": "#baked",
+          "uv": [
+            15.0,
+            0.0,
+            15.25,
+            1.28
+          ]
+        },
+        "west": {
+          "texture": "#baked",
+          "uv": [
+            15.375,
+            0.0,
+            15.625,
+            1.28
+          ]
+        },
+        "up": {
+          "texture": "#baked",
+          "uv": [
+            0.0,
+            14.72,
+            1.0,
+            16.0
+          ]
+        },
+        "down": {
+          "texture": "#baked",
+          "uv": [
+            1.125,
+            14.72,
+            2.125,
+            16.0
+          ]
+        }
+      }
+    }
+  ]
+}
