@@ -96,6 +96,8 @@ final class SpriteSkin extends GuiSkin {
         g.blitSprite(d.panel(), x, y, w, h);
         if (d.wash() != 0)
             g.fill(x, y, x + w, y + h, d.wash());
+        for (SkinDef.Glow glow : d.glow())
+            glow(g, glow, x, y, w, h);
         if (have(d.frame()))
             g.blitSprite(d.frame(), x, y, w, h);
         for (SkinDef.Decor layer : d.decor())
@@ -105,14 +107,32 @@ final class SpriteSkin extends GuiSkin {
             effect.draw(this, g, x, y, w, h);
     }
 
+    /** 0 to 1 how hot the opened thing is, by the orange band: the screen gives it through {@link #heat}. */
+    private float heatFraction() {
+        return Incandescence.light(heatTu) <= 0 ? 0f : Mth.clamp(heatTu / 1100f, 0f, 1f);
+    }
+
+    /** Firelight rising from the bottom edge: a steady glow with no heat, brighter and flickering as the chamber heats. */
+    private void glow(GuiGraphics g, SkinDef.Glow glow, int x, int y, int w, int h) {
+        float f = heatFraction();
+        float pulse = f > 0f ? HeatGlow.pulse() : 1f;
+        int rgb = glow.colour() & 0xFFFFFF;
+        int top = Math.max(y + 1, y + h - 1 - glow.height());
+        int a = Mth.clamp(Math.round((glow.base() + (glow.hot() - glow.base()) * f) * pulse), 0, 255);
+        g.fillGradient(x + 1, top, x + w - 1, y + h - 1, rgb, a << 24 | rgb);
+        if (glow.lip() > 0)
+            g.fill(x + 1, y + h - 2, x + w - 1, y + h - 1, Mth.clamp(Math.round(glow.lip() * (0.6f + 0.4f * f) * pulse), 0, 255) << 24 | rgb);
+    }
+
     private void decor(GuiGraphics g, SkinDef.Decor layer, int x, int y, int w, int h) {
         if (!have(layer.sprite()))
             return;
         float alpha = 1f;
-        if (layer.heat()) {
-            if (Incandescence.light(heatTu) <= 0)
+        if (layer.heat()) { // visible at its cold level (0 for a layer that only shows when glowing), full at the orange band
+            alpha = layer.cold() + (1f - layer.cold()) * heatFraction() * HeatGlow.pulse();
+            if (alpha <= 0.01f)
                 return;
-            alpha = Mth.clamp(heatTu / 1600f, 0.2f, 1f);
+            alpha = Mth.clamp(alpha, 0f, 1f);
         }
         String a = layer.anchor();
         int ax = a.contains("right") ? x + w - layer.w() : a.equals("top") || a.equals("center") || a.equals("bottom") ? x + (w - layer.w()) / 2 : x;
@@ -204,8 +224,8 @@ final class SpriteSkin extends GuiSkin {
         switch (d.reveal()) {
             case "slide" -> g.enableScissor(x - 4, y - 4, x + Math.round(w * t), y + h + 8);
             case "shutters" -> {
-                int half = Math.round(w * t / 2f);
-                g.enableScissor(x + w / 2 - half, y - 4, x + w / 2 + half, y + h + 8);
+                int gap = Math.round((h / 2f + 6) * t);
+                g.enableScissor(x - 4, y + h / 2 - gap, x + w + 8, y + h / 2 + gap);
             }
             default -> { }
         }
@@ -214,9 +234,21 @@ final class SpriteSkin extends GuiSkin {
     @Override
     public void endReveal(GuiGraphics g, int x, int y, int w, int h, float t) {
         SkinDef d = def();
-        if (d != null && t < 1 && (d.reveal().equals("slide") || d.reveal().equals("shutters"))) {
-            g.flush();
-            g.disableScissor();
+        if (d == null || t >= 1 || !(d.reveal().equals("slide") || d.reveal().equals("shutters")))
+            return;
+        g.flush();
+        g.disableScissor();
+        if (d.reveal().equals("shutters")) { // two halves of the panel sliding back into the frame
+            int mid = y + h / 2, gap = Math.round((h / 2f + 6) * t);
+            int top = mid - gap - y, bottom = y + h - (mid + gap);
+            if (top > 0) {
+                panel(g, x, y, w, top);
+                g.fill(x + 1, y + top - 2, x + w - 1, y + top, trim());
+            }
+            if (bottom > 0) {
+                panel(g, x, mid + gap, w, bottom);
+                g.fill(x + 1, mid + gap, x + w - 1, mid + gap + 2, trim());
+            }
         }
     }
 }

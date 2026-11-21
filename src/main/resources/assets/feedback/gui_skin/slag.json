@@ -1,0 +1,70 @@
+{
+  "colours": {
+    "ink": "#DAD6D0",
+    "dim": "#8E8780",
+    "accent": "#FF8A2A",
+    "warn": "#FF4A2A",
+    "well": "#0E0C0B",
+    "trim": "#3C3633",
+    "plate": "#2A2523"
+  },
+  "panel": {
+    "sprite": "feedback:skin/slag/tile",
+    "wash": "#3C0A0C10",
+    "frame": "feedback:skin/slag/frame",
+    "shadow": true
+  },
+  "slot": "feedback:skin/slag/slot",
+  "button": {
+    "normal": "feedback:skin/slag/button",
+    "hover": "feedback:skin/slag/button_hover",
+    "down": "feedback:skin/slag/button_down",
+    "off": "feedback:skin/slag/button_off",
+    "primary": "feedback:skin/slag/button_primary",
+    "primary_hover": "feedback:skin/slag/button_primary"
+  },
+  "sounds": {
+    "click": "minecraft:block.iron_trapdoor.close",
+    "open": "minecraft:block.iron_door.open",
+    "close": "minecraft:block.iron_door.close",
+    "cues": {
+      "seat": "minecraft:block.iron_trapdoor.close",
+      "reject": "minecraft:block.anvil.land",
+      "stage": "minecraft:item.firecharge.use",
+      "start": "minecraft:item.firecharge.use",
+      "finish": "minecraft:block.iron_door.open",
+      "abort": "minecraft:block.iron_door.close"
+    }
+  },
+  "reveal": "none",
+  "decor": [
+    {
+      "sprite": "feedback:skin/slag/spout",
+      "anchor": "top_right",
+      "x": -12,
+      "y": 5,
+      "w": 24,
+      "h": 60,
+      "heat": false
+    },
+    {
+      "sprite": "feedback:skin/slag/cracks",
+      "anchor": "bottom",
+      "x": 0,
+      "y": -6,
+      "w": 176,
+      "h": 26,
+      "heat": true,
+      "cold": 0.5
+    }
+  ],
+  "glow": [
+    {
+      "colour": "#FF5A10",
+      "height": 26,
+      "base": 48,
+      "hot": 150,
+      "lip": 0
+    }
+  ]
+}

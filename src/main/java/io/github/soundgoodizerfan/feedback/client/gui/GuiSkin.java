@@ -141,130 +141,7 @@ public abstract class GuiSkin {
      * dull scale on the plate, edges that catch the firelight. Buttons are cold iron that warm under the pointer; the
      * primary one is metal heated to glowing. The screen opens like a hatch, two iron shutters parting from the middle.
      */
-    public static final GuiSkin FORGE = new GuiSkin("FORGE", 0xFFE6D2B4, 0xFF9A8470, 0xFFFF9A3C, 0xFFFF5A3C, 0xFF0A0807, 0xFF5A2E18, 0xFF2A201C) {
-        private static final int IRON = 0xFF1C1816, EDGE = 0xFF070504, GLOW = 0xFFFF6A1E;
-        /** Scale pitting on the plate, fixed: x, y, size, as fractions of the plate. */
-        private static final float[] SCALE = scale();
-
-        private static float[] scale() {
-            Random r = new Random(0xF0E6E);
-            float[] out = new float[3 * 140];
-            for (int i = 0; i < out.length; i++)
-                out[i] = r.nextFloat();
-            return out;
-        }
-
-        /** Blackened plate: iron, firelight rising from the bottom, a warm lip on the lower edges. */
-        private static void plate(GuiGraphics g, int x, int y, int w, int h) {
-            g.fill(x, y, x + w, y + h, EDGE);
-            g.fill(x + 1, y + 1, x + w - 1, y + h - 1, IRON);
-            g.fillGradient(x + 1, y + 1, x + w - 1, y + Math.min(h - 1, 30), 0x30000000, 0x00000000); // soot
-            g.fillGradient(x + 1, y + Math.max(1, h / 2), x + w - 1, y + h - 1, 0x00FF5A14, 0x40FF5A14);
-            g.fill(x + 1, y + h - 2, x + w - 1, y + h - 1, 0x80FF7A2A);
-            g.fill(x + 1, y + 1, x + w - 1, y + 2, 0x14FFFFFF);
-        }
-
-        @Override
-        public void panel(GuiGraphics g, int x, int y, int w, int h) {
-            g.fill(x + 3, y + 4, x + w + 3, y + h + 4, 0x70000000);
-            plate(g, x, y, w, h);
-            for (int i = 0; i < SCALE.length; i += 3) {
-                int sx = x + 3 + (int) (SCALE[i] * (w - 6)), sy = y + 3 + (int) (SCALE[i + 1] * (h - 6));
-                float heat = (sy - y) / (float) h; // pits catch more light low down
-                int sz = SCALE[i + 2] > 0.85f ? 2 : 1;
-                g.fill(sx, sy, sx + sz, sy + sz, (i & 1) == 0 ? 0x30000000 : (int) (heat * 0x1C) << 24 | 0xFF8A3C);
-            }
-            g.renderOutline(x + 4, y + 4, w - 8, h - 8, 0x50000000);
-        }
-
-        @Override
-        public void slot(GuiGraphics g, int x, int y) {
-            g.fill(x - 1, y - 1, x + 17, y + 17, 0xFF0E0B0A);
-            g.fill(x - 1, y - 1, x + 17, y, 0xFF000000);
-            g.fill(x - 1, y - 1, x, y + 17, 0xFF000000);
-            g.fill(x - 1, y + 16, x + 17, y + 17, 0x40FF7A2A);
-            g.fill(x + 16, y - 1, x + 17, y + 17, 0x30FF7A2A);
-        }
-
-        @Override
-        void button(GuiGraphics g, int x, int y, int w, int h, Component label, float glow, boolean down, boolean active,
-                    boolean primary) {
-            int top, bottom, text;
-            if (!active) {
-                top = 0xFF2A2523;
-                bottom = 0xFF1E1A18;
-                text = 0xFF6A625C;
-            } else if (primary) { // heated through
-                top = lerp(0xFFC04A1A, 0xFFF07A2A, glow);
-                bottom = lerp(0xFF7A2810, 0xFFA83E16, glow);
-                text = 0xFFFFEBCC;
-            } else { // cold iron, warming
-                top = lerp(0xFF3A322E, 0xFF5A3A28, glow);
-                bottom = lerp(0xFF221C1A, 0xFF3A2218, glow);
-                text = lerp(0xFFB09A84, 0xFFFFD8A8, glow);
-            }
-            if (down) {
-                int t = top;
-                top = bottom;
-                bottom = t;
-            }
-            g.fill(x, y, x + w, y + h, EDGE);
-            g.fillGradient(x + 1, y + 1, x + w - 1, y + h - 1, top, bottom);
-            if (!down && active) {
-                g.fill(x + 1, y + 1, x + w - 1, y + 2, 0x28FFFFFF);
-                g.fill(x + 1, y + h - 2, x + w - 1, y + h - 1, (int) ((0x30 + glow * 0x50)) << 24 | 0xFF7A2A);
-            }
-            if (primary && active && glow > 0)
-                g.renderOutline(x - 1, y - 1, w + 2, h + 2, (int) (glow * 0x80) << 24 | 0xFF9A3C);
-            var font = Minecraft.getInstance().font;
-            int o = down ? 1 : 0;
-            g.drawString(font, label, x + (w - font.width(label)) / 2 + o, y + (h - 8) / 2 + o, text, false);
-        }
-
-        @Override
-        public SoundEvent click() {
-            return SoundEvents.STONE_BUTTON_CLICK_ON;
-        }
-
-        @Override
-        public SoundEvent open() {
-            return FSounds.UI_HATCH_OPEN.get();
-        }
-
-        @Override
-        public SoundEvent close() {
-            return FSounds.UI_HATCH_CLOSE.get();
-        }
-
-        private static int gap(int h, float t) {
-            return Math.round((h / 2f + 6) * t);
-        }
-
-        @Override
-        public void beginReveal(GuiGraphics g, int x, int y, int w, int h, float t) {
-            if (t < 1)
-                g.enableScissor(x - 4, y + h / 2 - gap(h, t), x + w + 8, y + h / 2 + gap(h, t));
-        }
-
-        @Override
-        public void endReveal(GuiGraphics g, int x, int y, int w, int h, float t) {
-            if (t >= 1)
-                return;
-            g.flush();
-            g.disableScissor();
-            int mid = y + h / 2, gap = gap(h, t);
-            // The shutters, sliding back into the frame as the hatch opens.
-            int top = mid - gap - y, bottom = y + h - (mid + gap);
-            if (top > 0) {
-                plate(g, x, y, w, top);
-                g.fill(x + 1, y + top - 2, x + w - 1, y + top, 0xFF5A2E18);
-            }
-            if (bottom > 0) {
-                plate(g, x, mid + gap, w, bottom);
-                g.fill(x + 1, mid + gap, x + w - 1, mid + gap + 2, 0xFF5A2E18);
-            }
-        }
-    };
+    public static final GuiSkin FORGE = new SpriteSkin("forge");
 
     /**
      * Atomic-age laboratory enamel: a dusty sage hammered-enamel cabinet face, never white, stencilled in dark ink. Cut corners, a cream
@@ -733,192 +610,13 @@ public abstract class GuiSkin {
      * The smoker's: smoke-cured hickory, dark and warm. Broad boards with seams and grain, soot gathering at the top, a low
      * ember glow at the bottom edge. Buttons are dark wood that warms under the pointer; the primary one is a live coal.
      */
-    public static final GuiSkin SMOKE = new GuiSkin("SMOKE", 0xFFEBD3A6, 0xFFA88A60, 0xFFFFA64A, 0xFFFF5A3C, 0xFF1B1008, 0xFF553A1F, 0xFF3B2713) {
-        private static final int EDGE = 0xFF1B1008, BOARD = 0xFF3B2713; // spruce log bark: 3B2713 body, 4D3317 light, 2E1C0A dark, 553A1F highlight
-        /** Grain, fixed: x, y, length as fractions of the panel. */
-        private static final float[] GRAIN = grain();
-
-        private static float[] grain() {
-            Random r = new Random(0x5A0CE);
-            float[] out = new float[3 * 160];
-            for (int i = 0; i < out.length; i++)
-                out[i] = r.nextFloat();
-            return out;
-        }
-
-        @Override
-        public void panel(GuiGraphics g, int x, int y, int w, int h) {
-            g.fill(x + 3, y + 4, x + w + 3, y + h + 4, 0x70000000);
-            g.fill(x, y, x + w, y + h, EDGE);
-            g.fill(x + 1, y + 1, x + w - 1, y + h - 1, BOARD);
-            for (int bx = x + 30; bx < x + w - 2; bx += 30) { // board seams
-                g.fill(bx, y + 1, bx + 1, y + h - 1, 0xFF2E1608);
-                g.fill(bx + 1, y + 1, bx + 2, y + h - 1, 0x40553A1F);
-            }
-            for (int i = 0; i < GRAIN.length; i += 3) {
-                int gx = x + 2 + (int) (GRAIN[i] * (w - 4)), gy = y + 2 + (int) (GRAIN[i + 1] * (h - 4));
-                int len = 3 + (int) (GRAIN[i + 2] * 14);
-                g.fill(gx, gy, gx + 1, Math.min(y + h - 1, gy + len), (i & 1) == 0 ? 0xFF2E1C0A : 0xFF4D3317);
-            }
-            g.fillGradient(x + 1, y + 1, x + w - 1, y + 1 + Math.min(40, h / 3), 0x50000000, 0x00000000); // soot
-            g.fillGradient(x + 1, y + h - 28, x + w - 1, y + h - 1, 0x00FF6A1C, 0x40FF6A1C); // embers
-            g.fill(x + 1, y + h - 2, x + w - 1, y + h - 1, 0x70FF8A3A);
-            g.fill(x + 1, y + 1, x + w - 1, y + 2, 0x10FFE0B0);
-        }
-
-        @Override
-        public void slot(GuiGraphics g, int x, int y) {
-            g.fill(x - 1, y - 1, x + 17, y + 17, 0xFF0F0A06);
-            g.fill(x - 1, y - 1, x + 17, y, 0xFF000000);
-            g.fill(x - 1, y - 1, x, y + 17, 0xFF000000);
-            g.fill(x - 1, y + 16, x + 17, y + 17, 0x1CFFE0B0);
-            g.fill(x + 16, y - 1, x + 17, y + 17, 0x1CFFE0B0);
-        }
-
-        @Override
-        void button(GuiGraphics g, int x, int y, int w, int h, Component label, float glow, boolean down, boolean active,
-                    boolean primary) {
-            int top, bottom, text;
-            if (!active) {
-                top = 0xFF2A1A0C;
-                bottom = 0xFF20130A;
-                text = 0xFF6E6054;
-            } else if (primary) {
-                top = lerp(0xFFC04A1A, 0xFFF07A2A, glow);
-                bottom = lerp(0xFF6A220C, 0xFF9A3A16, glow);
-                text = 0xFFFFEBC8;
-            } else {
-                top = lerp(0xFF4D3317, 0xFF6A4624, glow);
-                bottom = lerp(0xFF2E1C0A, 0xFF3F2813, glow);
-                text = lerp(dim(), ink(), glow);
-            }
-            if (down) {
-                int t = top;
-                top = bottom;
-                bottom = t;
-            }
-            g.fill(x, y, x + w, y + h, EDGE);
-            g.fillGradient(x + 1, y + 1, x + w - 1, y + h - 1, top, bottom);
-            if (!down && active)
-                g.fill(x + 1, y + 1, x + w - 1, y + 2, 0x24FFE0B0);
-            var font = Minecraft.getInstance().font;
-            int o = down ? 1 : 0;
-            g.drawString(font, label, x + (w - font.width(label)) / 2 + o, y + (h - 8) / 2 + o, text, false);
-        }
-
-        @Override
-        public SoundEvent click() {
-            return SoundEvents.WOODEN_BUTTON_CLICK_ON;
-        }
-
-        @Override
-        public SoundEvent open() {
-            return SoundEvents.CAMPFIRE_CRACKLE;
-        }
-
-        @Override
-        public SoundEvent close() {
-            return SoundEvents.WOODEN_TRAPDOOR_CLOSE;
-        }
-    };
+    public static final GuiSkin SMOKE = new SpriteSkin("smoke");
 
     /**
      * The crude blast furnace's: heavy gunmetal plate in a plain riveted casing, and the cracks of cooling slag glowing at
      * the bottom edge. Buttons are cast iron; the primary one is molten orange.
      */
-    public static final GuiSkin SLAG = new GuiSkin("SLAG", 0xFFDAD6D0, 0xFF8E8780, 0xFFFF8A2A, 0xFFFF4A2A, 0xFF0E0C0B, 0xFF3C3633, 0xFF2A2523) {
-        private static final int EDGE = 0xFF0A0807, PLATE = 0xFF211D1B;
-        /** Cracks in the slag, fixed: x fraction, height, wobble seed. */
-        private static final float[] CRACKS = cracks();
-
-        private static float[] cracks() {
-            Random r = new Random(0x51A6);
-            float[] out = new float[3 * 26];
-            for (int i = 0; i < out.length; i++)
-                out[i] = r.nextFloat();
-            return out;
-        }
-
-        @Override
-        public void panel(GuiGraphics g, int x, int y, int w, int h) {
-            g.fill(x + 3, y + 4, x + w + 3, y + h + 4, 0x70000000);
-            g.fill(x, y, x + w, y + h, EDGE);
-            g.fillGradient(x + 1, y + 1, x + w - 1, y + h - 1, 0xFF2A2523, PLATE);
-            g.fill(x + 1, y + 1, x + w - 1, y + 2, 0x18FFFFFF);
-            g.fill(x + 1, y + 1, x + 2, y + h - 1, 0x0CFFFFFF);
-            // A casing: a plain raised frame round the plate, one rivet in each corner, nothing across the middle.
-            g.renderOutline(x + 3, y + 3, w - 6, h - 6, 0xFF38322F);
-            g.renderOutline(x + 4, y + 4, w - 8, h - 8, 0x50000000);
-            for (int[] c : new int[][] {{x + 5, y + 5}, {x + w - 8, y + 5}, {x + 5, y + h - 8}, {x + w - 8, y + h - 8}}) {
-                g.fill(c[0], c[1], c[0] + 3, c[1] + 3, 0xFF3A3532);
-                g.fill(c[0], c[1], c[0] + 3, c[1] + 1, 0xFF5A5450);
-            }
-            g.fillGradient(x + 1, y + h - 26, x + w - 1, y + h - 1, 0x00FF5A10, 0x30FF5A10);
-            for (int i = 0; i < CRACKS.length; i += 3) { // cooling slag, glowing in its cracks
-                int cx = x + 2 + (int) (CRACKS[i] * (w - 4)), top = y + h - 3 - (int) (4 + CRACKS[i + 1] * 12);
-                for (int cy = y + h - 2; cy > top; cy--) {
-                    cx += CRACKS[i + 2] > 0.5f ? ((cy + i) % 3 == 0 ? 1 : 0) : ((cy + i) % 3 == 0 ? -1 : 0);
-                    int a = 0x30 + (int) (0x90 * (cy - top) / (float) (y + h - 2 - top));
-                    g.fill(cx, cy, cx + 1, cy + 1, a << 24 | 0xFF7A20);
-                }
-            }
-        }
-
-        @Override
-        public void slot(GuiGraphics g, int x, int y) {
-            g.fill(x - 1, y - 1, x + 17, y + 17, 0xFF0F0D0C);
-            g.fill(x - 1, y - 1, x + 17, y, 0xFF000000);
-            g.fill(x - 1, y - 1, x, y + 17, 0xFF000000);
-            g.fill(x - 1, y + 16, x + 17, y + 17, 0x1CFFFFFF);
-            g.fill(x + 16, y - 1, x + 17, y + 17, 0x1CFFFFFF);
-        }
-
-        @Override
-        void button(GuiGraphics g, int x, int y, int w, int h, Component label, float glow, boolean down, boolean active,
-                    boolean primary) {
-            int top, bottom, text;
-            if (!active) {
-                top = 0xFF211D1B;
-                bottom = 0xFF181514;
-                text = 0xFF6A645E;
-            } else if (primary) {
-                top = lerp(0xFFE0782A, 0xFFFFA44A, glow);
-                bottom = lerp(0xFF8E3A12, 0xFFB45A22, glow);
-                text = 0xFF1A0C04;
-            } else {
-                top = lerp(0xFF3E3835, 0xFF5A4A40, glow);
-                bottom = lerp(0xFF25201E, 0xFF372C26, glow);
-                text = lerp(dim(), ink(), glow);
-            }
-            if (down) {
-                int t = top;
-                top = bottom;
-                bottom = t;
-            }
-            g.fill(x, y, x + w, y + h, EDGE);
-            g.fillGradient(x + 1, y + 1, x + w - 1, y + h - 1, top, bottom);
-            if (!down && active)
-                g.fill(x + 1, y + 1, x + w - 1, y + 2, 0x28FFFFFF);
-            var font = Minecraft.getInstance().font;
-            int o = down ? 1 : 0;
-            g.drawString(font, label, x + (w - font.width(label)) / 2 + o, y + (h - 8) / 2 + o, text, false);
-        }
-
-        @Override
-        public SoundEvent click() {
-            return SoundEvents.IRON_TRAPDOOR_CLOSE;
-        }
-
-        @Override
-        public SoundEvent open() {
-            return SoundEvents.IRON_DOOR_OPEN;
-        }
-
-        @Override
-        public SoundEvent close() {
-            return SoundEvents.IRON_DOOR_CLOSE;
-        }
-    };
+    public static final GuiSkin SLAG = new SpriteSkin("slag");
 
 
     /** The phosphor terminal in green: see {@link Terminal}. */
@@ -1364,6 +1062,11 @@ public abstract class GuiSkin {
     /** The thing selected, a value just changed. */
     public int accent() {
         return accent;
+    }
+
+    /** The rim of a sunken area and a skin's trim line. */
+    public int trim() {
+        return trim;
     }
 
     /** A figure past its limit. */

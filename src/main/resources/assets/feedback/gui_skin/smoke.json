@@ -1,0 +1,79 @@
+{
+  "colours": {
+    "ink": "#EBD3A6",
+    "dim": "#A88A60",
+    "accent": "#FFA64A",
+    "warn": "#FF5A3C",
+    "well": "#1B1008",
+    "trim": "#553A1F",
+    "plate": "#3B2713"
+  },
+  "panel": {
+    "sprite": "feedback:skin/smoke/tile",
+    "wash": "#38100602",
+    "frame": "feedback:skin/smoke/frame",
+    "shadow": true
+  },
+  "slot": "feedback:skin/smoke/slot",
+  "button": {
+    "normal": "feedback:skin/smoke/button",
+    "hover": "feedback:skin/smoke/button_hover",
+    "down": "feedback:skin/smoke/button_down",
+    "off": "feedback:skin/smoke/button_off",
+    "primary": "feedback:skin/smoke/button_primary",
+    "primary_hover": "feedback:skin/smoke/button_primary"
+  },
+  "sounds": {
+    "click": "minecraft:block.wooden_button.click_on",
+    "open": "minecraft:block.campfire.crackle",
+    "close": "minecraft:block.wooden_trapdoor.close",
+    "cues": {
+      "seat": "minecraft:block.wooden_button.click_on",
+      "reject": "minecraft:block.bamboo_wood.hit",
+      "stage": "minecraft:block.campfire.crackle",
+      "start": "minecraft:block.campfire.crackle",
+      "finish": "minecraft:block.bamboo_wood.place",
+      "abort": "minecraft:block.wooden_trapdoor.close"
+    }
+  },
+  "reveal": "none",
+  "decor": [
+    {
+      "sprite": "feedback:skin/smoke/soot",
+      "anchor": "top",
+      "x": 0,
+      "y": 8,
+      "w": 160,
+      "h": 44,
+      "heat": false
+    },
+    {
+      "sprite": "feedback:skin/smoke/hooks",
+      "anchor": "top_right",
+      "x": -9,
+      "y": 6,
+      "w": 46,
+      "h": 56,
+      "heat": false
+    },
+    {
+      "sprite": "feedback:skin/smoke/embers",
+      "anchor": "bottom",
+      "x": 0,
+      "y": -8,
+      "w": 176,
+      "h": 30,
+      "heat": true,
+      "cold": 0.35
+    }
+  ],
+  "glow": [
+    {
+      "colour": "#FF6A1C",
+      "height": 28,
+      "base": 64,
+      "hot": 150,
+      "lip": 112
+    }
+  ]
+}

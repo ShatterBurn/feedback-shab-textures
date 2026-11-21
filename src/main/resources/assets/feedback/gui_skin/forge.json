@@ -1,0 +1,79 @@
+{
+  "colours": {
+    "ink": "#E6D2B4",
+    "dim": "#9A8470",
+    "accent": "#FF9A3C",
+    "warn": "#FF5A3C",
+    "well": "#0A0807",
+    "trim": "#5A2E18",
+    "plate": "#2A201C"
+  },
+  "panel": {
+    "sprite": "feedback:skin/forge/tile",
+    "wash": "#44100804",
+    "frame": "feedback:skin/forge/frame",
+    "shadow": true
+  },
+  "slot": "feedback:skin/forge/slot",
+  "button": {
+    "normal": "feedback:skin/forge/button",
+    "hover": "feedback:skin/forge/button_hover",
+    "down": "feedback:skin/forge/button_down",
+    "off": "feedback:skin/forge/button_off",
+    "primary": "feedback:skin/forge/button_primary",
+    "primary_hover": "feedback:skin/forge/button_primary"
+  },
+  "sounds": {
+    "click": "minecraft:block.stone_button.click_on",
+    "open": "feedback:ui.hatch_open",
+    "close": "feedback:ui.hatch_close",
+    "cues": {
+      "seat": "minecraft:block.chain.place",
+      "reject": "minecraft:block.anvil.land",
+      "stage": "feedback:ui.hatch_open",
+      "start": "minecraft:item.firecharge.use",
+      "finish": "minecraft:block.anvil.use",
+      "abort": "feedback:ui.hatch_close"
+    }
+  },
+  "reveal": "shutters",
+  "decor": [
+    {
+      "sprite": "feedback:skin/forge/soot",
+      "anchor": "top",
+      "x": 0,
+      "y": 8,
+      "w": 160,
+      "h": 44,
+      "heat": false
+    },
+    {
+      "sprite": "feedback:skin/forge/hinge",
+      "anchor": "top_right",
+      "x": -9,
+      "y": 8,
+      "w": 52,
+      "h": 20,
+      "heat": false
+    },
+    {
+      "sprite": "feedback:skin/forge/pits",
+      "anchor": "bottom",
+      "x": 0,
+      "y": -8,
+      "w": 176,
+      "h": 48,
+      "heat": true,
+      "cold": 0.3
+    }
+  ],
+  "glow": [
+    {
+      "colour": "#FF5A14",
+      "height": 88,
+      "base": 64,
+      "hot": 170,
+      "lip": 128
+    }
+  ]
+}
