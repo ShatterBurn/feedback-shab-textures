@@ -174,18 +174,16 @@ public final class SkinShowcaseScreen extends Screen {
         if (age < 1700)
             GuiStyle.stamp(g, Component.literal("DONE"), x + 80, y + 150, age, s.warn() & 0xFFFFFF);
 
-        // spinners: the rake at several speeds (RPM), the last turning the other way; the smear trails behind the turn only
-        for (int i = 0; i < SPIN_RPM.length; i++) {
-            int sx = x + 30 + i * 46, sy = y + 190;
-            s.inset(g, sx - 15, sy - 15, 30, 30);
-            SPINNERS[i].draw(g, Feedback.id("spin/rabble_rake"), sx, sy, 24, 24, SPIN_RPM[i]);
-            String rpm = Integer.toString(SPIN_RPM[i]);
-            g.drawString(font, rpm, sx - font.width(rpm) / 2, sy + 18, s.dim(), false);
-        }
+        // spinner: one rake, its speed set by the slider (5 is stopped, each step 60 RPM, below 5 turns the other way); the smear trails behind the turn only
+        int rpm = (int) Math.round((slid - 5) * 60);
+        int sx = x + 120, sy = y + 166;
+        s.inset(g, sx - 16, sy - 16, 32, 32);
+        spinner.draw(g, Feedback.id("spin/rabble_rake"), sx, sy, 24, 24, rpm);
+        String label = rpm + " rpm";
+        g.drawString(font, label, sx - font.width(label) / 2, sy + 20, s.dim(), false);
     }
 
-    private static final int[] SPIN_RPM = {20, 60, 150, 400, -150};
-    private static final Spinner[] SPINNERS = {new Spinner(), new Spinner(), new Spinner(), new Spinner(), new Spinner()};
+    private final Spinner spinner = new Spinner();
 
     @Override
     public boolean mouseClicked(double mx, double my, int button) {

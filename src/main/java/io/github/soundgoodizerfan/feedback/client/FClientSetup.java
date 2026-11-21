@@ -109,6 +109,7 @@ public class FClientSetup {
         event.registerBlockEntityRenderer(FBlockEntities.WATER_WHEEL.get(), RotatingRenderer::new);
         event.registerBlockEntityRenderer(io.github.soundgoodizerfan.feedback.registry.FAutomation.FISH_WHEEL_ENTITY.get(), RotatingRenderer::new);
         event.registerBlockEntityRenderer(FBlockEntities.CLUTCH.get(), io.github.soundgoodizerfan.feedback.client.render.ClutchRenderer::new);
+        event.registerBlockEntityRenderer(io.github.soundgoodizerfan.feedback.registry.FWeapons.MIXER_ENTITY.get(), io.github.soundgoodizerfan.feedback.client.render.MixerRenderer::new);
         event.registerBlockEntityRenderer(FBlockEntities.OVERSPEED_TRIP.get(), RotatingRenderer::new);
         event.registerBlockEntityRenderer(FBlockEntities.STEAM_ENGINE.get(), RotatingRenderer::new);
         event.registerBlockEntityRenderer(FBlockEntities.STEAM_TURBINE.get(), RotatingRenderer::new);

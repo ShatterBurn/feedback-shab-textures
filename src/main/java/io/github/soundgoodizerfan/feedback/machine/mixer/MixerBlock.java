@@ -15,6 +15,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -38,6 +39,22 @@ public class MixerBlock extends BaseEntityBlock implements Rotatable {
     @Override
     protected MapCodec<? extends BaseEntityBlock> codec() {
         return CODEC;
+    }
+
+    /** Mirrors models/block/mixer.json (scripts/mixer_model.py): the drum stands 24 sixteenths, half a block over the block's top. */
+    private static final net.minecraft.world.phys.shapes.VoxelShape OUTLINE = Block.box(1, 0, 1, 15, 16, 15);
+    private static final net.minecraft.world.phys.shapes.VoxelShape COLLISION = Block.box(1, 0, 1, 15, 24, 15);
+
+    @Override
+    protected net.minecraft.world.phys.shapes.VoxelShape getShape(BlockState state, net.minecraft.world.level.BlockGetter level, BlockPos pos,
+                                                                  net.minecraft.world.phys.shapes.CollisionContext context) {
+        return OUTLINE;
+    }
+
+    @Override
+    protected net.minecraft.world.phys.shapes.VoxelShape getCollisionShape(BlockState state, net.minecraft.world.level.BlockGetter level,
+                                                                           BlockPos pos, net.minecraft.world.phys.shapes.CollisionContext context) {
+        return COLLISION;
     }
 
     @Override
