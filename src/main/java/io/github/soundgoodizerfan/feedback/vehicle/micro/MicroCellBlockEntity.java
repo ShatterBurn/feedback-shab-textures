@@ -230,11 +230,16 @@ public class MicroCellBlockEntity extends BlockEntity implements BlockEntitySubL
 
     /** Voxel {@code index}, just set to the state the machine now stands in, becomes {@code machine} again; call {@link #commit} after. */
     public boolean land(int index, Lifted machine) {
-        if (level == null || voxels[index] == null)
+        if (level == null)
             return false;
-        var be = net.minecraft.world.level.block.entity.BlockEntity.loadStatic(worldPosition, voxels[index], machine.save(), level.registryAccess());
-        if (be == null)
+        var be = voxels[index] == null ? null
+                : net.minecraft.world.level.block.entity.BlockEntity.loadStatic(worldPosition, voxels[index], machine.save(), level.registryAccess());
+        if (be == null) {
+            // A machine never vanishes: one that cannot stand where it was sent drops as its item.
+            if (level instanceof net.minecraft.server.level.ServerLevel && !machine.item().isEmpty())
+                Block.popResource(level, worldPosition, machine.item().copy());
             return false;
+        }
         be.setLevel(level);
         install(index, be, machine.item());
         return true;
