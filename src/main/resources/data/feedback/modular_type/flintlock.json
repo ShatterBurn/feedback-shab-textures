@@ -75,7 +75,8 @@
         "item": "feedback:receiver",
         "cells": 1,
         "stock": [
-          "ingot"
+          "@lump",
+          "@sheet"
         ],
         "base": "handgun",
         "variants": [

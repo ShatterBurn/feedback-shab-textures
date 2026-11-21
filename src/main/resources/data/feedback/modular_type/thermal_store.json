@@ -38,7 +38,8 @@
         "item": "feedback:store_core",
         "cells": 6,
         "stock": [
-          "@lump"
+          "@lump",
+          "@sheet"
         ],
         "base": "store_walled",
         "variants": [

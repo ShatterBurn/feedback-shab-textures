@@ -44,7 +44,8 @@
         "item": "feedback:wheel_rim",
         "cells": 6,
         "stock": [
-          "@board"
+          "@board",
+          "@sheet"
         ],
         "slots": [
           {

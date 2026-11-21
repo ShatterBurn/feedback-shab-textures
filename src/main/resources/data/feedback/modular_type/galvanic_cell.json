@@ -38,7 +38,9 @@
         "item": "feedback:cell_anode",
         "cells": 6,
         "stock": [
-          "ingot"
+          "@lump",
+          "@long",
+          "@sheet"
         ],
         "base": "anode_rod",
         "variants": [

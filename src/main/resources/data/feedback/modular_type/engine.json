@@ -37,7 +37,7 @@
         "item": "feedback:engine_block",
         "cells": 4,
         "stock": [
-          "ingot"
+          "@lump"
         ],
         "base": "inline_block",
         "variants": [
@@ -145,7 +145,8 @@
         "item": "feedback:crankshaft",
         "cells": 2,
         "stock": [
-          "ingot"
+          "@lump",
+          "@long"
         ],
         "slots": [
           {

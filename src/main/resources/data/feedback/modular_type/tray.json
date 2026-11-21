@@ -44,7 +44,7 @@
         "item": "feedback:tray_deck",
         "cells": 3,
         "stock": [
-          "plate"
+          "@sheet"
         ],
         "base": "tray_sieve",
         "variants": [
