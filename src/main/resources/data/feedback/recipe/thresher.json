@@ -1,0 +1,19 @@
+{
+  "type": "feedback:engineering",
+  "key": {
+    "P": { "tag": "minecraft:planks" },
+    "R": { "item": "feedback:wrought_iron_rod" },
+    "S": { "item": "feedback:shaft" },
+    "B": { "item": "feedback:bearing" },
+    "W": { "tag": "minecraft:planks" }
+  },
+  "pattern": [
+    " P ",
+    "RSR",
+    "BWB"
+  ],
+  "result": { "count": 1, "id": "feedback:thresher" },
+  "tool": [ { "ability": "feedback:hammer", "wear": 1 } ],
+  "fasteners": { "count": 2, "floor": 1, "forms": [ "screw", "machine_bolt" ] },
+  "school": "mechanical:1"
+}

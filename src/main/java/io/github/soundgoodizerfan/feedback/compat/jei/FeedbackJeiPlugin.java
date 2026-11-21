@@ -430,6 +430,7 @@ public class FeedbackJeiPlugin implements IModPlugin {
         // Potions: one generic bottle and salts entry each. Per-effect entries would list every node, spoiling the ones not yet made.
         info(registration, FItems.BREWING_STAND.get(), "brewing_stand");
         info(registration, FItems.VACUUM_DRYER.get(), "vacuum_dryer");
+        info(registration, FItems.THRESHER.get(), "thresher");
         info(registration, io.github.soundgoodizerfan.feedback.registry.FWeapons.MIXER_ITEM.get(), "mixer");
         // Stations, blueprints and the magazine (loaded by a code recipe with no fixed grid).
         info(registration, FModular.PREP_TABLE_ITEM.get(), "prep_table");

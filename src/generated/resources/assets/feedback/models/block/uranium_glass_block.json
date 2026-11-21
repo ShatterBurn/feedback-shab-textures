@@ -46,8 +46,9 @@
       ]
     }
   ],
+  "render_type": "minecraft:translucent",
   "textures": {
-    "all": "feedback:block/form/block",
-    "particle": "feedback:block/form/block"
+    "all": "feedback:block/form/glass",
+    "particle": "feedback:block/form/glass"
   }
 }

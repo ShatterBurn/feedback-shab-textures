@@ -1406,6 +1406,12 @@ public class FBlocks {
                     .strength(4.0f)
                     .sound(SoundType.METAL)
                     .noOcclusion()));
+    public static final DeferredBlock<io.github.soundgoodizerfan.feedback.machine.thresher.ThresherBlock> THRESHER = BLOCKS.register("thresher",
+            () -> new io.github.soundgoodizerfan.feedback.machine.thresher.ThresherBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.WOOD)
+                    .strength(2.5f)
+                    .sound(SoundType.WOOD)
+                    .noOcclusion()));
     public static final DeferredBlock<io.github.soundgoodizerfan.feedback.machine.gastank.GasTankBlock> GAS_TANK = BLOCKS.register("gas_tank",
             () -> new io.github.soundgoodizerfan.feedback.machine.gastank.GasTankBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.METAL)

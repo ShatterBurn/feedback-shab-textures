@@ -47,7 +47,7 @@
     }
   ],
   "textures": {
-    "all": "feedback:block/form/block",
-    "particle": "feedback:block/form/block"
+    "all": "feedback:block/form/meat",
+    "particle": "feedback:block/form/meat"
   }
 }

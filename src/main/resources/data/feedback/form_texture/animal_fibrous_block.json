@@ -1,5 +1,6 @@
 {
   "form": "block",
+  "kind": "animal",
   "trait": "fibrous",
   "sprite": "feedback:block/form/cloth",
   "priority": 20

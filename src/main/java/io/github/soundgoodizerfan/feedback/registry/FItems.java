@@ -221,6 +221,7 @@ public class FItems {
     public static final DeferredItem<io.github.soundgoodizerfan.feedback.potion.PotionSaltItem> POTION_SALTS = ITEMS.register("potion_salts",
             () -> new io.github.soundgoodizerfan.feedback.potion.PotionSaltItem(new net.minecraft.world.item.Item.Properties()));
     public static final DeferredItem<BlockItem> VACUUM_DRYER = ITEMS.registerSimpleBlockItem(FBlocks.VACUUM_DRYER);
+    public static final DeferredItem<BlockItem> THRESHER = ITEMS.registerSimpleBlockItem(FBlocks.THRESHER);
     /** A ladled serving; its figures and name are baked on the stack (food spec 5). */
     public static final DeferredItem<io.github.soundgoodizerfan.feedback.item.MealItem> MEAL = ITEMS.register("meal",
             () -> new io.github.soundgoodizerfan.feedback.item.MealItem(new net.minecraft.world.item.Item.Properties().stacksTo(1)

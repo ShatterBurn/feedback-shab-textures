@@ -636,6 +636,9 @@ public class FBlockEntities {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<io.github.soundgoodizerfan.feedback.machine.compressor.CompressorBlockEntity>> COMPRESSOR =
             BLOCK_ENTITIES.register("compressor", () -> BlockEntityType.Builder
                     .of(io.github.soundgoodizerfan.feedback.machine.compressor.CompressorBlockEntity::new, FBlocks.COMPRESSOR.get()).build(null));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<io.github.soundgoodizerfan.feedback.machine.thresher.ThresherBlockEntity>> THRESHER =
+            BLOCK_ENTITIES.register("thresher", () -> BlockEntityType.Builder
+                    .of(io.github.soundgoodizerfan.feedback.machine.thresher.ThresherBlockEntity::new, FBlocks.THRESHER.get()).build(null));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<io.github.soundgoodizerfan.feedback.machine.dryer.DryerBlockEntity>> VACUUM_DRYER =
             BLOCK_ENTITIES.register("vacuum_dryer", () -> BlockEntityType.Builder
                     .of(io.github.soundgoodizerfan.feedback.machine.dryer.DryerBlockEntity::new, FBlocks.VACUUM_DRYER.get()).build(null));

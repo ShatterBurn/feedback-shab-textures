@@ -217,6 +217,7 @@ public final class FAutomation {
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, DEPOT_ENTITY.get(), (depot, side) -> depot.port());
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, CREEL_ENTITY.get(), (creel, side) -> creel.catches());
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, FISH_WHEEL_ENTITY.get(), (wheel, side) -> wheel.catches());
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, FBlockEntities.THRESHER.get(), (thresher, side) -> thresher.port());
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, FUME_PORT_ENTITY.get(), (port, side) -> port.tank());
     }
 

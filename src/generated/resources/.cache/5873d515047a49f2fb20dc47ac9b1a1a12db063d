@@ -1,4 +1,4 @@
-// 1.21.1	2026-11-20T09:26:58.770871188	Tags for minecraft:item mod id feedback
+// 1.21.1	2026-11-21T17:37:36.87108403	Tags for minecraft:item mod id feedback
 3073a61ba898ee96262dfccbc399f1d5818039eb data/c/tags/item/birdshots/alnico.json
 574ad0a0f2ff288ea1128b7267ecde3cdd2af387 data/c/tags/item/birdshots/aluminium.json
 3b858b2b1f82950d60df7edc28f511d16bcaa4d0 data/c/tags/item/birdshots/aluminium_foam.json
@@ -2586,6 +2586,15 @@ b20015cc23070ec72626cac2c6135b2e2d2aae73 data/c/tags/item/shards/echo_shard.json
 6d13efea7291b16d5cc560908882a04ae34168c0 data/c/tags/item/shards/mud_brick.json
 76a456ca796d85b47a81f0e1037f3214df969f87 data/c/tags/item/shards/prismarine.json
 c5a20bd9de3e87ea409d96d991b05f8d4733af88 data/c/tags/item/shards/terracotta.json
+d71af9cbad2db32be3a23b510a598eacb2999441 data/c/tags/item/shavings/acacia.json
+9f3875665339a0f4dd2a97a3c08bd9700425051d data/c/tags/item/shavings/birch.json
+313b790cf986e768e2f5dcd4103c83fcfef6a94c data/c/tags/item/shavings/cherry.json
+adba77a5c00dbb6e033751da5ce5c8c2b3978912 data/c/tags/item/shavings/dark_oak.json
+0cd0835f43969b4de80c5c9d7f2457b32312f769 data/c/tags/item/shavings/jungle.json
+1443543c5e37d43dd55123e0b881198602c5eec9 data/c/tags/item/shavings/mangrove.json
+57573d93ca04581c18919e9e4416a0189b8b3aea data/c/tags/item/shavings/oak.json
+eb489029d549d3bc5317a3ad21562037bd8a5973 data/c/tags/item/shavings/spruce.json
+8114229471de593e3f730182b45018fc8a483804 data/c/tags/item/shavings/wood.json
 bddaeed843834d86ca6d881b0649f158787850f0 data/c/tags/item/slugs/osmium.json
 cbd781a35ff408b516345a0c26b562ac35cb547f data/c/tags/item/storage_blocks/alnico.json
 ea479b6935828ece76c68316722b04918a70fe0b data/c/tags/item/storage_blocks/aluminium.json
