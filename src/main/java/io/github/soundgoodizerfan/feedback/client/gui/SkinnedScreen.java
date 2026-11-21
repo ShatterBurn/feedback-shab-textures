@@ -126,9 +126,11 @@ public abstract class SkinnedScreen<M extends AbstractContainerMenu> extends Abs
         float p = (GuiStyle.time() - slideAt) / feel.slideTicks();
         if (p >= 1f) {
             releaseSlide();
+            if (feel.thunks()) // arrives at speed and stops dead
+                impact(1.5f);
             return -1f;
         }
-        return GuiStyle.easeOut(feel.slide(p));
+        return feel.slide(p);
     }
 
     @Override

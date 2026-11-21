@@ -57,15 +57,24 @@ public record Feel(float weight, float slop) {
         return Mth.lerp(GuiStyle.outBack(t, give()), from, to);
     }
 
-    /** Ticks a stepper's reading takes to slide out and its successor in; 0 snaps. */
+    /** Ticks a slide (stepper reading, tab change) takes; 0 snaps. Short: a lurch, not a glide. */
     public float slideTicks() {
-        return weight <= 0f ? 0f : 3f + 7f * weight;
+        return weight <= 0f ? 0f : 2f + 3f * weight;
     }
 
-    /** Progress 0..1 of a slide at time fraction {@code t}: rough skins (stone, wood) ramp up as if sliding off, machined ones move at a steady rate. */
+    /**
+     * Progress 0..1 at time fraction {@code t}. Every skin starts at full speed; the weight and slop of the material decide the end.
+     * Rough, soft skins (wood) brake gradually and slow to a stop; hard, crisp ones (iron) hold their speed and stop dead
+     * ({@link #thunks}). The braking exponent runs from 1 (no braking at all) up with the slop.
+     */
     public float slide(float t) {
-        t = Mth.clamp(t, 0f, 1f);
-        return slop >= 0.25f ? t * t * (3f - 2f * t) * 0.5f + t * t * 0.5f : t;
+        float u = 1f - Mth.clamp(t, 0f, 1f);
+        return 1f - (float) Math.pow(u, 1f + 3f * slop);
+    }
+
+    /** Whether a slide ends in a thud: heavy and crisp, so it arrives at speed and stops at once. */
+    public boolean thunks() {
+        return weight >= 0.7f && slop < 0.25f;
     }
 
     /** Per-second rate a slider's thumb closes on its value: weightless snaps, heavy lags behind the pointer. */
