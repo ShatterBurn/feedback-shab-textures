@@ -171,12 +171,14 @@ public final class ModularAssembly {
             if (sheets.stream().anyMatch(d -> d.fine() && d.type().equals(e.getKey())) && io.github.soundgoodizerfan.feedback.vehicle.micro.FineHosts.hostableType(e.getKey()))
                 for (ModularType.Assembly a : assemblies) {
                     Best one = new Best();
-                    assign(type, e.getKey(), io.github.soundgoodizerfan.feedback.vehicle.micro.FineHosts.fineCounts(a.counts()), merged, used, what, 0,
-                            new String[used.size()], new boolean[used.size()], one);
+                    Map<String, Integer> quarter = io.github.soundgoodizerfan.feedback.vehicle.micro.FineHosts.fineCounts(a.counts());
+                    assign(type, e.getKey(), quarter, merged, used, what, 0, new String[used.size()], new boolean[used.size()], one);
                     if (one.design != null && (best.key == null || one.key.compareTo(best.key) < 0)) {
                         best.key = one.key;
-                        // The design is the full one, so its figures are the machine as drawn; only the cost was a quarter.
-                        best.design = one.design.withFine(true).withParts(one.design.parts().stream().map(p -> p.withCount(a.counts().get(p.role()))).toList());
+                        // The design is the full one, so its figures are the machine as drawn; only the cost was a quarter. Raw stock counts as
+                        // the stack did; a shaped part counts its own cells, whatever the assembly says, and is left as it is.
+                        best.design = one.design.withFine(true).withParts(one.design.parts().stream()
+                                .map(p -> p.count() == quarter.get(p.role()) ? p.withCount(a.counts().get(p.role())) : p).toList());
                         best.roles = one.roles;
                     }
                 }

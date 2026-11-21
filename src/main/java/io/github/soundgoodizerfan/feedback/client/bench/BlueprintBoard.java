@@ -2319,7 +2319,8 @@ public final class BlueprintBoard {
     }
 
     List<ModularDesign> pinnedDesigns() {
-        return baked.isEmpty() ? List.of() : pins.stream().filter(p -> p.design().type().equals(baked.get().type())).map(Pin::design).toList();
+        return baked.isEmpty() ? List.of() : pins.stream().filter(p -> p.design().type().equals(baked.get().type()))
+                .map(p -> p.design().withFine(p.draft().fine() && finable())).toList();
     }
 
     /** The selected part's name, or null; the host shows a sample slot while there is one. */
