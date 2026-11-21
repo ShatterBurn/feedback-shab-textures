@@ -337,8 +337,10 @@ final class ForgePanel implements WorkPanel {
             }
         ring(g, tapC, line, 9, host.skin.accent());
         ring(g, heavyC, line, 12, host.skin.accent());
-        g.drawString(host.font(), Component.translatable("screen.feedback.forge.tap"), tapX + 4, line + 14, host.skin.dim(), false);
-        g.drawString(host.font(), Component.translatable("screen.feedback.forge.heavy"), heavyX + 4, line + 14, host.skin.dim(), false);
+        // The key hints sit beside their rings (outside the lanes, inside the viewport), not under them where the viewport's edge cuts them.
+        Component tapLabel = Component.translatable("screen.feedback.forge.tap"), heavyLabel = Component.translatable("screen.feedback.forge.heavy");
+        g.drawString(host.font(), tapLabel, tapX - 4 - host.font().width(tapLabel), line - 4, host.skin.dim(), false);
+        g.drawString(host.font(), heavyLabel, heavyX + LANE_W + 4, line - 4, host.skin.dim(), false);
         for (int i = 0; i < rhythm.length(); i++) {
             char c = rhythm.charAt(i);
             if (!ForgeRhythm.note(c))

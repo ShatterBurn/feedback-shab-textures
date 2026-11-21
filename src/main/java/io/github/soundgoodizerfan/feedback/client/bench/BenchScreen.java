@@ -760,7 +760,8 @@ public class BenchScreen extends SkinnedScreen<PartBenchMenu> {
         if (seatAge >= 0 && seatAge < 9 && !ClientSettings.reduceMotion())
             GuiStyle.ring(g, sx, sy, 14 + Math.round(GuiStyle.easeOut(seatAge / 9f) * 18), 2, (int) (0x90 * (1 - seatAge / 9f)) << 24 | skin.accent() & 0xFFFFFF);
         BenchFan.Node hover = fan.at(mouseX, mouseY, cx, cy);
-        fan.draw(g, skin, font, x, y, VW, VH, cx, cy, sx, sy, axis.covers(mouseX, mouseY) ? -9999 : mouseX, mouseY, shake, busy() ? 0.2f : 1f);
+        if (!busy()) // a minigame in play owns the viewport: the shape fan is not drawn behind it
+            fan.draw(g, skin, font, x, y, VW, VH, cx, cy, sx, sy, axis.covers(mouseX, mouseY) ? -9999 : mouseX, mouseY, shake, 1f);
         axis.draw(g, font);
 
         if (menu.trim()) {
