@@ -400,7 +400,7 @@ public class ThermalVesselBlockEntity extends ThermalVesselCore
 
     @Override
     public boolean stillValid(Player player) {
-        return Container.stillValidBlockEntity(this, player);
+        return io.github.soundgoodizerfan.feedback.vehicle.micro.FineHosts.stillValid(this, player);
     }
 
     @Override

@@ -180,7 +180,7 @@ public class CrucibleMenu extends AbstractContainerMenu {
 
         @Override
         public boolean stillValid(Player player) {
-            return Container.stillValidBlockEntity(crucible, player);
+            return io.github.soundgoodizerfan.feedback.vehicle.micro.FineHosts.stillValid(crucible, player);
         }
 
         @Override

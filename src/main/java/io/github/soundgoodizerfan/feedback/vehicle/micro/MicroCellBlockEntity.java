@@ -308,6 +308,14 @@ public class MicroCellBlockEntity extends BlockEntity implements BlockEntitySubL
         return null;
     }
 
+    /** Whether {@code machine} is hosted in this cell. */
+    public boolean holds(net.minecraft.world.level.block.entity.BlockEntity machine) {
+        for (var be : hosted)
+            if (be == machine)
+                return true;
+        return false;
+    }
+
     /** True if any voxel holds a machine. */
     public boolean hasHosted() {
         return hostedCount > 0;
@@ -1032,7 +1040,9 @@ public class MicroCellBlockEntity extends BlockEntity implements BlockEntitySubL
             if (hosted[i] != null && hostedItems[i] != null && !hostedItems[i].isEmpty()) {
                 CompoundTag one = new CompoundTag();
                 one.putByte("I", (byte) i);
-                one.put("Be", hosted[i].saveWithFullMetadata(registries));
+                // The update tag carries what the machine itself would sync in the world; the save carries all of it.
+                one.putBoolean("Sync", syncing);
+                one.put("Be", syncing ? hosted[i].getUpdateTag(registries) : hosted[i].saveWithFullMetadata(registries));
                 one.put("Item", hostedItems[i].save(registries));
                 machines.add(one);
             }
@@ -1056,6 +1066,14 @@ public class MicroCellBlockEntity extends BlockEntity implements BlockEntitySubL
         for (int i = 0; i < kinds.length; i++)
             kinds[i] = NbtUtils.readBlockState(registries.lookupOrThrow(Registries.BLOCK), palette.getCompound(i));
         byte[] ids = tag.getByteArray("Voxels");
+        // The machines already here are kept for the machines this load reads back, and out of the voxel loop's way: a voxel set while one
+        // stands would release it. A machine whose voxel, state and item are unchanged is updated in place, so its animation runs on.
+        var kept = hosted.clone();
+        var keptItems = hostedItems.clone();
+        Arrays.fill(hosted, null);
+        Arrays.fill(hostedItems, null);
+        Arrays.fill(hostedRotors, null);
+        hostedCount = 0;
         // A load is the cell as it stands: its belts are read back below, and the far ends are not touched.
         belts.clear();
         Arrays.fill(beltWear, 0);
@@ -1090,28 +1108,41 @@ public class MicroCellBlockEntity extends BlockEntity implements BlockEntitySubL
             if (!skin.isAir())
                 setSkin(skinned.getCompound(k).getByte("I") & (VOXELS - 1), skin);
         }
-        Arrays.fill(hosted, null);
-        Arrays.fill(hostedItems, null);
-        Arrays.fill(hostedRotors, null);
-        hostedCount = 0;
         ListTag machines = tag.getList("Machines", Tag.TAG_COMPOUND);
         for (int k = 0; k < machines.size(); k++) {
             CompoundTag one = machines.getCompound(k);
             int i = one.getByte("I") & (VOXELS - 1);
             if (voxels[i] == null)
                 continue;
-            var be = net.minecraft.world.level.block.entity.BlockEntity.loadStatic(worldPosition, voxels[i], one.getCompound("Be"), registries);
             var item = net.minecraft.world.item.ItemStack.parse(registries, one.get("Item")).orElse(net.minecraft.world.item.ItemStack.EMPTY);
-            if (be == null || item.isEmpty())
+            if (item.isEmpty())
                 continue;
-            if (level != null)
-                be.setLevel(level);
+            net.minecraft.world.level.block.entity.BlockEntity be;
+            if (one.getBoolean("Sync")) {
+                // A sync tag has no block entity id: the machine is the one standing here, or made again from its item.
+                if (kept[i] != null && kept[i].getBlockState() == voxels[i] && net.minecraft.world.item.ItemStack.matches(keptItems[i], item)) {
+                    be = kept[i];
+                    kept[i] = null;
+                } else
+                    be = level == null ? null : FineHosts.make(level, worldPosition, voxels[i], item);
+                if (be != null)
+                    be.handleUpdateTag(one.getCompound("Be"), registries);
+            } else {
+                be = net.minecraft.world.level.block.entity.BlockEntity.loadStatic(worldPosition, voxels[i], one.getCompound("Be"), registries);
+                if (be != null && level != null)
+                    be.setLevel(level);
+            }
+            if (be == null)
+                continue;
             hosted[i] = be;
             hostedItems[i] = item;
             hostedCount++;
             if (be instanceof io.github.soundgoodizerfan.feedback.core.rotation.RotationNode node)
                 hostedRotors[i] = new HostedRotor(this, i, node);
         }
+        for (var left : kept)
+            if (left != null)
+                left.setRemoved();
         ListTag strapped = tag.getList("Belts", Tag.TAG_COMPOUND);
         for (int k = 0; k < strapped.size(); k++) {
             CompoundTag one = strapped.getCompound(k);
@@ -1134,9 +1165,17 @@ public class MicroCellBlockEntity extends BlockEntity implements BlockEntitySubL
         }
     }
 
+    /** True while the update tag is written: each machine sends its own sync tag in place of its full save. */
+    private boolean syncing;
+
     @Override
     public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
-        return saveWithoutMetadata(registries);
+        syncing = true;
+        try {
+            return saveWithoutMetadata(registries);
+        } finally {
+            syncing = false;
+        }
     }
 
     @Nullable

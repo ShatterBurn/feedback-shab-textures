@@ -82,6 +82,17 @@ public final class FineHosts {
             level.setBlock(pos, state, flags);
     }
 
+    /**
+     * {@code Container.stillValidBlockEntity} for a machine that may be hosted: a hosted machine stands in a cell, not in the chunk's map, so
+     * it is valid while its cell still holds it and the player is in reach of the cell.
+     */
+    public static boolean stillValid(BlockEntity machine, net.minecraft.world.entity.player.Player player) {
+        Level level = machine.getLevel();
+        if (level != null && level.getBlockEntity(machine.getBlockPos()) instanceof MicroCellBlockEntity cell && cell.holds(machine))
+            return player.canInteractWithBlock(machine.getBlockPos(), 4.0);
+        return net.minecraft.world.Container.stillValidBlockEntity(machine, player);
+    }
+
     /** The stack with its figures back at full size: what a machine taken out of a voxel is, with whatever condition it has kept. */
     public static ItemStack unscaled(ItemStack stack) {
         CompoundTag figures = stack.get(FDataComponents.BLOCK_FIGURES.get());
