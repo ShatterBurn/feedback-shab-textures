@@ -1152,6 +1152,7 @@
   "feedback.readout.strip_closed": "Closed - calling for heat",
   "feedback.readout.strip_open": "Tripped - no longer calling",
   "feedback.spec.insulation": "Insulated on %s sides",
+  "feedback.spec.lined": "Refractory lining fitted",
   "feedback.spec.trip": "Trips at %s Tu",
   "feedback.jei.thermal_process": "Thermal process",
   "feedback.jei.modular.set": "set in",

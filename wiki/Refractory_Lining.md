@@ -13,7 +13,7 @@ B
 
 ## Fitting it
 
-Right-click a crucible or a furnace, with the lining. It goes inside, so it doesn't matter which face you click. Each takes **one** lining. Breaking the machine, or prying with a [Crowbar](Crowbar.md), gives the lining back.
+Right-click a crucible or a furnace, with the lining. It goes inside, so it doesn't matter which face you click. Each takes **one** lining, and Jade shows "Refractory lining fitted" on a vessel that has one. Breaking the machine, or prying with a [Crowbar](Crowbar.md), gives the lining back.
 
 ## What it actually does
 

@@ -40,6 +40,7 @@ public class ThermalServerData implements IServerDataProvider<BlockAccessor> {
     static final String FIRE_TU = "FireTu";
     static final String FLUIDS = "FluidHeat";
     static final String HELD = "HeldHeat";
+    static final String LINED = "Lined";
 
     @Override
     public void appendServerData(CompoundTag data, BlockAccessor accessor) {
@@ -50,6 +51,10 @@ public class ThermalServerData implements IServerDataProvider<BlockAccessor> {
             data.putBoolean(READABLE, body.hasThermowell());
             data.putFloat(TEMPERATURE, body.getTemperature().value());
         }
+
+        if (be instanceof io.github.soundgoodizerfan.feedback.machine.vessel.ThermalVesselCore lined
+                && lined.getUpgrades().stream().anyMatch(io.github.soundgoodizerfan.feedback.fitting.upgrade.RefractoryLiningFitting.class::isInstance))
+            data.putBoolean(LINED, true);
 
         if (be instanceof io.github.soundgoodizerfan.feedback.machine.vessel.ThermalVesselCore vessel && vessel.hasThermowell()) {
             var list = new net.minecraft.nbt.ListTag();

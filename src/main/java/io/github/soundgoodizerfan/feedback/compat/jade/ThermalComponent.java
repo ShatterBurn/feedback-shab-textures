@@ -98,6 +98,9 @@ public class ThermalComponent implements IBlockComponentProvider {
                         .withStyle(ChatFormatting.DARK_GRAY));
         }
 
+        if (data.getBoolean(ThermalServerData.LINED))
+            tooltip.add(Component.translatable("feedback.spec.lined").withStyle(ChatFormatting.DARK_GRAY));
+
         // What each held piece is at: a cold piece laid in a hot vessel is seen warming.
         for (net.minecraft.nbt.Tag t : data.getList(ThermalServerData.HELD, net.minecraft.nbt.Tag.TAG_COMPOUND)) {
             CompoundTag entry = (CompoundTag) t;
