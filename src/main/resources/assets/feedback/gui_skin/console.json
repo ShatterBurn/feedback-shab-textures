@@ -36,6 +36,7 @@
       "abort": "feedback:ui.toggle"
     }
   },
+  "feel":    { "weight": 0, "slop": 0 },
   "reveal": "none",
   "glint": {
     "colour": "#9EE8E0",

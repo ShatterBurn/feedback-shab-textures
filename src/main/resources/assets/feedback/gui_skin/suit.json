@@ -36,6 +36,7 @@
       "abort": "minecraft:block.piston.contract"
     }
   },
+  "feel":    { "weight": 0, "slop": 0 },
   "reveal": "plates",
   "decor": [
     {

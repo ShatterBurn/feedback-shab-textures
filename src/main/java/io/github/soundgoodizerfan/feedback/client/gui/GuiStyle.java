@@ -56,6 +56,73 @@ public final class GuiStyle {
         return 1 - u * u * u;
     }
 
+    /** {@link #easeOut} that swings {@code over} (a fraction of the travel) past the end and back, landing exactly on 1; 0 is plain easeOut. */
+    public static float outBack(float t, float over) {
+        t = Mth.clamp(t, 0, 1);
+        return easeOut(t) + over * Mth.sin(t * Mth.PI);
+    }
+
+    /** Where {@code t} sits in the span {@code a} to {@code b} (0 before it, 1 after): staggers beats off one timeline. */
+    public static float window(float t, float a, float b) {
+        return Mth.clamp((t - a) / (b - a), 0, 1);
+    }
+
+    /** 0 up to 1 and back to 0 over {@code t} 0..1: a pulse. */
+    public static float hump(float t) {
+        return Mth.sin(Mth.clamp(t, 0, 1) * Mth.PI);
+    }
+
+    /**
+     * A number readout that turns like an odometer when its value changes, in the skin's {@link Feel} (a digital skin just shows it).
+     * One per readout; the digits always settle on the exact value, and tooltips and figures are never delayed. Under reduce motion
+     * it is plain text.
+     */
+    public static final class Rolling {
+        private String shown = "", before = "";
+        private float since = Float.NEGATIVE_INFINITY;
+
+        /** Draw {@code value} with its left edge at {@code x}. */
+        public void draw(GuiGraphics g, GuiSkin skin, net.minecraft.client.gui.Font font, int x, int y, int value, int colour) {
+            String now = Integer.toString(value);
+            if (!now.equals(shown)) {
+                before = shown;
+                shown = now;
+                since = time();
+            }
+            Feel feel = skin.feel();
+            float p = (time() - since) / feel.rollTicks();
+            if (!feel.rolls() || ClientSettings.reduceMotion() || p >= 1f || before.isEmpty()) {
+                g.drawString(font, now, x, y, colour, false);
+                return;
+            }
+            float e = easeOut(p);
+            int up = value > parse(before) ? 1 : -1;
+            int pad = Math.max(0, now.length() - before.length());
+            for (int i = 0; i < now.length(); i++) {
+                char c = now.charAt(i);
+                int oi = i - pad - Math.max(0, before.length() - now.length());
+                char o = oi >= 0 && oi < before.length() ? before.charAt(oi) : ' ';
+                int cx = x + font.width(now.substring(0, i));
+                if (o == c) {
+                    g.drawString(font, String.valueOf(c), cx, y, colour, false);
+                    continue;
+                }
+                g.enableScissor(cx - 1, y - 1, cx + font.width(String.valueOf(c)) + 1, y + 9);
+                g.drawString(font, String.valueOf(o), cx, y - Math.round(up * e * 9), colour, false);
+                g.drawString(font, String.valueOf(c), cx, y + Math.round(up * (1 - e) * 9), colour, false);
+                g.disableScissor();
+            }
+        }
+
+        private static int parse(String s) {
+            try {
+                return Integer.parseInt(s);
+            } catch (NumberFormatException e) {
+                return 0;
+            }
+        }
+    }
+
     /**
      * The motion clock in ticks: game time plus partial tick, so motion holds still while paused;
      * wall clock (20/s) with no world. A screen stores this when an event happens and passes it back.
@@ -720,6 +787,8 @@ public final class GuiStyle {
         private final float pitch;
         private float glow;
         private long last;
+        private boolean wasDown;
+        private float from, shown, moved = Float.NEGATIVE_INFINITY, pressedAt = Float.NEGATIVE_INFINITY;
 
         FButton(GuiSkin skin, boolean primary, Supplier<SoundEvent> sound, float pitch, int x, int y, int w, int h,
                 Component label, OnPress press) {
@@ -738,7 +807,35 @@ public final class GuiStyle {
             float target = !active ? 0f : isHoveredOrFocused() ? 1f : 0f;
             glow += Mth.clamp(target - glow, -dt * 8f, dt * 8f);
             boolean down = active && isHovered() && Minecraft.getInstance().mouseHandler.isLeftPressed();
+            Feel feel = skin.feel();
+            float clock = time();
+            if (down != wasDown) { // the press is a pure function of time since the change
+                from = shown; // carry on from where it was drawn last
+                moved = clock;
+                wasDown = down;
+            }
+            shown = feel.travel(from, down ? feel.pressDepth() : 0f, clock - moved);
+            int dx = rejectAge(clock) >= 0 ? shake(skin.rejectAt(), 2) : 0;
+            g.pose().pushPose();
+            g.pose().translate(dx, Math.round(shown), 0);
             skin.button(g, getX(), getY(), getWidth(), getHeight(), getMessage(), glow, down, active, primary);
+            g.pose().popPose();
+            float age = rejectAge(clock);
+            if (age >= 0 && age < SHAKE_TICKS && !ClientSettings.reduceMotion()) // the flash rides with the shake, never alone
+                g.renderOutline(getX() + dx - 1, getY() - 1, getWidth() + 2, getHeight() + 2,
+                        (Math.round(200 * (1 - age / SHAKE_TICKS)) << 24) | (skin.warn() & 0xFFFFFF));
+        }
+
+        /** Ticks since the skin rejected something this button's press caused, or -1. */
+        private float rejectAge(float clock) {
+            float r = skin.rejectAt();
+            return r >= pressedAt && r - pressedAt < 12f && clock - r >= 0 ? clock - r : -1f;
+        }
+
+        @Override
+        public void onPress() {
+            pressedAt = time();
+            super.onPress();
         }
 
         @Override

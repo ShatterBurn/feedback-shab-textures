@@ -22,7 +22,7 @@ import net.minecraft.resources.ResourceLocation;
  */
 record SkinDef(int ink, int dim, int accent, int warn, int well, int trim, int plate,
                ResourceLocation panel, boolean shadow, int wash, ResourceLocation frame, ResourceLocation slot, Map<String, ResourceLocation> buttons,
-               String click, String open, String close, Map<String, String> cues, String reveal, List<Decor> decor, List<Glow> glow, Glint glint, Tabs tabs, String effect) {
+               String click, String open, String close, Map<String, String> cues, String reveal, List<Decor> decor, List<Glow> glow, Glint glint, Tabs tabs, Feel feel, Idle idle, String effect) {
 
     /** One sprite laid over the panel: {@code anchor} names the panel point it hangs from, (x, y) is the offset, w by h its size. */
     record Decor(ResourceLocation sprite, String anchor, int x, int y, int w, int h, boolean heat, float cold, float breathe, float spin) {
@@ -38,6 +38,10 @@ record SkinDef(int ink, int dim, int accent, int warn, int well, int trim, int p
     }
 
     record Joint(ResourceLocation sprite, int x, int y, int w, int h) {
+    }
+
+    /** Ambient motes rising from the panel's bottom edge while the thing opened runs (hot or turning): {@code rate} per tick, {@code pixels} square. */
+    record Idle(int colour, float rate, int pixels) {
     }
 
     /** A soft diagonal band of light that crosses the panel in a quick pass once every {@code period} ticks and rests between (a pass takes a quarter of it). */
@@ -82,6 +86,16 @@ record SkinDef(int ink, int dim, int accent, int warn, int well, int trim, int p
             glint = new Glint(colour(o, "colour"), num(o, "alpha", 20), num(o, "period", 100), num(o, "width", 14),
                     o.has("slope") ? o.get("slope").getAsFloat() : 0.7f);
         }
+        Feel feel = null;
+        Idle idle = null;
+        if (json.has("feel")) {
+            JsonObject o = json.getAsJsonObject("feel");
+            feel = new Feel(o.has("weight") ? o.get("weight").getAsFloat() : 0f, o.has("slop") ? o.get("slop").getAsFloat() : 0f);
+            if (o.has("idle")) {
+                JsonObject i = o.getAsJsonObject("idle");
+                idle = new Idle(colour(i, "colour"), i.has("rate") ? i.get("rate").getAsFloat() : 0.1f, num(i, "pixels", 1));
+            }
+        }
         JsonObject panel = json.has("panel") ? json.getAsJsonObject("panel") : new JsonObject();
         return new SkinDef(colour(c, "ink"), colour(c, "dim"), colour(c, "accent"), colour(c, "warn"), colour(c, "well"), colour(c, "trim"),
                 colour(c, "plate"),
@@ -91,7 +105,7 @@ record SkinDef(int ink, int dim, int accent, int warn, int well, int trim, int p
                 panel.has("frame") ? ResourceLocation.parse(panel.get("frame").getAsString()) : null,
                 json.has("slot") ? ResourceLocation.parse(json.get("slot").getAsString()) : null, Map.copyOf(button),
                 str(sounds, "click", null), str(sounds, "open", null), str(sounds, "close", null), Map.copyOf(cues),
-                str(json, "reveal", "none"), List.copyOf(decor), List.copyOf(glow), glint, tabs, str(json, "effect", null));
+                str(json, "reveal", "none"), List.copyOf(decor), List.copyOf(glow), glint, tabs, feel, idle, str(json, "effect", null));
     }
 
     private static Joint joint(JsonObject o, String key) {

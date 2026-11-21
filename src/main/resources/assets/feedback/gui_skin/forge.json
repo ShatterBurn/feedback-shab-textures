@@ -36,6 +36,7 @@
       "abort": "feedback:ui.hatch_close"
     }
   },
+  "feel":    { "weight": 0.9, "slop": 0.1, "idle": {"colour": "#FF8A30", "rate": 0.18, "pixels": 1} },
   "reveal": "shutters",
   "decor": [
     {

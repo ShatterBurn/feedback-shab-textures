@@ -36,6 +36,7 @@
       "abort": "minecraft:block.iron_door.close"
     }
   },
+  "feel":    { "weight": 0.9, "slop": 0.1, "idle": {"colour": "#FF6A20", "rate": 0.12, "pixels": 1} },
   "reveal": "none",
   "decor": [
     {

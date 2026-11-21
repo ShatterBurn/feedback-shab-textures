@@ -61,6 +61,8 @@ public final class SkinShowcaseScreen extends Screen {
         replay();
     }
 
+    private final GuiStyle.Rolling count = new GuiStyle.Rolling();
+
     private void replay() {
         opening = new Opening(skin());
         opening.start();
@@ -128,6 +130,7 @@ public final class SkinShowcaseScreen extends Screen {
             Component t = Component.literal(s.name() + "  " + (index + 1) + "/" + SKINS.length);
             g.drawString(font, t, x + (W - font.width(t)) / 2, y + 10, s.ink(), false);
 
+            count.draw(g, s, font, x + W - 40, y + 10, (int) (slid * 100), s.ink());
             drawPrimitives(g, s, mx, my, x + 172, y + 26);
             super.render(g, mx, my, partial);
         });

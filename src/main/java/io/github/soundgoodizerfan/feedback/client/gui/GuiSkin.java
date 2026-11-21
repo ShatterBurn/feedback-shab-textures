@@ -1042,6 +1042,29 @@ public abstract class GuiSkin {
         };
     }
 
+    private static float rejectAt = Float.NEGATIVE_INFINITY;
+
+    /** {@link GuiStyle#time()} when a {@link Cue#REJECT} last played. */
+    final float rejectAt() {
+        return rejectAt;
+    }
+
+    /**
+     * How this skin's controls move: heavy iron presses deep and slow with no give, wood settles with a little, a terminal key is
+     * instant. Data skins override it with the {@code feel} block of their JSON.
+     */
+    public Feel feel() {
+        return switch (name) {
+            case "FORGE", "SLAG", "ANVIL" -> new Feel(0.9f, 0.1f);
+            case "STONE", "BRICK" -> new Feel(0.8f, 0.3f);
+            case "WOOD", "KILN", "SMOKE", "ANNEALING_FURNACE", "IMPROVED_FURNACE" -> new Feel(0.5f, 0.6f);
+            case "MYSTIC" -> new Feel(0.2f, 0.5f);
+            case "BLUEPRINT" -> new Feel(0.3f, 0.2f);
+            case "ENAMEL", "VANILLA" -> new Feel(0.5f, 0.1f);
+            default -> Feel.DIGITAL; // terminals, console, glass, suit
+        };
+    }
+
     /** {@link #cue(Cue, Material.Kind, float)} with a neutral stock and no outcome bias. */
     public void cue(Cue cue) {
         cue(cue, null, 1f);
@@ -1055,6 +1078,8 @@ public abstract class GuiSkin {
      * silent.
      */
     public void cue(Cue cue, Material.Kind kind, float bias) {
+        if (cue == Cue.REJECT)
+            rejectAt = GuiStyle.time(); // the control whose press caused it shakes and flashes by itself
         long now = net.minecraft.Util.getMillis();
         int i = cue.ordinal();
         if (now - CUE_LAST[i] >= CUE_GAP_MS) {

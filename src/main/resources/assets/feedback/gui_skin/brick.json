@@ -36,6 +36,7 @@
       "abort": "minecraft:block.calcite.break"
     }
   },
+  "feel":    { "weight": 0.8, "slop": 0.3 },
   "reveal": "none",
   "decor": [
     {

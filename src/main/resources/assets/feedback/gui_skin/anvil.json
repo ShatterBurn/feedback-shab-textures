@@ -36,6 +36,7 @@
       "abort": "minecraft:block.anvil.break"
     }
   },
+  "feel":    { "weight": 0.9, "slop": 0.1 },
   "reveal": "none",
   "decor": [
     {

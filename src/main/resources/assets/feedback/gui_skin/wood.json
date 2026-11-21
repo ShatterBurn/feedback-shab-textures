@@ -36,6 +36,7 @@
       "abort": "minecraft:block.chest.close"
     }
   },
+  "feel":    { "weight": 0.5, "slop": 0.6 },
   "reveal": "none",
   "decor": [
     {

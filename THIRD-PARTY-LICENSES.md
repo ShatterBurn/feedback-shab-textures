@@ -1408,3 +1408,11 @@ axle and surfaces too steep to stand on; the wheel's visible spin integrated on 
 (not yet built here). *Rejected:* its round-wheel method (three vertical rays offset by the radius, no collider: Feedback keeps its ring of rim rays), the suspension built into
 the mount, preset tire radii as a menu, the redstone brake and steering, drive as a flat force per RPM with no torque limit or inertia, linear lateral grip, friction read from the road
 only, the strength dial, and every asset. Site: `vehicle/micro/TireHubBlock.java`, `vehicle/micro/MicroWheels.java`.
+
+## Cinematic Interactions (design only, 2026-11-20)
+
+`neoldev/CinematicInteractions` (original Southware), MIT, 1.21.1 NeoForge branch `main`. No code or assets copied. *Taken (design):* the easing vocabulary (out-back overshoot, windowed beats off one timeline, a hump pulse), motion derived from the time since an event instead of per-widget animation state, slow-in fast-out timing. *Rejected:* the camera rig and hand animation, per-station hard-coded timing, no reduce-motion path, every asset. Site: `client/gui/Feel.java`, `client/gui/GuiStyle.java` (`outBack`, `window`, `hump`, the button press).
+
+## Immersive UI (rejected, 2026-11-20)
+
+`Octo-Studios/immersive-ui`, All Rights Reserved: licence incompatible with GPL-3.0. Source not read, nothing taken, assets never. Considered for the same GUI-feel work as above.

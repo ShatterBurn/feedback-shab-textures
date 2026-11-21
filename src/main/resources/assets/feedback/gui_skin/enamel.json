@@ -36,6 +36,7 @@
       "abort": "feedback:ui.toggle"
     }
   },
+  "feel":    { "weight": 0.5, "slop": 0.1 },
   "reveal": "none",
   "decor": [
     {

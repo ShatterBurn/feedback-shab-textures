@@ -48,6 +48,32 @@ final class SpriteSkin extends GuiSkin {
 
     private final String file;
 
+    private final Specks motes = new Specks(24);
+    private final net.minecraft.util.RandomSource moteRng = net.minecraft.util.RandomSource.create();
+    private float moteClock = Float.NaN;
+
+    @Override
+    public Feel feel() {
+        SkinDef d = def();
+        return d != null && d.feel() != null ? d.feel() : super.feel();
+    }
+
+    /** The skin's idle driver: motes rise from the bottom edge while the thing is hot or turning, and none when it is still. */
+    private void idle(GuiGraphics g, SkinDef.Idle idle, int x, int y, int w, int h) {
+        float now = GuiStyle.time();
+        float dt = Float.isNaN(moteClock) ? 0f : Mth.clamp(now - moteClock, 0f, 4f);
+        boolean running = heatFraction() > 0f || spinRpm != 0f;
+        int ticks = (int) dt;
+        for (int i = 0; i < ticks; i++) { // advance whole ticks only, so the motes move at game speed
+            if (running && moteRng.nextFloat() < idle.rate())
+                motes.spawn(x + 6 + moteRng.nextFloat() * (w - 12), y + h - 4, (moteRng.nextFloat() - 0.5f) * 0.4f, -0.5f - moteRng.nextFloat() * 0.4f,
+                        idle.colour(), 30 + moteRng.nextInt(30), idle.pixels());
+            motes.tick(0f);
+        }
+        moteClock = Float.isNaN(moteClock) ? now : moteClock + ticks;
+        motes.draw(g, 0f);
+    }
+
     SpriteSkin(String name) {
         super(name.toUpperCase(java.util.Locale.ROOT), 0xFFFFFFFF, 0xFFA0A0A0, 0xFFFFC060, 0xFFFF5040, 0xFF202020, 0xFF606060, 0xFF404040);
         this.file = name;
@@ -120,6 +146,8 @@ final class SpriteSkin extends GuiSkin {
             g.blitSprite(d.frame(), x, y, w, h);
         for (SkinDef.Decor layer : d.decor())
             decor(g, layer, x, y, w, h);
+        if (d.idle() != null && !ClientSettings.reduceMotion())
+            idle(g, d.idle(), x, y, w, h);
         Effect effect = d.effect() == null ? null : EFFECTS.get(d.effect());
         if (effect != null)
             effect.draw(this, g, x, y, w, h);
