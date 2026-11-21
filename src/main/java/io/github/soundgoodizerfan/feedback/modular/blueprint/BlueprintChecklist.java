@@ -43,7 +43,9 @@ public final class BlueprintChecklist {
         for (Part want : drawn.parts()) {
             if (!want.sub().isEmpty() || type.roles().get(want.role()) == null)
                 continue;
-            out.add(new Row(want, describe(want, type), has(want, held, materials)));
+            // A fine drawing wants a quarter of each part (up to one): that is what is on the bench and what it is ticked against.
+            Part cost = drawn.fine() ? want.withCount(Math.max(1, (want.count() + 3) / 4)) : want;
+            out.add(new Row(want, describe(cost, type), has(cost, held, materials)));
         }
         return out;
     }

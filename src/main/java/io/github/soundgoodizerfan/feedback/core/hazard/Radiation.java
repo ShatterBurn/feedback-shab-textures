@@ -200,42 +200,7 @@ public final class Radiation {
             total += activity(stack, materials);
         for (ItemStack stack : player.getInventory().offhand)
             total += activity(stack, materials);
-        Map<Item, Float> table = sources(materials);
-        if (table.isEmpty())
-            return total;
-        Map<Item, Float> density = densities(materials);
-        int r = HazardTuning.RAD_REACH_BLOCKS;
-        BlockPos centre = player.blockPosition();
-        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
-        for (int dx = -r; dx <= r; dx++)
-            for (int dy = -r; dy <= r; dy++)
-                for (int dz = -r; dz <= r; dz++) {
-                    pos.set(centre.getX() + dx, centre.getY() + dy, centre.getZ() + dz);
-                    var state = level.getBlockState(pos);
-                    float here = table.getOrDefault(state.getBlock().asItem(), 0f);
-                    var be = state.hasBlockEntity() ? level.getBlockEntity(pos) : null;
-                    if (be instanceof RadiationEmitter emitter)
-                        here += emitter.radiationRu();
-                    if (be instanceof net.minecraft.world.Container box) {
-                        float held = 0f;
-                        for (int slot = 0; slot < box.getContainerSize(); slot++)
-                            held += activity(box.getItem(slot), materials);
-                        if (box instanceof Shielded lined) {
-                            Material lining = materials.get(lined.shieldMaterial());
-                            if (lining != null)
-                                held *= containerShield(lining);
-                        }
-                        here += held;
-                    }
-                    if (here > 0f)
-                        total += here / (1f + dx * dx + dy * dy + dz * dz) * through(level, pos.immutable(), centre, density);
-                }
-        for (ItemEntity drop : level.getEntitiesOfClass(ItemEntity.class, player.getBoundingBox().inflate(r))) {
-            float act = activity(drop.getItem(), materials);
-            if (act > 0f)
-                total += (float) (act / (1.0 + drop.distanceToSqr(player))) * through(level, drop.blockPosition(), centre, density);
-        }
-        return total;
+        return total + rateAt(level, player.blockPosition(), materials);
     }
 
     /** What the armour lets through, 0 to 1: dense worn material in the four slots. */

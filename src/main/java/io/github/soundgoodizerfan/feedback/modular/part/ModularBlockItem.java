@@ -27,13 +27,33 @@ public class ModularBlockItem extends BlockItem implements Modular {
         super(block, properties);
     }
 
+    /** Whether {@code stack} is a fine build: made from a quarter of the parts, a machine for finespace only. */
+    public static boolean fine(ItemStack stack) {
+        var design = ModularStacks.design(stack);
+        return design != null && design.fine();
+    }
+
     @Override
     public Component getName(ItemStack stack) {
-        return ModularStacks.name(stack, super.getName(stack));
+        Component name = ModularStacks.name(stack, super.getName(stack));
+        return fine(stack) ? Component.translatable("item.feedback.fine_build", name) : name;
+    }
+
+    /** A fine build stands only as a voxel of finespace (placed by {@code MicroPlacer}, which does not come through here). */
+    @Override
+    public net.minecraft.world.InteractionResult place(net.minecraft.world.item.context.BlockPlaceContext context) {
+        if (fine(context.getItemInHand())) {
+            if (context.getPlayer() != null)
+                context.getPlayer().displayClientMessage(Component.translatable("message.feedback.fine_build.finespace_only"), true);
+            return net.minecraft.world.InteractionResult.FAIL;
+        }
+        return super.place(context);
     }
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
+        if (fine(stack))
+            tooltip.add(Component.translatable("tooltip.feedback.fine_build").withStyle(net.minecraft.ChatFormatting.AQUA));
         ModularTooltip.add(stack, tooltip);
         CompoundTag figs = stack.get(FDataComponents.BLOCK_FIGURES.get());
         if (figs != null)

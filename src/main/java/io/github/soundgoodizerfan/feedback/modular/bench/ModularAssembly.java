@@ -165,8 +165,24 @@ public final class ModularAssembly {
             if (type.face() || !may.test(type))
                 continue;
             Best best = new Best();
-            for (ModularType.Assembly a : type.assemblies(used.size()))
-                assign(type, e.getKey(), a.counts(), merged, used, what, 0, new String[used.size()], new boolean[used.size()], best);
+            List<ModularType.Assembly> assemblies = type.assemblies(used.size());
+            // A fine sheet of a type a cell hosts in the blueprint slot: a quarter of the parts (see FineHosts.fineCounts) builds the same design
+            // as a fine build, placed only in finespace. Tried first; full counts still build the normal item.
+            if (sheets.stream().anyMatch(d -> d.fine() && d.type().equals(e.getKey())) && io.github.soundgoodizerfan.feedback.vehicle.micro.FineHosts.hostableType(e.getKey()))
+                for (ModularType.Assembly a : assemblies) {
+                    Best one = new Best();
+                    assign(type, e.getKey(), io.github.soundgoodizerfan.feedback.vehicle.micro.FineHosts.fineCounts(a.counts()), merged, used, what, 0,
+                            new String[used.size()], new boolean[used.size()], one);
+                    if (one.design != null && (best.key == null || one.key.compareTo(best.key) < 0)) {
+                        best.key = one.key;
+                        // The design is the full one, so its figures are the machine as drawn; only the cost was a quarter.
+                        best.design = one.design.withFine(true).withParts(one.design.parts().stream().map(p -> p.withCount(a.counts().get(p.role()))).toList());
+                        best.roles = one.roles;
+                    }
+                }
+            if (best.design == null)
+                for (ModularType.Assembly a : assemblies)
+                    assign(type, e.getKey(), a.counts(), merged, used, what, 0, new String[used.size()], new boolean[used.size()], best);
             if (best.design == null)
                 continue;
             ModularDesign design = best.design;

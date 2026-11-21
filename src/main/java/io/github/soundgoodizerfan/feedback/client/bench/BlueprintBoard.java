@@ -113,6 +113,8 @@ public final class BlueprintBoard {
     private final List<AbstractWidget> widgets = new ArrayList<>();
     /** The drawing's cosmetic colour (a pulse gun's beam), set by the picker, printed with the design. */
     private int colour = ModularDesign.DEFAULT_COLOUR;
+    /** The drawing is a fine build: a quarter of the parts, a machine for finespace (only types a cell hosts). */
+    private boolean fine;
     private ColourPicker picker;
     /** Each widget's place relative to the board's top-left, so a move of the board (a window dragged or scrolled) moves them. */
     private final List<int[]> widgetAt = new ArrayList<>();
@@ -158,7 +160,7 @@ public final class BlueprintBoard {
 
     /** Everything about an edit that can be put back: a pinned draft. */
     private record Draft(int type, int form, Set<String> extras, Map<String, Integer> sizes, Map<String, Integer> shape,
-                         Map<String, ResourceLocation> material, Edge edge, String selected, Map<String, Float> axes) {
+                         Map<String, ResourceLocation> material, Edge edge, String selected, Map<String, Float> axes, boolean fine) {
     }
 
     private record Pin(Draft draft, ModularFigures figures, ModularDesign design) {
@@ -645,6 +647,7 @@ public final class BlueprintBoard {
         slotSel.clear();
         axisVals.clear();
         colour = ModularDesign.DEFAULT_COLOUR;
+        fine = false;
         clearLists();
         flashes.clear();
         drawerScroll = Mth.clamp(type - drawerSlots / 2, 0, Math.max(0, types.size() - drawerSlots));
@@ -663,6 +666,7 @@ public final class BlueprintBoard {
         sizes.putAll(opened.get().sizes());
         edge = design.edge();
         colour = design.colour();
+        fine = design.fine();
         design.parts().forEach(p -> {
             List<PartBenchShaping.Option> options = shapes(p.role());
             for (int i = 0; i < options.size(); i++)
@@ -1046,7 +1050,7 @@ public final class BlueprintBoard {
         relist();
         if (design.isPresent())
             for (ModularDesign.Part p : design.get().parts()) {
-                List<ItemStack> made = ToolDesigns.items(p, t.roles().get(p.role()), ClientMaterials.get(), p.count());
+                List<ItemStack> made = ToolDesigns.items(p, t.roles().get(p.role()), ClientMaterials.get(), cost(p));
                 if (!made.isEmpty())
                     icons.put(p.role(), made.get(0));
             }
@@ -1790,6 +1794,10 @@ public final class BlueprintBoard {
         if (t != null && t.family() == ModularType.Family.ELECTRIC_GUN)
             picker = widgetAdd(new ColourPicker(skin, font, ox + canvas.x() + canvas.w() - 82, oy + canvas.y() + 4, 78,
                     Component.translatable("gui.feedback.blueprint_table.beam_colour"), () -> colour, v -> colour = v));
+        // A type a cell hosts may be drawn as a fine build: a quarter of the parts, placed only in finespace.
+        if (t != null && finable())
+            widgetAdd(GuiStyle.toggle(skin, Component.translatable("gui.feedback.blueprint_table.fine"), () -> fine, b -> change(() -> fine = !fine),
+                    ox + canvas.x() + canvas.w() - 82, oy + canvas.y() + 4, 78));
         String role = t == null ? null : sel();
         swapKeys = swaps(role);
         host.sampleWanted(role != null);
@@ -1893,7 +1901,7 @@ public final class BlueprintBoard {
     // --- drafts -----------------------------------------------------------------------------------
 
     private Draft capture() {
-        return new Draft(type, form, Set.copyOf(extras), Map.copyOf(sizes), Map.copyOf(shape), Map.copyOf(matId), edge, selected, Map.copyOf(axisVals));
+        return new Draft(type, form, Set.copyOf(extras), Map.copyOf(sizes), Map.copyOf(shape), Map.copyOf(matId), edge, selected, Map.copyOf(axisVals), fine);
     }
 
     private void restore(Draft d) {
@@ -1906,6 +1914,7 @@ public final class BlueprintBoard {
             matId.putAll(d.material());
             axisVals.putAll(d.axes());
             edge = d.edge();
+            fine = d.fine();
             selected = d.selected();
             refit = true;
         });
@@ -2296,7 +2305,17 @@ public final class BlueprintBoard {
 
     /** What would be printed: the drawing, if it can be made, and the pinned drafts of the same type. */
     Optional<ModularDesign> drawing() {
-        return baked.isPresent() && figures.isPresent() ? baked.map(d -> d.withColour(colour)) : Optional.empty();
+        return baked.isPresent() && figures.isPresent() ? baked.map(d -> d.withColour(colour).withFine(fine && finable())) : Optional.empty();
+    }
+
+    /** Whether the type on the board is one a cell hosts, so its drawing may be a fine build. */
+    private boolean finable() {
+        return !types.isEmpty() && io.github.soundgoodizerfan.feedback.vehicle.micro.FineHosts.hostableType(types.get(type));
+    }
+
+    /** What a part costs on the bench: its count, or a quarter of it (up to one) for a fine build. */
+    private int cost(ModularDesign.Part p) {
+        return fine && finable() ? Math.max(1, (p.count() + 3) / 4) : p.count();
     }
 
     List<ModularDesign> pinnedDesigns() {

@@ -212,6 +212,15 @@ public class BlueprintTableMenu extends AbstractContainerMenu {
 
     /** As above, titled {@code title}; the credit's name is the printing player's, taken here and never from the client. */
     public static boolean write(Container paper, ModularDesign design, List<ModularDesign> variants, String title, Player player) {
+        // A fine drawing is for a type a cell hosts; the client's word is not taken for it.
+        return write0(paper, sane(design), variants.stream().map(BlueprintTableMenu::sane).toList(), title, player);
+    }
+
+    private static ModularDesign sane(ModularDesign d) {
+        return d.withFine(d.fine() && io.github.soundgoodizerfan.feedback.vehicle.micro.FineHosts.hostableType(d.type()));
+    }
+
+    private static boolean write0(Container paper, ModularDesign design, List<ModularDesign> variants, String title, Player player) {
         if (paper.getItem(0).isEmpty()) {
             send(player, Component.translatable("message.feedback.blueprint_table.no_paper"));
             return false;

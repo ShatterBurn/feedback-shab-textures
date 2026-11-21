@@ -493,6 +493,15 @@ public class FCreativeTabs {
         net.minecraft.core.registries.BuiltInRegistries.BLOCK.stream()
                 .filter(b -> b.asItem() != net.minecraft.world.item.Items.AIR && io.github.soundgoodizerfan.feedback.vehicle.micro.MoteItem.eligible(b.defaultBlockState()))
                 .forEach(b -> out.accept(io.github.soundgoodizerfan.feedback.vehicle.micro.MoteItem.of(b, 1)));
+        // A fine build of every type a cell hosts, as its starter design: the machine finespace takes from a quarter of the parts.
+        var materials = FormItems.materials();
+        var types = io.github.soundgoodizerfan.feedback.modular.type.ModularTypes.known();
+        types.keySet().stream().filter(io.github.soundgoodizerfan.feedback.vehicle.micro.FineHosts::hostableType).sorted().forEach(id ->
+                io.github.soundgoodizerfan.feedback.modular.blueprint.ToolDesigns.starter(id, types, materials).ifPresent(design -> {
+                    ItemStack stack = new ItemStack(net.minecraft.core.registries.BuiltInRegistries.ITEM.get(id));
+                    if (io.github.soundgoodizerfan.feedback.modular.item.ModularStacks.assemble(stack, design.withFine(true), materials, types))
+                        out.accept(stack);
+                }));
     }
 
     private static void fillFood(CreativeModeTab.Output out) {

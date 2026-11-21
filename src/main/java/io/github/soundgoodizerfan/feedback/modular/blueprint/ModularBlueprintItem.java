@@ -74,6 +74,8 @@ public class ModularBlueprintItem extends Item {
         Component typeName = Component.translatable("item." + design.type().getNamespace() + "." + design.type().getPath());
         tooltip.add((named != null && named.family() == ModularType.Family.HAFTED ? ModularStacks.haftedName(design, named, typeName) : typeName)
                 .copy().withStyle(ChatFormatting.WHITE));
+        if (design.fine())
+            tooltip.add(Component.translatable("tooltip.feedback.blueprint.fine").withStyle(ChatFormatting.AQUA));
         BlueprintCredit credit = BlueprintCredit.of(stack);
         if (credit != null && credit.titleLine() != null)
             tooltip.add(credit.titleLine());

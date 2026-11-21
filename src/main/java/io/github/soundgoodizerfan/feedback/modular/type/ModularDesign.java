@@ -29,13 +29,17 @@ import io.github.soundgoodizerfan.feedback.modular.bench.ForgeRhythm;
  * @param edge  how the edge was last ground.
  * @param colour a cosmetic RGB the drawing was given (a pulse gun's beam), carried from the blueprint onto the built item; blue by default.
  */
-public record ModularDesign(ResourceLocation type, List<Part> parts, Edge edge, int colour) {
+public record ModularDesign(ResourceLocation type, List<Part> parts, Edge edge, int colour, boolean fine) {
 
     /** The colour a design has until one is chosen: a blue beam. */
     public static final int DEFAULT_COLOUR = 0x3F7FFF;
 
     public ModularDesign(ResourceLocation type, List<Part> parts, Edge edge) {
-        this(type, parts, edge, DEFAULT_COLOUR);
+        this(type, parts, edge, DEFAULT_COLOUR, false);
+    }
+
+    public ModularDesign(ResourceLocation type, List<Part> parts, Edge edge, int colour) {
+        this(type, parts, edge, colour, false);
     }
 
     /**
@@ -91,6 +95,11 @@ public record ModularDesign(ResourceLocation type, List<Part> parts, Edge edge, 
 
         public Part(String role, ResourceLocation material, String form, int count, String kind, String variant, int flaw) {
             this(role, material, form, count, kind, variant, flaw, Measures.NONE);
+        }
+
+        /** This part with {@code n} items in it, everything else kept. */
+        public Part withCount(int n) {
+            return new Part(role, material, form, n, kind, variant, flaw, measures, sub);
         }
 
         /** This part with {@code m} in place of its measures. */
@@ -152,7 +161,8 @@ public record ModularDesign(ResourceLocation type, List<Part> parts, Edge edge, 
             ResourceLocation.CODEC.fieldOf("type").forGetter(ModularDesign::type),
             Part.CODEC.listOf().fieldOf("parts").forGetter(ModularDesign::parts),
             Edge.CODEC.optionalFieldOf("edge", Edge.STANDARD).forGetter(ModularDesign::edge),
-            Codec.INT.optionalFieldOf("colour", DEFAULT_COLOUR).forGetter(ModularDesign::colour)
+            Codec.INT.optionalFieldOf("colour", DEFAULT_COLOUR).forGetter(ModularDesign::colour),
+            Codec.BOOL.optionalFieldOf("fine", false).forGetter(ModularDesign::fine)
     ).apply(instance, ModularDesign::new));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, ModularDesign> STREAM_CODEC = StreamCodec.composite(
@@ -160,6 +170,7 @@ public record ModularDesign(ResourceLocation type, List<Part> parts, Edge edge, 
             Part.STREAM_CODEC.apply(ByteBufCodecs.list()), ModularDesign::parts,
             ByteBufCodecs.idMapper(i -> Edge.values()[i], Edge::ordinal), ModularDesign::edge,
             ByteBufCodecs.VAR_INT, ModularDesign::colour,
+            ByteBufCodecs.BOOL, ModularDesign::fine,
             ModularDesign::new);
 
     /** The part in {@code role}, or null. */
@@ -171,21 +182,26 @@ public record ModularDesign(ResourceLocation type, List<Part> parts, Edge edge, 
     }
 
     public ModularDesign withEdge(Edge edge) {
-        return new ModularDesign(type, parts, edge, colour);
+        return new ModularDesign(type, parts, edge, colour, fine);
     }
 
     /** This design with {@code colour} (an RGB, the high bits ignored). */
     public ModularDesign withColour(int colour) {
-        return new ModularDesign(type, parts, edge, colour & 0xFFFFFF);
+        return new ModularDesign(type, parts, edge, colour & 0xFFFFFF, fine);
     }
 
-    /** This design with {@code replacement} parts and everything else kept: its edge and its colour. */
+    /** This design with {@code replacement} parts and everything else kept: its edge, its colour and whether it is a fine build. */
     public ModularDesign withParts(List<Part> replacement) {
-        return new ModularDesign(type, replacement, edge, colour);
+        return new ModularDesign(type, replacement, edge, colour, fine);
     }
 
     public ModularDesign withPart(Part replacement) {
         return new ModularDesign(type, parts.stream()
-                .map(p -> p.role().equals(replacement.role()) ? replacement : p).toList(), edge, colour);
+                .map(p -> p.role().equals(replacement.role()) ? replacement : p).toList(), edge, colour, fine);
+    }
+
+    /** This design as a fine build (made from a quarter of the parts, placed only in finespace) or not. */
+    public ModularDesign withFine(boolean fine) {
+        return new ModularDesign(type, parts, edge, colour, fine);
     }
 }

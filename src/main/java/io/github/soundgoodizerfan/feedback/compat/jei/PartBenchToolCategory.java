@@ -172,7 +172,15 @@ public class PartBenchToolCategory implements IRecipeCategory<PartBenchToolCateg
             y = note(graphics, font, y, "feedback.jei.modular.binding");
         if (type.edged())
             y = note(graphics, font, y, "feedback.jei.modular.grind");
-        note(graphics, font, y, "feedback.jei.modular.coat");
+        y = note(graphics, font, y, "feedback.jei.modular.coat");
+        // A type a cell hosts may be drawn fine on a blueprint: the same machine from a quarter of the parts, placed only in finespace.
+        if (io.github.soundgoodizerfan.feedback.vehicle.micro.FineHosts.hostableType(card.type())) {
+            String fine = io.github.soundgoodizerfan.feedback.vehicle.micro.FineHosts.fineCounts(roles).entrySet().stream()
+                    .map(r -> Component.translatable("modular.feedback.role." + type.roles().get(r.getKey()).name()).getString()
+                            + (r.getValue() > 1 && !ToolDesigns.shaped(type.roles().get(r.getKey())) ? " x" + r.getValue() : ""))
+                    .collect(java.util.stream.Collectors.joining(", "));
+            note(graphics, font, y, Component.translatable("feedback.jei.tool_table_tool.fine", fine));
+        }
     }
 
     private static int note(GuiGraphics graphics, Font font, int y, String key) {

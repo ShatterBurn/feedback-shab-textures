@@ -65,6 +65,21 @@ public final class FineHosts {
                         || p.getValueClass() == net.minecraft.core.Direction.Axis.class));
     }
 
+    /**
+     * Whether modular type {@code type} (its id is its item's) is one a cell hosts: a blueprint of it may be made fine. Found from the type's
+     * own item, never listed by id.
+     */
+    public static boolean hostableType(net.minecraft.resources.ResourceLocation type) {
+        return io.github.soundgoodizerfan.feedback.modular.item.ModularStacks.blank(type).filter(FineHosts::hostable).isPresent();
+    }
+
+    /** The counts of a fine build: each role's count in quarters, rounded up, at least one. */
+    public static java.util.Map<String, Integer> fineCounts(java.util.Map<String, Integer> counts) {
+        java.util.Map<String, Integer> out = new java.util.LinkedHashMap<>();
+        counts.forEach((role, n) -> out.put(role, Math.max(1, (n + 3) / 4)));
+        return out;
+    }
+
     /** A fine wire of a conductor: the stock a wire voxel is drawn from, by its form and its material's ampacity, never by id. */
     public static boolean isFineWire(ItemStack stack) {
         return CableRecipe.FINE_WIRE.test(stack);
