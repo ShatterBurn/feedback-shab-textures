@@ -48,7 +48,7 @@ A bearing that is stopped and undriven holds its angle and does not sag. While i
 
 A hinge drive that sits at its torque cap while the arm does not turn is stalled, and a stalled drive loses condition down to a floor of 30%, which cuts its torque. Time spent running costs nothing. A drive pushing against a held brake wears the brake pad and lowers the brake's grip. See [Wear](Vehicles.md#wear).
 
-A role 0 bearing whose piece holds a [Tire Hub](Tire.md#tire-hub) is a wheel; see [Wheels](Vehicles.md#wheels).
+A role 0 bearing whose piece holds a [Tire Hub](Tire.md#tire-hub) is a wheel; see [Wheels](Vehicles.md#wheels). A hub on a body with no bearing turning it is not a wheel.
 
 ## See also
 

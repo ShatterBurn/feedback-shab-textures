@@ -53,11 +53,13 @@ S is a [Shaft](Shaft.md). P is a Wrought Iron Plate for every hub.
 
 To make a wheel:
 
-1. Build the body a role 0 Rotary Bearing turns, and put the hub on its axle: as a block in ordinary space, or as a voxel in [finespace](Finespace.md).
+1. Build the body a role 0 Rotary Bearing turns, and put the hub on its axle: as a block in ordinary space, or as a voxel in [finespace](Finespace.md). The hinge is what makes the wheel.
 2. Use a tire on the hub to fit it. A hub comes with no tire.
 3. Assemble the bearing as usual. The body is a wheel.
 
 **Sneak-use** the hub with an empty hand to take the tire off. Breaking the hub gives the tire back.
+
+A hub on a body fixed to its vehicle, with no Rotary Bearing turning it, is not a wheel: it does nothing, has no ring to roll on, and slides along with the body. Four hubs fixed on a block slide.
 
 The hub declares the wheel's radius, from the axle to the tread:
 
