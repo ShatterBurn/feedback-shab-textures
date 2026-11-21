@@ -1,0 +1,7 @@
+{
+  "form": "block",
+  "trait": "transparent",
+  "sprite": "feedback:block/form/glass",
+  "render_type": "translucent",
+  "priority": 10
+}

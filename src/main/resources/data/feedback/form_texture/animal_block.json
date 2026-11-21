@@ -1,0 +1,6 @@
+{
+  "form": "block",
+  "kind": "animal",
+  "sprite": "feedback:block/form/meat",
+  "priority": 10
+}

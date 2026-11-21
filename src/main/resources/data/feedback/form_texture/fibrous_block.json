@@ -1,0 +1,6 @@
+{
+  "form": "block",
+  "trait": "fibrous",
+  "sprite": "feedback:block/form/cloth",
+  "priority": 20
+}

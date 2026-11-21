@@ -87,9 +87,11 @@ public final class FormData {
                 }
                 else if (g.block() != null)
                 {
-                    ResourceLocation sprite = Feedback.id("block/form/block");
+                    var rule = FormTexture.find(FormItems.materials().get(g.material()), g.form());
+                    ResourceLocation sprite = rule.map(FormTexture::sprite).orElse(Feedback.id("block/form/block"));
                     var model = models().getBuilder(g.block().getId().getPath()).parent(models().getExistingFile(mcLoc("block/block")))
                             .texture("particle", sprite).texture("all", sprite);
+                    rule.flatMap(FormTexture::renderType).ifPresent(model::renderType);
                     model.element().from(0, 0, 0).to(16, 16, 16)
                             .allFaces((direction, face) -> face.texture("#all").cullface(direction).tintindex(0));
                     simpleBlockWithItem(g.block().get(), model);
