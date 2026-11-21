@@ -75,5 +75,24 @@
       "hot": 170,
       "lip": 128
     }
-  ]
+  ],
+  "tabs": {
+    "inset": 3,
+    "normal": "feedback:skin/forge/tab",
+    "selected": "feedback:skin/forge/tab_selected",
+    "joint_left": {
+      "sprite": "feedback:skin/forge/tab_joint_left",
+      "x": -5,
+      "y": -5,
+      "w": 8,
+      "h": 13
+    },
+    "joint_right": {
+      "sprite": "feedback:skin/forge/tab_joint_right",
+      "x": -3,
+      "y": -5,
+      "w": 8,
+      "h": 13
+    }
+  }
 }

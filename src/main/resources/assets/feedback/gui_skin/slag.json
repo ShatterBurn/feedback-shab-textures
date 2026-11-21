@@ -66,5 +66,24 @@
       "hot": 150,
       "lip": 0
     }
-  ]
+  ],
+  "tabs": {
+    "inset": 3,
+    "normal": "feedback:skin/slag/tab",
+    "selected": "feedback:skin/slag/tab_selected",
+    "joint_left": {
+      "sprite": "feedback:skin/slag/tab_joint_left",
+      "x": -4,
+      "y": -4,
+      "w": 7,
+      "h": 10
+    },
+    "joint_right": {
+      "sprite": "feedback:skin/slag/tab_joint_right",
+      "x": -3,
+      "y": -4,
+      "w": 7,
+      "h": 10
+    }
+  }
 }

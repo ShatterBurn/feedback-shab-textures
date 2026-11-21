@@ -22,10 +22,22 @@ import net.minecraft.resources.ResourceLocation;
  */
 record SkinDef(int ink, int dim, int accent, int warn, int well, int trim, int plate,
                ResourceLocation panel, boolean shadow, int wash, ResourceLocation frame, ResourceLocation slot, Map<String, ResourceLocation> buttons,
-               String click, String open, String close, Map<String, String> cues, String reveal, List<Decor> decor, List<Glow> glow, Glint glint, String effect) {
+               String click, String open, String close, Map<String, String> cues, String reveal, List<Decor> decor, List<Glow> glow, Glint glint, Tabs tabs, String effect) {
 
     /** One sprite laid over the panel: {@code anchor} names the panel point it hangs from, (x, y) is the offset, w by h its size. */
     record Decor(ResourceLocation sprite, String anchor, int x, int y, int w, int h, boolean heat, float cold, float breathe, float spin) {
+    }
+
+    /**
+     * A folder tab's own art: {@code normal} (sits back) and {@code selected} are nine-slice sprites for the tab body (a small border so
+     * the 14 px tab has room for its label), and {@code inset} is the selected tab's rail thickness, so the tile patch that erases the
+     * panel's top border runs between the rails; each joint is a sprite where the tab's rail meets that border, anchored at the
+     * tab's bottom-left (left joint) or bottom-right (right joint) corner on the panel's top edge, offset by (x, y).
+     */
+    record Tabs(int inset, ResourceLocation normal, ResourceLocation selected, Joint left, Joint right) {
+    }
+
+    record Joint(ResourceLocation sprite, int x, int y, int w, int h) {
     }
 
     /** A soft diagonal band of light that crosses the panel in a quick pass once every {@code period} ticks and rests between (a pass takes a quarter of it). */
@@ -58,6 +70,12 @@ record SkinDef(int ink, int dim, int accent, int warn, int well, int trim, int p
                 JsonObject o = e.getAsJsonObject();
                 glow.add(new Glow(colour(o, "colour"), num(o, "height", 28), num(o, "base", 0), num(o, "hot", 160), num(o, "lip", 0)));
             }
+        Tabs tabs = null;
+        if (json.has("tabs")) {
+            JsonObject o = json.getAsJsonObject("tabs");
+            tabs = new Tabs(num(o, "inset", 3), o.has("normal") ? ResourceLocation.parse(o.get("normal").getAsString()) : null,
+                    o.has("selected") ? ResourceLocation.parse(o.get("selected").getAsString()) : null, joint(o, "joint_left"), joint(o, "joint_right"));
+        }
         Glint glint = null;
         if (json.has("glint")) {
             JsonObject o = json.getAsJsonObject("glint");
@@ -73,7 +91,14 @@ record SkinDef(int ink, int dim, int accent, int warn, int well, int trim, int p
                 panel.has("frame") ? ResourceLocation.parse(panel.get("frame").getAsString()) : null,
                 json.has("slot") ? ResourceLocation.parse(json.get("slot").getAsString()) : null, Map.copyOf(button),
                 str(sounds, "click", null), str(sounds, "open", null), str(sounds, "close", null), Map.copyOf(cues),
-                str(json, "reveal", "none"), List.copyOf(decor), List.copyOf(glow), glint, str(json, "effect", null));
+                str(json, "reveal", "none"), List.copyOf(decor), List.copyOf(glow), glint, tabs, str(json, "effect", null));
+    }
+
+    private static Joint joint(JsonObject o, String key) {
+        if (!o.has(key))
+            return null;
+        JsonObject j = o.getAsJsonObject(key);
+        return new Joint(ResourceLocation.parse(j.get("sprite").getAsString()), num(j, "x", 0), num(j, "y", 0), j.get("w").getAsInt(), j.get("h").getAsInt());
     }
 
     private static JsonObject obj(JsonObject o, String key) {

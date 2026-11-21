@@ -75,5 +75,24 @@
       "hot": 150,
       "lip": 112
     }
-  ]
+  ],
+  "tabs": {
+    "inset": 3,
+    "normal": "feedback:skin/smoke/tab",
+    "selected": "feedback:skin/smoke/tab_selected",
+    "joint_left": {
+      "sprite": "feedback:skin/smoke/tab_joint_left",
+      "x": -4,
+      "y": -4,
+      "w": 7,
+      "h": 12
+    },
+    "joint_right": {
+      "sprite": "feedback:skin/smoke/tab_joint_right",
+      "x": -3,
+      "y": -4,
+      "w": 7,
+      "h": 12
+    }
+  }
 }

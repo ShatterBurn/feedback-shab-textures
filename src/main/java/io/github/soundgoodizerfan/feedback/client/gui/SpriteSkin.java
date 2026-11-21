@@ -101,11 +101,17 @@ final class SpriteSkin extends GuiSkin {
             g.renderOutline(x, y, w, h, 0xFF909090);
             return;
         }
-        if (d.shadow())
+        boolean tab = inTab; // a folder tab borrows the panel: it takes the face and frame, not the ornaments that belong to a whole window
+        if (d.shadow() && !tab)
             g.fill(x + 3, y + 4, x + w + 3, y + h + 4, 0x50000000);
         g.blitSprite(d.panel(), x, y, w, h);
         if (d.wash() != 0)
             g.fill(x, y, x + w, y + h, d.wash());
+        if (tab) {
+            if (have(d.frame()))
+                g.blitSprite(d.frame(), x, y, w, h);
+            return;
+        }
         for (SkinDef.Glow glow : d.glow())
             glow(g, glow, x, y, w, h);
         if (d.glint() != null && !ClientSettings.reduceMotion())
@@ -134,6 +140,53 @@ final class SpriteSkin extends GuiSkin {
         g.fillGradient(x + 1, top, x + w - 1, y + h - 1, rgb, a << 24 | rgb);
         if (glow.lip() > 0)
             g.fill(x + 1, y + h - 2, x + w - 1, y + h - 1, Mth.clamp(Math.round(glow.lip() * (0.6f + 0.4f * f) * pulse), 0, 255) << 24 | rgb);
+    }
+
+    /**
+     * The selected tab stands on the panel: its own face (frame and tile, clipped to the tab) above, and over the panel's top border
+     * between the tab's rails a patch of the panel's tile and wash, aligned to the panel's own tiling so the pattern runs through
+     * unbroken, with the skin's two joint sprites where the rails meet the border. Unselected tabs are the base class's.
+     */
+    @Override
+    void folderTabFace(GuiGraphics g, int x, int y, int w, int h, boolean selected, float glow, int[] host) {
+        SkinDef d = def();
+        SkinDef.Tabs tabs = d == null ? null : d.tabs();
+        if (tabs == null || !have(tabs.normal()) || !have(tabs.selected())) {
+            super.folderTabFace(g, x, y, w, h, selected, glow, host);
+            return;
+        }
+        if (!selected) { // sits back two pixels, its bottom hidden behind the panel's border
+            g.enableScissor(x, y, x + w, y + h);
+            g.blitSprite(tabs.normal(), x, y + 2, w, h + 12);
+            if (glow > 0)
+                g.fill(x, y, x + w, y + h, (int) (0x30 * glow) << 24 | accent() & 0xFFFFFF);
+            g.disableScissor();
+            return;
+        }
+        g.enableScissor(x, y, x + w, y + h);
+        g.blitSprite(tabs.selected(), x, y, w, h + 14);
+        g.disableScissor();
+        if (host != null && have(d.panel())) {
+            // The patch: the panel's tile, unshifted, from under the tab's top rim down over the border band, between the tab's rails.
+            int px = x + tabs.inset(), py = y + tabs.inset(), pw = w - 2 * tabs.inset(), ph = host[1] + 12 - py; // the whole face inside the rim, so the tile runs through the tab and the panel as one
+            if (pw > 0) {
+                var sprite = Minecraft.getInstance().getGuiSprites().getSprite(d.panel()).contents();
+                int tw = Math.max(1, sprite.width()), th = Math.max(1, sprite.height());
+                int ox = host[0] + Math.floorDiv(px - host[0], tw) * tw, oy = host[1] + Math.floorDiv(py - host[1], th) * th;
+                g.enableScissor(px, py, px + pw, py + ph);
+                g.blitSprite(d.panel(), ox, oy, (px + pw - ox + tw - 1) / tw * tw, (py + ph - oy + th - 1) / th * th);
+                if (d.wash() != 0)
+                    g.fill(px, py, px + pw, py + ph, d.wash());
+                g.disableScissor();
+            }
+            drawJoint(g, tabs.left(), x, host[1]);
+            drawJoint(g, tabs.right(), x + w, host[1]);
+        }
+    }
+
+    private void drawJoint(GuiGraphics g, SkinDef.Joint joint, int ax, int ay) {
+        if (joint != null && have(joint.sprite()))
+            g.blitSprite(joint.sprite(), ax + joint.x(), ay + joint.y(), joint.w(), joint.h());
     }
 
     /** A band of light crossing the glass in a quick pass, then nothing until the next period. */

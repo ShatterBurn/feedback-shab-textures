@@ -30,5 +30,24 @@
     "cues": {}
   },
   "reveal": "none",
-  "decor": []
+  "decor": [],
+  "tabs": {
+    "inset": 3,
+    "normal": "feedback:skin/kiln/tab",
+    "selected": "feedback:skin/kiln/tab_selected",
+    "joint_left": {
+      "sprite": "feedback:skin/kiln/tab_joint_left",
+      "x": -4,
+      "y": -4,
+      "w": 7,
+      "h": 10
+    },
+    "joint_right": {
+      "sprite": "feedback:skin/kiln/tab_joint_right",
+      "x": -3,
+      "y": -4,
+      "w": 7,
+      "h": 10
+    }
+  }
 }

@@ -56,5 +56,24 @@
       "h": 22,
       "heat": false
     }
-  ]
+  ],
+  "tabs": {
+    "inset": 3,
+    "normal": "feedback:skin/stone/tab",
+    "selected": "feedback:skin/stone/tab_selected",
+    "joint_left": {
+      "sprite": "feedback:skin/stone/tab_joint_left",
+      "x": -3,
+      "y": -3,
+      "w": 6,
+      "h": 11
+    },
+    "joint_right": {
+      "sprite": "feedback:skin/stone/tab_joint_right",
+      "x": -3,
+      "y": -3,
+      "w": 6,
+      "h": 11
+    }
+  }
 }

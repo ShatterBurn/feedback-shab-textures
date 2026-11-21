@@ -56,5 +56,24 @@
       "h": 36,
       "heat": false
     }
-  ]
+  ],
+  "tabs": {
+    "inset": 3,
+    "normal": "feedback:skin/anvil/tab",
+    "selected": "feedback:skin/anvil/tab_selected",
+    "joint_left": {
+      "sprite": "feedback:skin/anvil/tab_joint_left",
+      "x": -5,
+      "y": -5,
+      "w": 8,
+      "h": 12
+    },
+    "joint_right": {
+      "sprite": "feedback:skin/anvil/tab_joint_right",
+      "x": -3,
+      "y": -5,
+      "w": 8,
+      "h": 12
+    }
+  }
 }

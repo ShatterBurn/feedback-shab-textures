@@ -804,7 +804,7 @@ public abstract class GuiSkin {
     /** True while a folder tab borrows {@link #panel}: a skin leaves out ornaments that belong to a whole window (stripes, lamps, brackets). */
     static boolean inTab;
 
-    private void folderTabFace(GuiGraphics g, int x, int y, int w, int h, boolean selected, float glow, int[] host) {
+    void folderTabFace(GuiGraphics g, int x, int y, int w, int h, boolean selected, float glow, int[] host) {
         if (selected) {
             // The tab itself, with its own frame and rails, standing above the panel.
             g.enableScissor(x, y, x + w, y + h);

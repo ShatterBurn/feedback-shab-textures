@@ -47,5 +47,24 @@
       "h": 14,
       "heat": false
     }
-  ]
+  ],
+  "tabs": {
+    "inset": 3,
+    "normal": "feedback:skin/wood/tab",
+    "selected": "feedback:skin/wood/tab_selected",
+    "joint_left": {
+      "sprite": "feedback:skin/wood/tab_joint_left",
+      "x": -3,
+      "y": -3,
+      "w": 6,
+      "h": 11
+    },
+    "joint_right": {
+      "sprite": "feedback:skin/wood/tab_joint_right",
+      "x": -3,
+      "y": -3,
+      "w": 6,
+      "h": 11
+    }
+  }
 }

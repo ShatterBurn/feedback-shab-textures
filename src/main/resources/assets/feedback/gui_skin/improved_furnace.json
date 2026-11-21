@@ -40,5 +40,24 @@
       "h": 24,
       "heat": false
     }
-  ]
+  ],
+  "tabs": {
+    "inset": 3,
+    "normal": "feedback:skin/improved_furnace/tab",
+    "selected": "feedback:skin/improved_furnace/tab_selected",
+    "joint_left": {
+      "sprite": "feedback:skin/improved_furnace/tab_joint_left",
+      "x": -5,
+      "y": -5,
+      "w": 8,
+      "h": 13
+    },
+    "joint_right": {
+      "sprite": "feedback:skin/improved_furnace/tab_joint_right",
+      "x": -3,
+      "y": -5,
+      "w": 8,
+      "h": 13
+    }
+  }
 }

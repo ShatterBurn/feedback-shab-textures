@@ -83,5 +83,24 @@
       "h": 14,
       "heat": false
     }
-  ]
+  ],
+  "tabs": {
+    "inset": 3,
+    "normal": "feedback:skin/suit/tab",
+    "selected": "feedback:skin/suit/tab_selected",
+    "joint_left": {
+      "sprite": "feedback:skin/suit/tab_joint_left",
+      "x": -4,
+      "y": -4,
+      "w": 7,
+      "h": 12
+    },
+    "joint_right": {
+      "sprite": "feedback:skin/suit/tab_joint_right",
+      "x": -3,
+      "y": -4,
+      "w": 7,
+      "h": 12
+    }
+  }
 }

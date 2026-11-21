@@ -100,5 +100,24 @@
       "heat": false,
       "breathe": 0.1
     }
-  ]
+  ],
+  "tabs": {
+    "inset": 3,
+    "normal": "feedback:skin/console/tab",
+    "selected": "feedback:skin/console/tab_selected",
+    "joint_left": {
+      "sprite": "feedback:skin/console/tab_joint_left",
+      "x": -4,
+      "y": -4,
+      "w": 7,
+      "h": 12
+    },
+    "joint_right": {
+      "sprite": "feedback:skin/console/tab_joint_right",
+      "x": -3,
+      "y": -4,
+      "w": 7,
+      "h": 12
+    }
+  }
 }
