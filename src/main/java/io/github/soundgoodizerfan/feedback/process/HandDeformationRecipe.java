@@ -151,6 +151,12 @@ public class HandDeformationRecipe extends CustomRecipe {
         // refused below the material's hardness floor a line later, so there is no list anywhere of
         // which tools deform -- the strength and the declared operation are the whole answer.
         HandTool handTool = (HandTool) tool.getItem();
+        // A hand file removes material: the same one cut a machine makes, with the file's own edge hardness as the gate.
+        if (handTool.getOperation(tool).removesMaterial()) {
+            Removing.Cut cut = Removing.apply(workpiece, io.github.soundgoodizerfan.feedback.modular.item.ModularHandTool.fileDrive(tool),
+                    io.github.soundgoodizerfan.feedback.modular.item.ModularHandTool.fileHardness(tool), handTool.getOperation(tool), 1f, 0f, level);
+            return cut.landed() ? cut.result() : null;
+        }
         // A crafting grid has nowhere to put what the work drives out (a bloom's slag): that is the anvil's shingling, not a swing in a grid.
         var entry = DeformationTable.get().find(workpiece, handTool.getOperation());
         if (entry.isPresent() && !entry.get().byproduct().isEmpty())

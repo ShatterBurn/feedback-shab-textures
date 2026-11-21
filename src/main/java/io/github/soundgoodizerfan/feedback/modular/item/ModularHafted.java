@@ -354,6 +354,11 @@ public class ModularHafted extends MaceItem implements Modular, HandTool {
     }
 
     @Override
+    public Operation getOperation(ItemStack stack) {
+        return io.github.soundgoodizerfan.feedback.modular.engineering.ToolAbilities.face(stack, "file_head") != null ? Operation.FILE : Operation.BLOW;
+    }
+
+    @Override
     public SoundEvent getWorkSound() {
         return SoundEvents.ANVIL_LAND;
     }

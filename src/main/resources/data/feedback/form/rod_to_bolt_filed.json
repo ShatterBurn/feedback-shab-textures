@@ -1,0 +1,7 @@
+{
+  "from": "rod",
+  "to": "bolt",
+  "operation": "file",
+  "base": 12,
+  "slope": 2.0
+}

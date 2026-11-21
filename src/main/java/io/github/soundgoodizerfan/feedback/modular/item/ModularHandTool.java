@@ -61,6 +61,21 @@ public class ModularHandTool extends HandToolItem implements Modular {
         return f == null ? 0f : f.get(Fig.STRIKE_ST);
     }
 
+    /**
+     * The St a hand file bears on its cut: the arm's file stroke ({@link FTuning#HAND_FILE_ST}) times the file's grains (a coarse cut takes more
+     * per stroke); 0 for a stack with no file face or a broken one.
+     */
+    public static St fileDrive(ItemStack stack) {
+        var face = ModularStacks.broken(stack) ? null : io.github.soundgoodizerfan.feedback.modular.engineering.ToolAbilities.face(stack, "file_head");
+        return new St(face == null ? 0f : FTuning.HAND_FILE_ST.value() * face.param("grains", 1f));
+    }
+
+    /** The hardness of a hand file's edge, which must beat the stock's (a hard gate, as every cutting tool's). */
+    public static St fileHardness(ItemStack stack) {
+        ModularFigures f = ModularStacks.figures(stack);
+        return new St(f == null ? 0f : f.get(Fig.HARDNESS));
+    }
+
     /** Whether this is a hand tool whose type strikes (the hammer): by what the type is, not whether this one is broken. */
     public static boolean strikes(ItemStack stack) {
         if (stack.getItem() instanceof ModularHafted)

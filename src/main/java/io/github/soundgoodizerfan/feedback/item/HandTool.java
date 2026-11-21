@@ -20,5 +20,10 @@ public interface HandTool {
 
     Operation getOperation();
 
+    /** What this stack performs: its item's operation, unless the stack is a tool whose face decides (a hafted tool with a file head files, one with a hammer head strikes). */
+    default Operation getOperation(ItemStack stack) {
+        return getOperation();
+    }
+
     SoundEvent getWorkSound();
 }

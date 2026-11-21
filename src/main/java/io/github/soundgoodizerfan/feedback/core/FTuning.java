@@ -61,6 +61,9 @@ public final class FTuning {
      */
     public static final St HAND_SWING_BLOW_ST = new St(7f);
 
+    /** Invented. What one stroke of a hand file bears on the cut before the file's grains scale it; a hammer blow's own figure, since the same arm drives it. */
+    public static final St HAND_FILE_ST = new St(7f);
+
     /**
      * Bottoms of the condition bands, descending -- how battered a machine looks, in words.
      *
