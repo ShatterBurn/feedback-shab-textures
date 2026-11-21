@@ -25,6 +25,11 @@ public record Feel(float weight, float slop) {
         return weight < 0.3f ? 0 : weight < 0.9f ? 1 : 2;
     }
 
+    /** Whether a press is a glow pulse in place of depth: a skin light enough to have no press depth that is not a key on a screen (a sigil's glow). */
+    public boolean pulses() {
+        return weight > 0f && pressDepth() == 0;
+    }
+
     /** Ticks a press or release takes to settle; 0 is instant. */
     public float settleTicks() {
         return weight * 5f;

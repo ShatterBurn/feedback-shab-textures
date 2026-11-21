@@ -136,6 +136,8 @@ public final class GuiStyle {
 
     /** Ticks a shake lasts. */
     private static final float SHAKE_TICKS = 8;
+    /** Ticks a press pulse lasts on a skin with no press depth. */
+    private static final float PULSE_TICKS = 6;
 
     /**
      * Sideways pixels to draw a rejecting slot or control at, {@code start} being {@link #time()} when it
@@ -945,6 +947,11 @@ public final class GuiStyle {
             g.pose().translate(dx, Math.round(shown), 0);
             skin.button(g, getX(), getY(), getWidth(), getHeight(), getMessage(), glow, down, active, primary);
             g.pose().popPose();
+            // A skin with no press depth lights the face instead: the pulse rises and falls over a few ticks after the press.
+            float since = clock - pressedAt;
+            if (feel.pulses() && active && since >= 0f && since < PULSE_TICKS && !ClientSettings.reduceMotion())
+                g.fill(getX(), getY(), getX() + getWidth(), getY() + getHeight(),
+                        (Math.round(110 * hump(since / PULSE_TICKS)) << 24) | (skin.accent() & 0xFFFFFF));
             float age = rejectAge(clock);
             if (age >= 0 && age < SHAKE_TICKS && !ClientSettings.reduceMotion()) // the flash rides with the shake, never alone
                 g.renderOutline(getX() + dx - 1, getY() - 1, getWidth() + 2, getHeight() + 2,
