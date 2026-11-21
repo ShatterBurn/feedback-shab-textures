@@ -152,10 +152,13 @@ public abstract class SkinnedScreen<M extends AbstractContainerMenu> extends Abs
                 int ix = leftPos + SLIDE_INSET, iy = topPos + SLIDE_INSET, iw = imageWidth - 2 * SLIDE_INSET, ih = imageHeight - 2 * SLIDE_INSET;
                 int old = -slideDir * Math.round(iw * c);
                 g.enableScissor(ix, iy, ix + iw, iy + ih);
+                g.pose().pushPose();
+                g.pose().translate(0, 0, 350); // above everything the fixed pass drew, items and text included, so none of the new tab shows through early
                 g.blit(SLIDE_TEX, ix + old, iy, iw, ih, 0f, 0f, slidePw, slidePh, slidePw, slidePh);
                 g.pose().pushPose();
                 g.pose().translate(old + slideDir * iw, 0, 0);
                 super.render(g, mouseX, mouseY, partialTick);
+                g.pose().popPose();
                 g.pose().popPose();
                 g.disableScissor();
             }
