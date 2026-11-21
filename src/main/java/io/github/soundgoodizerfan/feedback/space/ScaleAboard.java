@@ -2,8 +2,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.space;
 
-import dev.ryanhcode.sable.companion.SableCompanion;
-import dev.ryanhcode.sable.sublevel.ServerSubLevel;
 import io.github.soundgoodizerfan.feedback.Feedback;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
@@ -17,10 +15,10 @@ import net.minecraft.world.level.entity.EntityTypeTest;
 import java.util.List;
 
 /**
- * Everything alive on a scaled body shrinks with it (docs/specs/feedback_space_spec.md 2.4): size, reach, step height, jump,
+ * Everything alive in the Gap shrinks with the bodies there (docs/specs/feedback_space_spec.md 2.4): size, reach, step height, jump,
  * walking speed and the fall that hurts. One transient multiplier on each attribute, so it is never saved: a person who logs out
- * aboard comes back at full size and is scaled again by the next sweep. The sweep runs once a second in the Gap and costs one
- * lookup per living thing there; a crossing applies and clears at once.
+ * in the Gap comes back at full size and is scaled again by the next sweep. The sweep runs once a second in the Gap and costs one
+ * attribute write per living thing there; a crossing applies and clears at once.
  */
 public final class ScaleAboard {
     private static final ResourceLocation MODIFIER = Feedback.id("body_scale");
@@ -34,17 +32,10 @@ public final class ScaleAboard {
     /** Ticks between sweeps of the Gap. */
     public static final int SWEEP_TICKS = 20;
 
-    /** The sweep: each living thing on a scaled body takes that body's scale, everything else is full size. */
+    /** The sweep: everything alive in the Gap is at the Gap's scale (a body there was scaled by the crossing; a person off any body is as small). */
     public static void sweep(ServerLevel gap) {
         for (LivingEntity e : gap.getEntities(EntityTypeTest.forClass(LivingEntity.class), x -> true))
-            set(e, scaleUnder(gap, e));
-    }
-
-    /** The scale of the body {@code e} is on or inside, 1 when it is on none. */
-    private static double scaleUnder(ServerLevel level, LivingEntity e) {
-        ServerSubLevel body = SableCompanion.INSTANCE.getTrackingOrVehicleSubLevel(e) instanceof ServerSubLevel s ? s
-                : SableCompanion.INSTANCE.getContaining(level, e.blockPosition()) instanceof ServerSubLevel c ? c : null;
-        return body == null ? 1.0 : BodyScale.of(body);
+            set(e, SpaceTuning.GAP_SCALE);
     }
 
     /** Puts {@code e} at scale {@code k} (1 removes the multiplier). */

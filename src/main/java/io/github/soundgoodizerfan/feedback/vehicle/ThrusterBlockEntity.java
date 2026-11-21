@@ -17,6 +17,7 @@ import io.github.soundgoodizerfan.feedback.process.MaterialTable;
 import io.github.soundgoodizerfan.feedback.registry.FDataComponents;
 import io.github.soundgoodizerfan.feedback.registry.FModular;
 import io.github.soundgoodizerfan.feedback.registry.FVehicles;
+import io.github.soundgoodizerfan.feedback.space.BodyScale;
 import io.github.soundgoodizerfan.feedback.vehicle.engine.FuelBlend;
 
 import net.minecraft.world.phys.Vec3;
@@ -169,9 +170,14 @@ public class ThrusterBlockEntity extends BlockEntity implements BlockEntitySubLe
             fuel.burn(drawn);
         if (server.getGameTime() % 2 == 0) {
             Direction out = getBlockState().getValue(ThrusterBlock.FACING).getOpposite();
-            server.sendParticles(ParticleTypes.FLAME, worldPosition.getX() + 0.5 + out.getStepX() * 0.7,
+            // A particle's size is fixed, so on a scaled body (the Gap) the flame is an orange dust of the body's scale and spread.
+            double k = SableCompanion.INSTANCE.getContaining(this) instanceof ServerSubLevel body ? BodyScale.of(body) : 1.0;
+            net.minecraft.core.particles.ParticleOptions fire = k < 1.0
+                    ? new net.minecraft.core.particles.DustParticleOptions(new org.joml.Vector3f(1f, 0.55f, 0.12f), (float) Math.max(0.01, k))
+                    : ParticleTypes.FLAME;
+            server.sendParticles(fire, worldPosition.getX() + 0.5 + out.getStepX() * 0.7,
                     worldPosition.getY() + 0.5 + out.getStepY() * 0.7, worldPosition.getZ() + 0.5 + out.getStepZ() * 0.7,
-                    2, 0.1, 0.1, 0.1, 0.02);
+                    2, 0.1 * k, 0.1 * k, 0.1 * k, 0.02 * k);
         }
     }
 
