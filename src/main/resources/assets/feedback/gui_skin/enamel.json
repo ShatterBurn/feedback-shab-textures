@@ -1,0 +1,70 @@
+{
+  "colours": {
+    "ink": "#18211B",
+    "dim": "#3F4C43",
+    "accent": "#9A3A12",
+    "warn": "#A81C1C",
+    "well": "#7F8B7C",
+    "trim": "#3B463E",
+    "plate": "#A7B1A1"
+  },
+  "panel": {
+    "sprite": "feedback:skin/enamel/tile",
+    "wash": "#10181C12",
+    "frame": "feedback:skin/enamel/frame",
+    "shadow": true
+  },
+  "slot": "feedback:skin/enamel/slot",
+  "button": {
+    "normal": "feedback:skin/enamel/button",
+    "hover": "feedback:skin/enamel/button_hover",
+    "down": "feedback:skin/enamel/button_down",
+    "off": "feedback:skin/enamel/button_off",
+    "primary": "feedback:skin/enamel/button_primary",
+    "primary_hover": "feedback:skin/enamel/button_primary"
+  },
+  "sounds": {
+    "click": "feedback:ui.detent",
+    "open": "feedback:ui.toggle",
+    "close": "feedback:ui.toggle",
+    "cues": {
+      "seat": "feedback:ui.detent",
+      "reject": "minecraft:block.dispenser.fail",
+      "stage": "feedback:ui.toggle",
+      "start": "minecraft:block.lever.click",
+      "finish": "minecraft:block.comparator.click",
+      "abort": "feedback:ui.toggle"
+    }
+  },
+  "reveal": "none",
+  "decor": [
+    {
+      "sprite": "feedback:skin/enamel/starburst",
+      "anchor": "top_left",
+      "x": 0,
+      "y": 0,
+      "w": 20,
+      "h": 20,
+      "heat": false
+    },
+    {
+      "sprite": "feedback:skin/enamel/lamp",
+      "anchor": "top_right",
+      "x": 0,
+      "y": 0,
+      "w": 16,
+      "h": 16,
+      "heat": false
+    },
+    {
+      "sprite": "feedback:skin/enamel/lamp_lit",
+      "anchor": "top_right",
+      "x": 0,
+      "y": 0,
+      "w": 16,
+      "h": 16,
+      "heat": false,
+      "breathe": 0.08
+    }
+  ]
+}

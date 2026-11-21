@@ -22,10 +22,14 @@ import net.minecraft.resources.ResourceLocation;
  */
 record SkinDef(int ink, int dim, int accent, int warn, int well, int trim, int plate,
                ResourceLocation panel, boolean shadow, int wash, ResourceLocation frame, ResourceLocation slot, Map<String, ResourceLocation> buttons,
-               String click, String open, String close, Map<String, String> cues, String reveal, List<Decor> decor, List<Glow> glow, String effect) {
+               String click, String open, String close, Map<String, String> cues, String reveal, List<Decor> decor, List<Glow> glow, Glint glint, String effect) {
 
     /** One sprite laid over the panel: {@code anchor} names the panel point it hangs from, (x, y) is the offset, w by h its size. */
-    record Decor(ResourceLocation sprite, String anchor, int x, int y, int w, int h, boolean heat, float cold) {
+    record Decor(ResourceLocation sprite, String anchor, int x, int y, int w, int h, boolean heat, float cold, float breathe) {
+    }
+
+    /** A soft diagonal band of light that crosses the panel in a quick pass once every {@code period} ticks and rests between (a pass takes a quarter of it). */
+    record Glint(int colour, int alpha, int period, int width, float slope) {
     }
 
     /** Firelight along the panel's bottom edge: {@code height} px of colour fading up, {@code base} alpha (0 to 255) when the screen gives no heat, {@code hot} at full heat, {@code lip} a bright line on the edge itself. */
@@ -46,7 +50,7 @@ record SkinDef(int ink, int dim, int accent, int warn, int well, int trim, int p
             JsonObject d = e.getAsJsonObject();
             decor.add(new Decor(ResourceLocation.parse(d.get("sprite").getAsString()), str(d, "anchor", "top_left"),
                     num(d, "x", 0), num(d, "y", 0), d.get("w").getAsInt(), d.get("h").getAsInt(),
-                    d.has("heat") && d.get("heat").getAsBoolean(), d.has("cold") ? d.get("cold").getAsFloat() : 0f));
+                    d.has("heat") && d.get("heat").getAsBoolean(), d.has("cold") ? d.get("cold").getAsFloat() : 0f, d.has("breathe") ? d.get("breathe").getAsFloat() : 0f));
         }
         List<Glow> glow = new ArrayList<>();
         if (json.has("glow"))
@@ -54,6 +58,12 @@ record SkinDef(int ink, int dim, int accent, int warn, int well, int trim, int p
                 JsonObject o = e.getAsJsonObject();
                 glow.add(new Glow(colour(o, "colour"), num(o, "height", 28), num(o, "base", 0), num(o, "hot", 160), num(o, "lip", 0)));
             }
+        Glint glint = null;
+        if (json.has("glint")) {
+            JsonObject o = json.getAsJsonObject("glint");
+            glint = new Glint(colour(o, "colour"), num(o, "alpha", 20), num(o, "period", 100), num(o, "width", 14),
+                    o.has("slope") ? o.get("slope").getAsFloat() : 0.7f);
+        }
         JsonObject panel = json.has("panel") ? json.getAsJsonObject("panel") : new JsonObject();
         return new SkinDef(colour(c, "ink"), colour(c, "dim"), colour(c, "accent"), colour(c, "warn"), colour(c, "well"), colour(c, "trim"),
                 colour(c, "plate"),
@@ -63,7 +73,7 @@ record SkinDef(int ink, int dim, int accent, int warn, int well, int trim, int p
                 panel.has("frame") ? ResourceLocation.parse(panel.get("frame").getAsString()) : null,
                 json.has("slot") ? ResourceLocation.parse(json.get("slot").getAsString()) : null, Map.copyOf(button),
                 str(sounds, "click", null), str(sounds, "open", null), str(sounds, "close", null), Map.copyOf(cues),
-                str(json, "reveal", "none"), List.copyOf(decor), List.copyOf(glow), str(json, "effect", null));
+                str(json, "reveal", "none"), List.copyOf(decor), List.copyOf(glow), glint, str(json, "effect", null));
     }
 
     private static JsonObject obj(JsonObject o, String key) {

@@ -9,6 +9,7 @@ import java.util.Map;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 
+import io.github.soundgoodizerfan.feedback.client.ClientSettings;
 import io.github.soundgoodizerfan.feedback.core.thermal.Incandescence;
 
 import net.minecraft.client.Minecraft;
@@ -98,6 +99,8 @@ final class SpriteSkin extends GuiSkin {
             g.fill(x, y, x + w, y + h, d.wash());
         for (SkinDef.Glow glow : d.glow())
             glow(g, glow, x, y, w, h);
+        if (d.glint() != null && !ClientSettings.reduceMotion())
+            glint(g, d.glint(), x, y, w, h);
         if (have(d.frame()))
             g.blitSprite(d.frame(), x, y, w, h);
         for (SkinDef.Decor layer : d.decor())
@@ -124,6 +127,21 @@ final class SpriteSkin extends GuiSkin {
             g.fill(x + 1, y + h - 2, x + w - 1, y + h - 1, Mth.clamp(Math.round(glow.lip() * (0.6f + 0.4f * f) * pulse), 0, 255) << 24 | rgb);
     }
 
+    /** A band of light crossing the glass in a quick pass, then nothing until the next period. */
+    private static void glint(GuiGraphics g, SkinDef.Glint glint, int x, int y, int w, int h) {
+        float t = (GuiStyle.time() % glint.period()) / (glint.period() * 0.24f);
+        if (t > 1f)
+            return;
+        int centre = (int) (-40 + t * (w + 80));
+        int rgb = glint.colour() & 0xFFFFFF;
+        for (int j = 2; j < h - 2; j += 2) {
+            int a = x + centre + (int) (j * glint.slope()), b = a + glint.width();
+            int l = Math.max(x + 1, a), r = Math.min(x + w - 1, b);
+            if (r > l)
+                g.fill(l, y + j, r, y + Math.min(j + 2, h - 1), glint.alpha() << 24 | rgb);
+        }
+    }
+
     private void decor(GuiGraphics g, SkinDef.Decor layer, int x, int y, int w, int h) {
         if (!have(layer.sprite()))
             return;
@@ -133,6 +151,10 @@ final class SpriteSkin extends GuiSkin {
             if (alpha <= 0.01f)
                 return;
             alpha = Mth.clamp(alpha, 0f, 1f);
+        }
+        if (layer.breathe() > 0f) { // a lamp that breathes: steady at 0.8 under reduce motion
+            float breath = ClientSettings.reduceMotion() ? 0.8f : 0.5f + 0.5f * Mth.sin(GuiStyle.time() * layer.breathe());
+            alpha *= 0.3f + 0.7f * breath;
         }
         String a = layer.anchor();
         int ax = a.contains("right") ? x + w - layer.w() : a.equals("top") || a.equals("center") || a.equals("bottom") ? x + (w - layer.w()) / 2 : x;
@@ -223,6 +245,10 @@ final class SpriteSkin extends GuiSkin {
             return;
         switch (d.reveal()) {
             case "slide" -> g.enableScissor(x - 4, y - 4, x + Math.round(w * t), y + h + 8);
+            case "plates" -> {
+                int gap = Math.round((w / 2f + 6) * t);
+                g.enableScissor(x + w / 2 - gap - 1, y - 4, x + w / 2 + gap + 1, y + h + 8);
+            }
             case "shutters" -> {
                 int gap = Math.round((h / 2f + 6) * t);
                 g.enableScissor(x - 4, y + h / 2 - gap, x + w + 8, y + h / 2 + gap);
@@ -234,10 +260,22 @@ final class SpriteSkin extends GuiSkin {
     @Override
     public void endReveal(GuiGraphics g, int x, int y, int w, int h, float t) {
         SkinDef d = def();
-        if (d == null || t >= 1 || !(d.reveal().equals("slide") || d.reveal().equals("shutters")))
+        if (d == null || t >= 1 || !(d.reveal().equals("slide") || d.reveal().equals("shutters") || d.reveal().equals("plates")))
             return;
         g.flush();
         g.disableScissor();
+        if (d.reveal().equals("plates")) { // two plates drawing back from the middle into their housings
+            int mid = x + w / 2, gap = Math.round((w / 2f + 6) * t);
+            int left = mid - gap - x, right = x + w - (mid + gap);
+            if (left > 0) {
+                panel(g, x, y, left, h);
+                g.fill(x + left - 2, y, x + left, y + h, accent());
+            }
+            if (right > 0) {
+                panel(g, mid + gap, y, right, h);
+                g.fill(mid + gap, y, mid + gap + 2, y + h, accent());
+            }
+        }
         if (d.reveal().equals("shutters")) { // two halves of the panel sliding back into the frame
             int mid = y + h / 2, gap = Math.round((h / 2f + 6) * t);
             int top = mid - gap - y, bottom = y + h - (mid + gap);

@@ -1,0 +1,104 @@
+{
+  "colours": {
+    "ink": "#E8DEC0",
+    "dim": "#8EA098",
+    "accent": "#FFB84A",
+    "warn": "#FF5A3C",
+    "well": "#0C1719",
+    "trim": "#7A6330",
+    "plate": "#2A3C3F"
+  },
+  "panel": {
+    "sprite": "feedback:skin/console/tile",
+    "wash": "#00000000",
+    "frame": "feedback:skin/console/frame",
+    "shadow": true
+  },
+  "slot": "feedback:skin/console/slot",
+  "button": {
+    "normal": "feedback:skin/console/button",
+    "hover": "feedback:skin/console/button_hover",
+    "down": "feedback:skin/console/button_down",
+    "off": "feedback:skin/console/button_off",
+    "primary": "feedback:skin/console/button_primary",
+    "primary_hover": "feedback:skin/console/button_primary"
+  },
+  "sounds": {
+    "click": "feedback:ui.detent",
+    "open": "feedback:ui.toggle",
+    "close": "feedback:ui.toggle",
+    "cues": {
+      "seat": "feedback:ui.detent",
+      "reject": "minecraft:block.dispenser.fail",
+      "stage": "feedback:ui.toggle",
+      "start": "minecraft:block.lever.click",
+      "finish": "minecraft:block.comparator.click",
+      "abort": "feedback:ui.toggle"
+    }
+  },
+  "reveal": "none",
+  "glint": {
+    "colour": "#9EE8E0",
+    "alpha": 20,
+    "period": 100,
+    "width": 14,
+    "slope": 0.7
+  },
+  "decor": [
+    {
+      "sprite": "feedback:skin/console/bracket_tl",
+      "anchor": "top_left",
+      "x": 0,
+      "y": 0,
+      "w": 16,
+      "h": 16,
+      "heat": false
+    },
+    {
+      "sprite": "feedback:skin/console/bracket_tr",
+      "anchor": "top_right",
+      "x": 0,
+      "y": 0,
+      "w": 16,
+      "h": 16,
+      "heat": false
+    },
+    {
+      "sprite": "feedback:skin/console/bracket_bl",
+      "anchor": "bottom_left",
+      "x": 0,
+      "y": 0,
+      "w": 16,
+      "h": 16,
+      "heat": false
+    },
+    {
+      "sprite": "feedback:skin/console/bracket_br",
+      "anchor": "bottom_right",
+      "x": 0,
+      "y": 0,
+      "w": 16,
+      "h": 16,
+      "heat": false
+    },
+    {
+      "sprite": "feedback:skin/console/lamps",
+      "anchor": "bottom_left",
+      "x": 16,
+      "y": 0,
+      "w": 66,
+      "h": 8,
+      "heat": false
+    },
+    {
+      "sprite": "feedback:skin/console/lamp_lit",
+      "anchor": "bottom_left",
+      "x": 16,
+      "y": 0,
+      "w": 66,
+      "h": 8,
+      "heat": false,
+      "breathe": 0.1
+    }
+  ]
+}

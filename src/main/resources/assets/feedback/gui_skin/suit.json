@@ -1,0 +1,87 @@
+{
+  "colours": {
+    "ink": "#E4F1F6",
+    "dim": "#7C99A6",
+    "accent": "#4FE3FF",
+    "warn": "#FFA52E",
+    "well": "#06090B",
+    "trim": "#9035B6D0",
+    "plate": "#1B2328"
+  },
+  "panel": {
+    "sprite": "feedback:skin/suit/tile",
+    "wash": "#00000000",
+    "frame": "feedback:skin/suit/frame",
+    "shadow": true
+  },
+  "slot": "feedback:skin/suit/slot",
+  "button": {
+    "normal": "feedback:skin/suit/button",
+    "hover": "feedback:skin/suit/button_hover",
+    "down": "feedback:skin/suit/button_down",
+    "off": "feedback:skin/suit/button_off",
+    "primary": "feedback:skin/suit/button_primary",
+    "primary_hover": "feedback:skin/suit/button_primary"
+  },
+  "sounds": {
+    "click": "minecraft:block.iron_trapdoor.open",
+    "open": "minecraft:block.piston.extend",
+    "close": "minecraft:block.piston.contract",
+    "cues": {
+      "seat": "minecraft:block.iron_trapdoor.close",
+      "reject": "minecraft:block.dispenser.fail",
+      "stage": "minecraft:block.piston.extend",
+      "start": "minecraft:block.beacon.power_select",
+      "finish": "minecraft:block.beacon.activate",
+      "abort": "minecraft:block.piston.contract"
+    }
+  },
+  "reveal": "plates",
+  "decor": [
+    {
+      "sprite": "feedback:skin/suit/brace_tl",
+      "anchor": "top_left",
+      "x": 0,
+      "y": 0,
+      "w": 18,
+      "h": 18,
+      "heat": false
+    },
+    {
+      "sprite": "feedback:skin/suit/brace_tr",
+      "anchor": "top_right",
+      "x": 0,
+      "y": 0,
+      "w": 18,
+      "h": 18,
+      "heat": false
+    },
+    {
+      "sprite": "feedback:skin/suit/brace_bl",
+      "anchor": "bottom_left",
+      "x": 0,
+      "y": 0,
+      "w": 18,
+      "h": 18,
+      "heat": false
+    },
+    {
+      "sprite": "feedback:skin/suit/brace_br",
+      "anchor": "bottom_right",
+      "x": 0,
+      "y": 0,
+      "w": 18,
+      "h": 18,
+      "heat": false
+    },
+    {
+      "sprite": "feedback:skin/suit/servo",
+      "anchor": "top_right",
+      "x": -9,
+      "y": 8,
+      "w": 34,
+      "h": 14,
+      "heat": false
+    }
+  ]
+}
