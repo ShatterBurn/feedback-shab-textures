@@ -42,7 +42,7 @@
       "sprite": "feedback:skin/wood/hinge",
       "anchor": "top_right",
       "x": -8,
-      "y": 8,
+      "y": -8,
       "w": 44,
       "h": 14,
       "heat": false
