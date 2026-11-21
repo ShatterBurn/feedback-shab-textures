@@ -1,9 +1,9 @@
 {
   "parent": "minecraft:block/block",
   "textures": {
-    "copper": "feedback:block/copper_sheet",
+    "copper": "feedback:block/bronze_sheet",
     "bronze": "feedback:block/bronze_sheet",
-    "particle": "feedback:block/copper_sheet",
+    "particle": "feedback:block/bronze_sheet",
     "baked": "feedback:block/clutch_driven_faces"
   },
   "elements": [

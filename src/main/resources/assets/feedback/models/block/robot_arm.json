@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:block/block",
   "textures": {
-    "copper": "feedback:block/copper_sheet",
+    "copper": "feedback:block/steel_sheet",
     "wire": "feedback:block/copper_winding",
     "string": "feedback:block/string_winding",
     "lamp": "feedback:block/robot_lamp",
     "lattice": "feedback:block/robot_lattice",
-    "particle": "feedback:block/copper_sheet",
+    "particle": "feedback:block/steel_sheet",
     "baked": "feedback:block/robot_arm_faces"
   },
   "elements": [

@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:block/block",
   "textures": {
-    "case": "feedback:block/copper_sheet",
+    "case": "feedback:block/bronze_sheet",
     "wood": "feedback:block/housing_wood",
     "bronze": "feedback:block/bronze_sheet",
     "front_off": "feedback:block/timer_front",
     "front_on": "feedback:block/timer_front_running",
-    "particle": "feedback:block/copper_sheet",
+    "particle": "feedback:block/bronze_sheet",
     "baked": "feedback:block/timer_faces"
   },
   "elements": [

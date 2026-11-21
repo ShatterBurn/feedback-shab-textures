@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:block/cube_column",
   "textures": {
-    "end": "feedback:block/housing_iron",
-    "side": "feedback:block/housing_iron"
+    "end": "feedback:block/steel_sheet",
+    "side": "feedback:block/steel_sheet"
   }
 }

@@ -2,7 +2,7 @@
   "parent": "minecraft:block/block",
   "textures": {
     "wood": "feedback:block/cog_wood",
-    "copper": "feedback:block/copper_sheet",
+    "copper": "feedback:block/steel_sheet",
     "bronze": "feedback:block/bronze_sheet",
     "particle": "feedback:block/cog_wood",
     "paper": "feedback:block/programmer_top",

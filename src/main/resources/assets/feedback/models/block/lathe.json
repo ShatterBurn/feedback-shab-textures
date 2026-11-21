@@ -2,8 +2,8 @@
   "parent": "minecraft:block/block",
   "render_type": "cutout",
   "textures": {
-    "particle": "feedback:block/housing_iron",
-    "iron": "feedback:block/housing_iron",
+    "particle": "feedback:block/steel_sheet",
+    "iron": "feedback:block/steel_sheet",
     "shaft": "feedback:block/bronze_sheet"
   },
   "elements": [

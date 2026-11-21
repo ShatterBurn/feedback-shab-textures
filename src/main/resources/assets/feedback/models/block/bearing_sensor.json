@@ -1,6 +1,12 @@
 {
-  "parent": "minecraft:block/cube_all",
+  "parent": "minecraft:block/cube",
   "textures": {
-    "all": "feedback:block/block_metal_hepatizon"
+    "north": "feedback:block/sensor_bearing_front",
+    "south": "feedback:block/sensor_bearing_back",
+    "east": "feedback:block/sensor_bearing_side",
+    "west": "feedback:block/sensor_bearing_side",
+    "up": "feedback:block/sensor_bearing_top",
+    "down": "feedback:block/sensor_bottom",
+    "particle": "feedback:block/sensor_bearing_side"
   }
 }
