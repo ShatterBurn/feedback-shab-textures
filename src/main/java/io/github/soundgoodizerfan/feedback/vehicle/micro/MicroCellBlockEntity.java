@@ -338,6 +338,17 @@ public class MicroCellBlockEntity extends BlockEntity implements BlockEntitySubL
         return hosted[index] instanceof io.github.soundgoodizerfan.feedback.core.thermal.HeatSource source ? source : null;
     }
 
+    /** A hosted machine has burnt out: its voxel is emptied and nothing drops. False if {@code machine} is not hosted here. */
+    public boolean burnedOut(net.minecraft.world.level.block.entity.BlockEntity machine) {
+        int i = voxelOf(machine);
+        if (i < 0)
+            return false;
+        releaseHosted(i);
+        set(i, null);
+        commit();
+        return true;
+    }
+
     /** The voxel {@code machine} is hosted in, or -1. */
     public int voxelOf(net.minecraft.world.level.block.entity.BlockEntity machine) {
         for (int i = 0; i < VOXELS; i++)
@@ -393,7 +404,8 @@ public class MicroCellBlockEntity extends BlockEntity implements BlockEntitySubL
         if (be == null)
             return net.minecraft.world.item.ItemStack.EMPTY;
         var item = hostedItems[index] == null ? net.minecraft.world.item.ItemStack.EMPTY : hostedItems[index].copy();
-        if (!item.isEmpty()) {
+        // A wire voxel gives back the fine wire it was drawn from, as it came (its stack is the form, not a cable).
+        if (!item.isEmpty() && !FineHosts.isFineWire(be)) {
             item.applyComponents(be.collectComponents());
             FineHosts.unscaled(item);
         }

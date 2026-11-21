@@ -88,6 +88,8 @@ public final class MicroPlacer {
     /** The block a held voxel stack is made of: the mote's block, or the block item's own. */
     private static Block blockOf(ItemStack held) {
         BlockState mote = MoteItem.state(held);
+        if (FineHosts.isFineWire(held))
+            return FineHosts.fineWireState().getBlock();
         return mote != null ? mote.getBlock() : ((BlockItem) held.getItem()).getBlock();
     }
 
@@ -271,6 +273,9 @@ public final class MicroPlacer {
     @Nullable
     private static BlockState placementState(Player player, ItemStack held, BlockHitResult hit, @Nullable BlockState against,
                                              int tx, int ty, int tz, @Nullable Block as) {
+        // A wire voxel is the whole voxel and joins by adjacency: no placement rule, no arms.
+        if (FineHosts.isFineWire(held) && as == null)
+            return FineHosts.fineWireState();
         BlockPos at = cellOf(tx, ty, tz);
         Vec3 inVoxel = hit.getLocation().scale(N).subtract(tx, ty, tz);
         BlockHitResult asBlock = new BlockHitResult(Vec3.atLowerCornerOf(at).add(inVoxel), hit.getDirection(),

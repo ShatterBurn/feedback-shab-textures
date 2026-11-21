@@ -187,6 +187,9 @@ public class MicroCellRenderer implements BlockEntityRenderer<MicroCellBlockEnti
                         poseStack.translate(-0.5f, -0.5f, -0.5f);
                     }
                     BakedModel model = blocks.getBlockModel(state);
+                    // A wire voxel wears its conductor's colour: the cable's tint reads a block entity at a position, and a voxel has none there.
+                    wireTint = cell.hosted(MicroCellBlockEntity.index(x, y, z)) instanceof io.github.soundgoodizerfan.feedback.machine.cable.CableBlockEntity wire
+                            && wire.material() != null ? 0xFF000000 | io.github.soundgoodizerfan.feedback.modular.type.MaterialColors.of(wire.material()) : 0;
                     BlockState skin = cell.skin(MicroCellBlockEntity.index(x, y, z));
                     Look look = skin == null ? null : looks.computeIfAbsent(skin, k -> lookOf(k, random));
                     for (RenderType type : model.getRenderTypes(state, random, ModelData.EMPTY)) {
@@ -250,12 +253,15 @@ public class MicroCellRenderer implements BlockEntityRenderer<MicroCellBlockEnti
         return out;
     }
 
+    /** The colour the voxel being drawn wears whatever its block's tint says (a wire voxel's conductor), or 0 for none. */
+    private static int wireTint;
+
     private static void draw(VertexConsumer out, PoseStack.Pose pose, BlockColors colors, Level level, BlockPos pos,
                              BlockState state, List<BakedQuad> quads, int light, int overlay) {
         for (BakedQuad quad : quads) {
             float r = 1f, g = 1f, b = 1f;
             if (quad.isTinted()) {
-                int tint = colors.getColor(state, level, pos, quad.getTintIndex());
+                int tint = wireTint != 0 ? wireTint : colors.getColor(state, level, pos, quad.getTintIndex());
                 r = (tint >> 16 & 255) / 255f;
                 g = (tint >> 8 & 255) / 255f;
                 b = (tint & 255) / 255f;

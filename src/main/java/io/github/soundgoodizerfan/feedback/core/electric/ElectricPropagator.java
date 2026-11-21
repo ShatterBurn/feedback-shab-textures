@@ -169,6 +169,8 @@ public final class ElectricPropagator {
     /** The bare wire a bare {@code from} arcs to over an air gap in direction {@code face}, if any (whole blocks only). */
     @Nullable
     private static ElectricNode arcAcross(Level level, ElectricNode from, Direction face) {
+        if (level.getBlockEntity(from.getBlockPos()) instanceof MicroCellBlockEntity cell)
+            return voxelArc(level, cell, from, face);
         if (!from.bare() || level.getBlockEntity(from.getBlockPos()) != from)
             return null;
         BlockPos gap = from.getBlockPos().relative(face);
@@ -184,6 +186,33 @@ public final class ElectricPropagator {
             return false;
         return a.role() == ElectricMember.Role.WIRE || b.role() == ElectricMember.Role.WIRE
                 || a.role() != b.role();
+    }
+
+    /**
+     * The bare wire a bare finespace wire {@code from} arcs to across {@code face}: straight over exactly one empty voxel (in this cell, the
+     * next, or the air of a block with no cell in it), to a bare hosted wire. Never to a whole block's cable, nor to a full voxel.
+     */
+    @Nullable
+    private static ElectricNode voxelArc(Level level, MicroCellBlockEntity cell, ElectricNode from, Direction face) {
+        int voxel = cell.voxelOf(from);
+        if (voxel < 0 || !from.bare())
+            return null;
+        int n = MicroCellBlockEntity.N;
+        BlockPos pos = from.getBlockPos();
+        int x = (voxel & 3) + face.getStepX(), y = (voxel >> 2 & 3) + face.getStepY(), z = (voxel >> 4) + face.getStepZ();
+        BlockPos gap = pos.offset(Math.floorDiv(x, n), Math.floorDiv(y, n), Math.floorDiv(z, n));
+        int gapVoxel = MicroCellBlockEntity.index(Math.floorMod(x, n), Math.floorMod(y, n), Math.floorMod(z, n));
+        x += face.getStepX();
+        y += face.getStepY();
+        z += face.getStepZ();
+        BlockPos beyond = pos.offset(Math.floorDiv(x, n), Math.floorDiv(y, n), Math.floorDiv(z, n));
+        if (!level.isLoaded(gap) || !level.isLoaded(beyond))
+            return null;
+        boolean empty = level.getBlockEntity(gap) instanceof MicroCellBlockEntity between ? between.get(gapVoxel) == null : level.getBlockState(gap).isAir();
+        if (!empty || !(level.getBlockEntity(beyond) instanceof MicroCellBlockEntity far))
+            return null;
+        return far.hosted(MicroCellBlockEntity.index(Math.floorMod(x, n), Math.floorMod(y, n), Math.floorMod(z, n))) instanceof ElectricNode node
+                && node.bare() && !node.isGone() ? node : null;
     }
 
     /** Every live node in the block at {@code pos}: the block entity itself, or each machine a finespace cell hosts. */

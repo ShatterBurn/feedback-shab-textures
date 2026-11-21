@@ -127,8 +127,9 @@ public class CableBlockEntity extends ElectricNode implements ThermalBody, Fitta
         // that carries nothing, which shows on the first current.
         float area = gauge().area();
         baseRating = material.ampacity().orElse(0f) * ElectricMachineTuning.WIRE_AMPS_PER_AMPACITY * area;
-        baseDrop = material.electrical().drop().orElse(0f) * ElectricMachineTuning.CABLE_LOSS_EU_PER_DROP / area;
-        quenchDrop = material.electrical().quenchDrop().map(d -> d * ElectricMachineTuning.CABLE_LOSS_EU_PER_DROP / area).orElse(-1f);
+        float length = gauge().length();
+        baseDrop = material.electrical().drop().orElse(0f) * ElectricMachineTuning.CABLE_LOSS_EU_PER_DROP * length / area;
+        quenchDrop = material.electrical().quenchDrop().map(d -> d * ElectricMachineTuning.CABLE_LOSS_EU_PER_DROP * length / area).orElse(-1f);
         material.thermal().serviceTemperature().ifPresent(tu -> serviceTu = tu.value());
     }
 
@@ -352,7 +353,9 @@ public class CableBlockEntity extends ElectricNode implements ThermalBody, Fitta
             server.sendParticles(ParticleTypes.LARGE_SMOKE, worldPosition.getX() + 0.5,
                     worldPosition.getY() + 0.5, worldPosition.getZ() + 0.5, 8, 0.15, 0.15, 0.15, 0.01);
             server.playSound(null, worldPosition, SoundEvents.FIRE_EXTINGUISH, SoundSource.BLOCKS, 0.5f, 1.4f);
-            server.destroyBlock(worldPosition, false);
+            // A wire in finespace burns out of its voxel, not out of the whole cell.
+            if (!(server.getBlockEntity(worldPosition) instanceof io.github.soundgoodizerfan.feedback.vehicle.micro.MicroCellBlockEntity cell && cell.burnedOut(this)))
+                server.destroyBlock(worldPosition, false);
         }
     }
 

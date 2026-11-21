@@ -26,7 +26,9 @@ public enum CableGauge implements StringRepresentable {
     THIN(ElectricMachineTuning.CABLE_GAUGE_THIN_AREA, 2, 2),
     STANDARD(ElectricMachineTuning.CABLE_GAUGE_STANDARD_AREA, 3, 3),
     HEAVY(ElectricMachineTuning.CABLE_GAUGE_HEAVY_AREA, 4, 4),
-    BUS(ElectricMachineTuning.CABLE_GAUGE_BUS_AREA, 6, 2);
+    BUS(ElectricMachineTuning.CABLE_GAUGE_BUS_AREA, 6, 2),
+    /** A finespace wire voxel: the whole voxel is conductor, and it is a quarter of a block long. */
+    FINE(ElectricMachineTuning.CABLE_GAUGE_FINE_AREA, 8, 8);
 
     public static final Codec<CableGauge> CODEC = StringRepresentable.fromEnum(CableGauge::values);
     public static final StreamCodec<ByteBuf, CableGauge> STREAM_CODEC =
@@ -61,7 +63,13 @@ public enum CableGauge implements StringRepresentable {
             case STANDARD -> ElectricMachineTuning.CABLE_GAUGE_STANDARD_YIELD;
             case HEAVY -> ElectricMachineTuning.CABLE_GAUGE_HEAVY_YIELD;
             case BUS -> ElectricMachineTuning.CABLE_GAUGE_BUS_YIELD;
+            case FINE -> 1;
         };
+    }
+
+    /** How much of a block this gauge's piece is long: what it loses is a block's share of the cable's loss. */
+    public float length() {
+        return this == FINE ? ElectricMachineTuning.CABLE_GAUGE_FINE_LENGTH : 1f;
     }
 
     @Override

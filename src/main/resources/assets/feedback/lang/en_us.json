@@ -888,6 +888,7 @@
   "feedback.cable.gauge.standard": "Standard",
   "feedback.cable.gauge.heavy": "Heavy",
   "feedback.cable.gauge.bus": "Bus bar",
+  "feedback.cable.gauge.fine": "Fine",
   "feedback.tooltip.cable.gauge": "Gauge: %s (%s times the standard cross-section: carries that much more, loses that much less)",
   "block.feedback.fence": "Electrified Fence Post",
   "form.feedback.fence": "%s Fence Post",

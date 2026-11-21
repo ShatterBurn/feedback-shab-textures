@@ -6,7 +6,14 @@ import java.util.Set;
 
 import io.github.soundgoodizerfan.feedback.core.rotation.MicroRotation;
 import io.github.soundgoodizerfan.feedback.machine.bearing.JointPart;
+import io.github.soundgoodizerfan.feedback.machine.cable.CableBlock;
+import io.github.soundgoodizerfan.feedback.machine.cable.CableBlockEntity;
+import io.github.soundgoodizerfan.feedback.machine.cable.CableGauge;
+import io.github.soundgoodizerfan.feedback.machine.cable.CableRecipe;
+import io.github.soundgoodizerfan.feedback.registry.FBlocks;
 import io.github.soundgoodizerfan.feedback.modular.type.Modular;
+import io.github.soundgoodizerfan.feedback.process.Material;
+import io.github.soundgoodizerfan.feedback.process.MaterialIngredient;
 import io.github.soundgoodizerfan.feedback.registry.FDataComponents;
 
 import org.jetbrains.annotations.Nullable;
@@ -47,6 +54,8 @@ public final class FineHosts {
      * replace the cell with its own block.
      */
     public static boolean hostable(ItemStack stack) {
+        if (isFineWire(stack))
+            return true;
         if (!(stack.getItem() instanceof BlockItem item) || !(stack.getItem() instanceof Modular))
             return false;
         var block = item.getBlock();
@@ -54,6 +63,21 @@ public final class FineHosts {
                 && (block instanceof Routed || block.getStateDefinition().getProperties().stream()
                 .allMatch(p -> p instanceof net.minecraft.world.level.block.state.properties.DirectionProperty
                         || p.getValueClass() == net.minecraft.core.Direction.Axis.class));
+    }
+
+    /** A fine wire of a conductor: the stock a wire voxel is drawn from, by its form and its material's ampacity, never by id. */
+    public static boolean isFineWire(ItemStack stack) {
+        return CableRecipe.FINE_WIRE.test(stack);
+    }
+
+    /** A hosted machine that is a finespace wire voxel. */
+    public static boolean isFineWire(BlockEntity machine) {
+        return machine instanceof CableBlockEntity cable && cable.gauge() == CableGauge.FINE;
+    }
+
+    /** The cable block's state for a wire voxel: the whole voxel conductor, no arms. */
+    public static BlockState fineWireState() {
+        return FBlocks.CABLE.get().defaultBlockState().setValue(CableBlock.GAUGE, CableGauge.FINE);
     }
 
     /**
@@ -186,6 +210,9 @@ public final class FineHosts {
             return null;
         be.setLevel(level);
         be.applyComponentsFromItemStack(scaled(stack));
+        // A wire voxel is of the material its fine wire is: found as the cable recipe finds it, not read off a component.
+        if (be instanceof CableBlockEntity wire && wire.material() == null)
+            Material.find(MaterialIngredient.materialsNow(), stack).map(Material.Located::id).ifPresent(wire::setMaterial);
         return be;
     }
 }

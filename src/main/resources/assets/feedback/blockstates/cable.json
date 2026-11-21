@@ -411,6 +411,14 @@
         "model": "feedback:block/cable_arm_bus",
         "x": 90
       }
+    },
+    {
+      "when": {
+        "gauge": "fine"
+      },
+      "apply": {
+        "model": "feedback:block/cable_fine"
+      }
     }
   ]
 }

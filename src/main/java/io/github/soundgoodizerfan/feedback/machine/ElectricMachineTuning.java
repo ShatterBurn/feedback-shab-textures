@@ -49,6 +49,13 @@ public final class ElectricMachineTuning {
             CABLE_GAUGE_HEAVY_AREA = 4f, CABLE_GAUGE_BUS_AREA = 16f;
 
     /**
+     * Placeholder. A finespace wire voxel: one fine wire is a block length of thin conductor (area {@link #CABLE_GAUGE_THIN_AREA}), drawn
+     * into a voxel a quarter of a block long, so the same copper is four times the cross-section ({@code CABLE_GAUGE_THIN_AREA} over
+     * the length) and each voxel loses a quarter of what a block of that cable loses.
+     */
+    public static final float CABLE_GAUGE_FINE_LENGTH = 0.25f, CABLE_GAUGE_FINE_AREA = CABLE_GAUGE_THIN_AREA / CABLE_GAUGE_FINE_LENGTH;
+
+    /**
      * Placeholder. Cables one craft yields, per gauge: three fine wires in a row, three wires in a
      * row, a 2x2 of wires, one plate. Each cable costs its area in wires, so the yield is the
      * recipe's copper over the gauge's area.
