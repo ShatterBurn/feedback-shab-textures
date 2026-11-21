@@ -15,6 +15,8 @@
     "shadow": true
   },
   "slot": "feedback:skin/kiln/slot",
+  "inset": "feedback:skin/kiln/inset",
+  "plaque": "feedback:skin/kiln/plaque",
   "button": {
     "normal": "feedback:skin/kiln/button",
     "hover": "feedback:skin/kiln/button_hover",

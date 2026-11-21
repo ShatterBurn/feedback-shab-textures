@@ -15,6 +15,8 @@
     "shadow": true
   },
   "slot": "feedback:skin/improved_furnace/slot",
+  "inset": "feedback:skin/improved_furnace/inset",
+  "plaque": "feedback:skin/improved_furnace/plaque",
   "button": {
     "normal": "feedback:skin/improved_furnace/button",
     "hover": "feedback:skin/improved_furnace/button_hover",

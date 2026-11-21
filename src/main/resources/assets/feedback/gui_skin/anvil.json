@@ -15,6 +15,8 @@
     "shadow": true
   },
   "slot": "feedback:skin/anvil/slot",
+  "inset": "feedback:skin/anvil/inset",
+  "plaque": "feedback:skin/anvil/plaque",
   "button": {
     "normal": "feedback:skin/anvil/button",
     "hover": "feedback:skin/anvil/button_hover",
