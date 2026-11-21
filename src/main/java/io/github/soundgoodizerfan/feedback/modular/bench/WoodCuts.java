@@ -85,6 +85,32 @@ public final class WoodCuts {
         return Optional.empty();
     }
 
+    /**
+     * Shavings a sawn {@code inputs} of {@code in} sheds: the saw blade's kerf (its thickness against the default one) times
+     * {@link io.github.soundgoodizerfan.feedback.modular.bake.ModularTuning#SAW_SHAVINGS_PER_KERF} per log or plank spent. A
+     * thinner blade wastes less wood and bends more; 0 for a saw that has no blade or no thickness.
+     */
+    public static int kerfShavings(ItemStack saw, ItemStack in, int inputs, Level level) {
+        var design = io.github.soundgoodizerfan.feedback.modular.item.ModularStacks.design(saw);
+        var type = design == null ? null : io.github.soundgoodizerfan.feedback.modular.type.ModularTypes.known(design.type());
+        var part = design == null ? null : design.part("B");
+        var role = type == null ? null : type.roles().get("B");
+        if (part == null || role == null)
+            return 0;
+        return Math.round(role.axis(part, "thickness") * io.github.soundgoodizerfan.feedback.modular.bake.ModularTuning.SAW_SHAVINGS_PER_KERF * inputs);
+    }
+
+    /** The shavings of the wood {@code in} is: its own species' if it is a timber material, else the generic wood's. */
+    public static Optional<Item> shavingOf(ItemStack in) {
+        var located = io.github.soundgoodizerfan.feedback.process.MaterialIngredient.locate(in.getItem())
+                .filter(l -> l.material().traits().contains(io.github.soundgoodizerfan.feedback.process.Material.Trait.WOODY));
+        if (located.isPresent())
+            return located.get().material().item(located.get().id(), "shaving");
+        ResourceLocation wood = io.github.soundgoodizerfan.feedback.Feedback.id("wood");
+        var material = io.github.soundgoodizerfan.feedback.process.MaterialIngredient.materialsNow().get(wood);
+        return material == null ? Optional.empty() : material.item(wood, "shaving");
+    }
+
     private static Ingredient single(List<Ingredient> all) {
         List<Ingredient> some = all.stream().filter(i -> !i.isEmpty()).toList();
         return some.size() == 1 ? some.get(0) : null;

@@ -64,7 +64,11 @@ public enum Operation implements StringRepresentable {
     /** Cutting edge spun and fed axially into a stationary workpiece -- a drill press. */
     DRILL,
     /** Abrasive wheel spun against the workpiece -- a grinding wheel. */
-    GRIND;
+    GRIND,
+    /** A toothed blade drawn through wood across or along the grain, its kerf falling as shavings -- a saw, at a bench or in the hand. */
+    SAW,
+    /** Beating or tumbling a plant against a toothed drum so the grain shakes free of stem and husk -- a thresher. Not a form step: the thresher is the only machine that performs it. */
+    THRESH;
 
     /** By lowercase name. An unknown name is a parse error on that entry, not an exception. */
     public static final Codec<Operation> CODEC = StringRepresentable.fromEnum(Operation::values);
@@ -81,7 +85,7 @@ public enum Operation implements StringRepresentable {
     /** {@code feedback.operation.turn} and friends, for the JEI card and machine tooltips. */
     /** The removal family compiles to a {@link Removal}; everything else to a {@link Deformation}. */
     public boolean removesMaterial() {
-        return this == TURN || this == DRILL || this == GRIND;
+        return this == TURN || this == DRILL || this == GRIND || this == SAW;
     }
 
     public String translationKey() {

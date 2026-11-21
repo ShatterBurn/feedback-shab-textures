@@ -326,6 +326,8 @@ public final class ModularTuning {
     public static final float NOTES_MAX_LEVELS = 2f;
     /** Filing: strokes a file takes before it wears one point (hand tools may always wear). */
     public static final int FILE_STROKES_PER_WEAR = 5;
+    /** Invented. Shavings a log's worth of sawing sheds per unit of blade thickness (the default blade is 1): 2 for a plain saw. */
+    public static final float SAW_SHAVINGS_PER_KERF = 2f;
     /** The share of swarf's volume lost when it melts back at the crucible (oxide and drag-out). */
     public static final float SWARF_REMELT_LOSS = 0.10f;
     /** The share of a whole part's volume lost when it melts back at the crucible: less than filings, which have more surface. */

@@ -519,8 +519,20 @@ public class PartBenchMenu extends AbstractContainerMenu {
 
     /** Whether {@code stack} is what the tool slot takes: a knife at the Prep Table, an axe at the woodworking table, a saw at the stonecutter, a hand hammer elsewhere. */
     public boolean workTool(ItemStack stack) {
-        return !station.usesTool() ? false : dish ? PartBenchBlockEntity.isKnife(stack) : station == Station.WOODWORKING ? stack.is(net.minecraft.tags.ItemTags.AXES) || stack.canPerformAction(net.neoforged.neoforge.common.ItemAbilities.AXE_DIG)
+        return !station.usesTool() ? false : dish ? PartBenchBlockEntity.isKnife(stack) : station == Station.WOODWORKING ? axe(stack) || PartBenchBlockEntity.isSaw(stack)
                 : station == Station.STONECUTTING ? PartBenchBlockEntity.isSaw(stack) : PartBenchBlockEntity.isHammer(stack);
+    }
+
+    private static boolean axe(ItemStack stack) {
+        return stack.is(net.minecraft.tags.ItemTags.AXES) || stack.canPerformAction(net.neoforged.neoforge.common.ItemAbilities.AXE_DIG);
+    }
+
+    /**
+     * Whether the tool in the slot is the one this wood cut takes: an axe strips a log, a saw cuts planks and everything made of them
+     * (the stonecutter's saw cuts on its own rule). A saw's kerf falls as shavings.
+     */
+    private boolean toolFor(WoodCuts.Cut cut) {
+        return station != Station.WOODWORKING || (cut.strip() ? axe(hammer()) : PartBenchBlockEntity.isSaw(hammer()));
     }
 
     /** The types this table's shapes come from: dishes at the Prep Table, every other type (guns included) at the part benches. */
@@ -770,7 +782,7 @@ public class PartBenchMenu extends AbstractContainerMenu {
         if (cutting()) {
             ItemStack in = centreStack();
             if (sawing(level))
-                return hasHammer() ? woodCut(level).filter(w -> in.getCount() >= w.inputs(in)).map(w -> w.result().copy()).orElse(ItemStack.EMPTY)
+                return hasHammer() ? woodCut(level).filter(w -> in.getCount() >= w.inputs(in) && toolFor(w)).map(w -> w.result().copy()).orElse(ItemStack.EMPTY)
                         : ItemStack.EMPTY;
             if (!hasHammer())
                 return ItemStack.EMPTY;
@@ -833,6 +845,10 @@ public class PartBenchMenu extends AbstractContainerMenu {
         if (cutting()) {
             ItemStack in = centreStack().copy();
             Optional<WoodCuts.Cut> saw = sawing(level) ? woodCut(level) : Optional.empty();
+            if (saw.isPresent() && !toolFor(saw.get()))
+                return;
+            // A saw's kerf: read before the tool takes its wear, given back below with the spare planks.
+            int shavings = saw.isPresent() && PartBenchBlockEntity.isSaw(hammer()) ? WoodCuts.kerfShavings(hammer(), in, saw.get().inputs(in), level) : 0;
             // A recipe data stick in the off hand records this cut (the stonecutter alone for now; the other benches call the same with their station id).
             if (station == Station.STONECUTTING) {
                 List<ItemStack> made = cuts(level);
@@ -848,6 +864,8 @@ public class PartBenchMenu extends AbstractContainerMenu {
                 int left = saw.get().leftover(in);
                 if (left > 0)
                     WoodCuts.planksOf(level, in).ifPresent(p -> player.getInventory().placeItemBackInInventory(new ItemStack(p, left)));
+                if (shavings > 0)
+                    WoodCuts.shavingOf(in).ifPresent(s -> player.getInventory().placeItemBackInInventory(new ItemStack(s, shavings)));
                 wearHammer();
             }
             level.playSound(null, pos, saw.isPresent() ? SoundEvents.WOOD_BREAK : SoundEvents.UI_STONECUTTER_TAKE_RESULT, SoundSource.BLOCKS, 0.8f, 1f);
