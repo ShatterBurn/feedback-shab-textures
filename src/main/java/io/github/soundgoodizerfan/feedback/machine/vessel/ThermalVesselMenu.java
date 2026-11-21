@@ -53,7 +53,7 @@ public class ThermalVesselMenu extends AbstractContainerMenu {
 
     /** Client side: the open packet carries the kind's ordinal. */
     public ThermalVesselMenu(int id, Inventory playerInventory, int kindOrdinal) {
-        this(id, playerInventory, new SimpleContainer(ThermalVesselBlockEntity.SLOTS + 1), new SimpleContainerData(3),
+        this(id, playerInventory, new SimpleContainer(ThermalVesselBlockEntity.SLOTS + 1), new SimpleContainerData(6),
                 VesselKind.values()[kindOrdinal]);
     }
 
@@ -65,7 +65,7 @@ public class ThermalVesselMenu extends AbstractContainerMenu {
         super(FMenus.THERMAL_VESSEL.get(), id);
         this.kind = kind;
         checkContainerSize(container, ThermalVesselBlockEntity.SLOTS + 1);
-        checkContainerDataCount(data, 3);
+        checkContainerDataCount(data, 6);
         this.container = container;
         this.data = data;
 
@@ -101,6 +101,20 @@ public class ThermalVesselMenu extends AbstractContainerMenu {
 
     public int getGaugeTu() {
         return data.get(2);
+    }
+
+    /** The rabble's speed in RPM (0 for a vessel without one). */
+    public int rabbleRpm() {
+        return data.get(3);
+    }
+
+    /** The working band of the row being run, RPM: both 0 when the running row names no rabble band. */
+    public int bandMin() {
+        return data.get(4);
+    }
+
+    public int bandMax() {
+        return data.get(5);
     }
 
     @Override

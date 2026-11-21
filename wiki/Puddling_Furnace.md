@@ -21,3 +21,7 @@ It is a furnace in every way except the stirring: nine slots, a fuel slot, a hea
 - Past **1500 Tu** the oxidizer eats the iron and leaves Burnt Iron.
 
 The result is an Iron Bloom with a little slag (*a little slag in the iron*). Shingle it at an [Anvil](Anvil.md#shingling) or put it under a [Mechanical Hammer](Mechanical_Hammer.md).
+
+### The rabble window
+
+Right of the heat gauge, a window shows the stirring rod end-on, turning at the speed of the shaft. It is still when the shaft is stopped. Under it a speed dial marks the working speed band of the recipe being run, with a needle at the rod's speed. The needle is plain inside the band and the warning color outside it, so a charge that is not changing because the rod is stalled or racing shows why on the screen.

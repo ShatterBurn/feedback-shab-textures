@@ -19,6 +19,9 @@ import io.github.soundgoodizerfan.feedback.client.gui.SkinnedScreen;
 
 import io.github.soundgoodizerfan.feedback.client.gui.Specks;
 
+import io.github.soundgoodizerfan.feedback.client.ClientSettings;
+import io.github.soundgoodizerfan.feedback.client.gui.GuiStyle;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.Util;
@@ -81,9 +84,19 @@ public class ThermalVesselScreen extends SkinnedScreen<ThermalVesselMenu> {
         inventoryLabelY = ThermalVesselMenu.INV_Y - 12;
     }
 
+    /** The rabble's rake angle in degrees, this tick and last, so it turns smoothly between ticks. */
+    private float rake, lastRake;
+
+    /** The rabble window, right of the gauge (relative to the panel): the rake end-on, a speed dial under it. */
+    private static final int ROD_X = ThermalVesselMenu.GAUGE_X + 18, ROD_Y = ThermalVesselMenu.GAUGE_Y, ROD_W = 28;
+
     @Override
     protected void containerTick() {
         super.containerTick();
+        if (menu.getKind().rotates()) {
+            lastRake = rake;
+            rake += Math.max(-40f, Math.min(40f, menu.rabbleRpm() * 6f / 20f)); // a turn a second at 60 RPM, stepped so a fast rod does not alias
+        }
         specks.tick(0f);
         int tu = menu.getGaugeTu();
         for (int slot = 0; slot < ThermalVesselBlockEntity.SLOTS; slot++) {
@@ -157,7 +170,40 @@ public class ThermalVesselScreen extends SkinnedScreen<ThermalVesselMenu> {
         Gauge.of(() -> (band + 1f) / BAND_COLORS.length).lead(() -> BAND_COLORS[band]).ticks(BAND_COLORS.length).vertical()
                 .render(graphics, skin, leftPos + ThermalVesselMenu.GAUGE_X, topPos + ThermalVesselMenu.GAUGE_Y,
                         GAUGE_WIDTH, ThermalVesselMenu.GAUGE_HEIGHT);
+        if (menu.getKind().rotates())
+            rabble(graphics, partialTicks);
         inventory(graphics, 8, ThermalVesselMenu.INV_Y);
+    }
+
+    /**
+     * The rabble end-on in the charge, turning at its real speed, and under it a dial: the speed on a scale with the working band of
+     * the running row marked and a needle at the rod's speed. The needle is the accent inside the band and the warning colour outside
+     * it, so a charge that is not changing shows why, in place.
+     */
+    private void rabble(GuiGraphics g, float partial) {
+        int x = leftPos + ROD_X, y = topPos + ROD_Y;
+        skin.inset(g, x, y, ROD_W, ROD_W);
+        int cx = x + ROD_W / 2, cy = y + ROD_W / 2;
+        GuiStyle.disc(g, cx, cy, 11, 0xFF2A1A12); // the charge in the hearth
+        float a = ClientSettings.reduceMotion() ? 0.5f : (float) Math.toRadians(Mth.lerp(partial, lastRake, rake));
+        for (int arm = 0; arm < 2; arm++) {
+            float t = a + arm * Mth.PI;
+            GuiStyle.line(g, cx, cy, cx + Math.round(Mth.cos(t) * 10f), cy + Math.round(Mth.sin(t) * 10f), skin.ink());
+            GuiStyle.line(g, cx + Math.round(Mth.cos(t) * 10f), cy + Math.round(Mth.sin(t) * 10f),
+                    cx + Math.round(Mth.cos(t + 0.9f) * 9f), cy + Math.round(Mth.sin(t + 0.9f) * 9f), skin.ink()); // the rake's tooth
+        }
+        GuiStyle.disc(g, cx, cy, 2, skin.ink());
+
+        int dy = y + ROD_W + 4, dh = 12;
+        skin.inset(g, x, dy, ROD_W, dh);
+        int lo = menu.bandMin(), hi = menu.bandMax(), rpm = Math.abs(menu.rabbleRpm());
+        float span = Math.max(Math.max(hi * 1.5f, rpm * 1.1f), 1f);
+        if (hi > 0)
+            g.fill(x + 1 + Math.round((ROD_W - 2) * lo / span), dy + 1, x + 1 + Math.round((ROD_W - 2) * hi / span), dy + dh - 1,
+                    0x60000000 | skin.accent() & 0xFFFFFF);
+        int nx = x + 1 + Math.min(ROD_W - 3, Math.round((ROD_W - 2) * rpm / span));
+        boolean inside = hi <= 0 || rpm >= lo && rpm <= hi;
+        g.fill(nx, dy + 1, nx + 1, dy + dh - 1, inside ? skin.ink() : skin.warn());
     }
 
     /**

@@ -120,7 +120,7 @@ public class ThermalVesselBlockEntity extends ThermalVesselCore
 
     private final VesselKind kind;
     /** Fuel-left, fuel-duration, temperature (whole Tu) -- what the screen actually needs. */
-    private final ContainerData data = new SimpleContainerData(3);
+    private final ContainerData data = new SimpleContainerData(6);
 
     public ThermalVesselBlockEntity(BlockPos pos, BlockState state, VesselKind kind) {
         super(FBlockEntities.THERMAL_VESSEL.get(), pos, state);
@@ -268,6 +268,11 @@ public class ThermalVesselBlockEntity extends ThermalVesselCore
         data.set(0, fuelTicksLeft);
         data.set(1, fuelDuration);
         data.set(2, Math.round(temperature));
+        // The rabble's speed and the working band of the row it serves, for the screen's rod and dial (zero for a vessel with none).
+        var band = currentProcess == null ? java.util.Optional.<ThermalProcess.Rabble>empty() : currentProcess.rabble();
+        data.set(3, Math.round(rabbleRpm()));
+        data.set(4, band.map(b -> Math.round(b.minRpm())).orElse(0));
+        data.set(5, band.map(b -> Math.round(b.maxRpm())).orElse(0));
 
         BlockState state = getBlockState();
         if (state.hasProperty(ThermalVesselBlock.LIT) && state.getValue(ThermalVesselBlock.LIT) != lit)
