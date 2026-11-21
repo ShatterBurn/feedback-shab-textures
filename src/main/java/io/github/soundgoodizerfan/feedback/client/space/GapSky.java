@@ -24,8 +24,8 @@ import org.joml.Vector3f;
 
 /**
  * The Gap's sky, drawn in place of vanilla's: a hard square sun, a dense starfield with a milky band, the Overworld's atmosphere as a
- * limb glow below the horizon, and the destination planets at fixed bearings: the sun a flat pixel-art square as vanilla draws its sun, each planet a sphere wrapped in a
- * hand-drawn bird's-eye map ({@code textures/environment/gap/}) and lit smoothly by the sun. Everything sits on a sphere
+ * limb glow below the horizon, and the destination planets at fixed bearings: the sun a flat pixel-art square as vanilla draws its sun, each planet a slowly turning cube, as
+ * most space mods draw them, with a hand-drawn bird's-eye map ({@code textures/environment/gap/}) on its faces. Everything sits on a sphere
  * around the camera, so it costs a few thousand vertices a frame. The explored map plane ({@link GapMapView}) is drawn over the lower
  * glow afterwards, at the chunks' real coordinates.
  * <p>
@@ -62,6 +62,10 @@ final class GapSky {
     private static final float GAS_GIANT_SIZE = 5.5f;
     /** The most its apparent size grows to, so a craft inside the capture sphere sees it fill much of the sky, not all of it. */
     private static final float GROWTH_CAP = 10f;
+    /** Half-width of a planet's cube against its nominal radius: the cube's corners then reach about the radius. */
+    private static final float CUBE_SHARE = 0.8f;
+    /** Radians a planet turns each tick: a full turn in about a minute. */
+    private static final float SPIN = 0.005f;
 
     private static float[] stars; // x, y, z, size, r, g, b, a per star
 
@@ -69,7 +73,7 @@ final class GapSky {
     }
 
     /** Draws the whole sky. {@code view} is the camera's rotation, so directions here are fixed in the world. */
-    static void render(Matrix4f view, Vec3 camera) {
+    static void render(Matrix4f view, Vec3 camera, float time) {
         if (stars == null)
             stars = buildStars();
         RenderSystem.disableDepthTest();
@@ -90,12 +94,12 @@ final class GapSky {
         RenderSystem.defaultBlendFunc();
         RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
         for (Planet p : PLANETS)
-            globe(view, p.texture, dir(p.yaw, p.pitch), p.radius, false);
+            cube(view, p.texture, dir(p.yaw, p.pitch), p.radius * CUBE_SHARE, false, time * SPIN * (1f + p.yaw % 3f / 3f) + p.yaw);
         Vector3d to = EndRoute.planet().sub(camera.x, camera.y, camera.z);
         double away = to.length();
         if (away > 1e-3)
-            globe(view, GAS_GIANT, new Vector3f((float) (to.x / away), (float) (to.y / away), (float) (to.z / away)),
-                    GAS_GIANT_SIZE * (float) Math.min(GROWTH_CAP, SpaceTuning.END_DISTANCE / away), true);
+            cube(view, GAS_GIANT, new Vector3f((float) (to.x / away), (float) (to.y / away), (float) (to.z / away)),
+                    GAS_GIANT_SIZE * CUBE_SHARE * (float) Math.min(GROWTH_CAP, SpaceTuning.END_DISTANCE / away), true, time * SPIN);
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         sprite(view, SUN_TEXTURE, SUN, SUN_SIZE);
 
@@ -198,36 +202,39 @@ final class GapSky {
         BufferUploader.drawWithShader(b.buildOrThrow());
     }
 
+    /** A cube face: its outward normal, and the two edges of its texture (right, up as the map is read). */
+    private static final Vector3f[][] FACES = {
+            { new Vector3f(1, 0, 0), new Vector3f(0, 0, -1), new Vector3f(0, 1, 0) },
+            { new Vector3f(-1, 0, 0), new Vector3f(0, 0, 1), new Vector3f(0, 1, 0) },
+            { new Vector3f(0, 1, 0), new Vector3f(1, 0, 0), new Vector3f(0, 0, -1) },
+            { new Vector3f(0, -1, 0), new Vector3f(1, 0, 0), new Vector3f(0, 0, 1) },
+            { new Vector3f(0, 0, 1), new Vector3f(1, 0, 0), new Vector3f(0, 1, 0) },
+            { new Vector3f(0, 0, -1), new Vector3f(-1, 0, 0), new Vector3f(0, 1, 0) },
+    };
+
     /**
-     * A planet: a sphere of radius {@code radius} at bearing {@code c}, wrapped in {@code texture}, a bird's-eye map (u is longitude, v
-     * latitude) whose centre faces the camera. Each vertex is lit by the sun, smoothly, with a floor so the night side still reads. A
-     * {@code gas} planet is drawn all round, far side first, so its see-through gas shows the far side's islands through it.
+     * A planet: a cube of half-width {@code half} at bearing {@code c}, turning slowly, with {@code texture} (a bird's-eye map with its
+     * own dithered light baked in) on all six faces, each face shaded flat by how square it faces the sun, as Minecraft shades blocks.
+     * A {@code gas} planet is see-through: all six faces are drawn, the far ones first, so its islands show through the gas.
      */
-    private static void globe(Matrix4f m, ResourceLocation texture, Vector3f c, float radius, boolean gas) {
-        Vector3f r = side(c);
-        Vector3f up = new Vector3f(r).cross(c);
+    private static void cube(Matrix4f m, ResourceLocation texture, Vector3f c, float half, boolean gas, float angle) {
+        org.joml.Quaternionf turn = new org.joml.Quaternionf().rotateAxis(angle, new Vector3f(0.3f, 1f, 0.2f).normalize());
         RenderSystem.setShaderTexture(0, texture);
         BufferBuilder b = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
-        int lats = 16, lons = 32;
-        // The far side is the longitudes past a quarter turn; those go first, so the near side lies over them.
         for (int pass = gas ? 0 : 1; pass < 2; pass++)
-            for (int j = 0; j < lons; j++) {
-                float mid = ((j + 0.5f) / lons - 0.5f) * 2f * (float) Math.PI;
-                if ((Math.abs(mid) > Math.PI / 2) == (pass == 1))
+            for (Vector3f[] face : FACES) {
+                Vector3f n = turn.transform(new Vector3f(face[0]));
+                boolean near = n.dot(c) < 0; // the face looks back at the camera
+                if (near != (pass == 1))
                     continue;
-                for (int i = 0; i < lats; i++)
-                    for (int corner = 0; corner < 4; corner++) {
-                        float lon = ((j + (corner == 1 || corner == 2 ? 1 : 0)) / (float) lons - 0.5f) * 2f * (float) Math.PI;
-                        float lat = ((i + (corner >= 2 ? 1 : 0)) / (float) lats - 0.5f) * (float) Math.PI;
-                        float cl = (float) Math.cos(lat);
-                        // The map's centre (longitude 0, latitude 0) is the point nearest the camera, which is back along -c.
-                        Vector3f n = new Vector3f(r).mul(cl * (float) Math.sin(lon)).add(new Vector3f(up).mul((float) -Math.sin(lat)))
-                                .sub(new Vector3f(c).mul(cl * (float) Math.cos(lon)));
-                        float lit = 0.15f + 0.85f * Math.max(0f, n.dot(SUN));
-                        b.addVertex(m, c.x * R + n.x * radius, c.y * R + n.y * radius, c.z * R + n.z * radius)
-                                .setUv((j + (corner == 1 || corner == 2 ? 1 : 0)) / (float) lons, (i + (corner >= 2 ? 1 : 0)) / (float) lats)
-                                .setColor(lit, lit, lit, 1f);
-                    }
+                Vector3f r = turn.transform(new Vector3f(face[1])), u = turn.transform(new Vector3f(face[2]));
+                float lit = 0.45f + 0.55f * Math.max(0f, n.dot(SUN));
+                for (int k = 0; k < 4; k++) {
+                    float sx = k == 1 || k == 2 ? 1f : -1f, sy = k >= 2 ? 1f : -1f;
+                    b.addVertex(m, c.x * R + (n.x + r.x * sx + u.x * sy) * half, c.y * R + (n.y + r.y * sx + u.y * sy) * half,
+                            c.z * R + (n.z + r.z * sx + u.z * sy) * half)
+                            .setUv((sx + 1f) / 2f, (1f - sy) / 2f).setColor(lit, lit, lit, 1f);
+                }
             }
         BufferUploader.drawWithShader(b.buildOrThrow());
     }
