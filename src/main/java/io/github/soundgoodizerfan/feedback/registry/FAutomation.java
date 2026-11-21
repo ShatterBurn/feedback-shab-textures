@@ -149,7 +149,9 @@ public final class FAutomation {
     /** The fish wheel: a water wheel with baskets. */
     public static final DeferredBlock<FishWheelBlock> FISH_WHEEL = BLOCKS.register("fish_wheel",
             () -> new FishWheelBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(2.0f).sound(SoundType.WOOD).noOcclusion()));
-    public static final DeferredItem<BlockItem> FISH_WHEEL_ITEM = ITEMS.registerSimpleBlockItem(FISH_WHEEL);
+    /** Carries the water wheel's parts it was made from (see {@code FishWheelRecipe}). */
+    public static final DeferredItem<io.github.soundgoodizerfan.feedback.modular.part.ModularBlockItem> FISH_WHEEL_ITEM = ITEMS.register("fish_wheel",
+            () -> new io.github.soundgoodizerfan.feedback.modular.part.ModularBlockItem(FISH_WHEEL.get(), new net.minecraft.world.item.Item.Properties().stacksTo(1)));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<FishWheelBlockEntity>> FISH_WHEEL_ENTITY =
             BLOCK_ENTITIES.register("fish_wheel", () -> BlockEntityType.Builder.of(FishWheelBlockEntity::new, FISH_WHEEL.get()).build(null));
 

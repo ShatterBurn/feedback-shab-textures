@@ -88,6 +88,11 @@ public class FRecipes {
             GEAR = SERIALIZERS.register("gear",
                     () -> new SimpleCraftingRecipeSerializer<>(io.github.soundgoodizerfan.feedback.combat.gear.GearRecipe::new));
 
+    /** A creel over a water wheel -> a fish wheel carrying that wheel's parts and figures. */
+    public static final DeferredHolder<RecipeSerializer<?>, SimpleCraftingRecipeSerializer<io.github.soundgoodizerfan.feedback.machine.fishwheel.FishWheelRecipe>>
+            FISH_WHEEL = SERIALIZERS.register("fish_wheel",
+                    () -> new SimpleCraftingRecipeSerializer<>(io.github.soundgoodizerfan.feedback.machine.fishwheel.FishWheelRecipe::new));
+
     /** One plate and one rod of one diamagnetic material -> a levitation sleeve in that material. */
     public static final DeferredHolder<RecipeSerializer<?>, SimpleCraftingRecipeSerializer<io.github.soundgoodizerfan.feedback.machine.levitation.LevitationSleeveRecipe>>
             LEVITATION_SLEEVE = SERIALIZERS.register("levitation_sleeve",

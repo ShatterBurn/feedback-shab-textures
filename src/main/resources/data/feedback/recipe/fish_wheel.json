@@ -1,16 +1,4 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
-  "key": {
-    "C": { "item": "feedback:creel" },
-    "W": { "item": "feedback:water_wheel" }
-  },
-  "pattern": [
-    "C",
-    "W"
-  ],
-  "result": {
-    "count": 1,
-    "id": "feedback:fish_wheel"
-  }
+  "type": "feedback:fish_wheel",
+  "category": "misc"
 }

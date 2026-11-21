@@ -50,6 +50,7 @@ final class CodeRecipeExamples {
         crafting.addExtension(io.github.soundgoodizerfan.feedback.machine.pyro.PyroPlateRecipe.class, new ElectronicsCrafting.ExtensionOf<>(ext));
         crafting.addExtension(io.github.soundgoodizerfan.feedback.machine.levitation.LevitationSleeveRecipe.class, new ElectronicsCrafting.ExtensionOf<>(ext));
         crafting.addExtension(io.github.soundgoodizerfan.feedback.machine.bearing.CouplingSleeveRecipe.class, new ElectronicsCrafting.ExtensionOf<>(ext));
+        crafting.addExtension(io.github.soundgoodizerfan.feedback.machine.fishwheel.FishWheelRecipe.class, new ElectronicsCrafting.ExtensionOf<>(ext));
         crafting.addExtension(io.github.soundgoodizerfan.feedback.process.TorchRecipe.class, new ElectronicsCrafting.ExtensionOf<>(ext));
         crafting.addExtension(io.github.soundgoodizerfan.feedback.weapon.MagazineLoadRecipe.class, new ElectronicsCrafting.ExtensionOf<>(ext));
         crafting.addExtension(io.github.soundgoodizerfan.feedback.process.FoodSaltingRecipe.class, new ElectronicsCrafting.ExtensionOf<>(ext));
@@ -213,6 +214,11 @@ final class CodeRecipeExamples {
         });
         if (!sleevePlates.isEmpty())
             out.add(holder("levitation_sleeve", List.of(sleevePlates, sleeveRods), 2, 1, sleeves));
+
+        // Fish wheel: a creel over a water wheel; the wheel's parts and figures carry over.
+        out.add(holder("fish_wheel", List.of(List.of(new ItemStack(io.github.soundgoodizerfan.feedback.registry.FAutomation.CREEL_ITEM.get())),
+                List.of(new ItemStack(FModular.WATER_WHEEL.get()))), 1, 2,
+                List.of(new ItemStack(io.github.soundgoodizerfan.feedback.registry.FAutomation.FISH_WHEEL_ITEM.get()))));
 
         // Coupling sleeve: a plate and a rod of one metal with a yield strength.
         List<ItemStack> couplingPlates = new ArrayList<>(), couplingRods = new ArrayList<>(), couplings = new ArrayList<>();

@@ -58,7 +58,7 @@ Place it so it sits in a body of water; a puddle catches nothing. Every couple o
 
 A Water Wheel with baskets on its blades. It turns in a current as any wheel does, gives half the power, and catches fish while it turns.
 
-Craft it with a [Creel](#creel) directly above a Water Wheel. Place and drive it like a Water Wheel; where the Water Wheel is a bucketed drum, it is a spar carrying two scoop baskets on a small frame. It draws a catch from the same fish the water gives a rod, never treasure, and more blades in the current catch faster. An empty hand empties the baskets, and a hopper can take from them. A full basket stops the catch, not the wheel.
+Craft it with a [Creel](#creel) directly above a Water Wheel, one column and two rows. The Fish Wheel is built on that Water Wheel: it has the same rim material, addons and tooltip figures, and keeps them when you break it and pick it up. Place and drive it like a Water Wheel; where the Water Wheel is a bucketed drum, it is a spar carrying two scoop baskets on a small frame. It draws a catch from the same fish the water gives a rod, never treasure, and more blades in the current catch faster. An empty hand empties the baskets, and a hopper can take from them. A full basket stops the catch, not the wheel.
 
 ## Attunements
 

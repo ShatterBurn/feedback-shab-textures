@@ -6,7 +6,16 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "feedback:fish_wheel"
+          "name": "feedback:fish_wheel",
+          "functions": [
+            {
+              "function": "minecraft:copy_components",
+              "source": "block_entity",
+              "include": [
+                "feedback:block_figures"
+              ]
+            }
+          ]
         }
       ],
       "conditions": [
