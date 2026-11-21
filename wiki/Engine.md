@@ -29,7 +29,7 @@ The pistons' metal decides how fast the engine can rev. **Light, strong metals r
 
 ## Building it
 
-Make the five parts (a block, a piston set, a crankshaft, a cylinder head and a spark plug, each from ingots or plate of the metal you chose, each with a fixed standard lining, valve, ring or insulator material that is never picked) at the [Smithing Table](Smithing_Table.md), then assemble them at the [Engineering Table](Engineering_Table.md): the five parts in the grid, two [fasteners](Fasteners.md) in the fastener slots, and the **Engine Blueprint** in the blueprint slot to judge the fit against your drawing. The Engine comes out with the bore and stroke of its parts, and the blueprint is kept.
+Make the five parts (a block, a piston set, a crankshaft, a cylinder head and a spark plug, each from stock of the metal you chose (the block from any lump, the crankshaft from a lump or a long piece), each with a fixed standard lining, valve, ring or insulator material that is never picked) at the [Smithing Table](Smithing_Table.md), then assemble them at the [Engineering Table](Engineering_Table.md): the five parts in the grid, two [fasteners](Fasteners.md) in the fastener slots, and the **Engine Blueprint** in the blueprint slot to judge the fit against your drawing. The Engine comes out with the bore and stroke of its parts, and the blueprint is kept.
 
 ## The spark plug
 
