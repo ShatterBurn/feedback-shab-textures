@@ -1,0 +1,60 @@
+{
+  "colours": {
+    "ink": "#E6E9EC",
+    "dim": "#9AA2AA",
+    "accent": "#FFC66A",
+    "warn": "#FF5A44",
+    "well": "#0D0F11",
+    "trim": "#AEB8C2",
+    "plate": "#3A4046"
+  },
+  "panel": {
+    "sprite": "feedback:skin/anvil/tile",
+    "wash": "#68101418",
+    "frame": "feedback:skin/anvil/frame",
+    "shadow": true
+  },
+  "slot": "feedback:skin/anvil/slot",
+  "button": {
+    "normal": "feedback:skin/anvil/button",
+    "hover": "feedback:skin/anvil/button_hover",
+    "down": "feedback:skin/anvil/button_down",
+    "off": "feedback:skin/anvil/button_off",
+    "primary": "feedback:skin/anvil/button_primary",
+    "primary_hover": "feedback:skin/anvil/button_primary"
+  },
+  "sounds": {
+    "click": "minecraft:block.anvil.place",
+    "open": "minecraft:block.anvil.place",
+    "close": "minecraft:block.anvil.hit",
+    "cues": {
+      "seat": "minecraft:block.anvil.place",
+      "reject": "minecraft:block.anvil.land",
+      "stage": "minecraft:block.anvil.hit",
+      "start": "minecraft:block.anvil.place",
+      "finish": "minecraft:block.anvil.use",
+      "abort": "minecraft:block.anvil.break"
+    }
+  },
+  "reveal": "none",
+  "decor": [
+    {
+      "sprite": "feedback:skin/anvil/strap",
+      "anchor": "top_right",
+      "x": -9,
+      "y": 9,
+      "w": 38,
+      "h": 9,
+      "heat": false
+    },
+    {
+      "sprite": "feedback:skin/anvil/strap_side",
+      "anchor": "right",
+      "x": 0,
+      "y": 30,
+      "w": 8,
+      "h": 36,
+      "heat": false
+    }
+  ]
+}

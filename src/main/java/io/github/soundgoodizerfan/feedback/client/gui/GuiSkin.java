@@ -513,65 +513,7 @@ public abstract class GuiSkin {
      * old masonry and not as a block face. No trim, no hardware; buttons are cut slabs. It opens
      * and closes with no ceremony. Vanilla's cobblestone is drawn in place, not copied.
      */
-    public static final GuiSkin STONE = new GuiSkin("STONE", 0xFFDCD6C8, 0xFF9C968A, 0xFFFFB05A, 0xFFFF6A50, 0xFF161411, 0x50FFFFFF, 0xFF3A3630) {
-        private static final ResourceLocation COBBLE = ResourceLocation.withDefaultNamespace("textures/block/cobblestone.png");
-        private static final int MORTAR = 0xFF14120F;
-
-        /** Cobblestone tiled over a box, then washed toward grey so its contrast drops and it darkens. */
-        private static void masonry(GuiGraphics g, int x, int y, int w, int h, int wash) {
-            g.blit(COBBLE, x, y, 0, 0, w, h, 16, 16);
-            g.fill(x, y, x + w, y + h, wash);
-        }
-
-        @Override
-        public void panel(GuiGraphics g, int x, int y, int w, int h) {
-            g.fill(x + 3, y + 4, x + w + 3, y + h + 4, 0x60000000);
-            g.fill(x, y, x + w, y + h, MORTAR);
-            masonry(g, x + 1, y + 1, w - 2, h - 2, 0xB0262320);
-            g.fill(x + 1, y + 1, x + w - 1, y + 2, 0x18FFFFFF);
-            g.fill(x + 1, y + h - 2, x + w - 1, y + h - 1, 0x50000000);
-        }
-
-        @Override
-        public void slot(GuiGraphics g, int x, int y) {
-            g.fill(x - 1, y - 1, x + 17, y + 17, 0xFF161411);
-            g.fill(x - 1, y - 1, x + 17, y, 0xFF000000);
-            g.fill(x - 1, y - 1, x, y + 17, 0xFF000000);
-            g.fill(x - 1, y + 16, x + 17, y + 17, 0x28FFFFFF);
-            g.fill(x + 16, y - 1, x + 17, y + 17, 0x28FFFFFF);
-        }
-
-        @Override
-        void button(GuiGraphics g, int x, int y, int w, int h, Component label, float glow, boolean down, boolean active,
-                    boolean primary) {
-            int wash = !active ? 0xD0201E1B : lerp(primary ? 0x98402A1C : 0x98262320, 0x60302C28, glow);
-            int text = !active ? 0xFF6E6A62 : primary ? lerp(0xFFE8C090, 0xFFFFD8A0, glow) : lerp(dim(), ink(), glow);
-            g.fill(x, y, x + w, y + h, MORTAR);
-            masonry(g, x + 1, y + 1, w - 2, h - 2, wash);
-            if (!down && active) {
-                g.fill(x + 1, y + 1, x + w - 1, y + 2, 0x28FFFFFF);
-                g.fill(x + 1, y + h - 2, x + w - 1, y + h - 1, 0x40000000);
-            }
-            var font = Minecraft.getInstance().font;
-            int o = down ? 1 : 0;
-            g.drawString(font, label, x + (w - font.width(label)) / 2 + o, y + (h - 8) / 2 + o, text, false);
-        }
-
-        @Override
-        public SoundEvent click() {
-            return SoundEvents.STONE_BUTTON_CLICK_ON;
-        }
-
-        @Override
-        public SoundEvent open() {
-            return SoundEvents.STONE_PLACE;
-        }
-
-        @Override
-        public SoundEvent close() {
-            return SoundEvents.STONE_HIT;
-        }
-    };
+    public static final GuiSkin STONE = new SpriteSkin("stone");
 
     /**
      * The enchanting table's: deep indigo going to violet, a faint noise of glyphs, trimmed in gold leaf with
@@ -773,201 +715,19 @@ public abstract class GuiSkin {
      * trim round the panel and its sunken areas, brick buttons with the primary one a cream calcite slab. Opens and closes with calcite's
      * own sounds and no ceremony. Sunken areas stay dark so the cream text on them reads; the sockets are calcite.
      */
-    public static final GuiSkin BRICK = new GuiSkin("BRICK", 0xFFF4EAD2, 0xFFD2B79A, 0xFFFFE08A, 0xFFFF4A30, 0xFF2B1511, 0xFFE8DCC4, 0xFF8A4632) {
-        private static final ResourceLocation BRICKS = ResourceLocation.withDefaultNamespace("textures/block/bricks.png");
-        private static final int CALCITE = 0xFFE8DCC4, SOCKET = 0xFFD6CBB4;
-
-        /** Vanilla's bricks tiled over a box, then washed so the text on it reads. */
-        private static void masonry(GuiGraphics g, int x, int y, int w, int h, int wash) {
-            g.blit(BRICKS, x, y, 0, 0, w, h, 16, 16);
-            g.fill(x, y, x + w, y + h, wash);
-        }
-
-        @Override
-        public void panel(GuiGraphics g, int x, int y, int w, int h) {
-            g.fill(x + 3, y + 4, x + w + 3, y + h + 4, 0x60000000);
-            g.fill(x, y, x + w, y + h, 0xFF2B1511);
-            masonry(g, x + 1, y + 1, w - 2, h - 2, 0x90200E0A);
-            g.fillGradient(x + 1, y + 1, x + w - 1, y + Math.min(h - 1, 40), 0x20FFFFFF, 0x00FFFFFF);
-            g.fillGradient(x + 1, y + h - 40, x + w - 1, y + h - 1, 0x00000000, 0x40000000);
-            g.renderOutline(x + 3, y + 3, w - 6, h - 6, CALCITE);
-            g.renderOutline(x + 4, y + 4, w - 8, h - 8, 0x50000000);
-        }
-
-        @Override
-        public void slot(GuiGraphics g, int x, int y) {
-            g.fill(x - 1, y - 1, x + 17, y + 17, SOCKET);
-            g.fill(x - 1, y - 1, x + 17, y, 0xFF5A3A2C);
-            g.fill(x - 1, y - 1, x, y + 17, 0xFF5A3A2C);
-            g.fill(x - 1, y + 16, x + 17, y + 17, 0xFFFFF8E8);
-            g.fill(x + 16, y - 1, x + 17, y + 17, 0xFFFFF8E8);
-        }
-
-        @Override
-        void button(GuiGraphics g, int x, int y, int w, int h, Component label, float glow, boolean down, boolean active,
-                    boolean primary) {
-            int text;
-            g.fill(x, y, x + w, y + h, 0xFF2B1511);
-            if (primary && active) {
-                int top = lerp(0xFFE6DAC0, 0xFFFFF4DC, glow), bottom = lerp(0xFFB8AB92, 0xFFD4C7AC, glow);
-                g.fillGradient(x + 1, y + 1, x + w - 1, y + h - 1, down ? bottom : top, down ? top : bottom);
-                text = 0xFF3A1D16;
-            } else {
-                masonry(g, x + 1, y + 1, w - 2, h - 2, !active ? 0xC0201210 : lerp(0x90301410, 0x50301410, glow));
-                text = !active ? 0xFF8E7A6C : ink();
-            }
-            if (!down && active)
-                g.fill(x + 1, y + 1, x + w - 1, y + 2, 0x50FFE8D0);
-            var font = Minecraft.getInstance().font;
-            int o = down ? 1 : 0;
-            g.drawString(font, label, x + (w - font.width(label)) / 2 + o, y + (h - 8) / 2 + o, text, false);
-        }
-
-        @Override
-        public SoundEvent click() {
-            return SoundEvents.CALCITE_HIT;
-        }
-
-        @Override
-        public SoundEvent open() {
-            return SoundEvents.CALCITE_PLACE;
-        }
-
-        @Override
-        public SoundEvent close() {
-            return SoundEvents.CALCITE_HIT;
-        }
-    };
+    public static final GuiSkin BRICK = new SpriteSkin("brick");
 
     /**
      * The woodworking table's: vanilla's oak planks drawn in place under a dark wash, a pale-grain trim round the panel,
      * sockets cut into the board, buttons of darker board with the primary one a bright cut face. Wood's own sounds, no ceremony.
      */
-    public static final GuiSkin WOOD = new GuiSkin("WOOD", 0xFFF2E4C8, 0xFFC4A878, 0xFFFFD27A, 0xFFFF6A50, 0xFF1F160D, 0xFFB08850, 0xFF5A4126) {
-        private static final ResourceLocation PLANKS = ResourceLocation.withDefaultNamespace("textures/block/oak_planks.png");
-        private static final int EDGE = 0xFF1F160D;
-
-        private static void board(GuiGraphics g, int x, int y, int w, int h, int wash) {
-            g.blit(PLANKS, x, y, 0, 0, w, h, 16, 16);
-            g.fill(x, y, x + w, y + h, wash);
-        }
-
-        @Override
-        public void panel(GuiGraphics g, int x, int y, int w, int h) {
-            g.fill(x + 3, y + 4, x + w + 3, y + h + 4, 0x60000000);
-            g.fill(x, y, x + w, y + h, EDGE);
-            board(g, x + 1, y + 1, w - 2, h - 2, 0xA0301E0E);
-            g.fill(x + 1, y + 1, x + w - 1, y + 2, 0x30FFFFFF);
-            g.renderOutline(x + 3, y + 3, w - 6, h - 6, 0x80B08850);
-            g.renderOutline(x + 4, y + 4, w - 8, h - 8, 0x50000000);
-        }
-
-        @Override
-        public void slot(GuiGraphics g, int x, int y) {
-            g.fill(x - 1, y - 1, x + 17, y + 17, 0xFF3A2814);
-            g.fill(x - 1, y - 1, x + 17, y, 0xFF140C05);
-            g.fill(x - 1, y - 1, x, y + 17, 0xFF140C05);
-            g.fill(x - 1, y + 16, x + 17, y + 17, 0x40FFE0A0);
-            g.fill(x + 16, y - 1, x + 17, y + 17, 0x40FFE0A0);
-        }
-
-        @Override
-        void button(GuiGraphics g, int x, int y, int w, int h, Component label, float glow, boolean down, boolean active,
-                    boolean primary) {
-            g.fill(x, y, x + w, y + h, EDGE);
-            if (primary && active) {
-                int top = lerp(0xFFD9A85C, 0xFFF0C878, glow), bottom = lerp(0xFFA87C3C, 0xFFC89850, glow);
-                g.fillGradient(x + 1, y + 1, x + w - 1, y + h - 1, down ? bottom : top, down ? top : bottom);
-            } else
-                board(g, x + 1, y + 1, w - 2, h - 2, !active ? 0xD0140C05 : lerp(0xA0301E0E, 0x60301E0E, glow));
-            int text = !active ? 0xFF7A6A52 : primary ? 0xFF2A1A0A : ink();
-            if (!down && active)
-                g.fill(x + 1, y + 1, x + w - 1, y + 2, 0x40FFE8C0);
-            var font = Minecraft.getInstance().font;
-            int o = down ? 1 : 0;
-            g.drawString(font, label, x + (w - font.width(label)) / 2 + o, y + (h - 8) / 2 + o, text, false);
-        }
-
-        @Override
-        public SoundEvent click() {
-            return SoundEvents.WOODEN_BUTTON_CLICK_ON;
-        }
-
-        @Override
-        public SoundEvent open() {
-            return SoundEvents.WOOD_PLACE;
-        }
-
-        @Override
-        public SoundEvent close() {
-            return SoundEvents.WOOD_HIT;
-        }
-    };
+    public static final GuiSkin WOOD = new SpriteSkin("wood");
 
     /**
      * The anvil's: vanilla's anvil texture drawn in place under a cold wash, a polished-steel trim round the panel (the anvil's
      * worked face), hammer-dimple sockets, buttons of dark cast iron with the primary one bright struck steel. Anvil sounds only.
      */
-    public static final GuiSkin ANVIL = new GuiSkin("ANVIL", 0xFFE6E9EC, 0xFF9AA2AA, 0xFFFFC66A, 0xFFFF5A44, 0xFF0D0F11, 0xFFAEB8C2, 0xFF3A4046) {
-        private static final ResourceLocation IRON = ResourceLocation.withDefaultNamespace("textures/block/anvil.png");
-        private static final int EDGE = 0xFF0D0F11, FACE = 0xFFAEB8C2;
-
-        private static void cast(GuiGraphics g, int x, int y, int w, int h, int wash) {
-            g.blit(IRON, x, y, 0, 0, w, h, 16, 16);
-            g.fill(x, y, x + w, y + h, wash);
-        }
-
-        @Override
-        public void panel(GuiGraphics g, int x, int y, int w, int h) {
-            g.fill(x + 3, y + 4, x + w + 3, y + h + 4, 0x60000000);
-            g.fill(x, y, x + w, y + h, EDGE);
-            cast(g, x + 1, y + 1, w - 2, h - 2, 0xB0101418);
-            g.fillGradient(x + 1, y + 1, x + w - 1, y + Math.min(h - 1, 30), 0x28FFFFFF, 0x00FFFFFF);
-            g.renderOutline(x + 3, y + 3, w - 6, h - 6, FACE);
-            g.renderOutline(x + 4, y + 4, w - 8, h - 8, 0x50000000);
-        }
-
-        @Override
-        public void slot(GuiGraphics g, int x, int y) {
-            g.fill(x - 1, y - 1, x + 17, y + 17, 0xFF1C2024);
-            g.fill(x - 1, y - 1, x + 17, y, 0xFF050607);
-            g.fill(x - 1, y - 1, x, y + 17, 0xFF050607);
-            g.fill(x - 1, y + 16, x + 17, y + 17, 0x50D8E4F0);
-            g.fill(x + 16, y - 1, x + 17, y + 17, 0x50D8E4F0);
-        }
-
-        @Override
-        void button(GuiGraphics g, int x, int y, int w, int h, Component label, float glow, boolean down, boolean active,
-                    boolean primary) {
-            g.fill(x, y, x + w, y + h, EDGE);
-            if (primary && active) {
-                int top = lerp(0xFFA9B4BF, 0xFFD2DCE6, glow), bottom = lerp(0xFF6C7782, 0xFF909BA6, glow);
-                g.fillGradient(x + 1, y + 1, x + w - 1, y + h - 1, down ? bottom : top, down ? top : bottom);
-            } else
-                cast(g, x + 1, y + 1, w - 2, h - 2, !active ? 0xE0080A0C : lerp(0xB0101418, 0x70101418, glow));
-            int text = !active ? 0xFF6A7178 : primary ? 0xFF101418 : ink();
-            if (!down && active)
-                g.fill(x + 1, y + 1, x + w - 1, y + 2, 0x50FFFFFF);
-            var font = Minecraft.getInstance().font;
-            int o = down ? 1 : 0;
-            g.drawString(font, label, x + (w - font.width(label)) / 2 + o, y + (h - 8) / 2 + o, text, false);
-        }
-
-        @Override
-        public SoundEvent click() {
-            return SoundEvents.ANVIL_PLACE;
-        }
-
-        @Override
-        public SoundEvent open() {
-            return SoundEvents.ANVIL_PLACE;
-        }
-
-        @Override
-        public SoundEvent close() {
-            return SoundEvents.ANVIL_HIT;
-        }
-    };
+    public static final GuiSkin ANVIL = new SpriteSkin("anvil");
 
     /**
      * The smoker's: smoke-cured hickory, dark and warm. Broad boards with seams and grain, soot gathering at the top, a low

@@ -1,0 +1,60 @@
+{
+  "colours": {
+    "ink": "#DCD6C8",
+    "dim": "#9C968A",
+    "accent": "#FFB05A",
+    "warn": "#FF6A50",
+    "well": "#161411",
+    "trim": "#50FFFFFF",
+    "plate": "#3A3630"
+  },
+  "panel": {
+    "sprite": "feedback:skin/stone/tile",
+    "wash": "#60262320",
+    "frame": "feedback:skin/stone/frame",
+    "shadow": true
+  },
+  "slot": "feedback:skin/stone/slot",
+  "button": {
+    "normal": "feedback:skin/stone/button",
+    "hover": "feedback:skin/stone/button_hover",
+    "down": "feedback:skin/stone/button_down",
+    "off": "feedback:skin/stone/button_off",
+    "primary": "feedback:skin/stone/button_primary",
+    "primary_hover": "feedback:skin/stone/button_primary"
+  },
+  "sounds": {
+    "click": "minecraft:block.stone_button.click_on",
+    "open": "minecraft:block.stone.place",
+    "close": "minecraft:block.stone.hit",
+    "cues": {
+      "seat": "minecraft:block.stone.place",
+      "reject": "minecraft:block.stone.hit",
+      "stage": "minecraft:ui.stonecutter.select_recipe",
+      "start": "minecraft:block.grindstone.use",
+      "finish": "minecraft:ui.stonecutter.take_result",
+      "abort": "minecraft:block.stone.break"
+    }
+  },
+  "reveal": "none",
+  "decor": [
+    {
+      "sprite": "feedback:skin/stone/keystone",
+      "anchor": "top_right",
+      "x": -26,
+      "y": 4,
+      "w": 24,
+      "h": 18,
+      "heat": false
+    },
+    {
+      "sprite": "feedback:skin/stone/moss",
+      "anchor": "top_right",
+      "x": 0,
+      "y": 0,
+      "w": 24,
+      "h": 22,
+      "heat": false
+    }
+  ]
+}

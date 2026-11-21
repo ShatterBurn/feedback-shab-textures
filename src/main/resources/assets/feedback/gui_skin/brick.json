@@ -1,0 +1,60 @@
+{
+  "colours": {
+    "ink": "#F4EAD2",
+    "dim": "#D2B79A",
+    "accent": "#FFE08A",
+    "warn": "#FF4A30",
+    "well": "#2B1511",
+    "trim": "#E8DCC4",
+    "plate": "#8A4632"
+  },
+  "panel": {
+    "sprite": "feedback:skin/brick/tile",
+    "wash": "#802B1210",
+    "frame": "feedback:skin/brick/frame",
+    "shadow": true
+  },
+  "slot": "feedback:skin/brick/slot",
+  "button": {
+    "normal": "feedback:skin/brick/button",
+    "hover": "feedback:skin/brick/button_hover",
+    "down": "feedback:skin/brick/button_down",
+    "off": "feedback:skin/brick/button_off",
+    "primary": "feedback:skin/brick/button_primary",
+    "primary_hover": "feedback:skin/brick/button_primary"
+  },
+  "sounds": {
+    "click": "minecraft:block.calcite.hit",
+    "open": "minecraft:block.calcite.place",
+    "close": "minecraft:block.calcite.hit",
+    "cues": {
+      "seat": "minecraft:block.calcite.place",
+      "reject": "minecraft:block.calcite.hit",
+      "stage": "minecraft:block.calcite.fall",
+      "start": "minecraft:block.calcite.place",
+      "finish": "minecraft:block.calcite.hit",
+      "abort": "minecraft:block.calcite.break"
+    }
+  },
+  "reveal": "none",
+  "decor": [
+    {
+      "sprite": "feedback:skin/brick/lintel",
+      "anchor": "top_right",
+      "x": -9,
+      "y": 8,
+      "w": 46,
+      "h": 14,
+      "heat": false
+    },
+    {
+      "sprite": "feedback:skin/brick/lamp",
+      "anchor": "top_right",
+      "x": 0,
+      "y": 76,
+      "w": 16,
+      "h": 30,
+      "heat": false
+    }
+  ]
+}

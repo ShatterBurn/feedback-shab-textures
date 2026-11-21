@@ -1,0 +1,51 @@
+{
+  "colours": {
+    "ink": "#F2E4C8",
+    "dim": "#C4A878",
+    "accent": "#FFD27A",
+    "warn": "#FF6A50",
+    "well": "#1F160D",
+    "trim": "#B08850",
+    "plate": "#5A4126"
+  },
+  "panel": {
+    "sprite": "feedback:skin/wood/tile",
+    "wash": "#90301E0E",
+    "frame": "feedback:skin/wood/frame",
+    "shadow": true
+  },
+  "slot": "feedback:skin/wood/slot",
+  "button": {
+    "normal": "feedback:skin/wood/button",
+    "hover": "feedback:skin/wood/button_hover",
+    "down": "feedback:skin/wood/button_down",
+    "off": "feedback:skin/wood/button_off",
+    "primary": "feedback:skin/wood/button_primary",
+    "primary_hover": "feedback:skin/wood/button_primary"
+  },
+  "sounds": {
+    "click": "minecraft:block.wooden_button.click_on",
+    "open": "minecraft:block.wood.place",
+    "close": "minecraft:block.wood.hit",
+    "cues": {
+      "seat": "minecraft:block.wooden_button.click_on",
+      "reject": "minecraft:block.bamboo_wood.hit",
+      "stage": "minecraft:block.bamboo_wood_button.click_on",
+      "start": "minecraft:block.chest.open",
+      "finish": "minecraft:block.bamboo_wood.place",
+      "abort": "minecraft:block.chest.close"
+    }
+  },
+  "reveal": "none",
+  "decor": [
+    {
+      "sprite": "feedback:skin/wood/hinge",
+      "anchor": "top_right",
+      "x": -8,
+      "y": 8,
+      "w": 44,
+      "h": 14,
+      "heat": false
+    }
+  ]
+}
