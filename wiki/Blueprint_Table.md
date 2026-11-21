@@ -171,6 +171,10 @@ A blueprint is a **drawn fit**: a specification that the [Engineering Table](Eng
 
 A blueprint comes from the Print button, a copy, a villager or a chest, or from taking a complex item apart on the Treatise tab of the Engineering Table with blank paper in the blank slot, which writes a blueprint of its design.
 
+### Fine blueprints
+
+A drawing of a machine that a [finespace](Finespace.md#machines-in-finespace) cell can hold (a crucible, boiler, burner, lamp, electromagnet, pump, flywheel, heat exchanger, thermal store and the like) has a **Finespace** toggle at the top right of the canvas. Turned on, the parts list and the part icons show each part's count divided by 4, rounded up, at least 1, and the printed sheet is marked **Fine**. Its tooltip reads "Fine: a quarter of the parts, for finespace". The [Engineering Table](Engineering_Table.md#fine-builds) builds a Fine machine from those counts.
+
 Operators can make a blueprint of the item in their hand with `/feedback blueprint`; it works on any modular item that is not itself a blueprint.
 
 ## Naming, credit and the checklist

@@ -99,6 +99,8 @@ Only a [Rotation Adapter](Rotation_Adapter.md) joins rotation in finespace to fu
 
 Any modular machine item, such as a dynamotor, thruster, jet, gas tank, heat exchanger, water wheel or gas centrifuge, can be a voxel. Right-click an existing finespace cell with the machine, or a block whose neighbor across the face you click is a finespace cell, so a machine can sit against a block. It takes one voxel, and that voxel is the machine: the design it was built with, drawn at a quarter of a block. A thruster in a voxel pushes its body. One machine item pays for one voxel.
 
+A **Fine build** is the same machine made from a quarter of the parts: draw it with the Finespace toggle on the [Blueprint Table](Blueprint_Table.md#fine-blueprints) and build it at the [Engineering Table](Engineering_Table.md#fine-builds). It stands only in finespace, and mining its voxel returns the Fine item.
+
 The machine is scaled to a voxel's volume when placed. Figures that follow volume are a 64th of the full-size machine: mass, power, force, burn, capacity, tank, flow, push, pull, lift, current, supply, stored energy, slots, heat, work, intake, leak and seep. Rotational inertia is a 1024th. Figures that belong to the material, such as temperatures, speeds, efficiencies and voltage bands, stay as built.
 
 Mine the voxel to get the machine back as an item with its figures as built. Breaking the cell or replacing the voxel drops it.

@@ -73,6 +73,12 @@ Three things move them. The **fasteners** (a complex type spends them): quality 
 
 A [blueprint](Blueprint_Table.md#what-a-blueprint-is-for) is a drawn fit. Parts of a material inside the drawn properties fit clean; any other material still builds, and the item is marked **off the drawing**. Each part also has **axes** (a bore, a length). Hand-fitted parts may be off their mate by 20% of the axis range before the joint takes a fit flaw; parts built to a blueprint may be off the drawing by 5%. Past that the item takes a flaw: looser joints and, for a gun, a wider spread. Nothing is refused.
 
+## Fine builds
+
+With a **Fine** sheet ([Fine blueprints](Blueprint_Table.md#fine-blueprints)) of a machine type in the blueprint slot, a quarter of the parts, counts as the sheet shows, builds the same machine as a **Fine build**: same design and figures, named "Fine <machine>", with the tooltip "Fine build: stands only in finespace". Full counts with the same sheet build the normal machine. A machine whose counts are all 1 costs the same either way but is still marked Fine.
+
+A Fine build can be placed only as a voxel in [finespace](Finespace.md#machines-in-finespace); a full-size placement is refused with a message. Mining it from a voxel returns the Fine item.
+
 ## Fit tab
 
 Put a finished item in the **Item** slot and up to sixteen extras in the **Attachments** grid, one attachment to a slot: a tip, a pommel, a lining, a spring, a magazine, an addon. **Apply** fits them all, in grid order, each onto the item the last made, so extras that clash are refused as they are one at a time. It is all or nothing, and a hammer in the tool row loses a point. A type with a school needs its volume held first.
