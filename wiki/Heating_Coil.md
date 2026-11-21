@@ -11,7 +11,7 @@ A Heating Coil is a [modular](Tools_and_Weapons.md) block made from one part, a 
 
 A metal that resists current (a high electrical drop, like nichrome) turns more of the current into heat than one that does not. Copper hardly heats; iron heats well.
 
-Recipes that ask for a Heating Coil take any of them.
+The coil takes the color of its element's metal. Recipes that ask for a Heating Coil take any of them.
 
 ## Using it
 

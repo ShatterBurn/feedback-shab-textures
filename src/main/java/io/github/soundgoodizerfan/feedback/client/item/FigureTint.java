@@ -36,11 +36,21 @@ public final class FigureTint {
 
     /** Tint index to the part role it takes its material from, per block. */
     private static Map<Block, String[]> roles() {
-        return Map.of(
-                FBlocks.LEYDEN_JAR.get(), new String[]{"S", "F"},        // 0 the glass, 1 the foil
-                FBlocks.ELECTROMAGNET.get(), new String[]{"S"},          // 0 the core and winding metal
-                FBlocks.LAMP.get(), new String[]{"S"},                   // 0 the whole panel: the filament's colour
-                FBlocks.MODULAR_PISTON.get(), PISTON);                   // 0 the cylinder, 1 the rod
+        return Map.ofEntries(
+                Map.entry(FBlocks.LEYDEN_JAR.get(), new String[]{"S", "F"}),   // 0 the glass, 1 the foil
+                Map.entry(FBlocks.ELECTROMAGNET.get(), new String[]{"S"}),     // 0 the core and winding metal
+                Map.entry(FBlocks.LAMP.get(), new String[]{"S"}),              // 0 the whole panel: the filament's colour
+                Map.entry(FBlocks.MODULAR_PISTON.get(), PISTON),               // 0 the cylinder, 1 the rod
+                Map.entry(FBlocks.GAS_TANK.get(), new String[]{"S"}),          // 0 the tank shell
+                Map.entry(FBlocks.BOILER.get(), new String[]{"S"}),            // 0 the boiler shell
+                Map.entry(FBlocks.COMPRESSOR.get(), new String[]{"S"}),        // 0 the compressor casing, the rotor's metal
+                Map.entry(FBlocks.BURNER.get(), new String[]{"S"}),            // 0 the burner casing, the nozzle's metal
+                Map.entry(FBlocks.GAS_CENTRIFUGE.get(), new String[]{"S"}),    // 0 the centrifuge casing, the rotor's metal
+                Map.entry(FBlocks.HEAT_EXCHANGER.get(), new String[]{"S"}),    // 0 the exchanger core
+                Map.entry(FBlocks.PUMP.get(), new String[]{"S"}),              // 0 the impeller (the intake and outlet faces)
+                Map.entry(FBlocks.HEATING_COIL.get(), new String[]{"S"}),      // 0 the coil element's metal
+                Map.entry(FBlocks.TRAY.get(), new String[]{"S"}),              // 0 the tray deck
+                Map.entry(FBlocks.LINEAR_MOTOR.get(), new String[]{"S"}));     // 0 the motor winding's metal
     }
 
     /** The piston's tint roles: index 0 the cylinder's metal, index 1 the rod's (also the head plate and the rod blocks). */

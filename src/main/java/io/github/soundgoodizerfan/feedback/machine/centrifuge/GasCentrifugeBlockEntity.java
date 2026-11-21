@@ -25,7 +25,12 @@ import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
  * batch advances with the square of the speed (centripetal acceleration), so a faster shaft finishes sooner. The machine holds the
  * feed, the acid and both outputs; it knows only uranium by the material it is made of.
  */
-public class GasCentrifugeBlockEntity extends RotationNode {
+public class GasCentrifugeBlockEntity extends RotationNode implements io.github.soundgoodizerfan.feedback.modular.bake.FigureHolder {
+
+    @Override
+    public io.github.soundgoodizerfan.feedback.modular.bake.FigureStore figures() {
+        return figures;
+    }
 
     private static final ResourceLocation URANIUM = ResourceLocation.fromNamespaceAndPath("feedback", "uranium_ingot");
     private static final ResourceLocation ENRICHED = ResourceLocation.fromNamespaceAndPath("feedback", "uranium_enriched_ingot");

@@ -34,7 +34,7 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandler;
  * reaches for fuel from its neighbours and never filters; a fluid that does not burn just sits there.
  * shortcut: no catch-up across unloaded time, and the air an ordinary fuel burns in is assumed.
  */
-public class BurnerBlockEntity extends BlockEntity implements HeatSource {
+public class BurnerBlockEntity extends BlockEntity implements HeatSource, io.github.soundgoodizerfan.feedback.modular.bake.FigureHolder {
 
     private final HeatedTank fuel = new HeatedTank(VesselTuning.BURNER_TANK_MB, this::setChanged);
     private float owed;
@@ -52,6 +52,22 @@ public class BurnerBlockEntity extends BlockEntity implements HeatSource {
     protected void collectImplicitComponents(net.minecraft.core.component.DataComponentMap.Builder components) {
         super.collectImplicitComponents(components);
         figures.collect(components);
+    }
+
+    @Override
+    public FigureStore figures() {
+        return figures;
+    }
+
+    /** The design rides to the client so the casing takes its nozzle metal's colour. */
+    @Override
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        return saveWithoutMetadata(registries);
+    }
+
+    @Override
+    public net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket getUpdatePacket() {
+        return net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket.create(this);
     }
 
     public BurnerBlockEntity(BlockPos pos, BlockState state) {

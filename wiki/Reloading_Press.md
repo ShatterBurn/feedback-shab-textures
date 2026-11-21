@@ -10,7 +10,7 @@ P R P
 P P P
 ```
 
-P is a Wrought Iron Plate and R is a Wrought Iron Rod. Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 2 screws ([Fasteners](Fasteners.md)). It needs Weapons Treatise II: Firearms ([Treatise](Treatise.md)).
+P is a Wrought Iron Plate and R is a Wrought Iron Rod. Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 2 screws ([Fasteners](Fasteners.md)). It needs Weapons Treatise II: Firearms ([Treatise](Treatise.md)). It looks like an iron frame with a rod through the middle.
 
 ## The screen
 

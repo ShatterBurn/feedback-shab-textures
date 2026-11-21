@@ -34,7 +34,12 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandler;
  * makes with two water sources and a bucket. Lava does not renew, so a pump will not make it
  * from nothing; that is the fluid's own property, not a check on which fluid it is.
  */
-public class PumpBlockEntity extends RotationNode implements io.github.soundgoodizerfan.feedback.machine.Figured, io.github.soundgoodizerfan.feedback.machine.Reachable {
+public class PumpBlockEntity extends RotationNode implements io.github.soundgoodizerfan.feedback.machine.Figured, io.github.soundgoodizerfan.feedback.machine.Reachable, io.github.soundgoodizerfan.feedback.modular.bake.FigureHolder {
+
+    @Override
+    public FigureStore figures() {
+        return figures;
+    }
 
     /** Condition a pump loses per tick turning dry or against a closed line, per unit of speed share, and the least it wears to. Placeholder. */
     private static final float MISUSE_WEAR_PER_TICK = 0.0004f, CONDITION_FLOOR = 0.4f;

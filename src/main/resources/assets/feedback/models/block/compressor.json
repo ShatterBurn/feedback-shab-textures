@@ -1,6 +1,23 @@
 {
-  "parent": "block/cube_all",
+  "parent": "minecraft:block/block",
   "textures": {
-    "all": "feedback:block/metal_alloy_block"
-  }
+    "particle": "feedback:block/compressor_side",
+    "ends": "feedback:block/compressor_end",
+    "sides": "feedback:block/compressor_side"
+  },
+  "elements": [
+    {
+      "name": "shell",
+      "from": [0, 0, 0],
+      "to": [16, 16, 16],
+      "faces": {
+        "north": { "texture": "#sides", "tintindex": 0, "cullface": "north" },
+        "south": { "texture": "#sides", "tintindex": 0, "cullface": "south" },
+        "east": { "texture": "#sides", "tintindex": 0, "cullface": "east" },
+        "west": { "texture": "#sides", "tintindex": 0, "cullface": "west" },
+        "up": { "texture": "#ends", "tintindex": 0, "cullface": "up" },
+        "down": { "texture": "#ends", "tintindex": 0, "cullface": "down" }
+      }
+    }
+  ]
 }

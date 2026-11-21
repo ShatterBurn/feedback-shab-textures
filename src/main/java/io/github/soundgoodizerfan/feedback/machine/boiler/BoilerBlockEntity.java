@@ -64,7 +64,7 @@ import io.github.soundgoodizerfan.feedback.process.ThermalProcessTable;
  * {@link FTuning#BOILER_RELIEF_PU}, below the seep line, so it never reaches the danger line; the
  * price is the steam and a scald. Unfitted, the seams are the only relief.
  */
-public class BoilerBlockEntity extends io.github.soundgoodizerfan.feedback.machine.vessel.ThermalVesselCore implements io.github.soundgoodizerfan.feedback.core.thermal.HeatedTanks, io.github.soundgoodizerfan.feedback.core.hazard.PressureHolder, io.github.soundgoodizerfan.feedback.machine.Reachable {
+public class BoilerBlockEntity extends io.github.soundgoodizerfan.feedback.machine.vessel.ThermalVesselCore implements io.github.soundgoodizerfan.feedback.core.thermal.HeatedTanks, io.github.soundgoodizerfan.feedback.core.hazard.PressureHolder, io.github.soundgoodizerfan.feedback.machine.Reachable, io.github.soundgoodizerfan.feedback.modular.bake.FigureHolder {
 
     /** Away-time bookkeeping: see {@link Catchup}. */
     private final Catchup offline = new Catchup();
@@ -91,6 +91,11 @@ public class BoilerBlockEntity extends io.github.soundgoodizerfan.feedback.machi
     protected void collectImplicitComponents(net.minecraft.core.component.DataComponentMap.Builder components) {
         super.collectImplicitComponents(components);
         figures.collect(components);
+    }
+
+    @Override
+    public FigureStore figures() {
+        return figures;
     }
 
     /** How sound the shell is, 1 as built: it wears above its danger line, and a worn shell's lines are lower ({@code MachineKinds#vessel}). */

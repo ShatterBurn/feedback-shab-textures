@@ -29,7 +29,7 @@ import net.neoforged.neoforge.fluids.FluidStack;
  * line, a climbing chance past it, certain at critical, and the gas goes with it. A flare or a
  * consumer is the safe way down; the hazard is only reached by compressing more in than is drawn off.
  */
-public class GasTankBlockEntity extends BlockEntity implements PressureHolder {
+public class GasTankBlockEntity extends BlockEntity implements PressureHolder, io.github.soundgoodizerfan.feedback.modular.bake.FigureHolder {
 
     private final HeatedTank gas = new HeatedTank(PetrochemTuning.GAS_TANK_MB, this::setChanged);
 
@@ -47,6 +47,22 @@ public class GasTankBlockEntity extends BlockEntity implements PressureHolder {
     protected void collectImplicitComponents(net.minecraft.core.component.DataComponentMap.Builder components) {
         super.collectImplicitComponents(components);
         figures.collect(components);
+    }
+
+    @Override
+    public FigureStore figures() {
+        return figures;
+    }
+
+    /** The design rides to the client so the shell takes its metal's colour. */
+    @Override
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        return saveWithoutMetadata(registries);
+    }
+
+    @Override
+    public net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket getUpdatePacket() {
+        return net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket.create(this);
     }
 
     /** A built tank holds the room its shell was baked with, not the fixed 16000 mB. */

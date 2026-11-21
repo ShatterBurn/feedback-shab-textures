@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "feedback:block/housing_iron"
+    "all": "feedback:block/fume_port"
   }
 }

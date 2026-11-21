@@ -42,6 +42,8 @@ Shock Plate  C C C / P P P
 P wrought iron plate, S stick, C copper plate, X shaft, B bearing, G glass pane, T tube
 ```
 
+Each block looks like its recipe. The Fall Plate is a wrought iron plate on two stick legs. The Fire Plate is an iron plate over a copper element. The Shock Plate is copper contacts over an iron plate. The Crush Head is an iron casing with a shaft in a bearing. The Fume Port is an iron frame round a glass pane with a tube.
+
 The Crush Head is crafted at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 4 screws ([Fasteners](Fasteners.md)); it needs Mechanical Treatise I: Engines, Flywheels and Dynamotors ([Treatise](Treatise.md)).
 
 ```
@@ -50,7 +52,7 @@ L U L
 L L
 ```
 
-The Radiation Source is made at the Engineering Table: L is a Lead Plate and U is a Uranium Ingot. It takes a [hammer](Hammer.md) in the tool row, 4 rivets and Nuclear Treatise I: Reactors and Fuel.
+The Radiation Source is made at the Engineering Table: L is a Lead Plate and U is a Uranium Ingot. It takes a [hammer](Hammer.md) in the tool row, 4 rivets and Nuclear Treatise I: Reactors and Fuel. It looks like a lead plate shell round a uranium core.
 
 ## The shield
 

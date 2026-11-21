@@ -38,7 +38,7 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandler;
  * Run against a line that cannot take more and it surges: condition falls to a floor and never
  * lower. Wear comes only from that misuse, never from running correctly.
  */
-public class CompressorBlockEntity extends RotationNode implements Fittable, io.github.soundgoodizerfan.feedback.machine.Mendable {
+public class CompressorBlockEntity extends RotationNode implements Fittable, io.github.soundgoodizerfan.feedback.machine.Mendable, io.github.soundgoodizerfan.feedback.modular.bake.FigureHolder {
 
     /** At most one {@link AirIntakeFitting}; stateless, so a flag is its whole persistence. */
     private final List<UpgradeFitting> upgrades = new ArrayList<>();
@@ -96,6 +96,11 @@ public class CompressorBlockEntity extends RotationNode implements Fittable, io.
     protected void collectImplicitComponents(net.minecraft.core.component.DataComponentMap.Builder components) {
         super.collectImplicitComponents(components);
         figures.collect(components);
+    }
+
+    @Override
+    public FigureStore figures() {
+        return figures;
     }
 
     public CompressorBlockEntity(BlockPos pos, BlockState state) {

@@ -17,7 +17,23 @@ import net.minecraft.world.level.block.state.BlockState;
  * run feeds it at least half of what it wants; tube blocks beside it read that when they time a hop.
  * Only a capsule with a magnetic plate answers to it (the same property again, spec 6.1).
  */
-public class LinearMotorBlockEntity extends ElectricNode implements io.github.soundgoodizerfan.feedback.machine.Wearing {
+public class LinearMotorBlockEntity extends ElectricNode implements io.github.soundgoodizerfan.feedback.machine.Wearing, io.github.soundgoodizerfan.feedback.modular.bake.FigureHolder {
+
+    @Override
+    public io.github.soundgoodizerfan.feedback.modular.bake.FigureStore figures() {
+        return figures;
+    }
+
+    /** The design rides to the client so the winding takes its metal's colour. */
+    @Override
+    public net.minecraft.nbt.CompoundTag getUpdateTag(net.minecraft.core.HolderLookup.Provider registries) {
+        return saveWithoutMetadata(registries);
+    }
+
+    @Override
+    public net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket getUpdatePacket() {
+        return net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket.create(this);
+    }
 
     private boolean powered;
     /** How sound the winding is, 1 as built: current past what its wire carries wears it, to a floor, and it pushes by it. A ring never breaks. */

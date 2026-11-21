@@ -4,7 +4,7 @@ A shaft-driven machine that separates natural uranium into **Enriched Uranium** 
 
 ## Building it
 
-Draw it at the [Blueprint Table](Blueprint_Table.md) (pick *Gas Centrifuge* in the type row); drawing and assembling it take Nuclear Treatise I: Reactors and Fuel ([Treatise](Treatise.md)). It has one part, the **Centrifuge Rotor**, shaped from plate of a metal (stainless steel by default); the centrifuge is built from it at the Stonecutter. The rotor has one measure, its **radius**, from 10 to 50 cm in steps of 5 (25 by default).
+Draw it at the [Blueprint Table](Blueprint_Table.md) (pick *Gas Centrifuge* in the type row); drawing and assembling it take Nuclear Treatise I: Reactors and Fuel ([Treatise](Treatise.md)). It has one part, the **Centrifuge Rotor**, shaped from plate of a metal (stainless steel by default); the centrifuge is built from it at the Stonecutter. The rotor has one measure, its **radius**, from 10 to 50 cm in steps of 5 (25 by default). The block and its item take the color of the rotor's metal.
 
 ## Using it
 

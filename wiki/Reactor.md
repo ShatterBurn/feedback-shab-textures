@@ -14,6 +14,8 @@ P   P
 
 P is a [Steel Plate](Mechanical_Hammer.md). Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 2 [fasteners](Fasteners.md), holding Nuclear Treatise I: Reactors and Fuel ([Treatise](Treatise.md)).
 
+Its casing is riveted steel plate.
+
 ## Using it
 
 1. **Heat it.** Set it on a [Firebox](Firebox.md), a [Fluid Burner](Fluid_Burner.md), a [Heating Coil](Heating_Coil.md) or lava, like a [Crucible](Crucible.md). It climbs toward the fire's temperature.

@@ -43,7 +43,7 @@ The liquid a tray catches collects in its **draw tank (1,000 mB)** and is pushed
 
 ### Building a tray
 
-A tray is one modular block, the **Column Tray**. Draw it at the [Blueprint Table](Blueprint_Table.md) (pick *Column Tray* in the type row). It has one part, the **Tray Deck**, shaped from plate of a metal; the tray is built from it at the Stonecutter.
+A tray is one modular block, the **Column Tray**. Draw it at the [Blueprint Table](Blueprint_Table.md) (pick *Column Tray* in the type row). It has one part, the **Tray Deck**, shaped from plate of a metal; the tray is built from it at the Stonecutter. The tray takes the color of the deck's metal.
 
 The deck comes in three variants:
 

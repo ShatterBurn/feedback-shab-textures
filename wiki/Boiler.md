@@ -19,7 +19,7 @@ A boiler is a modular build. Draw it at the [Blueprint Table](Blueprint_Table.md
 
 The shell has a ceramic lining as well; it is fixed, costs stock like the rest of the shell and is never picked (see [Composed Parts](Composed_Parts.md)).
 
-Shape the shell from plate of the metal you chose at the [Smithing Table](Smithing_Table.md), then assemble it at the [Engineering Table](Engineering_Table.md): the shell in the grid, two [fasteners](Fasteners.md) in the fastener slots, and the blueprint in the blueprint slot to judge the fit against your drawing. Assembling it takes Chemical Treatise I. The boiler comes out with the shape, wall and metal of the shell, and the blueprint is kept.
+Shape the shell from plate of the metal you chose at the [Smithing Table](Smithing_Table.md), then assemble it at the [Engineering Table](Engineering_Table.md): the shell in the grid, two [fasteners](Fasteners.md) in the fastener slots, and the blueprint in the blueprint slot to judge the fit against your drawing. Assembling it takes Chemical Treatise I. The boiler comes out with the shape, wall and metal of the shell, and the blueprint is kept. The block and its item show riveted tank plating in the color of the shell metal.
 
 The shell sets the pressure the boiler **risks letting go at** (its danger line) and the pressure it **gives way at**. Its seams weep, and a relief valve opens, at pressures that scale with the danger line, so a stronger shell holds steam at a higher pressure before venting.
 

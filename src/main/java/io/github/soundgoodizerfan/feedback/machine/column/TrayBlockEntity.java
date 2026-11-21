@@ -27,7 +27,23 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandler;
  * that in a draw tank and offers it to any fluid handler beside it (the draw port is a pipe). Coke
  * builds on it only from over-temperature, and takes both its efficiency and its flow with it.
  */
-public class TrayBlockEntity extends BlockEntity implements Part {
+public class TrayBlockEntity extends BlockEntity implements Part, io.github.soundgoodizerfan.feedback.modular.bake.FigureHolder {
+
+    @Override
+    public io.github.soundgoodizerfan.feedback.modular.bake.FigureStore figures() {
+        return figures;
+    }
+
+    /** The design rides to the client so the deck takes its metal's colour. */
+    @Override
+    public net.minecraft.nbt.CompoundTag getUpdateTag(net.minecraft.core.HolderLookup.Provider registries) {
+        return saveWithoutMetadata(registries);
+    }
+
+    @Override
+    public net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket getUpdatePacket() {
+        return net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket.create(this);
+    }
 
     @Nullable
     private Structure structure;

@@ -37,7 +37,23 @@ import net.minecraft.world.level.block.state.BlockState;
  * to stand it between -- philosophy 3's "shafts and pipes are still real blocks... a genuine
  * spatial and budgetary puzzle" applied to a wall instead of a pipe.
  */
-public class HeatExchangerBlockEntity extends BlockEntity implements io.github.soundgoodizerfan.feedback.machine.Mendable {
+public class HeatExchangerBlockEntity extends BlockEntity implements io.github.soundgoodizerfan.feedback.machine.Mendable, io.github.soundgoodizerfan.feedback.modular.bake.FigureHolder {
+
+    @Override
+    public FigureStore figures() {
+        return figures;
+    }
+
+    /** The design rides to the client so the core takes its metal's colour. */
+    @Override
+    public net.minecraft.nbt.CompoundTag getUpdateTag(net.minecraft.core.HolderLookup.Provider registries) {
+        return saveWithoutMetadata(registries);
+    }
+
+    @Override
+    public net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket getUpdatePacket() {
+        return net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket.create(this);
+    }
 
 
     private final FigureStore figures = new FigureStore();

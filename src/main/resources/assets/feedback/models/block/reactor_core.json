@@ -1,1 +1,6 @@
-{ "parent": "block/cube_all", "textures": { "all": "feedback:block/metal_alloy_block" } }
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "feedback:block/reactor_core"
+  }
+}

@@ -14,7 +14,7 @@ Draw it at the [Blueprint Table](Blueprint_Table.md) (pick *Heat Exchanger* in t
 
 How fast it carries heat is the tube metal's conductivity times the tube area. Copper tubes at the default area carry what a plain copper exchanger does.
 
-Shape the core from plate of the metal you chose at the [Smithing Table](Smithing_Table.md), then assemble it at the [Engineering Table](Engineering_Table.md): the core in the grid, two [fasteners](Fasteners.md) in the fastener slots, and the Heat Exchanger Blueprint in the blueprint slot to judge the fit against your drawing. The Heat Exchanger comes out with the design of the core, and the blueprint is kept. Its tooltip shows how fast it carries heat ("Carries heat at"). Breaking the block gives the same exchanger back.
+Shape the core from plate of the metal you chose at the [Smithing Table](Smithing_Table.md), then assemble it at the [Engineering Table](Engineering_Table.md): the core in the grid, two [fasteners](Fasteners.md) in the fastener slots, and the Heat Exchanger Blueprint in the blueprint slot to judge the fit against your drawing. The Heat Exchanger comes out with the design of the core, and the blueprint is kept. Its tooltip shows how fast it carries heat ("Carries heat at"). Breaking the block gives the same exchanger back. The block and its item take the color of the core's metal.
 
 ## Tube types
 

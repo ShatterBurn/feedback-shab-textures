@@ -51,7 +51,23 @@ import net.minecraft.world.level.block.state.BlockState;
  * higher band than it is rated for, a resistive element draws more current, and past what its wire carries it wears by the excess
  * ({@link io.github.soundgoodizerfan.feedback.core.electric.ElectricRules#overCurrent}); fed as rated it never does.
  */
-public class CoilBlockEntity extends ElectricNode implements ThermalBody, HeatSource, Wearing {
+public class CoilBlockEntity extends ElectricNode implements ThermalBody, HeatSource, Wearing, io.github.soundgoodizerfan.feedback.modular.bake.FigureHolder {
+
+    @Override
+    public io.github.soundgoodizerfan.feedback.modular.bake.FigureStore figures() {
+        return figures;
+    }
+
+    /** The design rides to the client so the element takes its metal's colour. */
+    @Override
+    public net.minecraft.nbt.CompoundTag getUpdateTag(net.minecraft.core.HolderLookup.Provider registries) {
+        return saveWithoutMetadata(registries);
+    }
+
+    @Override
+    public net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket getUpdatePacket() {
+        return net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket.create(this);
+    }
 
     /** What a built coil keeps of its element's design: the amps it draws, the heat each Eu makes, its heat mass and the hottest it runs unworn ({@code BlockFigures}). */
     private final io.github.soundgoodizerfan.feedback.modular.bake.FigureStore figures = new io.github.soundgoodizerfan.feedback.modular.bake.FigureStore();

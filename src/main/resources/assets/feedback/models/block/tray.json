@@ -1,6 +1,55 @@
 {
-  "parent": "block/cube_all",
+  "parent": "minecraft:block/block",
   "textures": {
-    "all": "minecraft:block/gray_concrete"
-  }
+    "particle": "feedback:block/tray_deck",
+    "side": "feedback:block/tray_deck",
+    "end": "feedback:block/tray_deck"
+  },
+  "elements": [
+    {
+      "name": "body",
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#side",
+          "cullface": "north",
+          "tintindex": 0
+        },
+        "south": {
+          "texture": "#side",
+          "cullface": "south",
+          "tintindex": 0
+        },
+        "east": {
+          "texture": "#side",
+          "cullface": "east",
+          "tintindex": 0
+        },
+        "west": {
+          "texture": "#side",
+          "cullface": "west",
+          "tintindex": 0
+        },
+        "up": {
+          "texture": "#end",
+          "cullface": "up",
+          "tintindex": 0
+        },
+        "down": {
+          "texture": "#end",
+          "cullface": "down",
+          "tintindex": 0
+        }
+      }
+    }
+  ]
 }
