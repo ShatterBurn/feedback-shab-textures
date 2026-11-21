@@ -244,6 +244,8 @@ public record Material(St hardness, Tu minTemperature, Tu maxTemperature,
         ALLOY, FLAMMABLE, FIREPROOF, TRANSPARENT, LUMINOUS,
         /** Gives off light when hot enough to glow (every metal does; other materials opt in). */
         INCANDESCENT, FIBROUS, POROUS, STICKY,
+        /** Timber: grown wood a saw cuts across the grain (a form type's {@code traits} opens {@code shaving} to it; kerf falls as shavings). */
+        WOODY,
         /** An acid or a base: eats a vessel whose corrosion resistance is below {@code HazardTuning.CORROSIVE_BITE} (core/hazard/Corrosion). */
         CORROSIVE,
         /** Carries ions (a dissolved salt, acid or base, or an ionic organic solvent): what a battery's electrolyte must be. Whether it is a water solution is {@code ph}. */

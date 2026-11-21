@@ -3,7 +3,8 @@
   "traits": [],
   "hardness": 1,
   "forms": {
-    "raw": "minecraft:wheat"
+    "raw": "minecraft:wheat",
+    "seed": "minecraft:wheat_seeds"
   },
   "food": {
     "moisture": 0.12,

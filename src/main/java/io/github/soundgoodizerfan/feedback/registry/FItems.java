@@ -232,6 +232,9 @@ public class FItems {
     /** Reads a dish held in the other hand (the profile a villager judges). */
     public static final DeferredItem<io.github.soundgoodizerfan.feedback.item.TastingSpoonItem> TASTING_SPOON = ITEMS.register("tasting_spoon",
             () -> new io.github.soundgoodizerfan.feedback.item.TastingSpoonItem(new Item.Properties()));
+    /** What a thresher leaves of a grain plant: the stem and the husk (materials {@code straw} and {@code chaff}). */
+    public static final DeferredItem<Item> STRAW = ITEMS.registerSimpleItem("straw");
+    public static final DeferredItem<Item> CHAFF = ITEMS.registerSimpleItem("chaff");
     public static final DeferredItem<net.minecraft.world.item.Item> SALT = ITEMS.registerSimpleItem("salt");
     public static final DeferredItem<net.minecraft.world.item.Item> ALUMINA = ITEMS.registerSimpleItem("alumina");
     public static final DeferredItem<net.minecraft.world.item.Item> SILICATE_SLAG = ITEMS.registerSimpleItem("silicate_slag");

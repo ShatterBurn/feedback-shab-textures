@@ -256,7 +256,7 @@ public class FCreativeTabs {
 
     /** Reagents and refined minerals. */
     private static final List<DeferredItem<?>> CHEMICALS = of(FItems.SALT, FItems.SALTPETRE, FItems.SULFUR,
-            FItems.GRAPHITE, FItems.KAOLINITE, FItems.ALUMINA, FItems.HUSK_SAND, FItems.PURIFIED_REDSTONE,
+            FItems.GRAPHITE, FItems.KAOLINITE, FItems.ALUMINA, FItems.STRAW, FItems.CHAFF, FItems.HUSK_SAND, FItems.PURIFIED_REDSTONE,
             FItems.DIAMOND_GRIT, FItems.DIAMOND_SEED);
 
     /** Process intermediates and wastes, in the order the work goes: powders, compacts, blanks, then slags. */
