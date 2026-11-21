@@ -87,13 +87,13 @@ Reads the sheen of passing cargo and sweeps one band (dull, mid or bright) to it
 
 Crushed ore and dust it meets are **separated** instead: it tells the ore from its rock by their sheen. The concentrate is swept off its side, the tailings drop below the cell, and a unit it cannot tell goes on to be tried again. A dirty head separates nothing. Chain readers along a belt to raise the share that gets sorted ([Ore Processing](Ore_Processing.md#separating)).
 
-Crafting: Optical Glass Lens + [Photocell](Sensors.md) + 2 Wrought Iron Plates + a [Basic Electronic Circuit](Basic_Electronic_Circuit.md). Engineering Table, screwdriver, 3 screws, Electrical Treatise III.
+Crafting: Optical Glass Lens + [Photocell](Sensors.md) + 2 Steel Plates + a [Basic Electronic Circuit](Basic_Electronic_Circuit.md). Engineering Table, screwdriver, 3 screws, Electrical Treatise III.
 
 ### Belt Weigher
 
 Reads the weight of passing cargo as density bands and size bands. Click to choose the band. Draws current.
 
-Crafting: Balance Scale + 2 Wrought Iron Plates + a [Basic Electronic Circuit](Basic_Electronic_Circuit.md). Engineering Table, screwdriver, 3 screws, Electrical Treatise III.
+Crafting: Balance Scale + 2 Steel Plates + a [Basic Electronic Circuit](Basic_Electronic_Circuit.md). Engineering Table, screwdriver, 3 screws, Electrical Treatise III.
 
 ### Belt Air Jet
 

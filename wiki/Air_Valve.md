@@ -9,7 +9,7 @@ S V S
 K
 ```
 
-S is a Steel Plate, V is a [Valve](Valve.md) and K is a [Coil Spring](Lathe.md#what-it-makes) of any metal. Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 2 screws ([Fasteners](Fasteners.md)). It needs Mechanical Treatise I: Engines, Flywheels and Dynamotors ([Treatise](Treatise.md)).
+S is a Wrought Iron Plate, V is a [Valve](Valve.md) and K is a [Coil Spring](Lathe.md#what-it-makes) of any metal. Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 2 screws ([Fasteners](Fasteners.md)). It needs Mechanical Treatise I: Engines, Flywheels and Dynamotors ([Treatise](Treatise.md)).
 
 ## Using it
 

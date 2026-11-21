@@ -3,7 +3,7 @@
   "key": {
     "S": { "item": "feedback:balance_scale" },
     "C": { "tag": "feedback:circuits" },
-    "P": { "item": "feedback:wrought_iron_plate" }
+    "P": { "item": "feedback:steel_plate" }
   },
   "pattern": [ " S ", "PCP" ],
   "result": { "count": 1, "id": "feedback:belt_module_weigher" },

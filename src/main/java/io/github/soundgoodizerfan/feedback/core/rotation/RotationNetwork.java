@@ -526,6 +526,11 @@ public class RotationNetwork {
         return new Drag(dragSuPerRpm);
     }
 
+    /** The run's own inertia, for a coupled body that turns by what the run's forces did to the shaft. */
+    public float runInertia() {
+        return Math.max(inertia, RotationTuning.MINIMUM_INERTIA.suTicksPerRpm());
+    }
+
     public Inertia getInertia() {
         return new Inertia(inertia);
     }

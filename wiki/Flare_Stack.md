@@ -10,7 +10,7 @@ P   P
 P T P
 ```
 
-P is a Steel Plate and T is Copper Tubing. Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, 3 screws ([Fasteners](Fasteners.md)) and Chemical Treatise I: Pressure Vessels ([Treatise](Treatise.md)).
+P is a Wrought Iron Plate and T is Copper Tubing. Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, 3 screws ([Fasteners](Fasteners.md)) and Chemical Treatise I: Pressure Vessels ([Treatise](Treatise.md)).
 
 ## Using it
 

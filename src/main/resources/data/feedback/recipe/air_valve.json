@@ -1,7 +1,7 @@
 {
   "type": "feedback:engineering",
   "key": {
-    "S": { "item": "feedback:steel_plate" },
+    "S": { "item": "feedback:wrought_iron_plate" },
     "V": { "item": "feedback:valve" },
     "K": { "type": "feedback:material", "form": "coil_spring" }
   },

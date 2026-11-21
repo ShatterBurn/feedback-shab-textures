@@ -10,7 +10,7 @@ C   C
 B B B
 ```
 
-P is a Wrought Iron Plate, C is Ceramic and B is Bricks. Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 2 [fasteners](Fasteners.md). It needs Electrical Treatise III: Circuits and Materials Treatise I: Machine-Shop Consumables ([Treatise](Treatise.md)).
+P is a Steel Plate, C is Ceramic and B is Bricks. Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 2 [fasteners](Fasteners.md). It needs Electrical Treatise III: Circuits and Materials Treatise I: Machine-Shop Consumables ([Treatise](Treatise.md)).
 
 ## Using it
 

@@ -174,7 +174,7 @@ P T P
 W C W
 ```
 
-P is a Wrought Iron Plate, T is a [Thermometer](#thermometer), W is [Copper Wire](Wire_Drawer.md) and C is a [circuit](Basic_Electronic_Circuit.md). Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, 2 screws ([Fasteners](Fasteners.md)) and Electrical Treatise III: Circuits ([Treatise](Treatise.md)).
+P is a Steel Plate, T is a [Thermometer](#thermometer), W is [Copper Wire](Wire_Drawer.md) and C is a [circuit](Basic_Electronic_Circuit.md). Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, 2 screws ([Fasteners](Fasteners.md)) and Electrical Treatise III: Circuits ([Treatise](Treatise.md)).
 
 Right-click a face of a [Crucible](Crucible.md) or an **Improved Furnace** with it. It attaches to that side; one sensor per face. It does not attach to the sealed [furnaces](Furnaces.md) (Furnace, Smoker, Crude Blast Furnace, Kiln, Annealing Furnace): they have no opening for it. Being unwatchable is the price of a sealed furnace.
 
@@ -265,7 +265,7 @@ P G P
 W C W
 ```
 
-P is a Wrought Iron Plate, G is a [Galvanometer](#galvanometer), W is [Copper Wire](Wire_Drawer.md) and C is a [circuit](Basic_Electronic_Circuit.md). Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, 2 screws ([Fasteners](Fasteners.md)) and Electrical Treatise III: Circuits ([Treatise](Treatise.md)).
+P is a Steel Plate, G is a [Galvanometer](#galvanometer), W is [Copper Wire](Wire_Drawer.md) and C is a [circuit](Basic_Electronic_Circuit.md). Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, 2 screws ([Fasteners](Fasteners.md)) and Electrical Treatise III: Circuits ([Treatise](Treatise.md)).
 
 Right-click the face of a cable you want it on. You can put one on each of the six faces. Breaking the cable drops the sensor. It fits on cable only, not directly on sources or machines.
 
@@ -283,7 +283,7 @@ P S P
 W C W
 ```
 
-P is a Wrought Iron Plate, S is a [Phosphor Screen](Phosphor_Screen.md), W is [Copper Wire](Wire_Drawer.md) and C is a [circuit](Basic_Electronic_Circuit.md). Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, 2 screws ([Fasteners](Fasteners.md)) and Electrical Treatise III: Circuits ([Treatise](Treatise.md)).
+P is a Steel Plate, S is a [Phosphor Screen](Phosphor_Screen.md), W is [Copper Wire](Wire_Drawer.md) and C is a [circuit](Basic_Electronic_Circuit.md). Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, 2 screws ([Fasteners](Fasteners.md)) and Electrical Treatise III: Circuits ([Treatise](Treatise.md)).
 
 Put it **against a cable** and **against a screen**. It joins no line; it only reads. Every tenth of a second it samples the cable and drives the screen to match (four levels). **Right-click** it to see the last 16 samples as a row of bars, to the nearest 0.25 A.
 

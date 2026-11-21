@@ -9,7 +9,7 @@ I B I
   S
 ```
 
-I is a Wrought Iron Plate, B is a [Bearing](Bearing.md) and S is a [Shaft](Shaft.md). Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 2 [fasteners](Fasteners.md). It needs Mechanical Treatise I: Engines, Flywheels and Dynamotors and Materials Treatise I: Machine-Shop Consumables ([Treatise](Treatise.md)).
+I is a Steel Plate, B is a [Bearing](Bearing.md) and S is a [Shaft](Shaft.md). Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 2 [fasteners](Fasteners.md). It needs Mechanical Treatise I: Engines, Flywheels and Dynamotors and Materials Treatise I: Machine-Shop Consumables ([Treatise](Treatise.md)).
 
 The die is a [machine head](Machine_Heads.md): draw it at the Blueprint Table and put it together in a crafting grid.
 

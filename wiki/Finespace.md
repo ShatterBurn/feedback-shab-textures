@@ -39,7 +39,7 @@ RP
 PR
 ```
 
-R is a Wrought Iron Rod and P is a Wrought Iron Plate. Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, holding Electrical Treatise III: Circuits ([Treatise](Treatise.md)).
+R is a Steel Rod and P is a Steel Plate. Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, holding Electrical Treatise III: Circuits ([Treatise](Treatise.md)).
 
 **Sneak-use** the gauge, on a block or in the air, to cycle the mode. A strip under the crosshair lists every mode with the current one lit, and a line says what it does.
 
@@ -83,7 +83,7 @@ PP
 RP
 ```
 
-R is a Wrought Iron Rod and P is a Wrought Iron Plate. Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, holding Electrical Treatise III: Circuits ([Treatise](Treatise.md)).
+R is a Steel Rod and P is a Steel Plate. Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, holding Electrical Treatise III: Circuits ([Treatise](Treatise.md)).
 
 Use it empty on a block of Finespace: every voxel, its look, wear and spin, and every hosted machine with the item it was made from, goes into the case and the block becomes air. Use it full on the clicked block if it can be replaced, otherwise on the spot beside the face you clicked: the block comes back exactly as it was. The case holds one block and does not stack. A full case glints, and its tooltip says how many voxels and machines it holds.
 

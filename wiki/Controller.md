@@ -118,6 +118,6 @@ W S W              P A P            C
 P P P              I A I            R
 ```
 
-- Memory Drum: P is a Wrought Iron Plate, M Magnetite Dust, W [Copper Wire](Wire_Drawer.md) and S a [Shaft](Shaft.md). It is crafted at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, holding Electrical Treatise III: Circuits ([Treatise](Treatise.md)); it spends no fasteners.
+- Memory Drum: P is a Steel Plate, M Magnetite Dust, W [Copper Wire](Wire_Drawer.md) and S a [Shaft](Shaft.md). It is crafted at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, holding Electrical Treatise III: Circuits ([Treatise](Treatise.md)); it spends no fasteners.
 - Card Rack: P is any planks, I a wrought iron rod, A paper.
-- Escapement: S is a steel plate, C a small cog, R a wrought iron rod.
+- Escapement: S is a brass plate, C a small cog, R a wrought iron rod.

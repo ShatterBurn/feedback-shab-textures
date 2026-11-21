@@ -10,7 +10,7 @@ P G P
 P B P
 ```
 
-P is a Wrought Iron Plate, S is a [Shaft](Shaft.md), G is a [Gearbox](Cogs.md#gearbox) and B is a [Bearing](Bearing.md). Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, 3 machine bolts ([Fasteners](Fasteners.md)) and Mechanical Treatise II: Transmission ([Treatise](Treatise.md)).
+P is a Steel Plate, S is a [Shaft](Shaft.md), G is a [Gearbox](Cogs.md#gearbox) and B is a [Bearing](Bearing.md). Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, 3 machine bolts ([Fasteners](Fasteners.md)) and Mechanical Treatise II: Transmission ([Treatise](Treatise.md)).
 
 | Part | Recipe |
 | --- | --- |

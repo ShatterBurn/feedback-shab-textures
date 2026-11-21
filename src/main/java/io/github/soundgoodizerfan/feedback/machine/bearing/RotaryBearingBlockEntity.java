@@ -108,6 +108,8 @@ public class RotaryBearingBlockEntity extends RotationNode implements io.github.
 
     /** The coupling's last push on the run, Su along the network's positive sense; server only. */
     private float lastPush;
+    /** The run's speed as this bearing last left it, to tell what the run did to it since. */
+    private float shaftSet;
 
     @Override
     public boolean addUpgrade(io.github.soundgoodizerfan.feedback.fitting.UpgradeFitting upgrade) {
@@ -255,9 +257,22 @@ public class RotaryBearingBlockEntity extends RotationNode implements io.github.
         var sleeve = coupling();
         boolean rebuild = bearing.couple(sleeve == null ? 0f : sleeve.grip());
         rebuild |= bearing.tick(level, worldPosition, worldAnchor(), facing(), getRpm().value());
-        // What the road does to a wheel on this bearing, or the coupled body to the shaft, reaches the run as a push.
-        float road = bearing.takeRoadSu(facing().getAxisDirection() == Direction.AxisDirection.POSITIVE ? 1 : -1, 1);
-        lastPush = road;
+        float sign = facing().getAxisDirection() == Direction.AxisDirection.POSITIVE ? 1 : -1;
+        var net = getNetwork();
+        if (bearing.coupled() && net != null && getRatio() != 0f) {
+            // The body is the flywheel: what the run's sources and loads did to the shaft since last tick is a torque on the body,
+            // and the shaft then reads the body's real spin. Both ways conserve; the shaft never integrates its own speed.
+            float torque = (net.getCurrentRpm().value() - shaftSet) * net.runInertia() / getRatio();
+            bearing.setShaftTorque(torque, sign);
+            lastPush = -torque;
+            shaftSet = bearing.spinRpm(level, worldPosition, facing()) / getRatio();
+            net.inheritSpeed(shaftSet);
+        } else
+            shaftSet = net == null ? 0f : net.getCurrentRpm().value();
+        // What the road does to a wheel on this bearing reaches the run as a push.
+        float road = bearing.takeRoadSu(sign, 1);
+        if (!bearing.coupled())
+            lastPush = road;
         if (road != 0 && getNetwork() != null)
             getNetwork().driveExternally(new io.github.soundgoodizerfan.feedback.core.unit.Su(road),
                     new Drag(0f), new Inertia(0f));

@@ -102,7 +102,7 @@ A P A
 P G P
 A A A
 ```
-G is a grindstone, A an amethyst shard, P a wrought iron plate.
+G is a grindstone, A an amethyst shard, P a steel plate.
 
 ## Drawing from a run
 

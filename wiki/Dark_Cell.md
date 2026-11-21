@@ -16,7 +16,7 @@ W C W
 P P P
 ```
 
-P is a Wrought Iron Plate, X is Galena, W is Copper Wire and C is a [circuit](Basic_Electronic_Circuit.md).
+P is a Steel Plate, X is Galena, W is Copper Wire and C is a [circuit](Basic_Electronic_Circuit.md).
 
 Hostile mobs gather up to a limit set by the room's volume. The overworld, the Nether and the End each draw from their own kinds.
 

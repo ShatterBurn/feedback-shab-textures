@@ -1,7 +1,7 @@
 {
   "type": "feedback:engineering",
   "key": {
-    "P": { "item": "feedback:wrought_iron_plate" },
+    "P": { "item": "feedback:steel_plate" },
     "M": { "item": "feedback:magnetite_dust" },
     "W": { "item": "feedback:copper_wire" },
     "S": { "item": "feedback:shaft" }

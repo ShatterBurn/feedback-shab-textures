@@ -10,7 +10,7 @@ J
 P K P
 ```
 
-P is a Steel Plate, T is a [Lined Tube](Pneumatic_Tube.md), V is a [Valve](Valve.md), J is a [Piston Joint](Joints.md#piston-joint) and K is a [Crank Linkage](Crank_Linkage.md). Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 4 rivets ([Fasteners](Fasteners.md)). It needs Mechanical Treatise I: Engines, Flywheels and Dynamotors ([Treatise](Treatise.md)).
+P is a Wrought Iron Plate, T is a [Lined Tube](Pneumatic_Tube.md), V is a [Valve](Valve.md), J is a [Piston Joint](Joints.md#piston-joint) and K is a [Crank Linkage](Crank_Linkage.md). Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 4 rivets ([Fasteners](Fasteners.md)). It needs Mechanical Treatise I: Engines, Flywheels and Dynamotors ([Treatise](Treatise.md)).
 
 ## Using it
 

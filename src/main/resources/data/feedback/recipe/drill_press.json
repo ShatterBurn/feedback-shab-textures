@@ -2,7 +2,7 @@
   "type": "feedback:engineering",
   "key": {
     "I": {
-      "item": "feedback:wrought_iron_plate"
+      "item": "feedback:steel_plate"
     },
     "B": {
       "item": "feedback:bearing"

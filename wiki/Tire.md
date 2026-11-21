@@ -49,7 +49,7 @@ PSP
 PPP
 ```
 
-S is a [Shaft](Shaft.md). P is a Wrought Iron Plate for the small and medium hub and a Steel Plate for the large.
+S is a [Shaft](Shaft.md). P is a Wrought Iron Plate for every hub.
 
 To make a wheel:
 

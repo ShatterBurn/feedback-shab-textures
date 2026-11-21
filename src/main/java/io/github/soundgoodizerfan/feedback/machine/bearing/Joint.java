@@ -147,8 +147,8 @@ public final class Joint {
     // that reading (our drive already measures it) and rejected its flat Su per RPM with no reaction on the body: here the drive's impulse
     // is the torque both ways, so a loaded shaft slows the body.
     private volatile float coupling;
-    /** The drive's angular impulse on the body summed over physics steps while coupled, kpg x block^2 / s; the shaft takes the opposite. */
-    private double couplingImpulse;
+    /** While coupled: the torque the shaft's run puts on the body along its positive axis, kpg x block^2 / s^2; set each game tick. */
+    private volatile double shaftTorque;
     /** Physics steps the hinge's torque sat at its cap with no relative turning, summed for the game tick. */
     private final java.util.concurrent.atomic.AtomicInteger stalledTicks = new java.util.concurrent.atomic.AtomicInteger();
     /** Consecutive physics steps the drive has sat at its cap without the arm turning; physics thread only. */
@@ -331,6 +331,20 @@ public final class Joint {
         float now = kind == Kind.HINGE && variant == 0 ? Math.max(0f, grip) : 0f;
         coupling = now;
         return wasCoupled != now > 0f;
+    }
+
+    /** Sets the torque the run puts on a coupled body (positive along the network's positive sense), in Su, for the next game tick. */
+    public void setShaftTorque(float su, float facingSign) {
+        shaftTorque = facingSign * su / io.github.soundgoodizerfan.feedback.core.unit.Units.SU_PER_KPG_TORQUE;
+    }
+
+    /** The body's spin about the facing relative to its parent's, in RPM along the network's positive sense. */
+    public float spinRpm(ServerLevel level, BlockPos bearingPos, Direction facing) {
+        ServerSubLevel s = held(level);
+        if (s == null || s.isRemoved())
+            return 0f;
+        float sign = facing.getAxisDirection() == Direction.AxisDirection.POSITIVE ? 1 : -1;
+        return (float) (sign * relativeSpin(s, parentOf(level, bearingPos), facing) * 60 / (2 * Math.PI));
     }
 
     /** True while a coupling sleeve locks the body to the shaft. */
@@ -617,17 +631,15 @@ public final class Joint {
      * helps it, one the road holds back loads it.
      */
     public float takeRoadSu(float facingSign, double ticks) {
-        double impulse, coupled;
+        double impulse;
         synchronized (this) {
             impulse = roadImpulse;
             roadImpulse = 0;
-            coupled = couplingImpulse;
-            couplingImpulse = 0;
         }
         double seconds = Math.max(ticks / FTuning.TICKS_PER_SECOND, 1e-6);
-        // Coupled: road and weight already act on the body's spin, so the shaft feels only what the drive does to the body, reversed.
+        // Coupled: the shaft takes its speed from the body, so road and weight reach it through the body's own spin.
         if (coupling > 0f)
-            return (float) (-facingSign * coupled / seconds * io.github.soundgoodizerfan.feedback.core.unit.Units.SU_PER_KPG_TORQUE);
+            return 0f;
         return (float) (facingSign * (impulse / seconds + gravityTorque) * io.github.soundgoodizerfan.feedback.core.unit.Units.SU_PER_KPG_TORQUE);
     }
 
@@ -681,6 +693,9 @@ public final class Joint {
         double step = (targetRadPerS - w) * (1 - Math.exp(-MachineTuning.ROTARY_BEARING_DRIVE_RATE * dt));
         double ramp = MachineTuning.ROTARY_BEARING_MAX_ACCEL * dt;
         double impulse = driveInertia * Math.max(-ramp, Math.min(ramp, step));
+        // Coupled, no servo: the run's own torque is the only drive, and the body's spin is the shaft's speed.
+        if (coupling > 0f)
+            impulse = shaftTorque * dt;
         // The reaction may spin the parent no faster than its own limit, so a light car is not thrown
         // over by its arm starting: the ground's friction and the car's weight hold a gentle twist.
         if (p != null && parentInertia > 0) {
@@ -706,10 +721,6 @@ public final class Joint {
         lastDrive = impulse;
         if (impulse == 0)
             return;
-        if (grip > 0f)
-            synchronized (this) {
-                couplingImpulse += impulse;
-            }
         torque(h, s, new Vector3d(axis).mul(impulse));
         if (hp != null)
             torque(hp, p, new Vector3d(axis).mul(-impulse));

@@ -3,7 +3,7 @@
   "key": {
     "C": { "item": "feedback:small_cog" },
     "S": { "item": "feedback:shaft" },
-    "P": { "item": "feedback:wrought_iron_plate" }
+    "P": { "item": "feedback:steel_plate" }
   },
   "pattern": [
     "PCP",
