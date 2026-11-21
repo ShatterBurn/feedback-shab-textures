@@ -628,7 +628,8 @@ public final class GuiStyle {
             float p = feel.slideTicks() <= 0f || ClientSettings.reduceMotion() || dir == 0 ? 1f : (time() - since) / feel.slideTicks();
             int colour = flash.colour(0, v, skin.ink(), skin.accent());
             if (p >= 1f) {
-                text(g, font, v, room, 0, colour);
+                float after = time() - since - feel.slideTicks(); // a heavy crisp skin lands with a one pixel thud, in the direction it was going
+                text(g, font, v, room, feel.thunks() && dir != 0 && after >= 0f && after < 1.5f && !ClientSettings.reduceMotion() ? dir : 0, colour);
                 return;
             }
             float c = feel.slide(p);
