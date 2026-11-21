@@ -143,7 +143,9 @@ public final class UpswingSwing {
             return;
         // Better Combat's "mine with weapon" key flips this; off, a click on a block swings instead of mining.
         // shortcut: its item white/blacklists and attack-when-enemies-close option are not read, add if asked.
-        if (BetterCombatClientMod.config.isMiningWithWeaponsEnabled && mc.hitResult != null && mc.hitResult.getType() == HitResult.Type.BLOCK)
+        // A spear with something behind the block it points at (grass, a flower) still swings.
+        if (BetterCombatClientMod.config.isMiningWithWeaponsEnabled && mc.hitResult != null && mc.hitResult.getType() == HitResult.Type.BLOCK
+                && SpearPick.pick(mc, player) == null)
             return;
         if (player.hasData(FCombat.STATE) && CombatState.of(player).phase() != CombatPhase.IDLE)
             return;
@@ -273,7 +275,11 @@ public final class UpswingSwing {
             PacketDistributor.sendToServer(new OffhandStrikePayload(false));
             player.swing(InteractionHand.OFF_HAND);
         } else {
-            if (mc.hitResult instanceof EntityHitResult hit && hit.getEntity().isAlive())
+            // A spear picks for itself (through blocks with no collision, hitboxes grown a little); anything else takes vanilla's pick.
+            net.minecraft.world.entity.Entity spearTarget = SpearPick.pick(mc, player);
+            if (spearTarget != null)
+                mc.gameMode.attack(player, spearTarget);
+            else if (mc.hitResult instanceof EntityHitResult hit && hit.getEntity().isAlive())
                 mc.gameMode.attack(player, hit.getEntity());
             else {
                 if (mc.hitResult instanceof net.minecraft.world.phys.BlockHitResult b

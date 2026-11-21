@@ -116,6 +116,30 @@ public final class FormTint {
      * The ore model draws a grey overlay (tint index 0) on the host stone; the material's colour
      * is the overlay's tint. Layering idea from GregTech CEu Modern (see THIRD-PARTY-LICENSES.md).
      */
+    /**
+     * The colour (RGB) of the ore {@code state} is, or empty: a Feedback ore by the material it is an ore of, any other by the {@code c:ores/<name>}
+     * tag it is in (the material of that name, so a modded ore answers by property, never by id).
+     */
+    public static OptionalInt oreColour(net.minecraft.world.level.block.state.BlockState state) {
+        if (builtOres == null)
+            builtOres = oreBlocks();
+        ResourceLocation id = builtOres.get(state.getBlock());
+        if (id == null)
+            for (var tag : (Iterable<net.minecraft.tags.TagKey<Block>>) state.getTags()::iterator) {
+                ResourceLocation loc = tag.location();
+                if (loc.getNamespace().equals("c") && loc.getPath().startsWith("ores/")) {
+                    ResourceLocation named = Feedback.id(loc.getPath().substring("ores/".length()));
+                    if (FormItems.materials().containsKey(named)) {
+                        id = named;
+                        break;
+                    }
+                }
+            }
+        return id == null ? OptionalInt.empty() : OptionalInt.of(MaterialColors.of(id));
+    }
+
+    private static Map<Block, ResourceLocation> builtOres;
+
     private static Map<Block, ResourceLocation> oreBlocks() {
         Map<Block, ResourceLocation> ores = new HashMap<>();
         FormItems.materials().forEach((id, material) -> material.forms().forEach((form, item) -> {

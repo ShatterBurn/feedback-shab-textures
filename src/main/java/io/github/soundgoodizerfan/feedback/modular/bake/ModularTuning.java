@@ -607,6 +607,8 @@ public final class ModularTuning {
     public static final int BARB_WITHDRAW_TICKS = 8;
     /** Placeholder. A spear build whose baked {@code BALANCE} (share of swing moment in the head) is below this is balanced for the hand and thrown on release; at or above it is head-heavy and charges. */
     public static final float SPEAR_THROW_BALANCE = 0.45f;
+    /** Placeholder. Blocks a spear's pick grows a target's hitbox by each way: a long thin weapon forgives a little aim. Vanilla's own reach check allows a block's margin, so the server takes the blow. */
+    public static final double SPEAR_PICK_MARGIN = 0.15;
     /** Placeholder. Each tine past the first costs this share of the thrust: every target takes {@code 1 / (1 + drag x (tines - 1))} of the blow. */
     public static final float TINE_DRAG = 0.1f;
     /** Placeholder. The look-line match a one-tine spear needs to land a blow (1 is dead centre). */

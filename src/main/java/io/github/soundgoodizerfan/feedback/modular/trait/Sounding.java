@@ -25,7 +25,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
 
 /**
  * The prospector's pick (spec 5.4): right click sends a pulse that outlines every ore within
- * {@code range} blocks (default 12) through the stone, for {@code seconds} (default 6), to the
+ * {@code range_per_stick} blocks (default 4) for each stick of the haft, through the stone, for {@code seconds} (default 6), to the
  * wielder alone. It is an instrument: it reads and never mines faster. Cost: {@code cooldown_ticks}
  * (default 200) between pulses and {@code wear} (default 4) per pulse. Ore is a block tag, never
  * an id, so modded ore answers too; {@code max_found} (default 64) nearest are sent.
@@ -36,7 +36,10 @@ public final class Sounding implements ModularTrait {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand, ItemStack weapon, Params params) {
         if (!(player instanceof ServerPlayer sp) || player.getCooldowns().isOnCooldown(weapon.getItem()))
             return InteractionResultHolder.pass(weapon);
-        int range = (int) params.get("range", 12);
+        // A longer haft is a longer sounding rod: the range is so many blocks for each stick of it.
+        var design = ModularStacks.design(weapon);
+        var haft = design == null ? null : design.part("S");
+        int range = (int) (params.get("range_per_stick", 4) * (haft == null ? 1 : Math.max(1, haft.count())));
         BlockPos centre = player.blockPosition();
         List<BlockPos> found = new ArrayList<>();
         for (BlockPos pos : BlockPos.betweenClosed(centre.offset(-range, -range, -range), centre.offset(range, range, range)))

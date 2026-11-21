@@ -413,7 +413,7 @@ public final class ModularModifiers {
             case "throw" -> new Object[]{n(p(v, "min_charge_ticks", 10) / FTuning.TICKS_PER_SECOND), n(p(v, "damage_per_block", 0.35f) * 100),
                     n(p(v, "max_mult", 2.5f)), n(p(v, "wear", 2))};
             case "hook" -> new Object[]{n(p(v, "disable_ticks", 160) / FTuning.TICKS_PER_SECOND), n(p(v, "pull", 0.4f)), n(p(v, "no_shield_mult", 0.9f))};
-            case "sounding" -> new Object[]{n(p(v, "range", 12)), n(p(v, "seconds", 6)), n(p(v, "cooldown_ticks", 200) / FTuning.TICKS_PER_SECOND),
+            case "sounding" -> new Object[]{n(p(v, "range_per_stick", 4)), n(p(v, "seconds", 6)), n(p(v, "cooldown_ticks", 200) / FTuning.TICKS_PER_SECOND),
                     n(p(v, "wear", 4)), n(p(v, "max_found", 64))};
             case "vein" -> new Object[]{n(p(v, "cap", 8)), n(p(v, "wear_per_block", 1))};
             case "spear_charge" -> new Object[]{n(p(v, "min_range", 2)), n(p(v, "charge_reach", 4.5f)), n(p(v, "min_speed", 4.6f)),
