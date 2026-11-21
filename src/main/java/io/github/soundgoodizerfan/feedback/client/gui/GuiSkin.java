@@ -1081,6 +1081,11 @@ public abstract class GuiSkin {
         };
     }
 
+    /** The quiet thud a slide that {@link Feel#thunks} lands with. */
+    public void thud() {
+        play(FSounds.UI_HATCH_CLOSE.get(), 0.9f, 0.3f);
+    }
+
     /** {@link #cue(Cue, Material.Kind, float)} with a neutral stock and no outcome bias. */
     public void cue(Cue cue) {
         cue(cue, null, 1f);

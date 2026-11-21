@@ -57,9 +57,9 @@ public record Feel(float weight, float slop) {
         return Mth.lerp(GuiStyle.outBack(t, give()), from, to);
     }
 
-    /** Ticks a slide (stepper reading, tab change) takes; 0 snaps. Short: a lurch, not a glide. */
+    /** Ticks a slide (stepper reading, tab change) takes; 0 snaps. Very short, and quicker the crisper the skin (iron about 2 ticks, wood about 4). */
     public float slideTicks() {
-        return weight <= 0f ? 0f : 2f + 3f * weight;
+        return weight <= 0f ? 0f : 1.5f + 4f * slop;
     }
 
     /**

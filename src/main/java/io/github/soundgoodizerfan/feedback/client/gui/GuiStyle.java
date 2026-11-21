@@ -585,6 +585,7 @@ public final class GuiStyle {
         private long last;
         private String cur = "", prev = "";
         private int dir;
+        private boolean thudded;
         private float since = Float.NEGATIVE_INFINITY;
 
         Stepper(GuiSkin skin, int x, int y, int w, int h, Component left, Component right, Supplier<String> value,
@@ -623,12 +624,17 @@ public final class GuiStyle {
                 prev = cur;
                 cur = v;
                 since = time();
+                thudded = false;
             }
             Feel feel = skin.feel();
             float p = feel.slideTicks() <= 0f || ClientSettings.reduceMotion() || dir == 0 ? 1f : (time() - since) / feel.slideTicks();
             int colour = flash.colour(0, v, skin.ink(), skin.accent());
             if (p >= 1f) {
-                float after = time() - since - feel.slideTicks(); // a heavy crisp skin lands with a one pixel thud, in the direction it was going
+                float after = time() - since - feel.slideTicks();
+                if (feel.thunks() && dir != 0 && !thudded && after >= 0f && after < 1.5f && !ClientSettings.reduceMotion()) {
+                    thudded = true;
+                    skin.thud();
+                } // a heavy crisp skin lands with a one pixel thud, in the direction it was going
                 text(g, font, v, room, feel.thunks() && dir != 0 && after >= 0f && after < 1.5f && !ClientSettings.reduceMotion() ? dir : 0, colour);
                 return;
             }
