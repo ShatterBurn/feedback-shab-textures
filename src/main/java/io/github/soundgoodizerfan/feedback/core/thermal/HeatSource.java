@@ -101,32 +101,80 @@ public interface HeatSource {
 
     Direction[] DIRS = Direction.values();
 
-    /** The heat source standing in block {@code pos}: the block entity itself, or the first one a finespace cell hosts. */
-    private static HeatSource sourceAt(Level level, BlockPos pos) {
-        BlockEntity be = level.getBlockEntity(pos);
-        if (be instanceof HeatSource source)
-            return source;
-        return be instanceof io.github.soundgoodizerfan.feedback.vehicle.micro.MicroCellBlockEntity cell ? cell.hostedHeatSource() : null;
+    /** The voxel of a finespace cell that {@code receiver} is hosted in, or -1 for a machine that is a whole block. */
+    private static int voxelOf(Level level, BlockEntity receiver) {
+        return level.getBlockEntity(receiver.getBlockPos()) instanceof io.github.soundgoodizerfan.feedback.vehicle.micro.MicroCellBlockEntity cell
+                ? cell.voxelOf(receiver) : -1;
     }
 
     /**
-     * The source that could reach {@code pos} from candidate {@code i} (0-5: the block on that face; 6-17: a block touching an edge),
-     * or null. A face neighbour always reaches; an edge neighbour reaches only when it points at a block next to {@code pos}, which is
-     * to say it faces one of the two faces it touches {@code pos} across (the block where it points, and the four round that, are lit).
+     * The source that could reach {@code pos} (or voxel {@code voxel} of the cell there, -1 for the whole block) from candidate {@code i}
+     * (0-5: the spot on that face; 6-17: a spot touching an edge), or null. A face neighbour always reaches; an edge neighbour reaches
+     * only when it points at a spot next to the receiver, which is to say it faces one of the two faces it touches the receiver across
+     * (the spot where it points, and the four round that, are lit).
      */
-    private static HeatSource reaching(Level level, BlockPos pos, int i) {
+    private static HeatSource reaching(Level level, BlockPos pos, int voxel, int i) {
+        Direction da, db = null;
         if (i < 6)
-            return sourceAt(level, pos.relative(DIRS[i]));
-        int n = i - 6, pair = n / 4, signs = n % 4;
-        // pair 0: x,y   pair 1: x,z   pair 2: y,z; signs pick the direction on each axis
-        Direction.Axis first = pair < 2 ? Direction.Axis.X : Direction.Axis.Y, second = pair == 0 ? Direction.Axis.Y : Direction.Axis.Z;
-        Direction da = Direction.fromAxisAndDirection(first, (signs & 1) == 0 ? Direction.AxisDirection.POSITIVE : Direction.AxisDirection.NEGATIVE);
-        Direction db = Direction.fromAxisAndDirection(second, (signs & 2) == 0 ? Direction.AxisDirection.POSITIVE : Direction.AxisDirection.NEGATIVE);
-        HeatSource source = sourceAt(level, pos.relative(da).relative(db));
-        if (source == null)
-            return null;
+            da = DIRS[i];
+        else {
+            int n = i - 6, pair = n / 4, signs = n % 4;
+            // pair 0: x,y   pair 1: x,z   pair 2: y,z; signs pick the direction on each axis
+            Direction.Axis first = pair < 2 ? Direction.Axis.X : Direction.Axis.Y, second = pair == 0 ? Direction.Axis.Y : Direction.Axis.Z;
+            da = Direction.fromAxisAndDirection(first, (signs & 1) == 0 ? Direction.AxisDirection.POSITIVE : Direction.AxisDirection.NEGATIVE);
+            db = Direction.fromAxisAndDirection(second, (signs & 2) == 0 ? Direction.AxisDirection.POSITIVE : Direction.AxisDirection.NEGATIVE);
+        }
+        HeatSource source = voxel < 0 ? sourceBeside(level, pos, da, db) : sourceNextTo(level, pos, voxel, da, db);
+        if (source == null || db == null)
+            return source;
         Direction face = source.heatFacing();
         return face == da.getOpposite() || face == db.getOpposite() ? source : null;
+    }
+
+    /**
+     * The source a whole block {@code pos} has across {@code da} (and {@code db}, if not null): the block entity itself, or, in a finespace
+     * cell, the hottest source hosted on the voxels that touch the block.
+     */
+    private static HeatSource sourceBeside(Level level, BlockPos pos, Direction da, Direction db) {
+        BlockPos at = db == null ? pos.relative(da) : pos.relative(da).relative(db);
+        BlockEntity be = level.getBlockEntity(at);
+        if (be instanceof HeatSource source)
+            return source;
+        if (!(be instanceof io.github.soundgoodizerfan.feedback.vehicle.micro.MicroCellBlockEntity cell))
+            return null;
+        HeatSource best = null;
+        for (int v = 0; v < io.github.soundgoodizerfan.feedback.vehicle.micro.MicroCellBlockEntity.VOXELS; v++)
+            if (touches(v, da) && (db == null || touches(v, db))) {
+                HeatSource source = cell.hostedHeatSource(v);
+                if (source != null && (best == null || source.getFireTu().value() > best.getFireTu().value()))
+                    best = source;
+            }
+        return best;
+    }
+
+    /** Whether voxel {@code v} of a cell is on the face of the cell that touches a block lying toward {@code d} from the cell's other side. */
+    private static boolean touches(int v, Direction d) {
+        int c = d.getAxis() == Direction.Axis.X ? v & 3 : d.getAxis() == Direction.Axis.Y ? v >> 2 & 3 : v >> 4;
+        return c == (d.getAxisDirection() == Direction.AxisDirection.POSITIVE ? 0 : io.github.soundgoodizerfan.feedback.vehicle.micro.MicroCellBlockEntity.N - 1);
+    }
+
+    /**
+     * The source beside voxel {@code voxel} of the cell at {@code pos} across {@code da} (and {@code db}): a voxel of this cell, the matching
+     * voxel of the next cell, or a whole block there.
+     */
+    private static HeatSource sourceNextTo(Level level, BlockPos pos, int voxel, Direction da, Direction db) {
+        int n = io.github.soundgoodizerfan.feedback.vehicle.micro.MicroCellBlockEntity.N;
+        int x = (voxel & 3) + da.getStepX(), y = (voxel >> 2 & 3) + da.getStepY(), z = (voxel >> 4) + da.getStepZ();
+        if (db != null) {
+            x += db.getStepX();
+            y += db.getStepY();
+            z += db.getStepZ();
+        }
+        BlockPos at = pos.offset(Math.floorDiv(x, n), Math.floorDiv(y, n), Math.floorDiv(z, n));
+        BlockEntity be = level.getBlockEntity(at);
+        if (be instanceof io.github.soundgoodizerfan.feedback.vehicle.micro.MicroCellBlockEntity cell)
+            return cell.hostedHeatSource(io.github.soundgoodizerfan.feedback.vehicle.micro.MicroCellBlockEntity.index(Math.floorMod(x, n), Math.floorMod(y, n), Math.floorMod(z, n)));
+        return be instanceof HeatSource source ? source : null;
     }
 
     /** The share {@code source}, found as candidate {@code i} of {@link #reaching}, gives: the face neighbours by facing, an edge neighbour its side share. */
@@ -211,10 +259,19 @@ public interface HeatSource {
 
     /** {@link #at} across a gap: the fire the sources round {@code pos} gave over {@code gap} ticks. */
     static FireSpan spanAt(Level level, BlockPos pos, long gap) {
+        return spanAt(level, pos, -1, gap);
+    }
+
+    /** {@link #spanAt(Level, BlockPos, long)} for a machine that may be hosted in a finespace cell: its voxel's neighbours, not the cell's. */
+    static FireSpan spanAt(Level level, BlockEntity receiver, long gap) {
+        return spanAt(level, receiver.getBlockPos(), voxelOf(level, receiver), gap);
+    }
+
+    private static FireSpan spanAt(Level level, BlockPos pos, int voxel, long gap) {
         FireSpan best = FireSpan.NONE;
         Tu ambient = null;
         for (int i = 0; i < REACH; i++) {
-            HeatSource source = reaching(level, pos, i);
+            HeatSource source = reaching(level, pos, voxel, i);
             if (source == null)
                 continue;
             float share = shareAt(source, i);
@@ -229,7 +286,7 @@ public interface HeatSource {
             if (tu > best.tu())
                 best = new FireSpan(span.litTicks(), tu);
         }
-        if (level.getFluidState(pos.below()).is(FluidTags.LAVA) && ThermalTuning.FIRE_TU_LAVA.value() > best.tu()) {
+        if (onFloor(voxel) && level.getFluidState(pos.below()).is(FluidTags.LAVA) && ThermalTuning.FIRE_TU_LAVA.value() > best.tu()) {
             io.github.soundgoodizerfan.feedback.core.Awards.near(level, pos, "progress/heat/lava_fire");
             return new FireSpan(gap, ThermalTuning.FIRE_TU_LAVA.value());
         }
@@ -242,10 +299,19 @@ public interface HeatSource {
      * chilled (the reactor) reads this when no fire reaches it.
      */
     static Tu coldAt(Level level, BlockPos pos) {
+        return coldAt(level, pos, -1);
+    }
+
+    /** {@link #coldAt(Level, BlockPos)} for a machine that may be hosted in a finespace cell. */
+    static Tu coldAt(Level level, BlockEntity receiver) {
+        return coldAt(level, receiver.getBlockPos(), voxelOf(level, receiver));
+    }
+
+    private static Tu coldAt(Level level, BlockPos pos, int voxel) {
         Tu ambient = AmbientTable.at(level);
         float best = ambient.value();
         for (int i = 0; i < REACH; i++) {
-            HeatSource source = reaching(level, pos, i);
+            HeatSource source = reaching(level, pos, voxel, i);
             if (source == null)
                 continue;
             float share = shareAt(source, i);
@@ -267,10 +333,27 @@ public interface HeatSource {
      * counts.
      */
     static Tu at(Level level, BlockPos pos) {
+        return at(level, pos, -1);
+    }
+
+    /**
+     * {@link #at(Level, BlockPos)} for a machine that may be hosted in a finespace cell: a hosted machine reads the sources in the voxels
+     * round its own (in its cell, the next cell or the whole block beside it), not round the cell.
+     */
+    static Tu at(Level level, BlockEntity receiver) {
+        return at(level, receiver.getBlockPos(), voxelOf(level, receiver));
+    }
+
+    /** Whether a receiver ({@code voxel}, -1 for a whole block) stands on the floor of its block, so what is under the block is under it. */
+    private static boolean onFloor(int voxel) {
+        return voxel < 0 || (voxel >> 2 & 3) == 0;
+    }
+
+    private static Tu at(Level level, BlockPos pos, int voxel) {
         Tu ambient = AmbientTable.at(level);
         float best = ambient.value();
         for (int i = 0; i < REACH; i++) {
-            HeatSource source = reaching(level, pos, i);
+            HeatSource source = reaching(level, pos, voxel, i);
             if (source == null)
                 continue;
             float share = shareAt(source, i);
@@ -281,7 +364,7 @@ public interface HeatSource {
                 continue;
             best = Math.max(best, ambient.value() + share * (fire - ambient.value()));
         }
-        if (level.getFluidState(pos.below()).is(FluidTags.LAVA))
+        if (onFloor(voxel) && level.getFluidState(pos.below()).is(FluidTags.LAVA))
             best = Math.max(best, ThermalTuning.FIRE_TU_LAVA.value());
         return new Tu(best);
     }

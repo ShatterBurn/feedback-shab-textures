@@ -290,22 +290,52 @@ public class MicroCellBlockEntity extends BlockEntity implements BlockEntitySubL
         return hosted[index];
     }
 
-    /** The first hosted machine that is an electric node: the cell stands for it on the electric network (one a cell), or null. */
-    @Nullable
-    public io.github.soundgoodizerfan.feedback.core.electric.ElectricNode hostedElectric() {
+    /** Every hosted machine that is an electric node: each is a node of its own on the electric network, found by its voxel. */
+    public List<io.github.soundgoodizerfan.feedback.core.electric.ElectricNode> hostedElectrics() {
+        List<io.github.soundgoodizerfan.feedback.core.electric.ElectricNode> out = new ArrayList<>();
         for (var be : hosted)
             if (be instanceof io.github.soundgoodizerfan.feedback.core.electric.ElectricNode node)
-                return node;
-        return null;
+                out.add(node);
+        return out;
     }
 
-    /** The first hosted machine that is a heat source: the cell stands for it to what it heats, or null. */
+    /** The heat source hosted in voxel {@code index}, or null. */
     @Nullable
-    public io.github.soundgoodizerfan.feedback.core.thermal.HeatSource hostedHeatSource() {
-        for (var be : hosted)
-            if (be instanceof io.github.soundgoodizerfan.feedback.core.thermal.HeatSource source)
-                return source;
-        return null;
+    public io.github.soundgoodizerfan.feedback.core.thermal.HeatSource hostedHeatSource(int index) {
+        return hosted[index] instanceof io.github.soundgoodizerfan.feedback.core.thermal.HeatSource source ? source : null;
+    }
+
+    /** The voxel {@code machine} is hosted in, or -1. */
+    public int voxelOf(net.minecraft.world.level.block.entity.BlockEntity machine) {
+        for (int i = 0; i < VOXELS; i++)
+            if (hosted[i] == machine)
+                return i;
+        return -1;
+    }
+
+    /** The voxel beside {@code index} toward {@code face}, or -1 when that is outside the cell. */
+    public static int beside(int index, net.minecraft.core.Direction face) {
+        int x = (index & 3) + face.getStepX(), y = (index >> 2 & 3) + face.getStepY(), z = (index >> 4) + face.getStepZ();
+        return x < 0 || x >= N || y < 0 || y >= N || z < 0 || z >= N ? -1 : index(x, y, z);
+    }
+
+    /** The voxel at the same place in the next cell toward {@code face}: the coordinate along it wraps. */
+    public static int wrapped(int index, net.minecraft.core.Direction face) {
+        return index((index & 3) + face.getStepX() + N & N - 1, (index >> 2 & 3) + face.getStepY() + N & N - 1, (index >> 4) + face.getStepZ() + N & N - 1);
+    }
+
+    /** The {@code N * N} voxels on the face of a cell that looks toward {@code side}. */
+    public static int[] plane(net.minecraft.core.Direction side) {
+        int[] out = new int[N * N];
+        int fixed = side.getAxisDirection() == net.minecraft.core.Direction.AxisDirection.POSITIVE ? N - 1 : 0, k = 0;
+        for (int a = 0; a < N; a++)
+            for (int b = 0; b < N; b++)
+                out[k++] = switch (side.getAxis()) {
+                    case X -> index(fixed, a, b);
+                    case Y -> index(a, fixed, b);
+                    case Z -> index(a, b, fixed);
+                };
+        return out;
     }
 
     /** Whether {@code machine} is hosted in this cell. */
@@ -622,7 +652,7 @@ public class MicroCellBlockEntity extends BlockEntity implements BlockEntitySubL
         rotorAdded = false;
         if (level != null && !level.isClientSide && !rotationMembers().isEmpty())
             RotationPropagator.queue(level, worldPosition);
-        if (level != null && !level.isClientSide && hostedElectric() != null)
+        if (level != null && !level.isClientSide && !hostedElectrics().isEmpty())
             io.github.soundgoodizerfan.feedback.core.electric.ElectricPropagator.requeue(level, worldPosition);
     }
 

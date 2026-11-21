@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import io.github.soundgoodizerfan.feedback.vehicle.micro.MicroCellBlockEntity;
+
 import org.jetbrains.annotations.Nullable;
 
 
@@ -60,70 +62,73 @@ public final class ElectricPropagator {
     }
 
     static void flushAdded(Level level, Set<BlockPos> added) {
-        Set<BlockPos> covered = new HashSet<>();
+        Set<ElectricNode> covered = new HashSet<>();
         for (BlockPos pos : added)
-            if (!covered.contains(pos))
-                for (ElectricNode member : rebuild(level, pos))
-                    covered.add(member.getBlockPos());
+            for (ElectricNode node : nodesAt(level, pos))
+                if (!covered.contains(node))
+                    covered.addAll(rebuild(level, node));
     }
 
     static void onRemoved(Level level, BlockPos pos, ElectricNode removed) {
         ElectricRuns runs = ElectricRuns.of(level);
-        if (removed.getRun() != null)
-            runs.discard(removed.getRun());
+        ElectricRun run = removed.getRun();
+        // Who the node touched is read off its run (arcs and finespace voxels included), before the run is discarded.
+        List<ElectricMember> around = run == null ? List.of() : run.neighboursOf(removed);
+        if (run != null)
+            runs.discard(run);
         removed.setRun(null);
         // The run may have been cut in two: rebuild from each neighbour, skipping any that an
         // earlier rebuild already covered.
-        Set<BlockPos> covered = new HashSet<>();
-        for (Direction face : Direction.values())
-            // Two steps out too: a bare wire may have been arcing to one across the gap.
-            for (int step = 1; step <= 1 + ElectricTuning.ARC_GAP_BLOCKS; step++) {
-                BlockPos neighbour = pos.relative(face, step);
-                if (covered.contains(neighbour) || nodeAt(level, neighbour) == null)
-                    continue;
-                for (ElectricNode member : rebuild(level, neighbour))
-                    covered.add(member.getBlockPos());
-            }
+        Set<ElectricNode> covered = new HashSet<>();
+        for (ElectricMember member : around)
+            if (member instanceof ElectricNode node && node != removed && !node.isGone() && !covered.contains(node))
+                covered.addAll(rebuild(level, node));
     }
 
-    /** Re-resolve the run at {@code pos}. For tests and for anything that changes a node's role. */
+    /** Re-resolve the run at {@code pos} (each node a finespace cell hosts there too). For tests and for anything that changes a node's role. */
     public static void rebuildFrom(Level level, BlockPos pos) {
-        rebuild(level, pos);
+        Set<ElectricNode> covered = new HashSet<>();
+        for (ElectricNode node : nodesAt(level, pos))
+            if (!covered.contains(node))
+                covered.addAll(rebuild(level, node));
     }
 
-    private static List<ElectricNode> rebuild(Level level, BlockPos pos) {
-        ElectricNode start = nodeAt(level, pos);
-        if (start == null)
-            return List.of();
-
+    private static List<ElectricNode> rebuild(Level level, ElectricNode start) {
         // Flood fill, keeping an index per node so adjacency is built in the same pass.
         List<ElectricNode> found = new ArrayList<>();
-        Map<BlockPos, Integer> index = new HashMap<>();
+        Map<ElectricNode, Integer> index = new HashMap<>();
         Deque<ElectricNode> queue = new ArrayDeque<>();
         queue.add(start);
-        index.put(start.getBlockPos(), 0);
+        index.put(start, 0);
         found.add(start);
         List<List<Integer>> edges = new ArrayList<>();
         edges.add(new ArrayList<>());
+        List<ElectricNode> touching = new ArrayList<>();
 
         while (!queue.isEmpty()) {
             ElectricNode current = queue.poll();
-            int ci = index.get(current.getBlockPos());
+            int ci = index.get(current);
             for (Direction face : Direction.values()) {
-                ElectricNode other = nodeAt(level, current.getBlockPos().relative(face));
-                if (other == null)
-                    other = arcAcross(level, current, face);
-                if (other == null || !connects(current, other))
-                    continue;
-                Integer oi = index.get(other.getBlockPos());
-                if (oi == null) {
-                    oi = found.size();
-                    index.put(other.getBlockPos(), oi);
-                    found.add(other);
-                    edges.add(new ArrayList<>());
-                    queue.add(other);
+                touching.clear();
+                neighbours(level, current, face, touching);
+                if (touching.isEmpty()) {
+                    ElectricNode far = arcAcross(level, current, face);
+                    if (far != null)
+                        touching.add(far);
                 }
-                edges.get(ci).add(oi);
+                for (ElectricNode other : touching) {
+                    if (!connects(current, other))
+                        continue;
+                    Integer oi = index.get(other);
+                    if (oi == null) {
+                        oi = found.size();
+                        index.put(other, oi);
+                        found.add(other);
+                        edges.add(new ArrayList<>());
+                        queue.add(other);
+                    }
+                    edges.get(ci).add(oi);
+                }
             }
         }
 
@@ -147,21 +152,30 @@ public final class ElectricPropagator {
      * opening splits one run into two and closing joins two into one.
      */
     public static void reconnect(Level level, BlockPos pos) {
-        rebuild(level, pos);
-        for (Direction face : Direction.values())
-            if (nodeAt(level, pos.relative(face)) != null)
-                rebuild(level, pos.relative(face));
+        Set<ElectricNode> covered = new HashSet<>();
+        List<ElectricNode> touching = new ArrayList<>();
+        for (ElectricNode node : nodesAt(level, pos)) {
+            if (!covered.contains(node))
+                covered.addAll(rebuild(level, node));
+            touching.clear();
+            for (Direction face : Direction.values())
+                neighbours(level, node, face, touching);
+            for (ElectricNode other : touching)
+                if (!covered.contains(other))
+                    covered.addAll(rebuild(level, other));
+        }
     }
 
-    /** The bare wire a bare {@code from} arcs to over an air gap in direction {@code face}, if any. */
+    /** The bare wire a bare {@code from} arcs to over an air gap in direction {@code face}, if any (whole blocks only). */
     @Nullable
     private static ElectricNode arcAcross(Level level, ElectricNode from, Direction face) {
-        if (!from.bare())
+        if (!from.bare() || level.getBlockEntity(from.getBlockPos()) != from)
             return null;
         BlockPos gap = from.getBlockPos().relative(face);
         if (!level.isLoaded(gap) || !level.getBlockState(gap).isAir())
             return null;
-        ElectricNode far = nodeAt(level, gap.relative(face));
+        BlockPos beyond = gap.relative(face);
+        ElectricNode far = level.isLoaded(beyond) && level.getBlockEntity(beyond) instanceof ElectricNode n && !n.isGone() ? n : null;
         return far != null && far.bare() ? far : null;
     }
 
@@ -172,14 +186,55 @@ public final class ElectricPropagator {
                 || a.role() != b.role();
     }
 
-    @Nullable
-    private static ElectricNode nodeAt(Level level, BlockPos pos) {
+    /** Every live node in the block at {@code pos}: the block entity itself, or each machine a finespace cell hosts. */
+    private static List<ElectricNode> nodesAt(Level level, BlockPos pos) {
         if (!level.isLoaded(pos))
-            return null;
+            return List.of();
         BlockEntity be = level.getBlockEntity(pos);
-        // A finespace cell is the electric node of the machine it hosts (one a cell: runs are told apart by block position).
-        if (be instanceof io.github.soundgoodizerfan.feedback.vehicle.micro.MicroCellBlockEntity cell)
-            be = cell.hostedElectric();
-        return be instanceof ElectricNode node && !node.isGone() ? node : null;
+        List<ElectricNode> out = new ArrayList<>();
+        if (be instanceof MicroCellBlockEntity cell)
+            for (ElectricNode node : cell.hostedElectrics())
+                add(out, node);
+        else if (be instanceof ElectricNode node)
+            add(out, node);
+        return out;
+    }
+
+    private static void add(List<ElectricNode> out, ElectricNode node) {
+        if (!node.isGone())
+            out.add(node);
+    }
+
+    /**
+     * Adds to {@code out} the nodes touching {@code node} across {@code face}, by voxel: a node in a finespace cell touches the voxel beside
+     * it (in the cell, or the matching voxel of the next cell, or the whole block there); a whole block's node touches the voxels on the
+     * face of a cell beside it.
+     */
+    private static void neighbours(Level level, ElectricNode node, Direction face, List<ElectricNode> out) {
+        BlockPos pos = node.getBlockPos();
+        MicroCellBlockEntity home = level.getBlockEntity(pos) instanceof MicroCellBlockEntity cell ? cell : null;
+        int voxel = home == null ? -1 : home.voxelOf(node);
+        if (voxel >= 0) {
+            int next = MicroCellBlockEntity.beside(voxel, face);
+            if (next >= 0) {
+                if (home.hosted(next) instanceof ElectricNode other)
+                    add(out, other);
+                return;
+            }
+        }
+        BlockPos at = pos.relative(face);
+        if (!level.isLoaded(at))
+            return;
+        BlockEntity be = level.getBlockEntity(at);
+        if (be instanceof MicroCellBlockEntity cell) {
+            if (voxel >= 0) {
+                if (cell.hosted(MicroCellBlockEntity.wrapped(voxel, face)) instanceof ElectricNode other)
+                    add(out, other);
+            } else
+                for (int i : MicroCellBlockEntity.plane(face.getOpposite()))
+                    if (cell.hosted(i) instanceof ElectricNode other)
+                        add(out, other);
+        } else if (be instanceof ElectricNode other)
+            add(out, other);
     }
 }

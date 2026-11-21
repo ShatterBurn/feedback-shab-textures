@@ -166,11 +166,11 @@ public class BoilerBlockEntity extends io.github.soundgoodizerfan.feedback.machi
         if (level == null)
             return;
 
-        Tu fireTu = HeatSource.at(level, worldPosition);
+        Tu fireTu = HeatSource.at(level, this);
         Tu ambient = AmbientTable.at(level);
         long away = offline.take(level);
         if (away > 0L)
-            Catchup.settle(this, HeatSource.spanAt(level, worldPosition, away), ambient, away);
+            Catchup.settle(this, HeatSource.spanAt(level, this, away), ambient, away);
         Heat.tick(this, fireTu, ambient, fireTu.value() > ambient.value(), scale());
         measureDelta();
 

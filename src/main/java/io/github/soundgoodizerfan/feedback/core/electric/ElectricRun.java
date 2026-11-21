@@ -87,6 +87,16 @@ public final class ElectricRun {
         pooledNow = new boolean[n];
     }
 
+    /** The members {@code member} touched when this run was built, so a run cut at a member knows where to rebuild from. */
+    List<ElectricMember> neighboursOf(ElectricMember member) {
+        List<ElectricMember> out = new java.util.ArrayList<>();
+        for (int i = 0; i < members.length; i++)
+            if (members[i] == member)
+                for (int j : adjacent[i])
+                    out.add(members[j]);
+        return out;
+    }
+
     public int size() {
         return members.length;
     }
