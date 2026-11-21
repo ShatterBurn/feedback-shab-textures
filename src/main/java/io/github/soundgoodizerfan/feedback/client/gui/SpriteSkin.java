@@ -266,6 +266,24 @@ final class SpriteSkin extends GuiSkin {
     }
 
     @Override
+    public void inset(GuiGraphics g, int x, int y, int w, int h) {
+        SkinDef d = def();
+        if (d != null && have(d.inset()))
+            g.blitSprite(d.inset(), x, y, w, h);
+        else
+            super.inset(g, x, y, w, h);
+    }
+
+    @Override
+    public void plaque(GuiGraphics g, int x, int y, int w, int h) {
+        SkinDef d = def();
+        if (d != null && have(d.plaque()))
+            g.blitSprite(d.plaque(), x, y, w, h);
+        else
+            super.plaque(g, x, y, w, h);
+    }
+
+    @Override
     public void slot(GuiGraphics g, int x, int y) {
         SkinDef d = def();
         if (d != null && have(d.slot()))

@@ -442,10 +442,15 @@ public final class GuiStyle {
 
         /** Eases toward the target; call once a frame, before reading {@link #px}. Returns the position. */
         public float update() {
+            return update(16f);
+        }
+
+        /** As {@link #update()} closing on the target at {@code rate} per second (0 or less jumps): a skin's own scroll feel. */
+        public float update(float rate) {
             long t = System.nanoTime();
             float dt = last == 0 ? 0f : Math.min(0.1f, (t - last) / 1e9f);
             last = t;
-            k = ClientSettings.reduceMotion() ? 1f : 1f - (float) Math.exp(-dt * 16f);
+            k = ClientSettings.reduceMotion() || rate <= 0f ? 1f : 1f - (float) Math.exp(-dt * rate);
             now = ease(now, target, k);
             return now;
         }
@@ -456,6 +461,91 @@ public final class GuiStyle {
 
         public int px() {
             return Math.round(now);
+        }
+    }
+
+    /**
+     * A list of equal rows that scrolls smoothly in its skin's feel: the one way a screen lists things. Holds the glide; the screen
+     * keeps its own rows. Each frame: {@link #size}, {@link #update}, then draw rows {@link #first} on at {@code top - }{@link #offset}
+     * between {@link #begin} and {@link #end} (which clip to the view), then {@link #bar}. The wheel goes to {@link #wheel}; a click's
+     * row is {@link #rowAt}. {@code rowPx} is a row's height, {@code viewPx} the list's visible height.
+     */
+    public static final class RowList {
+        private final Scroll scroll = new Scroll();
+        private final int rowPx;
+        private int viewPx, rows;
+
+        public RowList(int rowPx, int viewPx) {
+            this.rowPx = rowPx;
+            this.viewPx = viewPx;
+        }
+
+        /** The visible height, if it can change with the window. */
+        public void view(int viewPx) {
+            this.viewPx = viewPx;
+        }
+
+        /** How many rows there are now (call every frame; it clamps the position when the list shrinks). */
+        public void size(int rows) {
+            this.rows = rows;
+            scroll.setMax(Math.max(0, rows * rowPx - viewPx));
+        }
+
+        /** The wheel moved by {@code dy} (vanilla's sign: positive is up): one row a notch. */
+        public void wheel(double dy) {
+            scroll.by(-(float) Math.signum(dy) * rowPx);
+        }
+
+        public void toRow(int row) {
+            scroll.to(row * rowPx);
+        }
+
+        public void snapTo(int row) {
+            scroll.snap(row * rowPx);
+        }
+
+        /** Glide one frame in {@code skin}'s feel. */
+        public void update(GuiSkin skin) {
+            scroll.update(skin.feel().scrollRate());
+        }
+
+        public int first() {
+            return Math.max(0, scroll.px() / rowPx);
+        }
+
+        /** Pixels the first row sits above the list's top edge. */
+        public int offset() {
+            return scroll.px() % rowPx;
+        }
+
+        /** How many rows to draw from {@link #first} to fill the view (one more than fit, for the partly shown one). */
+        public int drawn() {
+            return Math.min(rows - first(), viewPx / rowPx + 2);
+        }
+
+        /** The row under pixel {@code my} of a list whose top is {@code top}, or -1 outside the rows. */
+        public int rowAt(double my, int top) {
+            if (my < top || my >= top + viewPx)
+                return -1;
+            int r = (int) ((my - top + scroll.px()) / rowPx);
+            return r < rows ? r : -1;
+        }
+
+        public void begin(GuiGraphics g, int x, int top, int w) {
+            g.enableScissor(x, top, x + w, top + viewPx);
+        }
+
+        public void end(GuiGraphics g) {
+            g.disableScissor();
+        }
+
+        /** The skin's scroll thumb at (x, y), {@code h} tall, following the glide. */
+        public void bar(GuiGraphics g, GuiSkin skin, int x, int y, int h) {
+            skin.scrollbar(g, x, y, h, rows * rowPx, viewPx, scroll.px());
+        }
+
+        public boolean scrolls() {
+            return rows * rowPx > viewPx;
         }
     }
 
@@ -493,6 +583,9 @@ public final class GuiStyle {
         private final Flash flash = new Flash(1);
         private float glowLeft, glowRight;
         private long last;
+        private String cur = "", prev = "";
+        private int dir;
+        private float since = Float.NEGATIVE_INFINITY;
 
         Stepper(GuiSkin skin, int x, int y, int w, int h, Component left, Component right, Supplier<String> value,
                 IntConsumer step, boolean plaque, Supplier<SoundEvent> sound) {
@@ -526,13 +619,34 @@ public final class GuiStyle {
             String v = value.get();
             var font = Minecraft.getInstance().font;
             int room = width - 2 * ARROW - 4;
+            if (!v.equals(cur)) { // the reading changed: the old one makes way toward the arrow that was pressed
+                prev = cur;
+                cur = v;
+                since = time();
+            }
+            Feel feel = skin.feel();
+            float p = feel.slideTicks() <= 0f || ClientSettings.reduceMotion() || dir == 0 ? 1f : (time() - since) / feel.slideTicks();
+            int colour = flash.colour(0, v, skin.ink(), skin.accent());
+            if (p >= 1f) {
+                text(g, font, v, room, 0, colour);
+                return;
+            }
+            float c = feel.slide(p);
+            int span = room + 8;
+            g.enableScissor(getX() + ARROW + 1, getY(), getX() + width - ARROW - 1, getY() + height);
+            text(g, font, prev, room, Math.round(dir * span * c), skin.dim());
+            text(g, font, v, room, Math.round(-dir * span * (1 - c)), colour);
+            g.disableScissor();
+        }
+
+        private void text(GuiGraphics g, net.minecraft.client.gui.Font font, String v, int room, int dx, int colour) {
             String shown = font.width(v) <= room ? v : font.plainSubstrByWidth(v, room - font.width("...")) + "...";
-            g.drawString(font, shown, getX() + (width - font.width(shown)) / 2, getY() + (height - 8) / 2 + 1,
-                    flash.colour(0, v, skin.ink(), skin.accent()), skin == GuiSkin.VANILLA);
+            g.drawString(font, shown, getX() + (width - font.width(shown)) / 2 + dx, getY() + (height - 8) / 2 + 1, colour, skin == GuiSkin.VANILLA);
         }
 
         private void press(int dir) {
             GuiSkin.play(sound != null ? sound.get() : skin.click(), dir < 0 ? 0.9f : 1.1f);
+            this.dir = dir;
             step.accept(dir);
         }
 
@@ -600,6 +714,7 @@ public final class GuiStyle {
         private float glow;
         private long last;
         private boolean dragging;
+        private float shownFrac = Float.NaN;
 
         Slider(GuiSkin skin, int x, int y, int w, double min, double max, double step, DoubleSupplier value, DoubleConsumer set) {
             super(x, y, w, 12, Component.empty());
@@ -633,7 +748,10 @@ public final class GuiStyle {
             float dt = Math.min(now - last, 100L) / 1000f;
             last = now;
             glow = ease(glow, active && (dragging || isHoveredOrFocused()), dt);
-            skin.slider(g, getX(), getY(), width, frac(), glow, active);
+            float target = frac(), rate = skin.feel().followRate();
+            shownFrac = Float.isNaN(shownFrac) || rate <= 0f || ClientSettings.reduceMotion() ? target
+                    : Math.abs(target - shownFrac) < 0.002f ? target : shownFrac + (target - shownFrac) * (1f - (float) Math.exp(-dt * rate));
+            skin.slider(g, getX(), getY(), width, shownFrac, glow, active);
         }
 
         @Override

@@ -32,7 +32,7 @@ public class BoardScreen extends SkinnedScreen<BoardMenu> {
 
     private int tab;
     private int picked;
-    private final int[] scroll = new int[3];
+    private final GuiStyle.RowList[] lists = {new GuiStyle.RowList(ROW, ROW * ROWS), new GuiStyle.RowList(ROW, ROW * ROWS), new GuiStyle.RowList(ROW, ROW * ROWS)};
     private Button deliver, banner;
     private BoardView seen = BoardView.EMPTY;
     private long stampedAt = -1;
@@ -103,9 +103,13 @@ public class BoardScreen extends SkinnedScreen<BoardMenu> {
     }
 
     private void orders(GuiGraphics g, BoardView v, int x, int y, int mx, int my) {
-        for (int i = 0; i < ROWS && scroll[ORDERS] + i < v.orders().size(); i++) {
-            BoardView.OrderLine o = v.orders().get(scroll[ORDERS] + i);
-            int ry = y + 1 + i * ROW;
+        GuiStyle.RowList list = lists[ORDERS];
+        list.size(v.orders().size());
+        list.update(skin);
+        list.begin(g, x, y, LIST_W);
+        for (int i = 0; i < list.drawn(); i++) {
+            BoardView.OrderLine o = v.orders().get(list.first() + i);
+            int ry = y + 1 + i * ROW - list.offset();
             g.drawString(font, fit(Component.translatable("village.feedback.board.order_head", o.type(), o.profession()), LIST_W - 50), x + 4, ry + 2,
                     o.done() ? skin.dim() : skin.ink(), false);
             g.drawString(font, o.done() ? Component.translatable("gui.feedback.villager.done") : Component.translatable("gui.feedback.villager.pay", o.pay()),
@@ -113,24 +117,30 @@ public class BoardScreen extends SkinnedScreen<BoardMenu> {
                     ry + 2, skin.dim(), false);
             g.drawString(font, fit(o.text(), LIST_W - 10), x + 4, ry + 11, skin.dim(), false);
         }
+        list.end(g);
         if (v.orders().isEmpty())
             g.drawString(font, Component.translatable("gui.feedback.board.no_orders"), x + 6, y + 6, skin.dim(), false);
-        scrollbar(g, x + LIST_W + 2, y, ROW * ROWS + 2, v.orders().size(), ROWS, scroll[ORDERS]);
+        list.bar(g, skin, x + LIST_W + 2, y, ROW * ROWS + 2);
     }
 
     private void contracts(GuiGraphics g, BoardView v, int x, int y, int mx, int my) {
-        for (int i = 0; i < ROWS && scroll[CONTRACTS] + i < v.contracts().size(); i++) {
-            int idx = scroll[CONTRACTS] + i;
+        GuiStyle.RowList list = lists[CONTRACTS];
+        list.size(v.contracts().size());
+        list.update(skin);
+        list.begin(g, x, y, LIST_W);
+        for (int i = 0; i < list.drawn(); i++) {
+            int idx = list.first() + i;
             BoardView.ContractLine c = v.contracts().get(idx);
-            int ry = y + 1 + i * ROW;
+            int ry = y + 1 + i * ROW - list.offset();
             skin.row(g, x + 1, ry, LIST_W - 2, ROW, idx == picked, mx >= x && mx < x + LIST_W && my >= ry && my < ry + ROW);
             g.drawString(font, fit(c.what(), LIST_W - 10), x + 4, ry + 2, c.delivered() >= c.count() ? skin.dim() : skin.ink(), false);
             g.drawString(font, fit(Component.translatable("village.feedback.board.contract_line", c.delivered(), c.count(), c.min(), c.daysLeft(), c.pay()),
                     LIST_W - 10), x + 4, ry + 11, skin.dim(), false);
         }
+        list.end(g);
         if (v.contracts().isEmpty())
             g.drawString(font, Component.translatable("gui.feedback.board.no_contracts"), x + 6, y + 6, skin.dim(), false);
-        scrollbar(g, x + LIST_W + 2, y, ROW * ROWS + 2, v.contracts().size(), ROWS, scroll[CONTRACTS]);
+        list.bar(g, skin, x + LIST_W + 2, y, ROW * ROWS + 2);
     }
 
     private void notices(GuiGraphics g, BoardView v, int x, int y) {
@@ -180,8 +190,8 @@ public class BoardScreen extends SkinnedScreen<BoardMenu> {
         if (settled() && tab == CONTRACTS) {
             int x = leftPos + PAD, y = topPos + TOP;
             if (mx >= x && mx < x + LIST_W && my >= y && my < y + ROW * ROWS) {
-                int idx = scroll[CONTRACTS] + (int) ((my - y) / ROW);
-                if (idx < menu.view().contracts().size()) {
+                int idx = lists[CONTRACTS].rowAt(my, y);
+                if (idx >= 0) {
                     picked = idx;
                     skin.cue(GuiSkin.Cue.SEAT);
                     return true;
@@ -194,8 +204,7 @@ public class BoardScreen extends SkinnedScreen<BoardMenu> {
     @Override
     public boolean mouseScrolled(double mx, double my, double sx, double sy) {
         if (settled() && tab <= CONTRACTS) {
-            int total = tab == ORDERS ? menu.view().orders().size() : menu.view().contracts().size();
-            scroll[tab] = Mth.clamp(scroll[tab] - (int) Math.signum(sy), 0, Math.max(0, total - ROWS));
+            lists[tab].wheel(sy);
             return true;
         }
         return super.mouseScrolled(mx, my, sx, sy);

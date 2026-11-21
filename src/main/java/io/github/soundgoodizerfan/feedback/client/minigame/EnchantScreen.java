@@ -71,7 +71,8 @@ public class EnchantScreen extends SkinnedScreen<EnchantMenu> {
     private static final String[] LAMPS = {"part", "heat", "effect", "xp"};
 
     private final List<Attunements.Effect> effects = new ArrayList<>(Attunements.known().values());
-    private int chosen = -1, scroll;
+    private int chosen = -1;
+    private final GuiStyle.RowList list = new GuiStyle.RowList(ROW, ROW * ROWS);
     private Button begin, commit;
 
     private boolean playing;
@@ -562,14 +563,13 @@ public class EnchantScreen extends SkinnedScreen<EnchantMenu> {
     private int rowAt(double mx, double my) {
         if (!over(mx, my, LIST_X + 1, LIST_Y + 2, LIST_W - 6, ROW * ROWS))
             return -1;
-        int i = scroll + (int) (my - topPos - LIST_Y - 2) / ROW;
-        return i < effects.size() ? i : -1;
+        return list.rowAt(my, topPos + LIST_Y + 2);
     }
 
     @Override
     public boolean mouseScrolled(double mx, double my, double scrollX, double scrollY) {
         if (over(mx, my, LIST_X, LIST_Y, LIST_W, LIST_H) && effects.size() > ROWS) {
-            scroll = Mth.clamp(scroll - (int) Math.signum(scrollY), 0, effects.size() - ROWS);
+            list.wheel(scrollY);
             return true;
         }
         return super.mouseScrolled(mx, my, scrollX, scrollY);
@@ -657,20 +657,25 @@ public class EnchantScreen extends SkinnedScreen<EnchantMenu> {
         // The effect list.
         int lx = leftPos + LIST_X, ly = topPos + LIST_Y;
         skin.inset(g, lx, ly, LIST_W, LIST_H);
-        for (int r = 0; r < ROWS && scroll + r < effects.size(); r++) {
-            Attunements.Effect row = effects.get(scroll + r);
-            int ry = ly + 2 + r * ROW, rx = lx + 1, rw = LIST_W - 6;
-            boolean picked = scroll + r == chosen;
-            skin.row(g, rx, ry, rw, ROW, picked, !playing && over(mx, my, LIST_X + 1, LIST_Y + 2 + r * ROW, rw, ROW));
+        list.size(effects.size());
+        list.update(skin);
+        list.begin(g, lx + 1, ly + 2, LIST_W - 6);
+        for (int r = 0; r < list.drawn(); r++) {
+            int idx = list.first() + r;
+            Attunements.Effect row = effects.get(idx);
+            int ry = ly + 2 + r * ROW - list.offset(), rx = lx + 1, rw = LIST_W - 6;
+            boolean picked = idx == chosen;
+            skin.row(g, rx, ry, rw, ROW, picked, !playing && over(mx, my, LIST_X + 1, ry - topPos, rw, ROW));
             int colour = picked ? skin.accent() : inert(row) ? skin.dim() : skin.ink();
             if (known(row))
-                for (int[] c : initials[scroll + r])
+                for (int[] c : initials[idx])
                     g.fill(rx + 4 + c[0] * 2, ry + 1 + c[1] * 2, rx + 6 + c[0] * 2, ry + 3 + c[1] * 2, 0xFF000000 | colour);
             g.drawString(font, font.plainSubstrByWidth(shown(row).getString(), rw - 27), rx + 4 + SgaGlyphs.COLUMNS * 2 + 5, ry + 4, colour, false);
             if (owned(row))
                 pip(g, rx + rw - 6, ry + ROW / 2, skin.accent());
         }
-        skin.scrollbar(g, lx + LIST_W - 4, ly + 2, LIST_H - 4, effects.size(), ROWS, scroll);
+        list.end(g);
+        list.bar(g, skin, lx + LIST_W - 4, ly + 2, ROW * ROWS);
 
         pad(g, t, e, p, mx, my);
 

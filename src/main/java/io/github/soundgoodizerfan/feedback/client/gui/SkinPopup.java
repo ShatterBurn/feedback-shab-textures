@@ -55,7 +55,7 @@ public final class SkinPopup<T> {
     private EditBox search;
     private Consumer<T> onPick = v -> {
     };
-    private int scroll;
+    private final GuiStyle.RowList list = new GuiStyle.RowList(ROW_H, 1);
     /** Where the window was last drawn, which the input is tested against. */
     private int x, y, h;
 
@@ -86,7 +86,7 @@ public final class SkinPopup<T> {
             search.setFocused(true);
         }
         this.onPick = onPick;
-        scroll = 0;
+        list.snapTo(0);
         shown = true;
         opening = new Opening(skin);
         opening.start();
@@ -100,7 +100,7 @@ public final class SkinPopup<T> {
     private void filter(String text) {
         query = text.trim().toLowerCase(Locale.ROOT);
         rebuild();
-        scroll = 0;
+        list.snapTo(0);
     }
 
     private void rebuild() {
@@ -139,8 +139,8 @@ public final class SkinPopup<T> {
     private int at(double mx, double my) {
         if (mx < x + PAD || mx >= x + W - PAD || my < listY() || my >= listY() + rows() * ROW_H)
             return -1;
-        int i = scroll + (int) (my - listY()) / ROW_H;
-        return i < entries.size() ? i : -1;
+        list.view(rows() * ROW_H);
+        return list.rowAt(my, listY());
     }
 
     /** Drawn over the host's panel at ({@code hx}, {@code hy}), {@code hw} by {@code hh}, centred on it. */
@@ -171,8 +171,12 @@ public final class SkinPopup<T> {
             }
             if (entries.isEmpty())
                 g.drawString(font, Component.translatable("gui.feedback.popup.none"), x + PAD + 5, listY() + 5, skin.dim(), false);
-            for (int r = 0; r < rows(); r++) {
-                int i = scroll + r, ry = listY() + r * ROW_H;
+            list.view(rows() * ROW_H);
+            list.size(entries.size());
+            list.update(skin);
+            list.begin(g, x + PAD, listY(), W - 2 * PAD);
+            for (int r = 0; r < list.drawn(); r++) {
+                int i = list.first() + r, ry = listY() + r * ROW_H - list.offset();
                 skin.plaque(g, x + PAD, ry + 1, W - 2 * PAD, ROW_H - 2);
                 skin.row(g, x + PAD, ry + 1, W - 2 * PAD, ROW_H - 2, false, i == hover);
                 Row<T> row = entries.get(i);
@@ -182,7 +186,8 @@ public final class SkinPopup<T> {
                     g.drawString(font, row.entry().label(), x + PAD + (row.entry().group().isEmpty() || !query.isEmpty() ? 5 : 14), ry + 5,
                             i == hover ? skin.accent() : skin.ink(), false);
             }
-            skin.scrollbar(g, x + W - PAD + 1, listY(), rows() * ROW_H, entries.size(), rows(), scroll);
+            list.end(g);
+            list.bar(g, skin, x + W - PAD + 1, listY(), rows() * ROW_H);
         });
         if (hover >= 0 && entries.get(hover).entry() != null && !entries.get(hover).entry().tip().isEmpty())
             g.renderComponentTooltip(font, entries.get(hover).entry().tip(), mx, my);
@@ -207,7 +212,6 @@ public final class SkinPopup<T> {
             if (!folded.remove(heading))
                 folded.add(heading);
             rebuild();
-            scroll = Math.min(scroll, Math.max(0, entries.size() - MAX_ROWS));
         } else if (i >= 0) {
             GuiSkin.play(skin.click(), 1f);
             onPick.accept(entries.get(i).entry().value());
@@ -220,8 +224,7 @@ public final class SkinPopup<T> {
     public boolean mouseScrolled(double scrollY) {
         if (!shown)
             return false;
-        if (entries.size() > MAX_ROWS)
-            scroll = Math.max(0, Math.min(entries.size() - MAX_ROWS, scroll - (int) Math.signum(scrollY)));
+        list.wheel(scrollY);
         return true;
     }
 

@@ -56,4 +56,25 @@ public record Feel(float weight, float slop) {
         float t = Math.max(0f, age) / settle;
         return Mth.lerp(GuiStyle.outBack(t, give()), from, to);
     }
+
+    /** Ticks a stepper's reading takes to slide out and its successor in; 0 snaps. */
+    public float slideTicks() {
+        return weight <= 0f ? 0f : 3f + 7f * weight;
+    }
+
+    /** Progress 0..1 of a slide at time fraction {@code t}: rough skins (stone, wood) ramp up as if sliding off, machined ones move at a steady rate. */
+    public float slide(float t) {
+        t = Mth.clamp(t, 0f, 1f);
+        return slop >= 0.25f ? t * t * (3f - 2f * t) * 0.5f + t * t * 0.5f : t;
+    }
+
+    /** Per-second rate a slider's thumb closes on its value: weightless snaps, heavy lags behind the pointer. */
+    public float followRate() {
+        return weight <= 0f ? 0f : 30f - 22f * weight;
+    }
+
+    /** Per-second rate a list's scroll closes on its target: stone ramps slowly, glass is quick, a weightless skin jumps. */
+    public float scrollRate() {
+        return weight <= 0f ? 0f : 26f - 16f * weight;
+    }
 }

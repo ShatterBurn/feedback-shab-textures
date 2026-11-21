@@ -22,7 +22,7 @@ import net.minecraft.resources.ResourceLocation;
  */
 record SkinDef(int ink, int dim, int accent, int warn, int well, int trim, int plate,
                ResourceLocation panel, boolean shadow, int wash, ResourceLocation frame, ResourceLocation slot, Map<String, ResourceLocation> buttons,
-               String click, String open, String close, Map<String, String> cues, String reveal, List<Decor> decor, List<Glow> glow, Glint glint, Tabs tabs, Feel feel, Idle idle, String effect) {
+               String click, String open, String close, Map<String, String> cues, String reveal, List<Decor> decor, List<Glow> glow, Glint glint, Tabs tabs, Feel feel, Idle idle, String effect, ResourceLocation inset, ResourceLocation plaque) {
 
     /** One sprite laid over the panel: {@code anchor} names the panel point it hangs from, (x, y) is the offset, w by h its size. */
     record Decor(ResourceLocation sprite, String anchor, int x, int y, int w, int h, boolean heat, float cold, float breathe, float spin) {
@@ -105,7 +105,9 @@ record SkinDef(int ink, int dim, int accent, int warn, int well, int trim, int p
                 panel.has("frame") ? ResourceLocation.parse(panel.get("frame").getAsString()) : null,
                 json.has("slot") ? ResourceLocation.parse(json.get("slot").getAsString()) : null, Map.copyOf(button),
                 str(sounds, "click", null), str(sounds, "open", null), str(sounds, "close", null), Map.copyOf(cues),
-                str(json, "reveal", "none"), List.copyOf(decor), List.copyOf(glow), glint, tabs, feel, idle, str(json, "effect", null));
+                str(json, "reveal", "none"), List.copyOf(decor), List.copyOf(glow), glint, tabs, feel, idle, str(json, "effect", null),
+                json.has("inset") ? ResourceLocation.parse(json.get("inset").getAsString()) : null,
+                json.has("plaque") ? ResourceLocation.parse(json.get("plaque").getAsString()) : null);
     }
 
     private static Joint joint(JsonObject o, String key) {

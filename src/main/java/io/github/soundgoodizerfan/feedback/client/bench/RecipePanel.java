@@ -51,7 +51,8 @@ final class RecipePanel implements BlueprintBoard.Host {
     private final Map<String, int[]> chosen = new HashMap<>();
     private final StringBuilder name = new StringBuilder();
     private boolean nameFocus;
-    private int scroll, left, top, hoverRow = -1;
+    private int left, top, hoverRow = -1;
+    private final GuiStyle.RowList list = new GuiStyle.RowList(ROW, 1);
     private long stampAt;
     private ItemStack lastPaper = ItemStack.EMPTY;
 
@@ -187,17 +188,20 @@ final class RecipePanel implements BlueprintBoard.Host {
         // the steps
         List<String> roles = board.stepRoles();
         int rows = visibleRows();
-        scroll = Mth.clamp(scroll, 0, Math.max(0, roles.size() - rows));
+        list.view(rows * ROW);
+        list.size(roles.size());
+        list.update(skin);
         skin.inset(g, listX() - 3, top + LIST_TOP - 3, listW() + 6, rows * ROW + 6);
         hoverRow = -1;
-        for (int v = 0; v < rows && scroll + v < roles.size(); v++) {
-            String role = roles.get(scroll + v);
-            int y = rowY(v), x = listX();
-            boolean over = in(mx, my, x, y, listW(), ROW - 2);
+        list.begin(g, listX(), top + LIST_TOP, listW());
+        for (int v = 0; v < list.drawn(); v++) {
+            String role = roles.get(list.first() + v);
+            int y = rowY(v) - list.offset(), x = listX();
+            boolean over = in(mx, my, x, y, listW(), ROW - 2) && my >= top + LIST_TOP && my < top + LIST_TOP + rows * ROW;
             if (over)
-                hoverRow = scroll + v;
+                hoverRow = list.first() + v;
             skin.row(g, x, y, listW(), ROW - 2, false, over);
-            g.drawString(font, (scroll + v + 1) + ".", x + 3, y + 5, skin.dim(), false);
+            g.drawString(font, (list.first() + v + 1) + ".", x + 3, y + 5, skin.dim(), false);
             g.drawString(font, font.plainSubstrByWidth(board.stepRoleName(role).getString(), 50), x + 16, y + 5, skin.dim(), false);
             Optional<Material.Located> now = board.stepChoice(role);
             int mx0 = x + 70;
@@ -222,8 +226,8 @@ final class RecipePanel implements BlueprintBoard.Host {
             if (board.stepRemovable(role))
                 g.drawString(font, "x", x + listW() - 9, y + 5, skin.warn(), false);
         }
-        if (roles.size() > rows)
-            skin.scrollbar(g, left + PartBenchMenu.W - MARGIN - 4, top + LIST_TOP, rows * ROW, roles.size(), rows, scroll);
+        list.end(g);
+        list.bar(g, skin, left + PartBenchMenu.W - MARGIN - 4, top + LIST_TOP, rows * ROW);
         // add a step
         int ax = left + MARGIN, ay = top + PartBenchMenu.BOARD_H - 28;
         for (String key : board.stepAddable()) {
@@ -283,10 +287,10 @@ final class RecipePanel implements BlueprintBoard.Host {
             cx += w + 4;
         }
         List<String> roles = board.stepRoles();
-        for (int v = 0; v < visibleRows() && scroll + v < roles.size(); v++) {
-            String role = roles.get(scroll + v);
-            int y = rowY(v), x = listX();
-            if (!in(mx, my, x, y, listW(), ROW - 2))
+        for (int v = 0; v < list.drawn(); v++) {
+            String role = roles.get(list.first() + v);
+            int y = rowY(v) - list.offset(), x = listX();
+            if (!in(mx, my, x, y, listW(), ROW - 2) || my < top + LIST_TOP || my >= top + LIST_TOP + visibleRows() * ROW)
                 continue;
             if (board.stepRemovable(role) && mx >= x + listW() - 12) {
                 skin.cue(GuiSkin.Cue.REJECT);
@@ -344,7 +348,7 @@ final class RecipePanel implements BlueprintBoard.Host {
     boolean mouseScrolled(double mx, double my, double scrollY) {
         if (!in(mx, my, listX(), top + LIST_TOP, listW(), listH()))
             return false;
-        scroll = Math.max(0, scroll - (int) Math.signum(scrollY));
+        list.wheel(scrollY);
         return true;
     }
 

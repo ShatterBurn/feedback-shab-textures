@@ -38,11 +38,10 @@ public class ResearchTableScreen extends SkinnedScreen<ResearchTableMenu> {
     private static final GuiSkin TREATISES = GuiSkin.CONSOLE, ATTUNEMENTS = GuiSkin.MYSTIC, APPS = GuiSkin.TERMINAL;
     private static final int LIST_X = 10, LIST_Y = 28, LIST_W = 136, LIST_H = 142, ROW = 26, TAB_Y = 10, TAB_W = 50, TAB_GAP = 2, PAGE_X = ResearchTableMenu.PAGE_X, PAGE_W = 138;
 
-    private int tabMode = -1, scroll, descIndex = -1, descMode = -1;
+    private int tabMode = -1, descIndex = -1, descMode = -1;
+    private final GuiStyle.RowList list = new GuiStyle.RowList(ROW, LIST_H - 4);
     private List<FormattedCharSequence> nameLines = List.of(), blurbLines = List.of(), hintLines = List.of();
     private Component labelA = Component.empty(), labelB = Component.empty(), labelC = Component.empty();
-    private final int[] rowIndex = new int[16];
-    private int rowsShown;
     private ItemStack[] icons;
     private ItemStack book;
     private Button treatises, attunements, apps;
@@ -103,7 +102,7 @@ public class ResearchTableScreen extends SkinnedScreen<ResearchTableMenu> {
     private void press(int id) {
         minecraft.gameMode.handleInventoryButtonClick(menu.containerId, id);
         if (id == ResearchTableMenu.BTN_TREATISES || id == ResearchTableMenu.BTN_ATTUNEMENTS || id == ResearchTableMenu.BTN_APPS) {
-            scroll = 0;
+            list.snapTo(0);
             descIndex = -1;
         }
     }
@@ -171,14 +170,13 @@ public class ResearchTableScreen extends SkinnedScreen<ResearchTableMenu> {
         ls.panel(g, leftPos + LIST_X, topPos + LIST_Y, LIST_W, LIST_H);
         List<Component> names = names();
         refreshPage(names);
-        int visible = (LIST_H - 4) / ROW;
-        scroll = Mth.clamp(scroll, 0, Math.max(0, names.size() - visible));
-        rowsShown = 0;
-        for (int k = 0; k < visible && scroll + k < names.size() && k < rowIndex.length; k++) {
-            int i = scroll + k;
-            rowIndex[rowsShown++] = i;
+        list.size(names.size());
+        list.update(ls);
+        list.begin(g, leftPos + LIST_X + 3, topPos + LIST_Y + 2, LIST_W - 12);
+        for (int k = 0; k < list.drawn(); k++) {
+            int i = list.first() + k;
             boolean picked = i == menu.index();
-            int x = leftPos + LIST_X + 3, y = topPos + LIST_Y + 2 + k * ROW;
+            int x = leftPos + LIST_X + 3, y = topPos + LIST_Y + 2 + k * ROW - list.offset();
             boolean hover = mx >= x && mx < x + LIST_W - 12 && my >= y && my < y + ROW;
             ls.row(g, x, y, LIST_W - 12, ROW - 2, picked, hover);
             ls.slot(g, x + 3, y + 3);
@@ -196,8 +194,8 @@ public class ResearchTableScreen extends SkinnedScreen<ResearchTableMenu> {
             g.drawString(font, label, x + 26 - shift, y + 9, picked ? ls.accent() | 0xFF000000 : ls.ink(), false);
             g.disableScissor();
         }
-        if (names.size() > visible)
-            ls.scrollbar(g, leftPos + LIST_X + LIST_W - 8, topPos + LIST_Y + 2, LIST_H - 4, names.size(), visible, scroll);
+        list.end(g);
+        list.bar(g, ls, leftPos + LIST_X + LIST_W - 8, topPos + LIST_Y + 2, LIST_H - 4);
         skin.slot(g, leftPos + ResearchTableMenu.BLANK_X, topPos + ResearchTableMenu.SLOT_Y);
         if (menu.mode() != 0)
             skin.slot(g, leftPos + ResearchTableMenu.SECOND_X, topPos + ResearchTableMenu.SLOT_Y);
@@ -278,13 +276,11 @@ public class ResearchTableScreen extends SkinnedScreen<ResearchTableMenu> {
     @Override
     public boolean mouseClicked(double mx, double my, int button) {
         if (settled() && !closing() && button == 0 && mx >= leftPos + LIST_X && mx < leftPos + LIST_X + LIST_W - 8) {
-            for (int k = 0; k < rowsShown; k++) {
-                int y = topPos + LIST_Y + 2 + k * ROW;
-                if (my >= y && my < y + ROW) {
-                    minecraft.gameMode.handleInventoryButtonClick(menu.containerId, ResearchTableMenu.BTN_PICK + rowIndex[k]);
-                    minecraft.getSoundManager().play(SimpleSoundInstance.forUI(listSkin().click(), 1f));
-                    return true;
-                }
+            int row = list.rowAt(my, topPos + LIST_Y + 2);
+            if (row >= 0) {
+                minecraft.gameMode.handleInventoryButtonClick(menu.containerId, ResearchTableMenu.BTN_PICK + row);
+                minecraft.getSoundManager().play(SimpleSoundInstance.forUI(listSkin().click(), 1f));
+                return true;
             }
         }
         return super.mouseClicked(mx, my, button);
@@ -293,7 +289,7 @@ public class ResearchTableScreen extends SkinnedScreen<ResearchTableMenu> {
     @Override
     public boolean mouseScrolled(double mx, double my, double dx, double dy) {
         if (mx >= leftPos + LIST_X && mx < leftPos + LIST_X + LIST_W && my >= topPos + LIST_Y && my < topPos + LIST_Y + LIST_H) {
-            scroll = Mth.clamp(scroll - (int) Math.signum(dy), 0, Math.max(0, names().size() - (LIST_H - 4) / ROW));
+            list.wheel(dy);
             return true;
         }
         return super.mouseScrolled(mx, my, dx, dy);

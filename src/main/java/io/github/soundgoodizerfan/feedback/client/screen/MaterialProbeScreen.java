@@ -27,7 +27,8 @@ public class MaterialProbeScreen extends SkinnedScreen<MaterialProbeMenu> {
     private static final int TEXT_Y = 26;
     private static final int LINE = 10;
 
-    private int scroll, tab;
+    private int tab;
+    private final GuiStyle.RowList list = new GuiStyle.RowList(LINE, 1);
     private ItemStack shown = ItemStack.EMPTY;
     private List<MaterialDescription.Row> rows = List.of();
 
@@ -48,7 +49,7 @@ public class MaterialProbeScreen extends SkinnedScreen<MaterialProbeMenu> {
                         .map(t -> (Component) Component.translatable("screen.feedback.probe.tab." + t)).toList(),
                 () -> tab, i -> {
                     tab = i;
-                    scroll = 0;
+                    list.snapTo(0);
                 }));
     }
 
@@ -66,7 +67,7 @@ public class MaterialProbeScreen extends SkinnedScreen<MaterialProbeMenu> {
         if (ItemStack.isSameItemSameComponents(stack, shown))
             return;
         shown = stack.copy();
-        scroll = 0;
+        list.snapTo(0);
         if (stack.isEmpty()) {
             rows = List.of();
             return;
@@ -97,31 +98,36 @@ public class MaterialProbeScreen extends SkinnedScreen<MaterialProbeMenu> {
                     leftPos + TEXT_X, top, skin.dim(), false);
             return;
         }
-        scroll = Math.max(0, Math.min(scroll, shownRows.size() - visibleLines()));
+        list.view(visibleLines() * LINE);
+        list.size(shownRows.size());
+        list.update(skin);
         int right = leftPos + TEXT_X + textWidth() - 6;
-        for (int i = 0; i < visibleLines() && scroll + i < shownRows.size(); i++) {
-            var r = shownRows.get(scroll + i);
-            int y = top + i * LINE;
+        list.begin(graphics, leftPos + TEXT_X, top, textWidth());
+        for (int i = 0; i < list.drawn(); i++) {
+            var r = shownRows.get(list.first() + i);
+            int y = top + i * LINE - list.offset();
             graphics.drawString(font, r.label(), leftPos + TEXT_X, y, skin.ink(), false);
             String fig = font.plainSubstrByWidth(r.figure(), textWidth() - font.width(r.label()) - 14);
             graphics.drawString(font, fig, right - font.width(fig), y, skin.accent(), false);
         }
-        skin.scrollbar(graphics, x + w - 3, top - 1, h - 4, shownRows.size(), visibleLines(), scroll);
+        list.end(graphics);
+        list.bar(graphics, skin, x + w - 3, top - 1, h - 4);
     }
 
     @Override
     protected void renderTooltip(GuiGraphics g, int mouseX, int mouseY) {
         super.renderTooltip(g, mouseX, mouseY);
-        int row = (mouseY - (topPos + TEXT_Y)) / LINE, i = scroll + row;
+        int i = list.rowAt(mouseY, topPos + TEXT_Y);
         List<MaterialDescription.Row> shownRows = tabRows();
-        if (mouseY >= topPos + TEXT_Y && row < visibleLines() && i < shownRows.size()
+        if (i >= 0 && i < shownRows.size()
                 && mouseX >= leftPos + TEXT_X && mouseX < leftPos + imageWidth - 8)
             g.renderTooltip(font, font.split(shownRows.get(i).tip(), 180), mouseX, mouseY);
     }
 
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
-        scroll -= (int) Math.signum(scrollY) * 3;
+        for (int i = 0; i < 3; i++)
+            list.wheel(scrollY);
         return true;
     }
 }

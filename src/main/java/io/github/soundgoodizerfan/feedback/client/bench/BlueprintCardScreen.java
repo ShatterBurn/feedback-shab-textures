@@ -33,7 +33,8 @@ public class BlueprintCardScreen extends Screen {
     private final Component heading;
     private final Component credit;
     private final List<BlueprintChecklist.Row> rows;
-    private int w, h, cols, visibleRows, scroll;
+    private int w, h, cols, visibleRows;
+    private final GuiStyle.RowList list = new GuiStyle.RowList(ROW_H, 1);
 
     private BlueprintCardScreen(ItemStack sheet, ModularDesign design) {
         super(Component.translatable("screen.feedback.blueprint_card"));
@@ -59,7 +60,8 @@ public class BlueprintCardScreen extends Screen {
         visibleRows = Math.max(3, Math.min(needRows, (height - 90) / ROW_H));
         w = cols * COL_W + 16 + 6;
         h = 62 + visibleRows * ROW_H;
-        scroll = Math.max(0, Math.min(scroll, Math.max(0, needRows - visibleRows)));
+        list.view(visibleRows * ROW_H);
+        list.size(needRows);
     }
 
     private int left() {
@@ -90,25 +92,25 @@ public class BlueprintCardScreen extends Screen {
             if (credit != null)
                 g.drawString(font, credit, x + (w - font.width(credit)) / 2, y + 21, SKIN.dim(), false);
             SKIN.inset(g, x + 8, y + 34, w - 16, h - 60);
-            int total = (rows.size() + cols - 1) / cols;
-            for (int r = 0; r < visibleRows; r++)
+            list.update(SKIN);
+            list.begin(g, x + 9, y + 39, w - 18);
+            for (int r = 0; r < list.drawn(); r++)
                 for (int c = 0; c < cols; c++) {
-                    int i = (scroll + r) * cols + c;
+                    int i = (list.first() + r) * cols + c;
                     if (i >= rows.size())
                         break;
                     g.drawString(font, font.plainSubstrByWidth(Component.literal("- ").append(rows.get(i).text()).getString(), COL_W - 6),
-                            x + 13 + c * COL_W, y + 39 + r * ROW_H, SKIN.ink(), false);
+                            x + 13 + c * COL_W, y + 39 + r * ROW_H - list.offset(), SKIN.ink(), false);
                 }
-            if (total > visibleRows)
-                SKIN.scrollbar(g, x + w - 12, y + 36, visibleRows * ROW_H + 4, total, visibleRows, scroll);
+            list.end(g);
+            list.bar(g, SKIN, x + w - 12, y + 36, visibleRows * ROW_H + 4);
             super.render(g, mouseX, mouseY, partialTick);
         });
     }
 
     @Override
     public boolean mouseScrolled(double mx, double my, double scrollX, double scrollY) {
-        int total = (rows.size() + cols - 1) / cols;
-        scroll = Math.max(0, Math.min(scroll - (int) Math.signum(scrollY), Math.max(0, total - visibleRows)));
+        list.wheel(scrollY);
         return true;
     }
 

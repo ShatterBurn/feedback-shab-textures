@@ -46,7 +46,9 @@ public class VillagerScreen extends SkinnedScreen<VillagerMenu> {
     private static final int PAD = 8, TOP = 22;
 
     private int tab = -1;
-    private int order, good, want, orderScroll, goodScroll, wantScroll;
+    private int order, good, want;
+    private final GuiStyle.RowList orderList = new GuiStyle.RowList(ROW, ROW * ROWS), goodList = new GuiStyle.RowList(ROW, ROW * ROWS),
+            wantList = new GuiStyle.RowList(ROW, ROW * ROWS);
     private Button deliver, buy, sell, hintBtn;
     /** Coins thrown up when a commission is accepted (panel-relative). */
     private final io.github.soundgoodizerfan.feedback.client.gui.Specks coins = new io.github.soundgoodizerfan.feedback.client.gui.Specks(48);
@@ -170,10 +172,14 @@ public class VillagerScreen extends SkinnedScreen<VillagerMenu> {
 
     private void orders(GuiGraphics g, VillagerView v, int x, int y, int mx, int my) {
         skin.inset(g, x + PAD, y + TOP, LIST_W, ROW * ROWS + 2);
-        for (int i = 0; i < ROWS && orderScroll + i < v.orders().size(); i++) {
-            int idx = orderScroll + i;
+        GuiStyle.RowList list = orderList;
+        list.size(v.orders().size());
+        list.update(skin);
+        list.begin(g, x + PAD + 1, y + TOP + 1, LIST_W - 2);
+        for (int i = 0; i < list.drawn(); i++) {
+            int idx = list.first() + i;
             OrderView o = v.orders().get(idx);
-            int ry = y + TOP + 1 + i * ROW;
+            int ry = y + TOP + 1 + i * ROW - list.offset();
             skin.row(g, x + PAD + 1, ry, LIST_W - 2, ROW, idx == order, over(mx, my, x + PAD, ry, LIST_W, ROW));
             ItemStack icon = io.github.soundgoodizerfan.feedback.village.OrderWords.icon(o.type());
             g.renderItem(icon, x + PAD + 3, ry + 2);
@@ -182,7 +188,8 @@ public class VillagerScreen extends SkinnedScreen<VillagerMenu> {
             g.drawString(font, done ? Component.translatable("gui.feedback.villager.done") : Component.translatable("gui.feedback.villager.pay", o.pay()),
                     x + PAD + 22, ry + 11, skin.dim(), false);
         }
-        scrollbar(g, leftPos + PAD + LIST_W + 2, topPos + TOP, ROW * ROWS + 2, v.orders().size(), ROWS, orderScroll);
+        list.end(g);
+        list.bar(g, skin, leftPos + PAD + LIST_W + 2, topPos + TOP + 1, ROW * ROWS);
         skin.inset(g, x + DETAIL_X, y + TOP, DETAIL_W, 70);
         if (v.orders().isEmpty()) {
             g.drawString(font, Component.translatable("gui.feedback.villager.no_orders"), x + DETAIL_X + 6, y + TOP + 6, skin.dim(), false);
@@ -217,10 +224,14 @@ public class VillagerScreen extends SkinnedScreen<VillagerMenu> {
 
     private void goods(GuiGraphics g, VillagerView v, int x, int y, int mx, int my) {
         skin.inset(g, x + PAD, y + TOP, SHOP_W, ROW * ROWS + 2);
-        for (int i = 0; i < ROWS && goodScroll + i < v.goods().size(); i++) {
-            int idx = goodScroll + i;
+        GuiStyle.RowList list = goodList;
+        list.size(v.goods().size());
+        list.update(skin);
+        list.begin(g, x + PAD + 1, y + TOP + 1, SHOP_W - 2);
+        for (int i = 0; i < list.drawn(); i++) {
+            int idx = list.first() + i;
             GoodView gv = v.goods().get(idx);
-            int ry = y + TOP + 1 + i * ROW;
+            int ry = y + TOP + 1 + i * ROW - list.offset();
             skin.row(g, x + PAD + 1, ry, SHOP_W - 2, ROW, idx == good, over(mx, my, x + PAD, ry, SHOP_W, ROW));
             boolean off = gv.locked() || gv.left() == 0;
             g.renderItem(gv.stack(), x + PAD + 3, ry + 2);
@@ -229,7 +240,8 @@ public class VillagerScreen extends SkinnedScreen<VillagerMenu> {
             g.drawString(font, gv.locked() ? Component.translatable("gui.feedback.villager.locked")
                     : Component.translatable("gui.feedback.villager.cost", gv.price(), gv.left()), x + PAD + 22, ry + 11, off ? skin.warn() : skin.dim(), false);
         }
-        scrollbar(g, leftPos + PAD + SHOP_W + 2, topPos + TOP, ROW * ROWS + 2, v.goods().size(), ROWS, goodScroll);
+        list.end(g);
+        list.bar(g, skin, leftPos + PAD + SHOP_W + 2, topPos + TOP + 1, ROW * ROWS);
         skin.inset(g, x + SHOP_DETAIL_X, y + TOP, SHOP_DETAIL_W, 70);
         if (v.goods().isEmpty())
             g.drawString(font, Component.translatable("gui.feedback.villager.no_goods"), x + SHOP_DETAIL_X + 6, y + TOP + 6, skin.dim(), false);
@@ -242,17 +254,22 @@ public class VillagerScreen extends SkinnedScreen<VillagerMenu> {
 
     private void sell(GuiGraphics g, VillagerView v, int x, int y, int mx, int my) {
         skin.inset(g, x + PAD, y + TOP, LIST_W, ROW * ROWS + 2);
-        for (int i = 0; i < ROWS && wantScroll + i < v.wants().size(); i++) {
-            int idx = wantScroll + i;
+        GuiStyle.RowList list = wantList;
+        list.size(v.wants().size());
+        list.update(skin);
+        list.begin(g, x + PAD + 1, y + TOP + 1, LIST_W - 2);
+        for (int i = 0; i < list.drawn(); i++) {
+            int idx = list.first() + i;
             VillagerView.WantView w = v.wants().get(idx);
-            int ry = y + TOP + 1 + i * ROW;
+            int ry = y + TOP + 1 + i * ROW - list.offset();
             skin.row(g, x + PAD + 1, ry, LIST_W - 2, ROW, idx == want, over(mx, my, x + PAD, ry, LIST_W, ROW));
             g.renderItem(w.icon(), x + PAD + 3, ry + 2);
             Component name = w.food() ? Component.translatable("village.feedback.want.food") : w.icon().getHoverName();
             g.drawString(font, fit(name, LIST_W - 28), x + PAD + 22, ry + 2, w.left() == 0 ? skin.dim() : skin.ink(), false);
             g.drawString(font, Component.translatable("gui.feedback.villager.want_line", w.price(), w.left()), x + PAD + 22, ry + 11, skin.dim(), false);
         }
-        scrollbar(g, leftPos + PAD + LIST_W + 2, topPos + TOP, ROW * ROWS + 2, v.wants().size(), ROWS, wantScroll);
+        list.end(g);
+        list.bar(g, skin, leftPos + PAD + LIST_W + 2, topPos + TOP + 1, ROW * ROWS);
         skin.inset(g, x + DETAIL_X, y + TOP, DETAIL_W, 70);
         g.drawString(font, Component.translatable(v.wants().isEmpty() ? "gui.feedback.villager.no_wants" : "gui.feedback.villager.sell_hint"),
                 x + DETAIL_X + 6, y + TOP + 6, skin.dim(), false);
@@ -313,9 +330,11 @@ public class VillagerScreen extends SkinnedScreen<VillagerMenu> {
                 }
         }
         if (tabKind() == GOODS)
-            for (int i = 0; i < ROWS && goodScroll + i < v.goods().size(); i++)
-                if (over(mx, my, leftPos + PAD, topPos + TOP + 1 + i * ROW, SHOP_W, ROW))
-                    g.renderTooltip(font, v.goods().get(goodScroll + i).stack(), mx, my);
+        {
+            int gi = goodList.rowAt(my, topPos + TOP + 1);
+            if (gi >= 0 && mx >= leftPos + PAD && mx < leftPos + PAD + SHOP_W)
+                g.renderTooltip(font, v.goods().get(gi).stack(), mx, my);
+        }
     }
 
     // --- words ---
@@ -401,24 +420,22 @@ public class VillagerScreen extends SkinnedScreen<VillagerMenu> {
     public boolean mouseClicked(double mx, double my, int button) {
         if (settled() && button == 0) {
             VillagerView v = menu.view();
-            for (int i = 0; i < ROWS; i++) {
-                int ry = topPos + TOP + 1 + i * ROW;
-                if (tabKind() == SELL && wantScroll + i < v.wants().size() && over((int) mx, (int) my, leftPos + PAD, ry, LIST_W, ROW)) {
-                    want = wantScroll + i;
-                    skin.cue(GuiSkin.Cue.SEAT);
-                    return true;
-                }
-                if (tabKind() == ORDERS && orderScroll + i < v.orders().size() && over((int) mx, (int) my, leftPos + PAD, ry, LIST_W, ROW)) {
-                    order = orderScroll + i;
-                    hintOpen = false;
-                    skin.cue(GuiSkin.Cue.SEAT);
-                    return true;
-                }
-                if (tabKind() == GOODS && goodScroll + i < v.goods().size() && over((int) mx, (int) my, leftPos + PAD, ry, SHOP_W, ROW)) {
-                    good = goodScroll + i;
-                    skin.cue(GuiSkin.Cue.SEAT);
-                    return true;
-                }
+            int top = topPos + TOP + 1;
+            if (tabKind() == SELL && mx >= leftPos + PAD && mx < leftPos + PAD + LIST_W && wantList.rowAt(my, top) >= 0) {
+                want = wantList.rowAt(my, top);
+                skin.cue(GuiSkin.Cue.SEAT);
+                return true;
+            }
+            if (tabKind() == ORDERS && mx >= leftPos + PAD && mx < leftPos + PAD + LIST_W && orderList.rowAt(my, top) >= 0) {
+                order = orderList.rowAt(my, top);
+                hintOpen = false;
+                skin.cue(GuiSkin.Cue.SEAT);
+                return true;
+            }
+            if (tabKind() == GOODS && mx >= leftPos + PAD && mx < leftPos + PAD + SHOP_W && goodList.rowAt(my, top) >= 0) {
+                good = goodList.rowAt(my, top);
+                skin.cue(GuiSkin.Cue.SEAT);
+                return true;
             }
         }
         return super.mouseClicked(mx, my, button);
@@ -429,15 +446,15 @@ public class VillagerScreen extends SkinnedScreen<VillagerMenu> {
         if (settled()) {
             VillagerView v = menu.view();
             if (tabKind() == SELL && over((int) mx, (int) my, leftPos + PAD, topPos + TOP, LIST_W, ROW * ROWS)) {
-                wantScroll = Mth.clamp(wantScroll - (int) Math.signum(sy), 0, Math.max(0, v.wants().size() - ROWS));
+                wantList.wheel(sy);
                 return true;
             }
             if (tabKind() == ORDERS && over((int) mx, (int) my, leftPos + PAD, topPos + TOP, LIST_W, ROW * ROWS)) {
-                orderScroll = Mth.clamp(orderScroll - (int) Math.signum(sy), 0, Math.max(0, v.orders().size() - ROWS));
+                orderList.wheel(sy);
                 return true;
             }
             if (tabKind() == GOODS && over((int) mx, (int) my, leftPos + PAD, topPos + TOP, SHOP_W, ROW * ROWS)) {
-                goodScroll = Mth.clamp(goodScroll - (int) Math.signum(sy), 0, Math.max(0, v.goods().size() - ROWS));
+                goodList.wheel(sy);
                 return true;
             }
         }

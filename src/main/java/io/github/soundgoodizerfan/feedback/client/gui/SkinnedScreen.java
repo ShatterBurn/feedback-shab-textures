@@ -47,6 +47,7 @@ public abstract class SkinnedScreen<M extends AbstractContainerMenu> extends Abs
         if (tabs.size() < 2)
             return null;
         topPos = Math.max(topPos + FolderTabs.HEIGHT / 2, FolderTabs.HEIGHT);
+        tabIndex = selected;
         return addRenderableWidget(new FolderTabs(skin, leftPos + 10, topPos - FolderTabs.HEIGHT, tabs, selected, select)
                 .host(leftPos, topPos, imageWidth, imageHeight));
     }
@@ -67,6 +68,31 @@ public abstract class SkinnedScreen<M extends AbstractContainerMenu> extends Abs
     }
 
     private static final float IMPACT_TICKS = 7f;
+    private IntSupplier tabIndex;
+    private int lastTab = Integer.MIN_VALUE, tabDir;
+    private float tabAt = Float.NEGATIVE_INFINITY;
+
+    /**
+     * Sideways pixels the whole screen is still short of its place after its folder tab changed: it slides in from the side the new
+     * tab lies on, over the skin's {@link Feel#slideTicks}, ramping or steady by the skin's feel; 0 when still, with no tabs, for a
+     * digital skin or under reduce motion.
+     */
+    private int tabSlide() {
+        if (tabIndex == null)
+            return 0;
+        int now = tabIndex.getAsInt();
+        float clock = GuiStyle.time();
+        if (lastTab == Integer.MIN_VALUE)
+            lastTab = now;
+        if (now != lastTab) {
+            tabDir = Integer.signum(now - lastTab);
+            tabAt = clock;
+            lastTab = now;
+        }
+        Feel feel = skin.feel();
+        float p = feel.slideTicks() <= 0f || io.github.soundgoodizerfan.feedback.client.ClientSettings.reduceMotion() ? 1f : (clock - tabAt) / feel.slideTicks();
+        return p >= 1f ? 0 : Math.round(tabDir * 40 * (1f - GuiStyle.easeOut(feel.slide(p))));
+    }
     private float impactAt = Float.NEGATIVE_INFINITY, impactAmp;
 
     @Override
@@ -82,6 +108,7 @@ public abstract class SkinnedScreen<M extends AbstractContainerMenu> extends Abs
                 float fall = 1f - age / IMPACT_TICKS;
                 g.pose().translate(Math.round(Mth.sin(age * 2.6f) * impactAmp * fall), Math.round(Mth.sin(age * 3.4f + 1f) * impactAmp * fall * 0.7f), 0);
             }
+            g.pose().translate(tabSlide(), 0, 0);
             super.render(g, mouseX, mouseY, partialTick);
             g.pose().popPose();
         });
