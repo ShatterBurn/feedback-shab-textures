@@ -1,6 +1,6 @@
 # Crank Linkage
 
-Turns shaft rotation into back-and-forth strokes. Machines that work in strokes, like the [Mechanical Hammer](Mechanical_Hammer.md) and the [Powered Bellows](Powered_Bellows.md), go **directly in front of** it.
+Turns shaft rotation into back-and-forth strokes. Machines that work in strokes, like the [Mechanical Hammer](Mechanical_Hammer.md) and the [Powered Bellows](Powered_Bellows.md) and the [Drill Press](Drill_Press.md#linkage-feed), go **directly in front of** it.
 
 ## Crafting
 

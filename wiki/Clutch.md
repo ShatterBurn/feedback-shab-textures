@@ -36,6 +36,7 @@ A Clutch can be a voxel of [finespace](Finespace.md). A [Controller](Controller.
 ## Uses
 
 - Stopping one machine without stopping the whole line.
+- Starting and stopping the feed of a [Drill Press](Drill_Press.md#linkage-feed) by putting the clutch upstream of its [Crank Linkage](Crank_Linkage.md).
 - Automating stops with a [Timer](Timer.md) or [Controller](Controller.md).
 - An automatic version that trips on overspeed is the [Overspeed Trip](#overspeed-trip).
 - A coupling that lets the output run free whenever it outpaces the input is the [Freewheel](#freewheel).

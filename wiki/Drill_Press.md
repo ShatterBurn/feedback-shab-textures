@@ -1,6 +1,6 @@
 # Drill Press
 
-A spinning [Drill Bit](Machine_Heads.md) over a workpiece. The shaft keeps the bit turning, but **nothing gets drilled until you push it**. It's hand-fed, one push per click.
+A spinning [Drill Bit](Machine_Heads.md) over a workpiece. The shaft keeps the bit turning, but **nothing gets drilled until you push it**. You feed it by hand, one push per click, or put a [Crank Linkage](Crank_Linkage.md) in front of it to push for you.
 
 The first part cut on a drill press enters the [Machine Age](Ages.md) for you and any player nearby.
 
@@ -27,6 +27,12 @@ The bit is a [machine head](Machine_Heads.md): draw it at the Blueprint Table an
 **Sneak-right-click** with an empty hand switches between **slow feed** and **fast feed**.
 
 The bit has to be spinning. Pushing a stopped bit does nothing, and a press with no bit does nothing.
+
+## Linkage feed
+
+Place a [Crank Linkage](Crank_Linkage.md) **directly in front of** the press and each stroke of the linkage is one push of the bit, at the press's current feed (slow or fast). The linkage's throw and any gearing do not change the push; the feed setting does. A [Clutch](Clutch.md) upstream of the linkage starts and stops the feeding.
+
+The press still needs its bit spinning from its own shaft. A fed press loads two shafts: its spindle's 35 Su on its own shaft and the feed's load on the linkage's shaft. Hand feed works as well.
 
 ## What it makes
 

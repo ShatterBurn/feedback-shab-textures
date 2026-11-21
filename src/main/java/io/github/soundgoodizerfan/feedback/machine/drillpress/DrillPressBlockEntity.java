@@ -6,6 +6,8 @@ import io.github.soundgoodizerfan.feedback.machine.MachineTuning;
 import io.github.soundgoodizerfan.feedback.core.unit.St;
 import io.github.soundgoodizerfan.feedback.core.unit.Su;
 import io.github.soundgoodizerfan.feedback.machine.HeadedShopMachineBlockEntity;
+import io.github.soundgoodizerfan.feedback.machine.linkage.Reciprocating;
+import io.github.soundgoodizerfan.feedback.machine.linkage.Throw;
 import io.github.soundgoodizerfan.feedback.process.Operation;
 import io.github.soundgoodizerfan.feedback.process.Removing;
 import io.github.soundgoodizerfan.feedback.registry.FBlockEntities;
@@ -21,21 +23,18 @@ import net.minecraft.world.level.block.state.BlockState;
  * all day against a workpiece nobody is feeding in. Cutting only happens on a {@link #push()},
  * fed by hand with a right click.
  * <p>
- * <b>An automatic-feed actuator was cut.</b> A first pass here invented a {@code Piston} block --
- * "the Bellows' own crank-linkage mechanism, generalised" -- meant to bolt onto this and feed it
- * under controller control. The premise was wrong: the Bellows has no crank-linkage of its own to
- * generalise. It consumes reciprocating motion from an ordinary {@code CrankLinkageBlockEntity}
- * placed next to it, the same way every other reciprocating machine does. A network-driven pusher
- * gated by {@code Switchable} is therefore just a Crank Linkage with a Clutch already sitting
- * upstream of it -- both of which already exist -- so the Piston bought no capability a player
- * could not already build, which fails §5's "two answers that cost different things" test on its
- * own premise. Hand feed is the only route until a real second one is designed.
+ * <b>Automatic feed is a Crank Linkage.</b> A linkage placed in front of the press delivers one
+ * stroke per turn of its crank and each stroke is one {@link #push()}, at whatever feed (slow or
+ * fast) the press is set to. A Clutch upstream of the linkage starts and stops the feeding. The
+ * throw and gearing do not matter here: a push's force is the feed's, not the stroke's. The
+ * linkage borrows the press's load, as it does for every machine it drives, so a fed press costs
+ * its spindle's Su on one shaft and the feed's on the other.
  * <p>
  * Overrun is the removal table's business: keep pushing on a drilled plate and its overrun entry
  * takes the rest of it to swarf. A bound, fast-fed bit -- see {@link MachineTuning#BIT_SNAP_CHANCE} --
  * costs the push; a push that cannot cut costs the machine (see {@code ShopMachineBlockEntity}).
  */
-public class DrillPressBlockEntity extends HeadedShopMachineBlockEntity {
+public class DrillPressBlockEntity extends HeadedShopMachineBlockEntity implements Reciprocating {
 
     public DrillPressBlockEntity(BlockPos pos, BlockState state) {
         super(FBlockEntities.DRILL_PRESS.get(), pos, state);
@@ -66,8 +65,13 @@ public class DrillPressBlockEntity extends HeadedShopMachineBlockEntity {
         return MachineTuning.DRILL_PRESS_LOAD_SU;
     }
 
+    @Override
+    public void onStroke(Throw installed, float gearAdvantage) {
+        push();
+    }
+
     /**
-     * One hand-fed push: one pass of the bit. The bit must actually be spinning -- a stalled or
+     * One push: one pass of the bit. The bit must actually be spinning -- a stalled or
      * unpowered spindle biting into anything is a hazard in reality and a no-op here.
      */
     public void push() {
