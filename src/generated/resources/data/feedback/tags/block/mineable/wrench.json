@@ -19,6 +19,7 @@
     "feedback:ballast_tank",
     "feedback:battery",
     "feedback:bearing",
+    "feedback:bearing_sensor",
     "feedback:bell_metal_pipe",
     "feedback:bellows",
     "feedback:belt_head",
