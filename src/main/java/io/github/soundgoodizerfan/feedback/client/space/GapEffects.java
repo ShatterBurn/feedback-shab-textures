@@ -39,7 +39,8 @@ public final class GapEffects extends DimensionSpecialEffects {
 
     @Override
     public Vec3 getBrightnessDependentFogColor(Vec3 fog, float brightness) {
-        return fog;
+        // The sky colour comes from the biome's fog (the void's is a pale blue); space is black.
+        return Vec3.ZERO;
     }
 
     @Override

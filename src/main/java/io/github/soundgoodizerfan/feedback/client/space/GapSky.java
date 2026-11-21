@@ -11,22 +11,25 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
 
+import io.github.soundgoodizerfan.feedback.Feedback;
 import io.github.soundgoodizerfan.feedback.space.EndRoute;
 import io.github.soundgoodizerfan.feedback.space.SpaceTuning;
 
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3d;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 /**
- * The Gap's sky, drawn in place of vanilla's: a hard sun, a dense starfield with a milky band, the Overworld's atmosphere as a
- * limb glow below the horizon, and the destination planets at fixed bearings. Everything is plain coloured geometry on a sphere
- * around the camera (no textures, no shader of ours), so it costs a few thousand vertices a frame. The explored map plane
- * ({@link GapMapView}) is drawn over the lower glow afterwards, at the chunks' real coordinates.
+ * The Gap's sky, drawn in place of vanilla's: a hard square sun, a dense starfield with a milky band, the Overworld's atmosphere as a
+ * limb glow below the horizon, and the destination planets at fixed bearings: the sun a flat pixel-art square as vanilla draws its sun, each planet a sphere wrapped in a
+ * hand-drawn bird's-eye map ({@code textures/environment/gap/}) and lit smoothly by the sun. Everything sits on a sphere
+ * around the camera, so it costs a few thousand vertices a frame. The explored map plane ({@link GapMapView}) is drawn over the lower
+ * glow afterwards, at the chunks' real coordinates.
  * <p>
- * shortcut: the mesh is rebuilt every frame through the Tesselator, upload it once into a VertexBuffer if the sky ever shows up in a profile.
+ * shortcut: the star mesh is rebuilt every frame through the Tesselator, upload it once into a VertexBuffer if the sky ever shows up in a profile.
  */
 final class GapSky {
     /** The sphere the sky is painted on, blocks from the camera; depth test is off, so only the draw order matters. */
@@ -34,24 +37,29 @@ final class GapSky {
     private static final int STARS = 2600, BAND_STARS = 3400;
     private static final long SEED = 0x6A9C0DEL;
 
-    /** The sun: a bearing, and so also the direction every planet is lit from. */
+    /** The sun's bearing, and the size of its square. */
     private static final Vector3f SUN = dir(40f, 35f);
+    private static final float SUN_SIZE = 6f;
 
-    /** A destination at a fixed bearing: angular size is {@code radius / R}. Colours are the two ends of the cloud bands. */
-    private record Planet(float yaw, float pitch, float radius, int bandA, int bandB, float bands, float rim) {
+    private static ResourceLocation sprite(String name) {
+        return Feedback.id("textures/environment/gap/" + name + ".png");
+    }
+
+    private static final ResourceLocation SUN_TEXTURE = sprite("sun");
+
+    /** A destination at a fixed bearing: angular size is {@code radius / R}. */
+    private record Planet(float yaw, float pitch, float radius, ResourceLocation texture) {
     }
 
     private static final Planet[] PLANETS = {
-            // Acid-cloud world: ochre and sulphur, thick hazy rim.
-            new Planet(205f, 18f, 7f, 0xFFD9A441, 0xFF8F5B22, 5f, 0.5f),
-            // Frozen moon: pale blue-white, no cloud, a faint rim.
-            new Planet(112f, 27f, 4f, 0xFFDCE9F5, 0xFFA9C4DE, 0f, 0.2f),
-            // Crystal world: violet and teal.
-            new Planet(305f, 41f, 3f, 0xFF8A5CD6, 0xFF3FB6B0, 0f, 0.3f),
+            new Planet(205f, 18f, 7f, sprite("acid_cloud")),
+            new Planet(112f, 27f, 4f, sprite("frozen_moon")),
+            new Planet(305f, 41f, 3f, sprite("crystal")),
     };
 
-    /** The End's gas giant: banded. It is a real place in the Gap ({@link EndRoute#planet}), so it is drawn where it is, and grows as the craft closes on it. */
-    private static final Planet GAS_GIANT = new Planet(0f, 0f, 5.5f, 0xFFC87A3C, 0xFFEBD0A0, 9f, 0.25f);
+    /** The End's gas giant: a real place in the Gap ({@link EndRoute#planet}), so it is drawn where it is, and grows as the craft closes on it. */
+    private static final ResourceLocation GAS_GIANT = sprite("gas_giant");
+    private static final float GAS_GIANT_SIZE = 5.5f;
     /** The most its apparent size grows to, so a craft inside the capture sphere sees it fill much of the sky, not all of it. */
     private static final float GROWTH_CAP = 10f;
 
@@ -70,27 +78,26 @@ final class GapSky {
         RenderSystem.enableBlend();
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
 
-        // Light that adds: atmosphere, stars, the sun's glow.
+        // Light that adds: atmosphere and stars.
         RenderSystem.blendFunc(com.mojang.blaze3d.platform.GlStateManager.SourceFactor.SRC_ALPHA,
                 com.mojang.blaze3d.platform.GlStateManager.DestFactor.ONE);
         BufferBuilder add = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
         limb(add, view);
         stars(add, view);
-        glow(add, view, SUN, 55f, 0xFFFFD9A0, 0.55f);
         BufferUploader.drawWithShader(add.buildOrThrow());
 
-        // Solid things over it: the planets, then the sun's disc.
+        // Sprites over it: the planets, then the sun.
         RenderSystem.defaultBlendFunc();
-        BufferBuilder solid = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+        RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
         for (Planet p : PLANETS)
-            planet(solid, view, p, dir(p.yaw, p.pitch), p.radius);
+            globe(view, p.texture, dir(p.yaw, p.pitch), p.radius, false);
         Vector3d to = EndRoute.planet().sub(camera.x, camera.y, camera.z);
         double away = to.length();
         if (away > 1e-3)
-            planet(solid, view, GAS_GIANT, new Vector3f((float) (to.x / away), (float) (to.y / away), (float) (to.z / away)),
-                    GAS_GIANT.radius * (float) Math.min(GROWTH_CAP, SpaceTuning.END_DISTANCE / away));
-        disc(solid, view, SUN, 3.6f, 0xFFFFFFF0, 0xFFFFF2C8);
-        BufferUploader.drawWithShader(solid.buildOrThrow());
+            globe(view, GAS_GIANT, new Vector3f((float) (to.x / away), (float) (to.y / away), (float) (to.z / away)),
+                    GAS_GIANT_SIZE * (float) Math.min(GROWTH_CAP, SpaceTuning.END_DISTANCE / away), true);
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        sprite(view, SUN_TEXTURE, SUN, SUN_SIZE);
 
         RenderSystem.enableCull();
         RenderSystem.disableBlend();
@@ -177,68 +184,55 @@ final class GapSky {
 
     // ---- sun and planets ----
 
-    /** A soft additive halo: full {@code alpha} at the centre, none at {@code radius}. */
-    private static void glow(BufferBuilder b, Matrix4f m, Vector3f c, float radius, int colour, float alpha) {
-        fan(b, m, c, radius, 10, (x, y, r) -> tint(alpha * (1f - r) * (1f - r), colour));
+    /** A square of half-width {@code half} facing the camera at bearing {@code c}, with {@code texture} on it. */
+    private static void sprite(Matrix4f m, ResourceLocation texture, Vector3f c, float half) {
+        Vector3f r = side(c).mul(half);
+        Vector3f u = new Vector3f(c).cross(side(c)).mul(half);
+        RenderSystem.setShaderTexture(0, texture);
+        BufferBuilder b = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+        float cx = c.x * R, cy = c.y * R, cz = c.z * R;
+        b.addVertex(m, cx - r.x - u.x, cy - r.y - u.y, cz - r.z - u.z).setUv(0f, 1f);
+        b.addVertex(m, cx + r.x - u.x, cy + r.y - u.y, cz + r.z - u.z).setUv(1f, 1f);
+        b.addVertex(m, cx + r.x + u.x, cy + r.y + u.y, cz + r.z + u.z).setUv(1f, 0f);
+        b.addVertex(m, cx - r.x + u.x, cy - r.y + u.y, cz - r.z + u.z).setUv(0f, 0f);
+        BufferUploader.drawWithShader(b.buildOrThrow());
     }
 
-    private static void disc(BufferBuilder b, Matrix4f m, Vector3f c, float radius, int centre, int edge) {
-        fan(b, m, c, radius, 4, (x, y, r) -> lerp(centre, edge, r));
-    }
-
-    private static void planet(BufferBuilder b, Matrix4f m, Planet p, Vector3f c, float size) {
+    /**
+     * A planet: a sphere of radius {@code radius} at bearing {@code c}, wrapped in {@code texture}, a bird's-eye map (u is longitude, v
+     * latitude) whose centre faces the camera. Each vertex is lit by the sun, smoothly, with a floor so the night side still reads. A
+     * {@code gas} planet is drawn all round, far side first, so its see-through gas shows the far side's islands through it.
+     */
+    private static void globe(Matrix4f m, ResourceLocation texture, Vector3f c, float radius, boolean gas) {
         Vector3f r = side(c);
-        Vector3f u = new Vector3f(c).cross(r);
-        // A dim halo first, for the atmosphere.
-        fan(b, m, c, size * 1.5f, 8, (x, y, rad) -> {
-            float k = rad * 1.5f;
-            return k < 1f ? 0 : tint(p.rim * (1f - (k - 1f) / 0.5f) * 0.35f, lerp(p.bandA, p.bandB, 0.3f));
-        });
-        fan(b, m, c, size, 10, (x, y, rad) -> {
-            float z = (float) Math.sqrt(Math.max(0f, 1f - x * x - y * y));
-            // Normal of the sphere point, in world space; the camera sits at the origin looking at the planet.
-            Vector3f n = new Vector3f(r).mul(x).add(new Vector3f(u).mul(y)).sub(new Vector3f(c).mul(z));
-            float lit = 0.05f + 0.95f * Math.max(0f, n.dot(SUN));
-            float band = p.bands > 0f
-                    ? 0.5f + 0.5f * (float) Math.sin(y * p.bands * 1.7 + 1.3 * Math.sin(y * p.bands * 4.1 + x * 2.0))
-                    : 0.5f + 0.5f * (float) Math.sin(x * 6.0 + 2.0 * Math.sin(y * 5.0)) * (float) Math.cos(y * 4.0);
-            int col = lerp(p.bandA, p.bandB, band);
-            return argb(1f, (col >> 16 & 255) / 255f * lit, (col >> 8 & 255) / 255f * lit, (col & 255) / 255f * lit);
-        });
+        Vector3f up = new Vector3f(r).cross(c);
+        RenderSystem.setShaderTexture(0, texture);
+        BufferBuilder b = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
+        int lats = 16, lons = 32;
+        // The far side is the longitudes past a quarter turn; those go first, so the near side lies over them.
+        for (int pass = gas ? 0 : 1; pass < 2; pass++)
+            for (int j = 0; j < lons; j++) {
+                float mid = ((j + 0.5f) / lons - 0.5f) * 2f * (float) Math.PI;
+                if ((Math.abs(mid) > Math.PI / 2) == (pass == 1))
+                    continue;
+                for (int i = 0; i < lats; i++)
+                    for (int corner = 0; corner < 4; corner++) {
+                        float lon = ((j + (corner == 1 || corner == 2 ? 1 : 0)) / (float) lons - 0.5f) * 2f * (float) Math.PI;
+                        float lat = ((i + (corner >= 2 ? 1 : 0)) / (float) lats - 0.5f) * (float) Math.PI;
+                        float cl = (float) Math.cos(lat);
+                        // The map's centre (longitude 0, latitude 0) is the point nearest the camera, which is back along -c.
+                        Vector3f n = new Vector3f(r).mul(cl * (float) Math.sin(lon)).add(new Vector3f(up).mul((float) -Math.sin(lat)))
+                                .sub(new Vector3f(c).mul(cl * (float) Math.cos(lon)));
+                        float lit = 0.15f + 0.85f * Math.max(0f, n.dot(SUN));
+                        b.addVertex(m, c.x * R + n.x * radius, c.y * R + n.y * radius, c.z * R + n.z * radius)
+                                .setUv((j + (corner == 1 || corner == 2 ? 1 : 0)) / (float) lons, (i + (corner >= 2 ? 1 : 0)) / (float) lats)
+                                .setColor(lit, lit, lit, 1f);
+                    }
+            }
+        BufferUploader.drawWithShader(b.buildOrThrow());
     }
 
     // ---- geometry ----
-
-    private interface Shade {
-        /** Colour at a point of the disc: {@code x}, {@code y} in -1..1, {@code r} the distance from the centre, 0..1. */
-        int at(float x, float y, float r);
-    }
-
-    /** A disc facing the camera at bearing {@code c}, angular size {@code radius / R}, as rings of quads. */
-    private static void fan(BufferBuilder b, Matrix4f m, Vector3f c, float radius, int rings, Shade shade) {
-        Vector3f r = side(c);
-        Vector3f u = new Vector3f(c).cross(r);
-        int segs = 32;
-        for (int i = 0; i < rings; i++) {
-            float r0 = (float) i / rings, r1 = (float) (i + 1) / rings;
-            for (int s = 0; s < segs; s++) {
-                double a0 = s * Math.PI * 2 / segs, a1 = (s + 1) * Math.PI * 2 / segs;
-                ring(b, m, c, r, u, radius, r0, a0, shade);
-                ring(b, m, c, r, u, radius, r0, a1, shade);
-                ring(b, m, c, r, u, radius, r1, a1, shade);
-                ring(b, m, c, r, u, radius, r1, a0, shade);
-            }
-        }
-    }
-
-    private static void ring(BufferBuilder b, Matrix4f m, Vector3f c, Vector3f r, Vector3f u, float radius, float rad, double a,
-            Shade shade) {
-        float x = (float) Math.cos(a) * rad, y = (float) Math.sin(a) * rad;
-        float px = c.x * R + (r.x * x + u.x * y) * radius;
-        float py = c.y * R + (r.y * x + u.y * y) * radius;
-        float pz = c.z * R + (r.z * x + u.z * y) * radius;
-        b.addVertex(m, px, py, pz).setColor(shade.at(x, y, rad));
-    }
 
     private static void vert(BufferBuilder b, Matrix4f m, Vector3f d, int colour) {
         b.addVertex(m, d.x * R, d.y * R, d.z * R).setColor(colour);
@@ -266,10 +260,4 @@ final class GapSky {
         return (Math.round(Math.max(0f, Math.min(1f, alpha)) * 255) << 24) | (colour & 0xFFFFFF);
     }
 
-    private static int lerp(int a, int b, float t) {
-        int out = 0xFF000000;
-        for (int sh = 16; sh >= 0; sh -= 8)
-            out |= Math.round((a >> sh & 255) * (1f - t) + (b >> sh & 255) * t) << sh;
-        return out;
-    }
 }
