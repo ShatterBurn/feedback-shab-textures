@@ -1,4 +1,6 @@
 {
   "parent": "minecraft:item/generated",
-  "textures": { "layer0": "feedback:item/analog_adapter" }
+  "textures": {
+    "layer0": "feedback:item/analog_adapter"
+  }
 }
