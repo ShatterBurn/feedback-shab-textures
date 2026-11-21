@@ -47,9 +47,9 @@ public abstract class SkinnedScreen<M extends AbstractContainerMenu> extends Abs
         if (tabs.size() < 2)
             return null;
         topPos = Math.max(topPos + FolderTabs.HEIGHT / 2, FolderTabs.HEIGHT);
-        tabIndex = selected;
-        return addRenderableWidget(new FolderTabs(skin, leftPos + 10, topPos - FolderTabs.HEIGHT, tabs, selected, select)
+        tabStrip = addRenderableWidget(new FolderTabs(skin, leftPos + 10, topPos - FolderTabs.HEIGHT, tabs, selected, select)
                 .host(leftPos, topPos, imageWidth, imageHeight));
+        return tabStrip;
     }
 
     protected boolean settled() {
@@ -68,32 +68,68 @@ public abstract class SkinnedScreen<M extends AbstractContainerMenu> extends Abs
     }
 
     private static final float IMPACT_TICKS = 7f;
-    private IntSupplier tabIndex;
-    private int lastTab = Integer.MIN_VALUE, tabDir;
-    private float tabAt = Float.NEGATIVE_INFINITY;
+    private float impactAt = Float.NEGATIVE_INFINITY, impactAmp;
+    private FolderTabs tabStrip;
+    private net.minecraft.client.renderer.texture.DynamicTexture slideTex;
+    private int slideDir, slidePw, slidePh;
+    private float slideAt;
+    private static final net.minecraft.resources.ResourceLocation SLIDE_TEX = io.github.soundgoodizerfan.feedback.Feedback.id("tab_slide");
+    /** The panel's border is not part of what slides: this much is left fixed all round. */
+    private static final int SLIDE_INSET = 6;
 
     /**
-     * Sideways pixels the whole screen is still short of its place after its folder tab changed: it slides in from the side the new
-     * tab lies on, over the skin's {@link Feel#slideTicks}, ramping or steady by the skin's feel; 0 when still, with no tabs, for a
-     * digital skin or under reduce motion.
+     * Called by the folder tabs just before the tab changes, {@code dir} being -1 or +1 for the tab's side: takes a picture of the
+     * interior as it stands (the last frame is still in the main target) so the change can slide the old widgets off and the new
+     * ones on. Nothing for a digital skin or under reduce motion.
      */
-    private int tabSlide() {
-        if (tabIndex == null)
-            return 0;
-        int now = tabIndex.getAsInt();
-        float clock = GuiStyle.time();
-        if (lastTab == Integer.MIN_VALUE)
-            lastTab = now;
-        if (now != lastTab) {
-            tabDir = Integer.signum(now - lastTab);
-            tabAt = clock;
-            lastTab = now;
+    void captureForSlide(int dir) {
+        if (dir == 0 || skin.feel().slideTicks() <= 0f || io.github.soundgoodizerfan.feedback.client.ClientSettings.reduceMotion())
+            return;
+        var mc = net.minecraft.client.Minecraft.getInstance();
+        releaseSlide();
+        try (var full = net.minecraft.client.Screenshot.takeScreenshot(mc.getMainRenderTarget())) {
+            double k = (double) full.getWidth() / mc.getWindow().getGuiScaledWidth();
+            int px = (int) Math.round((leftPos + SLIDE_INSET) * k), py = (int) Math.round((topPos + SLIDE_INSET) * k);
+            slidePw = (int) Math.round((imageWidth - 2 * SLIDE_INSET) * k);
+            slidePh = (int) Math.round((imageHeight - 2 * SLIDE_INSET) * k);
+            if (px < 0 || py < 0 || px + slidePw > full.getWidth() || py + slidePh > full.getHeight())
+                return;
+            var crop = new com.mojang.blaze3d.platform.NativeImage(slidePw, slidePh, false);
+            full.copyRect(crop, px, py, 0, 0, slidePw, slidePh, false, false);
+            slideTex = new net.minecraft.client.renderer.texture.DynamicTexture(crop);
+            mc.getTextureManager().register(SLIDE_TEX, slideTex);
+            slideDir = dir;
+            slideAt = GuiStyle.time();
+        } catch (RuntimeException e) {
+            releaseSlide();
         }
-        Feel feel = skin.feel();
-        float p = feel.slideTicks() <= 0f || io.github.soundgoodizerfan.feedback.client.ClientSettings.reduceMotion() ? 1f : (clock - tabAt) / feel.slideTicks();
-        return p >= 1f ? 0 : Math.round(tabDir * 40 * (1f - GuiStyle.easeOut(feel.slide(p))));
     }
-    private float impactAt = Float.NEGATIVE_INFINITY, impactAmp;
+
+    private void releaseSlide() {
+        if (slideTex != null) {
+            net.minecraft.client.Minecraft.getInstance().getTextureManager().release(SLIDE_TEX);
+            slideTex = null;
+        }
+    }
+
+    @Override
+    public void removed() {
+        releaseSlide();
+        super.removed();
+    }
+
+    /** 0..1 how far the slide has gone, or -1 when none is running. */
+    private float slideProgress() {
+        if (slideTex == null)
+            return -1f;
+        Feel feel = skin.feel();
+        float p = (GuiStyle.time() - slideAt) / feel.slideTicks();
+        if (p >= 1f) {
+            releaseSlide();
+            return -1f;
+        }
+        return GuiStyle.easeOut(feel.slide(p));
+    }
 
     @Override
     public void render(GuiGraphics g, int mouseX, int mouseY, float partialTick) {
@@ -108,8 +144,19 @@ public abstract class SkinnedScreen<M extends AbstractContainerMenu> extends Abs
                 float fall = 1f - age / IMPACT_TICKS;
                 g.pose().translate(Math.round(Mth.sin(age * 2.6f) * impactAmp * fall), Math.round(Mth.sin(age * 3.4f + 1f) * impactAmp * fall * 0.7f), 0);
             }
-            g.pose().translate(tabSlide(), 0, 0);
             super.render(g, mouseX, mouseY, partialTick);
+            float c = slideProgress();
+            if (c >= 0f) { // the interior only: the old sheet slides off, the new one is drawn again beside it and slides on
+                int ix = leftPos + SLIDE_INSET, iy = topPos + SLIDE_INSET, iw = imageWidth - 2 * SLIDE_INSET, ih = imageHeight - 2 * SLIDE_INSET;
+                int old = -slideDir * Math.round(iw * c);
+                g.enableScissor(ix, iy, ix + iw, iy + ih);
+                g.blit(SLIDE_TEX, ix + old, iy, iw, ih, 0f, 0f, slidePw, slidePh, slidePw, slidePh);
+                g.pose().pushPose();
+                g.pose().translate(old + slideDir * iw, 0, 0);
+                super.render(g, mouseX, mouseY, partialTick);
+                g.pose().popPose();
+                g.disableScissor();
+            }
             g.pose().popPose();
         });
         drawStatus(g);
@@ -158,7 +205,13 @@ public abstract class SkinnedScreen<M extends AbstractContainerMenu> extends Abs
     /** The dimming is drawn in {@link #render}, faded in with the reveal; this draws only the panel. */
     @Override
     public void renderBackground(GuiGraphics g, int mouseX, int mouseY, float partialTick) {
+        GuiSkin.afterPanel = tabStrip == null ? null : () -> tabStrip.body(g); // the tabs sit on the panel, behind all else
         renderBg(g, partialTick, mouseX, mouseY);
+        if (GuiSkin.afterPanel != null) { // a screen that drew no panel
+            Runnable r = GuiSkin.afterPanel;
+            GuiSkin.afterPanel = null;
+            r.run();
+        }
     }
 
     /** The player's inventory at (x, y) relative to the screen: three rows, then the hotbar 4 below. */

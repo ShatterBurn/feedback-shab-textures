@@ -81,22 +81,40 @@ public final class FolderTabs extends AbstractWidget {
         last = now;
         int over = active && isHovered() ? at(mouseX) : -1, picked = Mth.clamp(selected.getAsInt(), 0, tabs.size() - 1);
         var font = Minecraft.getInstance().font;
-        // Back tabs first, the selected one last so its face overlaps its neighbours' edges.
+        for (int i = 0; i < tabs.size(); i++)
+            glow[i] += ((i == over && i != picked && tabs.get(i).enabled() ? 1f : 0f) - glow[i]) * Math.min(1f, dt * 12f);
+        if (!bodyDone) // a host that did not draw the bodies behind its content (see body) gets them here
+            body(g);
+        bodyDone = false;
+        for (int i = 0; i < tabs.size(); i++) {
+            int x = getX() + edge[i];
+            int tx = x + 8, ty = getY() + (i == picked ? 3 : 5);
+            if (!tabs.get(i).icon().isEmpty()) {
+                g.renderItem(tabs.get(i).icon(), tx - 2, ty - 4);
+                tx += 18;
+            }
+            int colour = !tabs.get(i).enabled() ? skin.dim() & 0xFFFFFF | 0x80000000 : i == picked ? skin.ink() : skin.dim();
+            g.drawString(font, tabs.get(i).label(), tx, ty, colour, false);
+        }
+    }
+
+    private boolean bodyDone;
+
+    /**
+     * The tabs' bodies and joints, back tabs first and the selected one last so its face overlaps its neighbours' edges. A
+     * {@link SkinnedScreen} calls this right after the panel is drawn, so the bodies sit behind everything else the screen draws;
+     * labels and icons are drawn with the widget.
+     */
+    void body(GuiGraphics g) {
+        int picked = Mth.clamp(selected.getAsInt(), 0, tabs.size() - 1);
         for (int pass = 0; pass < 2; pass++)
             for (int i = 0; i < tabs.size(); i++) {
                 if ((i == picked) != (pass == 1))
                     continue;
-                glow[i] += ((i == over && i != picked && tabs.get(i).enabled() ? 1f : 0f) - glow[i]) * Math.min(1f, dt * 12f);
                 int x = getX() + edge[i], w = edge[i + 1] - edge[i] + (i == 0 ? 0 : 1);
                 skin.folderTab(g, x, getY(), w, HEIGHT, i == picked, glow[i], host);
-                int tx = x + 8, ty = getY() + (i == picked ? 3 : 5);
-                if (!tabs.get(i).icon().isEmpty()) {
-                    g.renderItem(tabs.get(i).icon(), tx - 2, ty - 4);
-                    tx += 18;
-                }
-                int colour = !tabs.get(i).enabled() ? skin.dim() & 0xFFFFFF | 0x80000000 : i == picked ? skin.ink() : skin.dim();
-                g.drawString(font, tabs.get(i).label(), tx, ty, colour, false);
             }
+        bodyDone = true;
     }
 
     @Override
@@ -104,6 +122,8 @@ public final class FolderTabs extends AbstractWidget {
         int i = at(mouseX);
         if (i != selected.getAsInt() && tabs.get(i).enabled()) {
             skin.cue(GuiSkin.Cue.STAGE);
+            if (Minecraft.getInstance().screen instanceof SkinnedScreen<?> s)
+                s.captureForSlide(Integer.signum(i - selected.getAsInt()));
             select.accept(i);
         }
     }

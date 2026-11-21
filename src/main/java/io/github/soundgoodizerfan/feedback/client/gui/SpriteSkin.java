@@ -120,7 +120,7 @@ final class SpriteSkin extends GuiSkin {
     }
 
     @Override
-    public void panel(GuiGraphics g, int x, int y, int w, int h) {
+    public void drawPanel(GuiGraphics g, int x, int y, int w, int h) {
         SkinDef d = def();
         if (d == null || !have(d.panel())) {
             g.fill(x, y, x + w, y + h, 0xFF404040);

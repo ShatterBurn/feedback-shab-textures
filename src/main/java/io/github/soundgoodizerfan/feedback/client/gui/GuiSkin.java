@@ -47,7 +47,7 @@ public abstract class GuiSkin {
         }
 
         @Override
-        public void panel(GuiGraphics g, int x, int y, int w, int h) {
+        public void drawPanel(GuiGraphics g, int x, int y, int w, int h) {
             g.fill(x + 3, y + 4, x + w + 3, y + h + 4, 0x50000000); // the sheet's shadow on the stand
             g.fill(x, y, x + w, y + h, PAPER);
             g.fillGradient(x, y, x + w, y + 48, 0x16FFFFFF, 0x00FFFFFF);
@@ -198,7 +198,7 @@ public abstract class GuiSkin {
         }
 
         @Override
-        public void panel(GuiGraphics g, int x, int y, int w, int h) {
+        public void drawPanel(GuiGraphics g, int x, int y, int w, int h) {
             g.fill(x + 3, y + 4, x + w + 3, y + h + 4, 0x60000000);
             g.fillGradient(x, y, x + w, y + h, VIOLET, DEEP);
             float t = seconds();
@@ -314,7 +314,7 @@ public abstract class GuiSkin {
         private static final int BODY = 0xFFC6C6C6, LIGHT = 0xFFFFFFFF, SHADE = 0xFF555555, BLACK = 0xFF000000;
 
         @Override
-        public void panel(GuiGraphics g, int x, int y, int w, int h) {
+        public void drawPanel(GuiGraphics g, int x, int y, int w, int h) {
             g.fill(x + 2, y, x + w - 2, y + h, BLACK); // the notched silhouette
             g.fill(x, y + 2, x + w, y + h - 2, BLACK);
             g.fill(x + 1, y + 1, x + w - 1, y + h - 1, BLACK);
@@ -460,7 +460,7 @@ public abstract class GuiSkin {
         }
 
         @Override
-        public void panel(GuiGraphics g, int x, int y, int w, int h) {
+        public void drawPanel(GuiGraphics g, int x, int y, int w, int h) {
             g.fillGradient(x, y, x + w, y + h, 0xC4101216, 0xB0161920);
             g.fill(x, y, x + w, y + 1, 0x26FFFFFF);
             g.fill(x, y + h - 1, x + w, y + h, 0x26FFFFFF);
@@ -562,7 +562,7 @@ public abstract class GuiSkin {
         }
 
         @Override
-        public void panel(GuiGraphics g, int x, int y, int w, int h) {
+        public void drawPanel(GuiGraphics g, int x, int y, int w, int h) {
             TerminalLook.panel(this, g, x, y, w, h);
         }
 
@@ -884,7 +884,23 @@ public abstract class GuiSkin {
         g.fill(x, by, x + 2, by + bar, dim);
     }
 
-    public abstract void panel(GuiGraphics g, int x, int y, int w, int h);
+    /**
+     * The window itself, raised. Draws the skin's {@link #drawPanel}, then anything a screen queued in {@link #afterPanel} (the folder
+     * tabs' bodies), so the tabs sit on the panel but behind everything the screen draws next.
+     */
+    public final void panel(GuiGraphics g, int x, int y, int w, int h) {
+        drawPanel(g, x, y, w, h);
+        Runnable r = afterPanel;
+        if (r != null) {
+            afterPanel = null;
+            r.run();
+        }
+    }
+
+    /** Run once right after the next {@link #panel} (set and cleared by {@link SkinnedScreen}). */
+    static Runnable afterPanel;
+
+    public abstract void drawPanel(GuiGraphics g, int x, int y, int w, int h);
 
     /** A socket around the 16x16 item at (x, y). */
     public abstract void slot(GuiGraphics g, int x, int y);
