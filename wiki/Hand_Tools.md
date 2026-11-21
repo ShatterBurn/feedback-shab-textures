@@ -22,6 +22,10 @@ The head comes in three **cuts**. A **bastard cut** takes two grains a stroke, a
 
 A file also works parts at a bench: carried in your inventory, it takes a grain off an axis of a made part at the [Smithing Table](Smithing_Table.md#filing) and every other part bench. Put a file in a tool slot of the [Engineering Table](Engineering_Table.md). Recipes that ask for a file (the [Calipers](Instruments.md#calipers), the [Scratch File Set](Instruments.md#scratch-file-set), a [Saw Head or Plasma Head](Power_Cutter.md)) wear it a point.
 
+### Filing a rod
+
+Put a hafted file and **one rod** anywhere in a crafting grid. The output slot shows the rod after one more stroke of filing; take it and that is one stroke, wearing the file a point. Stroke by stroke the rod is cut into a **Screw** or **Machine Bolt** ([Fasteners](Fasteners.md)) or a gun **Bolt** ([Gun Parts](Gun_Parts.md)), the same pieces the [Lathe](Lathe.md) and [Grinding Wheel](Grinding_Wheel.md) make, at about twice their work. A coarser cut takes more per stroke. Only metal softer than the file's edge can be filed.
+
 ## Screwdriver
 
 A **Screwdriver** is a hardened bit on a handle. Shape a **Driver Bit** from a rod or an ingot at a bench, then put it with a handle (a stick, a rod or bone) in a crafting grid. The bit alone is a screwdriver too. The bit's material sets how long the screwdriver lasts.

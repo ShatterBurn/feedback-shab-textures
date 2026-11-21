@@ -7,7 +7,7 @@ Screws, machine bolts and rivets: the small metal pieces the [Engineering Table]
 Each form exists in every metal, named for it ("Steel Screw", "Iron Rivet"). Only the metals in the [quality list](#quality) fit a fastener slot.
 
 - **Rivet**: hammered from a **nugget** of the metal, by hand with a [Hammer](Hammer.md) in a crafting grid like any hand-hammered piece. A metal the hammer cannot move cannot be hammered into a rivet by hand.
-- **Screw** and **Machine Bolt**: turned from a **rod** of the metal on a [Lathe](Lathe.md).
+- **Screw** and **Machine Bolt**: turned from a **rod** of the metal on a [Lathe](Lathe.md), or cut from it by hand with a [File](Hand_Tools.md#filing-a-rod) in a crafting grid. Hand filing takes about twice the work of the Lathe.
 
 Gun bolts are a different part; see [Gun Parts](Gun_Parts.md).
 

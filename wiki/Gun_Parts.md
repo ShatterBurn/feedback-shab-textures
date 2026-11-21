@@ -19,6 +19,8 @@ Every metal has these part forms. Each is made by one step on a machine, like an
 | **Sight** | Plate | Rolling Mill | 4 + 0.5 × hardness | 12 |
 | **Belt Feed** | Plate | Rolling Mill | 4 + 0.5 × hardness | 12 |
 | **Box Feed** | Plate | Rolling Mill | 4 + 0.5 × hardness | 12 |
+
+A Bolt can also be filed from a rod by hand ([Filing a rod](Hand_Tools.md#filing-a-rod)).
 | **Cylinder** | Ground Ingot | Drill Press | 8 + 1.5 × hardness | 31 |
 | **Magazine Tube** | Rod | Drill Press | 6 + hardness | 21 |
 | **Suppressor** | Cylinder | Lathe | 4 + 0.5 × hardness | 12 |
