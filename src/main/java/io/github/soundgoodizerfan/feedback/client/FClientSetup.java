@@ -240,23 +240,15 @@ public class FClientSetup {
                 return instance.showIcon();
             }
         }, net.minecraft.world.effect.MobEffects.DIG_SPEED);
-        event.registerFluidType(moltenFluid(0xFFFF8A4B), FFluidTypes.MOLTEN_COPPER.get());
-        event.registerFluidType(moltenFluid(0xFFFFE066), FFluidTypes.MOLTEN_GOLD.get());
         event.registerFluidType(moltenFluid(0xFFE0E0E0), FFluidTypes.MOLTEN_WROUGHT_IRON.get());
-        event.registerFluidType(moltenFluid(0xFFEAEAEA), FFluidTypes.MOLTEN_IRON.get());
-        event.registerFluidType(moltenFluid(0xFFB8B8C4), FFluidTypes.MOLTEN_TIN.get());
-        event.registerFluidType(moltenFluid(0xFFE6EAF0), FFluidTypes.MOLTEN_SILVER.get());
-        event.registerFluidType(moltenFluid(0xFFA9C28F), FFluidTypes.MOLTEN_URANIUM.get());
         event.registerFluidType(moltenFluid(0xFF3A2F3F), FFluidTypes.MOLTEN_CAST_NETHERITE.get());
         event.registerFluidType(moltenFluid(0xFF6E5A4A), FFluidTypes.MOLTEN_SLAG.get());
         event.registerFluidType(moltenFluid(0xFF8A8A92), FFluidTypes.MOLTEN_CAST_IRON.get());
-        event.registerFluidType(moltenFluid(0xFF8C97A8), FFluidTypes.MOLTEN_ZINC.get());
         event.registerFluidType(moltenFluid(0xFFCD8A4D), FFluidTypes.MOLTEN_BRONZE.get());
         event.registerFluidType(moltenFluid(0xFFE8C464), FFluidTypes.MOLTEN_BRASS.get());
         event.registerFluidType(moltenFluid(0xFFA9B2C4), FFluidTypes.MOLTEN_SOLDER_LEADED.get());
         event.registerFluidType(moltenFluid(0xFFD2DADF), FFluidTypes.MOLTEN_SOLDER_FREE.get());
         event.registerFluidType(moltenFluid(0xFFB9E4D8), FFluidTypes.MOLTEN_GLASS.get());
-        event.registerFluidType(moltenFluid(0xFF9AA0A8), FFluidTypes.MOLTEN_LEAD.get());
         event.registerFluidType(moltenFluid(0xFFE2F2F5), FFluidTypes.MOLTEN_QUARTZ_GLASS.get());
         io.github.soundgoodizerfan.feedback.registry.MoltenMetals.types().forEach((id, type) ->
                 event.registerFluidType(moltenFluid(io.github.soundgoodizerfan.feedback.registry.MoltenMetals.tint(id)), type.get()));

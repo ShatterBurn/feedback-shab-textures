@@ -22,7 +22,8 @@ import net.neoforged.neoforge.registries.NeoForgeRegistries;
  * {@code molten_<id>} type, source and flowing fluid, tinted by the material's own colour. A
  * metal that is liquid when hot ought to be castable without anyone writing a fluid, a melt and a
  * casting for it, and the melt and casting are derived too (see {@code ThermalProcessTable} and
- * {@code CastingTable}). The older metals keep their hand-registered fluids in {@link FFluids}.
+ * {@code CastingTable}). Only alloys, glasses and slags that no material file names keep a
+ * hand-registered fluid in {@link FFluids}.
  * Steel is made by a process but melts like any metal once made; its tempers (a state of the
  * solid) are not listed.
  */
@@ -30,6 +31,7 @@ public final class MoltenMetals {
 
     /** Material ids that get a generated molten fluid. A new metal adds its id here. */
     public static final List<String> IDS = List.of(
+            "tin", "copper", "zinc", "lead", "gold", "silver", "iron", "uranium",
             "chromium", "nickel", "cobalt", "manganese", "aluminium", "titanium", "tungsten", "thorium",
             "silicon", "silicon_crude", "silica_glass", "optical_glass", "steel", "stainless_steel", "manganese_steel",
             "tungsten_carbide", "titanium_carbide", "thorium_tungsten", "cermet", "redstone_chromium",

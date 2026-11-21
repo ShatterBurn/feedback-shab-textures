@@ -28,13 +28,8 @@ public final class FFluidTypes {
     public static final DeferredRegister<FluidType> FLUID_TYPES =
             DeferredRegister.create(NeoForgeRegistries.FLUID_TYPES, Feedback.MOD_ID);
 
-    public static final DeferredHolder<FluidType, FluidType> MOLTEN_COPPER = moltenType("molten_copper");
-    public static final DeferredHolder<FluidType, FluidType> MOLTEN_GOLD = moltenType("molten_gold");
     public static final DeferredHolder<FluidType, FluidType> MOLTEN_WROUGHT_IRON = moltenType("molten_wrought_iron");
-    public static final DeferredHolder<FluidType, FluidType> MOLTEN_IRON = moltenType("molten_iron");
     public static final DeferredHolder<FluidType, FluidType> MOLTEN_CAST_IRON = moltenType("molten_cast_iron");
-    public static final DeferredHolder<FluidType, FluidType> MOLTEN_TIN = moltenType("molten_tin");
-    public static final DeferredHolder<FluidType, FluidType> MOLTEN_ZINC = moltenType("molten_zinc");
     /** Copper's alloys -- see {@code data/feedback/mixture/}. Each is its own real fluid, not a
      * tint of copper's, the same one-type-per-metal rule the pure metals already use. */
     public static final DeferredHolder<FluidType, FluidType> MOLTEN_BRONZE = moltenType("molten_bronze");
@@ -46,9 +41,6 @@ public final class FFluidTypes {
     /** Glass melts and casts exactly like a metal -- see {@code FItems#GLASS_INGOT}. */
     public static final DeferredHolder<FluidType, FluidType> MOLTEN_GLASS = moltenType("molten_glass");
 
-    public static final DeferredHolder<FluidType, FluidType> MOLTEN_LEAD = moltenType("molten_lead");
-    public static final DeferredHolder<FluidType, FluidType> MOLTEN_SILVER = moltenType("molten_silver");
-    public static final DeferredHolder<FluidType, FluidType> MOLTEN_URANIUM = moltenType("molten_uranium");
     public static final DeferredHolder<FluidType, FluidType> MOLTEN_CAST_NETHERITE = moltenType("molten_cast_netherite");
     public static final DeferredHolder<FluidType, FluidType> MOLTEN_SLAG = moltenType("molten_slag");
 

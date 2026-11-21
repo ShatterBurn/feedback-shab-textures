@@ -36,49 +36,16 @@ public final class FFluids {
     public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(
             net.minecraft.core.registries.Registries.FLUID, Feedback.MOD_ID);
 
-    public static final DeferredHolder<Fluid, Fluid> MOLTEN_COPPER =
-            FLUIDS.register("molten_copper", () -> new BaseFlowingFluid.Source(moltenCopper()));
-    public static final DeferredHolder<Fluid, Fluid> MOLTEN_COPPER_FLOWING =
-            FLUIDS.register("molten_copper_flowing", () -> new BaseFlowingFluid.Flowing(moltenCopper()));
-
-    public static final DeferredHolder<Fluid, Fluid> MOLTEN_GOLD =
-            FLUIDS.register("molten_gold", () -> new BaseFlowingFluid.Source(moltenGold()));
-    public static final DeferredHolder<Fluid, Fluid> MOLTEN_GOLD_FLOWING =
-            FLUIDS.register("molten_gold_flowing", () -> new BaseFlowingFluid.Flowing(moltenGold()));
-
     public static final DeferredHolder<Fluid, Fluid> MOLTEN_WROUGHT_IRON =
             FLUIDS.register("molten_wrought_iron", () -> new BaseFlowingFluid.Source(moltenWroughtIron()));
     public static final DeferredHolder<Fluid, Fluid> MOLTEN_WROUGHT_IRON_FLOWING =
             FLUIDS.register("molten_wrought_iron_flowing", () -> new BaseFlowingFluid.Flowing(moltenWroughtIron()));
-    public static final DeferredHolder<Fluid, Fluid> MOLTEN_IRON =
-            FLUIDS.register("molten_iron", () -> new BaseFlowingFluid.Source(moltenIron()));
-    public static final DeferredHolder<Fluid, Fluid> MOLTEN_IRON_FLOWING =
-            FLUIDS.register("molten_iron_flowing", () -> new BaseFlowingFluid.Flowing(moltenIron()));
 
     public static final DeferredHolder<Fluid, Fluid> MOLTEN_CAST_IRON =
             FLUIDS.register("molten_cast_iron", () -> new BaseFlowingFluid.Source(moltenCastIron()));
     public static final DeferredHolder<Fluid, Fluid> MOLTEN_CAST_IRON_FLOWING =
             FLUIDS.register("molten_cast_iron_flowing", () -> new BaseFlowingFluid.Flowing(moltenCastIron()));
 
-    public static final DeferredHolder<Fluid, Fluid> MOLTEN_TIN =
-            FLUIDS.register("molten_tin", () -> new BaseFlowingFluid.Source(moltenTin()));
-    public static final DeferredHolder<Fluid, Fluid> MOLTEN_TIN_FLOWING =
-            FLUIDS.register("molten_tin_flowing", () -> new BaseFlowingFluid.Flowing(moltenTin()));
-
-    public static final DeferredHolder<Fluid, Fluid> MOLTEN_SILVER =
-            FLUIDS.register("molten_silver", () -> new BaseFlowingFluid.Source(moltenSilver()));
-    public static final DeferredHolder<Fluid, Fluid> MOLTEN_SILVER_FLOWING =
-            FLUIDS.register("molten_silver_flowing", () -> new BaseFlowingFluid.Flowing(moltenSilver()));
-
-    public static final DeferredHolder<Fluid, Fluid> MOLTEN_URANIUM =
-            FLUIDS.register("molten_uranium", () -> new BaseFlowingFluid.Source(moltenUranium()));
-    public static final DeferredHolder<Fluid, Fluid> MOLTEN_URANIUM_FLOWING =
-            FLUIDS.register("molten_uranium_flowing", () -> new BaseFlowingFluid.Flowing(moltenUranium()));
-
-    public static final DeferredHolder<Fluid, Fluid> MOLTEN_ZINC =
-            FLUIDS.register("molten_zinc", () -> new BaseFlowingFluid.Source(moltenZinc()));
-    public static final DeferredHolder<Fluid, Fluid> MOLTEN_ZINC_FLOWING =
-            FLUIDS.register("molten_zinc_flowing", () -> new BaseFlowingFluid.Flowing(moltenZinc()));
 
     /** What a crucible's copper+tin mix becomes once {@code data/feedback/mixture/bronze.json}
      * matches -- see {@link io.github.soundgoodizerfan.feedback.process.AlloyMix}. */
@@ -107,11 +74,6 @@ public final class FFluids {
             FLUIDS.register("molten_glass", () -> new BaseFlowingFluid.Source(moltenGlass()));
     public static final DeferredHolder<Fluid, Fluid> MOLTEN_GLASS_FLOWING =
             FLUIDS.register("molten_glass_flowing", () -> new BaseFlowingFluid.Flowing(moltenGlass()));
-
-    public static final DeferredHolder<Fluid, Fluid> MOLTEN_LEAD =
-            FLUIDS.register("molten_lead", () -> new BaseFlowingFluid.Source(moltenLead()));
-    public static final DeferredHolder<Fluid, Fluid> MOLTEN_LEAD_FLOWING =
-            FLUIDS.register("molten_lead_flowing", () -> new BaseFlowingFluid.Flowing(moltenLead()));
 
     public static final DeferredHolder<Fluid, Fluid> MOLTEN_QUARTZ_GLASS =
             FLUIDS.register("molten_quartz_glass", () -> new BaseFlowingFluid.Source(moltenQuartzGlass()));
@@ -367,32 +329,12 @@ public final class FFluids {
     // Each pair's own properties instance, built lazily by the registry's own supplier -- by the
     // time either supplier actually runs (a registry event, well after class init), every
     // DeferredHolder referenced here is already assigned. Standard fluid-registration idiom.
-    private static BaseFlowingFluid.Properties moltenCopper() {
-        return new BaseFlowingFluid.Properties(FFluidTypes.MOLTEN_COPPER, MOLTEN_COPPER, MOLTEN_COPPER_FLOWING);
-    }
-
-    private static BaseFlowingFluid.Properties moltenGold() {
-        return new BaseFlowingFluid.Properties(FFluidTypes.MOLTEN_GOLD, MOLTEN_GOLD, MOLTEN_GOLD_FLOWING);
-    }
-
     private static BaseFlowingFluid.Properties moltenWroughtIron() {
         return new BaseFlowingFluid.Properties(FFluidTypes.MOLTEN_WROUGHT_IRON, MOLTEN_WROUGHT_IRON, MOLTEN_WROUGHT_IRON_FLOWING);
     }
 
-    private static BaseFlowingFluid.Properties moltenIron() {
-        return new BaseFlowingFluid.Properties(FFluidTypes.MOLTEN_IRON, MOLTEN_IRON, MOLTEN_IRON_FLOWING);
-    }
-
     private static BaseFlowingFluid.Properties moltenCastIron() {
         return new BaseFlowingFluid.Properties(FFluidTypes.MOLTEN_CAST_IRON, MOLTEN_CAST_IRON, MOLTEN_CAST_IRON_FLOWING);
-    }
-
-    private static BaseFlowingFluid.Properties moltenTin() {
-        return new BaseFlowingFluid.Properties(FFluidTypes.MOLTEN_TIN, MOLTEN_TIN, MOLTEN_TIN_FLOWING);
-    }
-
-    private static BaseFlowingFluid.Properties moltenSilver() {
-        return new BaseFlowingFluid.Properties(FFluidTypes.MOLTEN_SILVER, MOLTEN_SILVER, MOLTEN_SILVER_FLOWING);
     }
 
     private static BaseFlowingFluid.Properties moltenCastNetherite() {
@@ -403,14 +345,6 @@ public final class FFluids {
 
     private static BaseFlowingFluid.Properties moltenSlag() {
         return new BaseFlowingFluid.Properties(FFluidTypes.MOLTEN_SLAG, MOLTEN_SLAG, MOLTEN_SLAG_FLOWING);
-    }
-
-    private static BaseFlowingFluid.Properties moltenUranium() {
-        return new BaseFlowingFluid.Properties(FFluidTypes.MOLTEN_URANIUM, MOLTEN_URANIUM, MOLTEN_URANIUM_FLOWING);
-    }
-
-    private static BaseFlowingFluid.Properties moltenZinc() {
-        return new BaseFlowingFluid.Properties(FFluidTypes.MOLTEN_ZINC, MOLTEN_ZINC, MOLTEN_ZINC_FLOWING);
     }
 
     private static BaseFlowingFluid.Properties moltenBronze() {
@@ -431,10 +365,6 @@ public final class FFluids {
 
     private static BaseFlowingFluid.Properties moltenGlass() {
         return new BaseFlowingFluid.Properties(FFluidTypes.MOLTEN_GLASS, MOLTEN_GLASS, MOLTEN_GLASS_FLOWING);
-    }
-
-    private static BaseFlowingFluid.Properties moltenLead() {
-        return new BaseFlowingFluid.Properties(FFluidTypes.MOLTEN_LEAD, MOLTEN_LEAD, MOLTEN_LEAD_FLOWING);
     }
 
     private static BaseFlowingFluid.Properties moltenQuartzGlass() {
