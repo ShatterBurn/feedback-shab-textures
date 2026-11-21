@@ -634,8 +634,8 @@ public final class GuiStyle {
             float c = feel.slide(p);
             int span = room + 8;
             g.enableScissor(getX() + ARROW + 1, getY(), getX() + width - ARROW - 1, getY() + height);
-            text(g, font, prev, room, Math.round(dir * span * c), skin.dim());
-            text(g, font, v, room, Math.round(-dir * span * (1 - c)), colour);
+            text(g, font, prev, room, Math.round(-dir * span * c), skin.dim());
+            text(g, font, v, room, Math.round(dir * span * (1 - c)), colour);
             g.disableScissor();
         }
 
