@@ -70,9 +70,6 @@
         "west": {
           "texture": "#side"
         },
-        "up": {
-          "texture": "#side"
-        },
         "down": {
           "texture": "#side"
         }
