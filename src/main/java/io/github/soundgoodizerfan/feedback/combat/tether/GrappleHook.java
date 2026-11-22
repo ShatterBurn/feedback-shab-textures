@@ -498,10 +498,32 @@ public class GrappleHook extends Projectile {
      */
     private void swing(LivingEntity body, Vec3 offset, float distance) {
         body.fallDistance = 0f;
+        tow(body, offset, distance);
         if (body instanceof Player || distance <= rope)
             return;
         body.setDeltaMovement(constrain(offset, rope, new Vec3(body.getX() - body.xo, body.getY() - body.yo, body.getZ() - body.zo)));
         body.hurtMarked = true;
+    }
+
+    /**
+     * A taut line fixed to a Sable body pulls it as well as holding the swinger: the swinger's weight, as a force for one physics tick, drawn
+     * from the bite point toward them ({@link ModularTuning#GRAPPLE_TOW_IMPULSE_PER_MU} per Mu of {@link BodyMass}), so a light body is dragged
+     * along and a heavy one barely stirs, by its own mass. Applied through the body's own handle as a linear impulse (in the body's frame, as
+     * Sable takes it), waking it.
+     */
+    private void tow(LivingEntity swinger, Vec3 offset, float distance) {
+        if (!onBody() || distance < rope - ModularTuning.GRAPPLE_TOW_SLACK || distance < 1.0e-4 || !(level() instanceof net.minecraft.server.level.ServerLevel server))
+            return;
+        var access = body();
+        if (access == null || !(dev.ryanhcode.sable.api.sublevel.ServerSubLevelContainer.getContainer(server).getSubLevel(access.getUniqueId())
+                instanceof dev.ryanhcode.sable.sublevel.ServerSubLevel sub) || sub.isRemoved())
+            return;
+        // From the bite toward the swinger (offset runs from the swinger to the anchor).
+        Vec3 toward = offset.scale(-1.0 / distance);
+        double impulse = BodyMass.of(swinger) * ModularTuning.GRAPPLE_TOW_IMPULSE_PER_MU;
+        org.joml.Vector3d world = new org.joml.Vector3d(toward.x, toward.y, toward.z).mul(impulse);
+        dev.ryanhcode.sable.api.physics.handle.RigidBodyHandle.of(sub).applyLinearAndAngularImpulse(
+                sub.logicalPose().transformNormalInverse(world, new org.joml.Vector3d()), new org.joml.Vector3d(), true);
     }
 
     // --- what the world does to the line and the bite -------------------------------------------

@@ -749,6 +749,10 @@ public final class ModularTuning {
     public static final float GRAPPLE_PAYOUT = 0.35f;
     /** Passes the client makes over two lines so both hold together (a joint constraint, not one line then the other). */
     public static final int GRAPPLE_JOINT_PASSES = 3;
+    /** Impulse per Mu of the swinger a taut line fixed to a Sable body gives it each tick: the swinger's weight as a force (about 9.8 x 0.05 s). */
+    public static final float GRAPPLE_TOW_IMPULSE_PER_MU = 0.49f;
+    /** How far short of full rope, in blocks, a line counts as taut for towing. */
+    public static final float GRAPPLE_TOW_SLACK = 0.1f;
     /** Blocks from a fixed line within which an airborne body takes hold of it. */
     public static final double FIXED_LINE_REACH = 0.9;
     /** Blocks per tick a body climbs along a fixed line while a forward or back key is held. */
