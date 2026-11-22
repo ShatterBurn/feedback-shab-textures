@@ -55,6 +55,10 @@ public final class GunRenderer extends BlockEntityWithoutLevelRenderer {
         return new float[]{grip[0] * side / 16f + (eye[0] - at[0]) * k, grip[1] / 16f + (eye[1] - at[1]) * k, grip[2] / 16f + (eye[2] - at[2]) * k};
     }
 
+    /** The held gun's muzzle as an offset from the camera along the world's axes (the hand pose carries the camera's rotation), as of the last frame it was drawn. */
+    static final org.joml.Vector3f HELD_MUZZLE = new org.joml.Vector3f();
+    static long heldMuzzleMs;
+
     /** Draw a gun held in first person from the hand's pivot: placed by its grip, kicked and tilted by {@link GunMotion}. */
     static void renderHeld(ItemStack stack, GunView view, GunMotion.Hand hand, float side, PoseStack pose,
                            MultiBufferSource buffers, int light) {
@@ -79,6 +83,9 @@ public final class GunRenderer extends BlockEntityWithoutLevelRenderer {
         pose.scale(k, k, k);
         pose.translate(-at[0], -at[1], -at[2]);
         GunMotion.item(pose, view, hand, now);
+        // Where the nozzle is, for the stream that leaves it (StreamFx).
+        pose.last().pose().transformPosition(0, view.muzzleY(), -(view.muzzle() + view.muzzleReach()), HELD_MUZZLE);
+        heldMuzzleMs = now;
         var mesh = new GunMesh(pose, outputs(buffers, stack), light, net.minecraft.client.renderer.texture.OverlayTexture.NO_OVERLAY);
         mesh.sighted = hand == GunMotion.hand(false) && io.github.soundgoodizerfan.feedback.client.gun.GunClient.aim() > 0.5f;
         GunDraw.draw(mesh, view, parts);

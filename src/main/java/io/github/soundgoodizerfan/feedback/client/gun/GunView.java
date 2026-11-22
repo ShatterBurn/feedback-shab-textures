@@ -341,6 +341,13 @@ record GunView(GunLayout.Type type, String action, boolean slide, float len, flo
         return len;
     }
 
+    /** Height of the bore's axis at the muzzle, in model pixels: a caster's pipe rides at the height its frame sets; other guns' bores sit on the origin. */
+    float muzzleY() {
+        if (!action.equals("caster"))
+            return 0f;
+        return variant("S").equals("lance_frame") ? 1.5f : 0.25f;
+    }
+
     /** Front of an optic's mount. */
     float opticZ() {
         return switch (type) {

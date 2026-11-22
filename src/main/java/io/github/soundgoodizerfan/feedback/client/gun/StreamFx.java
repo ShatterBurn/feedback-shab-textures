@@ -133,6 +133,28 @@ public final class StreamFx {
     /** A chunky 4 by 4 pixel blob with the corners chipped, hard-edged like the game's own particles; made once at runtime, every droplet is this tinted. */
     private static ResourceLocation disc;
 
+    /** A smooth round falloff, filtered linearly: the puffs of fire and smoke are soft, not square like the droplets. */
+    private static ResourceLocation glow;
+
+    private static ResourceLocation glow(Minecraft mc) {
+        if (glow == null) {
+            int n = 32;
+            NativeImage img = new NativeImage(NativeImage.Format.RGBA, n, n, false);
+            for (int y = 0; y < n; y++)
+                for (int x = 0; x < n; x++) {
+                    float dx = (x + 0.5f) / n * 2f - 1f, dy = (y + 0.5f) / n * 2f - 1f;
+                    float f = Math.max(0f, 1f - (float) Math.sqrt(dx * dx + dy * dy));
+                    int a = (int) (255 * f * f * (3f - 2f * f));
+                    img.setPixelRGBA(x, y, a << 24 | 0xFFFFFF);
+                }
+            DynamicTexture tex = new DynamicTexture(img);
+            tex.setFilter(true, false);
+            glow = Feedback.id("stream_glow");
+            mc.getTextureManager().register(glow, tex);
+        }
+        return glow;
+    }
+
     private static ResourceLocation disc(Minecraft mc) {
         if (disc == null) {
             NativeImage img = new NativeImage(NativeImage.Format.RGBA, 4, 4, false);
@@ -237,7 +259,9 @@ public final class StreamFx {
             // Remember where the nozzle is and points this tick (your own from your live eye and look, others' from the last message).
             if (mc.player != null && r.owner == mc.player.getId()) {
                 Vec3 look = mc.player.getViewVector(1f);
-                remember(r, mc.player.getEyePosition(1f).add(look.scale(0.4)), look);
+                // Its history holds where the nozzle itself was, so a turn swings the stream about the nozzle, not about the eye.
+                Vec3 eye = mc.player.getEyePosition(1f).add(look.scale(0.4));
+                remember(r, eye.add(ownMuzzle(eye, look)), look);
             } else
                 remember(r, r.start, r.dir);
             if (r.updated) {
@@ -367,6 +391,23 @@ public final class StreamFx {
      * One message's droplets. How many is capped by the particles setting; the shape is the nozzle's: the cone from {@code spread}, the
      * arc from the exit speed against gravity, the size from the cone and the fluid's thickness. {@code scale} thins far streams.
      */
+    /**
+     * From where your stream's axis starts (just ahead of the eye) to the nozzle of the gun in your hand, as the hand view drew it last frame.
+     * Falls back to a fixed low-right guess when no gun has been drawn lately (hand hidden, other camera).
+     */
+    private static Vec3 ownMuzzle(Vec3 start, Vec3 dir) {
+        if (System.currentTimeMillis() - GunRenderer.heldMuzzleMs > 250) {
+            Vec3 right = dir.cross(new Vec3(0, 1, 0));
+            right = right.lengthSqr() < 1e-6 ? new Vec3(1, 0, 0) : right.normalize();
+            return right.scale(0.17).add(0, -0.13, 0);
+        }
+        Camera cam = Minecraft.getInstance().gameRenderer.getMainCamera();
+        Vector3f v = GunRenderer.HELD_MUZZLE;
+        // The hand pose starts from the inverse of the view rotation (GameRenderer.renderItemInHand), so the stored point is already along
+        // the world's axes, measured from the camera.
+        return cam.getPosition().add(v.x, v.y, v.z).subtract(start);
+    }
+
     private static void spray(Minecraft mc, ClientLevel level, CasterStreamPayload p, boolean opening, boolean mine, float scale, Ribbon rb) {
         RandomSource random = level.random;
         Vec3 start = new Vec3(p.x(), p.y(), p.z());
@@ -414,9 +455,7 @@ public final class StreamFx {
             // (sagged by gravity, spread by the cone) with the life it has left, so the stream is filled from the gun to where it lands.
             float grav = gravityOf(speed);
             // Your own stream leaves the barrel, low and to the right of the eye, and closes on the real ray over a few blocks.
-            Vec3 right = dir.cross(new Vec3(0, 1, 0));
-            right = right.lengthSqr() < 1e-6 ? new Vec3(1, 0, 0) : right.normalize();
-            Vec3 muzzle = mine ? right.scale(0.17).add(0, -0.13, 0) : Vec3.ZERO;
+            Vec3 muzzle = mine ? ownMuzzle(start, dir) : Vec3.ZERO;
             for (int i = 0; i < drops; i++) {
                 float dist = length * random.nextFloat();
                 float flown = dist / speed;
@@ -424,9 +463,9 @@ public final class StreamFx {
                 boolean core = random.nextFloat() < 0.4f;
                 Vec3 off = core ? across(across1, across2, random, 0.015) : across(across1, across2, random, tan * dist + 0.02);
                 // It left the nozzle `flown` ticks ago, from where the nozzle was then, along the aim it had then.
-                sample(rb, flown, start, dir, 0f);
+                sample(rb, flown, start.add(muzzle), dir, 0f);
                 Vec3 from = SCRATCH[0], aim = SCRATCH[1];
-                Vec3 at = from.add(aim.scale(dist)).add(off).add(muzzle.scale(Math.max(0, 1 - dist / 9f))).add(0, -0.5 * grav * flown * flown, 0);
+                Vec3 at = from.add(aim.scale(dist)).add(off).subtract(muzzle.scale(Math.min(1f, dist / 9f))).add(0, -0.5 * grav * flown * flown, 0);
                 Vec3 vel = aim.scale(speed * (0.9 + random.nextDouble() * 0.15)).add(off.scale(1.0 / Math.max(flown, 1f))).add(0, -grav * flown, 0);
                 Drop d = spawn(DROP, at.x, at.y, at.z, vel, size * (core ? 1.1f : 0.7f + random.nextFloat() * 0.6f),
                         Math.max(2, Math.round((length - dist) / (speed * 0.95f)) + 1), r, g, b, mine, 0f, flared);
@@ -581,9 +620,21 @@ public final class StreamFx {
         }
         VertexConsumer sc = buffers.getBuffer(soft);
         for (Drop d : DROPS)
-            blot(m, sc, d, left, up, partial);
+            if (!softKind(d))
+                blot(m, sc, d, left, up, partial);
         buffers.endBatch(soft);
+        // Fire and smoke are soft round puffs: a second pass with the filtered texture (two buffers cannot be open at once).
+        RenderType puffs = RenderType.text(glow(mc));
+        sc = buffers.getBuffer(puffs);
+        for (Drop d : DROPS)
+            if (softKind(d))
+                blot(m, sc, d, left, up, partial);
+        buffers.endBatch(puffs);
         pose.popPose();
+    }
+
+    private static boolean softKind(Drop d) {
+        return d.type == FLAME || d.type == HALO || d.type == SOOT;
     }
 
     /** The temperature ramp of a flame, 0 hot core to 1 soot rim: white-yellow, orange, deep red, soot. {@code hot} pushes the hot end toward white. */
@@ -626,9 +677,7 @@ public final class StreamFx {
         float w0 = (0.03f + 0.012f * Math.min(body, 8f)) * (burning ? 1.4f : 1.3f - 0.5f * drive);
         // Your own stream, seen down its length, would be edge-on: it leaves from the barrel (low and to the right of the eye) and
         // closes on the real ray over a few blocks, so it is seen from the side as it sweeps.
-        Vec3 right = dir.cross(new Vec3(0, 1, 0));
-        right = right.lengthSqr() < 1e-6 ? new Vec3(1, 0, 0) : right.normalize();
-        Vec3 muzzle = own ? right.scale(0.17).add(0, -0.13, 0) : Vec3.ZERO;
+        Vec3 muzzle = own ? ownMuzzle(start, dir) : Vec3.ZERO;
         int n = Mth.clamp(Math.round(drawn * 3), 6, 48);
         Vec3 prevTop = null, prevBot = null, prevCoreTop = null, prevCoreBot = null, prevRimTop = null, prevRimBot = null;
         float prevA = 0, prevCoreA = 0, prevRimA = 0, prevS = 0, prevFa = 0;
@@ -638,8 +687,8 @@ public final class StreamFx {
             // Each point of the stream left the nozzle t/speed ticks ago, from where it was then, along the aim it had then: a turn bends the
             // stream into a curve that lags behind the nozzle instead of swinging it as a rod.
             float ticks = t / Math.max(r.speed, 0.1f);
-            sample(r, ticks, start, dir, partial);
-            Vec3 at = SCRATCH[0].add(SCRATCH[1].scale(t)).add(muzzle.scale(Math.max(0, 1 - t / 9f)));
+            sample(r, ticks, start.add(muzzle), dir, partial);
+            Vec3 at = SCRATCH[0].add(SCRATCH[1].scale(t)).subtract(muzzle.scale(Math.min(1f, t / 9f)));
             if (!burning)
                 at = at.add(0, -0.5 * gravityOf(r.speed) * ticks * ticks, 0);
             Vec3 toCam = cam.subtract(at);
@@ -657,7 +706,7 @@ public final class StreamFx {
                 float fs = Mth.clamp(t / Math.max(length, 0.1f), 0f, 1f);
                 // The flame billows: wider with distance and rippling as it rises.
                 float billow = 1f + 0.25f * (float) Math.sin(t * 5 - time * 11 + s * 3);
-                w = (w0 + (float) (t * tan * 0.6) + 0.05f * t) * billow;
+                w = (w0 + (float) (t * tan * 0.6) + 0.085f * t) * billow;
                 float taper = 1f - (float) Math.pow(fs, 1.5);
                 a = (float) (0.55 * taper * life * near);
                 coreA = (float) (0.9 * (1f - fs) * life * near);
@@ -749,7 +798,7 @@ public final class StreamFx {
                 r = (c >> 16 & 255) / 255f;
                 g = (c >> 8 & 255) / 255f;
                 b = (c & 255) / 255f;
-                a = d.type == HALO ? 0.35f : d.type == EMBER ? 0.95f * (1f - f) : 0.95f * (1f - f * f);
+                a = d.type == HALO ? 0.3f : d.type == EMBER ? 0.95f * (1f - f) : 0.45f * (1f - f * f);
             }
             case SOOT -> a = 0.4f * (1f - f);
             case FOG -> a = 0.45f * (1f - f) * Math.min(1f, f * 6f);
