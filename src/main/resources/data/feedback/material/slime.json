@@ -1,5 +1,6 @@
 {
   "kind": "organic",
+  "fastener": 1,
   "traits": [
     "sticky",
     "transparent"

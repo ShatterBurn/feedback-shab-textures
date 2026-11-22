@@ -219,6 +219,8 @@ public record Material(St hardness, Tu minTemperature, Tu maxTemperature,
         FLUID,
         /** Plastics and rubbers (spec 11): shaped by the form, mould and casting systems like a metal. */
         POLYMER,
+        /** A stuff that holds two others together by sticking to both (hide glue; the slime ball is sticky without being one): its `glue` form is a fixing the Engineering Table spends. */
+        ADHESIVE,
         /** Two stuffs bonded into one body that is neither (fibre in resin, veneers in glue): fibreglass, carbon fibre, plywood. */
         COMPOSITE,
         /** Foodstuffs are classed as finely as stone and metal are, by what they are: */

@@ -28,10 +28,12 @@ The drawer sits **directly on a shaft line**. Connect it from any side; you don'
 | --- | --- | --- |
 | Rod | Wire | Fine Wire |
 | Plate | Case | |
+| Rod | Welding Rod | |
+| Solder ingot | Solder Wire | |
 
 With no die the drawer does nothing. Like every machine, it doesn't stop when the wire is done. Leave copper wire in and it becomes **fine wire**. See [Metalworking](Metalworking.md).
 
-Rods come from the [Rolling Mill](Rolling_Mill.md). Copper wire is used all over the mod: [cable](Copper_Cable.md), [electromagnets](Electromagnet.md), instruments. Cases are for [ammunition](Ammunition.md).
+A welding rod and solder wire are [fasteners](Fasteners.md). Rods come from the [Rolling Mill](Rolling_Mill.md). Copper wire is used all over the mod: [cable](Copper_Cable.md), [electromagnets](Electromagnet.md), instruments. Cases are for [ammunition](Ammunition.md).
 
 ## Slow vs. fast
 

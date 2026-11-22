@@ -1,0 +1,25 @@
+{
+  "inputs": [
+    { "item": "minecraft:leather" },
+    { "item": "minecraft:bone" }
+  ],
+  "min_temperature": 90,
+  "optimal_temperature": 100,
+  "max_temperature": 120,
+  "required_tpu": 600,
+  "result": {
+    "id": "feedback:collagen_glue",
+    "count": 4
+  },
+  "spoil_temperature": 160,
+  "reaction": {
+    "fluid_inputs": [
+      {
+        "fluid": "minecraft:water",
+        "mb": 250
+      }
+    ],
+    "fluid_outputs": [],
+    "heat": 2
+  }
+}

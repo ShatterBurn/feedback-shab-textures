@@ -131,6 +131,7 @@ Not everything is metal. A few others matter for parts and protection:
 | Feather Down | 1 | | | animal, fibrous; a very light, warm [bed](Bed.md) padding: see [below](#feather-down-and-rabbit-hide) |
 | Rabbit Hide | 1 | | 100 Tu | animal, fibrous; a warm, tough [bed](Bed.md) padding |
 | Ghast Bladder | 1 | | | animal; the skin of a bladder [gas cell](Gas_Cell.md) |
+| Collagen | 1 | | 55 Tu | adhesive; see [Collagen](#collagen) |
 | Coated Cloth | 0.5 | | | cloth coated in slime; the skin of a coated cloth [gas cell](Gas_Cell.md) |
 | Ruby | 200 | | 1400 Tu | transparent crystal; glows under current |
 | Spinel | 140 | | 1243 Tu | transparent crystal; see [Spinel](#spinel) |
@@ -150,6 +151,10 @@ Every material also decides how well it **takes an enchantment** when it's the m
 A material can carry a **permeability**: how fast a gas cell skinned in it lets gas through. A material without one is gas-tight. Ghast bladder has none; coated cloth seeps slowly.
 
 "Stands" is the temperature a grip or glove can bear against your hand. See [Hazards](Hazards.md).
+
+## Collagen
+
+An **adhesive**: a material that holds two others together by sticking to both. Collagen is sticky and flammable, and goes soft near 60 Tu. Its form is **Glue**, which the [Engineering Table](Engineering_Table.md) takes as a [fixing](Fasteners.md). It is boiled from leather and bone with 250 mB of water at about 100 Tu, 4 Collagen Glue to a batch.
 
 ## Woods
 
@@ -485,6 +490,9 @@ Every metal comes in a family of **forms**, each made by a particular machine:
 | Rod | [Rolling Mill](Rolling_Mill.md) |
 | Pipe | [Drill Press](Drill_Press.md) (an ingot) or [Rolling Mill](Rolling_Mill.md) (a plate) |
 | Wire, Fine Wire | [Wire Drawer](Wire_Drawer.md) |
+| Welding Rod | [Wire Drawer](Wire_Drawer.md) (a rod) |
+| Solder Wire | [Wire Drawer](Wire_Drawer.md) (a solder ingot) |
+| Glue | adhesives only: see [Collagen](#collagen) |
 | Case | drawing a plate |
 | Bullet | hammering a nugget, or [casting](Casting.md) |
 | Drilled Plate | [Drill Press](Drill_Press.md) |

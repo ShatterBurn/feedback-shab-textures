@@ -16,7 +16,7 @@ C is any wooden slab, T is a Crafting Table and S is a Wrought Iron Plate. Mine 
 
 The screen has four tabs: **Crafting**, **Fit**, **Repair** and **Treatise**. A **popout** beside the table holds four **hand tool** slots and three **fixings** slots, and stays on every tab. A hand tool is a [Hammer](Hammer.md), a [Sawblade](Sawblade.md), a [File](Hand_Tools.md#file) or a [Screwdriver](Hand_Tools.md#screwdriver). Each act that calls for a tool wears it a point; a broken tool stays in its slot and blocks the act until it is mended.
 
-The popout's fixings slots take screws, machine bolts and rivets (see [Fasteners](Fasteners.md)).
+The popout's fixings slots take screws, machine bolts, rivets, welding rods, solder wire and glue (see [Fasteners](Fasteners.md)).
 
 The Crafting tab holds:
 
@@ -114,5 +114,5 @@ Hold a [Recipe Data Stick](Data_Stick.md) in your **off hand** while you take a 
 
 ## See also
 
-- [Fasteners](Fasteners.md): screws, machine bolts and rivets, and the quality each metal gives.
+- [Fasteners](Fasteners.md): screws, machine bolts, rivets, welding rods, solder wire and glue, and the quality each material gives.
 - [Hand Tools](Hand_Tools.md): the hammer, file, screwdriver and sawblade the tool slots take.

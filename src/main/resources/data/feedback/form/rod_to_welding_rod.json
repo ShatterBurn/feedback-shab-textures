@@ -1,0 +1,7 @@
+{
+  "from": "rod",
+  "to": "welding_rod",
+  "operation": "draw",
+  "base": 8,
+  "slope": 1.0
+}

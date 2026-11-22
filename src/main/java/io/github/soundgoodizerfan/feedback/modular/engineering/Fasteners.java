@@ -23,32 +23,52 @@ import net.minecraft.world.item.ItemStack;
 public final class Fasteners {
 
     /** The forms that are fasteners. */
-    public static final Set<String> FORMS = Set.of("screw", "machine_bolt", "rivet");
+    public static final Set<String> FORMS = Set.of("screw", "machine_bolt", "rivet", "solder_wire", "welding_rod", "glue");
 
     /**
-     * What an assembly asks of its fasteners: how many are spent, the quality it is built for, and the forms that will do (empty
-     * means any). Defaults: two, quality 1, any form.
+     * How a fixing's form moves the quality its material gives (the joint it makes): a weld is the strongest, a screw, bolt or rivet is what the
+     * material is, solder is weaker and glue weakest. Added to the material's {@code fastener} level and held to 1..5.
      */
-    public record Need(int count, int floor, java.util.List<String> forms) {
+    private static int bias(String form) {
+        return switch (form) {
+            case "welding_rod" -> 1;
+            case "solder_wire" -> -1;
+            case "glue" -> -2;
+            default -> 0;
+        };
+    }
+
+    /**
+     * What an assembly asks of its fasteners: how many are spent, the quality it is built for, the forms that will do (empty
+     * means any) and the forms that will not ({@code not_forms}, e.g. no glue on a pressure vessel, no weld on a removable part).
+     * Defaults: two, quality 1, any form.
+     */
+    public record Need(int count, int floor, java.util.List<String> forms, java.util.List<String> notForms) {
 
         public static final Need DEFAULT = new Need(2, 1);
 
         public static final Codec<Need> CODEC = RecordCodecBuilder.create(i -> i.group(
                 Codec.intRange(0, 64).optionalFieldOf("count", 2).forGetter(Need::count),
                 Codec.intRange(1, 5).optionalFieldOf("floor", 1).forGetter(Need::floor),
-                Codec.STRING.listOf().optionalFieldOf("forms", java.util.List.of()).forGetter(Need::forms)).apply(i, Need::new));
+                Codec.STRING.listOf().optionalFieldOf("forms", java.util.List.of()).forGetter(Need::forms),
+                Codec.STRING.listOf().optionalFieldOf("not_forms", java.util.List.of()).forGetter(Need::notForms)).apply(i, Need::new));
 
         public static final StreamCodec<RegistryFriendlyByteBuf, Need> STREAM_CODEC = StreamCodec.composite(
                 ByteBufCodecs.VAR_INT, Need::count, ByteBufCodecs.VAR_INT, Need::floor,
-                ByteBufCodecs.STRING_UTF8.apply(ByteBufCodecs.list()), Need::forms, Need::new);
+                ByteBufCodecs.STRING_UTF8.apply(ByteBufCodecs.list()), Need::forms,
+                ByteBufCodecs.STRING_UTF8.apply(ByteBufCodecs.list()), Need::notForms, Need::new);
 
         public Need(int count, int floor) {
-            this(count, floor, java.util.List.of());
+            this(count, floor, java.util.List.of(), java.util.List.of());
+        }
+
+        public Need(int count, int floor, java.util.List<String> forms) {
+            this(count, floor, forms, java.util.List.of());
         }
 
         /** Whether a fastener of {@code form} will do. */
         public boolean accepts(String form) {
-            return forms.isEmpty() || forms.contains(form);
+            return (forms.isEmpty() || forms.contains(form)) && !notForms.contains(form);
         }
     }
 
@@ -71,9 +91,20 @@ public final class Fasteners {
         if (stack.isEmpty())
             return 0;
         return MaterialIngredient.locate(stack.getItem())
-                .filter(l -> isFastenerForm(l.form()) && need.accepts(l.form()))
-                .flatMap(l -> l.material().fastener())
+                .filter(l -> need.accepts(fixingForm(l)))
+                .filter(l -> isFastenerForm(fixingForm(l)))
+                .flatMap(l -> l.material().fastener().map(q -> Math.max(1, Math.min(5, q + bias(fixingForm(l))))))
                 .orElse(0);
+    }
+
+    /**
+     * The fixing a stack is: its form when that is a fastener form, else {@code glue} for anything sticky (a slime ball, a hide glue): by what it
+     * is, not what it is called.
+     */
+    private static String fixingForm(io.github.soundgoodizerfan.feedback.process.Material.Located l) {
+        if (FORMS.contains(l.form()))
+            return l.form();
+        return l.material().traits().contains(io.github.soundgoodizerfan.feedback.process.Material.Trait.STICKY) ? "glue" : l.form();
     }
 
     /** Whether {@code stack} can sit in a fastener slot. */

@@ -1,0 +1,7 @@
+{
+  "from": "ingot",
+  "to": "solder_wire",
+  "operation": "draw",
+  "base": 6.4,
+  "slope": 1.0
+}
