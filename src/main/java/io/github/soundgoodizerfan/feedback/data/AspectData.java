@@ -53,6 +53,8 @@ public final class AspectData implements DataProvider {
     private static final float REFLECTIVE = 0.7f;
     private static final float TOXIC = 0.5f;
     private static final float HARD = 6f;
+    /** An animal fibre lighter than this (Mu/mB) is down, not hide or wool. */
+    private static final float LIGHT_FIBRE = 0.1f;
     /** A fluid boiling below this is a gas at the world's ambient temperature (Tu, as written in the material files). */
     private static final float GAS_BOILING = 20f;
 
@@ -186,6 +188,9 @@ public final class AspectData implements DataProvider {
             out.put("ordo", clamp(2f + hardness / 4f));
         if (material.separation().magnetic() || material.traits().contains(Material.Trait.LUMINOUS))
             out.put("motus", clamp(2f + (material.separation().magnetic() ? 1.5f : 0f) + material.separation().diamagnetism()));
+        // Light fibre that holds air (feather down) lifts: flight.
+        if (kind == Material.Kind.ANIMAL && material.traits().contains(Material.Trait.FIBROUS) && density < LIGHT_FIBRE)
+            out.put("volatus", clamp(4f + (LIGHT_FIBRE - density) * 30f));
         if (form.equals("dust") || form.equals("crushed") || kind == Material.Kind.GRANULAR)
             out.putIfAbsent("perditio", clamp(2f + hardness / 20f));
         return out;

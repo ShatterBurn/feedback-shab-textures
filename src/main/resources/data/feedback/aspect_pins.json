@@ -166,6 +166,16 @@
     "feedback:strike_post": [{"aspect":"thaumaturge:instrumentum","amount":3},{"aspect":"thaumaturge:aversio","amount":3},{"aspect":"thaumaturge:herba","amount":2}],
     "feedback:sheave": [{"aspect":"thaumaturge:machina","amount":3},{"aspect":"thaumaturge:motus","amount":3},{"aspect":"thaumaturge:vinculum","amount":2}],
     "feedback:shock_capsule": [{"aspect":"thaumaturge:praemunio","amount":4},{"aspect":"thaumaturge:aversio","amount":2},{"aspect":"thaumaturge:motus","amount":2}],
-    "feedback:magma_head": [{"aspect":"thaumaturge:ignis","amount":6},{"aspect":"thaumaturge:terra","amount":3},{"aspect":"thaumaturge:instrumentum","amount":3}]
+    "feedback:thruster": [{"aspect":"thaumaturge:volatus","amount":6},{"aspect":"thaumaturge:motus","amount":5},{"aspect":"thaumaturge:machina","amount":5},{"aspect":"thaumaturge:ignis","amount":3}],
+    "feedback:thruster_nozzle": [{"aspect":"thaumaturge:volatus","amount":3},{"aspect":"thaumaturge:ignis","amount":2},{"aspect":"thaumaturge:metallum","amount":4}],
+    "feedback:module_thruster": [{"aspect":"thaumaturge:volatus","amount":5},{"aspect":"thaumaturge:machina","amount":4},{"aspect":"thaumaturge:motus","amount":3},{"aspect":"thaumaturge:potentia","amount":2}],
+    "feedback:jet": [{"aspect":"thaumaturge:volatus","amount":8},{"aspect":"thaumaturge:machina","amount":6},{"aspect":"thaumaturge:ignis","amount":5},{"aspect":"thaumaturge:aer","amount":3}],
+    "feedback:jet_nozzle": [{"aspect":"thaumaturge:volatus","amount":4},{"aspect":"thaumaturge:ignis","amount":3},{"aspect":"thaumaturge:aer","amount":2},{"aspect":"thaumaturge:metallum","amount":3}],
+    "feedback:jet_compressor": [{"aspect":"thaumaturge:aer","amount":5},{"aspect":"thaumaturge:machina","amount":5},{"aspect":"thaumaturge:motus","amount":4},{"aspect":"thaumaturge:volatus","amount":2}],
+    "feedback:propeller": [{"aspect":"thaumaturge:volatus","amount":5},{"aspect":"thaumaturge:motus","amount":5},{"aspect":"thaumaturge:aer","amount":3},{"aspect":"thaumaturge:machina","amount":2}],
+    "feedback:engine": [{"aspect":"thaumaturge:machina","amount":8},{"aspect":"thaumaturge:motus","amount":7},{"aspect":"thaumaturge:ignis","amount":4},{"aspect":"thaumaturge:potentia","amount":3}],
+    "feedback:levitation_sleeve": [{"aspect":"thaumaturge:volatus","amount":6},{"aspect":"thaumaturge:praecantatio","amount":3},{"aspect":"thaumaturge:vinculum","amount":2}],
+    "minecraft:phantom_membrane": [{"aspect":"thaumaturge:volatus","amount":5},{"aspect":"thaumaturge:tenebrae","amount":2},{"aspect":"thaumaturge:exanimis","amount":2}],
+    "feedback:magma_head":[{"aspect":"thaumaturge:ignis","amount":6},{"aspect":"thaumaturge:terra","amount":3},{"aspect":"thaumaturge:instrumentum","amount":3}]
   }
 }

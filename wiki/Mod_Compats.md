@@ -64,6 +64,7 @@ Every form of a material (ingot, dust, block, plate, nugget and the rest) carrie
 | Fluids | Aqua (water) or Aer (air) |
 | Plants | Herba (plant) |
 | Animals | Bestia (beast) and Victus (life) |
+| Light animal fiber, such as [feather down](Materials.md#feather-down-and-rabbit-hide) | Volatus (flight) |
 | Electrical conductivity | Potentia (energy) |
 | High reflectivity | Lux (light) |
 | Flammable or burning | Ignis (fire) |
@@ -82,6 +83,7 @@ Machines and devices carry aspects that match their function:
 - Tools and workshop machines: Instrumentum (tool) and Fabrico (craft).
 - Heat machines: Ignis. Cold machines: Gelum (ice). See [Heat](Heat.md).
 - Electrical parts: Potentia. See [Electricity](Electricity.md).
+- Flight hardware: Volatus (flight). This covers [thrusters](Thruster.md) with their nozzle and the suit thruster module of the [Exosuit](Exosuit.md), [jets](Jet.md) with their nozzle and compressor, [propellers](Propeller.md), the Levitation Plate and the Levitation Sleeve (see [Levitation](Levitation.md)). Light things that lift, such as feather down and the vanilla Phantom Membrane, carry it too.
 - Sensors: Sensus (senses).
 - Controllers and computers: Cognitio (mind). See [Controller](Controller.md).
 - Experience, ender and sculk gear: Praecantatio (magic). See [Experience](Experience.md) and [Sculk](Sculk.md).

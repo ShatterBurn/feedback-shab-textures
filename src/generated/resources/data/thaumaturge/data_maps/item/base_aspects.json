@@ -11750,6 +11750,24 @@
         "aspect": "thaumaturge:machina"
       }
     ],
+    "feedback:engine": [
+      {
+        "amount": 8,
+        "aspect": "thaumaturge:machina"
+      },
+      {
+        "amount": 7,
+        "aspect": "thaumaturge:motus"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:ignis"
+      },
+      {
+        "amount": 3,
+        "aspect": "thaumaturge:potentia"
+      }
+    ],
     "feedback:enriched_fuel_rod": [
       {
         "amount": 6,
@@ -12046,6 +12064,10 @@
       {
         "amount": 32,
         "aspect": "thaumaturge:ignis"
+      },
+      {
+        "amount": 50,
+        "aspect": "thaumaturge:volatus"
       }
     ],
     "feedback:feather_down_rod": [
@@ -12064,6 +12086,10 @@
       {
         "amount": 4,
         "aspect": "thaumaturge:ignis"
+      },
+      {
+        "amount": 6,
+        "aspect": "thaumaturge:volatus"
       }
     ],
     "feedback:fertiliser_dust": [
@@ -16752,6 +16778,60 @@
         "aspect": "thaumaturge:ordo"
       }
     ],
+    "feedback:jet": [
+      {
+        "amount": 8,
+        "aspect": "thaumaturge:volatus"
+      },
+      {
+        "amount": 6,
+        "aspect": "thaumaturge:machina"
+      },
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:ignis"
+      },
+      {
+        "amount": 3,
+        "aspect": "thaumaturge:aer"
+      }
+    ],
+    "feedback:jet_compressor": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:aer"
+      },
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:machina"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      },
+      {
+        "amount": 2,
+        "aspect": "thaumaturge:volatus"
+      }
+    ],
+    "feedback:jet_nozzle": [
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:volatus"
+      },
+      {
+        "amount": 3,
+        "aspect": "thaumaturge:ignis"
+      },
+      {
+        "amount": 2,
+        "aspect": "thaumaturge:aer"
+      },
+      {
+        "amount": 3,
+        "aspect": "thaumaturge:metallum"
+      }
+    ],
     "feedback:jungle_grip": [
       {
         "amount": 4,
@@ -17252,6 +17332,20 @@
       {
         "amount": 3,
         "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:levitation_sleeve": [
+      {
+        "amount": 6,
+        "aspect": "thaumaturge:volatus"
+      },
+      {
+        "amount": 3,
+        "aspect": "thaumaturge:praecantatio"
+      },
+      {
+        "amount": 2,
+        "aspect": "thaumaturge:vinculum"
       }
     ],
     "feedback:leyden_jar": [
@@ -19734,6 +19828,24 @@
       {
         "amount": 8,
         "aspect": "thaumaturge:mortuus"
+      }
+    ],
+    "feedback:module_thruster": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:volatus"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:machina"
+      },
+      {
+        "amount": 3,
+        "aspect": "thaumaturge:motus"
+      },
+      {
+        "amount": 2,
+        "aspect": "thaumaturge:potentia"
       }
     ],
     "feedback:molybdenite_calcine": [
@@ -23952,6 +24064,24 @@
       {
         "amount": 2,
         "aspect": "thaumaturge:instrumentum"
+      }
+    ],
+    "feedback:propeller": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:volatus"
+      },
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:motus"
+      },
+      {
+        "amount": 3,
+        "aspect": "thaumaturge:aer"
+      },
+      {
+        "amount": 2,
+        "aspect": "thaumaturge:machina"
       }
     ],
     "feedback:ptfe_powder": [
@@ -30906,6 +31036,38 @@
         "aspect": "thaumaturge:motus"
       }
     ],
+    "feedback:thruster": [
+      {
+        "amount": 6,
+        "aspect": "thaumaturge:volatus"
+      },
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:motus"
+      },
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:machina"
+      },
+      {
+        "amount": 3,
+        "aspect": "thaumaturge:ignis"
+      }
+    ],
+    "feedback:thruster_nozzle": [
+      {
+        "amount": 3,
+        "aspect": "thaumaturge:volatus"
+      },
+      {
+        "amount": 2,
+        "aspect": "thaumaturge:ignis"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:metallum"
+      }
+    ],
     "feedback:timer": [
       {
         "amount": 3,
@@ -37210,6 +37372,20 @@
       {
         "amount": 90,
         "aspect": "thaumaturge:ordo"
+      }
+    ],
+    "minecraft:phantom_membrane": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:volatus"
+      },
+      {
+        "amount": 2,
+        "aspect": "thaumaturge:tenebrae"
+      },
+      {
+        "amount": 2,
+        "aspect": "thaumaturge:exanimis"
       }
     ],
     "minecraft:powder_snow_bucket": [
