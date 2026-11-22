@@ -538,6 +538,8 @@ public final class StreamFx {
         pose.translate(-cam.x, -cam.y, -cam.z);
         Matrix4f m = pose.last().pose();
         boolean firstPerson = mc.options.getCameraType().isFirstPerson() && mc.player != null;
+        boolean shaded = FlameShader.ready();
+        java.util.List<java.util.function.Consumer<VertexConsumer>> flames = new java.util.ArrayList<>();
         for (Ribbon r : RIBBONS.values()) {
             if (r.kind == CasterStreamPayload.MIST)
                 continue;
@@ -559,10 +561,24 @@ public final class StreamFx {
                 continue;
             boolean burning = r.kind == CasterStreamPayload.BURNING;
                         // Every liquid has a core thread the whole length of its reach (the axis of the stream); it thins out where the stream breaks into drops.
-            strip(m, vc, r, start, dir, length, length, life, cam, time, partial, firstPerson && own, burning);
+            if (burning && shaded) {
+                // The shader flame is its own render type: drawn after this one is flushed, since two buffers cannot be open at once.
+                final Vec3 fs = start, fd = dir;
+                final float fl = length, flife = life;
+                final boolean fown = firstPerson && own;
+                flames.add(fc -> strip(m, fc, r, fs, fd, fl, fl, flife, cam, time, partial, fown, true, true));
+                continue;
+            }
+            strip(m, vc, r, start, dir, length, length, life, cam, time, partial, firstPerson && own, burning, false);
         }
         Vector3f left = camera.getLeftVector(), up = camera.getUpVector();
         buffers.endBatch(RenderType.debugQuads());
+        if (!flames.isEmpty()) {
+            VertexConsumer fc = buffers.getBuffer(FlameShader.type());
+            for (java.util.function.Consumer<VertexConsumer> f : flames)
+                f.accept(fc);
+            buffers.endBatch(FlameShader.type());
+        }
         VertexConsumer sc = buffers.getBuffer(soft);
         for (Drop d : DROPS)
             blot(m, sc, d, left, up, partial);
@@ -598,7 +614,7 @@ public final class StreamFx {
      * {@link #ramp} along its length, billows wider as it goes and has a dark rim. {@code drawn} is how far from the nozzle it runs.
      */
     private static void strip(Matrix4f m, VertexConsumer vc, Ribbon r, Vec3 start, Vec3 dir, float length, float drawn, float life, Vec3 cam, double time,
-                              float partial, boolean own, boolean burning) {
+                              float partial, boolean own, boolean burning, boolean shaded) {
         float cr = (r.rgb >> 16 & 255) / 255f, cg = (r.rgb >> 8 & 255) / 255f, cb = (r.rgb & 255) / 255f;
         // The core: the fluid's colour pushed toward white.
         float kr = Mth.lerp(0.55f, cr, 1f), kg = Mth.lerp(0.55f, cg, 1f), kb = Mth.lerp(0.55f, cb, 1f);
@@ -615,7 +631,7 @@ public final class StreamFx {
         Vec3 muzzle = own ? right.scale(0.17).add(0, -0.13, 0) : Vec3.ZERO;
         int n = Mth.clamp(Math.round(drawn * 3), 6, 48);
         Vec3 prevTop = null, prevBot = null, prevCoreTop = null, prevCoreBot = null, prevRimTop = null, prevRimBot = null;
-        float prevA = 0, prevCoreA = 0, prevRimA = 0;
+        float prevA = 0, prevCoreA = 0, prevRimA = 0, prevS = 0, prevFa = 0;
         int prevC = 0, prevCoreC = 0;
         for (int i = 0; i <= n; i++) {
             float s = i / (float) n, t = s * drawn;
@@ -665,7 +681,15 @@ public final class StreamFx {
             Vec3 top = at.add(side.scale(w)), bot = at.subtract(side.scale(w));
             Vec3 coreTop = at.add(side.scale(w * 0.4)), coreBot = at.subtract(side.scale(w * 0.4));
             Vec3 rimTop = at.add(side.scale(w * 1.35)), rimBot = at.subtract(side.scale(w * 1.35));
-            if (prevTop != null) {
+            if (shaded) {
+                // One strip as wide as the rim, its colour and fade made per pixel by flame.fsh: red carries how hot the fuel burns.
+                float fa = Math.min(1f, a + coreA * 0.6f);
+                float fs = Mth.clamp(t / Math.max(length, 0.1f), 0f, 1f);
+                if (prevTop != null)
+                    flameQuad(m, vc, prevRimTop, prevRimBot, rimBot, rimTop, prevS, fs, hot, prevFa, fa);
+                prevS = fs;
+                prevFa = fa;
+            } else if (prevTop != null) {
                 if (burning)
                     quad(m, vc, prevRimTop, prevRimBot, rimBot, rimTop, 0x1A1818, 0x1A1818, prevRimA, rimA);
                 quad(m, vc, prevTop, prevBot, bot, top, prevC, haloC, prevA, a);
@@ -683,6 +707,14 @@ public final class StreamFx {
             prevC = haloC;
             prevCoreC = coreC;
         }
+    }
+
+    /** One piece of the shader flame: u 1 on the top edge and 0 on the bottom, v the share of the way to the tip; red is the fuel's heat, alpha the strip's fade. */
+    private static void flameQuad(Matrix4f m, VertexConsumer vc, Vec3 a, Vec3 b, Vec3 c, Vec3 d, float vNear, float vFar, float hot, float aNear, float aFar) {
+        vc.addVertex(m, (float) a.x, (float) a.y, (float) a.z).setUv(1f, vNear).setColor(hot, hot, hot, aNear);
+        vc.addVertex(m, (float) b.x, (float) b.y, (float) b.z).setUv(0f, vNear).setColor(hot, hot, hot, aNear);
+        vc.addVertex(m, (float) c.x, (float) c.y, (float) c.z).setUv(0f, vFar).setColor(hot, hot, hot, aFar);
+        vc.addVertex(m, (float) d.x, (float) d.y, (float) d.z).setUv(1f, vFar).setColor(hot, hot, hot, aFar);
     }
 
     private static void quad(Matrix4f m, VertexConsumer vc, Vec3 a, Vec3 b, Vec3 c, Vec3 d, int nearRgb, int farRgb, float aNear, float aFar) {

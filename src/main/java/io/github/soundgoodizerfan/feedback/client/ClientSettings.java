@@ -33,6 +33,10 @@ public final class ClientSettings {
             .comment("Bullet hits on living things throw blood (flesh), dust (bone) or sparks (metal). Off keeps only the sparks and sounds.")
             .define("bloodEffects", true);
 
+    private static final ModConfigSpec.BooleanValue SHADER_FLAME = B
+            .comment("Draw the fluid caster's flame with a noise shader. Off draws the plain flame, which is also used if the shader cannot load (for example under some shader packs).")
+            .define("shaderFlame", true);
+
     /** How big the crosshair HUD ({@link AimHud}) draws: its dial, needle, mode strip and link chip. */
     public enum AimSize {
         SMALL(1f), MEDIUM(1.5f), LARGE(2f);
@@ -57,6 +61,10 @@ public final class ClientSettings {
     /** True when the player asked for less motion. False before the config has loaded. */
     public static boolean reduceMotion() {
         return SPEC.isLoaded() && REDUCE_MOTION.get();
+    }
+
+    public static boolean shaderFlame() {
+        return !SPEC.isLoaded() || SHADER_FLAME.get();
     }
 
     public static boolean blood() {
