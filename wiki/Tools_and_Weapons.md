@@ -38,7 +38,7 @@ The Crafting Table assembles the tools below except the crossbow. The Engineerin
 
 | Item | Parts |
 | --- | --- |
-| **Hafted tool** (pickaxe, axe, shovel, hoe, sword, mace, cleaver, spear, maul, sickle, hammer, knife, file, screwdriver) | one to three faces on a haft of one to four sticks: see [Hafted Tool](Hafted_Tool.md). A cleaver, maul or spear face needs Weapons Treatise I ([Treatise](Treatise.md)) |
+| **Hafted tool** (pickaxe, axe, shovel, hoe, sword, mace, cleaver, spear, maul, sickle, hammer, knife, file, hand drill, screwdriver) | one to three faces on a haft of one to four sticks: see [Hafted Tool](Hafted_Tool.md). A cleaver, maul or spear face needs Weapons Treatise I ([Treatise](Treatise.md)) |
 | **Bow** | three limbs, three lengths of string |
 | **Crossbow** | a prod (two cells), string, three stock, a lock: a mechanism, put together at the Engineering Table only (below) |
 | **Shield** | six faces, a rim part (a grip makes it five faces) |
@@ -189,7 +189,7 @@ Beyond the parts of the pattern, a finished tool takes optional **fittings**, pu
 
 | Fitting | On | Does |
 | --- | --- | --- |
-| binding | sword, hand hammer, hand knife, bow, crossbow, and the tools that already had one | Lashing where head meets handle: takes some of the shock. On a bow or crossbow, a stronger binding relieves more of the joint's strain. |
+| binding | sword, hand hammer, hand drill, hand knife, bow, crossbow, and the tools that already had one | Lashing where head meets handle: takes some of the shock. On a bow or crossbow, a stronger binding relieves more of the joint's strain. |
 | pommel | axe, maul, spear, pickaxe, sword | A knob, ball, wheel or counterweight at the butt that moves the weight toward your hand. |
 | tip | maul, hand hammer, and the tools that already had one | A hard piece set in the head. |
 | spring | maul, spear, sword | Wire or rod of metal. Right click cocks it, the next blow lets it go for extra damage; a sword's release also lunges you forward; on a spear it lets the head be thrown from the spring. Stored energy is its volume times its stiffness; a spring worked past what its head can take takes a permanent set and finally snaps. |

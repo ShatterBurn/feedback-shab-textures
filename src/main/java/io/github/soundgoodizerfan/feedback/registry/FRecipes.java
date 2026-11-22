@@ -3,7 +3,6 @@
 package io.github.soundgoodizerfan.feedback.registry;
 
 import io.github.soundgoodizerfan.feedback.Feedback;
-import io.github.soundgoodizerfan.feedback.process.HandDeformationRecipe;
 
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -13,23 +12,17 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 /**
- * The mod's one crafting-table recipe serializer, and it is likely to stay the only one.
+ * The mod's crafting-table recipe serializers (code recipes whose inputs are stateful items).
  *
  * <p>Feedback's processes are datapack tables rather than {@code RecipeType}s, on purpose -- a
  * machine that owned a recipe list would know when it had finished, which is the one thing this
- * mod's machines must never do. What lives here is the exception that proves it: hand work, where
- * the crafting table is vanilla's recipe machine and the player is the one who decides to stop.
- *
- * @see io.github.soundgoodizerfan.feedback.process.HandDeformationRecipe
+ * mod's machines must never do. Hand work is not a recipe at all: a held tool works the piece in
+ * the other hand ({@code item/HandWork}) through the same deformation and removal tables.
  */
 public class FRecipes {
 
     public static final DeferredRegister<RecipeSerializer<?>> SERIALIZERS =
             DeferredRegister.create(Registries.RECIPE_SERIALIZER, Feedback.MOD_ID);
-
-    public static final DeferredHolder<RecipeSerializer<?>, SimpleCraftingRecipeSerializer<HandDeformationRecipe>>
-            HAND_DEFORMATION = SERIALIZERS.register("hand_deformation",
-                    () -> new SimpleCraftingRecipeSerializer<>(HandDeformationRecipe::new));
 
     /** A magazine and loose rounds -> that magazine, fuller (guns spec section 5). */
     public static final DeferredHolder<RecipeSerializer<?>, SimpleCraftingRecipeSerializer<io.github.soundgoodizerfan.feedback.weapon.MagazineLoadRecipe>>

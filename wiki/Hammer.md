@@ -1,6 +1,6 @@
 # Hammer
 
-A hammer you swing yourself, in a crafting grid, or seat in a machine as its striking head. It is a modular tool: a **head** on a **handle**. It's the first way to make plates, before you have any machines, and it teaches you the mod's main lesson the hard way.
+A hammer you work with by hand, held against a piece in your other hand, or seat in a machine as its striking head. It is a modular tool: a **head** on a **handle**. It's the first way to make plates, before you have any machines, and it teaches you the mod's main lesson the hard way.
 
 ## Head shapes
 
@@ -22,9 +22,11 @@ Shape a **Hammer Head** (ingots, blocks, gems, planks or cobblestone) at a bench
 
 ## Using it
 
-Put the hammer and **one** workpiece anywhere in a crafting grid. The output slot shows what that piece will be **after one more blow**. Take it, and that's one swing: the hammer loses a little durability and the piece takes one blow's worth of work.
+Hold the hammer in one hand and **one** workpiece in the other, then **hold right-click**. The hammer takes the piece and lands a blow about every third of a second (2.5 a second). Each blow does what a machine's blow does and wears the hammer a point. It plays the hammer's noise and sprays bits of the piece.
 
-Keep swinging and watch the result change. An ordinary swing lands **7 St**, which is 2 Wu on copper: a copper ingot becomes a **Copper Plate** on the tenth swing, **Copper Foil** on the sixteenth, then **Copper Scrap**.
+The hammer keeps striking until you let go, swap to another item, or no blow can land (the metal is too hard for the swing, or has gone cold). **Letting go hands the piece back as it is**, with no cost. Only one piece is worked at a time.
+
+Watch the piece change. An ordinary swing lands **7 St**, which is 2 Wu on copper: a copper ingot becomes a **Copper Plate** on the tenth swing, **Copper Foil** on the sixteenth, then **Copper Scrap**.
 
 ## At the benches
 
@@ -51,9 +53,9 @@ Hold the hammer, **sneak and scroll** to pick a swing. The hammer's tooltip says
 
 Harder isn't better. A heavy blow on lead is 22 Wu at a time, so it's easy to swing straight past the plate.
 
-Every swing makes you a little hungrier, and harder swings more so: seven heavy blows cost about one hunger point.
+Every blow makes you a little hungrier, and harder swings more so.
 
-Shift-clicking the output is the same as taking it: **one swing**, and the piece goes to your inventory. The hammer only works one piece at a time, so put it back to swing again. The risk is in not counting: nothing stops you swinging a plate into foil. See [Metalworking](Metalworking.md).
+The hammer goes on past a finished plate, so the risk is in not watching: let go in time, or the plate thins into foil. See [Metalworking](Metalworking.md).
 
 ## What it can work
 
@@ -65,4 +67,4 @@ Very soft metals move a lot with each blow: 7 St on lead (0.5) is 14 Wu a swing.
 
 ## Wear
 
-In your hand the hammer wears out from **normal use**, like any hand tool. A stone head is good for about **260 swings**, around fifty copper plates; an iron one lasts longer. A worn-out hammer is *broken*: it lands nothing, but you can mend it on the Repair tab of the [Engineering Table](Engineering_Table.md#repair-tab) instead of throwing it away. A worn head also carries a swing a little less well, near the end.
+In your hand the hammer wears out from **normal use**, one point per blow. A stone head is good for about **260 swings**, around twenty-five copper plates; an iron one lasts longer. A worn-out hammer is *broken*: it lands nothing, but you can mend it on the Repair tab of the [Engineering Table](Engineering_Table.md#repair-tab) instead of throwing it away. A worn head also carries a swing a little less well, near the end.

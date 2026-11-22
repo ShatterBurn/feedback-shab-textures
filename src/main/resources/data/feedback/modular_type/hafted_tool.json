@@ -116,7 +116,8 @@
         "head_blank",
         "knife_blade",
         "file_head",
-        "driver_bit"
+        "driver_bit",
+        "drill_tip"
       ],
       "stock": [
         "@lump",
@@ -258,7 +259,8 @@
         "head_blank",
         "knife_blade",
         "file_head",
-        "driver_bit"
+        "driver_bit",
+        "drill_tip"
       ],
       "stock": [
         "@lump",
@@ -290,7 +292,8 @@
         "head_blank",
         "knife_blade",
         "file_head",
-        "driver_bit"
+        "driver_bit",
+        "drill_tip"
       ],
       "stock": [
         "@lump",

@@ -283,6 +283,13 @@ public class FDataComponents {
                     .networkSynchronized(io.github.soundgoodizerfan.feedback.item.HandSwing.STREAM_CODEC)
                     .build());
 
+    /** The workpiece a hand tool holds while its use is held ({@code item/HandWork}); absent when the tool is idle. */
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<net.minecraft.world.item.ItemStack>> HAND_WORK =
+            COMPONENTS.register("hand_work", () -> DataComponentType.<net.minecraft.world.item.ItemStack>builder()
+                    .persistent(net.minecraft.world.item.ItemStack.CODEC)
+                    .networkSynchronized(net.minecraft.world.item.ItemStack.STREAM_CODEC)
+                    .build());
+
     /** Which job a Data Connector's use does; chosen by sneak-scroll. Absent is link. */
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<io.github.soundgoodizerfan.feedback.item.DataConnectorMode>> DATA_CONNECTOR_MODE =
             COMPONENTS.register("data_connector_mode", () -> DataComponentType.<io.github.soundgoodizerfan.feedback.item.DataConnectorMode>builder()

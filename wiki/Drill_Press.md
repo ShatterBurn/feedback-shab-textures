@@ -44,6 +44,8 @@ It also drills most [gun parts](Gun_Parts.md): a turned rod into a **Gun Barrel*
 
 An ingot of any metal or polymer drills into a [Pipe](Pipe.md) of that material.
 
+A [Hand Drill](Hand_Tools.md#hand-drill) also drills a plate into a Drilled Plate, one held plate at a time and without a shaft.
+
 Two Wrought Iron Drilled Plates make a **Bullet Mold** (see [Ammunition](Ammunition.md#bullets)).
 
 ## Cutting is different from hammering

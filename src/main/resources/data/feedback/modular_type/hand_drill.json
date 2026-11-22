@@ -1,0 +1,149 @@
+{
+  "face": true,
+  "measures": {
+    "show": [
+      "hardness",
+      "edge_toughness",
+      "durability",
+      "joint",
+      "mass",
+      "corrosion"
+    ],
+    "roles": {
+      "H": [
+        "hardness",
+        "edge_toughness",
+        "durability",
+        "corrosion"
+      ],
+      "S": [
+        "mass",
+        "joint"
+      ]
+    }
+  },
+  "actions": [],
+  "family": "hand",
+  "strike": 0.0,
+  "wear_litres": 0.4,
+  "wear_role": "H",
+  "primary": "H",
+  "roles": {
+    "H": {
+      "name": "bit",
+      "class": "working_face",
+      "forms": [
+        "drill_tip"
+      ],
+      "litres": 0.06,
+      "at": 0.08,
+      "rides": true,
+      "layer": 0,
+      "part": {
+        "item": "feedback:drill_tip",
+        "cells": 1,
+        "stock": [
+          "rod",
+          "ingot"
+        ],
+        "base": "twist_flute",
+        "variants": [
+          {
+            "name": "twist_flute",
+            "params": {
+              "bite": 1.0
+            }
+          },
+          {
+            "name": "spade_flute",
+            "adjective": true,
+            "params": {
+              "bite": 0.6
+            }
+          }
+        ],
+        "slots": [
+          {
+            "name": "body",
+            "share": 3
+          },
+          {
+            "name": "edge",
+            "forms": [
+              "@lump",
+              "@gem"
+            ],
+            "share": 1,
+            "traits": []
+          }
+        ]
+      }
+    },
+    "S": {
+      "name": "handle",
+      "class": "mount",
+      "forms": [
+        "@long"
+      ],
+      "litres": 0.05,
+      "length": 0.3,
+      "layer": 1,
+      "traits": [
+        "toughness>=tough",
+        "strength>=fair"
+      ]
+    },
+    "B": {
+      "name": "binding",
+      "class": "mount",
+      "forms": [
+        "tool_binding"
+      ],
+      "litres": 0.01,
+      "at": 0.3,
+      "part": {
+        "item": "feedback:tool_binding",
+        "cells": 1,
+        "stock": [
+          "@skin",
+          "@cord"
+        ],
+        "slots": [
+          {
+            "name": "metal",
+            "share": 3
+          },
+          {
+            "name": "wrap",
+            "share": 1,
+            "standard": "feedback:leather"
+          }
+        ],
+        "traits": [
+          "cordage"
+        ]
+      },
+      "axes": {
+        "wraps": {
+          "min": 1,
+          "max": 3,
+          "default": 1,
+          "step": 1,
+          "scales": true
+        }
+      }
+    }
+  },
+  "patterns": [
+    [
+      "H",
+      "SB"
+    ]
+  ],
+  "defaults": {
+    "H": "feedback:iron",
+    "S": "feedback:wood",
+    "B": "feedback:leather"
+  },
+  "vanilla": {}
+}

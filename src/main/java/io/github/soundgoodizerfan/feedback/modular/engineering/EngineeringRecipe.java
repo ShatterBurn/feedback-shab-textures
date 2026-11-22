@@ -35,7 +35,7 @@ import net.neoforged.neoforge.common.ItemAbility;
 import net.neoforged.neoforge.common.util.RecipeMatcher;
 
 /**
- * Hand and bench work at the Engineering Table as a recipe: a second vanilla {@code RecipeType} beside {@code hand_deformation}, for the
+ * Hand and bench work at the Engineering Table as a recipe: a vanilla {@code RecipeType} (hand work in the open is {@code item/HandWork}, not a recipe), for the
  * same reason (the player is the one working, so hand work may be a recipe; no machine owns it).
  *
  * <p>The ingredients are shaped ({@code pattern}/{@code key}) or shapeless ({@code ingredients}) and matched against the table's 3x3 grid.

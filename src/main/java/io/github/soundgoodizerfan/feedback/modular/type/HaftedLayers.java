@@ -125,7 +125,7 @@ public final class HaftedLayers {
             Map.entry("hoe_head", "hoe"), Map.entry("maul_head", "maul"), Map.entry("sickle_head", "sickle"),
             Map.entry("cleaver_head", "cleaver"), Map.entry("sword_blade", "sword"), Map.entry("spear_head", "spear"),
             Map.entry("head_blank", "hand_hammer"), Map.entry("knife_blade", "knife"), Map.entry("file_head", "file"),
-            Map.entry("driver_bit", "screwdriver"));
+            Map.entry("driver_bit", "screwdriver"), Map.entry("drill_tip", "hand_drill"));
     /** The kinds whose edge runs with the haft rather than across it. */
     private static final Set<String> ALONG = Set.of("sword", "knife", "spear");
 
@@ -143,7 +143,7 @@ public final class HaftedLayers {
      * head); the same for every variant of the kind.
      */
     private static final Map<String, int[]> SEAT = Map.of("axe", new int[] {-1, -1}, "pickaxe", new int[] {-1, -1}, "hoe", new int[] {-1, -1},
-            "cleaver", new int[] {-1, 0}, "screwdriver", new int[] {1, 1},
+            "cleaver", new int[] {-1, 0}, "screwdriver", new int[] {1, 1}, "hand_drill", new int[] {1, 1},
             // A sword's blade is seated one step down its own haft (along (-1,+1)), so its base meets the guard and binding and no bare haft shows between them.
             "sword", new int[] {-1, 1});
 

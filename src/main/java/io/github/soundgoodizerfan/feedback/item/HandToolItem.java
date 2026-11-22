@@ -93,4 +93,37 @@ public abstract class HandToolItem extends Item implements HandTool {
     public boolean hasCraftingRemainingItem(ItemStack stack) {
         return true;
     }
+
+    // Hold-use hand work ({@link HandWork}): the workpiece in the other hand, a stroke every few ticks.
+
+    @Override
+    public net.minecraft.world.InteractionResultHolder<ItemStack> use(net.minecraft.world.level.Level level, net.minecraft.world.entity.player.Player player,
+                                                                     net.minecraft.world.InteractionHand hand) {
+        return HandWork.begin(level, player, hand);
+    }
+
+    @Override
+    public int getUseDuration(ItemStack stack, net.minecraft.world.entity.LivingEntity entity) {
+        return HandWork.working(stack) ? HandWork.useDuration() : 0;
+    }
+
+    @Override
+    public net.minecraft.world.item.UseAnim getUseAnimation(ItemStack stack) {
+        return HandWork.working(stack) ? HandWork.animation() : net.minecraft.world.item.UseAnim.NONE;
+    }
+
+    @Override
+    public void onUseTick(net.minecraft.world.level.Level level, net.minecraft.world.entity.LivingEntity user, ItemStack stack, int remaining) {
+        HandWork.tick(level, user, stack, remaining);
+    }
+
+    @Override
+    public void releaseUsing(ItemStack stack, net.minecraft.world.level.Level level, net.minecraft.world.entity.LivingEntity user, int remaining) {
+        HandWork.release(stack, user);
+    }
+
+    @Override
+    public void inventoryTick(ItemStack stack, net.minecraft.world.level.Level level, net.minecraft.world.entity.Entity entity, int slot, boolean selected) {
+        HandWork.sweep(stack, entity);
+    }
 }

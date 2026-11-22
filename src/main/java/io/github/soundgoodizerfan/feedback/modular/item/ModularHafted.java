@@ -12,6 +12,7 @@ import org.jetbrains.annotations.Nullable;
 import io.github.soundgoodizerfan.feedback.core.unit.St;
 import io.github.soundgoodizerfan.feedback.core.unit.Units;
 import io.github.soundgoodizerfan.feedback.item.HandTool;
+import io.github.soundgoodizerfan.feedback.item.HandWork;
 import io.github.soundgoodizerfan.feedback.modular.engineering.ToolAbilities;
 import io.github.soundgoodizerfan.feedback.modular.trait.SmashAttack;
 import io.github.soundgoodizerfan.feedback.modular.trait.SpearCharge;
@@ -112,6 +113,7 @@ public class ModularHafted extends MaceItem implements Modular, HandTool {
     @Override
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slot, boolean selected) {
         ModularStacks.tick(stack, level);
+        HandWork.sweep(stack, entity);
         if (!level.isClientSide && entity instanceof Player player && ModularHandTool.blow(stack) > 0
                 && ModularHandTool.swing(stack).within(player) != ModularHandTool.swing(stack))
             stack.set(FDataComponents.HAND_SWING, ModularHandTool.swing(stack).within(player));
@@ -271,6 +273,11 @@ public class ModularHafted extends MaceItem implements Modular, HandTool {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
+        if (ModularHandTool.isHand(stack) && !ModularStacks.broken(stack)) {
+            InteractionResultHolder<ItemStack> work = HandWork.begin(level, player, hand);
+            if (work.getResult() != InteractionResult.PASS)
+                return work;
+        }
         InteractionResultHolder<ItemStack> traited = ModularTraits.use(level, player, hand, stack);
         if (traited.getResult() != InteractionResult.PASS) {
             if (ModularTraits.useDuration(stack) > 0)
@@ -286,23 +293,35 @@ public class ModularHafted extends MaceItem implements Modular, HandTool {
 
     @Override
     public int getUseDuration(ItemStack stack, LivingEntity entity) {
+        if (HandWork.working(stack))
+            return HandWork.useDuration();
         int duration = ModularTraits.useDuration(stack);
         return duration > 0 ? duration : thrown(stack) ? 72000 : 0;
     }
 
     @Override
     public UseAnim getUseAnimation(ItemStack stack) {
+        if (HandWork.working(stack))
+            return HandWork.animation();
         UseAnim anim = ModularTraits.useAnimation(stack);
         return anim != UseAnim.NONE ? anim : thrown(stack) ? UseAnim.SPEAR : UseAnim.NONE;
     }
 
     @Override
     public void onUseTick(Level level, LivingEntity user, ItemStack stack, int remaining) {
+        if (HandWork.working(stack)) {
+            HandWork.tick(level, user, stack, remaining);
+            return;
+        }
         ModularTraits.onUseTick(level, user, stack, remaining);
     }
 
     @Override
     public void releaseUsing(ItemStack stack, Level level, LivingEntity user, int remaining) {
+        if (HandWork.working(stack)) {
+            HandWork.release(stack, user);
+            return;
+        }
         if (ModularTraits.useDuration(stack) > 0) {
             ModularTraits.releaseUsing(stack, level, user, remaining);
             return;
@@ -355,6 +374,8 @@ public class ModularHafted extends MaceItem implements Modular, HandTool {
 
     @Override
     public Operation getOperation(ItemStack stack) {
+        if (io.github.soundgoodizerfan.feedback.modular.engineering.ToolAbilities.face(stack, "drill_tip") != null)
+            return Operation.DRILL;
         return io.github.soundgoodizerfan.feedback.modular.engineering.ToolAbilities.face(stack, "file_head") != null ? Operation.FILE : Operation.BLOW;
     }
 

@@ -57,7 +57,7 @@ Machine parts give more figures:
 - **Machine heads:** how much the head wears per 1000 St of overload (per Wu ground, for a wheel); see [Machine Heads](Machine_Heads.md#wear).
 - **Lined or surfaced blocks:** how long a corrosive liquid takes to eat through; the lining's corrosion resistance sets it.
 
-- The figures follow the part: a sword lists no dig speed, and a file, knife or screwdriver head lists no damage, impact or bite. Each hafted head lists its own.
+- The figures follow the part: a sword lists no dig speed, and a file, drill, knife or screwdriver head lists no damage, impact or bite. Each hafted head lists its own.
 - **Part sizes** (length, width, head size, limb length, face size, bore and the like) show as plain lines. They are set by the steppers, not by the material, so they cannot be sorted by.
 - Further lines name what a type does with its numbers:
   - A hand hammer shows the share of a hand-forging blow it carries.

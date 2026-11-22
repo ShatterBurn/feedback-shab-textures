@@ -70,6 +70,25 @@ public class ModularHandTool extends HandToolItem implements Modular {
         return new St(face == null ? 0f : FTuning.HAND_FILE_ST.value() * face.param("grains", 1f));
     }
 
+    /**
+     * The St a hand drill bears on its cut: the arm's turn ({@link FTuning#HAND_DRILL_ST}) times the bit's bite (a twist flute clears the chips and
+     * bites on; a spade flute takes less per turn); 0 for a stack with no drill tip or a broken one.
+     */
+    public static St drillDrive(ItemStack stack) {
+        var face = ModularStacks.broken(stack) ? null : io.github.soundgoodizerfan.feedback.modular.engineering.ToolAbilities.face(stack, "drill_tip");
+        return new St(face == null ? 0f : FTuning.HAND_DRILL_ST.value() * face.param("bite", 1f));
+    }
+
+    /** What a hand tool's cutting face bears per stroke for {@code operation}: the file's or the drill's. */
+    public static St cutDrive(ItemStack stack, Operation operation) {
+        return operation == Operation.DRILL ? drillDrive(stack) : fileDrive(stack);
+    }
+
+    /** The hardness of a hand tool's cutting edge, which must beat the stock's (a hard gate, as every cutting tool's). */
+    public static St cutHardness(ItemStack stack) {
+        return fileHardness(stack);
+    }
+
     /** The hardness of a hand file's edge, which must beat the stock's (a hard gate, as every cutting tool's). */
     public static St fileHardness(ItemStack stack) {
         ModularFigures f = ModularStacks.figures(stack);
@@ -139,6 +158,7 @@ public class ModularHandTool extends HandToolItem implements Modular {
     @Override
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slot, boolean selected) {
         ModularStacks.tick(stack, level);
+        io.github.soundgoodizerfan.feedback.item.HandWork.sweep(stack, entity);
         if (!level.isClientSide && entity instanceof Player player && blow(stack) > 0 && swing(stack).within(player) != swing(stack))
             stack.set(FDataComponents.HAND_SWING, swing(stack).within(player));
     }

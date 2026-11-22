@@ -37,6 +37,9 @@ public final class ItemTuning {
      */
     public static final float HAND_SWING_EXHAUSTION_PER_ST = 0.05f;
 
+    /** Invented. Ticks between strokes of hand work held by use: a stroke every 8 ticks is two and a half a second, the pace of a worked arm. */
+    public static final int HAND_STROKE_TICKS = 8;
+
     /** Invented. A test strip reads a food's toxin, in Qu/mB, in quarter steps of a full strength ({@link ProcessTuning#FOOD_QU_PER_STRENGTH}): four bands, never a figure it cannot stand behind. */
     public static final float TEST_STRIP_RESOLUTION_TOXIN = 0.25f * ProcessTuning.FOOD_QU_PER_STRENGTH;
 

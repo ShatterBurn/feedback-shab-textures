@@ -30,8 +30,7 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 /**
  * Crafting-tab displays for the code-matched recipes that name no item (tongs, combat gear, fence, XP wire, torch),
  * built from the loaded materials the way {@link ElectronicsCrafting} builds its examples. The recipes whose inputs
- * are a stateful item (magazine loading, engine and transmission blueprints, food salting, merging and jarring, hand
- * deformation) are registered as unhandled so JEI draws no empty card; each has an info page or its own category.
+ * are a stateful item (magazine loading, engine and transmission blueprints, food salting, merging and jarring) are registered as unhandled so JEI draws no empty card; each has an info page or its own category.
  */
 final class CodeRecipeExamples {
 
@@ -58,7 +57,6 @@ final class CodeRecipeExamples {
         crafting.addExtension(io.github.soundgoodizerfan.feedback.process.JarFillRecipe.class, new ElectronicsCrafting.ExtensionOf<>(ext));
         crafting.addExtension(io.github.soundgoodizerfan.feedback.modular.engineering.ModularCraftingRecipe.class, new ElectronicsCrafting.ExtensionOf<>(ext));
         crafting.addExtension(io.github.soundgoodizerfan.feedback.modular.engineering.ModularSwapRecipe.class, new ElectronicsCrafting.ExtensionOf<>(ext));
-        crafting.addExtension(io.github.soundgoodizerfan.feedback.process.HandDeformationRecipe.class, new ElectronicsCrafting.ExtensionOf<>(ext));
     }
 
     private static RecipeHolder<CraftingRecipe> holder(String path, List<List<ItemStack>> inputs, int w, int h, List<ItemStack> outputs) {

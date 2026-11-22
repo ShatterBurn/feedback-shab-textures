@@ -1,9 +1,10 @@
 # Hand Tools
 
-The hand tools are the ones you carry and use yourself: a hammer for shaping metal, a file and a screwdriver for the work at the [Engineering Table](Engineering_Table.md), a wrench for turning blocks, a crowbar for prying fittings off, and the knife, spatula, spoon and tasting spoon for food, and the saw for stone. Most are hot-hammered from heated metal in a crafting grid, or have their metal blade shaped at a bench and assembled with a handle. Each has its own page.
+The hand tools are the ones you carry and use yourself: a hammer, a file and a drill for shaping metal in your hands, a screwdriver for the work at the [Engineering Table](Engineering_Table.md), a wrench for turning blocks, a crowbar for prying fittings off, and the knife, spatula, spoon and tasting spoon for food, and the saw for stone. Most have a head or blade shaped at a bench and assembled with a handle; a few are hot-hammered from heated metal in a crafting grid. Each has its own page.
 
-- [Hammer](Hammer.md): shapes plates and stock by hand, and is the tool the others are hammered with. Made in a crafting grid from cobblestone and a stick, or a better head shaped at a bench and put on a haft. The hammer, the knife, the file and the screwdriver are all [hafted tools](Hafted_Tool.md): a haft with a face of that kind.
-- [File](#file) and [Screwdriver](#screwdriver): the tools of the Engineering Table's file and driver work. Each is a head on a handle.
+- [Hammer](Hammer.md): shapes plates and stock held in your other hand, and is the tool the others are hammered with. Made in a crafting grid from cobblestone and a stick, or a better head shaped at a bench and put on a haft. The hammer, the knife, the file, the drill and the screwdriver are all [hafted tools](Hafted_Tool.md): a haft with a face of that kind.
+- [File](#file) and [Screwdriver](#screwdriver): the tools of the Engineering Table's file and driver work. Each is a head on a handle. The file also cuts a rod in your hands.
+- [Hand Drill](#hand-drill): drills a plate held in your other hand.
 - [Hand Knife](Prep_Table.md): cuts food and dough on the Prep Table. Its blade is one piece with a length and a width; a harder edge can be set in its edge slot. Made by shaping its blade hot at the [Smithing Table](Smithing_Table.md) or [Anvil](Anvil.md), then putting it together with a handle in a crafting grid.
 - [Mortar](Brewing_Stand.md#mortar): an ingredient of the [Brewing Stand](Brewing_Stand.md), whose bowl crushes plants. Made from a stick and stone in a crafting grid.
 - [Sawblade](Sawblade.md): goes in the Stonecutter's saw slot to cut stone and wood. Made by casting a saw blade in a [Saw Blade Mold](Casting.md#tool-part-molds), then putting it together in a crafting grid.
@@ -24,7 +25,20 @@ A file also works parts at a bench: carried in your inventory, it takes a grain 
 
 ### Filing a rod
 
-Put a hafted file and **one rod** anywhere in a crafting grid. The output slot shows the rod after one more stroke of filing; take it and that is one stroke, wearing the file a point. Stroke by stroke the rod is cut into a **Screw** or **Machine Bolt** ([Fasteners](Fasteners.md)) or a gun **Bolt** ([Gun Parts](Gun_Parts.md)), the same pieces the [Lathe](Lathe.md) and [Grinding Wheel](Grinding_Wheel.md) make, at about twice their work. A coarser cut takes more per stroke. Only metal softer than the file's edge can be filed.
+Hold a hafted file in one hand and **one rod** in the other, then **hold right-click**. The file takes the rod and lands a stroke about every third of a second, wearing the file a point and making you a little hungrier each time. The file goes on until you let go, swap to another item, or no stroke can cut; letting go hands the rod back as it is. Stroke by stroke the rod is cut into a **Screw** or **Machine Bolt** ([Fasteners](Fasteners.md)) or a gun **Bolt** ([Gun Parts](Gun_Parts.md)), the same pieces the [Lathe](Lathe.md) and [Grinding Wheel](Grinding_Wheel.md) make, at about twice their work. A coarser cut takes more per stroke. Only metal softer than the file's edge can be filed.
+
+## Hand Drill
+
+A **Hand Drill** is a bit on a long haft. Shape a **Drill Tip** from a rod or an ingot at a bench (the [Smithing Table](Smithing_Table.md) for metal), then put it with a long haft and a tool binding in a crafting grid; it is a [hafted tool](Hafted_Tool.md) whose face is a drill tip. A harder piece can be set in the tip's edge slot. The bit's material sets how long the drill lasts.
+
+Hold the drill in one hand and **one plate** in the other, then **hold right-click**. Each stroke turns the bit into the plate, about every third of a second, until it is a **Drilled Plate**; a harder plate takes more strokes. Letting go hands the plate back as it is. The bit wears one point per stroke, and each stroke makes you a little hungrier.
+
+**The bit must be harder than the plate.** A softer bit cuts nothing. Drilled plates are the stock of the bullet, ball, atomizing and tube molds and of gun parts, so a hand drill opens them before the [Machine Age](Ages.md); the [Drill Press](Drill_Press.md) does the same work on a shaft.
+
+The bit comes in two shapes:
+
+- **Twist flute**: clears its chips and bites on with every turn.
+- **Spade flute**: takes less from each turn.
 
 ## Screwdriver
 

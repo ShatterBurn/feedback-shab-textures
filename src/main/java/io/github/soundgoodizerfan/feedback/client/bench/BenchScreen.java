@@ -383,7 +383,7 @@ public class BenchScreen extends SkinnedScreen<PartBenchMenu> {
 
     /** The wheel's order for the types a bench makes shapes of: weapons, then tools, then armour head to foot, then the rest. */
     private static final List<String> WHEEL = List.of("sword", "cleaver", "maul", "spear", "twin", "axe", "pickaxe", "shovel", "hoe", "sickle",
-            "shears", "hand_hammer", "hand_knife", "spoon", "sawblade", "file", "screwdriver", "bow", "crossbow", "flintlock", "shield", "helmet", "chestplate", "leggings", "boots", "glove");
+            "shears", "hand_hammer", "hand_knife", "spoon", "sawblade", "file", "screwdriver", "hand_drill", "bow", "crossbow", "flintlock", "shield", "helmet", "chestplate", "leggings", "boots", "glove");
 
     private static int wheelRank(String type) {
         int i = WHEEL.indexOf(type);

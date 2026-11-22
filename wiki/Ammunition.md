@@ -29,7 +29,7 @@ A case weaker than the pressure inside it can hurt you even if the gun is fine. 
 Two ways to make them:
 
 - **Cast them.** Pour molten metal into a **Bullet Mold** from a crucible. One ingot's worth makes eight bullets. Copper, gold, wrought iron, lead, bronze and brass can all be cast this way.
-- **Hammer them.** Hammer a **nugget** into a bullet, by hand or with a [Mechanical Hammer](Mechanical_Hammer.md).
+- **Hammer them.** Hammer a **nugget** into a bullet, by hand with a [Hammer](Hammer.md) or with a [Mechanical Hammer](Mechanical_Hammer.md).
 
 **Bullet Mold**:
 
