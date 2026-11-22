@@ -12,7 +12,7 @@ Turns a data signal into redstone. A controller, timer or sensor program switche
 
 ```
 P P P
-W Y R      P wrought iron plate, W copper wire, Y relay, R redstone
+W Y R      P wrought iron plate, W copper wire, Y relay, R signal conductor (redstone dust or any item in the common redstone-dust tag)
 ```
 
 Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, 2 screws ([Fasteners](Fasteners.md)) and Electrical Treatise II: Coils and Magnets ([Treatise](Treatise.md)).
@@ -23,7 +23,7 @@ Turns redstone into a data reading. Redstone arriving at any face is read by a S
 
 ```
 P P P
-R W R      P wrought iron plate, W copper wire, R redstone
+R W R      P wrought iron plate, W copper wire, R signal conductor (redstone dust or any item in the common redstone-dust tag)
 ```
 
 Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, 2 screws ([Fasteners](Fasteners.md)) and Electrical Treatise II: Coils and Magnets ([Treatise](Treatise.md)).
@@ -34,7 +34,7 @@ A fitting for a machine with a variable setting. Right-click a face of the machi
 
 ```
 P R P
-W C P      P wrought iron plate, R redstone, W copper wire, C circuit
+W C P      P wrought iron plate, R signal conductor (redstone dust or any item in the common redstone-dust tag), W copper wire, C circuit
 ```
 
 Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and Electrical Treatise III: Circuits ([Treatise](Treatise.md)); it spends no fasteners. The circuit is any [circuit](Basic_Electronic_Circuit.md).

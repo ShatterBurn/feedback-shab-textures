@@ -4,7 +4,7 @@ Turns a placed block without breaking it.
 
 ## Crafting
 
-Hammered hot in a crafting grid: put a [Hammer](Hammer.md) (or another striking hand tool) and **4 Iron Ingots** anywhere in the grid, with every ingot at iron's working temperature. Heat the ingots in a furnace or [Firebox](Firebox.md) first; a cold ingot makes nothing. The hammer loses one point of wear.
+Hammered hot in a crafting grid: put a [Hammer](Hammer.md) (or another striking hand tool) and **4 ingots** of one metal anywhere in the grid, every ingot at that metal's working temperature. The metal must be hard enough (hardness 8 St or more: iron, bronze, steel and harder, but not copper or lead). Heat the ingots in a furnace or [Firebox](Firebox.md) first; a cold ingot makes nothing. The hammer loses one point of wear.
 
 ## Use
 

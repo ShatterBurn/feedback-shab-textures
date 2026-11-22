@@ -83,7 +83,7 @@ Crafting: [Electromagnet](Electromagnet.md) + 3 Wrought Iron Plates + 2 Copper W
 
 ### Belt Optical Reader
 
-Reads the sheen of passing cargo and sweeps one band (dull, mid or bright) to its side. Click to choose the band. A dirty head is wiped by hand; it fouls with use. Draws current.
+Reads the sheen of passing cargo and sweeps one band (dull, mid or bright) to its side. Click to choose the band. A plated piece reads as its coat's metal, in proportion to how much of the coat is on it: a gold-plated iron ingot reads as gold. A dirty head is wiped by hand; it fouls with use. Draws current.
 
 Crushed ore and dust it meets are **separated** instead: it tells the ore from its rock by their sheen. The concentrate is swept off its side, the tailings drop below the cell, and a unit it cannot tell goes on to be tried again. A dirty head separates nothing. Chain readers along a belt to raise the share that gets sorted ([Ore Processing](Ore_Processing.md#separating)).
 
