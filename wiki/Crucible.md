@@ -75,4 +75,4 @@ Water (or any other liquid that boils) in a crucible that reaches its boiling po
 
 ## Cooking
 
-Food in a crucible goes through raw, done, dried, charred and spoiled like food in a [furnace](Furnaces.md#melting-boiling-and-cooking), and any vanilla or modded smelting, blasting or smoking recipe works in it.
+Food in a crucible goes through raw, done, dried, charred and spoiled like food in a [furnace](Furnaces.md#melting-boiling-and-cooking), and any vanilla or modded smelting, blasting or smoking recipe works in it. A food that comes out of a dip (wet wheat into dough) or finishes cooking (dough into bread) stacks with a held stack of the same food when their states are close (cook, water, live load, toxin, char, rot, smoke and salt each within a hair); the merged stack keeps the lower of each. Dishes, and foods that differ in anything else, stay apart.

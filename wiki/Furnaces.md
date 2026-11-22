@@ -93,7 +93,7 @@ Furnaces and both [Crucibles](Crucible.md) are one family of vessels, and each d
 
 - **Melting.** Metal melts into one shared tank, and two metals in the right proportions alloy there: copper and tin make bronze in a furnace too ([Casting and Alloys](Casting.md#alloys)). A melt will not pour into a tank holding crude oil or a gas.
 - **Boiling.** Water, or any liquid that boils, boils in the tank once it reaches its boiling point. The vapor goes to the furnace's vapor tank and on to a neighboring [Condenser](Condenser.md). Crude oil distilled by hand in a furnace leaves the crude heavier, as the light cuts leave.
-- **Cooking.** Food goes through raw, done, dried, charred and spoiled; see [Food](Food.md).
+- **Cooking.** Food goes through raw, done, dried, charred and spoiled; see [Food](Food.md). Furnace-type vessels stack a food that finishes into the same food already held when their states are close; see [Crucible](Crucible.md#cooking).
 
 ## Kiln Zone
 

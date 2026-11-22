@@ -124,6 +124,56 @@ public final class FoodEvents {
                 Math.min(a.envTu(), b.envTu()), Math.min(a.smoke(), b.smoke()), Math.min(a.salt(), b.salt()));
     }
 
+    /**
+     * Stack {@code incoming} onto {@code existing} when they are one food a little apart: the same item, every component alike
+     * but the food's state, the eating figures and name derived from it, and the heat stamp, and every state figure within
+     * {@link ProcessTuning#FOOD_MERGE_TOLERANCE}. Both are brought to now, the lower of each figure is kept (as by hand), and the
+     * counts add. Returns whether it merged; on false nothing is changed. A machine calls it when a process finishes beside a
+     * stack of the same food, so dips and cooking do not leave a row of near-identical stacks.
+     */
+    public static boolean mergeNear(ItemStack existing, ItemStack incoming, net.minecraft.world.level.Level level, float envTu) {
+        if (existing.isEmpty() || incoming.isEmpty() || existing.getItem() != incoming.getItem()
+                || existing.getCount() + incoming.getCount() > existing.getMaxStackSize())
+            return false;
+        var entry = Cooking.findPerishable(level, existing);
+        if (entry.isEmpty() || Cooking.findPerishable(level, incoming).isEmpty() || !sameApartFromState(existing, incoming))
+            return false;
+        ItemStack a = existing.copy();
+        ItemStack b = incoming.copy();
+        Cooking.settle(a, level, envTu);
+        Cooking.settle(b, level, envTu);
+        FoodState x = a.get(FDataComponents.FOOD_STATE.get());
+        FoodState y = b.get(FDataComponents.FOOD_STATE.get());
+        if (x == null || y == null || !close(x, y))
+            return false;
+        FoodState low = lowest(x, y);
+        existing.set(FDataComponents.FOOD_STATE.get(), low);
+        Cooking.apply(existing, entry.get(), low);
+        existing.grow(incoming.getCount());
+        return true;
+    }
+
+    private static boolean close(FoodState a, FoodState b) {
+        float t = ProcessTuning.FOOD_MERGE_TOLERANCE;
+        return Math.abs(a.cook() - b.cook()) <= t && Math.abs(a.moisture() - b.moisture()) <= t && Math.abs(a.pathogen() - b.pathogen()) <= t
+                && Math.abs(a.toxin() - b.toxin()) <= t && Math.abs(a.charred() - b.charred()) <= t && Math.abs(a.rot() - b.rot()) <= t
+                && Math.abs(a.smoke() - b.smoke()) <= t && Math.abs(a.salt() - b.salt()) <= t;
+    }
+
+    private static boolean sameApartFromState(ItemStack a, ItemStack b) {
+        ItemStack x = a.copyWithCount(1);
+        ItemStack y = b.copyWithCount(1);
+        for (ItemStack s : new ItemStack[] {x, y}) {
+            s.remove(FDataComponents.FOOD_STATE.get());
+            s.remove(DataComponents.FOOD);
+            s.remove(DataComponents.ITEM_NAME);
+            s.remove(DataComponents.CUSTOM_MODEL_DATA);
+            s.remove(FDataComponents.TEMPERATURE.get());
+            s.remove(FDataComponents.HEATED_AT.get());
+        }
+        return ItemStack.isSameItemSameComponents(x, y);
+    }
+
     /** A dish picked up is carried: if it is overfull it spills (dish spec 2.2). Once per pickup, nothing ticked. */
     @SubscribeEvent
     public static void onPickup(ItemEntityPickupEvent.Pre event) {

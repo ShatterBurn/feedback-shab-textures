@@ -92,6 +92,9 @@ public final class ProcessTuning {
     /** Invented. A fresh food is stamped to the nearest minute, so stacks made close together still merge. */
     public static final long FOOD_STAMP_BUCKET = 1200L;
 
+    /** Invented. Two stacks of one food whose every figure (cook, moisture, pathogen, toxin, char, rot, smoke, salt) is within this of the other count as one food when a process finishes beside them, and stack. */
+    public static final float FOOD_MERGE_TOLERANCE = 0.05f;
+
     /** Invented. Food whose last surroundings were at or under this is frozen solid until it has sat warmer this long; a frozen bite costs this much cold damage. */
     public static final Tu FROZEN_AT = new Tu(0f);
 

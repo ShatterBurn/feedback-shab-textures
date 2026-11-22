@@ -412,8 +412,19 @@ public abstract class ThermalVesselCore extends io.github.soundgoodizerfan.feedb
         // Food is a material, not a recipe: the ladder takes it past done to dried and charred (food spec 4.3).
         var food = io.github.soundgoodizerfan.feedback.process.Cooking.findCookable(level, input);
         if (food.isPresent()) {
-            contents.set(slot, io.github.soundgoodizerfan.feedback.process.Cooking.tick(input, food.get(), new Tu(temperature), smoke(), level));
+            ItemStack cooked = io.github.soundgoodizerfan.feedback.process.Cooking.tick(input, food.get(), new Tu(temperature), smoke(), level);
+            contents.set(slot, cooked);
             slotTpu[slot] = 0f;
+            // The food finished into another item (dough to bread): it stacks with a batch of that already held, if a little apart.
+            if (cooked.getItem() != input.getItem()) {
+                float env = io.github.soundgoodizerfan.feedback.core.thermal.AmbientTable.at(level).value();
+                for (int other = 0; other < contents.size(); other++)
+                    if (other != slot && io.github.soundgoodizerfan.feedback.process.FoodEvents.mergeNear(contents.get(other), cooked, level, env)) {
+                        contents.set(slot, ItemStack.EMPTY);
+                        slotTpu[slot] = 0f;
+                        break;
+                    }
+            }
             return;
         }
         var row = ThermalProcessTable.get().findSingle(level, input, new Tu(temperature), airlessRun());
@@ -570,6 +581,12 @@ public abstract class ThermalVesselCore extends io.github.soundgoodizerfan.feedb
     /** Into the first free or stackable slot, or dropped if somehow none. */
     protected void place(ItemStack stack) {
         List<ItemStack> contents = processSlots();
+        // A food a little apart from one already held (dough of slightly different age) stacks with it, before any free slot is used.
+        if (level != null)
+            for (ItemStack existing : contents)
+                if (!existing.isEmpty() && io.github.soundgoodizerfan.feedback.process.FoodEvents.mergeNear(existing, stack, level,
+                        io.github.soundgoodizerfan.feedback.core.thermal.AmbientTable.at(level).value()))
+                    return;
         for (int slot = 0; slot < contents.size(); slot++) {
             ItemStack existing = contents.get(slot);
             if (existing.isEmpty()) {
