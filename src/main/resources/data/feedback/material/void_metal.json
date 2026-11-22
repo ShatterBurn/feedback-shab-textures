@@ -49,20 +49,16 @@
     "feedback:essentia": 0.04
   },
   "accepts": {
-    "tool": [
-      "thaumaturge:void_sword",
-      "thaumaturge:void_pickaxe",
-      "thaumaturge:void_axe",
-      "thaumaturge:void_shovel",
-      "thaumaturge:void_hoe",
-      "thaumaturge:void_shield"
-    ],
-    "armour": [
-      "thaumaturge:void_helm",
-      "thaumaturge:void_chest",
-      "thaumaturge:void_legs",
-      "thaumaturge:void_boots"
-    ]
+    "sword": ["thaumaturge:void_sword"],
+    "pickaxe": ["thaumaturge:void_pickaxe"],
+    "axe": ["thaumaturge:void_axe"],
+    "shovel": ["thaumaturge:void_shovel"],
+    "hoe": ["thaumaturge:void_hoe"],
+    "tool": ["thaumaturge:void_shield"],
+    "helmet": ["thaumaturge:void_helm"],
+    "chestplate": ["thaumaturge:void_chest"],
+    "leggings": ["thaumaturge:void_legs"],
+    "boots": ["thaumaturge:void_boots"]
   },
   "exclude": [
     "barrel_shroud",

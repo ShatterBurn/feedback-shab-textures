@@ -52,20 +52,16 @@
     "feedback:essentia": 0.06
   },
   "accepts": {
-    "tool": [
-      "thaumaturge:thaumium_sword",
-      "thaumaturge:thaumium_pickaxe",
-      "thaumaturge:thaumium_axe",
-      "thaumaturge:thaumium_shovel",
-      "thaumaturge:thaumium_hoe",
-      "thaumaturge:thaumium_shield"
-    ],
-    "armour": [
-      "thaumaturge:thaumium_helm",
-      "thaumaturge:thaumium_chest",
-      "thaumaturge:thaumium_legs",
-      "thaumaturge:thaumium_boots"
-    ]
+    "sword": ["thaumaturge:thaumium_sword"],
+    "pickaxe": ["thaumaturge:thaumium_pickaxe"],
+    "axe": ["thaumaturge:thaumium_axe"],
+    "shovel": ["thaumaturge:thaumium_shovel"],
+    "hoe": ["thaumaturge:thaumium_hoe"],
+    "tool": ["thaumaturge:thaumium_shield"],
+    "helmet": ["thaumaturge:thaumium_helm"],
+    "chestplate": ["thaumaturge:thaumium_chest"],
+    "leggings": ["thaumaturge:thaumium_legs"],
+    "boots": ["thaumaturge:thaumium_boots"]
   },
   "enchantability": 22,
   "attuning": {

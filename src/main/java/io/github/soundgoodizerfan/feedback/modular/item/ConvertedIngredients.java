@@ -62,7 +62,8 @@ public final class ConvertedIngredients {
             Map<String, List<Item>> sources = new HashMap<>();
             Map<Item, ItemStack> products = new IdentityHashMap<>();
             for (Item item : BuiltInRegistries.ITEM) {
-                if (!BuiltInRegistries.ITEM.getKey(item).getNamespace().equals("minecraft"))
+                // Any mod's item the material table names (a thaumium pickaxe), never our own.
+                if (BuiltInRegistries.ITEM.getKey(item).getNamespace().equals("feedback"))
                     continue;
                 ItemStack vanilla = new ItemStack(item);
                 if (!ModularConvert.convertible(vanilla))
