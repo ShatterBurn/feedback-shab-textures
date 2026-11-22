@@ -124,6 +124,8 @@ public final class Casts {
             new Cast("sunder", 30, Sunder::act),
             new Cast("kindle", 20, Kindle::act),
             new Cast("barge", 25, Barge::act),
+            new Cast("shoulder_charge", 30, ShoulderCharge::act),
+            new Cast("pin", 20, Pin::act),
             new Cast("stampede", 20, Stampede::act),
             new Cast("called_shot", 25, CalledShot::act),
             new Cast("size_up", 15, io.github.soundgoodizerfan.feedback.combat.skill.Weakness::sizeUp),

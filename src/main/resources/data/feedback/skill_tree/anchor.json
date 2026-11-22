@@ -356,6 +356,16 @@
       "effect": {
         "unlock": "lee_side"
       }
+    },
+    {
+      "id": "immovable",
+      "cost": 60,
+      "requires": [
+        "lee_side"
+      ],
+      "effect": {
+        "unlock": "immovable"
+      }
     }
   ]
 }

@@ -376,6 +376,28 @@
       "effect": {
         "unlock": "breather"
       }
+    },
+    {
+      "id": "shoulder_charge",
+      "cost": 60,
+      "requires": [
+        "momentum"
+      ],
+      "effect": {
+        "unlock": "shoulder_charge"
+      },
+      "rearm": "time"
+    },
+    {
+      "id": "pin",
+      "cost": 55,
+      "requires": [
+        "firm_grip"
+      ],
+      "effect": {
+        "unlock": "pin"
+      },
+      "rearm": "time"
     }
   ]
 }
