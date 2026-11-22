@@ -272,6 +272,9 @@ public final class ElectricMachineTuning {
 
     public static final float BREAKER_LOSS_PER_PACKET = 0.02f;
 
+    /** Copper's electrical drop (0.05): the contact metal a breaker's loss is figured against; a plated coat scales the loss by its metal's drop over this. */
+    public static final float CONTACT_REFERENCE_DROP = 0.05f;
+
     /** Placeholder. Eu lost per packet per block for each unit of a material's {@code drop} at the standard gauge (copper's 0.05 loses 0.4 Eu of a 32 Eu LV packet). */
     public static final float CABLE_LOSS_EU_PER_DROP = 8f;
 

@@ -33,6 +33,10 @@ Pitted contacts take a slice off every packet: **0.02 Eu** in a standard breaker
 
 **Opening it with no current flowing costs nothing.** Switch the load off first, or open the breaker on a line that's already idle, and it lasts forever. A controller flapping a breaker on and off under load with no gap between "on" and "off" will wear it out. See [Controller](Controller.md#holding-a-band).
 
+## Plated contacts
+
+A breaker carrying a coat of another metal (see [Plating](Tools_and_Weapons.md#plating) and [hot dipping](Casting.md#hot-dipping)) loses volts across its contacts by that metal instead of copper. A coat of a metal that conducts better than copper, such as silver, shrinks the slice each packet loses; a poorer metal enlarges it. The effect follows how much of the coat is left: a worn coat counts for less, and a bare patch is the plain copper contact again. The coat stays on the item when the breaker is picked up. A [Relay](Relay.md)'s contacts carry no such effect.
+
 ## Arc flash
 
 On an **EHV** line or higher, a breaker close to its trip current hums and sparks as a warning. Opening one under heavy current in those bands throws an **arc flash**: every living thing within **3 blocks** is burned (hot damage) and set alight. A player whose gear insulates for that band is spared. Open the load first, or keep a trunk breaker out of reach. See [Hazards](Hazards.md#arc-flash).

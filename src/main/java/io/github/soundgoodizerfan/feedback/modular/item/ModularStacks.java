@@ -308,8 +308,13 @@ public final class ModularStacks {
             assemble(stack, design, MaterialTable.get().materials(), ModularTypes.get().types());
     }
 
-    /** Whether the stack is a modular item whose wearing part is a metal: it conducts, so it can be plated. */
+    /**
+     * Whether the stack is a modular item whose wearing part is a metal (it conducts, so it can be plated), or a breaker, whose contacts are metal and
+     * take the coat ({@code BreakerBlockEntity.contactFactor} reads it).
+     */
     public static boolean platable(ItemStack stack) {
+        if (stack.getItem() instanceof io.github.soundgoodizerfan.feedback.machine.breaker.BreakerItem)
+            return true;
         ModularDesign d = design(stack);
         ModularType type = d == null ? null : ModularTypes.known(d.type());
         Part wear = type == null ? null : d.part(type.wearRole());

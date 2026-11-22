@@ -46,6 +46,8 @@ public class BreakerBlockEntity extends ElectricNode implements Switchable, Weld
     private float maxCondition = 1f;
     /** The cable gauge it was built from: contacts as thick as that cable, so it trips at that cable's rating. */
     private CableGauge gauge = CableGauge.STANDARD;
+    /** The coat plated on its contacts (a dipped breaker item carries it), or null for bare contacts. */
+    private io.github.soundgoodizerfan.feedback.process.Plating coat;
 
     public BreakerBlockEntity(BlockPos pos, BlockState state) {
         super(FBlockEntities.BREAKER.get(), pos, state);
@@ -65,6 +67,7 @@ public class BreakerBlockEntity extends ElectricNode implements Switchable, Weld
     protected void applyImplicitComponents(DataComponentInput input) {
         super.applyImplicitComponents(input);
         gauge = input.getOrDefault(FDataComponents.CABLE_GAUGE.get(), CableGauge.STANDARD);
+        coat = input.get(FDataComponents.PLATING.get());
     }
 
     /** Breaking it, or picking it, keeps the gauge on the stack. */
@@ -73,6 +76,22 @@ public class BreakerBlockEntity extends ElectricNode implements Switchable, Weld
         super.collectImplicitComponents(components);
         if (gauge != CableGauge.STANDARD)
             components.set(FDataComponents.CABLE_GAUGE.get(), gauge);
+        if (coat != null)
+            components.set(FDataComponents.PLATING.get(), coat);
+    }
+
+    /**
+     * What the contacts' metal does to the volts lost across them: the plated metal's drop over copper's (a silver coat lowers it, a poor
+     * one raises it), by the share of the coat still on, so a worn plating is the bare contact again (a property acts wherever its thing goes).
+     */
+    private float contactFactor() {
+        if (coat == null || coat.intact() <= 0f)
+            return 1f;
+        var plated = io.github.soundgoodizerfan.feedback.process.MaterialTable.get().materials().get(coat.metal());
+        if (plated == null || plated.electrical().drop().isEmpty())
+            return 1f;
+        float ratio = plated.electrical().drop().get() / ElectricMachineTuning.CONTACT_REFERENCE_DROP;
+        return Math.max(0.1f, 1f + (ratio - 1f) * coat.intact());
     }
 
     @Override
@@ -82,7 +101,7 @@ public class BreakerBlockEntity extends ElectricNode implements Switchable, Weld
 
     @Override
     public float lossPerPacket() {
-        return ElectricMachineTuning.BREAKER_LOSS_PER_PACKET / gauge.area() / condition;
+        return ElectricMachineTuning.BREAKER_LOSS_PER_PACKET * contactFactor() / gauge.area() / condition;
     }
 
     @Override
