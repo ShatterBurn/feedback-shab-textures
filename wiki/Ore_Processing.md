@@ -34,6 +34,8 @@ The full route is about 2.85 times what melting the raw rock gives. The [Electro
 
 Melting raw rock or crushed ore also leaves that ore's own **Tailings** beside the metal: the metal the melt missed, which you can leach or melt again. An ore with no tailings form leaves a lump of **Silicate Slag** instead. Silicate slag holds a little iron: crush it and melt the grains for a little pig iron. Slag itself melts to molten slag.
 
+Melting raw or crushed chalcopyrite gives molten copper, and its iron leaves as **Bloomery Slag**, which you can crush and melt for iron. Its concentrate and tailings leave no slag.
+
 Native copper, gold, tin, zinc and lead ores take the same ladder: they are separated from their rock rather than ground.
 
 ## Crushing and grinding

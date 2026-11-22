@@ -44,6 +44,7 @@ New here? Start with [Metalworking](Metalworking.md), then [Heat](Heat.md). Want
 - [Materials](Materials.md): every metal, gem, mineral, polymer, composite, glass and solder, and the forms they take
 - [Units](Units.md): what Tu, Su, mB, Qu, Wu, Fu and the other figures measure
 - [Ore Deposits](Ore_Deposits.md): where ores and crystals grow
+- [Ores](Ores.md): every metal-bearing ore, its metal and its depths
 - [Netherite](Netherite.md): scrap, melting, soul quenching and synthesis
 - [Crops](Crops.md) and [Food](Food.md)
 - [Radiation](Radiation.md)

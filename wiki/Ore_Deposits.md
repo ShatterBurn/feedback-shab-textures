@@ -120,4 +120,4 @@ JEI's **Ore Vein** page lists every vein: its dimension, depth, size and richnes
 
 Vanilla's two huge veins, the ones that hold raw iron and raw copper blocks, still form in the ground and still hold vanilla's ore blocks. Ancient debris is still vanilla's ([Ancient Debris](Vanilla_Changes.md#ancient-debris)), and so are the other Nether deposits (gravel, magma, soul sand, blackstone).
 
-See also [Ore Processing](Ore_Processing.md), [Guide: Making Wrought Iron](Guide_Making_Wrought_Iron.md), [Graphite](Materials.md#graphite), [Materials](Materials.md) and [Heat](Heat.md).
+See also [Ores](Ores.md), [Ore Processing](Ore_Processing.md), [Guide: Making Wrought Iron](Guide_Making_Wrought_Iron.md), [Graphite](Materials.md#graphite), [Materials](Materials.md) and [Heat](Heat.md).
