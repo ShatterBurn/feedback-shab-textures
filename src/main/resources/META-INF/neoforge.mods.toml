@@ -79,3 +79,7 @@ type = "required"
 versionRange = "${better_combat_version_range}"
 ordering = "AFTER"
 side = "CLIENT"
+
+# Mixins (mixin/): other mods' recipes accept what a vanilla item is converted into.
+[[mixins]]
+config = "feedback.mixins.json"
