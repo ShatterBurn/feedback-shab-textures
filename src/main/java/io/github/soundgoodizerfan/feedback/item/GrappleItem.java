@@ -5,7 +5,6 @@ package io.github.soundgoodizerfan.feedback.item;
 import io.github.soundgoodizerfan.feedback.Feedback;
 import io.github.soundgoodizerfan.feedback.combat.tether.FixedLines;
 import io.github.soundgoodizerfan.feedback.combat.tether.GrappleHook;
-import io.github.soundgoodizerfan.feedback.combat.tether.PitonBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.context.UseOnContext;
@@ -66,7 +65,7 @@ public class GrappleItem extends Item {
     public InteractionResult useOn(UseOnContext context) {
         Level level = context.getLevel();
         BlockPos pos = context.getClickedPos();
-        if (!(level.getBlockState(pos).getBlock() instanceof PitonBlock))
+        if (FixedLines.host(level, pos) == null)
             return InteractionResult.PASS;
         if (level.isClientSide)
             return InteractionResult.sidedSuccess(true);
@@ -81,7 +80,7 @@ public class GrappleItem extends Item {
             return InteractionResult.CONSUME;
         }
         BlockPos first = stack.get(FDataComponents.GRAPPLE_TIE.get());
-        if (first == null || first.equals(pos) || !(level.getBlockState(first).getBlock() instanceof PitonBlock)) {
+        if (first == null || first.equals(pos) || FixedLines.host(level, first) == null) {
             stack.set(FDataComponents.GRAPPLE_TIE.get(), pos);
             player.displayClientMessage(Component.translatable("feedback.grapple.tie.first"), true);
             return InteractionResult.CONSUME;

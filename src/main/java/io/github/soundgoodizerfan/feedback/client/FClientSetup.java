@@ -90,7 +90,8 @@ public class FClientSetup {
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerBlockEntityRenderer(FBlockEntities.MECHANICAL_HAMMER.get(), MechanicalHammerRenderer::new);
-        event.registerBlockEntityRenderer(FBlockEntities.PITON.get(), io.github.soundgoodizerfan.feedback.client.combat.PitonRenderer::new);
+        event.registerBlockEntityRenderer(FBlockEntities.PITON.get(), io.github.soundgoodizerfan.feedback.client.combat.LineRenderer::new);
+        event.registerBlockEntityRenderer(FBlockEntities.WINCH.get(), io.github.soundgoodizerfan.feedback.client.combat.LineRenderer::new);
         event.registerEntityRenderer(io.github.soundgoodizerfan.feedback.registry.FEntities.THROWN_WEAPON.get(),
                 ThrownWeaponRenderer::new);
         event.registerEntityRenderer(io.github.soundgoodizerfan.feedback.registry.FEntities.GRAPPLE_HOOK.get(),

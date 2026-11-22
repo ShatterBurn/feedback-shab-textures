@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "axis=y": { "model": "feedback:block/winch" },
+    "axis=x": { "model": "feedback:block/winch", "x": 90, "y": 90 },
+    "axis=z": { "model": "feedback:block/winch", "x": 90 }
+  }
+}

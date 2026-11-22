@@ -120,6 +120,11 @@ public final class MachineTuning {
 
     public static final Inertia GEARBOX_INERTIA = new Inertia(4f);
 
+    /** Radius of a winch's drum in blocks: the line draws in {@code RPM x 2 pi x radius} blocks a minute. Placeholder. */
+    public static final float WINCH_DRUM_RADIUS = 0.5f;
+    /** Su a winch's shaft carries per Mu hanging on the line per block of drum radius (the torque the load puts on the drum); over what the network can supply it stalls. Placeholder. */
+    public static final float WINCH_SU_PER_MU_BLOCK = 0.6f;
+
     /** Placeholder. A limited-slip differential lets its axles' speed shares differ from even by at most this fraction of the input's. */
     public static final float DIFFERENTIAL_SLIP_LIMIT = 0.3f;
 

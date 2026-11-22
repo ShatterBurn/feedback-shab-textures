@@ -1291,6 +1291,9 @@ public class FBlocks {
     /** A spike driven into a block face; a grapple ties a fixed line between two ({@code combat/tether/FixedLines}). */
     public static final DeferredBlock<io.github.soundgoodizerfan.feedback.combat.tether.PitonBlock> PITON = BLOCKS.register("piton",
             () -> new io.github.soundgoodizerfan.feedback.combat.tether.PitonBlock(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(2.0f, 4.0f).sound(SoundType.METAL).noOcclusion().noCollission()));
+    /** A drum on a shaft that draws in a fixed line tied to it; see {@code machine/winch/WinchBlockEntity}. */
+    public static final DeferredBlock<io.github.soundgoodizerfan.feedback.machine.winch.WinchBlock> WINCH = BLOCKS.register("winch",
+            () -> new io.github.soundgoodizerfan.feedback.machine.winch.WinchBlock(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(3.0f, 6.0f).sound(SoundType.METAL).noOcclusion()));
     public static final DeferredBlock<io.github.soundgoodizerfan.feedback.weapon.ShockCapsuleBlock> SHOCK_CAPSULE =BLOCKS.register("shock_capsule",
             () -> new io.github.soundgoodizerfan.feedback.weapon.ShockCapsuleBlock(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(1.0f, 1.0f).sound(SoundType.METAL)));
     /** A plate that sheds a touching vessel's heat whatever the air: the way out in a vacuum ({@code core/thermal/AirCoupling}). */

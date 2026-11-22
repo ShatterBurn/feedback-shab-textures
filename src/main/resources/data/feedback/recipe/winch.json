@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "P": {"item": "feedback:wrought_iron_plate"},
+    "R": {"item": "feedback:wrought_iron_rod"},
+    "S": {"item": "feedback:shaft"}
+  },
+  "pattern": [
+    "P P",
+    "RSR",
+    "P P"
+  ],
+  "result": {"count": 1, "id": "feedback:winch"}
+}

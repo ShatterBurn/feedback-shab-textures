@@ -386,6 +386,11 @@ public class FBlockEntities {
                     .of(io.github.soundgoodizerfan.feedback.machine.detector.CohererBlockEntity::new, FBlocks.COHERER.get())
                     .build(null));
 
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<io.github.soundgoodizerfan.feedback.machine.winch.WinchBlockEntity>> WINCH =
+            BLOCK_ENTITIES.register("winch", () -> BlockEntityType.Builder
+                    .of(io.github.soundgoodizerfan.feedback.machine.winch.WinchBlockEntity::new, FBlocks.WINCH.get())
+                    .build(null));
+
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<io.github.soundgoodizerfan.feedback.combat.tether.PitonBlockEntity>> PITON =
             BLOCK_ENTITIES.register("piton", () -> BlockEntityType.Builder
                     .of(io.github.soundgoodizerfan.feedback.combat.tether.PitonBlockEntity::new, FBlocks.PITON.get())

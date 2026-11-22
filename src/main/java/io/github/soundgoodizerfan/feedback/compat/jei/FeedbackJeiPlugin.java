@@ -356,6 +356,7 @@ public class FeedbackJeiPlugin implements IModPlugin {
         registration.addIngredientInfo(FItems.SHEATHED_BILLET.get(), Component.translatable("feedback.jei.info.sheathed_billet"));
         registration.addIngredientInfo(FItems.SHEAVE.get(), Component.translatable("feedback.jei.info.sheave"));
         registration.addIngredientInfo(FItems.PITON.get(), Component.translatable("feedback.jei.info.piton"));
+        registration.addIngredientInfo(FItems.WINCH.get(), Component.translatable("feedback.jei.info.winch"));
         registration.addIngredientInfo(FItems.SHOCK_CAPSULE.get(), Component.translatable("feedback.jei.info.shock_capsule"));
         registration.addIngredientInfo(FItems.DIAMOND_SEED.get(), Component.translatable("feedback.jei.info.diamond_seed"));
         registration.addIngredientInfo(FItems.FUEL_ROD.get(), Component.translatable("feedback.jei.info.fuel_rod"));

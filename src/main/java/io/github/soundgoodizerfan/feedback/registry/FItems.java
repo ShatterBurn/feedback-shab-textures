@@ -471,6 +471,7 @@ public class FItems {
     public static final DeferredItem<BlockItem> STRIKE_POST = ITEMS.registerSimpleBlockItem(FBlocks.STRIKE_POST);
     public static final DeferredItem<BlockItem> SHEAVE = ITEMS.registerSimpleBlockItem(FBlocks.SHEAVE);
     public static final DeferredItem<BlockItem> PITON = ITEMS.registerSimpleBlockItem(FBlocks.PITON);
+    public static final DeferredItem<BlockItem> WINCH = ITEMS.registerSimpleBlockItem(FBlocks.WINCH);
     public static final DeferredItem<BlockItem> SHOCK_CAPSULE = ITEMS.registerSimpleBlockItem(FBlocks.SHOCK_CAPSULE);
     /** Nanodiamond from a shock capsule: too small to cut, enough to seed a growth. */
     /** The refined-redstone superconductor chain (process/WorkHardening, thermal_process/superconductor_*): purified dust, the blend, the calcined powder, the silver-sheathed billet it is drawn from. */
