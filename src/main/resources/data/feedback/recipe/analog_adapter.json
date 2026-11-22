@@ -2,7 +2,7 @@
   "type": "feedback:engineering",
   "key": {
     "P": { "item": "feedback:steel_plate" },
-    "R": { "item": "minecraft:redstone" },
+    "R": { "tag": "feedback:signal_conductors" },
     "W": { "item": "feedback:copper_wire" },
     "C": { "tag": "feedback:circuits" }
   },

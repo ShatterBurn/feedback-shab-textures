@@ -3,7 +3,7 @@
   "key": {
     "P": { "item": "feedback:wrought_iron_plate" },
     "W": { "item": "feedback:copper_wire" },
-    "R": { "item": "minecraft:redstone" }
+    "R": { "tag": "feedback:signal_conductors" }
   },
   "pattern": [ "PPP", "RWR" ],
   "result": { "count": 1, "id": "feedback:redstone_receiver" },
