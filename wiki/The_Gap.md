@@ -18,7 +18,7 @@ The End's air is very thin and holds no oxygen, and is gone above y 320. A [thru
 
 ## Coming back
 
-A body moving fast through air heats on its leading face. Material blocks on the windward side burn off a voxel at a time when the heat passes what the material can take: burnable ones oxidize and metals melt. Thick burnable layers last longer, and refractory plates hold. Blocks that are only touching are not broken. A hard landing hurts everyone aboard like a fall of the speed change.
+A body moving fast through air heats on its leading face. Blocks on the windward side burn off a voxel at a time when the heat passes what their material can take: burnable ones oxidize and metals melt. A block counts by the material it is a form of, so an iron block holds until iron melts and a wool block burns away at wool's oxidation temperature. A block that is no material's form does not burn. Thick burnable layers last longer, and refractory plates hold. Blocks that are only touching are not broken. A hard landing hurts everyone aboard like a fall of the speed change.
 
 ## Living in it
 

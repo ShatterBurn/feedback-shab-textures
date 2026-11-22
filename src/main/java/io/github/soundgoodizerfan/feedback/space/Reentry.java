@@ -30,8 +30,9 @@ import org.joml.Vector3d;
  * cannot take the temperature goes a voxel at a time. Steep and fast (a short, hot pass) and shallow and long (a cooler, long one) both
  * work, by what the hull is made of. Speeds are full-size equivalents (a body in the Gap does not meet air).
  * <p>
- * shortcut: only voxels of a form block (one with a material) are touched; vanilla blocks are inert, upgrade when a block-to-material table
- * exists. Only micro-cell voxels are scanned, and the windward face is found along the one axis the velocity points most along.
+ * A voxel's material is its form block's, or the material its block's item is a form of ({@link #hullMaterial}), so vanilla blocks that are a
+ * material's form (iron, wool, wood) burn or hold by that material; a block that is no material's form is inert.
+ * shortcut: only micro-cell voxels are scanned, and the windward face is found along the one axis the velocity points most along.
  */
 @EventBusSubscriber(modid = Feedback.MOD_ID)
 public final class Reentry {
@@ -72,9 +73,10 @@ public final class Reentry {
                 for (int y = 0; y < MicroCellBlockEntity.N; y++)
                     for (int x = 0; x < MicroCellBlockEntity.N; x++) {
                         BlockState state = cell.get(x, y, z);
-                        if (state == null || !(state.getBlock() instanceof FormBlock form) || !exposed(level, cell, x, y, z, lead))
+                        if (state == null || !exposed(level, cell, x, y, z, lead))
                             continue;
-                        var material = materials.get(form.material());
+                        var hull = hullMaterial(state);
+                        var material = hull == null ? null : materials.get(hull);
                         if (material == null || material.failureTemperature().isEmpty())
                             continue;
                         double fails = material.failureTemperature().get().value();
@@ -91,6 +93,17 @@ public final class Reentry {
             if (changed)
                 cell.commit();
         }
+    }
+
+    /**
+     * What a hull voxel is made of: a form block's own material, else the material the block's item is a form of (an iron block is iron, a
+     * wool block is wool: a block-to-material table is the material table's own {@code forms}), or null for a block of none (inert).
+     */
+    private static net.minecraft.resources.ResourceLocation hullMaterial(BlockState state) {
+        if (state.getBlock() instanceof FormBlock form)
+            return form.material();
+        return io.github.soundgoodizerfan.feedback.process.MaterialIngredient.locate(state.getBlock().asItem())
+                .map(io.github.soundgoodizerfan.feedback.process.Material.Located::id).orElse(null);
     }
 
     /** Whether the voxel's face toward {@code lead} meets air: the next voxel that way, in this cell or the next, is empty. */
