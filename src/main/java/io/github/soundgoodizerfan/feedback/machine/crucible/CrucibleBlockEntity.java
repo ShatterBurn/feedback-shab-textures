@@ -146,6 +146,25 @@ public class CrucibleBlockEntity extends io.github.soundgoodizerfan.feedback.mac
 
     // --- thermal ----------------------------------------------------------------------------
 
+    /**
+     * Thermal shock: a melt poured into a wall far cooler than it is (glass and ceramic walls are rated by a {@code shock_limit}; metal walls are
+     * not) wears the wall by how many times the limit the jump overshoots, and a wall worn through gives way, as when it is held too hot.
+     */
+    @Override
+    protected void onPour(net.minecraft.world.level.material.Fluid fluid, float pourTu) {
+        float limit = figures.get("ShockTu", 0f);
+        if (limit <= 0f || level == null || level.isClientSide || isArcHearth())
+            return;
+        float over = Math.max(0f, (Math.abs(pourTu - temperature) - limit) / limit);
+        if (over <= 0f)
+            return;
+        wall = Math.max(0f, wall - VesselTuning.CRUCIBLE_SHOCK_WEAR * over);
+        level.playSound(null, worldPosition, net.minecraft.sounds.SoundEvents.GLASS_BREAK, net.minecraft.sounds.SoundSource.BLOCKS, 0.6f, 1.2f);
+        if (wall <= VesselTuning.CRUCIBLE_WALL_BREAK)
+            level.destroyBlock(worldPosition, false);
+        setChanged();
+    }
+
     @Override
     public ThermalMass getThermalMass() {
         ThermalMass base = getBlockState().getBlock() instanceof CrucibleBlock crucible

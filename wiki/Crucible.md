@@ -25,6 +25,10 @@ A [Refractory Lining](Refractory_Lining.md) makes a light crucible behave more l
 
 Every wall material holds up to a temperature. Run the crucible **hotter than its wall material holds** and the wall wears; a worn wall leaks more heat, and a spent wall gives way. Brick holds less than a good metal; choose the wall for the temperatures you mean to run.
 
+### Thermal shock
+
+A wall of brick, glass, ceramic or another material with a **shock limit** (see [Thermal shock](Heat.md#thermal-shock)) wears each time molten metal is poured into the crucible. The jump counts between the metal's melting point and the crucible's own temperature: it costs wear for every time the jump overshoots the wall's limit, with the sound of breaking glass, and a wall worn through gives way and the crucible breaks. A jump within the limit costs nothing. A warm crucible takes a smaller jump than a cold one, so warm the pot before you pour a hot melt into it. A metal wall and the [Arc Hearth](Arc_Furnace.md#the-arc-hearth) take no shock.
+
 ## How it looks
 
 A built crucible is drawn as a plain square box with straight vertical walls, a flat rim, a square opening and a full-width floor. A bigger tank makes a wider, taller box, and a heavier wall for its size makes thicker walls, so a glance tells a roomy light crucible from a small heavy one. Molten metal shows as a surface in the box, in the fluid's own color and texture, at the height the tank is filled. Each charge slot that holds something shows a lump on the floor. A hot crucible warms toward the glow color of its heat band (see [Heat](Heat.md)). Whatever its size, the outline when you look at it is the same.

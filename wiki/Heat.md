@@ -72,6 +72,8 @@ Brittle parts can crack in either bath; see [Thermal shock](#thermal-shock).
 
 A made part of glass, ceramic, brick, concrete or obsidian takes a flaw when you right-click water or lava with it and the bath differs from the part's own temperature by more than the material's **shock limit** (a figure on JEI's *Material Stats* page; the values are in [Materials](Materials.md#heat-and-other-figures)). It takes one flaw for every time the limit is overshot, up to 3 flaws, like [forging flaws](Hammer.md). A jump within the limit costs nothing, so warming a part in steps keeps it whole. A hot glass part in water, or a cold one in lava, is the usual way to lose it. Quartz and silica glass shrug off almost any jump.
 
+A brick, glass or ceramic [Crucible](Crucible.md#thermal-shock) wall takes the same shock from a molten metal poured into it.
+
 ### Merging heated stacks
 
 Heat is part of what a stack is, so two ingots taken from a crucible a moment apart differ by a few Tu and do not stack. **Right-click** a held stack onto a stack of the same item in any inventory, chest or machine slot, and the two take the **average heat of both** (weighted by count; heat is shared, not made) and merge, as many as the slot holds. It works on any item that differs only in heat. A left-click never does this: the stacks just do not combine.

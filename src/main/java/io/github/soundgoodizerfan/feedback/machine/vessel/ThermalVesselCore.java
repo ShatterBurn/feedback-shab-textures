@@ -316,9 +316,30 @@ public abstract class ThermalVesselCore extends io.github.soundgoodizerfan.feedb
         if (!takesMelt())
             return 0;
         int amount = Math.min(stack.getAmount(), tank.getCapacity() - alloy.amount());
+        if (amount > 0)
+            onPour(stack.getFluid(), pourTemperature(stack.getFluid()));
         alloy.add(stack.getFluid(), amount);
         refreshTank();
         return amount;
+    }
+
+    /**
+     * The temperature a molten metal pours at: its metal's melting point (a melt is poured as it melts), 0 for a fluid that is not a
+     * {@code molten_<metal>} or whose metal has none.
+     */
+    private static float pourTemperature(net.minecraft.world.level.material.Fluid fluid) {
+        var id = net.minecraft.core.registries.BuiltInRegistries.FLUID.getKey(fluid);
+        if (!id.getPath().startsWith("molten_"))
+            return 0f;
+        var metal = MaterialTable.get().materials().get(id.withPath(id.getPath().substring("molten_".length())));
+        return metal == null ? 0f : metal.thermal().meltingPoint().map(t -> t.value()).orElse(0f);
+    }
+
+    /**
+     * A melt is about to pour in at {@code pourTu}. A vessel with a wall of a rated material (glass, ceramic) overrides this to take the thermal
+     * shock of the jump between that and its own temperature; the default takes none.
+     */
+    protected void onPour(net.minecraft.world.level.material.Fluid fluid, float pourTu) {
     }
 
     /** The tank shows what the ledger resolves to; a vessel whose ledger is empty leaves a foreign fluid in the tank alone. */

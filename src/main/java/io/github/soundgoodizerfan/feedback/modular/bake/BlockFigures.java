@@ -184,6 +184,8 @@ float mass = ModularBake.param(type, part, "mass", 1f) * ModularTuning.STORE_MAS
                 out.putFloat("Tank", ModularTuning.CRUCIBLE_TANK_MB_PER_SLOT * slots);
                 out.putFloat("Mass", ModularTuning.CRUCIBLE_MASS * (slots / 2f) * (slots / 2f) * wall * heat);
                 out.putFloat("ServiceTu", m.failureTemperature().get().value());
+                // The sudden jump the wall takes without crazing (glass, ceramic): a hot pour into a cold wall past it wears the wall. 0 for a wall that is not rated.
+                out.putFloat("ShockTu", m.thermal().shockLimit().map(t -> t.value()).orElse(0f));
             }
             // A rotor separates by centripetal pull, which grows with radius and the square of the speed, so a wider rotor starts at a lower speed
             // (a = w^2 r); it weighs, and so loads the shaft, with its radius squared and its metal's density; and its rim holds only as fast

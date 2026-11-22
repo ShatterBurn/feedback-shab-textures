@@ -52,6 +52,8 @@ public final class VesselTuning {
      */
     /** A built crucible whose wall condition falls to this share has given way. */
     public static final float CRUCIBLE_WALL_BREAK = 0.1f;
+    /** Invented. Wall condition a pour costs per multiple of the wall's shock limit its temperature jump overshoots (a glass wall poured on at three times its limit loses a half). */
+    public static final float CRUCIBLE_SHOCK_WEAR = 0.25f;
     public static final ThermalMass CRUCIBLE_SMALL_MASS = new ThermalMass(25f);
 
     /**
