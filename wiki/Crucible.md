@@ -4,7 +4,7 @@ An open pot that sits over a [Firebox](Firebox.md) (or lava), or beside a [Heati
 
 ## Building it
 
-Draw it at the [Blueprint Table](Blueprint_Table.md) (pick *Crucible* in the type row). It has one part, the **Crucible Shell**, shaped from **brick** or from **plate** of a metal at the [Stonecutter](Stonecutter.md) (brick) or [Smithing Table](Smithing_Table.md) (plate), and the crucible is built from it at the Stonecutter. Breaking the block gives the same crucible back, with its wear.
+Shape a **Crucible Shell** from **brick** or from **plate** of a metal at the [Stonecutter](Stonecutter.md) (brick) or [Smithing Table](Smithing_Table.md) (plate), choosing its slots and wall there. Put the shell alone in the [crafting grid](Crafting_Table.md) and the crucible comes out with the shell's slots, wall and wall metal. It needs no blueprint, no treatise and no fasteners. Breaking the block gives the same crucible back, with its wear.
 
 The shell has two measures:
 

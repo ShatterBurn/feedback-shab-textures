@@ -10,7 +10,7 @@ S T S
 S S S
 ```
 
-C is any wooden slab, T is a Crafting Table and S is a Steel Plate. Mine it with a pickaxe: without one it drops nothing.
+C is any wooden slab, T is a Crafting Table and S is a Wrought Iron Plate. Mine it with a pickaxe: without one it drops nothing.
 
 ## Using it
 

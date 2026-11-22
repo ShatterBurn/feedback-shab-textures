@@ -54,7 +54,7 @@ public class BootstrapToolRecipe extends CustomRecipe {
     private static final ShapedRecipe GLOVE = shaped(Map.of('L', Ingredient.of(net.neoforged.neoforge.common.Tags.Items.LEATHERS)),
             Items.LEATHER, "L L", "LLL");
 
-    /** A cobblestone head on two sticks: the first hand hammer, a hafted tool whose one face is a hammer's. */
+    /** A cobblestone head on two sticks:the first hand hammer, a hafted tool whose one face is a hammer's. */
     private static final ShapedRecipe HAMMER = shaped(Map.of('S', Ingredient.of(Items.COBBLESTONE), 'T', STICK), Items.COBBLESTONE,
             "SSS", "STS", " T ");
 

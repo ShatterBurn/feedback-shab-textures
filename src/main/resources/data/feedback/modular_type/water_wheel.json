@@ -14,7 +14,7 @@
   "wear_litres": 0.5,
   "wear_role": "S",
   "primary": "S",
-  "blueprint": true,
+  "blueprint": false,
   "roles": {
     "S": {
       "name": "wheel_rim",

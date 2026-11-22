@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "C": { "tag": "minecraft:wooden_slabs" },
-    "S": { "item": "feedback:steel_plate" },
+    "S": { "item": "feedback:wrought_iron_plate" },
     "T": { "item": "minecraft:crafting_table" }
   },
   "pattern": [

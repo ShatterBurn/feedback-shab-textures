@@ -3,6 +3,8 @@
   "color": "#d0d0d0",
   "kind": "metal",
   "hardness": 10,
+  "min_temperature": 900,
+  "max_temperature": 1500,
   "density": 7.8,
   "thermal": {
     "melting_point": 1500,

@@ -1,6 +1,6 @@
 # Blueprint Table
 
-A drafting board for drawing a tool, weapon, shield, bow, piece of armor, [backpack](Backpack.md), [bed](Bed.md) or gun on paper and **reading its numbers before you make it**. Guns are drawn here too, and so are machines and their parts (engines, gearboxes, propellers, thrusters, jets, flywheels, pressure vessels, boilers, heat exchangers, gas tanks, gas compressors, water wheels, thermal stores, Leyden jars, pumps, fluid burners, electromagnets, galvanic cells, crucibles, gas centrifuges, column trays, lamps, motors, cells, belts and suit modules). Some types can be drawn only by someone who holds the right [treatise](Treatise.md); see [Schools](#schools).
+A drafting board for drawing a tool, weapon, shield, bow, piece of armor, [backpack](Backpack.md), [bed](Bed.md) or gun on paper and **reading its numbers before you make it**. Guns are drawn here too, and so are machines and their parts (engines, gearboxes, propellers, thrusters, jets, flywheels, pressure vessels, boilers, heat exchangers, gas tanks, gas compressors, thermal stores, Leyden jars, pumps, electromagnets, galvanic cells, gas centrifuges, column trays, lamps, motors, cells, belts and suit modules). Some types can be drawn only by someone who holds the right [treatise](Treatise.md); see [Schools](#schools).
 
 ## Crafting
 
@@ -158,7 +158,7 @@ Some **parts** and **shapes** belong to a school too (the servos of a powered su
 
 A pulse gun's drawing also lists the ways the build hurts its wielder, as red chips beside the usual ones: **Burns the hand** (no heat governor), **Shocks the wielder** (a cell above the receiver's band), **Arcs when wet**, and **Locks hot** (a core breech). See [Electric Gun](Electric_Gun.md#misuse-and-hazards).
 
-Every other type (tools, armor, backpack, bed, water wheel, thermal store, pump, fluid burner, lamp, belt and the rest) needs no treatise.
+Every other type (tools, armor, backpack, bed, thermal store, pump, lamp, belt and the rest) needs no treatise.
 
 ## What a blueprint is for
 
@@ -167,13 +167,13 @@ A blueprint is a **drawn fit**: a specification that the [Engineering Table](Eng
 - Put it in the Engineering Table's blueprint slot (a [Blueprint Book](#blueprint-book) works too) with the parts in the grid. A part whose material lies inside the properties the drawing names (strength, hardness, conductivity, insulation, density) fits clean. Another material still builds, and the item is marked **off the drawing**.
 - Each axis (a bore, a wall, a length) has a target. Parts built to a blueprint may be off by 5% of the axis range; past that the item takes a **fit flaw** (looser joints, and for a gun a wider spread). Without a blueprint the parts are judged against each other at 20%.
 - A blueprint skips the hand-work game and counts as a small bonus to the start. See [Fit and head start](Engineering_Table.md#fit-and-head-start).
-- The dimension of a machine (diameter, bore, turns, size, gauge, wall, area, buckets) is set here on the drawing. The [Water Wheel](Water_Wheel.md), [Thermal Store](Thermal_Store.md), [Leyden Jar](Leyden_Jar.md), [Pump](Pump.md), [Fluid Burner](Fluid_Burner.md), [Electromagnet](Electromagnet.md), [Galvanic Cell](Galvanic_Cell.md), [Crucible](Crucible.md), [Gas Centrifuge](Gas_Centrifuge.md), [Column Tray](Fractionating_Column.md#building-a-tray), [Glowstone Lamp](Lamp.md), [Boiler](Boiler.md), [Flywheel](Flywheel.md), [Pressure Vessel](Pressure_Vessel.md), [Heat Exchanger](Heat_Exchanger.md), [Gas Tank](Gas_Tank.md), [Gas Compressor](Gas_Compressor.md), [Thruster](Thruster.md), [engine](Engine.md), [transmission](Transmission.md), [propeller](Propeller.md), [jet](Jet.md), [suit module](Exosuit.md#learning-a-module) and [crossbow](Tools_and_Weapons.md#crossbow) are complex types: only the Engineering Table assembles them. Some need a treatise to draw and to assemble. The [Hand Crank](Hand_Crank.md) needs neither.
+- The dimension of a machine (bore, turns, size, gauge, wall, area) is set here on the drawing. The [Thermal Store](Thermal_Store.md), [Leyden Jar](Leyden_Jar.md), [Pump](Pump.md), [Electromagnet](Electromagnet.md), [Galvanic Cell](Galvanic_Cell.md), [Gas Centrifuge](Gas_Centrifuge.md), [Column Tray](Fractionating_Column.md#building-a-tray), [Glowstone Lamp](Lamp.md), [Boiler](Boiler.md), [Flywheel](Flywheel.md), [Pressure Vessel](Pressure_Vessel.md), [Heat Exchanger](Heat_Exchanger.md), [Gas Tank](Gas_Tank.md), [Gas Compressor](Gas_Compressor.md), [Thruster](Thruster.md), [engine](Engine.md), [transmission](Transmission.md), [propeller](Propeller.md), [jet](Jet.md), [suit module](Exosuit.md#learning-a-module) and [crossbow](Tools_and_Weapons.md#crossbow) are complex types: only the Engineering Table assembles them. Some need a treatise to draw and to assemble. The [Hand Crank](Hand_Crank.md) needs neither.
 
 A blueprint comes from the Print button, a copy, a villager or a chest, or from taking a complex item apart on the Treatise tab of the Engineering Table with blank paper in the blank slot, which writes a blueprint of its design.
 
 ### Fine blueprints
 
-A drawing of a machine that a [finespace](Finespace.md#machines-in-finespace) cell can hold (a crucible, boiler, burner, lamp, electromagnet, pump, flywheel, heat exchanger, thermal store and the like) has a **Finespace** toggle at the top right of the canvas. Turned on, the parts list and the part icons show each part's count divided by 4, rounded up, at least 1, and the printed sheet is marked **Fine**. Its tooltip reads "Fine: a quarter of the parts, for finespace". The [Engineering Table](Engineering_Table.md#fine-builds) builds a Fine machine from those counts.
+A drawing of a machine that a [finespace](Finespace.md#machines-in-finespace) cell can hold (a boiler, lamp, electromagnet, pump, flywheel, heat exchanger, thermal store and the like) has a **Finespace** toggle at the top right of the canvas. Turned on, the parts list and the part icons show each part's count divided by 4, rounded up, at least 1, and the printed sheet is marked **Fine**. Its tooltip reads "Fine: a quarter of the parts, for finespace". The [Engineering Table](Engineering_Table.md#fine-builds) builds a Fine machine from those counts.
 
 Operators can make a blueprint of the item in their hand with `/feedback blueprint`; it works on any modular item that is not itself a blueprint.
 

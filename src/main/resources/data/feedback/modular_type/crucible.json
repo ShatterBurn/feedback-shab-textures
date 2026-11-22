@@ -15,7 +15,7 @@
   "wear_litres": 1.0,
   "wear_role": "S",
   "primary": "S",
-  "blueprint": true,
+  "blueprint": false,
   "roles": {
     "S": {
       "name": "crucible_shell",

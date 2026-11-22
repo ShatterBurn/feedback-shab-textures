@@ -21,7 +21,7 @@ Hidden entries branch off for odd things you can do along the way: burst a boile
 
 This stage spans the Stone and Bronze Ages.
 
-You start with stone and wood tools and no fire you control. Build a [Campfire](Campfire.md), then a [Firebox](Firebox.md) or [Hearth](Hearth.md) whose temperature you can read, and fire clay into vessels. A [Crucible](Crucible.md) melts copper, tin and lead, and [Casting](Casting.md) turns the melt into ingots and parts in molds. Bronze and brass are alloys you pour yourself. Shape hot metal with the [Hammer](Hammer.md) at the [Smithing Table](Smithing_Table.md), and join parts with solder.
+You start with stone and wood tools and no fire you control. Build a [Campfire](Campfire.md), then a [Firebox](Firebox.md) or [Hearth](Hearth.md) whose temperature you can read, and fire clay into vessels. A [Crucible](Crucible.md), made from a Crucible Shell in the crafting grid, melts copper, tin and lead, and [Casting](Casting.md) turns the melt into ingots and parts in molds. Bronze and brass are alloys you pour yourself. Shape hot metal with the [Hammer](Hammer.md) at the [Smithing Table](Smithing_Table.md), and join parts with solder.
 
 Read: [Heat](Heat.md), [Metalworking](Metalworking.md), [Casting and Alloys](Casting.md), [Hand Tools](Hand_Tools.md), [Tools and Weapons](Tools_and_Weapons.md).
 

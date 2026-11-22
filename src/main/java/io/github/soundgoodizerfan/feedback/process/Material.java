@@ -952,25 +952,43 @@ public record Material(St hardness, Tu minTemperature, Tu maxTemperature,
         // A shaped part is one item for every material: it is told by its MadeOf, not its item.
         if (item instanceof io.github.soundgoodizerfan.feedback.modular.part.ModularPartItem)
             return Optional.empty();
-        return Optional.ofNullable(itemIndex(materials).get(item));
+        Index index = index(materials);
+        Located own = index.items().get(item);
+        if (own != null)
+            return Optional.of(own);
+        // A foreign item (another mod's alchemical brass ingot) is the material and form its common tag names: tagged brass ingot, it is brass.
+        // Only a listed or generated item of ours wins over the tag, so our own forms never change.
+        return item.builtInRegistryHolder().tags()
+                .map(t -> index.tags().get(t.location()))
+                .filter(java.util.Objects::nonNull)
+                .findFirst();
     }
 
-    /** Item to where it sits, first material in table order winning; rebuilt only when the table instance changes (a reload or sync). */
-    private static final Map<Map<ResourceLocation, Material>, Map<Item, Located>> INDEXES = new java.util.IdentityHashMap<>();
+    /** Item to where it sits, and common tag to where it points, first material in table order winning. */
+    private record Index(Map<Item, Located> items, Map<ResourceLocation, Located> tags) {}
 
-    private static synchronized Map<Item, Located> itemIndex(Map<ResourceLocation, Material> materials) {
-        Map<Item, Located> have = INDEXES.get(materials);
+    /** Rebuilt only when the table instance changes (a reload or sync). */
+    private static final Map<Map<ResourceLocation, Material>, Index> INDEXES = new java.util.IdentityHashMap<>();
+
+    private static synchronized Index index(Map<ResourceLocation, Material> materials) {
+        Index have = INDEXES.get(materials);
         if (have != null)
             return have;
         // The client and the server each hold a table; a few stale ones after reloads are dropped rather than tracked.
         if (INDEXES.size() >= 4)
             INDEXES.clear();
         Map<Item, Located> built = new java.util.IdentityHashMap<>();
+        Map<ResourceLocation, Located> tags = new java.util.HashMap<>();
         for (Map.Entry<ResourceLocation, Material> e : materials.entrySet())
-            for (Map.Entry<String, Item> form : e.getValue().items(e.getKey()).entrySet())
-                built.putIfAbsent(form.getValue(), new Located(e.getKey(), e.getValue(), form.getKey()));
-        INDEXES.put(materials, built);
-        return built;
+            for (Map.Entry<String, Item> form : e.getValue().items(e.getKey()).entrySet()) {
+                Located at = new Located(e.getKey(), e.getValue(), form.getKey());
+                built.putIfAbsent(form.getValue(), at);
+                tags.putIfAbsent(ResourceLocation.fromNamespaceAndPath("c",
+                        io.github.soundgoodizerfan.feedback.data.FormData.tagFolder(form.getKey()) + "/" + e.getKey().getPath()), at);
+            }
+        Index made = new Index(built, tags);
+        INDEXES.put(materials, made);
+        return made;
     }
 
     /**

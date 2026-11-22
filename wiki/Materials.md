@@ -18,8 +18,8 @@ Amounts of metal and other stuff are counted in **Qu**. See [Units](Units.md#amo
 | Zinc | 3.5 | 7.14 | 5 | 420 Tu | For brass and the [Galvanic Cell](Galvanic_Cell.md). |
 | Brass | 8 | 8.5 | 6 | 930 Tu | 65% copper, 35% zinc. Good cartridge cases. |
 | Bronze | 10 | 8.8 | 10 | 1000 Tu | 90% copper, 10% tin. |
-| Iron | 8 | 7.87 | 7.5 | 1538 Tu | **Magnetic.** Pure iron. Softer and weaker than wrought iron. |
-| Wrought Iron | 10 | 7.8 | 10 | 1500 Tu | **Magnetic.** Vanilla's iron: soft, tough, worked cold. Made by hammering the slag out of a bloom ([Guide: Making Wrought Iron](Guide_Making_Wrought_Iron.md)). |
+| Iron | 8 | 7.87 | 7.5 | 1538 Tu | **Magnetic.** Pure iron. Softer and weaker than wrought iron. Moves between **900 and 1500 Tu**. |
+| Wrought Iron | 10 | 7.8 | 10 | 1500 Tu | **Magnetic.** Vanilla's iron: soft, tough. Moves between **900 and 1500 Tu**. Made by hammering the slag out of a bloom ([Guide: Making Wrought Iron](Guide_Making_Wrought_Iron.md)). |
 | Cast Iron | 20 | 7.2 | 10 | 1200 Tu | **Magnetic.** Too brittle for plates, rods or wire; good for steelmaking. |
 | Steel | 15 | 7.85 | 12 | 1450 Tu | **Magnetic.** Only moves between **900 and 1100 Tu**. See [Guide: Making Steel](Guide_Making_Steel.md). |
 | Hardened Steel | 69 | 7.85 | 75 | 1450 Tu | **Magnetic.** No blow moves it; only a drill bit, a lathe bit or the [Grinding Wheel](Grinding_Wheel.md) cuts it. |
@@ -98,6 +98,10 @@ What the columns mean in play:
 | Copper | 0.06 |
 
 Electrical behavior is on the pages that use it: how much current a wire of each metal carries and how much each packet loses along it ([Copper Cable](Copper_Cable.md#how-much-it-carries), [Fuse](Fuse.md)), and how noble a metal is as an electrode ([Electrolytic Cell](Electrolytic_Cell.md#the-liquid-picks-the-metal)).
+
+## Items from other mods
+
+An item from another mod that carries a common metal tag counts as that material and form. An item tagged as a brass ingot is a brass ingot in every process: it smelts, casts, forms and machines like ours, and works in any recipe that asks for brass. It has the same figures as the material on this page. Tags exist per form (ingots, nuggets, plates, storage blocks, ores, dusts and so on). Feedback's own items are always read as themselves.
 
 ## Heat and other figures
 
