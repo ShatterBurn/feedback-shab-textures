@@ -36,6 +36,10 @@ public record GunReloadPayload(boolean held) implements CustomPacketPayload {
                     gun.mechanism().reloadKey(level, player, stack);
                     return;
                 }
+                // A pulse gun with no reload-key fitting swaps its battery for the fullest spare one carried.
+                if (payload.held() && stack.getItem() instanceof io.github.soundgoodizerfan.feedback.modular.item.ModularElectricGun
+                        && io.github.soundgoodizerfan.feedback.modular.item.ModularElectricGun.swapCell(player, stack))
+                    return;
             }
             if (payload.held())
                 GunShots.reloadStart(context.player(), System.currentTimeMillis());

@@ -169,6 +169,38 @@ public class ModularElectricGun extends GunItem {
         return true;
     }
 
+    /**
+     * R on a pulse gun that has no reload-key fitting (see {@link ElectricGunSpec#reloadKeyFitting}) swaps the cell: the fullest spare
+     * battery of the player's inventory that the receiver takes goes in and the old one takes its place in the inventory. False when the
+     * gun has a fitting that owns the key, is tethered, or no spare battery is carried (the key then does nothing).
+     */
+    public static boolean swapCell(Player player, ItemStack gun) {
+        ElectricGunSpec spec = specOf(gun);
+        if (spec == null || spec.tethered() || spec.reloadKeyFitting())
+            return false;
+        var inventory = player.getInventory();
+        int best = -1;
+        float bestCharge = -1f;
+        for (int i = 0; i < inventory.items.size(); i++) {
+            ItemStack candidate = inventory.items.get(i);
+            CompoundTag state = BatteryStack.state(candidate);
+            if (!BatteryStack.is(candidate) || state == null || Math.max(1, state.getInt("Cells")) > spec.maxCells())
+                continue;
+            float charge = BatteryStack.stateOfCharge(state);
+            if (charge > bestCharge) {
+                bestCharge = charge;
+                best = i;
+            }
+        }
+        if (best < 0)
+            return false;
+        ItemStack old = cell(gun);
+        setCell(gun, inventory.items.get(best));
+        inventory.items.set(best, old);
+        player.playSound(io.github.soundgoodizerfan.feedback.registry.FSounds.GUN_EGUN_CELL_IN.get(), 0.8f, 1f);
+        return true;
+    }
+
     private static boolean tethered(ItemStack gun) {
         ElectricGunSpec spec = specOf(gun);
         return spec != null && spec.tethered();
