@@ -234,6 +234,8 @@ public final class FixedLines {
         if (a == null)
             return;
         a.hung(mass);
+        if (mass <= 0f)
+            a.end().setTension(0f);
         LineHost b = a.partner() == null ? null : host(level, a.partner());
         if (b != null)
             b.hung(mass);
@@ -251,6 +253,7 @@ public final class FixedLines {
         float load = mass * (a.stalled() || b.stalled() ? ModularTuning.GRAPPLE_STALL_LOAD : 1f);
         LineEnd line = a.end();
         float rating = GrappleHook.lineRating(line.line(), level.isRainingAt(primary.above()));
+        line.setTension(load / rating);
         if (load > rating) {
             line.setStrain(line.strain() + (load / rating - 1f) * ModularTuning.GRAPPLE_STRAIN_PER_TICK);
             a.lineChanged();
@@ -275,6 +278,27 @@ public final class FixedLines {
                 return;
             }
         }
+    }
+
+    /**
+     * The tension, load over rating (0 to over 1), of the strongest fixed line that runs through the block at {@code cell}; 0 when none does or
+     * nobody hangs on it. Read by a tension gauge.
+     */
+    public static float tensionAt(Level level, BlockPos cell) {
+        Set<BlockPos> set = LIVE.get(level.dimension());
+        if (set == null)
+            return 0f;
+        net.minecraft.world.phys.AABB box = new net.minecraft.world.phys.AABB(cell);
+        float best = 0f;
+        for (BlockPos primary : set) {
+            Vec3[] ends = ends(level, primary);
+            if (ends == null || !box.contains(ends[0]) && !box.contains(ends[1]) && box.clip(ends[0], ends[1]).isEmpty())
+                continue;
+            LineHost host = host(level, primary);
+            if (host != null)
+                best = Math.max(best, host.end().tension());
+        }
+        return best;
     }
 
     /** Breaking a host cuts its line: called from the block, before the entity goes. */

@@ -21,6 +21,17 @@ public final class LineEnd {
     /** Strain on this end's hold in the block behind it (0 to 1; it works loose at 1). */
     private float holdStrain;
 
+    /** Load on the line over its rating this tick (not saved, set by {@link FixedLines}; read by a tension gauge). */
+    private float tension;
+
+    public float tension() {
+        return tension;
+    }
+
+    void setTension(float value) {
+        tension = value;
+    }
+
     public BlockPos partner() {
         return partner;
     }

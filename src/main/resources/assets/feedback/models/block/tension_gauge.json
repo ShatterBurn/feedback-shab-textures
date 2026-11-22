@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "north": "feedback:block/sensor_fill_gauge_front",
+    "south": "feedback:block/sensor_fill_gauge_back",
+    "east": "feedback:block/sensor_fill_gauge_side",
+    "west": "feedback:block/sensor_fill_gauge_side",
+    "up": "feedback:block/sensor_fill_gauge_top",
+    "down": "feedback:block/sensor_bottom",
+    "particle": "feedback:block/sensor_fill_gauge_side"
+  }
+}

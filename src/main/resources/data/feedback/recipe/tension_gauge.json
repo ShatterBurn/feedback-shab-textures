@@ -1,0 +1,15 @@
+{
+  "type": "feedback:engineering",
+  "key": {
+    "P": { "item": "feedback:steel_plate" },
+    "S": { "item": "feedback:sheave" },
+    "W": { "item": "feedback:copper_wire" },
+    "C": { "tag": "feedback:circuits" }
+  },
+  "pattern": [ "PSP", "WCW" ],
+  "result": { "count": 1, "id": "feedback:tension_gauge" },
+  "tool": [ { "ability": "feedback:driver", "wear": 1 } ],
+  "fasteners": { "count": 2, "floor": 1, "forms": [ "screw" ] },
+  "school": "electrical:3",
+  "carries_circuit": true
+}

@@ -76,6 +76,16 @@ public enum SensorKind {
             return 0f;
         }
     },
+    /**
+     * How taut the fixed line is that runs through the sensor's own block: the load hanging on it over what its material is rated for, in
+     * bands, 0 for a slack line or none. A line that is over its rating reads full, and is already straining ({@code FixedLines}).
+     */
+    TENSION("tension_gauge") {
+        @Override
+        public float read(Level level, BlockPos pos, Direction face, SensorBlockEntity self) {
+            return band(io.github.soundgoodizerfan.feedback.combat.tether.FixedLines.tensionAt(level, pos), finer(6, self));
+        }
+    },
     /** A change in the face block's state: high for a short time after it, and a tick late. The observer's role. */
     OBSERVER("observer") {
         @Override

@@ -6993,6 +6993,8 @@
   "feedback.jei.info.presence_plate": "Reads whether a creature or a dropped item stands in the block in front of it: full when one does, nothing when not.",
   "block.feedback.fill_gauge": "Fill Gauge",
   "feedback.jei.info.fill_gauge": "Reads how full the inventory or tank in front of it is, in eighths.",
+  "block.feedback.tension_gauge": "Tension Gauge",
+  "feedback.jei.info.tension_gauge": "Reads how taut the fixed line is that runs through its own block, in sixths: the load hanging on the line over what its material is rated for. A slack line, or none, reads nothing; a line over its rating reads full and is already straining. Set it where a fixed line crosses, and a controller card reads it.",
   "block.feedback.observer": "Observer",
   "block.feedback.note_block": "Note Block",
   "feedback.jei.info.note_block": "Built from a body cut to a pitch and one or two noisemakers: each noisemaker's shape is an instrument, its material sets how loud and how high it rings. It makes no sound without one. An empty hand steps the note and plays it; a rising signal or a punch plays it. Needs the cell above it clear.",
