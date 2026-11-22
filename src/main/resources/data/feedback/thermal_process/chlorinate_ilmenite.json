@@ -1,0 +1,38 @@
+{
+  "inputs": [
+    {
+      "type": "feedback:material",
+      "material": "feedback:ilmenite",
+      "forms": [
+        "concentrate"
+      ]
+    },
+    {
+      "item": "minecraft:charcoal"
+    }
+  ],
+  "min_temperature": 800,
+  "optimal_temperature": 1000,
+  "max_temperature": 1200,
+  "required_tpu": 300,
+  "result": {
+    "id": "minecraft:iron_nugget",
+    "count": 3
+  },
+  "spoil_temperature": 1300,
+  "reaction": {
+    "fluid_inputs": [
+      {
+        "fluid": "feedback:chlorine",
+        "mb": 600
+      }
+    ],
+    "fluid_outputs": [
+      {
+        "fluid": "feedback:titanium_tetrachloride",
+        "mb": 210
+      }
+    ],
+    "heat": 8
+  }
+}

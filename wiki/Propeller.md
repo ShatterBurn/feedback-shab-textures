@@ -29,6 +29,7 @@ Thrust grows with the shaft's turns, the disc diameter, the blade count, the pit
 - **Pitch.** Fine pitch pulls hard from a standstill and quits at low speed. Coarse pitch pulls less but keeps pulling at speed. Medium is between.
 - **Thin air.** Thrust and the load on the shaft both fall with air density. See [air drag](Vehicles.md#air-density).
 - **Stall.** Past the speed where a prop's thrust reaches zero it reads *Stalled*.
+- **Windmilling.** Past the speed where thrust reaches zero, the airflow along the thrust turns the shaft the way it is driven. A [Freewheel](Clutch.md#freewheel) has something to free, and a propeller in a dive spins up.
 - **Reverse.** A shaft turning backwards pushes the craft the other way, with noticeably weaker thrust than forward.
 - **Reaction.** The torque the blades take from the shaft pushes the airframe the other way, so a lone propeller rolls the craft against its spin.
 - **Water.** Under water a propeller is a ship's screw, with a load about 816 times that of air.

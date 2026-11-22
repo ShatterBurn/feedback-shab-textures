@@ -83,7 +83,7 @@ A full cell that climbs past its limit **weeps gas** until it is vented back und
 
 ### Holes and patches
 
-Arrows and bullets that hit a cell leave a **hole** that leaks gas until patched. Right-click the cell with wool, a synthetic rubber ingot or an aluminum plate to patch one hole; each patch is used up.
+Arrows and bullets that hit a cell leave a **hole** that leaks gas until patched. A hard impact (a fall of more than about 6 blocks) can puncture the cells aboard the same way, more surely the harder it is. Right-click the cell with wool, a synthetic rubber ingot or an aluminum plate to patch one hole; each patch is used up.
 
 ### Fire
 

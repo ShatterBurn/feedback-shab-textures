@@ -137,7 +137,7 @@ The stream is drawn from the fluid and the nozzle, so you can read what is in th
 
 - **Liquid** leaves as droplets in a cone and falls in an arc. A weakly driven gun sags and drops its stream short. A wider spread makes smaller droplets; a thicker fluid makes bigger ones. A hard-driven jet keeps a bright core near the nozzle.
 - **Gas and mist** leave as soft puffs that slow as they go.
-- **Burning fuel** is a billowing flame that runs white-yellow, then orange, then red, with a rim of soot, and glows where it lands. A cooler fuel leaves more soot; a hotter one burns whiter.
+- **Burning fuel** is a billowing flame that runs white-yellow, then orange, then red, with a rim of soot, and glows where it lands. The flame is drawn with a flickering shader; the **shaderFlame** setting in the mod's client config (on by default) turns it off, and a shader that fails to load leaves the plain flame. A cooler fuel leaves more soot; a hotter one burns whiter.
 - **Cold fluid** (0 Tu or under) is pale, trails fog and leaves frost motes where it lands.
 - **A potion** sparkles.
 - **An oxidiser** with a flame in its path whitens as the drops fly.

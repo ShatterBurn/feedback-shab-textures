@@ -60,9 +60,23 @@ With a second hook fitted, using the grapple while a line is out throws the seco
 
 The line also lets go if it parts, if it has been out for ten seconds, or if either end is gone.
 
+A hook in a [vehicle](Vehicles.md) body tows it as you swing: a taut line pulls the body toward you with your weight as the force. A light body is dragged along, a heavy one barely moves.
+
 A [Tether](Combat.md#tethers) holds the body on the line, and a creature held that way takes extra damage as with a barbed spear.
 
 The [Whiplash](Special_Loot.md#whiplash) arm throws a barbed spear on a lanyard of this kind from the wrist.
+
+## Fixed lines
+
+A grapple ties a line between two [Pitons](Piton.md), or a piton and a [Winch](Winch.md), that stays put when you let go.
+
+- **Tie.** Use the grapple on one piton, then on another. The line is made of the grapple's line material (string by default) and runs between the two. The two ends can be as far apart as the grapple's longest line (16 blocks, 28 with the extra coil). The grapple takes 1 wear for every 4 blocks of line.
+- **Cut.** Sneak and use the grapple on a piton to cut its line.
+- **Take hold.** Anyone off the ground within about a block of the line takes hold of it: jump at it. Forward and back climb along it, forward being the end you look toward. Sneak to drop off; you cannot take hold again at once. While you hold the line you do not fall.
+- **Load.** Everyone hanging on a line is its load. The line is rated like a grapple's line, by [material](#the-line-has-a-rating): over the rating it gains strain until it parts, and a load under it costs nothing however long it hangs. A [Winch](Winch.md) that cannot lift its load makes the line take the weight and strain hard.
+- **Ends.** A piton holds only as well as the block behind it (see [below](#what-the-hook-bites-into)): in soft blocks it works loose. Breaking a piton or a winch cuts its line.
+
+A [Tension Gauge](Sensors.md) reads how taut a fixed line is.
 
 ## What the hook bites into
 

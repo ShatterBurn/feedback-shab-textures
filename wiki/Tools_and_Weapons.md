@@ -132,7 +132,7 @@ A finished tool or weapon is named by rule from its blade, head, face or limb: i
 - **Charge or throw.** A spear's balance (set by head mass, haft length and pommel weight) decides its use. A head-heavy build charges with the held right click, as above; a balanced build is thrown on release. A spear with a spring fitted is always thrown.
 - **Tapered blade.** Keep hitting the same target without pause and each hit hurts more; getting hit or switching target resets it.
 - **Curved blade.** Wait before the first cut to land a heavy bleeding strike.
-- **Serrated blade.** Great against the unarmored and for clearing brush, poor against armor.
+- **Serrated blade.** Great against the unarmored and for clearing brush, poor against armor. It cuts foliage-type blocks, the ones a hoe clears, at half a hoe's speed.
 - **Long blade.** Wait for a full swing and it hits everything around your target; mash it and it is weak.
 - **Short blade.** Strike from behind or at unaware mobs, especially while sneaking; face to face it is worse than a plain blade.
 - **Leaf blade.** A kill readies your next swing and speeds you up, and fighting a crowd hits harder.

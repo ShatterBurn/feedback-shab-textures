@@ -26,7 +26,8 @@ A body moving fast through air heats on its leading face. Material blocks on the
 - **Air.** There is none. Breathe from a [Respirator](Respirator.md) with an air cylinder, or from a sealed cabin with an [Air Valve](Air_Valve.md) (see [thin air](Hazards.md#thin-air)).
 - **Heat.** It is cold, and a vessel keeps all the heat it has. A [Radiator Panel](Radiator_Panel.md) sheds it.
 - **Radiation.** Your dose rate gains the sky's own. See below.
-- **Map.** Below the craft the explored Overworld shows as a flat map at the chunks' real places, one pixel for each chunk, in the colors of the map.
+- **Map.** Below the craft the explored Overworld shows as a flat map at the chunks' real places, one pixel for each chunk, in the colors of the map. The higher the craft, the smaller and coarser the map.
+- **Pushing off.** Touching a wall and pressing jump pushes you off it, the only way to start or change a drift.
 
 ## The sky
 

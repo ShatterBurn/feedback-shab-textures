@@ -148,6 +148,10 @@ Landing a parry gives an **impact frame**: a one-to-two-frame white flash, a cam
 
 Fighters also move: the arm raises for a parry (a dagger fast, a greatsword slow and low), you tumble through a roll, and a stagger recoils the body.
 
+## The Wither
+
+A lit beacon within 20 blocks feeds a Wither: Regeneration and Strength by the beacon's pyramid level, Speed from level 2, and it takes 15% less damage for each level (at most 60%) and looses extra volleys of skulls, more often the higher the level. The strongest beacon counts; two do not add. Cover or break the beam and the help ends.
+
 ## Commands
 
 Operator-only testing commands:

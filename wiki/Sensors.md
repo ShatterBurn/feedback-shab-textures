@@ -1,6 +1,6 @@
 # Sensors
 
-Five blocks that look at the face they were placed against and report what they see to a [Controller](Controller.md). They sense and control nothing. Right-click one with an empty hand to read it as a percentage.
+Six blocks that report what they see to a [Controller](Controller.md); all but the Tension Gauge look at the face they were placed against. They sense and control nothing. Right-click one with an empty hand to read it as a percentage.
 
 | Sensor | Reads | Reads in |
 | --- | --- | --- |
@@ -9,6 +9,7 @@ Five blocks that look at the face they were placed against and report what they 
 | Presence Plate | whether a creature or a dropped item stands in front | on or off |
 | Fill Gauge | how full the inventory or tank in front is | eighths |
 | Observer | a change in the state of the block in front, for half a second after it | on or off |
+| Tension Gauge | how taut the [fixed line](Grapple.md#fixed-lines) is that passes through its own block: the load on it over the line's rating, full when over it | sixths |
 
 ## Using them
 
@@ -47,4 +48,15 @@ W   W
 
 P is a Wrought Iron Plate and W is Copper Fine Wire. X is a Pivot Arm (Short) for the Presence Plate and a Photocell for the Observer.
 
-Each of the four takes a screwdriver in the tool row, 2 screws ([Fasteners](Fasteners.md)) and Electrical Treatise III: Circuits ([Treatise](Treatise.md)). The [Data Sensor](Sculk.md#data-sensor) has its own grid and takes Electrical Treatise II: Coils and Magnets.
+Each of the four takes a screwdriver in the tool row, 2 screws ([Fasteners](Fasteners.md)) and Electrical Treatise III: Circuits ([Treatise](Treatise.md)).
+
+**Tension Gauge**, at the Engineering Table with a screwdriver in the tool row, 2 screws and Electrical Treatise III: Circuits:
+
+```
+P S P
+W C W
+```
+
+P is a Steel Plate, S is a [Sheave](Grapple.md#sheave), W is Copper Wire and C is a circuit, which the finished sensor keeps.
+
+The [Data Sensor](Sculk.md#data-sensor) has its own grid and takes Electrical Treatise II: Coils and Magnets.

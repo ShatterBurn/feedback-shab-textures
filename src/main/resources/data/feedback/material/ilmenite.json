@@ -29,9 +29,6 @@
     "magnetic": true,
     "gangue": "feedback:netherrack"
   },
-  "bears": {
-    "feedback:titanium": 0.5
-  },
   "corrosion_resistance": 1,
   "toxicity": 0,
   "molten": {

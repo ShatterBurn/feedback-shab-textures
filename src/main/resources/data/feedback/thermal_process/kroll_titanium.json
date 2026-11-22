@@ -1,0 +1,37 @@
+{
+  "inputs": [
+    {
+      "type": "feedback:material",
+      "material": "feedback:magnesium",
+      "forms": [
+        "ingot"
+      ]
+    },
+    {
+      "type": "feedback:material",
+      "material": "feedback:magnesium",
+      "forms": [
+        "ingot"
+      ]
+    }
+  ],
+  "min_temperature": 800,
+  "optimal_temperature": 900,
+  "max_temperature": 1050,
+  "required_tpu": 400,
+  "result": {
+    "id": "feedback:titanium_nugget",
+    "count": 9
+  },
+  "spoil_temperature": 1200,
+  "reaction": {
+    "fluid_inputs": [
+      {
+        "fluid": "feedback:titanium_tetrachloride",
+        "mb": 144
+      }
+    ],
+    "fluid_outputs": [],
+    "heat": 6
+  }
+}

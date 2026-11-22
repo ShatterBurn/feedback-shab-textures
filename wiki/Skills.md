@@ -73,6 +73,7 @@ Anchor: hold ground. Parries, bracing, taking blows without moving, and what you
 | Plant feet | 30 | Settle | Crouched, a tether (a grapple line) pulls you 30% less; worn armor mass adds to the hold. Holding against a pull pays a small trickle of Anchor points. |
 | Dig in | 40 | Plant feet | Crouched, a tether pulls you a further 20% less. |
 | Lee side | 30 | Plant feet | Crouched with a full block against you, a tether pulls you half as hard and knockback is halved. |
+| Immovable | 60 | Lee side | Knockback does not move you: it costs stamina instead, more the lighter you are. With too little stamina to pay it, you are moved as anyone is. |
 | Crank beat | 30 | Plant feet | Each click on a hand crank whose network carries a load keeps it turning 8 ticks longer, so a slow cadence holds the beat. Cranking a loaded crank pays a small trickle of Anchor points. |
 | Bench stance | 30 | Plant feet | Lift the soldering iron crouched and the tip may stray 0.2 of a pad pitch further before a joint bridges. |
 | Advance | 70 | Shield wall | Cast: for three seconds walk forward behind a held guard; everything in front is shoved back by the ratio of your mass to its, and the lighter ones are staggered. Needs a shield-type item. Costs 25 stamina. |
@@ -123,6 +124,7 @@ Brute: overpower. Weight: the bigger hit, the heavier body, the harder push. Pis
 | Grab | 20 |  | Take hold of what is in front of you, bare-handed. A worn glove improves it: a longer hold, and heavier targets. Throw, the grip nodes, Haymaker and Uppercut build on it. The same skill as the Anchor Grab node: owning either unlocks it, it is bought once with either tree's points, and the other node shows as owned. |
 | Shove | 50 | Grab | Cast, held: hands on a vehicle body. A body no heavier than you and your armor is held up in front of the camera; a heavier one is shoved or dragged along the ground at your mass times your speed, with an equal push back on you. See [Shove and carry](Vehicles.md#shove-and-carry). Costs stamina for work delivered. |
 | Momentum | 40 | Heavy butt | A melee blow lands up to 40% harder at a full sprint for an average body: speed times mass, with armor counting. A heavier body gains more, a light one less, and a standing swing gains nothing. |
+| Shoulder charge | 60 | Momentum | Cast: a half-second sprint, shoulder first, on the ground. A body well lighter than you is sent flying along the charge and staggered; one near your weight is staggered where it stands and stops you; one much heavier stops you dead and rocks you. Each body is hit once. Costs 30 stamina. *(once used, rearms on a timer.)* |
 | Roll with the kick | 60 | Momentum | Shooting with a loose, giving body: every shot kicks the view and shoves the hand less and spreads less. Reads the gun's own kick and spread. |
 | Heavy lift | 40 | Shove | You can carry a body up to 1.5 times your weight before it must be shoved. |
 | Deadlift | 70 | Heavy lift | You can carry a body up to 2 times your weight. |
@@ -134,6 +136,7 @@ Brute: overpower. Weight: the bigger hit, the heavier body, the harder push. Pis
 | Vault | 60 | Quake leap | Cast: spring off the shoulders of the nearest thing in front and land behind it; it is staggered by your mass pushed off it. Costs 25 stamina. |
 | Heavy butt | 25 | Pistol whip | A pistol-whip shoves the target half again as hard. |
 | Point-blank draw | 50 | Heavy butt | A bow or crossbow hit within four blocks staggers the target by the arrow's energy over the target's mass: a hard draw shoves a light body, a heavy one hardly moves. Price: you have to be on top of them. |
+| Pin by weight | 55 | Firm grip | Cast: kneel on a staggered or line-held body in front of you. It cannot move and takes more damage for about 2 seconds at equal weight, longer if it is lighter than you; a much heavier body throws you off. It ends when you move off, take a hard blow or cast it again. Costs 20 stamina. *(once used, rearms on a timer.)* |
 | Iron grip | 45 | Firm grip | [Grab](Combat.md#grab) holds 2 seconds longer |
 | Chamber | 50 | Pistol whip | A pistol-whip heavy enough to stagger the target fires a free shot at it. Needs a loaded gun; one stagger, one shot. *(once used, rearms on a timer.)* |
 | Stomp | 50 | Quake leap | Cast: your whole weight on the nearest staggered thing in reach, as damage and a fresh stagger. Nothing standing steady will take it. Rearms on a stagger. Costs 20 stamina. *(once used, rearms on staggering something.)* |
