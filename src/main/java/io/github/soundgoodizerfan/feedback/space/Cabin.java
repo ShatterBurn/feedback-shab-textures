@@ -29,7 +29,8 @@ import org.jetbrains.annotations.Nullable;
  * vacuum, and an Air Valve feeds it from a pipe. A person in thin air with air in their cabin breathes
  * as at sea level. Once a second, for people in thin air only.
  * The air is kept with the world ({@link CabinAir}), keyed by body and the cabin's smallest cell.
- * shortcut: a cabin that nobody is in does not leak; give it a leak by the time it was unattended when that matters.
+ * A cabin nobody is in leaks too: the tick it was last breathed in is kept ({@link CabinAir#attended}), and the next person in
+ * loses the air a hole bled over the gap.
  */
 @net.neoforged.fml.common.EventBusSubscriber(modid = io.github.soundgoodizerfan.feedback.Feedback.MOD_ID)
 public final class Cabin {
@@ -128,6 +129,11 @@ public final class Cabin {
         float[] air = store.cell(r.key(), r.holes() == 0 ? cap : cap * outside);
         store.changed();
         float density = AirDensityTable.at(p.level());
+        // A hole bleeds a cabin nobody is in as well: what it lost while unattended comes off when someone is next in it.
+        long now = p.level().getGameTime(), last = store.lastAttended(r.key());
+        if (last >= 0 && r.holes() > 0 && now - last > SpaceTuning.CABIN_UNATTENDED_TICKS)
+            air[0] -= (now - last) * r.holes() * SpaceTuning.CABIN_LEAK_MB_PER_HOLE_TICK * (1f - density);
+        store.attended(r.key(), now);
         if (r.holes() > 0) {
             air[0] -= r.holes() * SpaceTuning.CABIN_LEAK_MB_PER_HOLE_TICK * (1f - density);
             if (p.tickCount % 20 == 0)

@@ -80,7 +80,9 @@ public final class GapMapView {
         var cam = event.getCamera().getPosition();
         float xa = (float) (x0 * 16 - cam.x), xb = (float) ((x0 + size) * 16 - cam.x);
         float za = (float) (z0 * 16 - cam.z), zb = (float) ((z0 + size) * 16 - cam.z);
-        float y = -SpaceTuning.MAP_DEPTH_BLOCKS;
+        // The plane lies further off the higher the craft is, so the same square of the world shows smaller and coarser from up there.
+        float climb = (float) ((cam.y - SpaceTuning.ENTRY_Y) / SpaceTuning.MAP_CLIMB_PER_DEPTH);
+        float y = -SpaceTuning.MAP_DEPTH_BLOCKS * net.minecraft.util.Mth.clamp(1f + climb, SpaceTuning.MAP_DEPTH_MIN_SHARE, SpaceTuning.MAP_DEPTH_MAX_SHARE);
         RenderSystem.enableBlend();
         RenderSystem.disableCull();
         RenderSystem.depthMask(false);

@@ -8,6 +8,10 @@ public final class SpaceTuning {
     }
 
     /** Where a body arrives in the Gap: well above its floor, near the middle of the height range. */
+    /** Blocks per tick a person is pushed off a wall they touch in the Gap by a jump press (the same as a push-off a hull plate gives). */
+    public static final double WALL_PUSH_OFF = 0.42;
+    /** Ticks a cabin may go unbreathed before the air its holes bled over the gap is taken off. */
+    public static final int CABIN_UNATTENDED_TICKS = 40;
     public static final double ENTRY_Y = 64;
     /** A body in the Gap below this returns to the Overworld. */
     public static final double FLOOR_Y = 0;
@@ -74,4 +78,8 @@ public final class SpaceTuning {
     public static final int MAP_REQUEST_INTERVAL_TICKS = 40;
     /** How far (blocks) below the craft the map plane is drawn. */
     public static final float MAP_DEPTH_BLOCKS = 220f;
+    /** Blocks of climb above {@link #ENTRY_Y} that add one more {@link #MAP_DEPTH_BLOCKS} to the plane's depth: higher up the map lies further off, so it shows smaller and coarser. */
+    public static final float MAP_CLIMB_PER_DEPTH = 100f;
+    /** The least and most the plane's depth is, as shares of {@link #MAP_DEPTH_BLOCKS}. */
+    public static final float MAP_DEPTH_MIN_SHARE = 0.5f, MAP_DEPTH_MAX_SHARE = 4f;
 }

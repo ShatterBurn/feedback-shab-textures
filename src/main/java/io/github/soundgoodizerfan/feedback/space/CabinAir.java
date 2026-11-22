@@ -23,6 +23,19 @@ public final class CabinAir extends SavedData {
     private static final String NAME = "feedback_cabin_air";
 
     private final Map<Cabin.Key, float[]> air = new HashMap<>();
+    /** The game tick each cabin was last breathed in, so air a hole bled while nobody was in it can be taken off when someone comes back. */
+    private final Map<Cabin.Key, Long> attended = new HashMap<>();
+
+    /** The tick {@code key} was last breathed in, or -1 if never. */
+    public long lastAttended(Cabin.Key key) {
+        return attended.getOrDefault(key, -1L);
+    }
+
+    /** Notes that {@code key} was breathed in at {@code tick}. */
+    public void attended(Cabin.Key key, long tick) {
+        attended.put(key, tick);
+        setDirty();
+    }
 
     private static final SavedData.Factory<CabinAir> FACTORY = new SavedData.Factory<>(CabinAir::new, CabinAir::load, null);
 
@@ -49,6 +62,8 @@ public final class CabinAir extends SavedData {
         for (int i = 0; i < list.size(); i++) {
             CompoundTag one = list.getCompound(i);
             out.air.put(new Cabin.Key(one.getUUID("Body"), one.getLong("Anchor")), new float[] {one.getFloat("Air")});
+            if (one.contains("Last"))
+                out.attended.put(new Cabin.Key(one.getUUID("Body"), one.getLong("Anchor")), one.getLong("Last"));
         }
         return out;
     }
@@ -62,6 +77,9 @@ public final class CabinAir extends SavedData {
             one.putUUID("Body", body);
             one.putLong("Anchor", e.getKey().anchor());
             one.putFloat("Air", e.getValue()[0]);
+            Long last = attended.get(e.getKey());
+            if (last != null)
+                one.putLong("Last", last);
             list.add(one);
         }
         tag.put("Cabins", list);
