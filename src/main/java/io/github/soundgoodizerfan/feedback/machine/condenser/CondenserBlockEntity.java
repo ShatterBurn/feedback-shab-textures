@@ -85,7 +85,7 @@ public class CondenserBlockEntity extends BlockEntity implements io.github.sound
 
     @Override
     public ThermalMass getThermalMass() {
-        return PetrochemTuning.CONDENSER_MASS;
+        return PetrochemTuning.condenserMass();
     }
 
     @Override
@@ -118,7 +118,7 @@ public class CondenserBlockEntity extends BlockEntity implements io.github.sound
             return;
         // Only the room left below boiling can take latent heat, and taking it spends that room.
         float boil = change.get().boil().value();
-        int affordable = (int) ((boil - temperature) * PetrochemTuning.CONDENSER_MASS.workPerTu() / change.get().latent());
+        int affordable = (int) ((boil - temperature) * PetrochemTuning.condenserMass().workPerTu() / change.get().latent());
         int amount = Math.min(Math.min(PetrochemTuning.CONDENSER_MB_PER_TICK, affordable),
                 Math.min(steamTank.getFluidAmount(), waterTank.getSpace()));
         if (amount <= 0)

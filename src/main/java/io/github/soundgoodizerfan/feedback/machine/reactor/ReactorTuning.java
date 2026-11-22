@@ -114,7 +114,13 @@ public final class ReactorTuning {
 
     public static final int REACTOR_POOL_SLOTS = 9, REACTOR_POOL_TANK_MB = 8000;
 
+    /** Fallback only: the pool's own mass is its concrete basin ({@link #poolMass}). */
     public static final ThermalMass REACTOR_POOL_MASS = new ThermalMass(400f);
+
+    /** The spent fuel pool as a thermal body: 450 Mu of concrete basin, at concrete's specific heat (the water is its own tank). */
+    public static ThermalMass poolMass() {
+        return io.github.soundgoodizerfan.feedback.machine.vessel.VesselWalls.of("concrete", 450f, REACTOR_POOL_MASS);
+    }
 
     /** Invented. Dose a pool's rods give at point blank with no water over them (Ru per rod), the share water leaves, and the Tu at which a dry pool's rods slump into slag. */
     public static final float REACTOR_POOL_DRY_RU = 60f, REACTOR_POOL_WET_SHARE = 0.05f, REACTOR_POOL_MELT_TU = 1200f;

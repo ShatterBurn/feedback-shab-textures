@@ -127,7 +127,18 @@ public final class PetrochemTuning {
 
     public static final int CONDENSER_MB_PER_TICK = VesselTuning.STEAM_ENGINE_MB_PER_TICK;
 
+    /** Fallback only: the condenser's own mass is its copper shell ({@link #condenserMass}). */
     public static final ThermalMass CONDENSER_MASS = new ThermalMass(40f);
+
+    /** The condenser as a thermal body: 100 Mu of copper tube and shell, at copper's specific heat. */
+    public static ThermalMass condenserMass() {
+        return io.github.soundgoodizerfan.feedback.machine.vessel.VesselWalls.of("copper", 100f, CONDENSER_MASS);
+    }
+
+    /** The reboiler as a thermal body: 160 Mu of steel pot and jacket, at steel's specific heat. */
+    public static ThermalMass reboilerMass() {
+        return io.github.soundgoodizerfan.feedback.machine.vessel.VesselWalls.of("steel", 160f, REBOILER_MASS);
+    }
 
     public static final Conductance CONDENSER_LEAK = new Conductance(0.05f);
 
@@ -197,6 +208,7 @@ public final class PetrochemTuning {
     /** Invented. The reboiler: feed it holds (mB), the Work a Tu of it and its charge takes, the share of a cut's light mB that boils off each tick. */
     public static final int REBOILER_FEED_TANK_MB = 4000;
 
+    /** Fallback only: the reboiler's own mass is its steel walls ({@link #reboilerMass}). */
     public static final ThermalMass REBOILER_MASS = new ThermalMass(80f);
 
     public static final float COLUMN_BOIL_PER_TICK = 0.02f;

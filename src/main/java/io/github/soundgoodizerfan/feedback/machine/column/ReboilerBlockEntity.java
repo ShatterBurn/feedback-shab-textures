@@ -179,7 +179,7 @@ public class ReboilerBlockEntity extends io.github.soundgoodizerfan.feedback.mac
 
     @Override
     public ThermalMass getThermalMass() {
-        return PetrochemTuning.REBOILER_MASS;
+        return PetrochemTuning.reboilerMass();
     }
 
     @Override
@@ -256,7 +256,7 @@ public class ReboilerBlockEntity extends io.github.soundgoodizerfan.feedback.mac
                 continue;
             int before = feed.getFluidAmount();
             feed.drain(boiled, IFluidHandler.FluidAction.EXECUTE);
-            temperature -= boiled * cut.latent() / PetrochemTuning.REBOILER_MASS.workPerTu();
+            temperature -= boiled * cut.latent() / PetrochemTuning.reboilerMass().workPerTu();
             int left = rise(trays, t, cut, boiled);
             if (left > 0)
                 overhead(server, trays, cut, left, temperature);

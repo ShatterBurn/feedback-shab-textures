@@ -65,7 +65,7 @@ public class SpentFuelPoolBlockEntity extends BlockEntity implements ThermalBody
 
     @Override
     public ThermalMass getThermalMass() {
-        return ReactorTuning.REACTOR_POOL_MASS;
+        return ReactorTuning.poolMass();
     }
 
     public FluidTank water() {
@@ -134,7 +134,7 @@ public class SpentFuelPoolBlockEntity extends BlockEntity implements ThermalBody
         // Over the boiling point the water boils off: the heat it takes with it is what holds the pool there.
         var cut = ThermalProcessTable.get().boiling(new FluidStack(Fluids.WATER, 1)).orElse(null);
         if (cut != null && water.getFluidAmount() > 0 && temperature > cut.boil().value()) {
-            boilAcc += (temperature - cut.boil().value()) * ReactorTuning.REACTOR_POOL_MASS.workPerTu() / cut.latent();
+            boilAcc += (temperature - cut.boil().value()) * ReactorTuning.poolMass().workPerTu() / cut.latent();
             int mb = Math.min((int) boilAcc, water.getFluidAmount());
             if (mb > 0) {
                 water.drain(mb, IFluidHandler.FluidAction.EXECUTE);
