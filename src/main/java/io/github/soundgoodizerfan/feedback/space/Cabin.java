@@ -28,8 +28,8 @@ import org.jetbrains.annotations.Nullable;
  * (mB, {@link SpaceTuning#CABIN_AIR_MB_PER_CELL} a cell); a person in it breathes it down, a hole bleeds it by its size against a
  * vacuum, and an Air Valve feeds it from a pipe. A person in thin air with air in their cabin breathes
  * as at sea level. Once a second, for people in thin air only.
- * shortcut: the air lives in memory, keyed by body and the cabin's smallest cell, so a restart refills every cabin and a
- * cabin that nobody is in does not leak; upgrade to saved data when cabins matter between sessions.
+ * The air is kept with the world ({@link CabinAir}), keyed by body and the cabin's smallest cell.
+ * shortcut: a cabin that nobody is in does not leak; give it a leak by the time it was unattended when that matters.
  */
 @net.neoforged.fml.common.EventBusSubscriber(modid = io.github.soundgoodizerfan.feedback.Feedback.MOD_ID)
 public final class Cabin {
@@ -44,16 +44,14 @@ public final class Cabin {
     private record Seen(long tick, UUID body, @Nullable Region region) {
     }
 
-    private static final Map<Key, float[]> AIR = new HashMap<>();
     private static final Map<UUID, Seen> SEEN = new HashMap<>();
 
     private Cabin() {
     }
 
-    /** Forgets everything held in memory: a stopped server, or a player who left. */
+    /** Forgets what each player was last seen in: a stopped server. The air is kept with the world ({@link CabinAir}). */
     @net.neoforged.bus.api.SubscribeEvent
     public static void onStopped(net.neoforged.neoforge.event.server.ServerStoppedEvent event) {
-        AIR.clear();
         SEEN.clear();
     }
 
@@ -100,11 +98,14 @@ public final class Cabin {
     }
 
     /** Puts up to {@code mb} into the cabin; returns what it took (a cabin holds {@link SpaceTuning#CABIN_AIR_MB_PER_CELL} a cell). */
-    public static int add(Region region, int mb) {
+    public static int add(ServerLevel level, Region region, int mb) {
         float cap = region.cells() * SpaceTuning.CABIN_AIR_MB_PER_CELL;
-        float[] air = AIR.computeIfAbsent(region.key(), k -> new float[] {cap});
+        CabinAir store = CabinAir.of(level.getServer());
+        float[] air = store.cell(region.key(), cap);
         int taken = (int) Math.max(0, Math.min(mb, cap - air[0]));
         air[0] += taken;
+        if (taken > 0)
+            store.changed();
         return taken;
     }
 
@@ -123,7 +124,9 @@ public final class Cabin {
             return false;
         float cap = r.cells() * SpaceTuning.CABIN_AIR_MB_PER_CELL;
         // A cabin first seen sealed is full; one first seen open has already lost its air to what is outside.
-        float[] air = AIR.computeIfAbsent(r.key(), k -> new float[] {r.holes() == 0 ? cap : cap * outside});
+        CabinAir store = CabinAir.of(p.getServer());
+        float[] air = store.cell(r.key(), r.holes() == 0 ? cap : cap * outside);
+        store.changed();
         float density = AirDensityTable.at(p.level());
         if (r.holes() > 0) {
             air[0] -= r.holes() * SpaceTuning.CABIN_LEAK_MB_PER_HOLE_TICK * (1f - density);

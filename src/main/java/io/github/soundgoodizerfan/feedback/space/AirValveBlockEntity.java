@@ -48,7 +48,7 @@ public class AirValveBlockEntity extends BlockEntity {
             var region = Cabin.scan(server, body, worldPosition.relative(d));
             if (region == null || region.holes() > 0 && region.cells() >= SpaceTuning.CABIN_CELL_CAP)
                 continue;
-            int took = Cabin.add(region, tank.getFluidAmount());
+            int took = Cabin.add(server, region, tank.getFluidAmount());
             if (took > 0)
                 tank.drain(took, IFluidHandler.FluidAction.EXECUTE);
             return;
