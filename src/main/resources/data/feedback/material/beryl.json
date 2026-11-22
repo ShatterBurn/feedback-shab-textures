@@ -3,7 +3,7 @@
   "kind": "crystal",
   "abundance": 2.2,
   "traits": [
-    "transparent", "gemstone"],
+    "transparent", "gemstone", "refractory"],
   "exclude": [
     "ingot"
   ],

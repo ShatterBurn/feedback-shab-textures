@@ -2,6 +2,9 @@
   "color": "#d9d6cf",
   "kind": "mineral",
   "abundance": 21,
+  "traits": [
+    "refractory"
+  ],
   "exclude": [
     "ingot"
   ],

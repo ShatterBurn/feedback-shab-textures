@@ -288,7 +288,12 @@ public record Material(St hardness, Tu minTemperature, Tu maxTemperature,
         /** A made assembly (a clad fuel rod), not bulk stock: no modular part is built from it. */
         ASSEMBLY,
         /** A drawn filament whose texture grows with each draw-then-anneal cycle (process/WorkHardening): the superconductor's. Opts in to work hardening at any ductility. */
-        TEXTURED;
+        TEXTURED,
+        /**
+         * An ore whose oxide or silicate a furnace cannot reduce by heat alone (ilmenite, dolomite, beryl): it still {@code bears} its metal (so the
+         * ore forms and the ladder exist) but has no derived direct melt; only an authored reducing row (Kroll, Pidgeon, fluoride reduction) makes the metal.
+         */
+        REFRACTORY;
 
         public static final Codec<Trait> CODEC = StringRepresentable.fromEnum(Trait::values);
 

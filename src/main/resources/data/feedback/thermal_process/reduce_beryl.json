@@ -1,0 +1,30 @@
+{
+  "inputs": [
+    { "type": "feedback:material", "material": "feedback:beryl", "forms": [ "concentrate" ] },
+    { "type": "feedback:material", "material": "feedback:beryl", "forms": [ "concentrate" ] },
+    { "type": "feedback:material", "material": "feedback:beryl", "forms": [ "concentrate" ] },
+    { "type": "feedback:material", "material": "feedback:beryl", "forms": [ "concentrate" ] },
+    { "type": "feedback:material", "material": "feedback:beryl", "forms": [ "concentrate" ] },
+    { "type": "feedback:material", "material": "feedback:beryl", "forms": [ "concentrate" ] },
+    { "type": "feedback:material", "material": "feedback:magnesium", "forms": [ "ingot" ] }
+  ],
+  "min_temperature": 1200,
+  "optimal_temperature": 1300,
+  "max_temperature": 1400,
+  "required_tpu": 500,
+  "result": {
+    "id": "feedback:beryllium_nugget",
+    "count": 4
+  },
+  "spoil_temperature": 1500,
+  "reaction": {
+    "fluid_inputs": [
+      {
+        "fluid": "feedback:hydrofluoric_acid",
+        "mb": 288
+      }
+    ],
+    "fluid_outputs": [],
+    "heat": 6
+  }
+}

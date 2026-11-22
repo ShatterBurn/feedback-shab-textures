@@ -1,0 +1,23 @@
+{
+  "inputs": [
+    { "type": "feedback:material", "material": "feedback:dolomite", "forms": [ "concentrate" ] },
+    { "type": "feedback:material", "material": "feedback:dolomite", "forms": [ "concentrate" ] },
+    { "type": "feedback:material", "material": "feedback:dolomite", "forms": [ "concentrate" ] },
+    { "type": "feedback:material", "material": "feedback:dolomite", "forms": [ "concentrate" ] },
+    { "item": "feedback:silicon_crude_ingot" }
+  ],
+  "min_temperature": 1100,
+  "optimal_temperature": 1200,
+  "max_temperature": 1300,
+  "required_tpu": 400,
+  "result": {
+    "id": "feedback:magnesium_nugget",
+    "count": 8
+  },
+  "spoil_temperature": 1400,
+  "reaction": {
+    "fluid_inputs": [],
+    "fluid_outputs": [],
+    "heat": 4
+  }
+}

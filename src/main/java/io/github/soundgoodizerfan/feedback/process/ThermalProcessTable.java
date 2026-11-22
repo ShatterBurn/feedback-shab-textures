@@ -138,7 +138,7 @@ public class ThermalProcessTable extends SimpleJsonResourceReloadListener {
         var materials = MaterialTable.get().materials();
         materials.forEach((id, material) -> {
             var best = material.bears().entrySet().stream().max(java.util.Map.Entry.comparingByValue());
-            if (best.isEmpty())
+            if (best.isEmpty() || material.traits().contains(Material.Trait.REFRACTORY))
                 return;
             // A native-metal ore (it bears itself) keeps its authored melts for the raw rock; only the ladder's forms are derived.
             boolean selfBearing = best.get().getKey().equals(id);

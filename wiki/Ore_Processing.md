@@ -85,7 +85,20 @@ Leaching dissolves the metal out of a concentrate into a **liquor**, a fluid nam
 
 Tailings of each of these leach too, at a lower yield. Rows and windows are on the Reactor's JEI cards; the Reactor page has the layout of a reaction.
 
-**Ores that stop at the concentrate** are smelted from it: galena roasts to molten lead with oxygen, leaving sulfur, a silver nugget and, one time in ten, a bismuth nugget; tin and pyrolusite are reduced with charcoal to molten tin and manganese; chromite with charcoal to molten chromium and iron nuggets.
+**Ores that stop at the concentrate** (apart from the refractory ones above) are smelted from it: galena roasts to molten lead with oxygen, leaving sulfur, a silver nugget and, one time in ten, a bismuth nugget; tin and pyrolusite are reduced with charcoal to molten tin and manganese; chromite with charcoal to molten chromium and iron nuggets.
+
+## Reducing refractory ores
+
+**Ilmenite, dolomite and beryl are refractory**: a crucible or furnace gives crushed ore, concentrate and tailings of them but never melts them to metal. Their metal comes only from a reducing process, run as a heat process in a vessel (bands and holds are on the JEI cards).
+
+| Metal | Feed | Heat | Gives |
+| --- | --- | --- | --- |
+| Titanium (Kroll) | 2 magnesium ingots and 144 mB titanium tetrachloride | 800 to 1050 Tu, best near 900 | 9 titanium nuggets |
+| Titanium (sulfate) | ilmenite concentrate leached with sulfuric acid, then precipitated with hydrogen ([above](#leaching-and-winning)) | Reactor | titanium |
+| Magnesium (Pidgeon) | 4 dolomite concentrate and 1 crude silicon ingot | 1100 to 1300 Tu, best near 1200 | 8 magnesium nuggets |
+| Beryllium | 6 beryl concentrate, 1 magnesium ingot and 288 mB hydrofluoric acid | 1200 to 1400 Tu, best near 1300 | 4 beryllium nuggets |
+
+Ilmenite concentrate with charcoal and 600 mB chlorine at 800 to 1200 Tu, best near 1000, gives 3 iron nuggets and 210 mB of titanium tetrachloride, the Kroll feed. Dolomite gives the magnesium that reduces both titanium tetrachloride and beryl. The silicon for the Pidgeon process is [Crude Silicon](Materials.md#silicon).
 
 **Red Mud** is the bauxite waste. It melts to a little iron.
 

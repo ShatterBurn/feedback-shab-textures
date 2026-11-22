@@ -176,7 +176,7 @@ Every wood species also has **Shavings**, a loose form: the sawdust the [Woodwor
 
 ## Gems
 
-**Ruby**, **Jade**, **Garnet**, **Tourmaline** and **Beryl** are gems: their ore block drops the cut stone (*Ruby*, *Jade*, *Garnet*, *Tourmaline*, *Beryl*). They have no ingot, and no ore stage (crushed, concentrate, tailings). Each is mined from its own vein ([Ore Deposits](Ore_Deposits.md#gems)).
+**Ruby**, **Jade**, **Garnet**, **Tourmaline** and **Beryl** are gems: their ore block drops the cut stone (*Ruby*, *Jade*, *Garnet*, *Tourmaline*, *Beryl*). They have no ingot. Ruby, Jade, Garnet and Tourmaline have no ore stage (crushed, concentrate, tailings); Beryl does, and is also an ore of beryllium ([Ore minerals](#ore-minerals)). Each is mined from its own vein ([Ore Deposits](Ore_Deposits.md#gems)).
 
 - **Ruby** is a hard, transparent crystal (hardness 200). It stands 1400 Tu and **glows under an electric current**.
 - **Jade** is not a crystal but a tough mineral (hardness 65), the toughest of the four.
@@ -444,7 +444,7 @@ Two more are laminated in a vessel, each a plate:
 
 ## Ore minerals
 
-Ore minerals are not metal. Each melts into the metal it carries the most of, and gives more of it the further it is processed: crushed, separated into a concentrate, roasted and leached. See [Ore Processing](Ore_Processing.md). Find them in [Ore Deposits](Ore_Deposits.md).
+Ore minerals are not metal. Most melt into the metal they carry the most of, and give more of it the further they are processed: crushed, separated into a concentrate, roasted and leached. **Ilmenite, dolomite and beryl are refractory**: they do not melt to metal, and their metal comes only from a reducing process ([Ore Processing](Ore_Processing.md#reducing-refractory-ores)). See [Ore Processing](Ore_Processing.md). Find them in [Ore Deposits](Ore_Deposits.md).
 
 | Mineral | Gives |
 | --- | --- |
@@ -456,17 +456,17 @@ Ore minerals are not metal. Each melts into the metal it carries the most of, an
 | Pentlandite | Nickel |
 | Cobaltite | Cobalt |
 | Pyrolusite | Manganese |
-| Ilmenite | Titanium |
+| Ilmenite | Titanium (reduced, not melted) |
 | Wolframite | Tungsten |
 | Uraninite | Uranium |
 | Monazite | Thorium |
 | Spodumene | Lithium (3.7%) |
-| Beryl | Beryllium (5%) |
+| Beryl | Beryllium (5%; reduced, not melted) |
 | Stibnite | Antimony |
 | Vanadinite | Vanadium |
 | Cinnabar | Mercury |
 | Molybdenite | Molybdenum (60%) |
-| Dolomite | Magnesium (13%) |
+| Dolomite | Magnesium (13%; reduced, not melted) |
 
 **Galena** and **Pyrite** are crystals that rectify, which is why a [Cat's Whisker Detector](Cats_Whisker_Detector.md) wants one. Galena melts down to lead. **Spodumene** and **beryl** are transparent crystals.
 
