@@ -9,7 +9,7 @@ Nothing is locked behind an instrument; they are how you do on purpose what you 
 | [Calipers](#calipers) | Work done on a piece, machine wear, gun barrel size | Wear to 5%; barrel to 0.1 mm |
 | [Balance Scale](#balance-scale) | Mass of a tool, weapon or armor piece | 0.1 Mu |
 | [Scratch File Set](#scratch-file-set) | Hardness of an edge or plate | One of eight rungs, not a number |
-| [Impact Pendulum](#impact-pendulum) | Toughness of a made tool's edge, or of a made armor piece | Nearest 5 |
+| [Impact Pendulum](#impact-pendulum) | Toughness of a made tool's edge, or of a made armor piece | Nearest 5; nearest 1 when the piece is broken |
 | [Strike Post](#strike-post) | Work a blow carries and the damage it deals | Nearest 0.5 |
 | [Test Strip](#test-strip) | Toxin in a food | Steps of 0.025 Qu/mB |
 | [Thermometer](#thermometer) | Temperature of items and blocks | 25 Tu steps |
@@ -119,7 +119,9 @@ P B P
 
 P is a Wrought Iron Plate, B is a [Bearing](Bearing.md), R is a Wrought Iron Rod and I is an Iron Ingot.
 
-**Right-click** it holding a tool or armor piece made at a bench. The card shows the edge's toughness, to the nearest 5. A twin-headed tool reports both heads. An armor piece reports its armor toughness. Anything else says *"Nothing here to test."* The pendulum does not mark or wear the piece.
+**Right-click** it holding a tool or armor piece made at a bench. The card shows the edge's toughness, to the nearest 5. A twin-headed tool reports both heads. An armor piece reports its armor toughness. Anything else says *"Nothing here to test."* A plain right-click does not mark or wear the piece.
+
+**Sneak and right-click** with the specimen and the bob breaks it. The piece is spent, with the item-break sound, and the card gives the toughness at which it broke, to the nearest 1. The break test is five times finer than the plain reading and costs the piece.
 
 ## Strike Post
 

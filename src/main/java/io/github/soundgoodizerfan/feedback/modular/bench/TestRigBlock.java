@@ -89,9 +89,25 @@ public class TestRigBlock extends Block {
                                               InteractionHand hand, BlockHitResult hit) {
         if (kind != Kind.PENDULUM)
             return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
-        if (!level.isClientSide)
-            report(player, pos, stack);
+        if (!level.isClientSide) {
+            // Sneaking with the specimen swings the bob to break it: a real Charpy test spends its specimen, and the reading is as fine as the rig resolves.
+            if (player.isShiftKeyDown() && breakable(stack)) {
+                float edge = ModularStacks.figures(stack).get(ModularFigures.Fig.EDGE_TOUGHNESS);
+                float step = ModularTuning.PENDULUM_STEP * ModularTuning.PENDULUM_BREAK_STEP_SHARE;
+                io.github.soundgoodizerfan.feedback.net.AimPayloads.report(player, pos,
+                        Component.translatable("feedback.rig.pendulum_broke", Instruments.format(edge, step)));
+                level.playSound(null, pos, net.minecraft.sounds.SoundEvents.ITEM_BREAK, net.minecraft.sounds.SoundSource.BLOCKS, 0.8f, 0.8f);
+                stack.shrink(1);
+            } else
+                report(player, pos, stack);
+        }
         return ItemInteractionResult.sidedSuccess(level.isClientSide);
+    }
+
+    /** Whether the specimen has an edge toughness the pendulum can break it to read. */
+    private static boolean breakable(ItemStack stack) {
+        ModularFigures f = ModularStacks.figures(stack);
+        return f != null && f.get(ModularFigures.Fig.EDGE_TOUGHNESS) > 0f;
     }
 
     /** The post: take a swing at it. */

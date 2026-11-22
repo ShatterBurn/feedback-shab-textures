@@ -67,6 +67,9 @@ public final class ModularTuning {
     public static final float DAMAGE_K = 1.8f;
     /** Invented. What each test rig can distinguish: the Impact Pendulum's step in toughness, the Strike Post's in work and in damage. */
     public static final float PENDULUM_STEP = 5f, POST_JOULE_STEP = 0.5f, POST_DAMAGE_STEP = 0.5f;
+
+    /** Invented. A specimen broken on the Impact Pendulum (sneak-use) is read this share of the ordinary step: breaking it shows the true toughness a pass of the bob only brackets. */
+    public static final float PENDULUM_BREAK_STEP_SHARE = 0.2f;
     /** Dig speed per unit of blow, fitted to an iron pickaxe that digs near 6. */
     public static final float DIG_K = 2f;
     /** Durability per (edge competence x litre of wearing edge). */
