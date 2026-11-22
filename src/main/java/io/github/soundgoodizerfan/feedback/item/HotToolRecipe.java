@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package io.github.soundgoodizerfan.feedback.item;
 
+import java.util.Optional;
 
 import io.github.soundgoodizerfan.feedback.core.thermal.ItemHeat;
 import io.github.soundgoodizerfan.feedback.process.ClientMaterials;
@@ -33,20 +34,45 @@ import net.minecraft.world.level.Level;
  */
 public class HotToolRecipe extends CustomRecipe {
 
-    /** What the tool is made of: {@code count} pieces of the item {@code piece}, hammered to {@code result}. */
-    private final ResourceLocation piece;
+    /**
+     * What the tool is made of: {@code count} pieces hammered to {@code result}. A piece is either the one item {@code piece}, or any stock
+     * of {@code form} (an ingot) whose material is at least {@code minHardness} hard, all of one material: a tool is made of whatever metal
+     * is strong enough, never of one named id.
+     */
+    private final Optional<ResourceLocation> piece;
+    private final Optional<String> form;
+    private final float minHardness;
     private final int count;
     private final ItemStack result;
 
-    public HotToolRecipe(CraftingBookCategory category, ResourceLocation piece, int count, ItemStack result) {
+    public HotToolRecipe(CraftingBookCategory category, Optional<ResourceLocation> piece, Optional<String> form, float minHardness, int count,
+                         ItemStack result) {
         super(category);
         this.piece = piece;
+        this.form = form;
+        this.minHardness = minHardness;
         this.count = count;
         this.result = result;
     }
 
-    public ResourceLocation piece() {
+    public Optional<ResourceLocation> piece() {
         return piece;
+    }
+
+    public Optional<String> form() {
+        return form;
+    }
+
+    public float minHardness() {
+        return minHardness;
+    }
+
+    /** Whether {@code stock} is a piece this recipe takes, apart from its being hot: the item, or stock of the form that is hard enough. */
+    public boolean takes(ItemStack stock) {
+        if (piece.isPresent())
+            return BuiltInRegistries.ITEM.getKey(stock.getItem()).equals(piece.get());
+        return form.isPresent() && Material.find(io.github.soundgoodizerfan.feedback.process.MaterialIngredient.materialsNow(), stock.getItem())
+                .filter(found -> found.form().equals(form.get()) && found.material().hardness().value() >= minHardness).isPresent();
     }
 
     public int count() {
@@ -60,12 +86,16 @@ public class HotToolRecipe extends CustomRecipe {
     public static final class Serializer implements RecipeSerializer<HotToolRecipe> {
         private static final MapCodec<HotToolRecipe> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
                 CraftingBookCategory.CODEC.fieldOf("category").orElse(CraftingBookCategory.MISC).forGetter(CustomRecipe::category),
-                ResourceLocation.CODEC.fieldOf("piece").forGetter(HotToolRecipe::piece),
+                ResourceLocation.CODEC.optionalFieldOf("piece").forGetter(HotToolRecipe::piece),
+                Codec.STRING.optionalFieldOf("form").forGetter(HotToolRecipe::form),
+                Codec.FLOAT.optionalFieldOf("min_hardness", 0f).forGetter(HotToolRecipe::minHardness),
                 Codec.intRange(1, 9).fieldOf("count").forGetter(HotToolRecipe::count),
                 ItemStack.STRICT_CODEC.fieldOf("result").forGetter(HotToolRecipe::result)).apply(i, HotToolRecipe::new));
         private static final StreamCodec<RegistryFriendlyByteBuf, HotToolRecipe> STREAM = StreamCodec.composite(
                 CraftingBookCategory.STREAM_CODEC, CustomRecipe::category,
-                ResourceLocation.STREAM_CODEC, HotToolRecipe::piece,
+                ByteBufCodecs.optional(ResourceLocation.STREAM_CODEC), HotToolRecipe::piece,
+                ByteBufCodecs.optional(ByteBufCodecs.STRING_UTF8), HotToolRecipe::form,
+                ByteBufCodecs.FLOAT, HotToolRecipe::minHardness,
                 ByteBufCodecs.VAR_INT, HotToolRecipe::count,
                 ItemStack.STREAM_CODEC, HotToolRecipe::result,
                 HotToolRecipe::new);
@@ -95,6 +125,7 @@ public class HotToolRecipe extends CustomRecipe {
     private boolean find(CraftingInput input, Level level) {
         boolean hammer = false;
         int found = 0;
+        net.minecraft.world.item.Item made = null;
         for (int i = 0; i < input.size(); i++) {
             ItemStack stack = input.getItem(i);
             if (stack.isEmpty())
@@ -105,8 +136,12 @@ public class HotToolRecipe extends CustomRecipe {
                 hammer = true;
                 continue;
             }
-            if (!BuiltInRegistries.ITEM.getKey(stack.getItem()).equals(this.piece))
+            if (!takes(stack))
                 return false;
+            // One tool is one metal: pieces of two metals do not make it.
+            if (made != null && made != stack.getItem())
+                return false;
+            made = stack.getItem();
             found++;
             if (level != null && !workable(stack, level))
                 return false;

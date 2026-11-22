@@ -26,9 +26,13 @@ public class HotToolCraftingExtension implements ICraftingCategoryExtension<HotT
         HotToolRecipe recipe = holder.value();
         List<List<ItemStack>> inputs = new ArrayList<>();
         inputs.add(List.of(new ItemStack(FModular.HAFTED_TOOL.get())));
-        ItemStack piece = new ItemStack(BuiltInRegistries.ITEM.get(recipe.piece()));
+        // One named item, or stock of a form from any material hard enough (each slot cycles them).
+        List<ItemStack> pieces = recipe.piece().map(id -> List.of(new ItemStack(BuiltInRegistries.ITEM.get(id)))).orElseGet(() ->
+                recipe.form().map(form -> io.github.soundgoodizerfan.feedback.process.ClientMaterials.get().entrySet().stream()
+                        .filter(e -> e.getValue().hardness().value() >= recipe.minHardness())
+                        .flatMap(e -> e.getValue().item(e.getKey(), form).stream()).map(ItemStack::new).toList()).orElse(List.of()));
         for (int i = 0; i < recipe.count(); i++)
-            inputs.add(List.of(piece));
+            inputs.add(pieces);
         var slots = grid.createAndSetInputs(builder, inputs, 3, 2);
         for (int i = 1; i < slots.size(); i++)
             slots.get(i).addRichTooltipCallback((view, tooltip) -> tooltip.add(Component.translatable("feedback.jei.hot_tool.hot")));

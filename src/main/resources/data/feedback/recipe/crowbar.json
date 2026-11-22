@@ -1,7 +1,8 @@
 {
   "type": "feedback:hot_tool",
   "category": "equipment",
-  "piece": "minecraft:iron_ingot",
+  "form": "ingot",
+  "min_hardness": 8,
   "count": 2,
   "result": {
     "id": "feedback:crowbar"
