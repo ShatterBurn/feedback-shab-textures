@@ -214,7 +214,7 @@ public class FCreativeTabs {
     private static final List<DeferredItem<?>> ROTATION = of(FItems.SHAFT, FItems.BEARING, FItems.ROTARY_BEARING,
             FItems.SMALL_COG, FItems.LARGE_COG, FItems.RING_GEAR, FItems.LARGE_RING_GEAR, FItems.SMALL_PULLEY,
             FItems.LARGE_PULLEY, FItems.BELT, FItems.GEARBOX, FItems.DIFFERENTIAL, FItems.FREEWHEEL, FItems.ROTATION_ADAPTER,
-            FItems.CLUTCH, FItems.OVERSPEED_TRIP, FItems.ESCAPEMENT, FItems.SHEAVE, FModular.FLYWHEEL,
+            FItems.CLUTCH, FItems.OVERSPEED_TRIP, FItems.ESCAPEMENT, FItems.SHEAVE, FItems.PITON, FModular.FLYWHEEL,
             FItems.MICRO_WEDGE);
 
     /** Joints: fixed, then free to move. */

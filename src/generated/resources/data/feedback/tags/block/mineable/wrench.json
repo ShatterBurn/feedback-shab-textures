@@ -188,6 +188,7 @@
     "feedback:photocell",
     "feedback:piston",
     "feedback:piston_joint",
+    "feedback:piton",
     "feedback:pivot_mast",
     "feedback:platinum_pipe",
     "feedback:polyester_pipe",

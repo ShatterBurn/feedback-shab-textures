@@ -190,12 +190,16 @@ public class GrappleHook extends Projectile {
 
     /** The load the line takes, in Mu: its material's yield strength, less when a fibrous line is wet. */
     private float lineRating() {
-        Material m = lineMaterial();
+        return lineRating(line, getOwner() != null && getOwner().isInWaterOrRain());
+    }
+
+    /** The load, in Mu, a line of {@code material} takes (a fixed line is rated the same way as a grapple's); less when a fibrous line is {@code wet}. */
+    public static float lineRating(ResourceLocation material, boolean wet) {
+        Material m = MaterialTable.get().materials().get(material);
         float st = m != null ? m.mechanical().yieldStrength().map(s -> s.value()).orElse(ModularTuning.GRAPPLE_FALLBACK_ST)
                 : ModularTuning.GRAPPLE_FALLBACK_ST;
-        float wet = m != null && m.traits().contains(Material.Trait.FIBROUS) && getOwner() != null && getOwner().isInWaterOrRain()
-                ? ModularTuning.GRAPPLE_WET_RATING : 1f;
-        return st * ModularTuning.GRAPPLE_RATING_PER_ST * wet;
+        return st * ModularTuning.GRAPPLE_RATING_PER_ST
+                * (m != null && m.traits().contains(Material.Trait.FIBROUS) && wet ? ModularTuning.GRAPPLE_WET_RATING : 1f);
     }
 
     /** What the line itself weighs, in Mu: a heavy chain hangs on the one holding it, a thread hardly does. */

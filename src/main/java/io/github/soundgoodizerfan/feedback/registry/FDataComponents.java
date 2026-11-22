@@ -481,6 +481,13 @@ public class FDataComponents {
                     .networkSynchronized(ByteBufCodecs.VAR_INT)
                     .build());
 
+    /** The piton a grapple has been used on first, waiting for the second end of a fixed line ({@code combat/tether/FixedLines}). */
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<net.minecraft.core.BlockPos>> GRAPPLE_TIE =
+            COMPONENTS.register("grapple_tie", () -> DataComponentType.<net.minecraft.core.BlockPos>builder()
+                    .persistent(net.minecraft.core.BlockPos.CODEC)
+                    .networkSynchronized(net.minecraft.core.BlockPos.STREAM_CODEC)
+                    .build());
+
     /** What a piece of combat gear is made of and what that made of it -- see {@code combat/gear/GearStats}. */
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<io.github.soundgoodizerfan.feedback.combat.gear.GearStats>> GEAR =
             COMPONENTS.register("gear", () -> DataComponentType.<io.github.soundgoodizerfan.feedback.combat.gear.GearStats>builder()

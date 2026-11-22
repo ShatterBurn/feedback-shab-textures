@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "facing=up": { "model": "feedback:block/piton" },
+    "facing=down": { "model": "feedback:block/piton", "x": 180 },
+    "facing=north": { "model": "feedback:block/piton", "x": 90 },
+    "facing=east": { "model": "feedback:block/piton", "x": 90, "y": 90 },
+    "facing=south": { "model": "feedback:block/piton", "x": 90, "y": 180 },
+    "facing=west": { "model": "feedback:block/piton", "x": 90, "y": 270 }
+  }
+}

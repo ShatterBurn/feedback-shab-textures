@@ -749,6 +749,16 @@ public final class ModularTuning {
     public static final float GRAPPLE_PAYOUT = 0.35f;
     /** Passes the client makes over two lines so both hold together (a joint constraint, not one line then the other). */
     public static final int GRAPPLE_JOINT_PASSES = 3;
+    /** Blocks from a fixed line within which an airborne body takes hold of it. */
+    public static final double FIXED_LINE_REACH = 0.9;
+    /** Blocks per tick a body climbs along a fixed line while a forward or back key is held. */
+    public static final double FIXED_LINE_SPEED = 0.14;
+    /** Ticks after dropping off a fixed line (sneak) before it can be taken hold of again. */
+    public static final int FIXED_LINE_REGRAB_TICKS = 15;
+    /** Blocks of fixed line one point of the grapple's wear pays out. */
+    public static final float FIXED_LINE_BLOCKS_PER_WEAR = 4f;
+    /** Longest span between two pitons as a share of the grapple's longest line (the line hangs slack along the way). */
+    public static final float FIXED_LINE_SPAN = 1f;
 
     // --- attuning (EnchantGame, docs/specs/feedback_enchanting_spec.md): every figure [OPEN] until played ----
     /** Coercive field, loop width and lag (ticks) of a material with no {@code attuning} block. */

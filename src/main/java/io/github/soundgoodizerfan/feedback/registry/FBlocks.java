@@ -1288,7 +1288,10 @@ public class FBlocks {
                     io.github.soundgoodizerfan.feedback.modular.bench.TestRigBlock.Kind.POST));
     public static final DeferredBlock<io.github.soundgoodizerfan.feedback.combat.tether.SheaveBlock> SHEAVE = BLOCKS.register("sheave",
             () -> new io.github.soundgoodizerfan.feedback.combat.tether.SheaveBlock(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(2.0f, 4.0f).sound(SoundType.METAL).noOcclusion().noCollission()));
-    public static final DeferredBlock<io.github.soundgoodizerfan.feedback.weapon.ShockCapsuleBlock> SHOCK_CAPSULE = BLOCKS.register("shock_capsule",
+    /** A spike driven into a block face; a grapple ties a fixed line between two ({@code combat/tether/FixedLines}). */
+    public static final DeferredBlock<io.github.soundgoodizerfan.feedback.combat.tether.PitonBlock> PITON = BLOCKS.register("piton",
+            () -> new io.github.soundgoodizerfan.feedback.combat.tether.PitonBlock(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(2.0f, 4.0f).sound(SoundType.METAL).noOcclusion().noCollission()));
+    public static final DeferredBlock<io.github.soundgoodizerfan.feedback.weapon.ShockCapsuleBlock> SHOCK_CAPSULE =BLOCKS.register("shock_capsule",
             () -> new io.github.soundgoodizerfan.feedback.weapon.ShockCapsuleBlock(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(1.0f, 1.0f).sound(SoundType.METAL)));
     /** A plate that sheds a touching vessel's heat whatever the air: the way out in a vacuum ({@code core/thermal/AirCoupling}). */
     /** A wall valve that lets air from a pipe into the cabin it opens on ({@code space/Cabin}). */
