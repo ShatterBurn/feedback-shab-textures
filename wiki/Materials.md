@@ -519,4 +519,4 @@ JEI's **Material Stats** page shows every figure a material has (kind, XP top le
 
 Some materials also carry a **[perk](Material_Perks.md)**: what they do to whatever a weapon made of them hits.
 
-With the Thaumaturge mod installed, material items also carry aspects; see [Thaumaturge](Thaumaturge.md).
+With the Thaumaturge mod installed, material items also carry aspects; see [Mod Compats](Mod_Compats.md#thaumaturge).

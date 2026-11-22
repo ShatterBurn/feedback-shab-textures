@@ -42,7 +42,7 @@ New here? Start with [Metalworking](Metalworking.md), then [Heat](Heat.md). Want
 
 - [Metalworking](Metalworking.md): work, hardness, overrun and wear
 - [Materials](Materials.md): every metal, gem, mineral, polymer, composite, glass and solder, and the forms they take
-- [Thaumaturge](Thaumaturge.md): the aspects Feedback items carry when that mod is installed
+- [Mod Compats](Mod_Compats.md): the mods Feedback requires or works with, and what each adds
 - [Units](Units.md): what Tu, Su, mB, Qu, Wu, Fu and the other figures measure
 - [Ore Deposits](Ore_Deposits.md): where ores and crystals grow
 - [Ores](Ores.md): every metal-bearing ore, its metal and its depths
