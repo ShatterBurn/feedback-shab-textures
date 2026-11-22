@@ -188,7 +188,7 @@ public class ProgrammerBlockEntity extends BlockEntity implements Container, Men
             io.github.soundgoodizerfan.feedback.net.AimPayloads.screen(player, Component.translatable("feedback.programmer.no_card"));
             return;
         }
-        Optional<String> error = working.findError(ControllerLimits.MAX);
+        Optional<String> error = working.findError(ControllerLimits.ofMedium(card));
         if (error.isPresent()) {
             io.github.soundgoodizerfan.feedback.net.AimPayloads.screen(player, Component.translatable("feedback.programmer.error." + error.get()));
             return;

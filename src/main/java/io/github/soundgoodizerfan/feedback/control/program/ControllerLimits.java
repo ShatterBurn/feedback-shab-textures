@@ -21,6 +21,20 @@ public record ControllerLimits(int nodes, int variables, boolean typedDelays) {
     public static final ControllerLimits MAX = of(ControlTuning.MEMORY_DRUM_MAX, ControlTuning.CARD_RACK_MAX, true,
             io.github.soundgoodizerfan.feedback.process.ProcessTuning.CIRCUIT_MEMORY_MAX);
 
+    /**
+     * What a printed card of this medium can hold. A soft medium (Floppy Disk, USB Drive) holds the variables of a bare Controller plus the
+     * memory of the circuit seated in it ({@code CIRCUIT_STACK}, as a lattice adds to a Controller's Memory Drums); the cards and nodes it
+     * may hold are the host's business, so those stay at the ceiling. Any other medium is held to {@link #MAX}.
+     */
+    public static ControllerLimits ofMedium(net.minecraft.world.item.ItemStack card) {
+        if (!card.is(io.github.soundgoodizerfan.feedback.registry.FTags.SOFT_CARDS))
+            return MAX;
+        net.minecraft.world.item.ItemStack circuit = card.getOrDefault(io.github.soundgoodizerfan.feedback.registry.FDataComponents.CIRCUIT_STACK.get(),
+                net.minecraft.world.item.ItemStack.EMPTY);
+        int extra = circuit.isEmpty() ? 0 : io.github.soundgoodizerfan.feedback.process.Circuit.of(circuit).memory();
+        return new ControllerLimits(MAX.nodes(), BASE.variables() + extra, true);
+    }
+
     public static ControllerLimits of(int drums, int racks, boolean escapement) {
         return of(drums, racks, escapement, 0);
     }

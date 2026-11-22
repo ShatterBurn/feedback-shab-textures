@@ -100,7 +100,8 @@ Press **Print**. The program is checked first, and you'll be told if:
 - the program loops back on itself with no *Delay* in the loop,
 - a wire connects the wrong kind of signal (a yes/no into a number input),
 - two sensors being compared don't measure the same thing (temperature against current, say),
-- there are more than 40 cards or 24 variables (the most any [Controller](Controller.md#memory-and-upgrades) can hold), or
+- there are more than 40 cards or 24 variables (the most any [Controller](Controller.md#memory-and-upgrades) can hold),
+- the program declares more variables than a Memory Board, Floppy Disk or USB Drive can hold (see [Media](#media)), or
 - a Read or Write card names a variable that isn't declared, or a Delay length is out of range.
 
 Print does not know which Controller the card will go in. A Controller refuses to take a card that needs more cards or variables than it has room for, or a typed or wired Delay length without an Escapement fitted, and says why.
@@ -113,6 +114,8 @@ Each host takes its own media. The mechanical Controller and Programmer take the
 
 The USB Drive has its own icon.
 
+A Memory Board, Floppy Disk or USB Drive holds the variables of a bare Controller, **4**. A [circuit](Basic_Electronic_Circuit.md) built into a USB Drive adds its memory on top: a circuit with a [Lattice](Lattice.md) gives extra variables, up to 8 more, and a circuit without one adds none. Print refuses a program that declares more variables than the medium holds and says why. A Punch Card is not limited this way; the Controller checks it against its fitted Memory Drums.
+
 - **Punch Card**: written once. Mechanical hosts only.
 - **Memory Board**: rewritable: press **Erase** at an electric Programmer to bring the program back into the editor, then print the next one onto the same board. Made at the [Engineering Table](Engineering_Table.md) from a Punch Card between two Copper Fine Wires in a column, with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, holding Electrical Treatise III: Circuits ([Treatise](Treatise.md)); it spends no fasteners.
 - **Floppy Disk**: made at the Engineering Table with a screwdriver in the tool row and Electrical Treatise II: Coils and Magnets ([Treatise](Treatise.md)), from paper, a Punch Card, magnetite dust and a Wrought Iron Plate:
@@ -123,7 +126,7 @@ The USB Drive has its own icon.
   ```
 
   P is paper, D is a Punch Card, M is Magnetite Dust and H is a Wrought Iron Plate. It spends no fasteners. Put a printed disk in the Programmer and press **Erase**: the program comes back into the editor, the disk is blank, and Print writes the new program onto the same disk.
-- **USB Drive**: a Copper Plate above a [circuit](Basic_Electronic_Circuit.md) above a Ceramic, made at the Engineering Table with a screwdriver in the tool row and Electrical Treatise III: Circuits, with no fasteners. Rewritten the same way as a Floppy Disk. It goes only into a Computer fitted with a [USB Port](Electric_Controller.md#usb-port).
+- **USB Drive**: a Copper Plate above a [circuit](Basic_Electronic_Circuit.md) above a Ceramic, made at the Engineering Table with a screwdriver in the tool row and Electrical Treatise III: Circuits, with no fasteners. The circuit is consumed into the drive and sets how many variables it holds. Rewritten the same way as a Floppy Disk. It goes only into a Computer fitted with a [USB Port](Electric_Controller.md#usb-port).
 
 ## Text form
 

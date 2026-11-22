@@ -10,7 +10,7 @@ C
 K
 ```
 
-W is Copper Fine Wire, C is a [circuit](Basic_Electronic_Circuit.md) (any item in the circuits tag) and K is Ceramic. Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and Electrical Treatise III: Circuits ([Treatise](Treatise.md)); it spends no fasteners.
+W is Copper Fine Wire, C is a [circuit](Basic_Electronic_Circuit.md) (any item in the circuits tag) and K is Ceramic. Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and Electrical Treatise III: Circuits ([Treatise](Treatise.md)); it spends no fasteners. The circuit is built into the stick.
 
 ## Using it
 
