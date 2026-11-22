@@ -50,7 +50,7 @@ Readouts follow the instrument rule: a requirement printed on a part shows exact
 
 ## Thaumaturge
 
-**Optional.** With the **Thaumaturge** mod installed (a Thaumcraft port with aspects and a Thaumometer for scanning), Feedback items carry Thaumaturge aspects, so scanning them works as it does for any other item. Without Thaumaturge, nothing changes.
+**Optional.** With the **Thaumaturge** mod installed (a Thaumcraft port with aspects and a Thaumometer for scanning), nearly every Feedback item carries Thaumaturge aspects, so scanning them works as it does for any other item. Amounts differ from item to item. Without Thaumaturge, nothing changes.
 
 ### Materials
 
@@ -72,21 +72,44 @@ Every form of a material (ingot, dust, block, plate, nugget and the rest) carrie
 | Hardness and alloys | Ordo (order) |
 | Magnetism | Motus (motion) |
 | Powders | Perditio (entropy) |
+| Plastics, rubbers and composites | Fabrico (craft) |
+| Insulating plastics and rubbers | Praemunio (ward) |
+| Elastic rubber, such as tire rubber | Motus (motion) |
+| Bonded composites | Ordo (order) |
 
 Amounts follow the size of the form: a nugget carries less than an ingot, a block more. They also follow the material's figures, so a denser metal carries more Metallum and a better conductor more Potentia. See [Materials](Materials.md) for the properties themselves.
 
-### Machines and devices
+### Foods
 
-Machines and devices carry aspects that match their function:
+Every [food](Food.md) carries Victus (life) and Herba (plant), plus an aspect for what it does to the eater:
 
-- Mechanisms: Machina (mechanism) and Motus.
-- Tools and workshop machines: Instrumentum (tool) and Fabrico (craft).
+| Effect on the eater | Aspect |
+|---|---|
+| Warming and hearth foods | Ignis (fire) |
+| Cooling foods | Gelum (ice) |
+| Night sight | Lux (light) and Sensus (senses) |
+| Sobering | Cognitio (mind) |
+| Quickening | Motus (motion) |
+| Antitoxin | Alkimia (alchemy) |
+| Mending | Victus (life) |
+
+### Machines and hardware
+
+Machines, devices and carried hardware carry aspects that match their function:
+
+- Mechanisms, [belts](Belt_Modules.md), moving parts and [vehicle](Vehicles.md) hardware such as engines: Machina (mechanism) and Motus.
+- Tools and workshop machines: Instrumentum (tool) and Fabrico (craft). Tool heads and hand tools carry the same pair.
+- [Instruments](Instruments.md): Sensus (senses) and Instrumentum.
+- [Guns](Guns.md): Aversio (conflict).
+- [Armor](Armor.md) and [Combat Gear](Combat_Gear.md): Praemunio (ward).
 - Heat machines: Ignis. Cold machines: Gelum (ice). See [Heat](Heat.md).
-- Electrical parts: Potentia. See [Electricity](Electricity.md).
-- Flight hardware: Volatus (flight). This covers [thrusters](Thruster.md) with their nozzle and the suit thruster module of the [Exosuit](Exosuit.md), [jets](Jet.md) with their nozzle and compressor, [propellers](Propeller.md), the Levitation Plate and the Levitation Sleeve (see [Levitation](Levitation.md)). Light things that lift, such as feather down and the vanilla Phantom Membrane, carry it too.
+- Electrical parts: Potentia, and with electronics Cognitio (mind). See [Electricity](Electricity.md).
+- Flight hardware: Volatus (flight). This covers [thrusters](Thruster.md) with their nozzle and the suit thruster module of the [Exosuit](Exosuit.md), [jets](Jet.md) with their nozzle and compressor, [propellers](Propeller.md), the Levitation Plate and the Levitation Sleeve (see [Levitation](Levitation.md)). Light things that lift, such as feather down and the vanilla Phantom Membrane, carry it too. The gas cells of an [Airship](Airship.md) carry Aer (air) and Volatus.
 - Sensors: Sensus (senses).
 - Controllers and computers: Cognitio (mind). See [Controller](Controller.md).
+- Treatises and other books: Cognitio.
 - Experience, ender and sculk gear: Praecantatio (magic). See [Experience](Experience.md) and [Sculk](Sculk.md).
 - Reactor parts: their own aspects, set by what they do. See [Fission Reactor](Fission_Reactor.md).
+- [Robot](Robots.md) parts (chassis, drive, head, loader, radio, sensor, tether): Machina, Cognitio and Motus.
 
-Part items that carry their material on the stack, and creative-only blocks, have no aspects of their own. Thaumaturge works theirs out from their recipes.
+Part items that carry their material on the stack have no aspects of their own, and Thaumaturge works theirs out from their recipes. Creative and debug items have none.

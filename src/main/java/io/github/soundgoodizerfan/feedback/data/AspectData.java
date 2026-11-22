@@ -58,6 +58,11 @@ public final class AspectData implements DataProvider {
     /** A fluid boiling below this is a gas at the world's ambient temperature (Tu, as written in the material files). */
     private static final float GAS_BOILING = 20f;
 
+    /** The pinned keys of the current run, for the review's list of bare items. */
+    private static java.util.Set<String> PINNED = java.util.Set.of();
+    /** Food perk id to the aspects it adds (base weight), from {@code food_perks} in the pin file. */
+    private static Map<String, List<Aspect>> FOOD_PERKS = Map.of();
+
     private final PackOutput output;
 
     public AspectData(PackOutput output) {
@@ -66,8 +71,12 @@ public final class AspectData implements DataProvider {
 
     @Override
     public CompletableFuture<?> run(CachedOutput cache) {
+        FOOD_PERKS = table("food_perks");
         Map<ResourceLocation, List<Aspect>> entries = baseline();
-        Map<String, List<Aspect>> pins = pins();
+        // A group's items first, then explicit pins over them.
+        Map<String, List<Aspect>> pins = new TreeMap<>(groups());
+        pins.putAll(table("pins"));
+        PINNED = pins.keySet();
         review(entries);
         // A pin naming an item that does not exist is a typo: it would ship as a silent no-op.
         pins.keySet().stream().filter(k -> !k.startsWith("#") && !BuiltInRegistries.ITEM.containsKey(ResourceLocation.parse(k)))
@@ -126,7 +135,9 @@ public final class AspectData implements DataProvider {
         // material on the stack, which Thaumaturge cannot see, so they are skipped.
         FormItems.materials().forEach((matId, material) -> material.forms().forEach((form, id) -> {
             FormType type = FormItems.types().get(form);
-            if (type == null || type.part() || out.containsKey(id) || !BuiltInRegistries.ITEM.containsKey(id))
+            // "raw" is the material as it comes (a loaf, an onion, a lump of rock): no form type, but a whole item.
+            if ((type == null && !form.equals("raw")) || (type != null && type.part()) || out.containsKey(id)
+                    || !BuiltInRegistries.ITEM.containsKey(id))
                 return;
             List<Aspect> list = forForm(material, form);
             if (!list.isEmpty())
@@ -188,6 +199,24 @@ public final class AspectData implements DataProvider {
             out.put("ordo", clamp(2f + hardness / 4f));
         if (material.separation().magnetic() || material.traits().contains(Material.Trait.LUMINOUS))
             out.put("motus", clamp(2f + (material.separation().magnetic() ? 1.5f : 0f) + material.separation().diamagnetism()));
+        // Made, not found: a polymer or composite is craft; one that insulates also wards, an elastic one (moulded into
+        // a tyre) moves, and a bonded composite holds its order.
+        if (kind == Material.Kind.POLYMER || kind == Material.Kind.COMPOSITE) {
+            out.put("fabrico", clamp(3f + hardness / 3f));
+            if (material.electrical().insulation().isPresent())
+                out.put("praemunio", clamp(2f + hardness / 6f));
+            if (material.traits().contains(Material.Trait.TIRE))
+                out.put("motus", clamp(3f + Math.max(0f, 1f - hardness)));
+            if (kind == Material.Kind.COMPOSITE)
+                out.putIfAbsent("ordo", clamp(2f + hardness / 4f));
+        }
+        // Food is life; what it does to the eater (its perks) lays aspects over that, by the hand-edited
+        // food_perks table of the pin file, stronger perks heavier.
+        material.food().ifPresent(food -> {
+            out.put("victus", clamp(2f + (food.fat() + food.fibre()) * 6f));
+            food.perks().forEach((perk, strength) -> FOOD_PERKS.getOrDefault(perk, List.of())
+                    .forEach(a -> out.merge(a.id().replace("thaumaturge:", ""), a.amount() + strength * 8f, (x, y) -> clamp(x + y))));
+        });
         // Light fibre that holds air (feather down) lifts: flight.
         if (kind == Material.Kind.ANIMAL && material.traits().contains(Material.Trait.FIBROUS) && density < LIGHT_FIBRE)
             out.put("volatus", clamp(4f + (LIGHT_FIBRE - density) * 30f));
@@ -203,20 +232,58 @@ public final class AspectData implements DataProvider {
 
     // ------------------------------------------------------------------ pins
 
-    /** {@code data/feedback/aspect_pins.json}: {@code {"pins": {"<item id or #tag>": [{"aspect": "thaumaturge:machina", "amount": 5}]}}}. */
-    private static Map<String, List<Aspect>> pins() {
+    /**
+     * A section of {@code data/feedback/aspect_pins.json}: {@code {"pins": {"<item id or #tag>": [{"aspect": "thaumaturge:machina", "amount": 5}]}}}
+     * (a pin per item) and {@code "food_perks"} (the same shape, keyed by food perk id).
+     */
+    private static Map<String, List<Aspect>> table(String section) {
         Map<String, List<Aspect>> out = new TreeMap<>();
         try (InputStream in = AspectData.class.getResourceAsStream("/data/feedback/aspect_pins.json")) {
             if (in == null)
                 return out;
             JsonObject root = JsonParser.parseReader(new InputStreamReader(in, StandardCharsets.UTF_8)).getAsJsonObject();
-            for (Map.Entry<String, JsonElement> e : root.getAsJsonObject("pins").entrySet()) {
+            for (Map.Entry<String, JsonElement> e : root.getAsJsonObject(section).entrySet()) {
                 List<Aspect> list = new ArrayList<>();
                 for (JsonElement a : e.getValue().getAsJsonArray()) {
                     JsonObject o = a.getAsJsonObject();
                     list.add(new Aspect(o.get("aspect").getAsString(), o.has("amount") ? o.get("amount").getAsInt() : 1));
                 }
                 out.put(e.getKey(), list);
+            }
+        } catch (IOException | RuntimeException ex) {
+            throw new IllegalStateException("aspect_pins.json is unreadable", ex);
+        }
+        return out;
+    }
+
+    /**
+     * {@code "groups"} in the pin file: {@code {"aspects": {"machina": 5}, "spread": 2, "items": ["gear_set", ...]}}. The group says
+     * what a function is made of; each item's amount for each aspect is the group's figure moved by up to {@code spread} either
+     * way, by a fixed hash of the item and aspect, so no two items share all their numbers and a regenerate changes nothing.
+     * An item without a namespace is Feedback's.
+     */
+    private static Map<String, List<Aspect>> groups() {
+        Map<String, List<Aspect>> out = new TreeMap<>();
+        try (InputStream in = AspectData.class.getResourceAsStream("/data/feedback/aspect_pins.json")) {
+            if (in == null)
+                return out;
+            JsonObject root = JsonParser.parseReader(new InputStreamReader(in, StandardCharsets.UTF_8)).getAsJsonObject();
+            if (!root.has("groups"))
+                return out;
+            for (JsonElement g : root.getAsJsonArray("groups")) {
+                JsonObject group = g.getAsJsonObject();
+                int spread = group.has("spread") ? group.get("spread").getAsInt() : 0;
+                for (JsonElement item : group.getAsJsonArray("items")) {
+                    String key = item.getAsString().contains(":") ? item.getAsString() : "feedback:" + item.getAsString();
+                    List<Aspect> list = new ArrayList<>();
+                    for (Map.Entry<String, JsonElement> a : group.getAsJsonObject("aspects").entrySet()) {
+                        String id = "thaumaturge:" + a.getKey();
+                        int offset = spread == 0 ? 0 : Math.floorMod((key + id).hashCode(), 2 * spread + 1) - spread;
+                        list.add(new Aspect(id, Math.max(1, a.getValue().getAsInt() + offset)));
+                    }
+                    if (out.put(key, list) != null)
+                        LOG.warn("aspect group item listed twice: {}", key);
+                }
             }
         } catch (IOException | RuntimeException ex) {
             throw new IllegalStateException("aspect_pins.json is unreadable", ex);
@@ -234,6 +301,11 @@ public final class AspectData implements DataProvider {
             aspects(material, "ingot").forEach((id, w) -> names.append(names.isEmpty() ? "" : ",").append(id).append(Math.round(w)));
             lines.put(matId.toString(), names.toString());
         });
+        // What Thaumaturge will have to derive from recipes (or leave bare), so gaps are visible.
+        List<String> bare = BuiltInRegistries.ITEM.keySet().stream()
+                .filter(id -> id.getNamespace().equals("feedback") && !entries.containsKey(id) && !PINNED.contains(id.toString()))
+                .map(ResourceLocation::getPath).sorted().toList();
+        LOG.info("Feedback items with no aspect entry ({}): {}", bare.size(), String.join(" ", bare));
         LOG.info("Thaumaturge aspect baseline: {} items, {} materials", entries.size(), lines.size());
         lines.forEach((mat, names) -> LOG.info("  {} -> {}", mat, names.isEmpty() ? "(none)" : names));
     }
