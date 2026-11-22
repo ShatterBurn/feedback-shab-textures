@@ -61,6 +61,10 @@ public class PropBlockEntity extends RotationNode implements BlockEntitySubLevel
     private volatile float rhoKgM3;
     private volatile float tipLimit = Float.MAX_VALUE;
     private float dragSu;
+    /** What the airflow offers the shaft (set by the physics step): the free speed in RPM and the torque it drives with. */
+    private volatile float windRpm, windSu;
+    /** The wind figures the rotation network was last built with. */
+    private float windRpmApplied, windSuApplied;
     /** The card's pitch level, 0 reverse to 1 coarse; negative while no card has set it (a servo then holds the built pitch). */
     private volatile float pitchLevel = -1f;
     private final java.util.Set<io.github.soundgoodizerfan.feedback.control.data.DataNodeRef> links = new java.util.HashSet<>();
@@ -196,6 +200,36 @@ public class PropBlockEntity extends RotationNode implements BlockEntitySubLevel
         return dragSu <= 0f ? NO_DRAG : new Drag(dragSu);
     }
 
+    /**
+     * Autorotation: a disc past its zero-thrust advance ratio ({@code J > J0}, airflow along its thrust faster than it can pull against) is
+     * turned by the air. It free-runs where thrust is zero, {@code n = V / (D J0)}, and drives the shaft toward that speed with the torque it
+     * would take there ({@link #torqueNm}) times {@link VehicleTuning#PROP_WIND_EFFICIENCY}, falling to nothing as the shaft reaches it; so a
+     * freewheel has something to free, and a prop on a dead shaft in a dive spins up instead of braking. Only in the powered sense.
+     */
+    @Override
+    public io.github.soundgoodizerfan.feedback.core.unit.Rpm getGeneratedRpm() {
+        return new io.github.soundgoodizerfan.feedback.core.unit.Rpm(windRpmApplied);
+    }
+
+    @Override
+    public io.github.soundgoodizerfan.feedback.core.unit.Su getCapacitySu() {
+        return new io.github.soundgoodizerfan.feedback.core.unit.Su(windSuApplied);
+    }
+
+    /** The wind figures for airflow {@code forward} blocks a second along the thrust direction, at {@code turn} RPM and density {@code rho}. */
+    private void wind(PropDesign d, double forward, float turn, float rho) {
+        float lvl = pitchLevel;
+        double nFree = Math.max(0, forward) / (d.diameter() * j0(d, lvl));
+        double n = Math.max(0, turn) / 60.0;
+        if (reversed(d, lvl) || nFree * 60 < VehicleTuning.PROP_WIND_MIN_RPM || n >= nFree) {
+            windRpm = 0f;
+            windSu = 0f;
+            return;
+        }
+        windRpm = (float) (nFree * 60);
+        windSu = (float) (torqueNm(d, lvl, (float) nFree, rho) * (1 - n / nFree) * condition * VehicleTuning.PROP_WIND_EFFICIENCY);
+    }
+
     // --- the server tick --------------------------------------------------------------------------
 
     public void tickServer() {
@@ -226,10 +260,19 @@ public class PropBlockEntity extends RotationNode implements BlockEntitySubLevel
             setChanged();
         }
         float drag = Math.abs(turn) < 1f ? 0f : torqueNm(d, pitchLevel, n, rho) / Math.abs(turn);
+        boolean rebuild = false;
         if (drag > 0f ? Math.abs(drag - dragSu) > 0.15f * dragSu : dragSu > 0f) {
             dragSu = drag;
-            RotationPropagator.rebuildFrom(level, worldPosition);
+            rebuild = true;
         }
+        float wr = windRpm, ws = windSu;
+        if (Math.abs(wr - windRpmApplied) > 0.1f * Math.max(wr, windRpmApplied) + 0.5f || Math.abs(ws - windSuApplied) > 0.1f * Math.max(ws, windSuApplied) + 0.05f) {
+            windRpmApplied = wr;
+            windSuApplied = ws;
+            rebuild = true;
+        }
+        if (rebuild)
+            RotationPropagator.rebuildFrom(level, worldPosition);
     }
 
     // --- the physics step -------------------------------------------------------------------------
@@ -238,8 +281,10 @@ public class PropBlockEntity extends RotationNode implements BlockEntitySubLevel
     public void sable$physicsTick(ServerSubLevel subLevel, RigidBodyHandle handle, double dt) {
         PropDesign d = design;
         float turn = rpm, rho = rhoKgM3;
-        if (d == null || rho <= 0f || Math.abs(turn) < 1f) {
+        if (d == null || rho <= 0f) {
             status = 0;
+            windRpm = 0f;
+            windSu = 0f;
             return;
         }
         Direction facing = getBlockState().getValue(PropBlock.FACING);
@@ -247,6 +292,12 @@ public class PropBlockEntity extends RotationNode implements BlockEntitySubLevel
         var pose = subLevel.logicalPose();
         pose.transformNormal(dir, worldDir);
         handle.getLinearVelocity(lin);
+        // Airflow along the thrust, whatever the shaft is doing: past the zero-thrust advance ratio it turns the disc (autorotation).
+        wind(d, lin.dot(worldDir), turn, rho);
+        if (Math.abs(turn) < 1f) {
+            status = 0;
+            return;
+        }
         // A reversed shaft pushes the other way and is measured against motion along its own thrust direction.
         float lvl = pitchLevel;
         boolean flipped = reversed(d, lvl);

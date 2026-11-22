@@ -304,6 +304,11 @@ public final class VehicleTuning {
     /** Share of forward thrust a propeller makes spun backwards (blade sections run trailing edge first). Invented, tuned in play. */
     public static final float PROP_REVERSE_EFFICIENCY = 0.6f;
 
+    /** Share of the torque a disc takes at its free speed that the airflow gives back to the shaft when it drives it (a windmilling disc is a poor turbine). Invented, tuned in play. */
+    public static final float PROP_WIND_EFFICIENCY = 0.5f;
+    /** Free-running speed, in RPM, under which the airflow drives nothing (the bearings win). Invented. */
+    public static final float PROP_WIND_MIN_RPM = 20f;
+
     /** Placeholder [OPEN]. Power coefficient as a share of Ct0 x J0, chosen so peak efficiency is about 0.8 at half the zero-thrust advance ratio. */
     public static final float PROP_CP_PER_CT0_J0 = 0.3125f;
 
