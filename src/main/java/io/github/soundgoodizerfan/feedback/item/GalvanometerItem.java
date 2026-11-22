@@ -70,6 +70,9 @@ public class GalvanometerItem extends Item implements Instrument {
             return InteractionResult.PASS;
 
         if (!level.isClientSide) {
+            // The needle's lead is a hand on the conductor: a bare live one shocks the hand that reads it (a glove rated to the band stops it),
+            // and the reading is taken all the same. An insulated probe would be a part of its own.
+            io.github.soundgoodizerfan.feedback.core.hazard.Shock.apply(player, node.touchBand());
             Instrument self = Instruments.fitted(stack, this, level);
             // A trickle fainter than the needle can feel, for the gain it has, gives no reading at all (not a reading of zero).
             if (!Instruments.readable(self, Quantity.CURRENT, node.getAmps(), io.github.soundgoodizerfan.feedback.process.Circuit.of(stack, level).gain())) {
