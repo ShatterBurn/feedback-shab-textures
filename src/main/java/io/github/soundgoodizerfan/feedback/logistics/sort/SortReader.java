@@ -51,7 +51,15 @@ public final class SortReader {
         Fixed f = stack.getItem() instanceof io.github.soundgoodizerfan.feedback.modular.part.ModularPartItem
                 ? fixed(stack) : CACHE.computeIfAbsent(stack.getItem(), i -> fixed(new ItemStack(i)));
         float temp = ItemHeat.get(stack, level).value();
-        return new Reading(f.unknown, f.magnetic, f.curie, f.reflectivity, f.density, f.hardness, f.friction, f.kind, temp,
+        // An optical sorter sees the surface: a coat of metal shows its own reflectivity over as much of the piece as is still on it.
+        float reflectivity = f.reflectivity;
+        var coat = stack.get(FDataComponents.PLATING.get());
+        if (coat != null) {
+            Material plated = MaterialTable.get().materials().get(coat.metal());
+            if (plated != null && plated.separation().reflectivity().isPresent())
+                reflectivity += (plated.separation().reflectivity().get() - reflectivity) * coat.intact();
+        }
+        return new Reading(f.unknown, f.magnetic, f.curie, reflectivity, f.density, f.hardness, f.friction, f.kind, temp,
                 f.unitMass * stack.getCount(), f.unitMass, f.brittle, f.sticky,
                 stack.has(FDataComponents.PLATING.get()) ? f.tell * LogisticsTuning.KIND_COATED_TELL : f.tell);
     }
