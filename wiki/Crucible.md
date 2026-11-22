@@ -25,6 +25,10 @@ A [Refractory Lining](Refractory_Lining.md) makes a light crucible behave more l
 
 Every wall material holds up to a temperature. Run the crucible **hotter than its wall material holds** and the wall wears; a worn wall leaks more heat, and a spent wall gives way. Brick holds less than a good metal; choose the wall for the temperatures you mean to run.
 
+## How it looks
+
+A built crucible is drawn as an open clay pot. A bigger tank makes a wider, taller pot, and a heavier wall for its size makes a thicker rim and sides, so a glance tells a roomy light crucible from a small heavy one. Molten metal shows as a surface in the bowl, in the fluid's own color and texture, at the height the tank is filled. Each charge slot that holds something shows a lump on the floor of the pot. A hot pot warms toward the glow color of its heat band (see [Heat](Heat.md)). Whatever its size, the pot's outline when you look at it is the same.
+
 ## Using it
 
 - **Right-click with an item** to drop one in. Shift shows the same. A bucket or other fluid container is poured into the crucible's tank as far as it has room, and the empty bucket comes back (water here is what a dirt dip turns into clay, and what sets concrete powder into concrete). It holds as many items as it has charge slots.

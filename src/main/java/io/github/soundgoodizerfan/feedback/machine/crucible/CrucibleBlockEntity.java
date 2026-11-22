@@ -164,6 +164,17 @@ public class CrucibleBlockEntity extends io.github.soundgoodizerfan.feedback.mac
                 + dampers * VesselTuning.DAMPER_LEAK_BONUS.workPerTickPerTu());
     }
 
+    /** The hollow this vessel holds, mB: what a picture of it is sized by. */
+    public float shownTankMb() {
+        return tank.getCapacity();
+    }
+
+    /** The wall's mass as designed (the charge not counted): what a picture of it is thickened by. */
+    public float shownWallMass() {
+        return getBlockState().getBlock() instanceof CrucibleBlock crucible
+                ? figures.get("Mass", crucible.getThermalMass().workPerTu()) : VesselTuning.CRUCIBLE_SMALL_MASS.workPerTu();
+    }
+
     public boolean isArcHearth() {
         return getBlockState().is(io.github.soundgoodizerfan.feedback.registry.FBlocks.ARC_HEARTH.get());
     }

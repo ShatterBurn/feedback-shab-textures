@@ -396,14 +396,7 @@ public abstract class ThermalVesselCore extends io.github.soundgoodizerfan.feedb
             sync();
             return;
         }
-        // Food is a material, not a recipe: the ladder takes it past done to dried and charred (food spec 4.3).
-        var food = io.github.soundgoodizerfan.feedback.process.Cooking.findCookable(level, input);
-        if (food.isPresent()) {
-            contents.set(slot, io.github.soundgoodizerfan.feedback.process.Cooking.tick(input, food.get(), new Tu(temperature), smoke(), level));
-            slotTpu[slot] = 0f;
-            return;
-        }
-        // A plain dip (wash dirt to clay) works on a stack sitting in the vessel the same as one held to it; a coat or imbue needs a hand.
+        // A plain dip (wash dirt to clay, wet wheat to dough) works on a stack sitting in the vessel the same as one held to it; a coat or imbue needs a hand. It runs before the food ladder: a bath is a deliberate act, and a food in a bath that has a dip for it is dipped, not cooked.
         var dip = ThermalProcessTable.get().findDip(tank.getFluid(), input, new Tu(temperature));
         if (dip.isPresent() && dip.get().coat().isEmpty() && (!dip.get().hasFluidResult() || takesMelt())) {
             FluidStack drawn = tank.drain(dip.get().fluid().amount(), IFluidHandler.FluidAction.EXECUTE);
@@ -414,6 +407,13 @@ public abstract class ThermalVesselCore extends io.github.soundgoodizerfan.feedb
             else
                 placeHot(dip.get().result().copy());
             cleanEmpties(contents);
+            return;
+        }
+        // Food is a material, not a recipe: the ladder takes it past done to dried and charred (food spec 4.3).
+        var food = io.github.soundgoodizerfan.feedback.process.Cooking.findCookable(level, input);
+        if (food.isPresent()) {
+            contents.set(slot, io.github.soundgoodizerfan.feedback.process.Cooking.tick(input, food.get(), new Tu(temperature), smoke(), level));
+            slotTpu[slot] = 0f;
             return;
         }
         var row = ThermalProcessTable.get().findSingle(level, input, new Tu(temperature), airlessRun());

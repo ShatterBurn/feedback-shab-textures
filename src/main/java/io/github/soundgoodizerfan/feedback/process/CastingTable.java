@@ -36,11 +36,12 @@ public class CastingTable extends SimpleJsonResourceReloadListener {
      *                 melt's own freezing point: a spray shattered by water, which is how a melt becomes dust (atomising). Left to cool slowly
      *                 it is simply a long wait; douse it in the basin and it is dust at once.
      */
-    private record Shape(String form, int count, boolean quenched) {
+    private record Shape(String form, int count, boolean quenched, int mb) {
         static final com.mojang.serialization.Codec<Shape> CODEC = com.mojang.serialization.codecs.RecordCodecBuilder.create(i -> i.group(
                 com.mojang.serialization.Codec.STRING.fieldOf("form").forGetter(Shape::form),
                 com.mojang.serialization.Codec.intRange(1, 64).optionalFieldOf("count", 1).forGetter(Shape::count),
-                com.mojang.serialization.Codec.BOOL.optionalFieldOf("quenched", false).forGetter(Shape::quenched)
+                com.mojang.serialization.Codec.BOOL.optionalFieldOf("quenched", false).forGetter(Shape::quenched),
+                com.mojang.serialization.Codec.intRange(1, 1296 * 4).optionalFieldOf("mb", FormType.DEFAULT_MB).forGetter(Shape::mb)
         ).apply(i, Shape::new));
     }
 
@@ -103,13 +104,19 @@ public class CastingTable extends SimpleJsonResourceReloadListener {
                                 }).orElse(null);
                     if (result != null)
                         all.add(new Casting(new net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient(
-                                net.neoforged.neoforge.fluids.crafting.FluidIngredient.of(fluid.get()), FormType.DEFAULT_MB),
+                                net.neoforged.neoforge.fluids.crafting.FluidIngredient.of(fluid.get()), shape.mb()),
                                 shape.quenched() ? io.github.soundgoodizerfan.feedback.core.thermal.ThermalTuning.WARM_TU : melt.get(), result, mold));
                 });
             });
             entries = List.copyOf(all);
         }
         return entries;
+    }
+
+    /** How much melt a mold of this shape holds and casts from: the volume of what it makes (a block mold takes a block's 1296 mB, an ingot mold 144). */
+    public int capacity(String mold) {
+        Shape shape = shapes.get(mold);
+        return shape == null ? FormType.DEFAULT_MB : shape.mb();
     }
 
     /** The casting entry a mold's current contents satisfy, if any. */

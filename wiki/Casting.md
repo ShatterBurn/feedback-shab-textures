@@ -23,12 +23,12 @@ Melting takes time. A vessel melts one piece at a time: about half a second for 
 
 ## Molds
 
-A mold's shape names a form. Any metal or glass with a molten fluid freezes into that form of itself at its own melting point.
+A mold's shape names a form. Any metal or glass with a molten fluid freezes into that form of itself at its own melting point. Each mold takes its full amount, **144 mB** unless its entry says otherwise.
 
 - **Ingot Mold**: casts one ingot. Craft it from three Bricks in a row, a flat tray. Fired clay, so no metal needed to make your first one.
 - **Ball Mold**: casts **eight round balls** from one ingot's worth (see [Bullet shapes](Ammunition.md#bullet-shapes)).
 - **Bullet Mold**: casts **eight bullets** from one ingot's worth. Crafted from two Wrought Iron Drilled Plates and two Sticks (see [Ammunition](Ammunition.md#bullets)).
-- **Block Mold**: casts a glass block of the melt's glass (a [Block of Uranium Glass](Materials.md#uranium-glass-block), for one). Four Wrought Iron Drilled Plates in a square.
+- **Block Mold**: casts a glass block of the melt's glass (a [Block of Uranium Glass](Materials.md#uranium-glass-block), for one). It takes **1296 mB**, a block's worth, and a basin fills it across several pours. Four Wrought Iron Drilled Plates in a square.
 - **Glass Pane Mold**: casts **3 Glass Panes** from 144 mB of molten glass.
 - **Glass Bottle Mold**: casts a **Glass Bottle** from 144 mB of molten glass.
 - **Atomising Mold**: see [below](#atomising-mold).
@@ -109,7 +109,7 @@ B is any brick.
 - **Right-click with a Water Bucket** to quench: everything in the basin drops to room temperature at once. A pour in an [Atomising Mold](#atomising-mold) shatters into dust.
 - **Right-click with a full Copper Bucket** of melt to pour the bucket into the basin, as a vessel above would.
 
-With molds set, the melt fills them in order, first slot to last: each mold takes its [full 144 mB](#molds), then the next. Each is an ordinary filled mold, as hot as the pour, cooling by itself; you can lift it out and use it by hand instead of knocking it out. Mold slots that hold a different melt are skipped.
+With molds set, the melt fills them in order, first slot to last: each mold takes its [full amount](#molds), then the next. Each is an ordinary filled mold, as hot as the pour, cooling by itself; you can lift it out and use it by hand instead of knocking it out. Mold slots that hold a different melt are skipped.
 
 In the basin's screen a hot ingot glows in its mold, sparks lift off glowing stock and steam rises off warm ingots. A ring runs across a bar, and a clink sounds when an ingot sets.
 
@@ -195,6 +195,8 @@ Glass is brittle. A hard hit chips a share of the coat off, and the tooltip read
 ## Washing clay
 
 Right-click a vessel (a Thermal Vessel or a Crucible) holding water with dirt, gravel or mud in hand to dip it. Each dip takes one item and 250 mB of water. Dirt and gravel each give 1 **Clay Ball**; mud gives 2. A **wheat** dipped the same way gives 1 [Dough](Dough.md).
+
+An item already sitting in the vessel's slots takes the same dip when the vessel holds water: dirt becomes clay and wheat becomes dough, each drawing 250 mB. Food with no dip for the bath it sits in cooks, dries and chars as usual.
 
 ## Stained glass
 

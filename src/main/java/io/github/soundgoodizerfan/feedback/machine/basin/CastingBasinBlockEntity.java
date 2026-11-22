@@ -73,7 +73,11 @@ public class CastingBasinBlockEntity extends BaseContainerBlockEntity {
     private final ContainerData data = new ContainerData() {
         @Override
         public int get(int index) {
-            return index == 0 ? pool.getFluidAmount() : Math.round(poolTu);
+            return switch (index) {
+                case 0 -> pool.getFluidAmount();
+                case 1 -> Math.round(poolTu);
+                default -> net.minecraft.core.registries.BuiltInRegistries.FLUID.getId(pool.getFluid().getFluid());
+            };
         }
 
         @Override
@@ -82,7 +86,7 @@ public class CastingBasinBlockEntity extends BaseContainerBlockEntity {
 
         @Override
         public int getCount() {
-            return 2;
+            return 3;
         }
     };
 
@@ -142,7 +146,7 @@ public class CastingBasinBlockEntity extends BaseContainerBlockEntity {
             FluidStack held = MoldItem.contentOf(mold).copy();
             if (!held.isEmpty() && !FluidStack.isSameFluidSameComponents(held, offered))
                 continue;
-            int room = FTuning.MOLD_CAPACITY_MB - held.getAmount();
+            int room = CastingTable.get().capacity(((MoldItem) mold.getItem()).shape()) - held.getAmount();
             int added = Math.min(room, offered.getAmount());
             if (added <= 0)
                 continue;
@@ -172,7 +176,7 @@ public class CastingBasinBlockEntity extends BaseContainerBlockEntity {
             if (!(mold.getItem() instanceof MoldItem moldItem))
                 continue;
             FluidStack held = MoldItem.contentOf(mold).copy();
-            if (held.getAmount() < FTuning.MOLD_CAPACITY_MB)
+            if (held.getAmount() < CastingTable.get().capacity(moldItem.shape()))
                 continue;
             Optional<Casting> casting = CastingTable.get().find(held, moldItem.shape());
             if (casting.isEmpty() || !casting.get().isSolidAt(ItemHeat.get(mold, level)))

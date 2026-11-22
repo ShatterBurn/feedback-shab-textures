@@ -92,7 +92,7 @@ public class CrucibleScreen extends SkinnedScreen<CrucibleMenu> {
         var fluid = menu.tankFluid();
         // The melt shines toward the glow colour as hot as the chamber is, flickering with the fire.
         int colour = GlowColours.heated(IClientFluidTypeExtensions.of(fluid).getTintColor() & 0xFFFFFF, tu * HeatGlow.pulse()) | 0xFF000000;
-        Gauge.of(() -> menu.tankMb() / (double) menu.tankCapacity()).lead(() -> colour).vertical()
+        Gauge.of(() -> menu.tankMb() / (double) menu.tankCapacity()).liquid(menu::tankFluid).lead(() -> colour).vertical()
                 .render(graphics, skin, leftPos + CrucibleMenu.TANK_X, topPos + CrucibleMenu.GAUGE_Y, CrucibleMenu.TANK_W, CrucibleMenu.GAUGE_H);
         inventory(graphics, 8, CrucibleMenu.INV_Y);
     }

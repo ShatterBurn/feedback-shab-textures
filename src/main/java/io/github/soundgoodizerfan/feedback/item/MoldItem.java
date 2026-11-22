@@ -111,8 +111,9 @@ public class MoldItem extends Item {
 
         // Only a full mold's worth: a part-filled mold could neither cast nor be topped up.
         FluidTank tank = vessel.getTank();
-        FluidStack drawn = tank.drain(FTuning.MOLD_CAPACITY_MB, IFluidHandler.FluidAction.SIMULATE);
-        if (drawn.getAmount() < FTuning.MOLD_CAPACITY_MB)
+        int capacity = CastingTable.get().capacity(shape);
+        FluidStack drawn = tank.drain(capacity, IFluidHandler.FluidAction.SIMULATE);
+        if (drawn.getAmount() < capacity)
             return InteractionResult.FAIL;
 
         tank.drain(drawn.getAmount(), IFluidHandler.FluidAction.EXECUTE);

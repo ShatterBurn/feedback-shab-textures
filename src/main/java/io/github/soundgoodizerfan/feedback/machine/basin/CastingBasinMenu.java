@@ -25,7 +25,7 @@ public class CastingBasinMenu extends AbstractContainerMenu {
     private final ContainerData data;
 
     public CastingBasinMenu(int id, Inventory inventory) {
-        this(id, inventory, new SimpleContainer(CastingBasinBlockEntity.SLOTS), new SimpleContainerData(2));
+        this(id, inventory, new SimpleContainer(CastingBasinBlockEntity.SLOTS), new SimpleContainerData(3));
     }
 
     public CastingBasinMenu(int id, Inventory inventory, Container container, ContainerData data) {
@@ -55,6 +55,11 @@ public class CastingBasinMenu extends AbstractContainerMenu {
     /** What the open pool holds, in mB. */
     public int poolMb() {
         return data.get(0);
+    }
+
+    /** What the open pool holds. */
+    public net.minecraft.world.level.material.Fluid poolFluid() {
+        return net.minecraft.core.registries.BuiltInRegistries.FLUID.byId(data.get(2));
     }
 
     @Override

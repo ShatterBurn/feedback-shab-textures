@@ -54,6 +54,27 @@ public class CrucibleBlock extends Block implements EntityBlock, io.github.sound
         builder.add(io.github.soundgoodizerfan.feedback.core.thermal.Incandescence.GLOW);
     }
 
+    /**
+     * The largest pot a design can draw ({@code client/render/CrucibleShape}: foot, body, lip), as {x1, y1, z1, x2, y2, z2} in sixteenths.
+     * One outline for every size, so the pot you aim at never differs from the one beside it. Mirrors {@code scripts/crucible_model.py}.
+     */
+    private static final int[][] BOXES = {{4, 0, 4, 12, 2, 12}, {2, 2, 2, 14, 10, 14}, {1, 10, 1, 15, 12, 15}};
+    private static final net.minecraft.world.phys.shapes.VoxelShape POT = buildPot();
+
+    private static net.minecraft.world.phys.shapes.VoxelShape buildPot() {
+        net.minecraft.world.phys.shapes.VoxelShape shape = net.minecraft.world.phys.shapes.Shapes.empty();
+        for (int[] b : BOXES)
+            shape = net.minecraft.world.phys.shapes.Shapes.or(shape, Block.box(b[0], b[1], b[2], b[3], b[4], b[5]));
+        return shape;
+    }
+
+    /** The arc hearth keeps its own full-block model and outline. */
+    @Override
+    protected net.minecraft.world.phys.shapes.VoxelShape getShape(BlockState state, net.minecraft.world.level.BlockGetter level, BlockPos pos,
+                                                                 net.minecraft.world.phys.shapes.CollisionContext context) {
+        return state.is(io.github.soundgoodizerfan.feedback.registry.FBlocks.ARC_HEARTH.get()) ? net.minecraft.world.phys.shapes.Shapes.block() : POT;
+    }
+
     public int slots() {
         return slots;
     }

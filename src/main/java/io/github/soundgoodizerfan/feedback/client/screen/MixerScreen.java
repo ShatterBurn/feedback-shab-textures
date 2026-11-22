@@ -127,7 +127,9 @@ public class MixerScreen extends SkinnedScreen<MixerMenu> {
 
         int colour = tankColour();
         double cap = FTuning.GUN_CHARGE_CEILING * FTuning.MIXER_MB_PER_PART;
+        // A finished product is a real fluid and shows as it; an unmixed set of parts is only a colour.
         Gauge.of(() -> (menu.productMb() > 0 ? menu.productMb() : menu.fluidMb()) / cap).lead(() -> colour).vertical()
+                .liquid(() -> menu.productMb() > 0 ? menu.productFluid() : null)
                 .render(graphics, skin, leftPos + MixerMenu.TANK_X, topPos + MixerMenu.TANK_Y, MixerMenu.TANK_W, MixerMenu.TANK_H);
 
         var parts = parts();

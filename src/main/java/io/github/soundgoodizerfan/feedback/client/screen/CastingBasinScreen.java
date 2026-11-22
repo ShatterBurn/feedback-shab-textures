@@ -30,7 +30,7 @@ public class CastingBasinScreen extends SkinnedScreen<CastingBasinMenu> {
 
     private static final int GAUGE_X = 130, GAUGE_Y = 18, GAUGE_W = 10, GAUGE_H = 86;
 
-    private final Gauge pool = Gauge.of(() -> menu.poolMb() / (float) MachineTuning.BASIN_POOL_MB).ticks(9).vertical();
+    private final Gauge pool = Gauge.of(() -> menu.poolMb() / (float) MachineTuning.BASIN_POOL_MB).liquid(menu::poolFluid).ticks(9).vertical();
 
     /** Sparks and steam over the molds (panel-relative), and when each mold last gained ingots, for the ring that runs across a bar as it sets. */
     private final Specks specks = new Specks(40);

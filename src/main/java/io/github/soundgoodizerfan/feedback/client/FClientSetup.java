@@ -132,7 +132,7 @@ public class FClientSetup {
 
         event.registerBlockEntityRenderer(FBlockEntities.SKILLET.get(), SkilletRenderer::new);
         event.registerBlockEntityRenderer(FBlockEntities.STOCKPOT.get(), StockpotRenderer::new);
-        event.registerBlockEntityRenderer(FBlockEntities.CRUCIBLE.get(), GlowRenderer::new);
+        event.registerBlockEntityRenderer(FBlockEntities.CRUCIBLE.get(), io.github.soundgoodizerfan.feedback.client.render.CrucibleRenderer::new);
         event.registerBlockEntityRenderer(FBlockEntities.THERMAL_VESSEL.get(), GlowRenderer::new);
         event.registerBlockEntityRenderer(FBlockEntities.CASTING_BASIN.get(), GlowRenderer::new);
         event.registerBlockEntityRenderer(io.github.soundgoodizerfan.feedback.registry.FLogistics.BELT_ENTITY.get(), BeltModuleRenderer::new);
