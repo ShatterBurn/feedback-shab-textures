@@ -1,4 +1,4 @@
-// 1.21.1	2026-11-21T23:44:22.997724009	Block States: feedback
+// 1.21.1	2026-11-22T11:58:14.212121256	Block States: feedback
 0a87f2bb026369e040cdeed32dd5071ea4e35b44 assets/feedback/blockstates/alnico_block.json
 50ce162472eb5d1ced5989c7d098f6ea1a570ccf assets/feedback/blockstates/alnico_pipe.json
 4a4a4f3dba74d39a8a934c2874f25fc8932a02e5 assets/feedback/blockstates/alumina_deepslate_ore.json
@@ -258,6 +258,8 @@ fb3a855761e79b45b671989ebab7e6ad0ee0d61d assets/feedback/blockstates/sulfur_loos
 1eced50263907a61105fdb6975a3d1b3c8af674b assets/feedback/blockstates/synthetic_rubber_block.json
 50ce162472eb5d1ced5989c7d098f6ea1a570ccf assets/feedback/blockstates/synthetic_rubber_pipe.json
 50ce162472eb5d1ced5989c7d098f6ea1a570ccf assets/feedback/blockstates/tempered_steel_pipe.json
+a5336bf7fa6d0b03c1fc0d1d406d4cc345990eb4 assets/feedback/blockstates/thaumium_block.json
+50ce162472eb5d1ced5989c7d098f6ea1a570ccf assets/feedback/blockstates/thaumium_pipe.json
 2c2dd73c42b2d1c86ccdaf45b7326411b8bd8f36 assets/feedback/blockstates/thorium_block.json
 50ce162472eb5d1ced5989c7d098f6ea1a570ccf assets/feedback/blockstates/thorium_fuel_rod_pipe.json
 50ce162472eb5d1ced5989c7d098f6ea1a570ccf assets/feedback/blockstates/thorium_pipe.json
@@ -492,6 +494,7 @@ eeb2b7fdd623f92b323c9c3b84696a306aa13b50 assets/feedback/models/block/stibnite_d
 55da8edf27a5c9c02f3abacd24405597fe70fd0a assets/feedback/models/block/stibnite_ore.json
 5658b93c064de4b8d37ed011c74129e00346d38f assets/feedback/models/block/sulfur_loose_rock.json
 a25a6fdf9eae81c710624b79e3dd9f7d6181a9dd assets/feedback/models/block/synthetic_rubber_block.json
+a25a6fdf9eae81c710624b79e3dd9f7d6181a9dd assets/feedback/models/block/thaumium_block.json
 a25a6fdf9eae81c710624b79e3dd9f7d6181a9dd assets/feedback/models/block/thorium_block.json
 a25a6fdf9eae81c710624b79e3dd9f7d6181a9dd assets/feedback/models/block/thorium_tungsten_block.json
 a25a6fdf9eae81c710624b79e3dd9f7d6181a9dd assets/feedback/models/block/tin_block.json
@@ -781,6 +784,8 @@ db547f183c6e4debad5537e9cfd0f328b1816179 assets/feedback/models/item/stibnite_de
 eb8da86806bccfaa9a0f01956cf037b2d92ec498 assets/feedback/models/item/synthetic_rubber_block.json
 220c3a56bd41c563f0690f6c2070049e10f96e54 assets/feedback/models/item/synthetic_rubber_pipe.json
 220c3a56bd41c563f0690f6c2070049e10f96e54 assets/feedback/models/item/tempered_steel_pipe.json
+a2bf9af22c6532de49160ec5ac5093e85b65d475 assets/feedback/models/item/thaumium_block.json
+220c3a56bd41c563f0690f6c2070049e10f96e54 assets/feedback/models/item/thaumium_pipe.json
 e759e779e85441e430264a587dac066dd0469221 assets/feedback/models/item/thorium_block.json
 220c3a56bd41c563f0690f6c2070049e10f96e54 assets/feedback/models/item/thorium_fuel_rod_pipe.json
 220c3a56bd41c563f0690f6c2070049e10f96e54 assets/feedback/models/item/thorium_pipe.json
