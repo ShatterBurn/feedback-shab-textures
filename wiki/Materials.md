@@ -518,3 +518,5 @@ Tin, zinc and lead are ores in the ground. **Silver** comes from **argentite**, 
 JEI's **Material Stats** page shows every figure a material has (kind, XP top level, XP capacity, XP conductance, XP leak, oxygen share, hardness, density, heat (including specific, melting and boiling heat), toxicity, corrosivity, shear thickening, strength, electrical, and for foods moisture, fat, fiber, germs and toxin in Qu, with its compounds and perks). Figures that are zero are left out, and hovering a row says what it means. Hardness, density, melting point, service temperature, thermal conductivity, toughness, yield, friction and flame temperature carry a word beside the figure (low, middling or high, against the range across all materials); holding Shift while hovering gives the edges. A material that skins gas cells also shows its permeability.
 
 Some materials also carry a **[perk](Material_Perks.md)**: what they do to whatever a weapon made of them hits.
+
+With the Thaumaturge mod installed, material items also carry aspects; see [Thaumaturge](Thaumaturge.md).

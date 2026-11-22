@@ -22,5 +22,6 @@ public final class FeedbackData {
         event.getGenerator().addProvider(event.includeServer(),
                 new FormData.ItemTagsGen(output, lookup, blockTags.contentsGetter(), event.getExistingFileHelper()));
         event.getGenerator().addProvider(event.includeServer(), new FormData.Recipes(output, lookup));
+        event.getGenerator().addProvider(event.includeServer(), new AspectData(output));
     }
 }
