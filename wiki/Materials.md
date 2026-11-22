@@ -417,7 +417,7 @@ A **composite** is two materials mixed into one plate: light, tough and cheap to
 | --- | --- | --- |
 | Fibreglass | 30 to 40% silica glass, 60 to 70% polypropylene | Insulates to HV. Stands 130 Tu. |
 | Carbon Fibre | 55 to 65% graphite, 35 to 45% polypropylene | Strong for its weight (yield strength 30) and conducts a little. Stands 150 Tu. |
-| Plywood | 85 to 95% wood, 5 to 15% slime | Flammable and fibrous. Stands 100 Tu. |
+| Plywood | 85 to 95% any wood (the generic wood or any [species](#woods)), 5 to 15% slime | Flammable and fibrous. Stands 100 Tu. |
 | Cob | 60 to 72% clay, 14 to 24% sand, 8 to 18% wheat | Soft and rough (grip friction 0.7). Stands 900 Tu. Porous. |
 | Basalt Fibre | 60 to 70% basalt, 30 to 40% polypropylene | Tough (yield strength 20) and insulates to HV. Stands 250 Tu. |
 

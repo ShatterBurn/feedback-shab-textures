@@ -232,7 +232,7 @@ W is [Copper Wire](Wire_Drawer.md), N is a Wrought Iron Nugget and G is a Glass 
 - **Carry it anywhere in your inventory** and Jade's tooltip on electrical blocks gains an amps line.
 - Reading a line carrying more than **20 A** slams the needle and it drifts; see [Drift](#drift). Set against a dead line it reads zero again.
 
-Reading a live cable is free and safe while it is insulated, and nothing has to stop while you measure. Right-clicking **bare** live cable is a hand on the wire and shocks you.
+Reading a live cable is free and safe while it is insulated, and nothing has to stop while you measure. Right-clicking a **bare** live cable or a live [fence](Electrified_Fence.md) is a hand on the wire: you still get the reading, and it shocks you as touching it would. A glove rated for the band stops it. Idle wires shock nothing.
 
 - Find which cable on a busy line carries the most (and is about to overheat).
 - Check whether adding another [Galvanic Cell](Galvanic_Cell.md) helped.

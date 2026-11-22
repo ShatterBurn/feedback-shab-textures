@@ -110,7 +110,7 @@ A [Static ground](Brewing_Stand.md) potion cuts shock damage to two fifths while
 
 **Armor doesn't help**; a chestplate isn't insulation. A glove stops every shock up to the band it is rated for. They also stop the arc of an [electric gun](Electric_Gun.md#misuse-and-hazards) fired in water or rain, as long as the gun's battery is within what they stop.
 
-Right-clicking a bare live wire with a [Galvanometer](Instruments.md#galvanometer) or [Electroscope](Instruments.md#electroscope) is still a hand on the wire, and it still shocks you.
+Right-clicking a bare live wire with a [Galvanometer](Instruments.md#galvanometer) or [Electroscope](Instruments.md#electroscope) is a hand on the wire: you get the reading and it shocks you. A glove rated for the band stops it.
 
 ## Arc flash
 
