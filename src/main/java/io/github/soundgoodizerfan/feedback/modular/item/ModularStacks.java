@@ -469,8 +469,14 @@ public final class ModularStacks {
     /** The heads of a design, first head first: a single-head type's own, or what each striking part is. */
     private static List<ModularHeads> heads(ModularDesign design, ModularType type) {
         List<String> strikers = type.strikers();
-        if (strikers.isEmpty())
-            return type.mines().isEmpty() ? List.of() : List.of(new ModularHeads(type.mines(), type.strike(), 0, null, type.family(), type.wearLitres(), type.actions(), null, type.school(), type.trait(), type.traitParams()));
+        if (strikers.isEmpty()) {
+            // The shape the wearing part was made in may dig other tags than the type does (a serrated blade saws foliage).
+            Part wearing = design.part(type.wearRole());
+            ModularType.Role wearRole = type.roles().get(type.wearRole());
+            List<ModularType.Mine> mines = wearing == null || wearRole == null ? type.mines()
+                    : wearRole.variant(wearing).map(ModularType.Variant::mines).filter(m -> !m.isEmpty()).orElse(type.mines());
+            return mines.isEmpty() ? List.of() : List.of(new ModularHeads(mines, type.strike(), 0, null, type.family(), type.wearLitres(), type.actions(), null, type.school(), type.trait(), type.traitParams()));
+        }
         List<ModularHeads> out = new ArrayList<>();
         for (String role : strikers) {
             Part p = design.part(role);

@@ -858,7 +858,7 @@ public record ModularType(Family family, Slot slot, List<Mine> mines, float stri
             List<Variant> out = new ArrayList<>();
             // The base variant is the standard shape: it sets the standard's size, and is not listed again.
             float standard = variant(base).filter(v -> v.cells() > 0f).map(Variant::cells).orElse(cells);
-            out.add(new Variant("", standard, 0f, 1f, "", 1f, 0f, 1f, "", Map.of(), false, "", List.of()));
+            out.add(new Variant("", standard, 0f, 1f, "", 1f, 0f, 1f, "", Map.of(), false, "", List.of(), List.of()));
             variants.stream().filter(v -> v.cells() > 0f && !v.name().equals(base)).forEach(out::add);
             return out;
         }
@@ -934,13 +934,15 @@ public record ModularType(Family family, Slot slot, List<Mine> mines, float stri
      *                sword") rather than a name for the whole thing ("iron pitchfork"). Armour variants always are.
      * @param school  the treatise volume ({@code robotics:1}, as a type's) the table must hold before it offers this variant; empty for none.
      * @param actions what a hafted face of this shape also does to a block it is used on, beside its kind's ({@code till} for a kama).
+     * @param mines   block tags a single-head tool of this shape digs instead of its type's own, each at a share of the full dig speed (a serrated
+     *                blade saws through foliage); empty keeps the type's. {@code params.digs} 0 still means it digs nothing.
      * @param rhythm  for a variant forged rather than laid: the pattern played on the anvil, one
      *                character per step ({@code t} a tap, {@code h} a heavy blow, {@code .} a rest).
      *                A forged variant has no shape, since it is made from a standard part.
      */
     public record Variant(String name, float cells, float reach, float section, String rhythm, float strike,
                           float centre, float mass, String trait, Map<String, Float> params, boolean adjective, String school,
-                          List<String> actions) {
+                          List<String> actions, List<Mine> mines) {
         static final Codec<Variant> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 Codec.STRING.fieldOf("name").forGetter(Variant::name),
                 Codec.FLOAT.optionalFieldOf("cells", 0f).forGetter(Variant::cells),
@@ -954,7 +956,8 @@ public record ModularType(Family family, Slot slot, List<Mine> mines, float stri
                 Codec.unboundedMap(Codec.STRING, Codec.FLOAT).optionalFieldOf("params", Map.of()).forGetter(Variant::params),
                 Codec.BOOL.optionalFieldOf("adjective", false).forGetter(Variant::adjective),
                 Codec.STRING.optionalFieldOf("school", "").forGetter(Variant::school),
-                Codec.STRING.listOf().optionalFieldOf("actions", List.of()).forGetter(Variant::actions)
+                Codec.STRING.listOf().optionalFieldOf("actions", List.of()).forGetter(Variant::actions),
+                Mine.CODEC.listOf().optionalFieldOf("mines", List.of()).forGetter(Variant::mines)
         ).apply(instance, Variant::new));
 
     }

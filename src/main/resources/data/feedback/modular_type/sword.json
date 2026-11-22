@@ -108,6 +108,12 @@
               "sweep": 2,
               "wear_per_block": 0.333
             },
+            "mines": [
+              {
+                "tag": "minecraft:mineable/hoe",
+                "factor": 0.5
+              }
+            ],
             "adjective": true
           },
           {
