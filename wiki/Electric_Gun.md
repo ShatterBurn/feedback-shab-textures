@@ -81,6 +81,8 @@ At the Blueprint Table a pulse gun's drawing has a **beam color**: type a hex co
 
 **Load a battery** (one that fits the receiver) by clicking the gun in your inventory with a [battery](Battery.md) on your cursor; click the gun with an empty cursor to take it out. The battery keeps its charge, so it goes back to a [Charger](Charger.md) as it is.
 
+**Swap a battery** with the reload key (R) while holding the gun. The fullest spare battery in your inventory that the receiver takes (by cell count) loads, and the old cell goes into that inventory slot, with the sound of a cell going in. A gun with a fitting that owns the reload key (pump charge, hold charge, surge shunt governor, shock lead) keeps that use. A gun on a tether lead, or with no spare battery, does nothing on R.
+
 The gun is held and fired like a [gun](Guns.md#controls): attack (left mouse) fires, and holding it repeats where the seat allows; use (right mouse), held, aims down the sights. The view kicks and the hand strains on each shot as with a powder gun (see [Handling](Guns.md#handling)). The gun's hand rides each recoil out and back over a share of the gun's cycle: a fast gun twitches, a slow one heaves. A weak battery gives a weaker shot, never a refusal.
 
 ### What a shot does
