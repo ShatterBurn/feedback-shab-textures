@@ -535,6 +535,16 @@ public class PartBenchMenu extends AbstractContainerMenu {
         return station != Station.WOODWORKING || (cut.strip() ? axe(hammer()) : PartBenchBlockEntity.isSaw(hammer()));
     }
 
+    /** The chosen wood cut is a sawing and the tool in the slot is an axe (or the reverse): the cut will not come out. */
+    public boolean wrongTool(Level level) {
+        return cutting() && sawing(level) && hasHammer() && woodCut(level).filter(w -> !toolFor(w)).isPresent();
+    }
+
+    /** The chosen wood cut is a strip: true when it takes an axe, false when it takes a sawblade. */
+    public boolean wantsAxe(Level level) {
+        return woodCut(level).filter(WoodCuts.Cut::strip).isPresent();
+    }
+
     /** The types this table's shapes come from: dishes at the Prep Table, every other type (guns included) at the part benches. */
     public Map<ResourceLocation, ModularType> types(Level level) {
         return ModularAssembly.ofKind(ModularTypes.on(level), kind);

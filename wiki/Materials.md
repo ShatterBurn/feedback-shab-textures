@@ -103,12 +103,6 @@ Electrical behavior is on the pages that use it: how much current a wire of each
 
 An item from another mod that carries a common metal tag counts as that material and form. An item tagged as a brass ingot is a brass ingot in every process: it smelts, casts, forms and machines like ours, and works in any recipe that asks for brass. It has the same figures as the material on this page. Tags exist per form (ingots, nuggets, plates, storage blocks, ores, dusts and so on). Feedback's own items are always read as themselves.
 
-A material can also name foreign items directly, by item or tag, per form. Thaumaturge's quicksilver and nuggets count as mercury; its iron, gold, copper, tin, silver, lead, cinnabar and quartz clusters count as cluster forms of those metals and minerals; its amber and cinnabar ores, blocks and raw items count as amber and cinnabar; its rare earth counts as rare earth residue. Its thaumium and void tools and armor (not robes) count as tool and armor forms of [Thaumium](#thaumium-and-void-metal) and Void Metal.
-
-Right-click or use such an item and the material's stats card opens, the same as for a Feedback item. The card's item box lists every item that is the material, Feedback's and foreign.
-
-A smelting, blasting or other cooking recipe (not smoking), from vanilla or any mod, whose result is a form of a metal with a molten fluid gives that molten metal instead of an item. It comes out in a vessel at the metal's melting point, in the form's volume times the result count: 2 ingots pour 288 mB. See [Furnaces](Furnaces.md#vanilla-recipes).
-
 ## Heat and other figures
 
 Beyond the table, every material carries figures JEI's *Material Stats* page shows:
@@ -138,10 +132,6 @@ Not everything is metal. A few others matter for parts and protection:
 | Rabbit Hide | 1 | | 100 Tu | animal, fibrous; a warm, tough [bed](Bed.md) padding |
 | Ghast Bladder | 1 | | | animal; the skin of a bladder [gas cell](Gas_Cell.md) |
 | Coated Cloth | 0.5 | | | cloth coated in slime; the skin of a coated cloth [gas cell](Gas_Cell.md) |
-| Tallow | | | | animal fat with no items of its own; other mods' tallow and anything tagged tallow or animal fat counts as it |
-| Cloth | | | | no items of its own; Thaumaturge's fabric counts as it |
-| Mirrored Glass | | | | no items of its own; Thaumaturge's mirrored glass counts as it |
-| Essentia | | | | a quartz-like crystal that holds an aspect; Thaumaturge's essentia crystal and its seven world crystal blocks are its forms |
 | Ruby | 200 | | 1400 Tu | transparent crystal; glows under current |
 | Spinel | 140 | | 1243 Tu | transparent crystal; see [Spinel](#spinel) |
 | Jade | 65 | | 836 Tu | tough mineral |
@@ -160,12 +150,6 @@ Every material also decides how well it **takes an enchantment** when it's the m
 A material can carry a **permeability**: how fast a gas cell skinned in it lets gas through. A material without one is gas-tight. Ghast bladder has none; coated cloth seeps slowly.
 
 "Stands" is the temperature a grip or glove can bear against your hand. See [Hazards](Hazards.md).
-
-## Thaumium and void metal
-
-Two alloys that take their name from Thaumaturge. **Thaumium** is iron with a little essentia (94% iron, 6% essentia), a strong, magnetic metal with an enchantability of 22. **Void Metal** is dense, very hard and brittle, and dark (88% osmium, 8% ender pearl, 4% essentia). Each has the usual tinted form items. Thaumaturge's thaumium and void tools and armor count as their tool and armor forms (see [Mod Compats](Mod_Compats.md#thaumaturge)).
-
-**Flux Goo**, Thaumaturge's fluid, is a corrosive acidic sludge: pH 3, and it burns what it touches like any acid.
 
 ## Woods
 

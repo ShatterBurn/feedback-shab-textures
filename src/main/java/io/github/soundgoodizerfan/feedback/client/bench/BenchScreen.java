@@ -932,6 +932,8 @@ public class BenchScreen extends SkinnedScreen<PartBenchMenu> {
         if (st.usesTool() && !menu.trim() && !menu.hasHammer())
             return Component.translatable(st.saws() ? "gui.feedback.tool_table.status.no_axe" : st == Station.STONECUTTING ? "gui.feedback.tool_table.status.no_saw" : st.dishes() ? "gui.feedback.prep_table.status.no_hammer"
                     : "gui.feedback.tool_table.status.no_hammer");
+        if (menu.wrongTool(level))
+            return Component.translatable(menu.wantsAxe(level) ? "gui.feedback.tool_table.status.need_axe" : "gui.feedback.tool_table.status.need_saw");
         return switch (menu.centre(level)) {
             case EMPTY -> Component.translatable(st.dishes() ? "gui.feedback.bench.put_dish" : "gui.feedback.bench.put");
             case STOCK -> fan.isEmpty() ? Component.translatable("gui.feedback.tool_table.list.nothing") : Component.empty();
