@@ -42,7 +42,7 @@ A dish order's stated term reads "Noun: word", for example "Richness: at least r
 
 The **Hint** button on the Orders tab explains a selected dish order; tool orders state their materials outright and have no hint. Hints are free and stay until you press **Back** or pick another order.
 
-- For a dish order, each stated term gets a line saying how to move it: more animal parts, delivering it hot, salted food, smoking, a sealed container and so on. Under it, a line reading "Try building with ..." names up to four foods to build the dish from: foods of the matching kind or cuisine for meat, seafood, plant, starch and cuisine terms, and the foods highest (or lowest, when the term wants low) in the figure for fat, fibre and moisture terms. A closing line points to the [Tasting Spoon](Hand_Tools.md#tasting-spoon).
+- For a dish order, each stated term gets a line saying how to move it: more animal parts, delivering it hot, salted food, smoking, a sealed container and so on. Under it, a line reading "Try building with ..." names up to four foods to build the dish from: foods of the matching kind or cuisine for meat, seafood, plant, starch and cuisine terms, and the foods highest (or lowest, when the term wants low) in the figure for fat, fibre and moisture terms. A closing line points to tasting with the [Spoon](Hand_Tools.md#tasting).
 
 ### Delivering
 

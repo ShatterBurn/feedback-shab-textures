@@ -37808,20 +37808,6 @@
         "aspect": "thaumaturge:perditio"
       }
     ],
-    "feedback:tasting_spoon": [
-      {
-        "amount": 6,
-        "aspect": "thaumaturge:instrumentum"
-      },
-      {
-        "amount": 1,
-        "aspect": "thaumaturge:fabrico"
-      },
-      {
-        "amount": 4,
-        "aspect": "thaumaturge:metallum"
-      }
-    ],
     "feedback:temperature_sensor": [
       {
         "amount": 7,

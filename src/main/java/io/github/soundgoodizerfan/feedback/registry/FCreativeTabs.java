@@ -117,7 +117,7 @@ public class FCreativeTabs {
     // ---- Food & Farming ----
 
     private static final List<DeferredItem<?>> KITCHEN = of(FModular.PREP_TABLE_ITEM, FItems.DRYING_RACK,
-            FItems.BREWING_STAND, FModular.SPATULA, FModular.SPOON, FItems.TASTING_SPOON, FItems.JAR);
+            FItems.BREWING_STAND, FModular.SPATULA, FModular.SPOON, FItems.JAR);
 
     /** Staples and dishes, raw to made. */
     private static final List<DeferredItem<?>> FOOD_ITEMS = of(FItems.DOUGH, FItems.LOAF, FItems.FLATBREAD_DOUGH,

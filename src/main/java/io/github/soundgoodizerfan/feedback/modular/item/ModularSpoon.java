@@ -9,6 +9,7 @@ import io.github.soundgoodizerfan.feedback.core.hazard.HotContact;
 import io.github.soundgoodizerfan.feedback.core.unit.Tu;
 import io.github.soundgoodizerfan.feedback.machine.stockpot.StockpotBlockEntity;
 import io.github.soundgoodizerfan.feedback.modular.bake.ModularTuning;
+import io.github.soundgoodizerfan.feedback.modular.prep.DishProfile;
 import io.github.soundgoodizerfan.feedback.modular.type.ModularDesign;
 import io.github.soundgoodizerfan.feedback.modular.type.ModularType;
 import io.github.soundgoodizerfan.feedback.modular.type.ModularTypes;
@@ -100,10 +101,56 @@ public class ModularSpoon extends ModularItem {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
-        if (ModularStacks.broken(stack) || pot(player, level) == null)
+        if (ModularStacks.broken(stack))
+            return InteractionResultHolder.pass(stack);
+        // A dish in the other hand is tasted, not a pot stirred.
+        ItemStack dish = player.getItemInHand(hand == InteractionHand.MAIN_HAND ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND);
+        if (DishProfile.is(dish))
+            return taste(level, player, hand, stack, dish);
+        if (pot(player, level) == null)
             return InteractionResultHolder.pass(stack);
         player.startUsingItem(hand);
         return InteractionResultHolder.consume(stack);
+    }
+
+    /**
+     * Tasting: the dish's profile comes back as words, one line per axis ({@link DishProfile#AXES}, the same figures a villager judges), and as
+     * exact figures with an instrument at the truth tier. The spoon's options matter: a bowl under the reference size takes a small mouthful
+     * and tells only the two axes that stand furthest from the middle; a dish hotter than the handle can be held over burns the hand (the body
+     * is physics too). A tasting wears the spoon a point.
+     */
+    private static InteractionResultHolder<ItemStack> taste(Level level, Player player, InteractionHand hand, ItemStack spoon, ItemStack dish) {
+        if (level.isClientSide)
+            return InteractionResultHolder.success(spoon);
+        io.github.soundgoodizerfan.feedback.modular.bake.ModularFigures f = DishProfile.read(dish, level);
+        if (f == null)
+            return InteractionResultHolder.pass(spoon);
+        ModularDesign design = ModularStacks.design(spoon);
+        var handle = design == null ? null : design.part("S");
+        float stands = handle == null ? ThermalTuning.CONTACT_PAIN_TU.value() : holdsTo(level, handle.material(), shape(spoon, "reach"));
+        float warm = io.github.soundgoodizerfan.feedback.core.thermal.ItemHeat.get(dish, level).value();
+        if (warm > stands)
+            HotContact.burn(player, new Tu(warm));
+        boolean exact = io.github.soundgoodizerfan.feedback.instrument.Instruments.exact(player, io.github.soundgoodizerfan.feedback.instrument.Quantity.FIGURE);
+        java.util.List<DishProfile.Axis> axes = new java.util.ArrayList<>(DishProfile.AXES);
+        if (bowl(spoon) < 1f) {
+            // A small mouthful: only the two axes furthest from the middle of their range come through.
+            axes.sort(java.util.Comparator.comparingDouble((DishProfile.Axis a) ->
+                    -Math.abs((f.get(a.fig()) - a.lo()) / Math.max(1e-3f, a.hi() - a.lo()) - 0.5f)));
+            axes = new java.util.ArrayList<>(axes.subList(0, Math.min(2, axes.size())));
+        }
+        player.displayClientMessage(net.minecraft.network.chat.Component.translatable("tooltip.feedback.tasting.title", dish.getHoverName()), false);
+        for (DishProfile.Axis axis : axes) {
+            float v = f.get(axis.fig());
+            int band = Math.min(3, Math.max(0, (int) ((v - axis.lo()) / Math.max(1e-3f, axis.hi() - axis.lo()) * 4f)));
+            String name = axis.fig().name().toLowerCase(java.util.Locale.ROOT);
+            var line = net.minecraft.network.chat.Component.translatable("village.feedback.term." + name + "." + band);
+            player.displayClientMessage(exact
+                    ? net.minecraft.network.chat.Component.translatable("tooltip.feedback.tasting.exact", net.minecraft.network.chat.Component.translatable("village.feedback.noun." + name), line, String.format(java.util.Locale.ROOT, "%.2f", v))
+                    : net.minecraft.network.chat.Component.translatable("tooltip.feedback.tasting.line", net.minecraft.network.chat.Component.translatable("village.feedback.noun." + name), line), false);
+        }
+        spoon.hurtAndBreak(1, player, hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND);
+        return InteractionResultHolder.consume(spoon);
     }
 
     @Override

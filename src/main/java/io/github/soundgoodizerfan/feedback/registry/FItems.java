@@ -230,9 +230,6 @@ public class FItems {
     /** One bucket for any fluid: copper, 1000 mB, contents in a component. */
     public static final DeferredItem<io.github.soundgoodizerfan.feedback.item.CopperBucketItem> COPPER_BUCKET = ITEMS.register("copper_bucket",
             () -> new io.github.soundgoodizerfan.feedback.item.CopperBucketItem(new net.minecraft.world.item.Item.Properties()));
-    /** Reads a dish held in the other hand (the profile a villager judges). */
-    public static final DeferredItem<io.github.soundgoodizerfan.feedback.item.TastingSpoonItem> TASTING_SPOON = ITEMS.register("tasting_spoon",
-            () -> new io.github.soundgoodizerfan.feedback.item.TastingSpoonItem(new Item.Properties()));
     /** What a thresher leaves of a grain plant: the stem and the husk (materials {@code straw} and {@code chaff}). */
     public static final DeferredItem<Item> STRAW = ITEMS.registerSimpleItem("straw");
     public static final DeferredItem<Item> CHAFF = ITEMS.registerSimpleItem("chaff");

@@ -378,7 +378,6 @@ public class FeedbackJeiPlugin implements IModPlugin {
         registration.addIngredientInfo(FItems.CRYOCOOLER.get(), Component.translatable("feedback.jei.info.cryocooler"));
         registration.addIngredientInfo(net.minecraft.world.item.Items.EMERALD, Component.translatable("feedback.jei.info.commissions"));
         registration.addIngredientInfo(FModular.SPATULA.get(), Component.translatable("feedback.jei.info.spatula"));
-        registration.addIngredientInfo(FItems.TASTING_SPOON.get(), Component.translatable("feedback.jei.info.tasting_spoon"));
         registration.addIngredientInfo(FModular.SPOON.get(), Component.translatable("feedback.jei.info.spoon"));
         registration.addIngredientInfo(FModular.SHEARS.get(), Component.translatable("feedback.jei.info.shears"));
         registration.addIngredientInfo(FItems.TONGS.get(), Component.translatable("feedback.jei.info.tongs"));

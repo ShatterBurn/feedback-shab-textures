@@ -1,6 +1,6 @@
 # Hand Tools
 
-The hand tools are the ones you carry and use yourself: a hammer, a file and a drill for shaping metal in your hands, a screwdriver for the work at the [Engineering Table](Engineering_Table.md), a wrench for turning blocks, a crowbar for prying fittings off, and the knife, spatula, spoon and tasting spoon for food, and the saw for wood and stone. Most have a head or blade shaped at a bench and assembled with a handle; a few are hot-hammered from heated metal in a crafting grid. Each has its own page.
+The hand tools are the ones you carry and use yourself: a hammer, a file and a drill for shaping metal in your hands, a screwdriver for the work at the [Engineering Table](Engineering_Table.md), a wrench for turning blocks, a crowbar for prying fittings off, and the knife, spatula and spoon for food, and the saw for wood and stone. Most have a head or blade shaped at a bench and assembled with a handle; a few are hot-hammered from heated metal in a crafting grid. Each has its own page.
 
 - [Hammer](Hammer.md): shapes plates and stock held in your other hand, and is the tool the others are hammered with. Made in a crafting grid from cobblestone and a stick, or a better head shaped at a bench and put on a haft. The hammer, the knife, the file, the drill and the screwdriver are all [hafted tools](Hafted_Tool.md): a haft with a face of that kind.
 - [File](#file) and [Screwdriver](#screwdriver): the tools of the Engineering Table's file and driver work. Each is a head on a handle. The file also cuts a rod in your hands.
@@ -11,8 +11,7 @@ The hand tools are the ones you carry and use yourself: a hammer, a file and a d
 - [Spatula](#spatula): flips food in a [Skillet](Skillet.md). Made from a spatula blade shaped from plate, planks or bone (metal is shaped hot), put with a handle.
 - [Wrench](Wrench.md): turns a placed block a quarter turn. Made by hot-hammering four ingots of one hard metal in a crafting grid with a hammer.
 - [Crowbar](Crowbar.md): pries fittings off a machine. Made by hot-hammering two ingots of one hard metal in a crafting grid with a hammer.
-- [Spoon](#spoon): stirs and skims a [Stockpot](Stockpot.md). Made from a spoon bowl shaped from plate, planks or bone (metal is shaped hot), put with a handle.
-- [Tasting Spoon](#tasting-spoon): reads a dish in words, as a villager judges it. Made from a copper plate and a stick.
+- [Spoon](#spoon): stirs and skims a [Stockpot](Stockpot.md), and tastes a dish. Made from a spoon bowl shaped from plate, planks or bone (metal is shaped hot), put with a handle.
 - [Tongs](Hazards.md#tongs): hold hot work so it doesn't burn your hand. Made from two rods of one metal at working temperature, a grip and a hammer, in a crafting grid.
 
 ## File
@@ -67,7 +66,7 @@ Right-click a piece in a skillet to flip it. The quarter under your crosshair is
 
 ## Spoon
 
-A modular hand tool for working a [Stockpot](Stockpot.md): hold it to stir, tap it to skim.
+A modular hand tool for working a [Stockpot](Stockpot.md) and tasting a [dish](Prep_Table.md): hold it to stir, tap it to skim, use it against a dish in your other hand to taste.
 
 Shape a **Spoon Bowl** (from a plate, planks or bone; metal is shaped hot at the Smithing Table or Anvil) and put it with a handle (stick or bone) at the [Woodworking Table](Woodworking_Table.md), as for any modular tool. The handle's strength changes the tool's durability a little: a weaker handle than wood's shortens it, a stronger one lengthens it, and wood is normal.
 
@@ -87,22 +86,16 @@ The **depth** axis trades the two: a deep bowl skims more and a shallow one stir
 
 Stirring wears the spoon one point every 5 seconds; each skim that lifts scum wears it one point. A broken spoon does nothing. A pot hotter than the handle's material stands burns your hand once a second while you stir. See [Hazards](Hazards.md#hot-things).
 
-## Tasting Spoon
+### Tasting
 
-A hand tool that reads a [dish](Prep_Table.md) in words, one line per quality. The lines are the same qualities a villager judges in a [dish order](Villagers.md#dish-orders).
-
-```
- P
- S
-```
-
-P is a copper plate, S is a stick. The spoon has 120 uses.
-
-Hold a dish in one hand and use the spoon with the other. Chat prints the dish's name, then one line per quality:
+Hold a dish in one hand and use the spoon with the other. Chat prints the dish's name, then one line per quality, the same qualities a villager judges in a [dish order](Villagers.md#dish-orders):
 
 - heartiness (hearty or light), richness (lean or rich), chew (tender or chewy), moisture (dry or moist)
 - doneness (raw or cooked), char (unburnt or burnt), saltiness, smokiness
 - freshness (stale or fresh), warmth (cold or hot)
 - the share of the dish that is meat, fish, greens and grain
 
-Each reading is a word on a four-step scale. With an [instrument](Instruments.md) at its finest reading, each line also shows the exact figure. Each tasting wears the spoon one point. Rot, cooling and drying show in the reading as they are at that moment.
+Each reading is a word on a four-step scale. With an [instrument](Instruments.md) at its finest reading, each line also shows the exact figure. Rot, cooling and drying show in the reading as they are at that moment.
+
+A bowl smaller than the standard size takes a small mouthful and tells only the two qualities furthest from the middle of their range; a bigger bowl tells all of them. A dish hotter than the handle's material stands, with the bowl's reach, burns your hand. Each tasting wears the spoon one point.
+
