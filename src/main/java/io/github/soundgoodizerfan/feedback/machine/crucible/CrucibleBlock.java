@@ -55,10 +55,10 @@ public class CrucibleBlock extends Block implements EntityBlock, io.github.sound
     }
 
     /**
-     * The largest pot a design can draw ({@code client/render/CrucibleShape}: foot, body, lip), as {x1, y1, z1, x2, y2, z2} in sixteenths.
+     * The largest pot a design can draw ({@code client/render/CrucibleShape}: one straight-walled box), as {x1, y1, z1, x2, y2, z2} in sixteenths.
      * One outline for every size, so the pot you aim at never differs from the one beside it. Mirrors {@code scripts/crucible_model.py}.
      */
-    private static final int[][] BOXES = {{4, 0, 4, 12, 2, 12}, {2, 2, 2, 14, 10, 14}, {1, 10, 1, 15, 12, 15}};
+    private static final int[][] BOXES = {{1, 0, 1, 15, 12, 15}};
     private static final net.minecraft.world.phys.shapes.VoxelShape POT = buildPot();
 
     private static net.minecraft.world.phys.shapes.VoxelShape buildPot() {

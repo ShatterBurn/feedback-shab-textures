@@ -27,7 +27,7 @@ Every wall material holds up to a temperature. Run the crucible **hotter than it
 
 ## How it looks
 
-A built crucible is drawn as an open clay pot. A bigger tank makes a wider, taller pot, and a heavier wall for its size makes a thicker rim and sides, so a glance tells a roomy light crucible from a small heavy one. Molten metal shows as a surface in the bowl, in the fluid's own color and texture, at the height the tank is filled. Each charge slot that holds something shows a lump on the floor of the pot. A hot pot warms toward the glow color of its heat band (see [Heat](Heat.md)). Whatever its size, the pot's outline when you look at it is the same.
+A built crucible is drawn as a plain square box with straight vertical walls, a flat rim, a square opening and a full-width floor. A bigger tank makes a wider, taller box, and a heavier wall for its size makes thicker walls, so a glance tells a roomy light crucible from a small heavy one. Molten metal shows as a surface in the box, in the fluid's own color and texture, at the height the tank is filled. Each charge slot that holds something shows a lump on the floor. A hot crucible warms toward the glow color of its heat band (see [Heat](Heat.md)). Whatever its size, the outline when you look at it is the same.
 
 ## Using it
 

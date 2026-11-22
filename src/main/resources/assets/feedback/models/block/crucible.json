@@ -46,16 +46,16 @@
   },
   "elements": [
     {
-      "name": "foot",
+      "name": "base",
       "from": [
-        5,
+        2,
         0,
-        5
+        2
       ],
       "to": [
-        11,
-        2,
-        11
+        14,
+        4,
+        14
       ],
       "faces": {
         "north": {
@@ -79,256 +79,10 @@
       }
     },
     {
-      "name": "floor",
-      "from": [
-        4,
-        2,
-        4
-      ],
-      "to": [
-        12,
-        4,
-        12
-      ],
-      "faces": {
-        "north": {
-          "texture": "#inside"
-        },
-        "south": {
-          "texture": "#inside"
-        },
-        "east": {
-          "texture": "#inside"
-        },
-        "west": {
-          "texture": "#inside"
-        },
-        "up": {
-          "texture": "#inside"
-        }
-      }
-    },
-    {
-      "name": "body_n",
-      "from": [
-        4,
-        4,
-        4
-      ],
-      "to": [
-        12,
-        6,
-        6
-      ],
-      "faces": {
-        "north": {
-          "texture": "#side"
-        },
-        "south": {
-          "texture": "#side"
-        },
-        "east": {
-          "texture": "#side"
-        },
-        "west": {
-          "texture": "#side"
-        }
-      }
-    },
-    {
-      "name": "body_s",
-      "from": [
-        4,
-        4,
-        10
-      ],
-      "to": [
-        12,
-        6,
-        12
-      ],
-      "faces": {
-        "north": {
-          "texture": "#side"
-        },
-        "south": {
-          "texture": "#side"
-        },
-        "east": {
-          "texture": "#side"
-        },
-        "west": {
-          "texture": "#side"
-        }
-      }
-    },
-    {
-      "name": "body_w",
-      "from": [
-        4,
-        4,
-        6
-      ],
-      "to": [
-        6,
-        6,
-        10
-      ],
-      "faces": {
-        "north": {
-          "texture": "#side"
-        },
-        "south": {
-          "texture": "#side"
-        },
-        "east": {
-          "texture": "#side"
-        },
-        "west": {
-          "texture": "#side"
-        }
-      }
-    },
-    {
-      "name": "body_e",
-      "from": [
-        10,
-        4,
-        6
-      ],
-      "to": [
-        12,
-        6,
-        10
-      ],
-      "faces": {
-        "north": {
-          "texture": "#side"
-        },
-        "south": {
-          "texture": "#side"
-        },
-        "east": {
-          "texture": "#side"
-        },
-        "west": {
-          "texture": "#side"
-        }
-      }
-    },
-    {
-      "name": "shoulder_n",
-      "from": [
-        3,
-        6,
-        3
-      ],
-      "to": [
-        13,
-        8,
-        5
-      ],
-      "faces": {
-        "north": {
-          "texture": "#side"
-        },
-        "south": {
-          "texture": "#side"
-        },
-        "east": {
-          "texture": "#side"
-        },
-        "west": {
-          "texture": "#side"
-        }
-      }
-    },
-    {
-      "name": "shoulder_s",
-      "from": [
-        3,
-        6,
-        11
-      ],
-      "to": [
-        13,
-        8,
-        13
-      ],
-      "faces": {
-        "north": {
-          "texture": "#side"
-        },
-        "south": {
-          "texture": "#side"
-        },
-        "east": {
-          "texture": "#side"
-        },
-        "west": {
-          "texture": "#side"
-        }
-      }
-    },
-    {
-      "name": "shoulder_w",
-      "from": [
-        3,
-        6,
-        5
-      ],
-      "to": [
-        5,
-        8,
-        11
-      ],
-      "faces": {
-        "north": {
-          "texture": "#side"
-        },
-        "south": {
-          "texture": "#side"
-        },
-        "east": {
-          "texture": "#side"
-        },
-        "west": {
-          "texture": "#side"
-        }
-      }
-    },
-    {
-      "name": "shoulder_e",
-      "from": [
-        11,
-        6,
-        5
-      ],
-      "to": [
-        13,
-        8,
-        11
-      ],
-      "faces": {
-        "north": {
-          "texture": "#side"
-        },
-        "south": {
-          "texture": "#side"
-        },
-        "east": {
-          "texture": "#side"
-        },
-        "west": {
-          "texture": "#side"
-        }
-      }
-    },
-    {
-      "name": "lip_n",
+      "name": "wall_n",
       "from": [
         2,
-        8,
+        4,
         2
       ],
       "to": [
@@ -338,24 +92,24 @@
       ],
       "faces": {
         "north": {
-          "texture": "#top"
+          "texture": "#side"
         },
         "south": {
-          "texture": "#top"
+          "texture": "#side"
         },
         "east": {
-          "texture": "#top"
+          "texture": "#side"
         },
         "west": {
-          "texture": "#top"
+          "texture": "#side"
         }
       }
     },
     {
-      "name": "lip_s",
+      "name": "wall_s",
       "from": [
         2,
-        8,
+        4,
         12
       ],
       "to": [
@@ -365,24 +119,24 @@
       ],
       "faces": {
         "north": {
-          "texture": "#top"
+          "texture": "#side"
         },
         "south": {
-          "texture": "#top"
+          "texture": "#side"
         },
         "east": {
-          "texture": "#top"
+          "texture": "#side"
         },
         "west": {
-          "texture": "#top"
+          "texture": "#side"
         }
       }
     },
     {
-      "name": "lip_w",
+      "name": "wall_w",
       "from": [
         2,
-        8,
+        4,
         4
       ],
       "to": [
@@ -392,24 +146,24 @@
       ],
       "faces": {
         "north": {
-          "texture": "#top"
+          "texture": "#side"
         },
         "south": {
-          "texture": "#top"
+          "texture": "#side"
         },
         "east": {
-          "texture": "#top"
+          "texture": "#side"
         },
         "west": {
-          "texture": "#top"
+          "texture": "#side"
         }
       }
     },
     {
-      "name": "lip_e",
+      "name": "wall_e",
       "from": [
         12,
-        8,
+        4,
         4
       ],
       "to": [
@@ -419,16 +173,34 @@
       ],
       "faces": {
         "north": {
-          "texture": "#top"
+          "texture": "#side"
         },
         "south": {
-          "texture": "#top"
+          "texture": "#side"
         },
         "east": {
-          "texture": "#top"
+          "texture": "#side"
         },
         "west": {
-          "texture": "#top"
+          "texture": "#side"
+        }
+      }
+    },
+    {
+      "name": "floor_top",
+      "from": [
+        4,
+        4,
+        4
+      ],
+      "to": [
+        12,
+        4,
+        12
+      ],
+      "faces": {
+        "up": {
+          "texture": "#inside"
         }
       }
     }

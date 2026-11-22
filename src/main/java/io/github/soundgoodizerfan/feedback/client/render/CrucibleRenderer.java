@@ -76,16 +76,15 @@ public class CrucibleRenderer implements BlockEntityRenderer<CrucibleBlockEntity
         int w = shape.width(), h = shape.height(), t = shape.wall();
         int clay = SkilletRenderer.lerp(CLAY, tint, mix);
 
-        // Mirrors scripts/crucible_model.py: foot, floor, body, shoulder, lip.
-        slab(quads, m, side, 8 - (w - 4) / 2, 0, 8 + (w - 4) / 2, 2, clay, lit);
-        slab(quads, m, inside, 8 - (w - 2) / 2, 2, 8 + (w - 2) / 2, 2 + t, SkilletRenderer.lerp(0xC8C8C8, tint, mix), lit);
-        ring(quads, m, side, 2 + t, h - 4, w - 2, t, clay, lit);
-        ring(quads, m, side, h - 4, h - 2, w, t, clay, lit);
-        ring(quads, m, inside, h - 2, h, w + 2, t, SkilletRenderer.lerp(0xE0E0E0, tint, mix), lit);
+        // Mirrors scripts/crucible_model.py: a square box, straight walls, flat rim, floor slab the full width.
+        int ow = w + 2;
+        slab(quads, m, side, 8 - ow / 2, 0, 8 + ow / 2, 2 + t, clay, lit);
+        ring(quads, m, side, 2 + t, h, ow, t, clay, lit);
+        slab(quads, m, inside, 8 - (ow - 2 * t) / 2, 2 + t, 8 + (ow - 2 * t) / 2, 2 + t, SkilletRenderer.lerp(0xC8C8C8, tint, mix), lit);
 
         // The charge, one lump a slot, sitting on the floor.
         List<ItemStack> charge = crucible.getContents();
-        int inner = w - 2 - 2 * t;
+        int inner = w + 2 - 2 * t;
         float floor = shape.floorTop() * U;
         for (int i = 0; i < Math.min(charge.size(), LUMPS.length); i++) {
             if (charge.get(i).isEmpty() || inner < 3)
