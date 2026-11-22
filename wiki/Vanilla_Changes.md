@@ -26,6 +26,12 @@ Any vanilla bed that turns up in a world, village or structure, or that is place
 
 A placed bed cannot be dyed. Take it up and rework its parts to change the cover. Breaking a found bed returns it as one item with its parts, as with any placed bed.
 
+## Comparator
+
+**What vanilla does:** a comparator reads how full the container behind it is and puts out a redstone signal of that strength. It also compares or subtracts two signals and delays them.
+
+**What Feedback does:** it is replaced by the [Fill Gauge](Sensors.md), a sensor that reads how full the inventory or tank on the face it looks at is, in eighths, for a [Controller](Controller.md). The Comparator has no crafting recipe and is hidden from JEI. A Comparator already in a world, a structure or placed by a player turns into a Fill Gauge looking at the container behind where the Comparator sat. Subtract mode and the signal delay are not carried over.
+
 ## End Stone
 
 **What vanilla does:** a pale, hard building block found on the End island.

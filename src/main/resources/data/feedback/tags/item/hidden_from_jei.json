@@ -1,6 +1,7 @@
 {
   "values": [
     "minecraft:anvil",
+    "minecraft:comparator",
     "minecraft:chipped_anvil",
     "minecraft:damaged_anvil",
     "minecraft:blast_furnace",

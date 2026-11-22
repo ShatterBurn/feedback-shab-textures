@@ -50,7 +50,9 @@ public final class VanillaVesselSwap {
             Map.entry(Blocks.PISTON, FBlocks.MODULAR_PISTON.get()),
             Map.entry(Blocks.STICKY_PISTON, FBlocks.MODULAR_PISTON.get()),
             Map.entry(Blocks.OBSERVER, io.github.soundgoodizerfan.feedback.registry.FAutomation.SENSORS.get(
-                    io.github.soundgoodizerfan.feedback.machine.sensor.SensorKind.OBSERVER).get())));
+                    io.github.soundgoodizerfan.feedback.machine.sensor.SensorKind.OBSERVER).get()),
+            Map.entry(Blocks.COMPARATOR, io.github.soundgoodizerfan.feedback.registry.FAutomation.SENSORS.get(
+                    io.github.soundgoodizerfan.feedback.machine.sensor.SensorKind.FILL).get())));
 
     /** The table plus every vanilla bed: each of the sixteen colours becomes the one placed bed, dyed by the colour it was. */
     private static Map<Block, Block> swapTable(Map<Block, Block> base) {
@@ -142,6 +144,10 @@ public final class VanillaVesselSwap {
             // Every property the two blocks share carries over (a campfire's lit and waterlogged, an observer's or piston's facing).
             for (var prop : state.getProperties())
                 swapped = copy(swapped, state, prop);
+            // A comparator faces the player and reads the container behind it; the fill gauge faces the face it reads.
+            if (state.is(Blocks.COMPARATOR))
+                swapped = swapped.setValue(io.github.soundgoodizerfan.feedback.machine.sensor.SensorBlock.FACING,
+                        state.getValue(BlockStateProperties.HORIZONTAL_FACING).getOpposite());
             p.level().setBlock(p.pos(), swapped, Block.UPDATE_ALL);
         }
     }

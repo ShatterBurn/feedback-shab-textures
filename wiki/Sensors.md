@@ -15,7 +15,7 @@ Six blocks that report what they see to a [Controller](Controller.md); all but t
 
 Place a sensor with its face against what you want to watch, then link it to a Controller with the [Data Connector](Data_Connector.md), which costs fine wire by distance, and read it with an Input card. The reading is quantized, as the table lists: a probe reports a crop as unripe, a quarter, half, three quarters or ripe. A quiet circuit in a Fill Gauge or Ripeness Probe cuts the reading into up to about twice as many bands.
 
-A Ripeness Probe reads any block that has an age, so a modded crop works too. A Photocell reads its own lamp's light, so a lamp it switches can switch it back; keep the lamp out of its sight. An Observer reports a change a moment late. It is the Feedback version of the vanilla observer: a vanilla observer found in the world turns into an Observer. Where vanilla's observer pulses redstone, a controller card reads this one.
+A Ripeness Probe reads any block that has an age, so a modded crop works too. A Fill Gauge is the Feedback version of the vanilla comparator: a vanilla comparator found in the world turns into a Fill Gauge looking at the container it read. A Photocell reads its own lamp's light, so a lamp it switches can switch it back; keep the lamp out of its sight. An Observer reports a change a moment late. It is the Feedback version of the vanilla observer: a vanilla observer found in the world turns into an Observer. Where vanilla's observer pulses redstone, a controller card reads this one.
 
 A Ripeness Probe, Photocell, Presence Plate or Fill Gauge can also be seated in a [Pivot Mast](Pivot_Mast.md) as a sensing head, reading the cell under the arm tip.
 
