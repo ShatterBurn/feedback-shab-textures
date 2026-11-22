@@ -35,7 +35,7 @@ The mods Feedback works with, and what each one gives you. Some are required, so
 **Optional.** With Just Enough Items installed, the recipe browser covers Feedback's tables as well as its crafting recipes:
 
 - Cards for thermal processes (melting, smelting, reactions, boiling, quenching, dips, electrolysis, freezing), deformation and removal, alloy mixes, fuels, ore veins and fluid deposits, villager goods, brewing ingredients, soldering, guns and tool and part benches. [Heat](Heat.md) describes the thermal cards.
-- A **Material Stats** card for every material; its item box lists every item that is the material, from other mods too, and a **Separation** card per material that a separator can tell apart. See [Materials](Materials.md).
+- A **Material Stats** card for every material, and a **Separation** card per material that a separator can tell apart. See [Materials](Materials.md). The item box of a stats card lists every item that is the material, from other mods too.
 - Info pages on machines, stations and items that have no recipe card, saying what they do. They never give away a puzzle's answer.
 - Crafting cards for recipes that take any material, cycling through every material that fits.
 - Vanilla smelting, blasting and smoking cards, vanilla ores and the vanilla beds are hidden, because Feedback replaces them.
@@ -81,7 +81,18 @@ Amounts follow the size of the form: a nugget carries less than an ingot, a bloc
 
 ### Thaumaturge items as materials
 
-Thaumaturge items that match a Feedback material are read as that material: its clusters, quicksilver, nuggets, amber, cinnabar, rare earth, essentia crystals, fabric, mirrored glass, tallow and its thaumium and void tools and armor. Using one opens the material's stats card. See [Materials](Materials.md#items-from-other-mods) and [Thaumium and void metal](Materials.md#thaumium-and-void-metal).
+Thaumaturge items that match a Feedback material are read as that material in every process, as any item tagged as that metal is. Using one opens the material's stats card, whose item box lists it.
+
+- Quicksilver and its nuggets are mercury.
+- Clusters (iron, gold, copper, tin, silver, lead, cinnabar and quartz) are a cluster form of those metals and minerals.
+- Amber and cinnabar ores, blocks and raw items are amber and cinnabar.
+- Rare earth is rare earth residue.
+- Essentia is a quartz-like crystal that holds an aspect. Its crystal item and the seven world crystals (air, fire, water, earth, order, entropy and flux) are its forms.
+- Thaumium is iron with a little essentia (94% iron, 6% essentia): strong, magnetic, enchantability 22.
+- Void metal is dense, very hard, brittle and dark (88% osmium, 8% ender pearl, 4% essentia).
+- Thaumium and void metal each make the usual tinted form items. Thaumaturge's thaumium and void tools and armor (not robes) are their tool and armor forms.
+- Fabric is cloth, mirrored glass is mirrored glass and tallow is tallow. These three have no items of their own, and anything tagged tallow or animal fat from any mod counts as tallow.
+- Flux Goo, Thaumaturge's fluid, is a corrosive acidic sludge with pH 3.
 
 ### Foods
 
