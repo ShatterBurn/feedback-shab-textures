@@ -44,6 +44,9 @@
   "perks": {
     "smite": 1
   },
+  "accepts": {
+    "cluster": ["thaumaturge:cluster_silver"]
+  },
   "forms": {
     "ingot": "feedback:silver_ingot"
   },

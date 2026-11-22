@@ -1,0 +1,114 @@
+{
+  "fastener": 3,
+  "color": "#2a2740",
+  "kind": "metal",
+  "traits": [
+    "alloy"
+  ],
+  "hardness": 45,
+  "density": 9.31,
+  "thermal": {
+    "melting_point": 2900,
+    "boiling_point": 4900,
+    "cooling_rate": 2.64,
+    "conductivity": 0.012,
+    "oxidation_temperature": 2900,
+    "anneal_temperature": 1000,
+    "service_temperature": 2500,
+    "specific_heat": 0.216,
+    "latent_heat_fusion": 57,
+    "latent_heat_vaporisation": 3500
+  },
+  "mechanical": {
+    "toughness": 6,
+    "ductility": 1,
+    "work_hardening": 2,
+    "yield_strength": 14,
+    "friction": 0.6,
+    "abrasiveness": 0.5
+  },
+  "molten": {
+    "viscosity": 7,
+    "density": 8.4,
+    "shear_thickening": 0
+  },
+  "separation": {
+    "magnetic": false,
+    "reflectivity": 0.1
+  },
+  "electrical": {
+    "conductivity": 0.1,
+    "drop": 0.5,
+    "electrode_potential": 0.6
+  },
+  "ampacity": 0.3,
+  "corrosion_resistance": 1.0,
+  "composition": {
+    "feedback:osmium": 0.88,
+    "feedback:ender_pearl": 0.08,
+    "feedback:essentia": 0.04
+  },
+  "accepts": {
+    "tool": [
+      "thaumaturge:void_sword",
+      "thaumaturge:void_pickaxe",
+      "thaumaturge:void_axe",
+      "thaumaturge:void_shovel",
+      "thaumaturge:void_hoe",
+      "thaumaturge:void_shield"
+    ],
+    "armour": [
+      "thaumaturge:void_helm",
+      "thaumaturge:void_chest",
+      "thaumaturge:void_legs",
+      "thaumaturge:void_boots"
+    ]
+  },
+  "exclude": [
+    "barrel_shroud",
+    "bayonet",
+    "bipod",
+    "block",
+    "bolt",
+    "bullet",
+    "case",
+    "coin",
+    "cylinder",
+    "drilled_plate",
+    "eddy_sleeve",
+    "fine_wire",
+    "foil",
+    "grip",
+    "ground_ingot",
+    "gun_barrel",
+    "ingot",
+    "magazine_tube",
+    "muzzle_brake",
+    "nugget",
+    "pipe",
+    "plate",
+    "receiver",
+    "relief_vent",
+    "resonance_weight",
+    "rod",
+    "scrap",
+    "sculk_jacket",
+    "selector_switch",
+    "slide",
+    "suppressor",
+    "swarf",
+    "thermal_sleeve",
+    "trigger_group",
+    "turned_rod",
+    "wire"
+  ],
+  "enchantability": 10,
+  "attuning": {
+    "temperature": 800,
+    "lock": 200,
+    "coercive": 0.1,
+    "loop_width": 0.1,
+    "lag": 4
+  },
+  "toxicity": 2.0
+}

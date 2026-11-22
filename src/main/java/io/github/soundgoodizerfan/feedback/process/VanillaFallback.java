@@ -85,6 +85,22 @@ public final class VanillaFallback {
         return false;
     }
 
+    /** What a recipe result is when it is a form of a material that melts: the fluid, its melting point and the mB the whole stack holds. */
+    private record Melt(net.minecraft.world.level.material.Fluid fluid, Tu point, int mb) {
+    }
+
+    /** The melt {@code result} stands for, or null when it is no form of a material with both a {@code molten_<id>} fluid and a melting point. */
+    private static Melt melt(ItemStack result) {
+        var found = Material.find(MaterialIngredient.materialsNow(), result);
+        if (found.isEmpty())
+            return null;
+        var id = found.get().id();
+        var point = found.get().material().thermal().meltingPoint();
+        var fluid = net.minecraft.core.registries.BuiltInRegistries.FLUID.getOptional(id.withPath("molten_" + id.getPath()));
+        int mb = io.github.soundgoodizerfan.feedback.registry.FormItems.volume(found.get().form()) * result.getCount();
+        return point.isEmpty() || fluid.isEmpty() || mb <= 0 ? null : new Melt(fluid.get(), point.get(), mb);
+    }
+
     /** Every cooking recipe of {@code level}'s recipe manager as a row (see {@link #rowsFor}). */
     @SuppressWarnings("unchecked")
     public static synchronized List<ThermalProcess> allRows(Level level) {
@@ -107,6 +123,12 @@ public final class VanillaFallback {
                         all.add(new ThermalProcess(inputs, ThermalTuning.AMBIENT_TU, ProcessTuning.SMOKING_OPTIMAL_TU, ProcessTuning.FOOD_MAX_TU, hold,
                                 new io.github.soundgoodizerfan.feedback.core.unit.TuRate(Float.MAX_VALUE), result, ProcessTuning.FOOD_MAX_TU,
                                 ItemStack.EMPTY, net.neoforged.neoforge.fluids.FluidStack.EMPTY, false));
+                    else if (melt(result) instanceof Melt melt)
+                        // The result is a form of a material with a molten fluid (a cluster smelted to ingots): it is that metal's melt, at its melting
+                        // point, pouring the recipe's count of that form's volume, not an item no metal's melting point ever fixed.
+                        all.add(new ThermalProcess(inputs, melt.point(), melt.point(), new Tu(Float.MAX_VALUE), hold,
+                                new io.github.soundgoodizerfan.feedback.core.unit.TuRate(Float.MAX_VALUE), ItemStack.EMPTY, new Tu(Float.MAX_VALUE),
+                                ItemStack.EMPTY, new net.neoforged.neoforge.fluids.FluidStack(melt.fluid(), melt.mb()), false));
                     else
                         all.add(new ThermalProcess(inputs, ProcessTuning.METAL_MIN_TU,
                                 recipe instanceof BlastingRecipe ? ProcessTuning.BLASTING_OPTIMAL_TU : ProcessTuning.SMELTING_OPTIMAL_TU,

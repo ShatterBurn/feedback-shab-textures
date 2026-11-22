@@ -35,7 +35,7 @@ The mods Feedback works with, and what each one gives you. Some are required, so
 **Optional.** With Just Enough Items installed, the recipe browser covers Feedback's tables as well as its crafting recipes:
 
 - Cards for thermal processes (melting, smelting, reactions, boiling, quenching, dips, electrolysis, freezing), deformation and removal, alloy mixes, fuels, ore veins and fluid deposits, villager goods, brewing ingredients, soldering, guns and tool and part benches. [Heat](Heat.md) describes the thermal cards.
-- A **Material Stats** card for every material, and a **Separation** card per material that a separator can tell apart. See [Materials](Materials.md).
+- A **Material Stats** card for every material; its item box lists every item that is the material, from other mods too, and a **Separation** card per material that a separator can tell apart. See [Materials](Materials.md).
 - Info pages on machines, stations and items that have no recipe card, saying what they do. They never give away a puzzle's answer.
 - Crafting cards for recipes that take any material, cycling through every material that fits.
 - Vanilla smelting, blasting and smoking cards, vanilla ores and the vanilla beds are hidden, because Feedback replaces them.
@@ -78,6 +78,10 @@ Every form of a material (ingot, dust, block, plate, nugget and the rest) carrie
 | Bonded composites | Ordo (order) |
 
 Amounts follow the size of the form: a nugget carries less than an ingot, a block more. They also follow the material's figures, so a denser metal carries more Metallum and a better conductor more Potentia. See [Materials](Materials.md) for the properties themselves.
+
+### Thaumaturge items as materials
+
+Thaumaturge items that match a Feedback material are read as that material: its clusters, quicksilver, nuggets, amber, cinnabar, rare earth, essentia crystals, fabric, mirrored glass, tallow and its thaumium and void tools and armor. Using one opens the material's stats card. See [Materials](Materials.md#items-from-other-mods) and [Thaumium and void metal](Materials.md#thaumium-and-void-metal).
 
 ### Foods
 

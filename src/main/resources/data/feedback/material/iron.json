@@ -53,6 +53,9 @@
   },
   "ampacity": 0.31,
   "corrosion_resistance": 0.37,
+  "accepts": {
+    "cluster": ["thaumaturge:cluster_iron"]
+  },
   "forms": {
     "ore": "feedback:iron_ore",
     "deepslate_ore": "feedback:deepslate_iron_ore",

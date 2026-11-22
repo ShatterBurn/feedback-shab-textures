@@ -38,6 +38,11 @@
   "traits": [
     "transparent"
   ],
+  "accepts": {
+    "gem": ["#c:gems/amber"],
+    "ore": ["#c:ores/amber"],
+    "block": ["#c:storage_blocks/amber"]
+  },
   "exclude": [
     "foam",
     "mat",

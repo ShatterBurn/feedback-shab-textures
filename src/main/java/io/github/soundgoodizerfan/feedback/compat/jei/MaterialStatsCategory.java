@@ -50,11 +50,11 @@ public class MaterialStatsCategory implements IRecipeCategory<MaterialStatsCateg
         this.icon = guiHelper.createDrawableItemStack(new ItemStack(FItems.CALIPERS.get()));
     }
 
-    /** Only materials with an item to point at get a card. */
+    /** Only materials with an item to point at get a card: one of its own, or another mod's that is it. */
     public static List<Card> cards(Map<ResourceLocation, Material> materials) {
         List<Card> out = new ArrayList<>();
         materials.forEach((id, m) -> {
-            if (!m.items(id).isEmpty())
+            if (!m.items(id).isEmpty() || !m.foreignItems(id).isEmpty())
                 out.add(new Card(id, m));
         });
         return out;
@@ -88,6 +88,8 @@ public class MaterialStatsCategory implements IRecipeCategory<MaterialStatsCateg
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, Card card, IFocusGroup focuses) {
         List<Item> items = new ArrayList<>(card.material().items(card.id()).values());
+        // Other mods' items that are this material (their tagged brass ingot, an accepted cluster): right-clicking one lands here too.
+        items.addAll(card.material().foreignItems(card.id()));
         builder.addInputSlot(WIDTH - 19, 1).setStandardSlotBackground()
                 .addItemStacks(items.stream().map(ItemStack::new).toList());
     }

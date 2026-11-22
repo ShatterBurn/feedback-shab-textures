@@ -41,6 +41,10 @@
   "corrosion_resistance": 1.0,
   "enchantability": 6,
   "toxicity": 3.0,
+  "accepts": {
+    "gem": ["#c:gems/quicksilver"],
+    "nugget": ["#c:nuggets/quicksilver"]
+  },
   "exclude": [
     "lump"
   ],

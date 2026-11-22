@@ -43,6 +43,9 @@
   },
   "ampacity": 1,
   "corrosion_resistance": 0.7,
+  "accepts": {
+    "cluster": ["thaumaturge:cluster_copper"]
+  },
   "forms": {
     "ingot": "minecraft:copper_ingot",
     "block": "minecraft:copper_block",

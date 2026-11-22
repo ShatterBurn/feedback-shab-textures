@@ -51,6 +51,9 @@
   },
   "ampacity": 0.135,
   "corrosion_resistance": 0.87,
+  "accepts": {
+    "cluster": ["thaumaturge:cluster_lead"]
+  },
   "forms": {
     "ingot": "feedback:lead_ingot",
     "raw": "feedback:raw_lead",

@@ -45,6 +45,9 @@
   },
   "ampacity": 0.16,
   "corrosion_resistance": 0.9,
+  "accepts": {
+    "cluster": ["thaumaturge:cluster_tin"]
+  },
   "forms": {
     "ingot": "feedback:tin_ingot",
     "raw": "feedback:raw_tin",

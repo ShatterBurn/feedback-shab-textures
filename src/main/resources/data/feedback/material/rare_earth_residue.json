@@ -23,6 +23,9 @@
   "separation": {
     "reflectivity": 0.2
   },
+  "accepts": {
+    "raw": ["thaumaturge:rare_earth"]
+  },
   "forms": {
     "raw": "feedback:rare_earth_residue"
   },

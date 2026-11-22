@@ -2,6 +2,11 @@
   "color": "#b02a22",
   "kind": "mineral",
   "abundance": 2.2,
+  "accepts": {
+    "cluster": ["thaumaturge:cluster_cinnabar"],
+    "ore": ["#c:ores/cinnabar"],
+    "raw": ["#c:raw_materials/cinnabar"]
+  },
   "exclude": [
     "ingot"
   ],

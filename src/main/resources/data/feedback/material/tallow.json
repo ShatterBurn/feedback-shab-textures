@@ -1,0 +1,56 @@
+{
+  "color": "#e8dfc8",
+  "kind": "organic",
+  "traits": [
+    "flammable"
+  ],
+  "hardness": 0.2,
+  "density": 0.92,
+  "thermal": {
+    "cooling_rate": 1.17,
+    "conductivity": 4.24e-05,
+    "melting_point": 45,
+    "boiling_point": 300,
+    "specific_heat": 2.0,
+    "latent_heat_fusion": 150,
+    "latent_heat_vaporisation": 300,
+    "oxidation_temperature": 360,
+    "service_temperature": 35
+  },
+  "mechanical": {
+    "yield_strength": 0.1,
+    "friction": 0.3,
+    "abrasiveness": 0,
+    "toughness": 0.2
+  },
+  "molten": {
+    "viscosity": 35,
+    "density": 0.89,
+    "shear_thickening": 0
+  },
+  "separation": {
+    "reflectivity": 0.6
+  },
+  "accepts": {
+    "tallow": ["#c:tallow", "#c:animal_fat"],
+    "block": ["#c:storage_blocks/tallow"]
+  },
+  "exclude": [
+    "foregrip",
+    "grip",
+    "gun_grip",
+    "gun_stock",
+    "paper_case"
+  ],
+  "enchantability": 1,
+  "electrical": {
+    "insulation": "lv"
+  },
+  "corrosion_resistance": 0.5,
+  "toxicity": 0,
+  "combustion": {
+    "flame_temperature": 1000,
+    "burn_ticks": 600,
+    "spread": 0.1
+  }
+}

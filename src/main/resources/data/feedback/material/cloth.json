@@ -1,0 +1,56 @@
+{
+  "color": "#d9cdb4",
+  "kind": "organic",
+  "traits": [
+    "flammable",
+    "fibrous"
+  ],
+  "hardness": 0.5,
+  "density": 1.5,
+  "thermal": {
+    "cooling_rate": 0.526,
+    "conductivity": 1.5e-05,
+    "oxidation_temperature": 255,
+    "melting_point": 255,
+    "specific_heat": 1.3,
+    "latent_heat_fusion": 100,
+    "boiling_point": 500,
+    "latent_heat_vaporisation": 800,
+    "service_temperature": 140
+  },
+  "mechanical": {
+    "yield_strength": 2,
+    "friction": 0.5,
+    "abrasiveness": 0,
+    "toughness": 4
+  },
+  "separation": {
+    "reflectivity": 0.7
+  },
+  "accepts": {
+    "cloth": ["thaumaturge:fabric", "#c:cloth"]
+  },
+  "exclude": [
+    "foregrip",
+    "grip",
+    "gun_grip",
+    "gun_stock",
+    "paper_case"
+  ],
+  "enchantability": 15,
+  "electrical": {
+    "insulation": "lv"
+  },
+  "corrosion_resistance": 0.3,
+  "toxicity": 0,
+  "molten": {
+    "viscosity": 100,
+    "density": 1.35,
+    "shear_thickening": 0
+  },
+  "combustion": {
+    "flame_temperature": 600,
+    "burn_ticks": 100,
+    "spread": 0.2
+  }
+}

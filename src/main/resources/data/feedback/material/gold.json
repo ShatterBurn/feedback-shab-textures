@@ -43,6 +43,9 @@
   },
   "ampacity": 0.76,
   "corrosion_resistance": 1.0,
+  "accepts": {
+    "cluster": ["thaumaturge:cluster_gold"]
+  },
   "forms": {
     "ingot": "minecraft:gold_ingot",
     "nugget": "minecraft:gold_nugget",
