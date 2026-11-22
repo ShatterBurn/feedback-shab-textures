@@ -90,7 +90,7 @@ Thaumaturge items that match a Feedback material are read as that material in ev
 - Essentia is a quartz-like crystal that holds an aspect. Its crystal item and the seven world crystals (air, fire, water, earth, order, entropy and flux) are its forms.
 - Thaumium is iron with a little essentia (94% iron, 6% essentia): strong, magnetic, enchantability 22.
 - Void metal is dense, very hard, brittle and dark (88% osmium, 8% ender pearl, 4% essentia).
-- Thaumium and void metal each make the usual tinted form items. Thaumaturge's thaumium and void tools and armor (not robes) are their tool and armor forms.
+- Thaumium and void metal each make the usual tinted form items. Thaumaturge's thaumium and void swords, pickaxes, axes, shovels, hoes, helmets, chestplates, leggings and boots are converted on the spot into the modular item of that kind, headed or plated in that metal, like vanilla tools (see [Old vanilla tools](Tools_and_Weapons.md#old-vanilla-tools)). Robes and shields are not converted. Other mods' recipes and JEI pages that ask for one of these items accept the converted item too.
 - Fabric is cloth, mirrored glass is mirrored glass and tallow is tallow. These three have no items of their own, and anything tagged tallow or animal fat from any mod counts as tallow.
 - Flux Goo, Thaumaturge's fluid, is a corrosive acidic sludge with pH 3.
 
