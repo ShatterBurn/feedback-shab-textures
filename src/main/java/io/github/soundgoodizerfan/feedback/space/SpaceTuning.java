@@ -51,6 +51,8 @@ public final class SpaceTuning {
     public static final double IMPACT_MIN_SPEED_CHANGE = 8;
     /** Blocks of fall (of the fall that would stop a person as fast) that hurt nobody: vanilla's three. */
     public static final double IMPACT_FREE_FALL_BLOCKS = 3;
+    /** The fall, in blocks, that a hit must be worth before it tears gas cells aboard (the chance is nothing here and certain at twice it). */
+    public static final double IMPACT_PUNCTURE_FALL_BLOCKS = 6;
     /** Ticks the crossing overlay takes to clear. */
     public static final int FADE_TICKS = 60;
 

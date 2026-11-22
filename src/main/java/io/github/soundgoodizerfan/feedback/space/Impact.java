@@ -80,12 +80,33 @@ public final class Impact {
             if (container == null || !(container.getSubLevel(hit.body()) instanceof ServerSubLevel body))
                 continue;
             float damage = (float) Math.ceil(hit.fall() - SpaceTuning.IMPACT_FREE_FALL_BLOCKS);
+            if (hit.fall() > SpaceTuning.IMPACT_PUNCTURE_FALL_BLOCKS)
+                puncture(level, body, hit.fall());
             if (damage <= 0)
                 continue;
             var b = body.boundingBox();
             for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, new AABB(b.minX(), b.minY(), b.minZ(), b.maxX(), b.maxY(), b.maxZ()).inflate(1)))
                 e.hurt(level.damageSources().fall(), damage);
         }
+    }
+
+    /**
+     * A hard hit tears gas cells aboard: each cell in the body's plot is punctured with a chance that grows from nothing at
+     * {@link SpaceTuning#IMPACT_PUNCTURE_FALL_BLOCKS} to certain at twice it. A skin that took the blow no better than an arrow's point
+     * leaks as an arrow hole does (and is patched the same way).
+     */
+    private static void puncture(ServerLevel level, ServerSubLevel body, double fall) {
+        double chance = Math.min(1.0, (fall - SpaceTuning.IMPACT_PUNCTURE_FALL_BLOCKS) / SpaceTuning.IMPACT_PUNCTURE_FALL_BLOCKS);
+        var box = body.getPlot().getBoundingBox();
+        for (int cx = box.minX() >> 4; cx <= box.maxX() >> 4; cx++)
+            for (int cz = box.minZ() >> 4; cz <= box.maxZ() >> 4; cz++) {
+                var chunk = level.getChunkSource().getChunkNow(cx, cz);
+                if (chunk == null)
+                    continue;
+                for (var be : chunk.getBlockEntities().values())
+                    if (be instanceof io.github.soundgoodizerfan.feedback.vehicle.air.GasCellBlockEntity cell && level.random.nextDouble() < chance)
+                        cell.puncture();
+            }
     }
 
     @SubscribeEvent
