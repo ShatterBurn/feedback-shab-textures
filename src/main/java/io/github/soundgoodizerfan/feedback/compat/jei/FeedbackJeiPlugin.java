@@ -585,6 +585,7 @@ public class FeedbackJeiPlugin implements IModPlugin {
         info(registration, io.github.soundgoodizerfan.feedback.registry.FBlocks.STEAM_TURBINE.get().asItem(), "steam_turbine");
         info(registration, io.github.soundgoodizerfan.feedback.registry.FBlocks.TIMER.get().asItem(), "timer");
         info(registration, FModular.WATER_WHEEL.get(), "water_wheel");
+        info(registration, FModular.SAWBLADE.get(), "sawblade");
         info(registration, FModular.GALVANIC_CELL.get(), "galvanic_cell");
         info(registration, io.github.soundgoodizerfan.feedback.registry.FBlocks.SCULK_RELAY.get().asItem(), "sculk_relay");
         info(registration, io.github.soundgoodizerfan.feedback.registry.FBlocks.DATA_SENSOR.get().asItem(), "data_sensor");

@@ -172,7 +172,7 @@ A plank burns a quarter as long as a log ([Firebox](Firebox.md#fuels)). Each woo
 
 **Straw** and **Chaff** are what a [Threshing Machine](Threshing_Machine.md) leaves when it beats wheat apart. Both are loose fibers that burn and insulate heat. Straw, chaff and wood shavings can pad a [bed](Bed.md).
 
-Every wood species also has **Shavings**, a loose form: the sawdust the [Woodworking Table](Woodworking_Table.md)'s Saw tab sheds.
+Every wood species also has **Shavings**, a loose form: the sawdust the [Woodworking Table](Woodworking_Table.md)'s Saw tab sheds and a hand-held [Sawblade](Sawblade.md#sawing-in-the-world) leaves when it saws a log or plank block.
 
 ## Gems
 

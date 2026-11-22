@@ -99,22 +99,26 @@ public abstract class HandToolItem extends Item implements HandTool {
     @Override
     public net.minecraft.world.InteractionResultHolder<ItemStack> use(net.minecraft.world.level.Level level, net.minecraft.world.entity.player.Player player,
                                                                      net.minecraft.world.InteractionHand hand) {
-        return HandWork.begin(level, player, hand);
+        var work = HandWork.begin(level, player, hand);
+        return work.getResult() != net.minecraft.world.InteractionResult.PASS ? work : SawWork.begin(level, player, hand);
     }
 
     @Override
     public int getUseDuration(ItemStack stack, net.minecraft.world.entity.LivingEntity entity) {
-        return HandWork.working(stack) ? HandWork.useDuration() : 0;
+        return HandWork.working(stack) || SawWork.isSaw(stack) ? HandWork.useDuration() : 0;
     }
 
     @Override
     public net.minecraft.world.item.UseAnim getUseAnimation(ItemStack stack) {
-        return HandWork.working(stack) ? HandWork.animation() : net.minecraft.world.item.UseAnim.NONE;
+        return HandWork.working(stack) || SawWork.isSaw(stack) ? HandWork.animation() : net.minecraft.world.item.UseAnim.NONE;
     }
 
     @Override
     public void onUseTick(net.minecraft.world.level.Level level, net.minecraft.world.entity.LivingEntity user, ItemStack stack, int remaining) {
-        HandWork.tick(level, user, stack, remaining);
+        if (HandWork.working(stack))
+            HandWork.tick(level, user, stack, remaining);
+        else if (SawWork.isSaw(stack))
+            SawWork.tick(level, user, stack, remaining);
     }
 
     @Override

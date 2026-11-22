@@ -40,6 +40,12 @@ public final class ItemTuning {
     /** Invented. Ticks between strokes of hand work held by use: a stroke every 8 ticks is two and a half a second, the pace of a worked arm. */
     public static final int HAND_STROKE_TICKS = 8;
 
+    /** Invented. What one stroke of a hand saw bears on the wood, before the blade's thickness scales it: the arm's own figure, as the file's. */
+    public static final St HAND_SAW_ST = new St(7f);
+
+    /** Invented. Work (Wu) a log or plank block takes to saw through; each stroke delivers the saw's St over the wood's hardness. */
+    public static final float HAND_SAW_WORK = 6f;
+
     /** Invented. A test strip reads a food's toxin, in Qu/mB, in quarter steps of a full strength ({@link ProcessTuning#FOOD_QU_PER_STRENGTH}): four bands, never a figure it cannot stand behind. */
     public static final float TEST_STRIP_RESOLUTION_TOXIN = 0.25f * ProcessTuning.FOOD_QU_PER_STRENGTH;
 

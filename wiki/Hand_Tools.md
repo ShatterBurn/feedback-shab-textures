@@ -1,13 +1,13 @@
 # Hand Tools
 
-The hand tools are the ones you carry and use yourself: a hammer, a file and a drill for shaping metal in your hands, a screwdriver for the work at the [Engineering Table](Engineering_Table.md), a wrench for turning blocks, a crowbar for prying fittings off, and the knife, spatula, spoon and tasting spoon for food, and the saw for stone. Most have a head or blade shaped at a bench and assembled with a handle; a few are hot-hammered from heated metal in a crafting grid. Each has its own page.
+The hand tools are the ones you carry and use yourself: a hammer, a file and a drill for shaping metal in your hands, a screwdriver for the work at the [Engineering Table](Engineering_Table.md), a wrench for turning blocks, a crowbar for prying fittings off, and the knife, spatula, spoon and tasting spoon for food, and the saw for wood and stone. Most have a head or blade shaped at a bench and assembled with a handle; a few are hot-hammered from heated metal in a crafting grid. Each has its own page.
 
 - [Hammer](Hammer.md): shapes plates and stock held in your other hand, and is the tool the others are hammered with. Made in a crafting grid from cobblestone and a stick, or a better head shaped at a bench and put on a haft. The hammer, the knife, the file, the drill and the screwdriver are all [hafted tools](Hafted_Tool.md): a haft with a face of that kind.
 - [File](#file) and [Screwdriver](#screwdriver): the tools of the Engineering Table's file and driver work. Each is a head on a handle. The file also cuts a rod in your hands.
 - [Hand Drill](#hand-drill): drills a plate held in your other hand.
 - [Hand Knife](Prep_Table.md): cuts food and dough on the Prep Table. Its blade is one piece with a length and a width; a harder edge can be set in its edge slot. Made by shaping its blade hot at the [Smithing Table](Smithing_Table.md) or [Anvil](Anvil.md), then putting it together with a handle in a crafting grid.
 - [Mortar](Brewing_Stand.md#mortar): an ingredient of the [Brewing Stand](Brewing_Stand.md), whose bowl crushes plants. Made from a stick and stone in a crafting grid.
-- [Sawblade](Sawblade.md): goes in the Stonecutter's saw slot to cut stone and wood. Made by casting a saw blade in a [Saw Blade Mold](Casting.md#tool-part-molds), then putting it together in a crafting grid.
+- [Sawblade](Sawblade.md): saws a log or plank block you look at while you hold right-click, and goes in the Stonecutter's saw slot to cut stone and wood. Made by casting a saw blade in a [Saw Blade Mold](Casting.md#tool-part-molds), then putting it together in a crafting grid.
 - [Spatula](#spatula): flips food in a [Skillet](Skillet.md). Made from a spatula blade shaped from plate, planks or bone (metal is shaped hot), put with a handle.
 - [Wrench](Wrench.md): turns a placed block a quarter turn. Made by hot-hammering four ingots of one hard metal in a crafting grid with a hammer.
 - [Crowbar](Crowbar.md): pries fittings off a machine. Made by hot-hammering two ingots of one hard metal in a crafting grid with a hammer.
