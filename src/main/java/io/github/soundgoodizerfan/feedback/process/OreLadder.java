@@ -116,6 +116,16 @@ public final class OreLadder {
         return new ItemStack(tailings != null ? tailings : io.github.soundgoodizerfan.feedback.registry.FItems.SILICATE_SLAG.get());
     }
 
+    /**
+     * What a melt or a crushed-ore melt drives out of a bearer whose second metal is iron (chalcopyrite): the iron goes into bloomery slag, which
+     * bears iron itself and so climbs the ladder (crush it, melt it). The other rungs leave none, as {@link #slag}.
+     * shortcut: the one iron-rich slag; a slag material per metal would make this a lookup by what the slag bears.
+     */
+    public static ItemStack ironSlag(float recovery) {
+        return recovery != MELT && recovery != CRUSHED ? ItemStack.EMPTY
+                : new ItemStack(io.github.soundgoodizerfan.feedback.registry.FItems.BLOOMERY_SLAG.get());
+    }
+
     /** Whether a form is one a separator takes. */
     public static boolean isFeed(String form) {
         return form.equals("crushed") || form.equals("dust");

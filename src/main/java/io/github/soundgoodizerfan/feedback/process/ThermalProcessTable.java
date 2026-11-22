@@ -162,10 +162,13 @@ public class ThermalProcessTable extends SimpleJsonResourceReloadListener {
                     rungs.computeIfAbsent(OreLadder.recovery(form), k -> new ArrayList<>()).add(form);
             });
             Tu melt = material.thermal().meltingPoint().orElse(metal.thermal().meltingPoint().get());
+            // A bearer whose second-largest metal is iron (chalcopyrite's iron) sheds it as iron slag, not as its own tailings.
+            boolean ironSecond = material.bears().entrySet().stream().filter(e -> !e.getKey().equals(metalId))
+                    .max(java.util.Map.Entry.comparingByValue()).map(e -> e.getKey().getPath().equals("iron")).orElse(false);
             rungs.forEach((recovery, forms) -> out.add(new ThermalProcess(List.of(
                     new MaterialIngredient(Optional.empty(), Optional.empty(), Optional.empty(), Float.NEGATIVE_INFINITY, Float.POSITIVE_INFINITY,
                             Optional.of(id), forms.size() == material.items(id).size() ? List.of() : List.copyOf(forms)).toVanilla()),
-                    melt, melt, new Tu(Float.MAX_VALUE), ProcessTuning.MELT_HOLD_TPU, new TuRate(Float.MAX_VALUE), id.getPath().equals("silicate_slag") ? ItemStack.EMPTY : OreLadder.slag(recovery, material.items(id)),
+                    melt, melt, new Tu(Float.MAX_VALUE), ProcessTuning.MELT_HOLD_TPU, new TuRate(Float.MAX_VALUE), id.getPath().equals("silicate_slag") ? ItemStack.EMPTY : ironSecond ? OreLadder.ironSlag(recovery) : OreLadder.slag(recovery, material.items(id)),
                     new Tu(Float.MAX_VALUE), ItemStack.EMPTY,
                     new net.neoforged.neoforge.fluids.FluidStack(fluid.get(),
                             Math.round(FormType.DEFAULT_MB * best.get().getValue() * OreLadder.ORE_CONTENT * recovery)),
