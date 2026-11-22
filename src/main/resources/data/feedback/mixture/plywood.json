@@ -1,6 +1,6 @@
 {
   "parts": {
-    "feedback:wood": {
+    "trait:woody": {
       "min": 0.85,
       "max": 0.95
     },

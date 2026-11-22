@@ -66,6 +66,17 @@ public class MixtureCategory implements IRecipeCategory<Mixture> {
         var materials = io.github.soundgoodizerfan.feedback.process.ClientMaterials.get();
         int x = 1;
         for (var id : recipe.parts().keySet()) {
+            var trait = Mixture.traitOf(id);
+            if (trait != null) {
+                // A trait part: any material with the trait, each as its stock.
+                var stacks = materials.entrySet().stream().filter(e -> e.getValue().traits().contains(trait))
+                        .flatMap(e -> e.getValue().items(e.getKey()).values().stream()).map(ItemStack::new).toList();
+                if (!stacks.isEmpty()) {
+                    builder.addInputSlot(x, 84).setStandardSlotBackground().addItemStacks(stacks);
+                    x += 18;
+                }
+                continue;
+            }
             var material = materials.get(id);
             if (material == null || material.items(id).isEmpty())
                 continue;
@@ -87,7 +98,10 @@ public class MixtureCategory implements IRecipeCategory<Mixture> {
         int y = 13;
         for (var part : recipe.parts().entrySet()) {
             graphics.drawString(font, Math.round(part.getValue().min() * 100) + "-" + Math.round(part.getValue().max() * 100) + "%", 1, y, VALUE_COLOUR, false);
-            graphics.drawString(font, CartridgeItem.name(part.getKey()), 40, y, VALUE_COLOUR, false);
+            var trait = Mixture.traitOf(part.getKey());
+            Component name = trait != null ? Component.translatable("feedback.jei.mixture.trait." + trait.name().toLowerCase(Locale.ROOT))
+                    : CartridgeItem.name(part.getKey());
+            graphics.drawString(font, name, 40, y, VALUE_COLOUR, false);
             y += 9;
         }
         graphics.drawString(font, recipe.stray() > 0 ? Component.translatable("feedback.jei.mixture.stray", Math.round(recipe.stray() * 100)) : Component.translatable("feedback.jei.mixture.pure"), 1, y + 2, LABEL_COLOUR, false);

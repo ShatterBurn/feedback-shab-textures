@@ -116,6 +116,7 @@ public record Mixture(Map<ResourceLocation, Range> parts, float stray, ItemStack
 
     /** Whether {@code amounts} (any common unit, by material) fall in this row's windows; temperature is not asked. */
     public boolean matchesAmounts(Map<ResourceLocation, Integer> amounts) {
+        amounts = foldTraits(amounts);
         long total = 0;
         for (int n : amounts.values())
             total += n;
@@ -128,6 +129,47 @@ public record Mixture(Map<ResourceLocation, Range> parts, float stray, ItemStack
             if (!e.getValue().isIn(amounts.getOrDefault(e.getKey(), 0) / (float) total))
                 return false;
         return true;
+    }
+
+    /** The namespace of a part that names a trait ({@code trait:woody}) instead of one material: any material with that trait counts toward it. */
+    public static final String TRAIT_PART = "trait";
+
+    /** The trait a part key names, or null for a part that is one material. */
+    @org.jetbrains.annotations.Nullable
+    public static Material.Trait traitOf(ResourceLocation part) {
+        if (!part.getNamespace().equals(TRAIT_PART))
+            return null;
+        try {
+            return Material.Trait.valueOf(part.getPath().toUpperCase(java.util.Locale.ROOT));
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+    }
+
+    /**
+     * {@code amounts} with every material that has no part of its own, but a trait some trait part names, counted under that part (plywood
+     * takes any woody plank, not the one material called wood): a mixture asks what a stuff is, never which species.
+     */
+    private Map<ResourceLocation, Integer> foldTraits(Map<ResourceLocation, Integer> amounts) {
+        java.util.List<ResourceLocation> traitParts = parts.keySet().stream().filter(k -> traitOf(k) != null).toList();
+        if (traitParts.isEmpty())
+            return amounts;
+        var materials = MaterialIngredient.materialsNow();
+        Map<ResourceLocation, Integer> folded = new java.util.HashMap<>();
+        for (var e : amounts.entrySet()) {
+            ResourceLocation key = e.getKey();
+            if (!parts.containsKey(key)) {
+                Material material = materials.get(key);
+                if (material != null)
+                    for (ResourceLocation part : traitParts)
+                        if (material.traits().contains(traitOf(part))) {
+                            key = part;
+                            break;
+                        }
+            }
+            folded.merge(key, e.getValue(), Integer::sum);
+        }
+        return folded;
     }
 
     /** The table a machine asks on this side of the wire: the server's, or the browser's copy. */

@@ -2488,6 +2488,7 @@
   "feedback.jei.mixture": "Mixing",
   "feedback.jei.mixture.stray": "Anything else: up to %s%%",
   "feedback.jei.mixture.pure": "Nothing else in it.",
+  "feedback.jei.mixture.trait.woody": "Any wood",
   "tooltip.feedback.mixture.mostly": "mostly %s",
   "tooltip.feedback.mixture.some": "some %s",
   "tooltip.feedback.mixture.little": "a little %s",
