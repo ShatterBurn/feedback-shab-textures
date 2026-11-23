@@ -1211,6 +1211,11 @@ public class FBlocks {
                     .mapColor(MapColor.COLOR_CYAN)
                     .strength(2.0f)
                     .sound(SoundType.SCULK)));
+    public static final DeferredBlock<io.github.soundgoodizerfan.feedback.machine.glow.AuraSensorBlock> AURA_SENSOR = BLOCKS.register("aura_sensor",
+            () -> new io.github.soundgoodizerfan.feedback.machine.glow.AuraSensorBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_PURPLE)
+                    .strength(1.5f)
+                    .sound(SoundType.METAL)));
     public static final DeferredBlock<io.github.soundgoodizerfan.feedback.machine.glow.RadiationSensorBlock> RADIATION_SENSOR = BLOCKS.register("radiation_sensor",
             () -> new io.github.soundgoodizerfan.feedback.machine.glow.RadiationSensorBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.COLOR_LIGHT_GREEN)

@@ -1,6 +1,6 @@
 # Sensors
 
-Eight blocks that report what they see to a [Controller](Controller.md); all but the Tension Gauge and the Radiation Sensor look at the face they were placed against. They sense and control nothing. Right-click any of them but the Radiation Sensor with an empty hand to read it as a percentage.
+Nine blocks that report what they see to a [Controller](Controller.md); all but the Tension Gauge, the Radiation Sensor and the Aura Sensor look at the face they were placed against. They sense and control nothing. Right-click any of them but the Radiation Sensor and the Aura Sensor with an empty hand to read it as a percentage.
 
 | Sensor | Reads | Reads in |
 | --- | --- | --- |
@@ -11,6 +11,7 @@ Eight blocks that report what they see to a [Controller](Controller.md); all but
 | Observer | a change in the state of the block in front, for half a second after it | on or off |
 | Tension Gauge | how taut the [fixed line](Grapple.md#fixed-lines) is that passes through its own block: the load on it over the line's rating, full when over it | sixths |
 | Radiation Sensor | the [radiation](Radiation.md) rate where it stands, as a share of its full scale | 15 steps |
+| [Aura Sensor](Aura_Sensor.md) | the aura of the chunk it stands in: vis, and flux in 14 steps | share and steps |
 | [Thermocouple Probe](Thermocouple_Probe.md) | the temperature of the block in front, up to what its weaker wire stands | 2 to 16 bands, set by the two metals |
 
 ## Using them

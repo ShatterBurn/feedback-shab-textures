@@ -148,9 +148,10 @@ Scanning Feedback's entities with the Thaumometer also yields aspects: the robot
 
 ### Flux, scrubbing and rust
 
-Thaumaturge tracks **flux** in each chunk. Three Feedback blocks and one item deal with it.
+Thaumaturge tracks **flux** in each chunk. Four Feedback blocks and one item deal with it.
 
 - The [Scrubbing Bed](Scrubbing_Bed.md) takes flux out of the chunk it stands in. It fills up, and a full bed leaks flux back.
+- The [Aura Sensor](Aura_Sensor.md) reads the chunk's vis and flux for a [Controller](Controller.md).
 - The [Essentia Vent](Essentia_Vent.md) bleeds essentia from a full essentia store into the chunk as flux.
 - **Flux rust.** In a chunk whose flux stands well above its base, bare metal machines slowly corrode: [shafts](Shaft.md), [pulleys](Pulleys.md), [dynamotors](Dynamotor.md), [converters](Converter.md), [coils](Heating_Coil.md), [relays](Relay.md), [electromagnets](Electromagnet.md) and [batteries](Battery.md) lose condition, faster the more flux there is. It is the place doing it, not the machine's use. It happens in chunks near a player. A machine whose block wears a [Taint Glaze](Taint_Glaze.md) does not corrode, and neither does anything once a scrubbing bed brings the flux back down.
 - **Flux goo into brine.** 200 mB of Thaumaturge's Flux Goo and 100 mB of [lye](Chemicals.md#lye) in a [Reactor](Reactor.md) make 300 mB of [brine](Chemicals.md#brine). The Reactor wants it cool, 10 to 120 Tu, best near 40.

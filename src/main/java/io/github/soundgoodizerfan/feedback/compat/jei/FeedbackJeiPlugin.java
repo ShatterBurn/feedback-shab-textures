@@ -599,6 +599,7 @@ public class FeedbackJeiPlugin implements IModPlugin {
         info(registration, io.github.soundgoodizerfan.feedback.registry.FBlocks.SCULK_RELAY.get().asItem(), "sculk_relay");
         info(registration, io.github.soundgoodizerfan.feedback.registry.FBlocks.DATA_SENSOR.get().asItem(), "data_sensor");
         info(registration, io.github.soundgoodizerfan.feedback.registry.FBlocks.RADIATION_SENSOR.get().asItem(), "radiation_sensor");
+        info(registration, io.github.soundgoodizerfan.feedback.registry.FBlocks.AURA_SENSOR.get().asItem(), "aura_sensor");
         info(registration, io.github.soundgoodizerfan.feedback.registry.FBlocks.OPTICAL_TERMINAL.get().asItem(), "optical_terminal");
         info(registration, io.github.soundgoodizerfan.feedback.registry.FBlocks.REBOILER.get().asItem(), "reboiler");
         info(registration, io.github.soundgoodizerfan.feedback.registry.FBlocks.FLARE.get().asItem(), "flare");

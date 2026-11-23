@@ -2626,6 +2626,28 @@
         "aspect": "thaumaturge:terra"
       }
     ],
+    "feedback:aura_sensor": [
+      {
+        "amount": 2,
+        "aspect": "thaumaturge:fabrico"
+      },
+      {
+        "amount": 6,
+        "aspect": "thaumaturge:lux"
+      },
+      {
+        "amount": 28,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 8,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 21,
+        "aspect": "thaumaturge:potentia"
+      }
+    ],
     "feedback:auto_engineer": [
       {
         "amount": 9,
@@ -12065,20 +12087,6 @@
       },
       {
         "amount": 3,
-        "aspect": "thaumaturge:metallum"
-      }
-    ],
-    "feedback:crowbar": [
-      {
-        "amount": 7,
-        "aspect": "thaumaturge:instrumentum"
-      },
-      {
-        "amount": 1,
-        "aspect": "thaumaturge:fabrico"
-      },
-      {
-        "amount": 2,
         "aspect": "thaumaturge:metallum"
       }
     ],
@@ -31194,6 +31202,34 @@
       {
         "amount": 2,
         "aspect": "thaumaturge:machina"
+      }
+    ],
+    "feedback:prospector_head": [
+      {
+        "amount": 7,
+        "aspect": "thaumaturge:instrumentum"
+      },
+      {
+        "amount": 2,
+        "aspect": "thaumaturge:fabrico"
+      },
+      {
+        "amount": 1,
+        "aspect": "thaumaturge:metallum"
+      }
+    ],
+    "feedback:pry_head": [
+      {
+        "amount": 6,
+        "aspect": "thaumaturge:instrumentum"
+      },
+      {
+        "amount": 3,
+        "aspect": "thaumaturge:fabrico"
+      },
+      {
+        "amount": 1,
+        "aspect": "thaumaturge:metallum"
       }
     ],
     "feedback:ptfe_powder": [
