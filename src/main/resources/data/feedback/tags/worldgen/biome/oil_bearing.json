@@ -8,6 +8,12 @@
     "minecraft:badlands",
     "minecraft:swamp",
     "minecraft:forest",
-    "minecraft:river"
+    "minecraft:river",
+    { "id": "#c:is_plains", "required": false },
+    { "id": "#c:is_desert", "required": false },
+    { "id": "#c:is_savanna", "required": false },
+    { "id": "#c:is_swamp", "required": false },
+    { "id": "#c:is_river", "required": false },
+    { "id": "#minecraft:is_forest", "required": false }
   ]
 }
