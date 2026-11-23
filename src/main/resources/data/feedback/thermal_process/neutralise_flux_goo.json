@@ -1,0 +1,31 @@
+{
+  "neoforge:conditions": [
+    { "type": "neoforge:mod_loaded", "modid": "thaumaturge" }
+  ],
+  "inputs": [],
+  "min_temperature": 10,
+  "optimal_temperature": 40,
+  "max_temperature": 120,
+  "required_tpu": 80,
+  "reaction": {
+    "fluid_inputs": [
+      {
+        "fluid": "thaumaturge:flux_goo",
+        "mb": 200
+      },
+      {
+        "fluid": "feedback:lye",
+        "mb": 100
+      }
+    ],
+    "fluid_outputs": [
+      {
+        "fluid": "feedback:brine",
+        "mb": 300
+      }
+    ],
+    "min_pu": 1,
+    "optimal_pu": 1,
+    "heat": 4
+  }
+}

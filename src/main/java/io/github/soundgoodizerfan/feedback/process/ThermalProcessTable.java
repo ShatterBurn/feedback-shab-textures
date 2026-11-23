@@ -66,7 +66,7 @@ public class ThermalProcessTable extends SimpleJsonResourceReloadListener {
         // two-input process (iron + coal) also satisfy any one-input process among them, so the
         // more specific must be tried first -- and the order must not depend on HashMap iteration.
         Map<ResourceLocation, ThermalProcess> loaded = new TreeMap<>();
-        json.forEach((id, element) -> ThermalProcess.CODEC.parse(JsonOps.INSTANCE, element)
+        io.github.soundgoodizerfan.feedback.core.LoadConditions.filter(json).forEach((id, element) -> ThermalProcess.CODEC.parse(JsonOps.INSTANCE, element)
                 .resultOrPartial(error -> Feedback.LOGGER.error("Bad thermal process {}: {}", id, error))
                 .ifPresent(process -> loaded.put(id, process)));
         List<PhaseChange> boils = new ArrayList<>();

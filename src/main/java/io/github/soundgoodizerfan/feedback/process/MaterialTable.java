@@ -56,7 +56,7 @@ public class MaterialTable extends SimpleJsonResourceReloadListener {
     public static Map<ResourceLocation, JsonElement> resolved(Map<ResourceLocation, JsonElement> json) {
         Map<ResourceLocation, JsonElement> out = new TreeMap<>();
         json.forEach((id, element) -> {
-            if (!isTemplate(element))
+            if (!isTemplate(element) && io.github.soundgoodizerfan.feedback.core.LoadConditions.passes(element))
                 out.put(id, resolve(id, element, json, new HashSet<>()));
         });
         return out;
