@@ -1,0 +1,40 @@
+{
+ "format_version": "1.12.0",
+ "minecraft:geometry": [
+  {
+   "description": {
+    "identifier": "geometry.feedback.pauldron_l",
+    "texture_width": 64,
+    "texture_height": 32
+   },
+   "bones": [
+    {
+     "name": "left_arm",
+     "pivot": [
+      5,
+      22,
+      0
+     ],
+     "cubes": [
+      {
+       "origin": [
+        2.5,
+        22.5,
+        -3.5
+       ],
+       "size": [
+        6.5,
+        3,
+        7
+       ],
+       "uv": [
+        40,
+        16
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

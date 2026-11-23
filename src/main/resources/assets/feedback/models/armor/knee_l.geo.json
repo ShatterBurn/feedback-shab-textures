@@ -1,0 +1,45 @@
+{
+ "format_version": "1.12.0",
+ "minecraft:geometry": [
+  {
+   "description": {
+    "identifier": "geometry.feedback.knee_l",
+    "texture_width": 64,
+    "texture_height": 32
+   },
+   "bones": [
+    {
+     "name": "left_leg",
+     "pivot": [
+      1.9,
+      12,
+      0
+     ],
+     "cubes": [
+      {
+       "origin": [
+        -0.85,
+        5,
+        -3.5
+       ],
+       "size": [
+        5.5,
+        2.5,
+        1
+       ],
+       "uv": [
+        0,
+        16
+       ],
+       "inner_offset": [
+        0,
+        0,
+        0.5
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

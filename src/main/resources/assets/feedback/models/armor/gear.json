@@ -1,0 +1,108 @@
+{
+ "slots": {
+  "head": {
+   "conical": [
+    "crest"
+   ],
+   "ridged": [
+    "crest"
+   ],
+   "pointed_face": [
+    "visor",
+    "brim"
+   ],
+   "tailed": [
+    "neck",
+    "brim"
+   ],
+   "default": [
+    "brow"
+   ]
+  },
+  "chest": {
+   "brigandine": [
+    "collar"
+   ],
+   "breastplate": [
+    "ridge",
+    "pauldron_r",
+    "pauldron_l"
+   ],
+   "hauberk": [
+    "collar",
+    "skirt"
+   ],
+   "scale": [
+    "collar",
+    "skirt"
+   ],
+   "lamellar": [
+    "collar",
+    "skirt"
+   ],
+   "segmented": [
+    "ridge",
+    "pauldron_r",
+    "pauldron_l"
+   ],
+   "default": [
+    "collar"
+   ]
+  },
+  "legs": {
+   "articulated": [
+    "knee_r",
+    "knee_l"
+   ],
+   "mail_chausses": [
+    "thigh_r",
+    "thigh_l"
+   ],
+   "default": []
+  },
+  "feet": {
+   "sabatons": [
+    "toe_r",
+    "toe_l"
+   ],
+   "default": []
+  }
+ },
+ "studs": {
+  "head": [
+   "studs_head"
+  ],
+  "chest": [
+   "studs_body",
+   "studs_body2"
+  ]
+ },
+ "fit": [
+  {
+   "slot": "head",
+   "axis": "face_opening",
+   "band": "closed",
+   "add": [
+    "visor"
+   ]
+  },
+  {
+   "slot": "head",
+   "axis": "face_opening",
+   "band": "open",
+   "remove": [
+    "visor",
+    "brim"
+   ]
+  },
+  {
+   "slot": "feet",
+   "axis": "shaft",
+   "band_not": "ankle",
+   "add": [
+    "cuff_r",
+    "cuff_l"
+   ]
+  }
+ ]
+}
