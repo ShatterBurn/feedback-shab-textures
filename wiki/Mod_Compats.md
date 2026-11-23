@@ -163,6 +163,12 @@ Feedback machines are immune to Thaumaturge's taint: it does not convert them. A
 
 Core Slag, Crude Pools, Tar Seeps and Soul Seeps count as physical flux for Thaumaturge: they feed a chunk's flux floor and taint outbreaks, where Thaumaturge's options for that are on. Crude Pools, Tar Seeps and Soul Seeps can also be cleared by Thaumaturge's scrubbers. Without Thaumaturge, nothing changes.
 
+### Survey Meter and warp
+
+With Thaumaturge installed, the [Survey Meter](Instruments.md#survey-meter) adds a line, **Field anomaly, no ore**, with a bearing towards the chunk within 16 blocks whose vis is the highest share of its base aura, from 1.2 times base up. A chunk near that mark shows only some of the time.
+
+Crafting some Feedback items gives Thaumaturge warp, a few points each: the fuel rods ([Fuel Rod, Enriched Fuel Rod, Spent Fuel Rod, Thorium Fuel Rod](Nuclear_Fuel.md) and Breeder Rod), the [XP Container](Experience.md), [Culture Dish](Sculk.md), [Catalyst Tap](Sculk.md#catalyst-tap), [Sculk Relay](Sculk.md#sculk-relay) and [Chunk Anchor](Ender_Port.md#chunk-anchor). Spent Fuel Rod carries the most.
+
 ### The Outer Lands and arrival pads
 
 Thaumaturge's Outer Lands dimension is cold and has the thin, oxygen-free air of the End, so [Heat](Heat.md) rules for cold and the sealed-suit rules of [Hazards](Hazards.md) apply there.

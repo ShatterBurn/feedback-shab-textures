@@ -382,6 +382,8 @@ Right-click. It lists up to four kinds of ore within 16 blocks, each with a roug
 
 An **oil basin** reads as a line of its own, from how close the nearest basin's circle comes, with a bearing towards its center. Same rounding, same wobble. A **soul oil basin** in the Nether reads the same way. See [Oil](Oil.md#finding-a-basin) and [Soul oil basins](Oil.md#soul-oil-basins).
 
+With [Thaumaturge](Mod_Compats.md#thaumaturge) installed, the Survey Meter adds a line, **Field anomaly, no ore**, with a bearing towards a chunk within 16 blocks whose vis stands well above its base. It shows only some of the time at the margin.
+
 Every vein can show itself on the surface above it, if it is not buried too deep: up to three small signs scattered over the vein, each on dirt, sand or bare stone. Follow one down. See [Ore Deposits](Ore_Deposits.md#reading-the-surface) for which sign marks which ore.
 
 ## Mass Probe
