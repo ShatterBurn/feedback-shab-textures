@@ -35,8 +35,7 @@ import net.minecraft.world.phys.Vec3;
  * for a vanilla cooldown. A controller reads channel 0 as the frequency over 15, and channel 1 to 15 as whether that
  * exact frequency was just heard. Event-driven: it ticks nothing and costs one call per vibration in range.
  * <p>
- * shortcut: no wool dampening and no sneak filter, the listener hears every vibration game event in range; upgrade
- * if a sensor behind wool should be deaf.
+ * A careful step is not heard and a wool block on the line from the vibration to the sensor muffles it, as at a sculk sensor.
  */
 public class DataSensorBlockEntity extends BlockEntity
         implements DataNode, ChannelSource, GameEventListener.Provider<DataSensorBlockEntity.Ear> {
@@ -73,11 +72,29 @@ public class DataSensorBlockEntity extends BlockEntity
         public boolean handleGameEvent(ServerLevel level, Holder<GameEvent> event, GameEvent.Context context, Vec3 pos) {
             if (isRemoved() || !event.is(GameEventTags.VIBRATIONS))
                 return false;
+            // As a sculk sensor does: a careful step is not heard, and wool in the way muffles the sound.
+            if (context.sourceEntity() != null && context.sourceEntity().isSteppingCarefully() && event.is(GameEventTags.IGNORE_VIBRATIONS_SNEAKING))
+                return false;
+            if (muffled(level, pos))
+                return false;
             frequency = VibrationSystem.getGameEventFrequency(event);
             heardAt = level.getGameTime();
             io.github.soundgoodizerfan.feedback.core.Awards.near(level, getBlockPos(), "progress/deepdark/listen");
             return true;
         }
+    }
+
+    /** Whether a vibration-dampening block (wool, by the vanilla tag) stands on the straight line from {@code from} to this sensor. */
+    private boolean muffled(Level level, Vec3 from) {
+        Vec3 to = Vec3.atCenterOf(worldPosition);
+        Vec3 d = to.subtract(from);
+        int steps = (int) Math.ceil(d.length() * 2.0);
+        for (int i = 1; i < steps; i++) {
+            BlockPos p = BlockPos.containing(from.add(d.scale((double) i / steps)));
+            if (!p.equals(worldPosition) && level.getBlockState(p).is(net.minecraft.tags.BlockTags.DAMPENS_VIBRATIONS))
+                return true;
+        }
+        return false;
     }
 
     private boolean fresh() {

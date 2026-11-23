@@ -54,7 +54,7 @@ V is a Sculk Vein, O is a Relay Organ and P is a Wrought Iron Plate. Every relay
 
 ## Data Sensor
 
-Made at the [Engineering Table](Engineering_Table.md) from a Sculk Sensor, two Brass Plates and two Copper Fine Wire, with a [screwdriver](Hand_Tools.md#screwdriver), 2 screws and Electrical Treatise II: Coils and Magnets ([Treatise](Treatise.md)). Brass plating frames a sculk window. Listens like one (8 blocks, the same vibration frequencies) and holds the last frequency for two seconds. Link it to a [Controller](Controller.md) with a Data Connector and read it with an Input card: channel 0 is the frequency over 15, channels 1 to 15 are on while that exact frequency was just heard. It has no wool dampening and no sneak filter.
+Made at the [Engineering Table](Engineering_Table.md) from a Sculk Sensor, two Brass Plates and two Copper Fine Wire, with a [screwdriver](Hand_Tools.md#screwdriver), 2 screws and Electrical Treatise II: Coils and Magnets ([Treatise](Treatise.md)). Brass plating frames a sculk window. Listens like one (8 blocks, the same vibration frequencies) and holds the last frequency for two seconds. Link it to a [Controller](Controller.md) with a Data Connector and read it with an Input card: channel 0 is the frequency over 15, channels 1 to 15 are on while that exact frequency was just heard. Like a sculk sensor, it does not hear someone sneaking, and a wool block on the straight line between the vibration and the sensor muffles it.
 
 ## What sculk hears
 
