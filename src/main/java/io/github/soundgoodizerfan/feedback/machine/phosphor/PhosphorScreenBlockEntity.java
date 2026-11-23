@@ -65,6 +65,8 @@ public class PhosphorScreenBlockEntity extends BlockEntity implements ThermalBod
     private float burn;
     private int drive;
     private int hold;
+    private float craze;
+    private final io.github.soundgoodizerfan.feedback.core.thermal.ThermalShock.Watch shock = new io.github.soundgoodizerfan.feedback.core.thermal.ThermalShock.Watch();
 
     public PhosphorScreenBlockEntity(BlockPos pos, BlockState state) {
         super(FBlockEntities.PHOSPHOR_SCREEN.get(), pos, state);
@@ -149,6 +151,24 @@ public class PhosphorScreenBlockEntity extends BlockEntity implements ThermalBod
         Heat.tick(this, fireTu, ambient, fireTu.value() > ambient.value());
         setChanged();
 
+        // Rain or water against a hot envelope quenches it: it falls toward ambient at once.
+        boolean wet = level.isRainingAt(worldPosition.above());
+        for (net.minecraft.core.Direction side : net.minecraft.core.Direction.values())
+            wet |= level.getFluidState(worldPosition.relative(side)).is(net.minecraft.tags.FluidTags.WATER);
+        if (wet && temperature > ambient.value())
+            temperature -= (temperature - ambient.value()) * ElectricMachineTuning.ENVELOPE_QUENCH_FRACTION;
+
+        // Thermal shock: the glass crazes when it cools faster than it can take (heating on a fire is the work it is for), and gives
+        // way once crazed through.
+        float over = shock.overshoot(MaterialTable.get().materials().get(Feedback.id("glass")), temperature);
+        if (over > 0f && shock.lastJump() < 0f) {
+            craze += ElectricMachineTuning.ENVELOPE_CRAZE_PER_OVERSHOOT * over;
+            if (craze >= 1f) {
+                shatter();
+                return;
+            }
+        }
+
         if (temperature > serviceTu() && level.random.nextFloat() < 0.02f
                 || sealed && PressureBurst.fails(getPressure(), ElectricMachineTuning.ENVELOPE_DANGER_PU, ElectricMachineTuning.ENVELOPE_CRITICAL_PU, level.random)) {
             shatter();
@@ -174,6 +194,7 @@ public class PhosphorScreenBlockEntity extends BlockEntity implements ThermalBod
         tag.putBoolean("Sealed", sealed);
         tag.putFloat("SealTu", sealTu);
         tag.putFloat("Burn", burn);
+        tag.putFloat("Craze", craze);
         offline.save(tag, level);
     }
 
@@ -184,6 +205,7 @@ public class PhosphorScreenBlockEntity extends BlockEntity implements ThermalBod
         sealed = tag.getBoolean("Sealed");
         sealTu = tag.getFloat("SealTu");
         burn = tag.getFloat("Burn");
+        craze = tag.getFloat("Craze");
         offline.load(tag);
     }
 }

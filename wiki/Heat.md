@@ -72,6 +72,8 @@ Brittle parts can crack in either bath; see [Thermal shock](#thermal-shock).
 
 A made part of glass, ceramic, brick, concrete or obsidian takes a flaw when you right-click water or lava with it and the bath differs from the part's own temperature by more than the material's **shock limit** (a figure on JEI's *Material Stats* page; the values are in [Materials](Materials.md#heat-and-other-figures)). It takes one flaw for every time the limit is overshot, up to 3 flaws, like [forging flaws](Hammer.md). A jump within the limit costs nothing, so warming a part in steps keeps it whole. A hot glass part in water, or a cold one in lava, is the usual way to lose it. Quartz and silica glass shrug off almost any jump.
 
+A hot [Phosphor Screen](Phosphor_Screen.md#overrun) envelope crazes and shatters when rain or water beside it cools it too fast.
+
 A brick, glass or ceramic [Crucible](Crucible.md#thermal-shock) wall takes the same shock from a molten metal poured into it.
 
 ### Merging heated stacks

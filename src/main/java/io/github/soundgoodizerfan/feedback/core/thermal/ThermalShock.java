@@ -24,4 +24,37 @@ public final class ThermalShock {
         float limit = material.thermal().shockLimit().map(io.github.soundgoodizerfan.feedback.core.unit.Tu::value).orElse(0f);
         return limit <= 0f ? 0f : Math.max(0f, (Math.abs(jumpTu) - limit) / limit);
     }
+
+    /**
+     * The shock a {@link ThermalBody} of a rated material takes from its own temperature changing faster than the stuff can take: a body
+     * keeps one Watch, calls {@link #overshoot} every tick, and keeps the crazing it is told (a field and a way to give). The jump is the
+     * change in temperature across one window, so a slow warm-up never counts and a body thrown from a fire into cold water does.
+     */
+    public static final class Watch {
+        /** Ticks across which a jump is measured. */
+        public static final int WINDOW_TICKS = 20;
+
+        private float last = Float.NaN;
+        private int ticks;
+        private float jump;
+
+        /** The signed change in temperature across the window {@link #overshoot} last closed (negative is cooling). */
+        public float lastJump() {
+            return jump;
+        }
+
+        /** Called once a tick with the body's temperature; at the end of each window returns how many limits that window's jump overshot, else 0. */
+        public float overshoot(Material material, float temperature) {
+            if (Float.isNaN(last)) {
+                last = temperature;
+                return 0f;
+            }
+            if (++ticks < WINDOW_TICKS)
+                return 0f;
+            ticks = 0;
+            jump = temperature - last;
+            last = temperature;
+            return ThermalShock.overshoot(material, jump);
+        }
+    }
 }

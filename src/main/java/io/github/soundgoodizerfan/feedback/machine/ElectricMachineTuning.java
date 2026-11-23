@@ -552,6 +552,12 @@ public final class ElectricMachineTuning {
 
     public static final Conductance ENVELOPE_LEAK = new Conductance(0.05f);
 
+    /** Placeholder. Share of its heat above ambient a wet (rained on or water-side) hot envelope loses each tick. */
+    public static final float ENVELOPE_QUENCH_FRACTION = 0.08f;
+
+    /** Placeholder. Crazing a glass envelope gains per time its shock limit is overshot in one window; it shatters at 1. */
+    public static final float ENVELOPE_CRAZE_PER_OVERSHOOT = 0.35f;
+
     /** Placeholder. A sealed envelope reheated past its seal: gauge Pu where it starts to let go, and where it certainly does. */
     public static final Pu ENVELOPE_DANGER_PU = new Pu(0.1f);
 
