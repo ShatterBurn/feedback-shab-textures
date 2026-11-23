@@ -27,7 +27,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 
-/** A crossbow whose bolt speed is its prod and string. Its charge time is still vanilla (spec 11). */
+/** A crossbow whose bolt speed and load time both come from its prod and string. */
 public class ModularCrossbow extends net.minecraft.world.item.CrossbowItem implements Modular {
 
     public ModularCrossbow(Item.Properties properties) {
@@ -79,12 +79,21 @@ public class ModularCrossbow extends net.minecraft.world.item.CrossbowItem imple
         ModularStacks.strain(weapon, shooter, hand);
     }
 
-    /** The charge is the player's time held, divided by the archetype's load time: a slow crossbow needs longer held, a fast one less. */
+    /** Ticks held for a full load: the baked draw of the prod and string (as the bow's), times the archetype's load multiple. */
+    public static float loadTicks(ItemStack stack) {
+        return ModularStacks.drawTicks(stack) * RangedDispatch.drawScale(stack);
+    }
+
+    /**
+     * The charge is the player's time held over this crossbow's own load time, which a stiffer prod lengthens. Vanilla divides by its
+     * constant charge duration, so the held time is rescaled to what vanilla would need.
+     */
     @Override
     public void releaseUsing(ItemStack stack, Level level, LivingEntity shooter, int timeLeft) {
         int used = getUseDuration(stack, shooter) - timeLeft;
         boolean was = isCharged(stack);
-        super.releaseUsing(stack, level, shooter, getUseDuration(stack, shooter) - Math.round(used / RangedDispatch.drawScale(stack)));
+        float vanilla = getChargeDuration(stack, shooter);
+        super.releaseUsing(stack, level, shooter, getUseDuration(stack, shooter) - Math.round(used * vanilla / loadTicks(stack)));
         if (!was && isCharged(stack) && shooter instanceof ServerPlayer player)
             RangedDispatch.loaded(player, stack);
     }

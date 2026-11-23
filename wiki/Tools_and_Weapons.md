@@ -66,6 +66,7 @@ A whole diamond head is possible and bites superbly, but diamond is brittle: it 
 
 The crossbow is the one tool with a mechanism. It is a complex type: it takes Weapons Treatise II ([Treatise](Treatise.md)), is assembled only at the [Engineering Table](Engineering_Table.md) and spends [fasteners](Fasteners.md). A [blueprint](Blueprint_Table.md) of a crossbow in the blueprint slot judges the fit of its parts; without one the parts are hand-fitted.
 
+The time you hold the use key to load a bolt comes from the prod and string, as a bow's draw does: a stiffer prod loads slower and shoots harder, a softer one loads faster and shoots lighter.
 ## What the parts do
 
 You won't see a stat sheet. Hold the tool and read the words on its tooltip: *head-heavy*, *light in the hand*, *heavy*, *keen*, *blunt*, *brittle*, *soft*, *loose-jointed*, *worn*. A tool is a physical object, and these are the things you'd feel picking it up. Below the words, the tooltip lists every part except the head (or blade) as a line such as "contains Leather Binding (1)", with the count at the end: a pickaxe's handle reads "(2)".

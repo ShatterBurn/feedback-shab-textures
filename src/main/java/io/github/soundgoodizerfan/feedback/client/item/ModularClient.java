@@ -95,8 +95,7 @@ public final class ModularClient {
         net.minecraft.client.renderer.item.ItemProperties.register(crossbow, net.minecraft.resources.ResourceLocation.withDefaultNamespace("pull"), (stack, level, entity, seed) ->
                 entity == null || entity.getUseItem() != stack || net.minecraft.world.item.CrossbowItem.isCharged(stack) ? 0f
                         : (stack.getUseDuration(entity) - entity.getUseItemRemainingTicks())
-                                / (net.minecraft.world.item.CrossbowItem.getChargeDuration(stack, entity)
-                                        * io.github.soundgoodizerfan.feedback.modular.combat.RangedDispatch.drawScale(stack)));
+                                / io.github.soundgoodizerfan.feedback.modular.item.ModularCrossbow.loadTicks(stack));
         net.minecraft.client.renderer.item.ItemProperties.register(crossbow, net.minecraft.resources.ResourceLocation.withDefaultNamespace("pulling"), (stack, level, entity, seed) ->
                 entity != null && entity.isUsingItem() && entity.getUseItem() == stack && !net.minecraft.world.item.CrossbowItem.isCharged(stack) ? 1f : 0f);
         net.minecraft.client.renderer.item.ItemProperties.register(crossbow, net.minecraft.resources.ResourceLocation.withDefaultNamespace("charged"), (stack, level, entity, seed) ->
