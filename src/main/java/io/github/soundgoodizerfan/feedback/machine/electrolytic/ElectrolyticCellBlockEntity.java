@@ -263,8 +263,12 @@ public class ElectrolyticCellBlockEntity extends ElectricNode implements Thermal
             dissolvingLeft -= d;
             done += d;
             Material material = materials.get(dissolving);
-            if (material != null)
+            if (material != null) {
                 shares(material, dissolving).forEach((m, share) -> solution.merge(m, share * d, Float::sum));
+                // An ore dissolving in an acid or a base uses the bath up: it turns to the salt of the metal it took.
+                if (!material.bears().isEmpty() && material.composition().isEmpty() && leaching())
+                    water.drain(Math.round(d * ElectricMachineTuning.ELECTROLYSIS_LEACH_MB_PER_QU), net.neoforged.neoforge.fluids.capability.IFluidHandler.FluidAction.EXECUTE);
+            }
         }
         return done;
     }

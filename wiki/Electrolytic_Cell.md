@@ -26,7 +26,7 @@ G is Glass and W is [Copper Wire](Wire_Drawer.md). Craft it at the [Engineering 
 
 ## Refining
 
-The anode dissolves into the water as the metals it's made of. With acid in the cell an **ore item** hung as the anode dissolves too, as the metals it bears. An ore dissolves as much as its stage pays on the [ladder](Ore_Processing.md#how-much-metal-each-stage-gives): a concentrate or roasted concentrate gives close to its leach yield, tailings the tailings leach yield. **Brass** dissolves as copper and zinc, **bronze** as copper and tin. The current then plates metal back out onto the cathode.
+The anode dissolves into the water as the metals it's made of. With acid in the cell an **ore item** hung as the anode dissolves too, as the metals it bears. An ore dissolves as much as its stage pays on the [ladder](Ore_Processing.md#how-much-metal-each-stage-gives): a concentrate or roasted concentrate gives close to its leach yield, tailings the tailings leach yield. Dissolving ore uses the acid or lye up: every Qu of ore dissolved drains **4 mB** from the cell, so a long run needs the bath topped up to stay above 100 mB. Alloys dissolving in water cost no liquid. **Brass** dissolves as copper and zinc, **bronze** as copper and tin. The current then plates metal back out onto the cathode.
 
 ### Current is the speed
 

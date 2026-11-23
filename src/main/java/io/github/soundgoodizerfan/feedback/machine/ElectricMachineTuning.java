@@ -201,6 +201,8 @@ public final class ElectricMachineTuning {
      * wide one. Zinc sits 1.1 behind copper and tin 0.48, so water refines brass and bronze to copper and an acid plates both.
      */
     public static final float ELECTROLYSIS_WATER_WINDOW = 0.4f, ELECTROLYSIS_ACID_WINDOW = 1.5f;
+    /** Placeholder. mB of acid or base bath a Qu of ore dissolved in it uses up. */
+    public static final float ELECTROLYSIS_LEACH_MB_PER_QU = 4f;
 
     /**
      * Placeholder. The least band that splits water. With no anode left to dissolve, the only thing the anode can do is
