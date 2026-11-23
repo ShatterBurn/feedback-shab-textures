@@ -1,0 +1,7 @@
+{
+  "parent": "feedback:block/block_camera",
+  "textures": {
+    "lens": "minecraft:block/black_concrete",
+    "lamp": "minecraft:block/black_concrete"
+  }
+}

@@ -24,6 +24,10 @@ public class FWorldgen {
     public static final DeferredHolder<Feature<?>, io.github.soundgoodizerfan.feedback.geology.BasinFeature> BASIN = FEATURES.register("basin",
             () -> new io.github.soundgoodizerfan.feedback.geology.BasinFeature(NoneFeatureConfiguration.CODEC));
 
+    /** Stands traffic cameras on poles: anywhere, far more often beside a road. */
+    public static final DeferredHolder<Feature<?>, io.github.soundgoodizerfan.feedback.worldgen.BlockCameraFeature> BLOCK_CAMERA = FEATURES.register("block_camera",
+            () -> new io.github.soundgoodizerfan.feedback.worldgen.BlockCameraFeature(NoneFeatureConfiguration.CODEC));
+
     public static void register(IEventBus modBus) {
         FEATURES.register(modBus);
     }

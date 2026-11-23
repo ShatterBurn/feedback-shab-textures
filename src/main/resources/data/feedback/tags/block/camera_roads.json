@@ -1,0 +1,9 @@
+{
+  "values": [
+    "minecraft:dirt_path",
+    "minecraft:cobblestone",
+    "minecraft:mossy_cobblestone",
+    "minecraft:stone_bricks",
+    "#minecraft:rails"
+  ]
+}

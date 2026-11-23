@@ -21,6 +21,8 @@ Villages that already exist are unchanged.
 
 Villagers who are farmers plant and harvest the mod's [crops](Crops.md) (not rice) and carry starter seeds.
 
+A [Block Camera](Block_Camera.md) beside a road can report a player carrying Bad Omen, and the raid comes to the village center when a village is within 64 blocks.
+
 ## Guilds
 
 A guild forms among villagers of one profession who work close together. It posts a bigger daily order and shares experience between members.

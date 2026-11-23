@@ -112,6 +112,7 @@ public class Feedback {
         NeoForge.EVENT_BUS.addListener(io.github.soundgoodizerfan.feedback.village.VillagePieces::onServerAboutToStart);
         NeoForge.EVENT_BUS.addListener(io.github.soundgoodizerfan.feedback.village.RaidEvents::onJoin);
         NeoForge.EVENT_BUS.addListener(io.github.soundgoodizerfan.feedback.village.RaidEvents::onDrops);
+        NeoForge.EVENT_BUS.addListener(io.github.soundgoodizerfan.feedback.machine.blockcamera.BlockCameraWatch::onPlayerTick);
         NeoForge.EVENT_BUS.addListener(io.github.soundgoodizerfan.feedback.weapon.ArmedSkeletons::onEntityJoin);
         NeoForge.EVENT_BUS.addListener(io.github.soundgoodizerfan.feedback.weapon.ArmedSkeletons::onDrops);
         NeoForge.EVENT_BUS.addListener(io.github.soundgoodizerfan.feedback.worldgen.VanillaVesselSwap::onChunkLoad);

@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "facing=north,stage=idle": {"model": "feedback:block/block_camera"},
+    "facing=north,stage=lock_off": {"model": "feedback:block/block_camera"},
+    "facing=north,stage=lock_on": {"model": "feedback:block/block_camera_led"},
+    "facing=north,stage=spent": {"model": "feedback:block/block_camera_dead"},
+    "facing=east,stage=idle": {"model": "feedback:block/block_camera", "y": 90},
+    "facing=east,stage=lock_off": {"model": "feedback:block/block_camera", "y": 90},
+    "facing=east,stage=lock_on": {"model": "feedback:block/block_camera_led", "y": 90},
+    "facing=east,stage=spent": {"model": "feedback:block/block_camera_dead", "y": 90},
+    "facing=south,stage=idle": {"model": "feedback:block/block_camera", "y": 180},
+    "facing=south,stage=lock_off": {"model": "feedback:block/block_camera", "y": 180},
+    "facing=south,stage=lock_on": {"model": "feedback:block/block_camera_led", "y": 180},
+    "facing=south,stage=spent": {"model": "feedback:block/block_camera_dead", "y": 180},
+    "facing=west,stage=idle": {"model": "feedback:block/block_camera", "y": 270},
+    "facing=west,stage=lock_off": {"model": "feedback:block/block_camera", "y": 270},
+    "facing=west,stage=lock_on": {"model": "feedback:block/block_camera_led", "y": 270},
+    "facing=west,stage=spent": {"model": "feedback:block/block_camera_dead", "y": 270}
+  }
+}

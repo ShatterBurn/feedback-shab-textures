@@ -1,0 +1,6 @@
+{
+  "feature": "feedback:block_camera",
+  "placement": [
+    { "type": "minecraft:biome" }
+  ]
+}

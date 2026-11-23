@@ -572,6 +572,8 @@ public class FCreativeTabs {
             event.accept(FItems.CREATIVE_ELECTRIC.get());
             event.accept(FItems.CREATIVE_XP.get());
             event.accept(FItems.MATERIAL_PROBE.get());
+            event.accept(FItems.CAMERA_POLE.get());
+            event.accept(FItems.BLOCK_CAMERA.get());
         }
     }
 }

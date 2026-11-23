@@ -1,0 +1,6 @@
+{
+  "parent": "feedback:block/block_camera",
+  "textures": {
+    "lamp": "minecraft:block/redstone_block"
+  }
+}

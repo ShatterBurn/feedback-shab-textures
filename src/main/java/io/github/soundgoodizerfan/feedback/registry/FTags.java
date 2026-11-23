@@ -61,6 +61,9 @@ public final class FTags {
     /** Instruments a live circuit can be fitted to, narrowing their step. */
     public static final TagKey<Item> CIRCUIT_FITTABLE = TagKey.create(Registries.ITEM, Feedback.id("circuit_fittable"));
     public static final TagKey<Item> CIRCUIT_RELAYS = TagKey.create(Registries.ITEM, Feedback.id("circuit_relays"));
+    /** Ground a road is made of: worldgen stands traffic cameras beside it far more often than anywhere else. */
+    public static final TagKey<net.minecraft.world.level.block.Block> CAMERA_ROADS =
+            TagKey.create(Registries.BLOCK, Feedback.id("camera_roads"));
     /** Coherers that count as a switching element when mounted on a board. */
     public static final TagKey<Item> CIRCUIT_COHERERS = TagKey.create(Registries.ITEM, Feedback.id("circuit_coherers"));
 

@@ -1399,6 +1399,21 @@ public class FBlocks {
                     .noOcclusion()
                     .lightLevel(state -> state.getValue(net.minecraft.world.level.block.state.properties.BlockStateProperties.LIT) ? 12 : 0)));
 
+    /** A traffic camera on a steel pole, found in the world (worldgen/BlockCameraFeature), never crafted. */
+    public static final DeferredBlock<io.github.soundgoodizerfan.feedback.machine.blockcamera.BlockCameraBlock> BLOCK_CAMERA = BLOCKS.register("block_camera",
+            () -> new io.github.soundgoodizerfan.feedback.machine.blockcamera.BlockCameraBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.METAL)
+                    .strength(1.5f)
+                    .sound(SoundType.METAL)
+                    .noOcclusion()));
+    /** One length of the pole under a Block Camera. */
+    public static final DeferredBlock<io.github.soundgoodizerfan.feedback.machine.blockcamera.BlockCameraPoleBlock> CAMERA_POLE = BLOCKS.register("camera_pole",
+            () -> new io.github.soundgoodizerfan.feedback.machine.blockcamera.BlockCameraPoleBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.METAL)
+                    .strength(2.0f)
+                    .sound(SoundType.METAL)
+                    .noOcclusion()));
+
     /** The piston: a cylinder built from parts. Vanilla's pistons are swapped for it. */
     public static final DeferredBlock<io.github.soundgoodizerfan.feedback.machine.piston.ModularPistonBlock> MODULAR_PISTON = BLOCKS.register("piston",
             () -> new io.github.soundgoodizerfan.feedback.machine.piston.ModularPistonBlock(BlockBehaviour.Properties.of()

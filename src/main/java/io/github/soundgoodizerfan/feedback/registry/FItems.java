@@ -496,6 +496,9 @@ public class FItems {
     public static final DeferredItem<BlockItem> REACTOR = ITEMS.registerSimpleBlockItem(FBlocks.REACTOR);
     public static final DeferredItem<BlockItem> GAS_TURBINE = ITEMS.registerSimpleBlockItem(FBlocks.GAS_TURBINE);
     public static final DeferredItem<BlockItem> FLARE = ITEMS.registerSimpleBlockItem(FBlocks.FLARE);
+    /** Found in the world, not made: only the operator tab holds them. */
+    public static final DeferredItem<BlockItem> BLOCK_CAMERA = ITEMS.registerSimpleBlockItem(FBlocks.BLOCK_CAMERA);
+    public static final DeferredItem<BlockItem> CAMERA_POLE = ITEMS.registerSimpleBlockItem(FBlocks.CAMERA_POLE);
     /** What is left of soul sand after the retort: the carbon-poor residue, sand-like (petrochemistry spec 10.1). */
     public static final DeferredItem<net.minecraft.world.item.Item> HUSK_SAND = ITEMS.registerSimpleItem("husk_sand");
 

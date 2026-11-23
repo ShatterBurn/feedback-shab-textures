@@ -592,6 +592,8 @@ public class FeedbackJeiPlugin implements IModPlugin {
         info(registration, io.github.soundgoodizerfan.feedback.registry.FBlocks.DATA_SENSOR.get().asItem(), "data_sensor");
         info(registration, io.github.soundgoodizerfan.feedback.registry.FBlocks.REBOILER.get().asItem(), "reboiler");
         info(registration, io.github.soundgoodizerfan.feedback.registry.FBlocks.FLARE.get().asItem(), "flare");
+        info(registration, io.github.soundgoodizerfan.feedback.registry.FBlocks.BLOCK_CAMERA.get().asItem(), "block_camera");
+        info(registration, io.github.soundgoodizerfan.feedback.registry.FBlocks.CAMERA_POLE.get().asItem(), "camera_pole");
         info(registration, io.github.soundgoodizerfan.feedback.registry.FVehicles.FLIGHT_SENSOR_ITEM.get(), "flight_sensor");
         info(registration, io.github.soundgoodizerfan.feedback.registry.FVehicles.BEARING_SENSOR_ITEM.get(), "bearing_sensor");
         registration.addIngredientInfo(FItems.POTION.get(), Component.translatable("feedback.jei.info.potion"), Component.translatable("feedback.jei.info.potion_use"));
