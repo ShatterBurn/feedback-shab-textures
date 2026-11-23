@@ -4,7 +4,7 @@ A potion bottle fades: its strength halves every few days, faster when warm. Sal
 
 ## Vacuum Dryer
 
-A chamber set on a fire, with a vacuum pump on a shaft across it (the same shaft rule as the Gas Compressor). Turning the shaft draws the chamber down, deeper the faster it turns, to a floor of -0.9 Pu; when the shaft stops, air leaks back in. Craft it from a [Pressure Vessel](Pressure_Vessel.md) above a [Gas Compressor](Gas_Compressor.md) at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 2 [fasteners](Fasteners.md), screws or machine bolts, holding Chemical Treatise II: Heat and Compression ([Treatise](Treatise.md)).
+A chamber set on a fire, with a vacuum pump on a shaft across it (the same shaft rule as the Gas Compressor). Turning the shaft draws the chamber down, deeper the faster it turns, to a floor of -0.9 Pu; when the shaft stops, air leaks back in. Thin outside air does the pump's work: in the End, where the air is very thin, the chamber draws down toward the floor with no shaft turning, deeper the higher it stands. Craft it from a [Pressure Vessel](Pressure_Vessel.md) above a [Gas Compressor](Gas_Compressor.md) at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row and 2 [fasteners](Fasteners.md), screws or machine bolts, holding Chemical Treatise II: Heat and Compression ([Treatise](Treatise.md)).
 
 - Use a potion bottle on it to load it. A dud draught is refused.
 - It dries while the chamber is at least **60 Tu** and at or under **-0.5 Pu**, for 200 ticks (10 s). Low pressure is why 60 Tu is enough. If either condition lapses the drying waits where it is.

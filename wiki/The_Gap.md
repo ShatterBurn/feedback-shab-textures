@@ -14,7 +14,7 @@ A craft that enters the Gap shrinks to a hundredth of its size, with everything 
 
 The End is a point in the Gap along a fixed bearing, the gas giant in the sky (see below), about 120 blocks from the Gap's origin point (x 0, z 0). A craft that comes within 15 blocks of it while heading toward it arrives in the End at full size, over the main island, coming in fast and descending. A craft that misses has no rim to stop it and coasts on. A [Bearing Sensor](Bearing_Sensor.md) reads the turn and the distance to the End.
 
-The End's air is very thin and holds no oxygen, and is gone above y 320. A [thruster](Thruster.md) that carries its own oxidiser works there; an air-breathing one does not. Leaving upward out of the End's air, as in the Overworld climb, returns the craft to the Gap just short of the End, shrunk again.
+The End's air is very thin and holds no oxygen, and is gone above y 320. A [thruster](Thruster.md) that carries its own oxidizer works there; an air-breathing one does not. A [Vacuum Dryer](Potion_Salts.md#vacuum-dryer) set in the End draws its chamber down with no shaft turning. Leaving upward out of the End's air, as in the Overworld climb, returns the craft to the Gap just short of the End, shrunk again.
 
 ## Coming back
 

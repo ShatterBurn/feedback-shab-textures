@@ -158,7 +158,11 @@ public class DryerBlockEntity extends RotationNode implements ThermalBody, Press
             Catchup.settle(this, HeatSource.spanAt(level, worldPosition, away), ambient, away);
         Heat.tick(this, fireTu, ambient, fireTu.value() > ambient.value());
 
-        float target = -Math.min(Math.abs(getRpm().value()) * PotionTuning.DRYER_PU_PER_RPM, -PotionTuning.DRYER_FULL_PU.value());
+        // Thin air does the pump's work: the chamber never sits above the gauge the world's own air has (an Overworld
+        // atmosphere is 0, the End's near-vacuum is under the full-vacuum floor, so a dryer there needs no shaft).
+        float ambientGauge = -(1f - Math.min(1f, io.github.soundgoodizerfan.feedback.vehicle.AirDensityTable.at(level, worldPosition.getY())));
+        float pumped = -Math.min(Math.abs(getRpm().value()) * PotionTuning.DRYER_PU_PER_RPM, -PotionTuning.DRYER_FULL_PU.value());
+        float target = Math.max(PotionTuning.DRYER_FULL_PU.value(), Math.min(pumped, ambientGauge));
         pressure += (target - pressure) * PotionTuning.DRYER_RELAX_PER_TICK;
 
         boolean evacuated = pressure <= PotionTuning.DRYER_MAX_PU.value();
