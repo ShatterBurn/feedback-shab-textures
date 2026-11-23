@@ -114,6 +114,8 @@ Beyond the table, every material carries figures JEI's *Material Stats* page sho
 - **Boiling heat** (Wu/Mu): the same at the boiling point.
 - **Hydrogen uptake and release temperature**: palladium, magnesium, titanium and titanium 6Al-4V soak up hydrogen and give it back when hot. See the [Hydride Bed](Hydride_Bed.md).
 - **Shock limit** (Tu): glass, ceramic, brick, concrete and obsidian crack when dipped into a bath whose temperature differs from the part's by more than this. See [Thermal shock](Heat.md#thermal-shock). Obsidian 50, mud brick 60, glass, optical glass, uranium glass, terracotta and concrete 100, ceramic and glazed ceramic 120, brick 150, borosilicate glass 170, alumina and nether brick 200, silica glass and quartz glass 1000.
+- **Refractive index**: how strongly a transparent material bends light. Glass 1.52, quartz 1.55, amber 1.55, ruby 1.77, diamond 2.42.
+- **Transition** (Tu): the temperature at which a metal that remembers a shape returns to it. A [Thermal Valve](Valve.md#thermal-valve) reads it from its spring.
 - **Toxicity**: how harmful it is swallowed, a log scale of the real lethal dose. 0 is harmless; each step is ten times deadlier.
 - **pH**: shown on a fluid in the material stats and on the probe. Under 7 is an acid, over 7 a base, 7 neutral. A fluid that carries ions, an electrolyte, can fill a [Battery](Battery.md#the-electrolyte).
 - **Corrosivity**: how hard an acid or a base burns flesh and eats metal on contact, its pH distance from neutral. 0 is neutral; a strong acid or a strong base is about 7. A [Fluid Caster](Fluid_Caster.md#what-the-stream-does) stream of it burns what it hits.

@@ -97,7 +97,7 @@ Thaumaturge items that match a Feedback material are read as that material in ev
 - Rare earth is rare earth residue.
 - Essentia is a quartz-like crystal that holds an aspect. Its crystal item and the seven world crystals (air, fire, water, earth, order, entropy and flux) are its forms.
 - Thaumium is iron with a little essentia, in three grades (see [Doped thaumium](#doped-thaumium)).
-- Void metal is dense, very hard, brittle and dark (88% osmium, 8% ender pearl, 4% essentia).
+- Void metal is dense, very hard, brittle and dark (88% osmium, 8% ender pearl, 4% essentia). It remembers a shape: its transition is **80 Tu**, so a coil spring of it opens a [Thermal Valve](Valve.md#thermal-valve) at 80 Tu.
 - Thaumium and void metal each make the usual tinted form items. Thaumaturge's thaumium and void swords, pickaxes, axes, shovels, hoes, helmets, chestplates, leggings and boots are converted on the spot into the modular item of that kind, headed or plated in that metal, like vanilla tools (see [Old vanilla tools](Tools_and_Weapons.md#old-vanilla-tools)). Robes and shields are not converted. Other mods' recipes and JEI pages that ask for one of these items accept the converted item too.
 - Greatwood and silverwood logs are wood materials. Greatwood is a dense hardwood that burns long; silverwood is a lighter, pale wood that burns shorter.
 - Cinderpearl is a pyrophoric herb: it burns at a low temperature, short and hot, as fuel.
