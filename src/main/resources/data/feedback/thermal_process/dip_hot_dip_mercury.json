@@ -1,0 +1,20 @@
+{
+  "inputs": [],
+  "min_temperature": 0,
+  "optimal_temperature": 0,
+  "required_tpu": -1,
+  "dip": {
+    "fluid": {
+      "fluid": "feedback:molten_mercury",
+      "amount": 36
+    },
+    "input": {
+      "tag": "feedback:platable_parts"
+    },
+    "min_temperature": -40,
+    "coat": {
+      "metal": "feedback:mercury",
+      "thickness": 0.25
+    }
+  }
+}
