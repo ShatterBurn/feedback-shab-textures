@@ -5322,6 +5322,8 @@
   "block.feedback.catalyst_tap": "Catalyst Tap",
   "block.feedback.sculk_relay": "Sculk Relay",
   "block.feedback.data_sensor": "Data Sensor",
+  "block.feedback.radiation_sensor": "Radiation Sensor",
+  "feedback.jei.info.radiation_sensor": "A Geiger tube in a block. It reads the dose rate where it stands, from what radioactive material is around it, and gives a controller that reading: channel 0 is the rate against its full scale, and channels 1 to 15 switch on as the rate climbs past each fifteenth. Link it to a Controller with a Data Connector. Walls between it and the source cut what it sees.",
   "item.feedback.culture_seed": "Culture Seed",
   "item.feedback.relay_organ": "Relay Organ",
   "feedback.culture.stage.empty": "No culture",

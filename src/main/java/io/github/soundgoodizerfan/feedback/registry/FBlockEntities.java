@@ -556,6 +556,9 @@ public class FBlockEntities {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<io.github.soundgoodizerfan.feedback.machine.sculk.SculkRelayBlockEntity>> SCULK_RELAY =
             BLOCK_ENTITIES.register("sculk_relay", () -> BlockEntityType.Builder
                     .of(io.github.soundgoodizerfan.feedback.machine.sculk.SculkRelayBlockEntity::new, FBlocks.SCULK_RELAY.get()).build(null));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<io.github.soundgoodizerfan.feedback.machine.glow.RadiationSensorBlockEntity>> RADIATION_SENSOR =
+            BLOCK_ENTITIES.register("radiation_sensor", () -> BlockEntityType.Builder
+                    .of(io.github.soundgoodizerfan.feedback.machine.glow.RadiationSensorBlockEntity::new, FBlocks.RADIATION_SENSOR.get()).build(null));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<io.github.soundgoodizerfan.feedback.machine.sculk.DataSensorBlockEntity>> DATA_SENSOR =
             BLOCK_ENTITIES.register("data_sensor", () -> BlockEntityType.Builder
                     .of(io.github.soundgoodizerfan.feedback.machine.sculk.DataSensorBlockEntity::new, FBlocks.DATA_SENSOR.get()).build(null));

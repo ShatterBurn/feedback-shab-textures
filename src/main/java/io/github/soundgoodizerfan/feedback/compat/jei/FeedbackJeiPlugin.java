@@ -590,6 +590,7 @@ public class FeedbackJeiPlugin implements IModPlugin {
         info(registration, FModular.THERMOCOUPLE_PROBE.get(), "thermocouple_probe");
         info(registration, io.github.soundgoodizerfan.feedback.registry.FBlocks.SCULK_RELAY.get().asItem(), "sculk_relay");
         info(registration, io.github.soundgoodizerfan.feedback.registry.FBlocks.DATA_SENSOR.get().asItem(), "data_sensor");
+        info(registration, io.github.soundgoodizerfan.feedback.registry.FBlocks.RADIATION_SENSOR.get().asItem(), "radiation_sensor");
         info(registration, io.github.soundgoodizerfan.feedback.registry.FBlocks.REBOILER.get().asItem(), "reboiler");
         info(registration, io.github.soundgoodizerfan.feedback.registry.FBlocks.FLARE.get().asItem(), "flare");
         info(registration, io.github.soundgoodizerfan.feedback.registry.FBlocks.BLOCK_CAMERA.get().asItem(), "block_camera");

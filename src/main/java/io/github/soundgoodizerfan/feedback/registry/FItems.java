@@ -429,6 +429,7 @@ public class FItems {
     public static final DeferredItem<BlockItem> DISENCHANT_STONE = ITEMS.registerSimpleBlockItem(FBlocks.DISENCHANT_STONE);
     public static final DeferredItem<BlockItem> SCULK_RELAY = ITEMS.registerSimpleBlockItem(FBlocks.SCULK_RELAY);
     public static final DeferredItem<BlockItem> DATA_SENSOR = ITEMS.registerSimpleBlockItem(FBlocks.DATA_SENSOR);
+    public static final DeferredItem<BlockItem> RADIATION_SENSOR = ITEMS.registerSimpleBlockItem(FBlocks.RADIATION_SENSOR);
     public static final DeferredItem<io.github.soundgoodizerfan.feedback.machine.xp.XpWireItem> XP_WIRE = ITEMS.register("xp_wire",
             () -> new io.github.soundgoodizerfan.feedback.machine.xp.XpWireItem(FBlocks.XP_WIRE.get(), new Item.Properties()));
     public static final DeferredItem<io.github.soundgoodizerfan.feedback.machine.levitation.LevitationPlateItem> LEVITATION_PLATE = ITEMS.register("levitation_plate",

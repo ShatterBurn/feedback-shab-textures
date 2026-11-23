@@ -626,6 +626,8 @@ public final class ElectricMachineTuning {
 
     /** Invented. A Data Sensor hears within this many blocks (vanilla's sensor radius) and holds a heard frequency this many ticks (vanilla's cooldown). */
     public static final int DATA_SENSOR_RADIUS = 8, DATA_SENSOR_HOLD_TICKS = 40;
+    /** Placeholder. Dose rate in Ru at which a Radiation Sensor reads full scale. */
+    public static final float RADIATION_SENSOR_FULL_RU = 10f;
 
     /** Placeholder. The arc furnace's draw: 42 A at EHV is about 16 kW. */
     public static final float ARC_AMPS = 42f;

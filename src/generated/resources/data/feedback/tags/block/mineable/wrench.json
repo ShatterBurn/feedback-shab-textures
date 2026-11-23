@@ -207,6 +207,7 @@
     "feedback:pump",
     "feedback:pvc_pipe",
     "feedback:pyro_plate",
+    "feedback:radiation_sensor",
     "feedback:radiation_source",
     "feedback:reactor",
     "feedback:reactor_core",
