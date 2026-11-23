@@ -14,6 +14,7 @@ The mods Feedback works with, and what each one gives you. Some are required, so
 | [Jade](#jade) | Optional | Readouts on blocks and villagers |
 | [Thaumaturge](#thaumaturge) | Optional | Aspects on Feedback items, flux and essentia machines, thaumium alloys |
 | [Iris](#iris) | Optional | Shader packs: the fluid caster's flame follows the pack |
+| [Serene Seasons](#serene-seasons) | Optional | The season shifts the Overworld's room temperature |
 | [EMI](#emi) | Optional | Shows Feedback's recipe cards through its JEI bridge |
 | [Other mods' foods](#other-mods-foods) | Optional | Any food from another mod keeps and spoils like Feedback food |
 | [Inventory Sorter](#inventory-sorter) | Optional | Sorting skips screens whose slots are roles |
@@ -185,6 +186,10 @@ Hot surfaces, plants that hurt on contact, Core Slag, Crude Pools, Tar Seeps and
 ## Iris
 
 **Optional.** While Iris is running a shader pack, the [Fluid Caster](Fluid_Caster.md) draws the plain flame in place of its flickering shader flame.
+
+## Serene Seasons
+
+**Optional.** With Serene Seasons installed, the season shifts the Overworld's [room temperature](Heat.md#room-temperature) for every vessel and workpiece there: winter is **15 Tu** colder, autumn **4 Tu** colder, spring unchanged and summer **4 Tu** warmer. The room never goes above 60 Tu or below 0 Tu. A kiln or crucible loses heat faster in a winter room and a little slower in a summer one. The Nether and the other dimensions keep their own figures.
 
 ## Other mods' foods
 
