@@ -51,6 +51,10 @@ It always gives its own band, and its last packet tapers as the Eu run out: a st
 
 A jar smooths a pulse and carries you over a gap. For power that lasts, use a [Battery](Battery.md).
 
+## Storm strike
+
+A lightning strike on a vanilla Lightning Rod with a Leyden Jar directly beneath it reaches the jar as a burst of **EHV**. A jar whose glass is rated EHV or higher fills to its full capacity. A jar rated lower punctures: the glass breaks, everyone right at the jar is shocked with the charge it held, and the jar is destroyed. The default jar (HV glass) punctures, so a jar meant for storms needs glass that insulates at EHV. A rod with nothing under it behaves as in vanilla.
+
 ## Careful
 
 **A band above its rating cracks the jar.** Fed a band higher than the glass is rated for, the jar shatters and drops nothing. It discharges at once as a shock at its own band to every living thing touching the jar, whatever the charge it held. The crack comes with the sound of breaking glass and a burst of electric sparks, even from an empty jar. [Gloves](Hazards.md#shock) rated for that band protect.

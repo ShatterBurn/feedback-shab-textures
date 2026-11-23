@@ -166,21 +166,28 @@ public class LeydenJarBlockEntity extends ElectricNode implements io.github.soun
                 ? ElectricMachineTuning.LEYDEN_JAR_CHARGE_AMPS : 0;
     }
 
+    /** The glass goes: all the jar holds shocks whoever is near, with a crack and a flash, and the jar is gone. */
+    public void puncture() {
+        if (level == null)
+            return;
+        float held = charge;
+        for (net.minecraft.world.entity.LivingEntity near : level.getEntitiesOfClass(net.minecraft.world.entity.LivingEntity.class,
+                new net.minecraft.world.phys.AABB(worldPosition).inflate(ElectricMachineTuning.LEYDEN_JAR_CRACK_REACH)))
+            io.github.soundgoodizerfan.feedback.core.hazard.Shock.apply(near, band(), held);
+        // The glass goes with a crack and a flash even when the jar held nothing.
+        level.playSound(null, worldPosition, net.minecraft.sounds.SoundEvents.GLASS_BREAK, net.minecraft.sounds.SoundSource.BLOCKS, 1f, 1.4f);
+        if (level instanceof net.minecraft.server.level.ServerLevel server)
+            server.sendParticles(net.minecraft.core.particles.ParticleTypes.ELECTRIC_SPARK, worldPosition.getX() + 0.5, worldPosition.getY() + 0.5,
+                    worldPosition.getZ() + 0.5, 12, 0.3, 0.3, 0.3, 0.2);
+        level.destroyBlock(worldPosition, false);
+    }
+
     public void tickServer() {
         if (level == null)
             return;
         // Fed a band over what its glass is rated, the glass punctures: all it holds goes at once to whoever is near, and the jar is gone.
         if (getPacketEu() > 0f && getBand().compareTo(band()) > 0) {
-            float held = charge;
-            for (net.minecraft.world.entity.LivingEntity near : level.getEntitiesOfClass(net.minecraft.world.entity.LivingEntity.class,
-                    new net.minecraft.world.phys.AABB(worldPosition).inflate(ElectricMachineTuning.LEYDEN_JAR_CRACK_REACH)))
-                io.github.soundgoodizerfan.feedback.core.hazard.Shock.apply(near, band(), held);
-            // The glass goes with a crack and a flash even when the jar held nothing.
-            level.playSound(null, worldPosition, net.minecraft.sounds.SoundEvents.GLASS_BREAK, net.minecraft.sounds.SoundSource.BLOCKS, 1f, 1.4f);
-            if (level instanceof net.minecraft.server.level.ServerLevel server)
-                server.sendParticles(net.minecraft.core.particles.ParticleTypes.ELECTRIC_SPARK, worldPosition.getX() + 0.5, worldPosition.getY() + 0.5,
-                        worldPosition.getZ() + 0.5, 12, 0.3, 0.3, 0.3, 0.2);
-            level.destroyBlock(worldPosition, false);
+            puncture();
             return;
         }
         // Last tick's resolution: packets delivered in as a sink, drawn out as a source.

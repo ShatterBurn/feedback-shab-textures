@@ -342,6 +342,10 @@ public final class ElectricMachineTuning {
 
     public static final VoltageBand LEYDEN_JAR_BAND = VoltageBand.HV;
 
+    /** Placeholder. A lightning strike that lands on a rod standing on a Leyden jar: the band it arrives at and the packets of that band it carries; a jar rated under the band punctures, one rated at it takes the charge up to its capacity. */
+    public static final VoltageBand STORM_STRIKE_BAND = VoltageBand.EHV;
+    public static final float STORM_STRIKE_PACKETS = 40f;
+
     public static final float BATTERY_DISCHARGE_TICKS = 6000f, BATTERY_CHARGE_TICKS = 3000f;
 
     public static final float BATTERY_SELF_DISCHARGE_PER_DAY = 0.01f;

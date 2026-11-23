@@ -15,7 +15,7 @@ P is a Copper Plate, G is Glass and R is a Copper Rod. Craft it at the [Engineer
 
 Right-click it with an empty hand. You hear a click, and for **one second (20 ticks)** it puts **0.5 A in the HV band** on the line. Clicking again before the pulse ends refills it to a full second; clicking faster doesn't stack it any higher. To keep something running you have to keep clicking.
 
-It doesn't store anything between turns. When you stop clicking, the line goes dead. To keep a pulse, put a [Leyden Jar](Leyden_Jar.md) on the line: one pulse fills it.
+It doesn't store anything between turns. When you stop clicking, the line goes dead. To keep a pulse, put a [Leyden Jar](Leyden_Jar.md) on the line: one pulse fills it. A [lightning strike on a rod](Leyden_Jar.md#storm-strike) over a jar charges it too.
 
 ## Compared to a Galvanic Cell
 
