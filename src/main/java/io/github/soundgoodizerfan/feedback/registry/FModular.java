@@ -106,7 +106,7 @@ public final class FModular {
     public static final java.util.List<DeferredItem<io.github.soundgoodizerfan.feedback.modular.part.ModularPartItem>> PARTS = java.util.stream.Stream.of(
             "pickaxe_head", "axe_head", "shovel_head", "hoe_head", "sickle_head", "maul_head",
             "cleaver_head", "spear_head", "sword_blade",
-            "respirator_face", "filter_cartridge", "air_cylinder",
+            "respirator_face", "filter_cartridge", "air_cylinder", "objective_lens", "eyepiece_lens", "telescope_tube",
             "caster_tank", "caster_nozzle", "caster_receiver", "caster_valve", "caster_pump", "caster_pilot",
             "helmet_plate", "chestplate_plate", "leggings_plate", "boots_plate",
             "tool_tip", "tool_binding", "sword_guard", "shield_rim", "crossbow_prod", "bow_limbs", "shield_face",
@@ -196,6 +196,10 @@ public final class FModular {
     /** A mask worn in the Curios face slot: a filter (works down to a floor of thin air) or an air cylinder (carries air). */
     public static final DeferredItem<io.github.soundgoodizerfan.feedback.modular.item.ModularRespirator> RESPIRATOR = ITEMS.register("respirator",
             () -> new io.github.soundgoodizerfan.feedback.modular.item.ModularRespirator(ModularStacks.properties()));
+
+    /** A held refracting telescope: an objective lens, an eyepiece lens and a tube; held in use it narrows and softens the view by the figures baked from them. */
+    public static final DeferredItem<io.github.soundgoodizerfan.feedback.modular.item.ModularTelescope> TELESCOPE = ITEMS.register("telescope",
+            () -> new io.github.soundgoodizerfan.feedback.modular.item.ModularTelescope(ModularStacks.properties()));
 
     public static final DeferredItem<io.github.soundgoodizerfan.feedback.modular.item.ModularShears> SHEARS = ITEMS.register("shears",
             () -> new io.github.soundgoodizerfan.feedback.modular.item.ModularShears(ModularStacks.properties()));

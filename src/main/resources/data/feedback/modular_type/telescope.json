@@ -1,0 +1,130 @@
+{
+  "family": "telescope",
+  "measures": {
+    "show": [
+      "magnification",
+      "telescope_blur",
+      "mass"
+    ],
+    "roles": {
+      "O": [
+        "magnification",
+        "telescope_blur"
+      ],
+      "E": [
+        "magnification"
+      ],
+      "T": [
+        "mass"
+      ]
+    }
+  },
+  "required": [
+    "O",
+    "E",
+    "T"
+  ],
+  "wear_litres": 0.2,
+  "wear_role": "T",
+  "primary": "T",
+  "roles": {
+    "O": {
+      "name": "objective_lens",
+      "class": "working_face",
+      "forms": [
+        "objective_lens"
+      ],
+      "litres": 0.05,
+      "layer": 0,
+      "axes": {
+        "focal": {
+          "min": 100,
+          "max": 600,
+          "unit": "mm",
+          "default": 300,
+          "step": 20
+        },
+        "lens_diameter": {
+          "min": 20,
+          "max": 80,
+          "unit": "mm",
+          "default": 40,
+          "step": 5
+        }
+      },
+      "part": {
+        "item": "feedback:objective_lens",
+        "cells": 2,
+        "stock": [
+          "lens",
+          "gem"
+        ]
+      }
+    },
+    "E": {
+      "name": "eyepiece_lens",
+      "class": "working_face",
+      "forms": [
+        "eyepiece_lens"
+      ],
+      "litres": 0.02,
+      "layer": 1,
+      "axes": {
+        "focal": {
+          "min": 10,
+          "max": 60,
+          "unit": "mm",
+          "default": 30,
+          "step": 5
+        }
+      },
+      "part": {
+        "item": "feedback:eyepiece_lens",
+        "cells": 1,
+        "stock": [
+          "lens",
+          "gem"
+        ]
+      }
+    },
+    "T": {
+      "name": "body_tube",
+      "class": "housing",
+      "forms": [
+        "telescope_tube"
+      ],
+      "litres": 0.1,
+      "layer": 2,
+      "axes": {
+        "length": {
+          "min": 110,
+          "max": 660,
+          "unit": "mm",
+          "default": 330,
+          "step": 10
+        }
+      },
+      "part": {
+        "item": "feedback:telescope_tube",
+        "cells": 4,
+        "stock": [
+          "pipe",
+          "plate"
+        ]
+      }
+    }
+  },
+  "patterns": [
+    [
+      "O",
+      "E",
+      "T"
+    ]
+  ],
+  "defaults": {
+    "O": "feedback:glass",
+    "E": "feedback:glass",
+    "T": "feedback:brass"
+  },
+  "vanilla": {}
+}

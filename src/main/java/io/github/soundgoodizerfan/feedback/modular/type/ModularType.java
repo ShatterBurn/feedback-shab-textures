@@ -229,6 +229,8 @@ public record ModularType(Family family, Slot slot, List<Mine> mines, float stri
         GLOVE,
         /** A respirator worn in the Curios face slot: a face piece and strap, and either a filter cartridge (works down to a floor of thin air, wears with use) or an air cylinder (carries air, works anywhere); its bake is the figures {@code BREATH_FLOOR}, {@code AIR_CAPACITY}, {@code FILTER_LIFE} and {@code BREATH_DRAG}. */
         RESPIRATOR,
+        /** A held telescope: an objective lens, an eyepiece lens and a tube. Its bake is the figures {@code MAGNIFICATION} (objective focal length over eyepiece focal length) and {@code TELESCOPE_BLUR} (a tube that does not match the focal lengths, and lenses of low refractive index). */
+        TELESCOPE,
         /** A pack worn on the back: the shell sets the slots, the strap sets the carry rating, the contents live on the stack. */
         BACKPACK,
         /** A sleeping roll: sheet, fill and shell; its bake is the comfort the fill and sheet give ({@link ModularBed}). */

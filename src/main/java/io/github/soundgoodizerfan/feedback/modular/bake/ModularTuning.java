@@ -1311,6 +1311,10 @@ public final class ModularTuning {
     /** Placeholder. Wither ticks a radiant strike gives per level, and glow ticks. */
     public static final int RADIANT_WITHER_TICKS_PER_LEVEL = 60, RADIANT_GLOW_TICKS = 100;
 
+    /** Placeholder. A telescope: the most it magnifies, how hard a tube's mismatch (a share of the focal lengths' sum) blurs, how hard a lens's weakness (aperture over focal length over its refractive index less one) does, and the most blur it can reach. */
+    public static final float TELESCOPE_BASE_DURABILITY = 200f;
+    public static final float TELESCOPE_MAX_MAGNIFICATION = 20f, TELESCOPE_MISMATCH_BLUR = 2f, TELESCOPE_APERTURE_BLUR = 0.6f, TELESCOPE_BLUR_MAX = 1f;
+
     /** Placeholder. A respirator's filter bed (cm) at which its floor is halfway down: depth over depth plus this. */
     public static final float RESPIRATOR_BED_HALF_CM = 4f;
     /** Placeholder. The thinnest air (a lung's share of sea level) the deepest possible bed reaches; a shallow bed works down to nearly the unaided threshold. */

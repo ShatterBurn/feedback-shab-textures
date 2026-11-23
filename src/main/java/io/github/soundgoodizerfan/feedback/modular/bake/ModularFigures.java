@@ -152,6 +152,11 @@ public record ModularFigures(List<Float> values, int step) {
         FILTER_LIFE,
         /** Share of sprint speed the mask's breathing resistance takes off the wearer, 0 to 1. */
         BREATH_DRAG,
+        // --- a telescope's (family TELESCOPE) ---
+        /** How many times larger a distant thing looks: the objective's focal length over the eyepiece's, 1 or more. */
+        MAGNIFICATION,
+        /** 0 to 1: how much the image is softened. A tube whose length is not the sum of the two focal lengths, and a lens that bends light weakly for its aperture, both blur it. */
+        TELESCOPE_BLUR,
         // --- a dish's profile as it is judged (DishProfile): live state, then composition. Baked to zero; read off the stack when a dish is judged or tasted. ---
         /** 0 to 1: how cooked through the dish is now. */
         DISH_COOK,

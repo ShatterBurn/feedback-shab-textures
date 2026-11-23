@@ -28,6 +28,7 @@ import io.github.soundgoodizerfan.feedback.modular.bench.Filing;
 import io.github.soundgoodizerfan.feedback.modular.bench.ForgeRhythm;
 import io.github.soundgoodizerfan.feedback.modular.item.ModularGlove;
 import io.github.soundgoodizerfan.feedback.modular.item.ModularRespirator;
+import io.github.soundgoodizerfan.feedback.modular.item.ModularTelescope;
 import io.github.soundgoodizerfan.feedback.modular.part.ModularBackpack;
 import io.github.soundgoodizerfan.feedback.modular.part.ModularBed;
 import io.github.soundgoodizerfan.feedback.modular.prep.DishBake;
@@ -258,6 +259,8 @@ public final class ModularBake {
             // a tube's envelope insulates and withstands heat, its cathode emits, its grid conducts, its plate sheds heat
             case TUBE -> TubeDesign.suits(roleKey, material);
             case ELEMENT -> ElementDesign.suits(type.roles().get(roleKey).name(), material);
+            // a lens bends light: a material that states no refractive index cannot be one
+            case TELESCOPE -> !type.roles().get(roleKey).name().endsWith("_lens") || material.refractiveIndex().isPresent();
             case PROPELLER -> engineMetal(material) && (!roleKey.equals(PROP_BLADES) || material.mechanical().yieldStrength().isPresent());
             // a spring gun's barrel, piston and spring are metal (the spring states a yield strength); its receiver takes any material
             // a pulse gun's seat must conduct (its conductor sets the ceiling of a pulse); its barrel, receiver and grip take any material
@@ -1202,6 +1205,29 @@ public final class ModularBake {
                     float wall = type.roles().get(ModularRespirator.CYLINDER).axis(cylinder, "wall");
                     float rating = GearTuning.saturate(wall * strength(by.get(ModularRespirator.CYLINDER)), ModularTuning.RESPIRATOR_RATING_HALF);
                     f.put(Fig.AIR_CAPACITY, ModularTuning.RESPIRATOR_AIR_MB_MAX * rating * worn);
+                }
+            }
+            case TELESCOPE -> {
+                float total = 0;
+                for (Part p : design.parts())
+                    total += mass(type.roles().get(p.role()), p, by.get(p.role()));
+                f.put(Fig.MASS, total);
+                f.put(Fig.DURABILITY, ModularTuning.TELESCOPE_BASE_DURABILITY);
+                Part objective = design.part(ModularTelescope.OBJECTIVE), eyepiece = design.part(ModularTelescope.EYEPIECE), tube = design.part(ModularTelescope.TUBE);
+                if (objective != null && eyepiece != null) {
+                    // A refracting telescope: magnification is the objective's focal length over the eyepiece's, and the tube wants to be
+                    // the two focal lengths long (the image is only sharp when the lenses sit where they focus).
+                    float fo = type.roles().get(ModularTelescope.OBJECTIVE).axis(objective, "focal");
+                    float fe = type.roles().get(ModularTelescope.EYEPIECE).axis(eyepiece, "focal");
+                    float aperture = type.roles().get(ModularTelescope.OBJECTIVE).axis(objective, "lens_diameter");
+                    f.put(Fig.MAGNIFICATION, Math.max(1f, Math.min(ModularTuning.TELESCOPE_MAX_MAGNIFICATION, fo / Math.max(1f, fe))));
+                    float length = tube == null ? 0f : type.roles().get(ModularTelescope.TUBE).axis(tube, "length");
+                    float mismatch = Math.abs(length - (fo + fe)) / Math.max(1f, fo + fe);
+                    // A lens that bends light weakly (low refractive index) has to be a thick, slow one for its aperture: more aberration.
+                    float n = by.get(ModularTelescope.OBJECTIVE).refractiveIndex().orElse(1.5f);
+                    float weakness = aperture / Math.max(1f, fo) / Math.max(0.05f, n - 1f);
+                    f.put(Fig.TELESCOPE_BLUR, Math.min(ModularTuning.TELESCOPE_BLUR_MAX,
+                            mismatch * ModularTuning.TELESCOPE_MISMATCH_BLUR + weakness * ModularTuning.TELESCOPE_APERTURE_BLUR));
                 }
             }
             case BACKPACK -> {
