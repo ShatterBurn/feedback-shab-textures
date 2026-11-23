@@ -383,6 +383,7 @@ public class FItems {
     public static final DeferredItem<BlockItem> ELECTROLYTIC_CELL =
             ITEMS.registerSimpleBlockItem(FBlocks.ELECTROLYTIC_CELL);
     public static final DeferredItem<BlockItem> CHARGER = ITEMS.registerSimpleBlockItem(FBlocks.CHARGER);
+    public static final DeferredItem<BlockItem> ENERGY_FITTING = ITEMS.registerSimpleBlockItem(FBlocks.ENERGY_FITTING);
     public static final DeferredItem<BlockItem> ROBOT_DOCK = ITEMS.registerSimpleBlockItem(FBlocks.ROBOT_DOCK);
     public static final DeferredItem<BlockItem> ROBOT_MAST = ITEMS.registerSimpleBlockItem(FBlocks.ROBOT_MAST);
     public static final DeferredItem<BlockItem> ROBOT_ARM = ITEMS.registerSimpleBlockItem(FBlocks.ROBOT_ARM);

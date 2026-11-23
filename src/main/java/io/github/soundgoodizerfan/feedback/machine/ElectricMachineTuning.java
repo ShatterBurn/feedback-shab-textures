@@ -342,6 +342,11 @@ public final class ElectricMachineTuning {
 
     public static final VoltageBand LEYDEN_JAR_BAND = VoltageBand.HV;
 
+    /** Invented. The energy fitting (Forge Energy out of a line): the band it is rated, the amps it asks for, FE per Eu, the share kept after the loss, the buffer in FE and the most FE it passes in a tick. */
+    public static final VoltageBand ENERGY_FITTING_BAND = VoltageBand.MV;
+    public static final float ENERGY_FITTING_AMPS = 2f, ENERGY_FITTING_FE_PER_EU = 4f, ENERGY_FITTING_EFFICIENCY = 0.8f;
+    public static final int ENERGY_FITTING_CAPACITY_FE = 20000, ENERGY_FITTING_FE_PER_TICK = 400;
+
     /** Placeholder. A lightning strike that lands on a rod standing on a Leyden jar: the band it arrives at and the packets of that band it carries; a jar rated under the band punctures, one rated at it takes the charge up to its capacity. */
     public static final VoltageBand STORM_STRIKE_BAND = VoltageBand.EHV;
     public static final float STORM_STRIKE_PACKETS = 40f;

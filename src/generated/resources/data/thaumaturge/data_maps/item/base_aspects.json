@@ -5638,6 +5638,90 @@
         "aspect": "thaumaturge:perditio"
       }
     ],
+    "feedback:black_sand_calcine": [
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:terra"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      },
+      {
+        "amount": 2,
+        "aspect": "thaumaturge:perditio"
+      }
+    ],
+    "feedback:black_sand_concentrate": [
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:terra"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      },
+      {
+        "amount": 2,
+        "aspect": "thaumaturge:perditio"
+      }
+    ],
+    "feedback:black_sand_crushed": [
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:terra"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      },
+      {
+        "amount": 2,
+        "aspect": "thaumaturge:perditio"
+      }
+    ],
+    "feedback:black_sand_dust": [
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:terra"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      },
+      {
+        "amount": 2,
+        "aspect": "thaumaturge:perditio"
+      }
+    ],
+    "feedback:black_sand_lump": [
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:terra"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      },
+      {
+        "amount": 2,
+        "aspect": "thaumaturge:perditio"
+      }
+    ],
+    "feedback:black_sand_tailings": [
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:terra"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      },
+      {
+        "amount": 2,
+        "aspect": "thaumaturge:perditio"
+      }
+    ],
     "feedback:blackstone_dust": [
       {
         "amount": 5,
@@ -5711,6 +5795,66 @@
       },
       {
         "amount": 1,
+        "aspect": "thaumaturge:perditio"
+      }
+    ],
+    "feedback:bleached_soil_calcine": [
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:terra"
+      },
+      {
+        "amount": 2,
+        "aspect": "thaumaturge:perditio"
+      }
+    ],
+    "feedback:bleached_soil_concentrate": [
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:terra"
+      },
+      {
+        "amount": 2,
+        "aspect": "thaumaturge:perditio"
+      }
+    ],
+    "feedback:bleached_soil_crushed": [
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:terra"
+      },
+      {
+        "amount": 2,
+        "aspect": "thaumaturge:perditio"
+      }
+    ],
+    "feedback:bleached_soil_dust": [
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:terra"
+      },
+      {
+        "amount": 2,
+        "aspect": "thaumaturge:perditio"
+      }
+    ],
+    "feedback:bleached_soil_lump": [
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:terra"
+      },
+      {
+        "amount": 2,
+        "aspect": "thaumaturge:perditio"
+      }
+    ],
+    "feedback:bleached_soil_tailings": [
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:terra"
+      },
+      {
+        "amount": 2,
         "aspect": "thaumaturge:perditio"
       }
     ],
@@ -14766,6 +14910,20 @@
         "aspect": "thaumaturge:alienis"
       }
     ],
+    "feedback:energy_fitting": [
+      {
+        "amount": 6,
+        "aspect": "thaumaturge:potentia"
+      },
+      {
+        "amount": 3,
+        "aspect": "thaumaturge:machina"
+      },
+      {
+        "amount": 3,
+        "aspect": "thaumaturge:permutatio"
+      }
+    ],
     "feedback:engine": [
       {
         "amount": 8,
@@ -17630,6 +17788,50 @@
       {
         "amount": 4,
         "aspect": "thaumaturge:perditio"
+      }
+    ],
+    "feedback:gossan_rubble_calcine": [
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:terra"
+      }
+    ],
+    "feedback:gossan_rubble_concentrate": [
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:terra"
+      }
+    ],
+    "feedback:gossan_rubble_crushed": [
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:terra"
+      },
+      {
+        "amount": 2,
+        "aspect": "thaumaturge:perditio"
+      }
+    ],
+    "feedback:gossan_rubble_dust": [
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:terra"
+      },
+      {
+        "amount": 2,
+        "aspect": "thaumaturge:perditio"
+      }
+    ],
+    "feedback:gossan_rubble_lump": [
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:terra"
+      }
+    ],
+    "feedback:gossan_rubble_tailings": [
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:terra"
       }
     ],
     "feedback:granite_dust": [
@@ -34272,6 +34474,66 @@
         "aspect": "thaumaturge:perditio"
       }
     ],
+    "feedback:rusty_soil_calcine": [
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:terra"
+      },
+      {
+        "amount": 2,
+        "aspect": "thaumaturge:perditio"
+      }
+    ],
+    "feedback:rusty_soil_concentrate": [
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:terra"
+      },
+      {
+        "amount": 2,
+        "aspect": "thaumaturge:perditio"
+      }
+    ],
+    "feedback:rusty_soil_crushed": [
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:terra"
+      },
+      {
+        "amount": 2,
+        "aspect": "thaumaturge:perditio"
+      }
+    ],
+    "feedback:rusty_soil_dust": [
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:terra"
+      },
+      {
+        "amount": 2,
+        "aspect": "thaumaturge:perditio"
+      }
+    ],
+    "feedback:rusty_soil_lump": [
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:terra"
+      },
+      {
+        "amount": 2,
+        "aspect": "thaumaturge:perditio"
+      }
+    ],
+    "feedback:rusty_soil_tailings": [
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:terra"
+      },
+      {
+        "amount": 2,
+        "aspect": "thaumaturge:perditio"
+      }
+    ],
     "feedback:salmon_block": [
       {
         "amount": 37,
@@ -39295,6 +39557,66 @@
       },
       {
         "amount": 4,
+        "aspect": "thaumaturge:perditio"
+      }
+    ],
+    "feedback:tarnished_soil_calcine": [
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:terra"
+      },
+      {
+        "amount": 2,
+        "aspect": "thaumaturge:perditio"
+      }
+    ],
+    "feedback:tarnished_soil_concentrate": [
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:terra"
+      },
+      {
+        "amount": 2,
+        "aspect": "thaumaturge:perditio"
+      }
+    ],
+    "feedback:tarnished_soil_crushed": [
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:terra"
+      },
+      {
+        "amount": 2,
+        "aspect": "thaumaturge:perditio"
+      }
+    ],
+    "feedback:tarnished_soil_dust": [
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:terra"
+      },
+      {
+        "amount": 2,
+        "aspect": "thaumaturge:perditio"
+      }
+    ],
+    "feedback:tarnished_soil_lump": [
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:terra"
+      },
+      {
+        "amount": 2,
+        "aspect": "thaumaturge:perditio"
+      }
+    ],
+    "feedback:tarnished_soil_tailings": [
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:terra"
+      },
+      {
+        "amount": 2,
         "aspect": "thaumaturge:perditio"
       }
     ],

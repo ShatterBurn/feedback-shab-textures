@@ -936,6 +936,15 @@ public class FBlocks {
             BLOCKS.register("robot_reel", () -> new io.github.soundgoodizerfan.feedback.robot.RobotDockBlock(
                     BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_ORANGE).strength(1.0f).sound(SoundType.COPPER).noOcclusion(), true));
 
+    /** The one fitting from a line to another mod's Forge Energy. See {@code EnergyFittingBlockEntity}. */
+    public static final DeferredBlock<io.github.soundgoodizerfan.feedback.machine.energyfitting.EnergyFittingBlock> ENERGY_FITTING =
+            BLOCKS.register("energy_fitting", () -> new io.github.soundgoodizerfan.feedback.machine.energyfitting.EnergyFittingBlock(
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.COLOR_ORANGE)
+                            .strength(1.5f)
+                            .sound(SoundType.COPPER)
+                            .noOcclusion()));
+
     /** Charges a battery off a wire. See {@code ChargerBlockEntity}. */
     public static final DeferredBlock<io.github.soundgoodizerfan.feedback.machine.charger.ChargerBlock> CHARGER =
             BLOCKS.register("charger", () -> new io.github.soundgoodizerfan.feedback.machine.charger.ChargerBlock(

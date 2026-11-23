@@ -4,7 +4,10 @@
     "porous"
   ],
   "exclude": [
-    "ingot"
+    "ingot",
+    "ore",
+    "deepslate_ore",
+    "loose_rock"
   ],
   "hardness": 0.6,
   "density": 1.6,

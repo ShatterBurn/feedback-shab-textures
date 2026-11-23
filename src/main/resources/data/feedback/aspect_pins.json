@@ -170,6 +170,7 @@
     "feedback:electromagnet": [{"aspect":"thaumaturge:potentia","amount":4},{"aspect":"thaumaturge:motus","amount":5},{"aspect":"thaumaturge:metallum","amount":4}],
     "feedback:dynamotor": [{"aspect":"thaumaturge:potentia","amount":6},{"aspect":"thaumaturge:motus","amount":6},{"aspect":"thaumaturge:machina","amount":5},{"aspect":"thaumaturge:permutatio","amount":3}],
     "feedback:linear_motor": [{"aspect":"thaumaturge:potentia","amount":5},{"aspect":"thaumaturge:motus","amount":8},{"aspect":"thaumaturge:machina","amount":5}],
+    "feedback:energy_fitting": [{"aspect":"thaumaturge:potentia","amount":6},{"aspect":"thaumaturge:machina","amount":3},{"aspect":"thaumaturge:permutatio","amount":3}],
     "feedback:charger": [{"aspect":"thaumaturge:potentia","amount":6},{"aspect":"thaumaturge:machina","amount":3},{"aspect":"thaumaturge:permutatio","amount":2}],
     "feedback:charging_gantry": [{"aspect":"thaumaturge:potentia","amount":6},{"aspect":"thaumaturge:machina","amount":7},{"aspect":"thaumaturge:motus","amount":4}],
     "feedback:rectifier": [{"aspect":"thaumaturge:potentia","amount":4},{"aspect":"thaumaturge:permutatio","amount":4},{"aspect":"thaumaturge:ordo","amount":3}],

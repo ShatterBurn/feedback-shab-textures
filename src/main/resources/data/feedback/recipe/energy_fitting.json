@@ -1,0 +1,25 @@
+{
+  "type": "feedback:engineering",
+  "key": {
+    "W": { "item": "feedback:copper_wire" },
+    "R": { "item": "feedback:rectifier" },
+    "P": { "item": "feedback:copper_plate" }
+  },
+  "pattern": [
+    "WRW",
+    "PPP"
+  ],
+  "result": {
+    "count": 1,
+    "id": "feedback:energy_fitting"
+  },
+  "tool": [
+    { "ability": "feedback:driver", "wear": 1 }
+  ],
+  "fasteners": {
+    "count": 2,
+    "floor": 1,
+    "forms": ["screw"]
+  },
+  "school": "electrical:1"
+}

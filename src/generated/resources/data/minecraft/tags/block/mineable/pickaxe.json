@@ -504,6 +504,7 @@
     "feedback:end_stone_loose_rock",
     "feedback:end_stone_ore",
     "feedback:ender_port",
+    "feedback:energy_fitting",
     "feedback:engine",
     "feedback:engineering_table",
     "feedback:enriched_fuel_rod_pipe",

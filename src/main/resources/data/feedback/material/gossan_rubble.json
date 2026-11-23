@@ -1,7 +1,10 @@
 {
   "kind": "mineral",
   "exclude": [
-    "ingot"
+    "ingot",
+    "ore",
+    "deepslate_ore",
+    "loose_rock"
   ],
   "hardness": 3,
   "density": 2.4,
