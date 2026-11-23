@@ -1,0 +1,46 @@
+{
+  "neoforge:conditions": [
+    { "type": "neoforge:mod_loaded", "modid": "ae2" }
+  ],
+  "color": "#9cc9e6",
+  "kind": "crystal",
+  "hardness": 100,
+  "density": 2.65,
+  "thermal": {
+    "melting_point": 1710,
+    "cooling_rate": 2.62,
+    "conductivity": 0.00175,
+    "service_temperature": 1000,
+    "specific_heat": 0.74,
+    "latent_heat_fusion": 140,
+    "boiling_point": 2800,
+    "latent_heat_vaporisation": 5000,
+    "oxidation_temperature": 1710
+  },
+  "mechanical": {
+    "toughness": 1,
+    "friction": 0.4,
+    "abrasiveness": 0.6,
+    "yield_strength": 5
+  },
+  "molten": {
+    "viscosity": 100000,
+    "density": 2.2,
+    "shear_thickening": 0
+  },
+  "separation": {
+    "reflectivity": 0.1
+  },
+  "accepts": {
+    "gem": ["#c:gems/certus_quartz"],
+    "dust": ["#c:dusts/certus_quartz"]
+  },
+  "enchantability": 10,
+  "electrical": {
+    "insulation": "ehv",
+    "piezo_coupling": 1.0,
+    "rectifying": 0.3
+  },
+  "corrosion_resistance": 1,
+  "toxicity": 0
+}

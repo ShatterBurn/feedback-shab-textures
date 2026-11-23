@@ -1,0 +1,46 @@
+{
+  "neoforge:conditions": [
+    { "type": "neoforge:mod_loaded", "modid": "ae2" }
+  ],
+  "color": "#8a5fc7",
+  "kind": "crystal",
+  "hardness": 80,
+  "density": 2.7,
+  "thermal": {
+    "melting_point": 1600,
+    "cooling_rate": 2.6,
+    "conductivity": 0.0015,
+    "service_temperature": 950,
+    "specific_heat": 0.76,
+    "latent_heat_fusion": 140,
+    "boiling_point": 2700,
+    "latent_heat_vaporisation": 5000,
+    "oxidation_temperature": 1600
+  },
+  "mechanical": {
+    "toughness": 1,
+    "friction": 0.4,
+    "abrasiveness": 0.5,
+    "yield_strength": 4
+  },
+  "molten": {
+    "viscosity": 100000,
+    "density": 2.2,
+    "shear_thickening": 0
+  },
+  "separation": {
+    "reflectivity": 0.15
+  },
+  "accepts": {
+    "gem": ["#c:gems/fluix"],
+    "dust": ["#c:dusts/fluix"]
+  },
+  "enchantability": 12,
+  "electrical": {
+    "insulation": "hv",
+    "piezo_coupling": 0.7,
+    "rectifying": 0.2
+  },
+  "corrosion_resistance": 1,
+  "toxicity": 0
+}
