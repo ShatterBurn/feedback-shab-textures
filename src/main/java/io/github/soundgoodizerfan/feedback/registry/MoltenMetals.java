@@ -37,7 +37,8 @@ public final class MoltenMetals {
             "tungsten_carbide", "titanium_carbide", "thorium_tungsten", "cermet", "redstone_chromium",
             "magnesium", "lithium", "bismuth", "beryllium", "platinum", "gallium", "molybdenum", "palladium", "cadmium",
             "duralumin", "nichrome", "woods_metal", "beryllium_copper", "invar", "electrum", "amethyst_bronze", "borosilicate_glass", "uranium_glass",
-            "antimony", "vanadium", "indium", "mercury", "galinstan", "constantan", "cupronickel", "alnico", "high_speed_steel", "titanium_6al_4v", "stellite", "pewter", "babbitt", "bell_metal", "shakudo", "aluminium_foam", "lumen_glass");
+            "antimony", "vanadium", "indium", "mercury", "galinstan", "constantan", "cupronickel", "alnico", "high_speed_steel", "titanium_6al_4v", "stellite", "pewter", "babbitt", "bell_metal", "shakudo", "aluminium_foam", "lumen_glass",
+            "essentia", "thaumium_lean", "thaumium", "thaumium_rich");
 
     private static final DeferredRegister<FluidType> TYPES =
             DeferredRegister.create(NeoForgeRegistries.FLUID_TYPES, Feedback.MOD_ID);

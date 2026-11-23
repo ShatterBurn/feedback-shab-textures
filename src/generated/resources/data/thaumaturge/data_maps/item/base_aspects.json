@@ -39884,6 +39884,444 @@
         "aspect": "thaumaturge:motus"
       }
     ],
+    "feedback:thaumium_lean_birdshot": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:thaumium_lean_block": [
+      {
+        "amount": 44,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 41,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 32,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:thaumium_lean_bullet": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:thaumium_lean_case": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:thaumium_lean_coil_spring": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:thaumium_lean_coin": [
+      {
+        "amount": 1,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 1,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 1,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:thaumium_lean_drilled_plate": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:thaumium_lean_dust": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      },
+      {
+        "amount": 3,
+        "aspect": "thaumaturge:perditio"
+      }
+    ],
+    "feedback:thaumium_lean_fine_wire": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:thaumium_lean_flat_nose_bullet": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:thaumium_lean_flechette": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:thaumium_lean_foil": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:thaumium_lean_grip": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:thaumium_lean_ground_ingot": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:thaumium_lean_hollow_point_bullet": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:thaumium_lean_ingot": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:thaumium_lean_large_shot": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:thaumium_lean_machine_bolt": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:thaumium_lean_nugget": [
+      {
+        "amount": 1,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 1,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 1,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:thaumium_lean_pipe": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:thaumium_lean_plate": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:thaumium_lean_pointed_bullet": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:thaumium_lean_rivet": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:thaumium_lean_rod": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:thaumium_lean_round_ball": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:thaumium_lean_scrap": [
+      {
+        "amount": 1,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 1,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 1,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:thaumium_lean_screw": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:thaumium_lean_swarf": [
+      {
+        "amount": 1,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 1,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 1,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:thaumium_lean_turned_rod": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:thaumium_lean_welding_rod": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:thaumium_lean_wire": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
     "feedback:thaumium_machine_bolt": [
       {
         "amount": 5,
@@ -39947,6 +40385,444 @@
       },
       {
         "amount": 6,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:thaumium_rich_birdshot": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 8,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:thaumium_rich_block": [
+      {
+        "amount": 42,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 68,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 32,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:thaumium_rich_bullet": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 8,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:thaumium_rich_case": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 8,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:thaumium_rich_coil_spring": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 8,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:thaumium_rich_coin": [
+      {
+        "amount": 1,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 1,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 1,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:thaumium_rich_drilled_plate": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 8,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:thaumium_rich_dust": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 8,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      },
+      {
+        "amount": 3,
+        "aspect": "thaumaturge:perditio"
+      }
+    ],
+    "feedback:thaumium_rich_fine_wire": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 8,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:thaumium_rich_flat_nose_bullet": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 8,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:thaumium_rich_flechette": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 8,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:thaumium_rich_foil": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 8,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:thaumium_rich_grip": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 8,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:thaumium_rich_ground_ingot": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 8,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:thaumium_rich_hollow_point_bullet": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 8,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:thaumium_rich_ingot": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 8,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:thaumium_rich_large_shot": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 8,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:thaumium_rich_machine_bolt": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 8,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:thaumium_rich_nugget": [
+      {
+        "amount": 1,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 1,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 1,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:thaumium_rich_pipe": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 8,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:thaumium_rich_plate": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 8,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:thaumium_rich_pointed_bullet": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 8,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:thaumium_rich_rivet": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 8,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:thaumium_rich_rod": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 8,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:thaumium_rich_round_ball": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 8,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:thaumium_rich_scrap": [
+      {
+        "amount": 1,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 2,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 1,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:thaumium_rich_screw": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 8,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:thaumium_rich_swarf": [
+      {
+        "amount": 1,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 2,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 1,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:thaumium_rich_turned_rod": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 8,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:thaumium_rich_welding_rod": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 8,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:thaumium_rich_wire": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 8,
         "aspect": "thaumaturge:ordo"
       },
       {
