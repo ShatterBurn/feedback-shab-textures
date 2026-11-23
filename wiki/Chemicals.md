@@ -62,7 +62,7 @@ A scarce residue of electrolysing enriched water. See [Heavy Water](Heavy_Water.
 
 ## Hypochlorite Bleach
 
-Made in a Reactor from chlorine and lye. Dip a block of dyed wool in a vessel holding it, the way a ceramic is [glazed](Casting.md#glazing), and it comes out white wool; each block takes 250 mB.
+Made in a Reactor from chlorine and lye. Dip a block of dyed wool or a dyed carpet in a vessel holding it, the way a ceramic is [glazed](Casting.md#glazing), and it comes out white; each wool block takes 250 mB and each carpet 125 mB.
 
 ## Air separation
 
