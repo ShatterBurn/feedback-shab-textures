@@ -4,6 +4,7 @@
   ],
   "color": "#9cc9e6",
   "kind": "crystal",
+  "refractive_index": 1.55,
   "hardness": 100,
   "density": 2.65,
   "thermal": {

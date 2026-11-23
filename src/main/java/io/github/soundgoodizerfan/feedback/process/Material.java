@@ -132,6 +132,7 @@ public record Material(St hardness, Tu minTemperature, Tu maxTemperature,
                        Optional<Potion> potion, Optional<XpCapacity> xpStore,
                        Optional<Integer> luminance, boolean phosphor, Optional<Neutron> neutron, Optional<Integer> fastener,
                        Optional<Float> toxicity, Optional<Float> corrosivity, Optional<Float> abundance, Optional<Float> ph, Optional<Float> attenuation,
+                       Optional<Float> transition, Optional<Float> refractiveIndex,
                        Map<String, List<String>> accepts) {
 
     /**
@@ -743,12 +744,12 @@ public record Material(St hardness, Tu minTemperature, Tu maxTemperature,
             Combustion.CODEC.optionalFieldOf("combustion").forGetter(Material::combustion),
             // Sixteen is RecordCodecBuilder's ceiling, so the last keys ride as one group. The
             // JSON is unchanged: they stay plain top-level keys.
-            Tail.CODEC.forGetter(m -> new Tail(m.electrical(), m.composition(), m.enchantability(), m.color(), m.perks(), m.attunement(), m.food(), m.bears(), m.radioactivity(), m.catalyst(), m.potion(), m.xpStore(), m.neutron(), new Extras(m.luminance(), m.phosphor(), m.fastener(), m.toxicity(), m.corrosivity(), m.abundance(), m.ph(), m.attenuation(), m.accepts())))
+            Tail.CODEC.forGetter(m -> new Tail(m.electrical(), m.composition(), m.enchantability(), m.color(), m.perks(), m.attunement(), m.food(), m.bears(), m.radioactivity(), m.catalyst(), m.potion(), m.xpStore(), m.neutron(), new Extras(m.luminance(), m.phosphor(), m.fastener(), m.toxicity(), m.corrosivity(), m.abundance(), m.ph(), m.attenuation(), m.transition(), m.refractiveIndex(), m.accepts())))
     ).apply(instance, (hardness, min, max, forms, exclude, density, kind, traits, thermal, mechanical,
                        molten, separation, ampacity, corrosion, combustion, tail) -> new Material(
             hardness, min, max, forms, exclude, density, kind, traits, thermal, mechanical, molten,
             separation, ampacity, corrosion, combustion, tail.electrical(), tail.composition(),
-            tail.enchantability(), tail.color(), tail.perks(), tail.attunement(), tail.food().map(f -> f.heated(thermal.specificHeat())), tail.bears(), tail.radioactivity(), tail.catalyst(), tail.potion(), tail.xpStore(), tail.luminance(), tail.phosphor(), tail.neutron(), tail.fastener(), tail.toxicity(), tail.corrosivity(), tail.abundance(), tail.ph(), tail.attenuation(), tail.accepts())));
+            tail.enchantability(), tail.color(), tail.perks(), tail.attunement(), tail.food().map(f -> f.heated(thermal.specificHeat())), tail.bears(), tail.radioactivity(), tail.catalyst(), tail.potion(), tail.xpStore(), tail.luminance(), tail.phosphor(), tail.neutron(), tail.fastener(), tail.toxicity(), tail.corrosivity(), tail.abundance(), tail.ph(), tail.attenuation(), tail.transition(), tail.refractiveIndex(), tail.accepts())));
 
     /**
      * The keys that did not fit the codec's sixteen.
@@ -774,6 +775,8 @@ public record Material(St hardness, Tu minTemperature, Tu maxTemperature,
         Optional<Float> abundance() { return extras.abundance(); }
         Optional<Float> ph() { return extras.ph(); }
         Optional<Float> attenuation() { return extras.attenuation(); }
+        Optional<Float> transition() { return extras.transition(); }
+        Optional<Float> refractiveIndex() { return extras.refractiveIndex(); }
         Map<String, List<String>> accepts() { return extras.accepts(); }
 
         static final com.mojang.serialization.MapCodec<Tail> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
@@ -807,6 +810,10 @@ public record Material(St hardness, Tu minTemperature, Tu maxTemperature,
      * @param attenuation how much light a metre of a fibre drawn from it loses, in dB per metre (real: soda-lime glass about 1, optical
      *                    glass 0.1, silica glass 0.0002); absent means it carries no light (opaque or tinted). Read by the optical
      *                    terminal's fibre links ({@code control/data/DataWires}).
+     * @param transition the temperature (Tu) at which a shape-memory metal returns to the shape it was set in (real: nitinol about 60 C); absent for
+     *                   a material that has none. Read by the thermal valve's spring.
+     * @param refractiveIndex how strongly it bends light, 1 (vacuum) to about 2.5 (real: glass 1.5, quartz 1.55, diamond 2.42); absent for an
+     *                        opaque material. Read by a telescope's lens parts.
      * @param accepts foreign items that are this material in a form, by form name: each entry an item id ({@code thaumaturge:cluster_copper}) or a
      *                {@code #tag}. Only {@link #find} and the recipe browser's item box read it; nothing is generated from it and no step outputs
      *                it, so it is the compat key for another mod's mercury, cluster or finished gear. An id or tag nothing registers is ignored.
@@ -817,6 +824,7 @@ public record Material(St hardness, Tu minTemperature, Tu maxTemperature,
      */
     private record Extras(Optional<Integer> luminance, boolean phosphor, Optional<Integer> fastener, Optional<Float> toxicity,
                           Optional<Float> corrosivity, Optional<Float> abundance, Optional<Float> ph, Optional<Float> attenuation,
+                          Optional<Float> transition, Optional<Float> refractiveIndex,
                           Map<String, List<String>> accepts) {
         static final com.mojang.serialization.MapCodec<Extras> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
                 Codec.intRange(0, 15).optionalFieldOf("luminance").forGetter(Extras::luminance),
@@ -827,6 +835,8 @@ public record Material(St hardness, Tu minTemperature, Tu maxTemperature,
                 Codec.floatRange(0f, 1_000_000f).optionalFieldOf("abundance").forGetter(Extras::abundance),
                 Codec.floatRange(0f, 14f).optionalFieldOf("ph").forGetter(Extras::ph),
                 Codec.floatRange(0f, Float.MAX_VALUE).optionalFieldOf("attenuation").forGetter(Extras::attenuation),
+                Codec.floatRange(-273f, Float.MAX_VALUE).optionalFieldOf("transition").forGetter(Extras::transition),
+                Codec.floatRange(1f, 10f).optionalFieldOf("refractive_index").forGetter(Extras::refractiveIndex),
                 Codec.unboundedMap(Codec.STRING, Codec.STRING.listOf()).optionalFieldOf("accepts", Map.of()).forGetter(Extras::accepts)
         ).apply(instance, Extras::new));
     }

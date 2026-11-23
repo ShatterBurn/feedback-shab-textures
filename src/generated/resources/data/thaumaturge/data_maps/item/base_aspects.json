@@ -41378,6 +41378,20 @@
         "aspect": "thaumaturge:ordo"
       }
     ],
+    "feedback:thermal_valve": [
+      {
+        "amount": 2,
+        "aspect": "thaumaturge:fabrico"
+      },
+      {
+        "amount": 18,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 21,
+        "aspect": "thaumaturge:potentia"
+      }
+    ],
     "feedback:thermometer": [
       {
         "amount": 6,

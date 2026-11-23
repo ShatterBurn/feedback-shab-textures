@@ -1,6 +1,7 @@
 {
   "color": "#9fb4d6",
   "kind": "crystal",
+  "refractive_index": 1.72,
   "hardness": 140,
   "density": 3.58,
   "thermal": {

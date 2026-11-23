@@ -1,6 +1,7 @@
 {
   "color": "#f2e6a0",
   "kind": "glass",
+  "refractive_index": 1.55,
   "traits": [
     "transparent"
   ],

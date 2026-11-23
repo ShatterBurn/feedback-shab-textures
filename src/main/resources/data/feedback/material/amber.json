@@ -1,6 +1,7 @@
 {
   "color": "#d99a2b",
   "kind": "polymer",
+  "refractive_index": 1.55,
   "hardness": 2.5,
   "density": 1.08,
   "thermal": {

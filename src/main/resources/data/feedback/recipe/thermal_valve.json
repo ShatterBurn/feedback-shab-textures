@@ -1,0 +1,12 @@
+{
+  "type": "feedback:engineering",
+  "key": {
+    "V": { "item": "feedback:valve" },
+    "P": { "item": "feedback:copper_plate" }
+  },
+  "pattern": [ " V ", "PPP" ],
+  "result": { "count": 1, "id": "feedback:thermal_valve" },
+  "tool": [ { "ability": "feedback:driver", "wear": 1 } ],
+  "fasteners": { "count": 2, "floor": 1, "forms": [ "screw" ] },
+  "school": "mechanical:1"
+}

@@ -1,5 +1,6 @@
 {
   "kind": "mineral",
+  "refractive_index": 1.31,
   "exclude": [
     "dust",
     "ingot"

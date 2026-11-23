@@ -61,8 +61,77 @@ public class ValveBlockEntity extends BlockEntity implements Blown, Switchable, 
     /** Set while forwarding, so valves facing round in a loop lose the air rather than recurse forever. */
     private boolean forwarding;
 
+    /** A thermal valve's spring (a coil spring item of any material); empty on a plain valve. */
+    private net.minecraft.world.item.ItemStack spring = net.minecraft.world.item.ItemStack.EMPTY;
+
+    /** The temperature (Tu) the spring's material returns to its set shape at; NaN when it has none or no spring is fitted. */
+    private float opensAt = Float.NaN;
+
+    /** Fluid hotter than the transition by this much opens it, and it closes again this far under (the spring returns with a lag). */
+    private static final float SPRING_LAG_TU = 10f;
+
     public ValveBlockEntity(BlockPos pos, BlockState state) {
         super(FBlockEntities.VALVE.get(), pos, state);
+    }
+
+    public net.minecraft.world.item.ItemStack spring() {
+        return spring;
+    }
+
+    /** The temperature the fitted spring opens the valve at, NaN when there is none or its material remembers no shape. */
+    public float opensAt() {
+        return opensAt;
+    }
+
+    /** Fits one spring (any coil spring item); returns what is left in hand. A valve takes one and the one in it comes out first. */
+    public net.minecraft.world.item.ItemStack fitSpring(net.minecraft.world.item.ItemStack stack) {
+        if (level == null || level.isClientSide || !spring.isEmpty())
+            return stack;
+        var located = io.github.soundgoodizerfan.feedback.process.Material.find(
+                io.github.soundgoodizerfan.feedback.process.MaterialTable.get().materials(), stack.getItem());
+        if (located.isEmpty() || !located.get().form().equals("coil_spring"))
+            return stack;
+        spring = stack.copyWithCount(1);
+        opensAt = located.get().material().transition().orElse(Float.NaN);
+        setChanged();
+        net.minecraft.world.item.ItemStack rest = stack.copy();
+        rest.shrink(1);
+        return rest;
+    }
+
+    /** Takes the spring out and shuts the valve (nothing holds it open). */
+    public net.minecraft.world.item.ItemStack removeSpring() {
+        net.minecraft.world.item.ItemStack out = spring;
+        spring = net.minecraft.world.item.ItemStack.EMPTY;
+        opensAt = Float.NaN;
+        setChanged();
+        setEngaged(false);
+        return out;
+    }
+
+    /**
+     * A thermal valve's step, every ten ticks: it reads the temperature of what is behind its input face (a one-millibucket probe that
+     * is never taken) and the spring decides. Open at or above the spring material's {@code transition}, shut again {@link #SPRING_LAG_TU}
+     * under it; a spring whose material remembers no shape, or no spring, leaves it shut. Nothing here moves a fluid.
+     */
+    public void tickThermal() {
+        if (level == null || level.isClientSide || level.getGameTime() % 10 != 0)
+            return;
+        if (Float.isNaN(opensAt)) {
+            setEngaged(false);
+            return;
+        }
+        IFluidHandler upstream = beyond(getBlockState().getValue(ValveBlock.FACING).getOpposite());
+        FluidStack probe = upstream == null ? FluidStack.EMPTY : upstream.drain(1, IFluidHandler.FluidAction.SIMULATE);
+        if (probe.isEmpty()) {
+            setEngaged(false);
+            return;
+        }
+        float tu = io.github.soundgoodizerfan.feedback.core.thermal.FluidHeat.of(probe).value();
+        if (tu >= opensAt)
+            setEngaged(true);
+        else if (tu < opensAt - SPRING_LAG_TU)
+            setEngaged(false);
     }
 
     @Override
@@ -214,6 +283,8 @@ public class ValveBlockEntity extends BlockEntity implements Blown, Switchable, 
     protected void saveAdditional(net.minecraft.nbt.CompoundTag tag, net.minecraft.core.HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
         tag.putFloat("Opening", opening);
+        if (!spring.isEmpty())
+            tag.put("Spring", spring.save(registries));
         fittings.save(tag);
     }
 
@@ -221,6 +292,13 @@ public class ValveBlockEntity extends BlockEntity implements Blown, Switchable, 
     protected void loadAdditional(net.minecraft.nbt.CompoundTag tag, net.minecraft.core.HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
         opening = tag.contains("Opening") ? tag.getFloat("Opening") : 1f;
+        spring = net.minecraft.world.item.ItemStack.parseOptional(registries, tag.getCompound("Spring"));
+        // The material figure is read again on load, so a reloaded datapack changes where the spring opens.
+        opensAt = Float.NaN;
+        if (!spring.isEmpty())
+            io.github.soundgoodizerfan.feedback.process.Material.find(
+                    io.github.soundgoodizerfan.feedback.process.MaterialTable.get().materials(), spring.getItem())
+                    .flatMap(l -> l.material().transition()).ifPresent(t -> opensAt = t);
         fittings.load(tag, this);
     }
 

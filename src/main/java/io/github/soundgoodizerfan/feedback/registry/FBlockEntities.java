@@ -267,7 +267,7 @@ public class FBlockEntities {
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ValveBlockEntity>> VALVE =
             BLOCK_ENTITIES.register("valve", () -> BlockEntityType.Builder
-                    .of(ValveBlockEntity::new, FBlocks.VALVE.get())
+                    .of(ValveBlockEntity::new, FBlocks.VALVE.get(), FBlocks.THERMAL_VALVE.get())
                     .build(null));
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<io.github.soundgoodizerfan.feedback.machine.redstone.RedstoneEmitterBlockEntity>> REDSTONE_EMITTER =

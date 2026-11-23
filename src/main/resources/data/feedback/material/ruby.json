@@ -1,6 +1,7 @@
 {
   "color": "#d4143c",
   "kind": "crystal",
+  "refractive_index": 1.77,
   "abundance": 2.2,
   "traits": [
     "transparent", "gemstone"],

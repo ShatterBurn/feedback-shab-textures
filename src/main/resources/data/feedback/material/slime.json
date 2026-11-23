@@ -1,5 +1,6 @@
 {
   "kind": "organic",
+  "refractive_index": 1.4,
   "fastener": 1,
   "traits": [
     "sticky",

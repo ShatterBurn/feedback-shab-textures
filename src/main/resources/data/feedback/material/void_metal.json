@@ -2,6 +2,7 @@
   "fastener": 3,
   "color": "#2a2740",
   "kind": "metal",
+  "transition": 80,
   "traits": [
     "alloy"
   ],

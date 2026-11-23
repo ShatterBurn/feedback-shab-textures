@@ -1,6 +1,7 @@
 {
   "color": "#cfc6bd",
   "kind": "crystal",
+  "refractive_index": 1.66,
   "abundance": 2.2,
   "traits": [
     "transparent"

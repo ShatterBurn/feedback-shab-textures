@@ -7,6 +7,7 @@
     "leak": 0.1
   },
   "kind": "crystal",
+  "refractive_index": 1.55,
   "abundance": 45,
   "hardness": 108,
   "density": 2.65,

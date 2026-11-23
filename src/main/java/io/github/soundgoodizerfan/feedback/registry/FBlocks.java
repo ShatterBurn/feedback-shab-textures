@@ -1026,6 +1026,14 @@ public class FBlocks {
                     .sound(SoundType.METAL)
                     .noOcclusion()));
 
+    /** A valve a spring opens at the spring material's transition temperature. See {@code ThermalValveBlock}. */
+    public static final DeferredBlock<io.github.soundgoodizerfan.feedback.machine.valve.ThermalValveBlock> THERMAL_VALVE = BLOCKS.register("thermal_valve",
+            () -> new io.github.soundgoodizerfan.feedback.machine.valve.ThermalValveBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.METAL)
+                    .strength(3.0f)
+                    .sound(SoundType.METAL)
+                    .noOcclusion()));
+
     /** The data-to-redstone converter: a controller switches it, it powers vanilla redstone. */
     public static final DeferredBlock<io.github.soundgoodizerfan.feedback.machine.redstone.RedstoneEmitterBlock> REDSTONE_EMITTER = BLOCKS.register("redstone_emitter",
             () -> new io.github.soundgoodizerfan.feedback.machine.redstone.RedstoneEmitterBlock(BlockBehaviour.Properties.of()

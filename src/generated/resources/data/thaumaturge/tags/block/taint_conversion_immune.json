@@ -277,6 +277,7 @@
     "feedback:thaumium_pipe",
     "feedback:thaumium_rich_pipe",
     "feedback:thermal_store",
+    "feedback:thermal_valve",
     "feedback:thermocouple_probe",
     "feedback:thermoelectric_generator",
     "feedback:thorium_fuel_rod_pipe",
