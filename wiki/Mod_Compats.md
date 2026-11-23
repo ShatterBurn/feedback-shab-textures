@@ -18,6 +18,7 @@ The mods Feedback works with, and what each one gives you. Some are required, so
 | [EMI](#emi) | Optional | Shows Feedback's recipe cards through its JEI bridge |
 | [Other mods' foods](#other-mods-foods) | Optional | Any food from another mod keeps and spoils like Feedback food |
 | [Inventory Sorter](#inventory-sorter) | Optional | Sorting skips screens whose slots are roles |
+| [Xaero's Minimap](#xaeros-minimap) | Optional | Survey Meter readings pin to the map |
 | [Other mods](#other-mods) | Optional | Fluid tags and shared biome and stone tags |
 
 ## Sable, Dimensional Sable and Sable Scaling
@@ -199,6 +200,10 @@ Any food from another mod (an item that is edible and is not from Minecraft or F
 ## Inventory Sorter
 
 **Optional.** With Inventory Sorter installed, sorting and scroll-moving do nothing on screens whose slots are roles, where an input, a fuel and a result each sit in a place that matters: the [Engineering Table](Engineering_Table.md), Reloading Press, Blueprint Table, Research Table, Material Probe, Enchanting screen, Casting Basin, Mixer, Brewing Stand, Station, Programmer, Prep Table, Thermal Vessel, Arc Hearth and Crucible. Packs and depots stay sortable. Food that differs in cook or moisture state does not merge in a sort.
+
+## Xaero's Minimap
+
+**Optional.** With Xaero's Minimap installed, every [Survey Meter](Instruments.md#survey-meter) reading pins to the map. The pins sit in a waypoint set named **Feedback survey**, one yellow waypoint for each line the meter read: each kind of ore, oil, and the Thaumaturge field anomaly. A pin marks where most of that kind lies, rounded to 8 blocks, not the exact block. The next reading clears the set and fills it again, and a reading that finds nothing leaves it empty.
 
 ## Energy Fitting
 
