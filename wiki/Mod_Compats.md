@@ -13,6 +13,7 @@ The mods Feedback works with, and what each one gives you. Some are required, so
 | [JEI](#jei) | Optional | Recipe, process and info pages |
 | [Jade](#jade) | Optional | Readouts on blocks and villagers |
 | [Thaumaturge](#thaumaturge) | Optional | Aspects on Feedback items, flux and essentia machines, thaumium alloys |
+| [Inventory Sorter](#inventory-sorter) | Optional | Sorting skips screens whose slots are roles |
 | [Other mods](#other-mods) | Optional | Fluid tags and shared biome and stone tags |
 
 ## Sable, Dimensional Sable and Sable Scaling
@@ -167,6 +168,10 @@ Core Slag, Crude Pools, Tar Seeps and Soul Seeps count as physical flux for Thau
 Thaumaturge's Outer Lands dimension is cold and has the thin, oxygen-free air of the End, so [Heat](Heat.md) rules for cold and the sealed-suit rules of [Hazards](Hazards.md) apply there.
 
 Hot surfaces, plants that hurt on contact, Core Slag, Crude Pools, Tar Seeps and Soul Seeps count as unsafe landings for Thaumaturge's arrival pads.
+
+## Inventory Sorter
+
+**Optional.** With Inventory Sorter installed, sorting and scroll-moving do nothing on screens whose slots are roles, where an input, a fuel and a result each sit in a place that matters: the [Engineering Table](Engineering_Table.md), Reloading Press, Blueprint Table, Research Table, Material Probe, Enchanting screen, Casting Basin, Mixer, Brewing Stand, Station, Programmer, Prep Table, Thermal Vessel, Arc Hearth and Crucible. Packs and depots stay sortable. Food that differs in cook or moisture state does not merge in a sort.
 
 ## Other mods
 
