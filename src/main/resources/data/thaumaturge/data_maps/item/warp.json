@@ -1,0 +1,14 @@
+{
+  "values": {
+    "feedback:fuel_rod": { "amount": 4 },
+    "feedback:enriched_fuel_rod": { "amount": 6 },
+    "feedback:spent_fuel_rod": { "amount": 8 },
+    "feedback:breeder_rod": { "amount": 4 },
+    "feedback:thorium_fuel_rod": { "amount": 4 },
+    "feedback:xp_container": { "amount": 2 },
+    "feedback:culture_dish": { "amount": 3 },
+    "feedback:catalyst_tap": { "amount": 3 },
+    "feedback:sculk_relay": { "amount": 2 },
+    "feedback:ender_anchor": { "amount": 3 }
+  }
+}
