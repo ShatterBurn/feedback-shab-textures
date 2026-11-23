@@ -845,6 +845,7 @@ public class FItems {
     /** One end of an entangled data pair (endernet layer 1). */
     public static final DeferredItem<BlockItem> DATA_PORT = ITEMS.registerSimpleBlockItem(FBlocks.DATA_PORT);
     public static final DeferredItem<BlockItem> OPTICAL_TERMINAL = ITEMS.registerSimpleBlockItem(FBlocks.OPTICAL_TERMINAL);
+    public static final DeferredItem<BlockItem> SCRUBBING_BED = ITEMS.registerSimpleBlockItem(FBlocks.SCRUBBING_BED);
     /** An endernet upgrade for an Electric Controller or Computer, bonded under the pair id it carries. See {@code fitting.upgrade.EndernetFitting}. */
     public static final DeferredItem<Item> ENDERNET_UPGRADE =
             ITEMS.register("endernet_upgrade", () -> new io.github.soundgoodizerfan.feedback.item.EndernetUpgradeItem(new Item.Properties().stacksTo(1)));

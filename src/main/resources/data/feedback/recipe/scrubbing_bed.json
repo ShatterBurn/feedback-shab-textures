@@ -1,0 +1,13 @@
+{
+  "type": "feedback:engineering",
+  "key": {
+    "S": { "item": "feedback:wrought_iron_plate" },
+    "D": { "item": "feedback:wrought_iron_drilled_plate" },
+    "A": { "item": "feedback:air_intake" }
+  },
+  "pattern": [ " A ", "SDS", "SSS" ],
+  "result": { "count": 1, "id": "feedback:scrubbing_bed" },
+  "tool": [ { "ability": "feedback:driver", "wear": 1 } ],
+  "fasteners": { "count": 4, "floor": 1, "forms": [ "screw" ] },
+  "school": "mechanical:1"
+}

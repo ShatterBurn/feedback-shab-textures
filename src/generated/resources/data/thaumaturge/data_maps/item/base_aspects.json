@@ -34462,6 +34462,24 @@
         "aspect": "thaumaturge:metallum"
       }
     ],
+    "feedback:scrubbing_bed": [
+      {
+        "amount": 2,
+        "aspect": "thaumaturge:fabrico"
+      },
+      {
+        "amount": 30,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 24,
+        "aspect": "thaumaturge:motus"
+      },
+      {
+        "amount": 30,
+        "aspect": "thaumaturge:ordo"
+      }
+    ],
     "feedback:sculk_plate": [
       {
         "amount": 4,

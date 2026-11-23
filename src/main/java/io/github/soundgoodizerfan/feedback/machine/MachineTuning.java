@@ -643,6 +643,14 @@ public final class MachineTuning {
 
     public static final Su CENTRIFUGE_LOAD_SU = new Su(60f);
 
+    /**
+     * Placeholder. Scrubbing bed (flux in Thaumaturge's own units): flux a seated bed of full activity takes out of its chunk a second, flux it
+     * holds before it is saturated, flux a saturated bed lets back into the chunk a second, the share of its load a fire at its regeneration
+     * temperature burns off a second, and the share of its activity a fire at its sinter temperature takes for good a second.
+     */
+    public static final float SCRUBBER_FLUX_PER_SECOND = 1.5f, SCRUBBER_CAPACITY = 120f, SCRUBBER_BREAKTHROUGH_PER_SECOND = 0.5f,
+            SCRUBBER_REGEN_PER_SECOND = 0.04f, SCRUBBER_SINTER_PER_SECOND = 0.02f;
+
     /** Placeholder [OPEN]. A control surface's full deflection, in radians (about 29 degrees); the arm's force limit is the driver's (STEER_ARM_SU). */
     public static final float SURFACE_MAX_ANGLE = 0.5f;
 }
