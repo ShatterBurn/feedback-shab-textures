@@ -1,0 +1,32 @@
+{
+  "inputs": [
+    {
+      "item": "feedback:gold_amalgam"
+    }
+  ],
+  "min_temperature": 360,
+  "optimal_temperature": 450,
+  "max_temperature": 600,
+  "required_tpu": 300,
+  "result": {
+    "id": "minecraft:gold_nugget",
+    "count": 12
+  },
+  "spoil_temperature": 700,
+  "spoiled": {
+    "id": "feedback:scrap_metal"
+  },
+  "reaction": {
+    "fluid_inputs": [],
+    "fluid_outputs": [],
+    "byproducts": [
+      {
+        "item": {
+          "id": "feedback:mercury_ingot",
+          "count": 1
+        }
+      }
+    ],
+    "heat": 3
+  }
+}

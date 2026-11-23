@@ -1,0 +1,58 @@
+{
+  "color": "#b9b27a",
+  "kind": "metal",
+  "perks": {
+    "toxic": 1
+  },
+  "hardness": 0.6,
+  "density": 15.0,
+  "thermal": {
+    "melting_point": 120,
+    "boiling_point": 357,
+    "cooling_rate": 2.4,
+    "conductivity": 0.0045,
+    "anneal_temperature": 20,
+    "service_temperature": 100,
+    "specific_heat": 0.13,
+    "latent_heat_fusion": 20,
+    "latent_heat_vaporisation": 295,
+    "oxidation_temperature": 357
+  },
+  "mechanical": {
+    "toughness": 1,
+    "ductility": 1,
+    "work_hardening": 0,
+    "yield_strength": 0.2,
+    "friction": 0.2,
+    "abrasiveness": 0.0
+  },
+  "molten": {
+    "viscosity": 3,
+    "density": 14.5,
+    "shear_thickening": 0
+  },
+  "separation": {
+    "magnetic": false,
+    "reflectivity": 0.7
+  },
+  "electrical": {
+    "conductivity": 0.05,
+    "drop": 1.0,
+    "electrode_potential": 0.85
+  },
+  "ampacity": 0.02,
+  "corrosion_resistance": 0.9,
+  "enchantability": 6,
+  "toxicity": 3.0,
+  "forms": {
+    "dust": "feedback:gold_amalgam"
+  },
+  "exclude": [
+    "barrel_shroud", "belt_feed", "birdshot", "block", "bolt", "box_feed", "bullet", "case", "coil_spring", "coin",
+    "cylinder", "drilled_plate", "eddy_sleeve", "fine_wire", "flat_nose_bullet", "flechette", "foil", "foregrip", "grip",
+    "ground_ingot", "gun_barrel", "gun_grip", "gun_stock", "hollow_point_bullet", "ingot", "large_shot", "lump",
+    "machine_bolt", "magazine_tube", "muzzle_brake", "nugget", "pipe", "plate", "pointed_bullet", "receiver",
+    "relief_vent", "rivet", "rod", "round_ball", "scrap", "screw", "sight", "slide", "suppressor", "swarf",
+    "trigger_group", "turned_rod", "welding_rod", "wire"
+  ]
+}

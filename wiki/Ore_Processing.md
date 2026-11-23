@@ -102,10 +102,17 @@ Ilmenite concentrate with charcoal and 600 mB chlorine at 800 to 1200 Tu, best n
 
 **Red Mud** is the bauxite waste. It melts to a little iron.
 
+## Gold by amalgam
+
+Mercury takes gold out of its concentrate without acid. In the [Reactor](Reactor.md#the-reactions), a gold concentrate and a mercury ingot kept at **10 to 60 Tu** (best near 30) make one **Gold Amalgam**; above 90 Tu the batch spoils to scrap metal. Gold Amalgam is a toxic dust ([Materials](Materials.md#dust)).
+
+Heat the amalgam in a vessel at **360 to 600 Tu** (best near 450) and it gives **12 gold nuggets** and the mercury ingot back, ready for the next batch. Above 700 Tu the batch spoils to scrap metal. Finishing the batch in a vessel open to the air lets a toxic [fume cloud](Hazards.md#fume-clouds) go; a sealed vessel lets nothing out.
+
 ## Hazards
 
 - **Sulfur dioxide, osmium tetroxide** and the other gases leave as a fume cloud if the Reactor's output tank has no room ([Hazards](Hazards.md#fume-clouds)).
 - **Radioactive ores** (uraninite, monazite) stay radioactive as crushed ore, dust, concentrate and tailings.
+- **Gold Amalgam** retorted in an open vessel releases a fume cloud of mercury.
 - Dust of a toxic or combustible material is a hazard of its own; see [Dust](Materials.md#dust).
 
 See also [Ore Deposits](Ore_Deposits.md) and [Materials](Materials.md#ore-minerals).

@@ -577,6 +577,8 @@ public class FItems {
     public static final DeferredItem<Item> RHENIUM_SPONGE = ITEMS.registerSimpleItem("rhenium_sponge");
     public static final DeferredItem<Item> RHENIUM_POWDER = ITEMS.registerSimpleItem("rhenium_powder");
     public static final DeferredItem<Item> RHENIUM_GREEN_COMPACT = ITEMS.registerSimpleItem("rhenium_green_compact");
+    /** Gold concentrate wetted with mercury (material {@code gold_amalgam}, form {@code dust}); a retort drives the mercury off and leaves the gold. */
+    public static final DeferredItem<Item> GOLD_AMALGAM = ITEMS.registerSimpleItem("gold_amalgam");
     public static final DeferredItem<Item> BURNT_IRON = ITEMS.registerSimpleItem("burnt_iron");
     /** The bloomery's spongy iron, slag in it as {@code MadeOf.flaw}; shingled at the anvil or the Mechanical Hammer into wrought iron. */
     public static final DeferredItem<Item> IRON_BLOOM = ITEMS.registerItem("iron_bloom", io.github.soundgoodizerfan.feedback.item.BloomItem::new);

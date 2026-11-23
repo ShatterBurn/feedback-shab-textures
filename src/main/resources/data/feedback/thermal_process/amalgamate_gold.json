@@ -1,0 +1,30 @@
+{
+  "inputs": [
+    {
+      "type": "feedback:material",
+      "material": "feedback:gold",
+      "forms": [
+        "concentrate"
+      ]
+    },
+    {
+      "type": "feedback:material",
+      "material": "feedback:mercury",
+      "forms": [
+        "ingot"
+      ]
+    }
+  ],
+  "min_temperature": 10,
+  "optimal_temperature": 30,
+  "max_temperature": 60,
+  "required_tpu": 200,
+  "result": {
+    "id": "feedback:gold_amalgam",
+    "count": 1
+  },
+  "spoil_temperature": 90,
+  "spoiled": {
+    "id": "feedback:scrap_metal"
+  }
+}

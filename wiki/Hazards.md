@@ -122,7 +122,7 @@ A lithium-ion [Battery](Battery.md#thermal-runaway) that overheats, overcharges 
 
 ## Fume clouds
 
-A toxic gas that has nowhere to go does not poison at once; it hangs as a **cloud** about 3 blocks across where it was let go. [Osmium tetroxide](Chemicals.md#osmium-tetroxide) makes one when a [Reactor](Reactor.md) has no room for it, when osmium powder is heated without its protective gas (see the [Heavy Core](Heavy_Core.md#making-it)), and when a batch of toxic [dust](Materials.md#dust) finishes in an open vessel. Fine dust of a fuel such as coal or sulfur in an open vessel at its ignition temperature flashes and lights the air above it.
+A toxic gas that has nowhere to go does not poison at once; it hangs as a **cloud** about 3 blocks across where it was let go. [Osmium tetroxide](Chemicals.md#osmium-tetroxide) makes one when a [Reactor](Reactor.md) has no room for it, when osmium powder is heated without its protective gas (see the [Heavy Core](Heavy_Core.md#making-it)), and when a batch of toxic [dust](Materials.md#dust) finishes in an open vessel, such as [Gold Amalgam](Ore_Processing.md#gold-by-amalgam) retorted in the open. Fine dust of a fuel such as coal or sulfur in an open vessel at its ignition temperature flashes and lights the air above it.
 
 A [Fluid Caster](Fluid_Caster.md#gases) throwing a toxic fluid hotter than its boiling point leaves the same kind of cloud, and one that burns leaves a vapor a flame sets off.
 
