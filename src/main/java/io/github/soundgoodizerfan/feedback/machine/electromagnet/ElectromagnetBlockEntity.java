@@ -222,6 +222,13 @@ public class ElectromagnetBlockEntity extends ElectricNode implements ThermalBod
         // A levitation plate riding on the field (within the reach a plate feels it) is held off too, whatever it is made of.
         for (int up = 1; up <= (int) MagnetField.REACH && !humming; up++)
             humming = level.getBlockState(worldPosition.above(up)).getBlock() instanceof io.github.soundgoodizerfan.feedback.machine.levitation.LevitationPlateBlock;
+        // A sleeved shaft or bearing touching the magnet is held off by the same field.
+        for (net.minecraft.core.Direction d : net.minecraft.core.Direction.values()) {
+            if (humming)
+                break;
+            humming = level.getBlockEntity(worldPosition.relative(d)) instanceof io.github.soundgoodizerfan.feedback.fitting.Fittable f
+                    && io.github.soundgoodizerfan.feedback.fitting.upgrade.LevitationSleeves.of(f) != null;
+        }
         // A hum every couple of seconds while something diamagnetic is held off.
         if (humming && (sinceHum += ElectricMachineTuning.ELECTROMAGNET_PULL_INTERVAL_TICKS) >= ElectricMachineTuning.ELECTROMAGNET_HUM_INTERVAL_TICKS) {
             sinceHum = 0;
