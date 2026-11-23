@@ -177,6 +177,9 @@ public class ModularHafted extends MaceItem implements Modular, HandTool {
         ItemStack stack = context.getItemInHand();
         if (ModularStacks.broken(stack))
             return InteractionResult.PASS;
+        InteractionResult work = io.github.soundgoodizerfan.feedback.modular.bench.FaceWork.use(context);
+        if (work != InteractionResult.PASS)
+            return work;
         Set<String> acts = ModularFaces.actions(stack);
         if (acts.isEmpty())
             return InteractionResult.PASS;

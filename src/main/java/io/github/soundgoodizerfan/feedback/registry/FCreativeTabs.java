@@ -81,7 +81,7 @@ public class FCreativeTabs {
     // ---- Tools & Gear ----
 
     /** Hand tools: grip and prise, shape, then powered hand tools. */
-    private static final List<DeferredItem<?>> HAND_TOOLS = of(FItems.TONGS, FItems.CROWBAR, FItems.WRENCH, FItems.MORTAR,
+    private static final List<DeferredItem<?>> HAND_TOOLS = of(FItems.TONGS, FItems.WRENCH, FItems.MORTAR,
             FModular.HAFTED_TOOL, FModular.SAWBLADE, FModular.SHEARS, FModular.GLOVE, FModular.SCRATCH_FILES,
             FItems.JAR_BATON, FItems.SOLDERING_IRON, FItems.ARC_WELDER, FItems.POWER_CUTTER);
 

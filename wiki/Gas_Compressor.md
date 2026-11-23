@@ -36,7 +36,7 @@ S B S
 S B S
 ```
 
-Use the item on a compressor to fit it (one per compressor); a [Crowbar](Crowbar.md) takes it off. With it, a compressor that has no gas behind it draws open air into its front. How much it draws scales with the air density of the dimension; the End gives 5% of the Overworld's. A compressor with gas behind it works as before.
+Use the item on a compressor to fit it (one per compressor); a [Pry Bar](Pry_Bar.md) takes it off. With it, a compressor that has no gas behind it draws open air into its front. How much it draws scales with the air density of the dimension; the End gives 5% of the Overworld's. A compressor with gas behind it works as before.
 
 A [Respirator](Respirator.md) air cylinder is filled with the compressor.
 

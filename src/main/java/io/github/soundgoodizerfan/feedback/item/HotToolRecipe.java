@@ -29,7 +29,7 @@ import net.minecraft.world.level.Level;
 /**
  * A simple metal tool hammered out hot: a striking hand tool (the hammer) and the metal pieces the tool is made of, in
  * any arrangement, with every piece at its metal's working temperature. A cold piece does not match, so the grid offers
- * nothing and nothing is spent; the hammer wears one point per craft like any hand work. Wrenches and crowbars are made
+ * nothing and nothing is spent; the hammer wears one point per craft like any hand work. Wrenches are made
  * this way (heat spec section 2); tongs have their own recipe with the same rule.
  */
 public class HotToolRecipe extends CustomRecipe {

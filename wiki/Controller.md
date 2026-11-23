@@ -105,7 +105,7 @@ A bare Controller runs a program of up to **16 cards** with **4 variables** (nam
 | **Card Rack** | 8 more cards and 4 more linked nodes | 3 |
 | **Escapement** | Delay cards may use a typed or wired length | 1 |
 
-A card whose program needs more than the fitted parts give is refused when you try to put it in. A [Crowbar](Crowbar.md) will not pry off a part the card in the Controller needs. Variable values survive a reload; Delay history does not, and a Delay restarts from whatever its input reads. A stopped shaft freezes variables and delays along with everything else.
+A card whose program needs more than the fitted parts give is refused when you try to put it in. A [Pry Bar](Pry_Bar.md) will not pry off a part the card in the Controller needs. Variable values survive a reload; Delay history does not, and a Delay restarts from whatever its input reads. A stopped shaft freezes variables and delays along with everything else.
 
 When a new card goes in, variables it declares with the same name and kind keep their values; the rest are cleared.
 

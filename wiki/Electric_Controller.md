@@ -25,7 +25,7 @@ A powered Electric Controller warms a circuit with a [tube](Vacuum_Tube.md) with
 
 ## Endernet upgrade
 
-An [Endernet Upgrade](Endernet_Upgrade.md) makes an Electric Controller one end of an [endernet](Data_Port.md#endernet) pair, so that it reads what is linked to the pair's [Data Port](Data_Port.md) as though linked to itself. Use the upgrade on the controller to fit it. One fits per controller, it draws a small standing current while fitted, and a [Crowbar](Crowbar.md) takes it off.
+An [Endernet Upgrade](Endernet_Upgrade.md) makes an Electric Controller one end of an [endernet](Data_Port.md#endernet) pair, so that it reads what is linked to the pair's [Data Port](Data_Port.md) as though linked to itself. Use the upgrade on the controller to fit it. One fits per controller, it draws a small standing current while fitted, and a [Pry Bar](Pry_Bar.md) takes it off.
 
 ## Electric Programmer
 

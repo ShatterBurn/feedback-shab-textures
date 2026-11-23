@@ -382,7 +382,6 @@ public class FeedbackJeiPlugin implements IModPlugin {
         registration.addIngredientInfo(FModular.SHEARS.get(), Component.translatable("feedback.jei.info.shears"));
         registration.addIngredientInfo(FItems.TONGS.get(), Component.translatable("feedback.jei.info.tongs"));
         registration.addIngredientInfo(FItems.WRENCH.get(), Component.translatable("feedback.jei.info.hot_tool"));
-        registration.addIngredientInfo(FItems.CROWBAR.get(), Component.translatable("feedback.jei.info.hot_tool"));
         registration.addIngredientInfo(io.github.soundgoodizerfan.feedback.registry.FModular.BACKPACK.get(), Component.translatable("feedback.jei.info.backpack"));
         registration.addIngredientInfo(io.github.soundgoodizerfan.feedback.registry.FModular.BED.get(), Component.translatable("feedback.jei.info.bed"));
         registration.addIngredientInfo(io.github.soundgoodizerfan.feedback.registry.FModular.GLOVE.get(), Component.translatable("feedback.jei.info.gloves"));
@@ -589,6 +588,11 @@ public class FeedbackJeiPlugin implements IModPlugin {
         info(registration, io.github.soundgoodizerfan.feedback.registry.FBlocks.TIMER.get().asItem(), "timer");
         info(registration, FModular.WATER_WHEEL.get(), "water_wheel");
         info(registration, FModular.SAWBLADE.get(), "sawblade");
+        for (var part : FModular.PARTS) {
+            String id = part.getId().getPath();
+            if (id.equals("pry_head") || id.equals("prospector_head"))
+                info(registration, part.get(), id);
+        }
         info(registration, FModular.GALVANIC_CELL.get(), "galvanic_cell");
         info(registration, FModular.THERMOELECTRIC_GENERATOR.get(), "thermoelectric_generator");
         info(registration, FModular.THERMOCOUPLE_PROBE.get(), "thermocouple_probe");

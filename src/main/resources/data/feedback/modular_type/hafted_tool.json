@@ -117,7 +117,9 @@
         "knife_blade",
         "file_head",
         "driver_bit",
-        "drill_tip"
+        "drill_tip",
+        "pry_head",
+        "prospector_head"
       ],
       "stock": [
         "@lump",
@@ -260,7 +262,9 @@
         "knife_blade",
         "file_head",
         "driver_bit",
-        "drill_tip"
+        "drill_tip",
+        "pry_head",
+        "prospector_head"
       ],
       "stock": [
         "@lump",
@@ -293,7 +297,9 @@
         "knife_blade",
         "file_head",
         "driver_bit",
-        "drill_tip"
+        "drill_tip",
+        "pry_head",
+        "prospector_head"
       ],
       "stock": [
         "@lump",

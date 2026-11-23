@@ -20,7 +20,7 @@ import net.minecraft.world.item.ItemStack;
 /**
  * A block entity that runs a program: the mechanical Controller, the Electric Controller and the Computer. They differ in what powers
  * them and which media they take; the card slot, the upgrades and the evaluation are one {@link ControllerCore}. Every {@link Container}
- * and {@link Fittable} call goes through to it, so code that holds a host (the block, the upgrade items, the crowbar) does not care which.
+ * and {@link Fittable} call goes through to it, so code that holds a host (the block, the upgrade items, the pry bar) does not care which.
  */
 public interface ControllerHost extends Container, Fittable, io.github.soundgoodizerfan.feedback.control.data.Amplifying, io.github.soundgoodizerfan.feedback.control.ChannelSource,
         io.github.soundgoodizerfan.feedback.control.Steppable, io.github.soundgoodizerfan.feedback.control.RemoteChannels {

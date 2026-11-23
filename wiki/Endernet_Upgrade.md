@@ -11,7 +11,7 @@ Put one bonded [Data Port](Data_Port.md) and one metal plate in the crafting gri
 - **Use it on an [Electric Controller](Electric_Controller.md#endernet-upgrade) or a [Computer](Electric_Controller.md#computer).** It fits there; one fits per block. An upgrade with no bond does nothing, and its tooltip says so.
 - **Use it on a [robot](Robots.md#endernet-leash)** to leash it to the bonded port, or **in the air while wearing an [Exosuit](Exosuit.md#sharing-a-scan)** to share the suit's scan with it.
 - A fitted upgrade draws a small standing current from the block's line. The pair carries while both ends are powered.
-- A [Crowbar](Crowbar.md) takes it off, and it comes back as an upgrade with its bond.
+- A [Pry Bar](Pry_Bar.md) takes it off, and it comes back as an upgrade with its bond.
 - The [Data Port](Data_Port.md#endernet) at the other end pays for each crossing; an upgrade has no tank of its own.
 
 ## Reading across the pair

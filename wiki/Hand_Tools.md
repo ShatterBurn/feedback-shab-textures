@@ -1,6 +1,6 @@
 # Hand Tools
 
-The hand tools are the ones you carry and use yourself: a hammer, a file and a drill for shaping metal in your hands, a screwdriver for the work at the [Engineering Table](Engineering_Table.md), a wrench for turning blocks, a crowbar for prying fittings off, and the knife, spatula and spoon for food, and the saw for wood and stone. Most have a head or blade shaped at a bench and assembled with a handle; a few are hot-hammered from heated metal in a crafting grid. Each has its own page.
+The hand tools are the ones you carry and use yourself: a hammer, a file and a drill for shaping metal in your hands, a screwdriver for the work at the [Engineering Table](Engineering_Table.md), a wrench for turning blocks, a pry bar for prying, a prospector's pick for finding metal, and the knife, spatula and spoon for food, and the saw for wood and stone. Most have a head or blade shaped at a bench and assembled with a handle; a few are hot-hammered from heated metal in a crafting grid. Each has its own page.
 
 - [Hammer](Hammer.md): shapes plates and stock held in your other hand, and is the tool the others are hammered with. Made in a crafting grid from cobblestone and a stick, or a better head shaped at a bench and put on a haft. The hammer, the knife, the file, the drill and the screwdriver are all [hafted tools](Hafted_Tool.md): a haft with a face of that kind.
 - [File](#file) and [Screwdriver](#screwdriver): the tools of the Engineering Table's file and driver work. Each is a head on a handle. The file also cuts a rod in your hands.
@@ -10,7 +10,8 @@ The hand tools are the ones you carry and use yourself: a hammer, a file and a d
 - [Sawblade](Sawblade.md): saws a log or plank block you look at while you hold right-click, and goes in the Stonecutter's saw slot to cut stone and wood. Made by casting a saw blade in a [Saw Blade Mold](Casting.md#tool-part-molds), then putting it together in a crafting grid.
 - [Spatula](#spatula): flips food in a [Skillet](Skillet.md). Made from a spatula blade shaped from plate, planks or bone (metal is shaped hot), put with a handle.
 - [Wrench](Wrench.md): turns a placed block a quarter turn. Made by hot-hammering four ingots of one hard metal in a crafting grid with a hammer.
-- [Crowbar](Crowbar.md): pries fittings off a machine. Made by hot-hammering two ingots of one hard metal in a crafting grid with a hammer.
+- [Pry Bar](Pry_Bar.md): pries fittings off a machine and lifts nailed or pinned blocks off whole. A pry head on a haft.
+- [Prospector's Pick](Prospectors_Pick.md): shows by colored glints whether a block bears metal. A prospector head on a haft.
 - [Spoon](#spoon): stirs and skims a [Stockpot](Stockpot.md), and tastes a dish. Made from a spoon bowl shaped from plate, planks or bone (metal is shaped hot), put with a handle.
 - [Tongs](Hazards.md#tongs): hold hot work so it doesn't burn your hand. Made from two rods of one metal at working temperature, a grip and a hammer, in a crafting grid.
 

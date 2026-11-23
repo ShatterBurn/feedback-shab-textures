@@ -13,7 +13,6 @@ import io.github.soundgoodizerfan.feedback.item.DebugHelmetItem;
 import io.github.soundgoodizerfan.feedback.item.TongsItem;
 import io.github.soundgoodizerfan.feedback.item.MoldItem;
 import io.github.soundgoodizerfan.feedback.item.RefractoryLiningItem;
-import io.github.soundgoodizerfan.feedback.item.CrowbarItem;
 import io.github.soundgoodizerfan.feedback.item.ReliefValveItem;
 import io.github.soundgoodizerfan.feedback.item.TemperatureSensorItem;
 import io.github.soundgoodizerfan.feedback.item.ThermometerItem;
@@ -798,10 +797,6 @@ public class FItems {
     /** The hand arc welder: mends a worn part from a battery in the pack. See {@code item.ArcWelderItem}. */
     public static final DeferredItem<Item> ARC_WELDER =
             ITEMS.register("arc_welder", () -> new io.github.soundgoodizerfan.feedback.item.ArcWelderItem(new Item.Properties().stacksTo(1)));
-
-    /** Pries a fitting off its holder. See {@code item.CrowbarItem}. */
-    public static final DeferredItem<Item> CROWBAR =
-            ITEMS.register("crowbar", () -> new CrowbarItem(new Item.Properties().stacksTo(1).durability(250)));
 
     /** The heart of the Brewing Stand's grinding bowl: only a crafting ingredient of the stand. */
     public static final DeferredItem<Item> MORTAR =

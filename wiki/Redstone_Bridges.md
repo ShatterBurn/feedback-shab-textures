@@ -30,7 +30,7 @@ Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](H
 
 ## Analog Adapter
 
-A fitting for a machine with a variable setting. Right-click a face of the machine with it; redstone power arriving at that face then sets the setting from none to full in fifteen even steps: power 15 is full, power 0 is none. The [Valve](Valve.md) has one, its opening, which scales the flow it passes; an engine has its throttle, and a transmission its gear. Take the adapter off with a crowbar and the machine returns to full. A machine with no variable setting ignores it.
+A fitting for a machine with a variable setting. Right-click a face of the machine with it; redstone power arriving at that face then sets the setting from none to full in fifteen even steps: power 15 is full, power 0 is none. The [Valve](Valve.md) has one, its opening, which scales the flow it passes; an engine has its throttle, and a transmission its gear. Take the adapter off with a [Pry Bar](Pry_Bar.md) and the machine returns to full. A machine with no variable setting ignores it.
 
 ```
 P R P

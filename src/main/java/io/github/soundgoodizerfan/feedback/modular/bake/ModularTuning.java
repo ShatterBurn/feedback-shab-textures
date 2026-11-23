@@ -397,6 +397,16 @@ public final class ModularTuning {
     /** The most damage a shield stops outright is this plus its face's competence. */
     public static final float SHIELD_BASE_CAPACITY = 6f;
 
+    // --- pry bar and prospector's pick ---------------------------------------------------------
+
+    /** Edge toughness a pry bar needs per point of the fastened block's hardness: iron (80) lifts up to hardness 8, a flint bar (1.5) lifts nothing. */
+    public static final float PRY_TOUGHNESS_PER_HARDNESS = 10f;
+    /** Load (toughness units) that costs the bar one point of wear. */
+    public static final float PRY_LOAD_PER_WEAR = 20f;
+    /** Glints a prospector's pick throws per ingot a piece bears, and the most it throws for one metal. */
+    public static final float PROSPECT_GLINTS_PER_INGOT = 6f;
+    public static final int PROSPECT_MAX_GLINTS = 24;
+
     // --- bows ---------------------------------------------------------------------------------
 
     /** A string holds this many times its own strength before it is the limit; limbs beyond that strain it. */

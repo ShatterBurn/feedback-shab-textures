@@ -1,0 +1,14 @@
+{
+  "values": [
+    "#minecraft:rails",
+    "#minecraft:doors",
+    "#minecraft:trapdoors",
+    "#minecraft:all_signs",
+    "#minecraft:buttons",
+    "#minecraft:pressure_plates",
+    "minecraft:ladder",
+    "minecraft:iron_bars",
+    "minecraft:chain",
+    "#c:glass_panes"
+  ]
+}
