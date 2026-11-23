@@ -120,8 +120,12 @@ public class CreativeSourceScreen extends Screen {
             g.drawString(font, t, x + (W - font.width(t)) / 2, y + 10, SKIN.ink(), false);
             for (int i = 0; i < params.size(); i++) {
                 int ry = y + 48 + i * ROW;
-                g.drawString(font, Component.translatable("screen.feedback.creative." + params.get(i).key()),
-                        x + 12, ry + 3, SKIN.dim(), false);
+                CreativeSource.Param p = params.get(i);
+                Component label = Component.translatable("screen.feedback.creative." + p.key());
+                // A figure that stands for a named thing (a gas picked by number) prints its name beside the key, cut to the room left of the box.
+                if (p.name() != null)
+                    label = Component.literal(font.plainSubstrByWidth(label.getString() + ": " + p.name().apply(Math.round(values[i])).getString(), 74));
+                g.drawString(font, label, x + 12, ry + 3, SKIN.dim(), false);
             }
             super.render(g, mouseX, mouseY, partialTick);
         });

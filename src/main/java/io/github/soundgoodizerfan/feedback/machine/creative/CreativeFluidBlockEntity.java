@@ -97,6 +97,13 @@ public class CreativeFluidBlockEntity extends BlockEntity implements CreativeSou
         return gases;
     }
 
+    /** What gas number {@code n} is, by name; 0 is the fluid a bucket set. */
+    static net.minecraft.network.chat.Component gasName(int n) {
+        var list = gases();
+        return n > 0 && n <= list.size() ? new FluidStack(list.get(n - 1), 1).getHoverName()
+                : net.minecraft.network.chat.Component.translatable("screen.feedback.creative.gas_bucket");
+    }
+
     private FluidStack pouring(int amount) {
         var list = gases();
         if (gas > 0 && gas <= list.size())
@@ -151,7 +158,7 @@ public class CreativeFluidBlockEntity extends BlockEntity implements CreativeSou
     public List<Param> params() {
         return List.of(new Param("temperature", tu, 50f, 0f, 10000f), new Param("flow", rate, 50f, 0f, 10000f),
                 new Param("sink", sink ? 1f : 0f, 1f, 0f, 1f),
-                new Param("gas", gas, 1f, 0f, Math.max(1, gases().size())), new Param("pressure", pressure, 1f, 0f, 20f));
+                new Param("gas", gas, 1f, 0f, Math.max(1, gases().size()), CreativeFluidBlockEntity::gasName), new Param("pressure", pressure, 1f, 0f, 20f));
     }
 
     @Override

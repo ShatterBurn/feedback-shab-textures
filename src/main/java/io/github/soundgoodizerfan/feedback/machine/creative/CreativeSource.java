@@ -15,8 +15,15 @@ import java.util.List;
  */
 public interface CreativeSource {
 
-    /** One setting. {@code key} names its lang entry under {@code screen.feedback.creative.}. */
-    record Param(String key, float value, float step, float min, float max) {
+    /**
+     * One setting. {@code key} names its lang entry under {@code screen.feedback.creative.}; {@code name}, when set, says what the current
+     * whole value stands for (a gas picked by number), so the screen can print it beside the key.
+     */
+    record Param(String key, float value, float step, float min, float max,
+                 java.util.function.IntFunction<net.minecraft.network.chat.Component> name) {
+        public Param(String key, float value, float step, float min, float max) {
+            this(key, value, step, min, max, null);
+        }
     }
 
     boolean on();
