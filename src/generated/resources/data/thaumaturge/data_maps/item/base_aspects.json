@@ -34120,6 +34120,28 @@
         "aspect": "thaumaturge:mortuus"
       }
     ],
+    "feedback:rub_generator": [
+      {
+        "amount": 2,
+        "aspect": "thaumaturge:fabrico"
+      },
+      {
+        "amount": 32,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 16,
+        "aspect": "thaumaturge:motus"
+      },
+      {
+        "amount": 20,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 14,
+        "aspect": "thaumaturge:potentia"
+      }
+    ],
     "feedback:ruby_calcine": [
       {
         "amount": 10,

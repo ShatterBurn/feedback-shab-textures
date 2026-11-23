@@ -337,6 +337,9 @@ public final class ElectricMachineTuning {
 
     public static final float LEYDEN_JAR_EMPTY_EU = 0.5f;
 
+    /** Placeholder. Rub generator: Eu a rub leaves per step of the rod's insulation band, the most Eu the rod holds, the share of it that leaks away each tick, and the amps it gives at LV while charged. */
+    public static final float RUB_EU_PER_BAND_STEP = 4f, RUB_GENERATOR_CAPACITY_EU = 120f, RUB_GENERATOR_LEAK_PER_TICK = 0.0005f, RUB_GENERATOR_AMPS = 2f;
+
     public static final VoltageBand LEYDEN_JAR_BAND = VoltageBand.HV;
 
     public static final float BATTERY_DISCHARGE_TICKS = 6000f, BATTERY_CHARGE_TICKS = 3000f;

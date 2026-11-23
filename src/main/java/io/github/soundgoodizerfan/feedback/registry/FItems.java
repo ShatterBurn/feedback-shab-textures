@@ -850,6 +850,7 @@ public class FItems {
     public static final DeferredItem<BlockItem> OPTICAL_TERMINAL = ITEMS.registerSimpleBlockItem(FBlocks.OPTICAL_TERMINAL);
     public static final DeferredItem<BlockItem> SCRUBBING_BED = ITEMS.registerSimpleBlockItem(FBlocks.SCRUBBING_BED);
     public static final DeferredItem<BlockItem> ESSENTIA_VENT = ITEMS.registerSimpleBlockItem(FBlocks.ESSENTIA_VENT);
+    public static final DeferredItem<BlockItem> RUB_GENERATOR = ITEMS.registerSimpleBlockItem(FBlocks.RUB_GENERATOR);
     /** An endernet upgrade for an Electric Controller or Computer, bonded under the pair id it carries. See {@code fitting.upgrade.EndernetFitting}. */
     public static final DeferredItem<Item> ENDERNET_UPGRADE =
             ITEMS.register("endernet_upgrade", () -> new io.github.soundgoodizerfan.feedback.item.EndernetUpgradeItem(new Item.Properties().stacksTo(1)));

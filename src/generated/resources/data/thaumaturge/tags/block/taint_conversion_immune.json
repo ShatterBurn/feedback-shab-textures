@@ -237,6 +237,7 @@
     "feedback:rolling_mill",
     "feedback:rotary_bearing",
     "feedback:rotation_adapter",
+    "feedback:rub_generator",
     "feedback:scrubbing_bed",
     "feedback:sculk_relay",
     "feedback:shaft",
