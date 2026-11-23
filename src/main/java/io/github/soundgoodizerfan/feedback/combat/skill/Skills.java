@@ -167,6 +167,11 @@ public final class Skills {
         return 1 + Math.max(0f, modifier(who, Figure.RAD_RECOVERY));
     }
 
+    /** Multiplier on the food a stroke of hand work (hammer, file, drill, saw, a craft swing) costs. */
+    public static float handWorkShare(LivingEntity who) {
+        return Math.max(0.3f, 1 - modifier(who, Figure.HAND_EASE));
+    }
+
     /** Multiplier on the hazard effects of risky food, bitten or eaten. */
     public static float foodHazardShare(LivingEntity who) {
         return Math.max(0.1f, 1 - modifier(who, Figure.FOOD_SOFTEN));

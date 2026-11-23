@@ -66,7 +66,8 @@ public final class HandToolCrafting {
             return;
         // Every swing costs food, harder swings more. Before the clang throttle: that is per tick,
         // and every craft is a swing.
-        player.causeFoodExhaustion(ItemTuning.HAND_SWING_EXHAUSTION_PER_ST * tool.getStrength(held).value());
+        player.causeFoodExhaustion(ItemTuning.HAND_SWING_EXHAUSTION_PER_ST * tool.getStrength(held).value()
+                * io.github.soundgoodizerfan.feedback.combat.skill.Skills.handWorkShare(player));
 
         long now = level.getGameTime();
         Long heard = LAST_HEARD.get(player);

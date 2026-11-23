@@ -111,7 +111,8 @@ public final class HandWork {
         }
         HandTool handTool = (HandTool) tool.getItem();
         tool.set(FDataComponents.HAND_WORK, next);
-        player.causeFoodExhaustion(ItemTuning.HAND_SWING_EXHAUSTION_PER_ST * Math.max(1f, handTool.getStrength(tool).value()));
+        player.causeFoodExhaustion(ItemTuning.HAND_SWING_EXHAUSTION_PER_ST * Math.max(1f, handTool.getStrength(tool).value())
+                * io.github.soundgoodizerfan.feedback.combat.skill.Skills.handWorkShare(player));
         level.playSound(null, player.blockPosition(), handTool.getWorkSound(), SoundSource.PLAYERS, 0.3f, 1.5f + level.random.nextFloat() * 0.2f);
         if (level instanceof ServerLevel server)
             server.sendParticles(new ItemParticleOption(ParticleTypes.ITEM, piece), player.getX() + player.getLookAngle().x * 0.6,

@@ -86,7 +86,9 @@ public record SkillTree(String tree, List<Node> nodes) {
         /** Fraction taken off the wear a worn part holds when a tool is taken apart (-0.25 returns parts as if a quarter less worn). */
         SALVAGE_WEAR,
         /** Fraction added to the power of a demolition charge you light (-0.3 is three tenths less blast, so a tighter radius). */
-        CHARGE_TAMP;
+        CHARGE_TAMP,
+        /** Fraction taken off the food a stroke of hand work costs (0.25 is a quarter less): the practised hand wastes no effort. */
+        HAND_EASE;
 
         static final Codec<Figure> CODEC = StringRepresentable.fromEnum(Figure::values);
         static final StreamCodec<ByteBuf, Figure> STREAM = ByteBufCodecs.idMapper(i -> values()[i], Figure::ordinal);

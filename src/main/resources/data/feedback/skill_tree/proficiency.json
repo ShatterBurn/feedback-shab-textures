@@ -216,6 +216,28 @@
         "amount": 0.4
       },
       "branch": "hardy"
+    },
+    {
+      "id": "worked_hands",
+      "cost": 35,
+      "requires": [
+        "tend"
+      ],
+      "effect": {
+        "figure": "hand_ease",
+        "amount": 0.25
+      }
+    },
+    {
+      "id": "journeyman_hands",
+      "cost": 50,
+      "requires": [
+        "worked_hands"
+      ],
+      "effect": {
+        "figure": "hand_ease",
+        "amount": 0.25
+      }
     }
   ]
 }

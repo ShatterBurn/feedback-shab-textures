@@ -82,7 +82,8 @@ public final class SawWork {
         level.playSound(null, pos, SoundEvents.WOOD_HIT, SoundSource.BLOCKS, 0.5f, 1.3f + level.random.nextFloat() * 0.2f);
         if (level instanceof ServerLevel server)
             server.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, state), pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 4, 0.25, 0.25, 0.25, 0.05);
-        player.causeFoodExhaustion(ItemTuning.HAND_SWING_EXHAUSTION_PER_ST * ItemTuning.HAND_SAW_ST.value());
+        player.causeFoodExhaustion(ItemTuning.HAND_SWING_EXHAUSTION_PER_ST * ItemTuning.HAND_SAW_ST.value()
+                * io.github.soundgoodizerfan.feedback.combat.skill.Skills.handWorkShare(player));
         ItemStack worn = saw.getItem().getCraftingRemainingItem(saw);
         if (!worn.isEmpty())
             saw.setDamageValue(worn.getDamageValue());

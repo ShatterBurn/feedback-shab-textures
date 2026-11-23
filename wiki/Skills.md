@@ -255,6 +255,8 @@ Proficiency: survive. Healing, breath, heat, getting out of trouble. Pool `profi
 | Callused hands | 30 | Hot clear | Bare hands take the scald band: anything under 300 Tu can be held or touched unhurt. Burning and searing still hurt; gloves and tongs still do better. |
 | Shake off | 40 | Last stand | Cast: a hard full-body shake that throws off what a body can shake: fire, dirt in the eyes, anything sticky on the limbs, a daze, a stun. Poison, wither and the like stay. Refused with nothing to shake. Rearms when you stagger something. *(once used, rearms on staggering something.)* |
 | Tend | 30 | Field dressing | Held cast: stand still within two blocks of a hurt ally and hold the key to bind their wounds. They mend as fast as Field dressing mends you, and stamina drains from you, 25 a second. Either of you moving, either taking damage, the ally at full health or an empty bar ends it. *(once used, rearms on a timer.)* |
+| Worked hands | 35 | Tend | Every stroke of hand work (hammer, file, drill and saw strokes, and each swing of a hand-crafted item) costs 25% less food. |
+| Journeyman hands | 50 | Worked hands | Hand work costs another 25% less food, 50% less in all. |
 | Fume ward | 35 | Hot clear | A fume dose (soldering, the reflow oven) gives 30% less poison. |
 | Slow dose | 40 | Fume ward | The radiation dose you carry clears half again as fast, so the illness steps (hunger, weakness and mining fatigue, wither) end sooner. |
 | Iron stomach | 45 | Fume ward | Eating or biting risky food (live organism, toxin, char) gives 40% less of its Hunger, Poison and Nausea. A bite still tells you which class the food is in. |
