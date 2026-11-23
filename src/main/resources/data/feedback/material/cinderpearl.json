@@ -1,0 +1,23 @@
+{
+  "parent": "_kind_herb",
+  "color": "#d9672b",
+  "kind": "herb",
+  "traits": [
+    "vegetal",
+    "flammable"
+  ],
+  "hardness": 1,
+  "density": 0.4,
+  "thermal": {
+    "oxidation_temperature": 110,
+    "service_temperature": 90,
+    "cooling_rate": 1.56
+  },
+  "combustion": {
+    "flame_temperature": 700,
+    "burn_ticks": 160
+  },
+  "accepts": {
+    "cinderpearl": ["thaumaturge:cinderpearl"]
+  }
+}
