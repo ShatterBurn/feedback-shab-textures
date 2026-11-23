@@ -35,7 +35,7 @@ Amounts of metal and other stuff are counted in **Qu**. See [Units](Units.md#amo
 | Lithium | 0.05 | 0.534 | 0.1 | 181 Tu | The lightest and softest metal. Bites at air from 180 Tu. |
 | Bismuth | 2 | 9.78 | 1 | 271 Tu | Dense and brittle; melts low. A byproduct of smelting galena. |
 | Beryllium | 16.5 | 1.85 | 12 | 1287 Tu | Light and stiff; **moderates neutrons** like graphite. Toxic. |
-| Antimony | 3 | 6.7 | 0.5 | 631 Tu | Brittle and toxic. Hardens tin into pewter and babbitt. A mineral of its own: stibnite. |
+| Antimony | 3 | 6.7 | 0.5 | 631 Tu | Brittle and toxic. Hardens tin into pewter and babbitt. A mineral of its own: stibnite, which [iron precipitates](Ore_Processing.md#leaching-and-winning) to antimony. |
 | Platinum | 5 | 21.45 | 2.5 | 1768 Tu | Dense and nearly immune to corrosion. A **catalyst** (activity 1.6). |
 | Gallium | 0.5 | 5.91 | 0.1 | 29.8 Tu | Melts in a warm biome. A byproduct of leaching bauxite. |
 | Molybdenum | 15 | 10.28 | 22 | 2623 Tu | Strong and stands high heat. |
@@ -43,7 +43,7 @@ Amounts of metal and other stuff are counted in **Qu**. See [Units](Units.md#amo
 | Cadmium | 2 | 8.65 | 1 | 321 Tu | Soft and toxic. A byproduct of leaching sphalerite. |
 | Vanadium | 6.5 | 6.11 | 7.5 | 1910 Tu | Tough; stands 600 Tu. For high-speed steel and titanium 6Al-4V. Comes from vanadinite. |
 | Indium | 0.1 | 7.31 | 0.2 | 157 Tu | Very soft and ductile, melts low. A byproduct of leaching sphalerite. For galinstan. |
-| Mercury | 0.2 | 13.53 | 0.1 | -38.8 Tu | **Liquid at room temperature** and toxic. Its items are the frozen metal. Comes from cinnabar. Binds gold into [Gold Amalgam](Ore_Processing.md#gold-by-amalgam). |
+| Mercury | 0.2 | 13.53 | 0.1 | -38.8 Tu | **Liquid at room temperature** and toxic. Its items are the frozen metal. Comes from [roasting cinnabar](Ore_Processing.md#leaching-and-winning). Binds gold into [Gold Amalgam](Ore_Processing.md#gold-by-amalgam). |
 | Thorium | 4 | 11.7 | 5 | 1750 Tu | **Radioactive**, weaker than uranium. See [Thorium](#thorium). |
 | Stainless Steel | 20 | 7.9 | 14 | 1400 Tu | Steel with chromium and nickel. Barely corrodes. |
 | Manganese Steel | 22 | 7.8 | 18 | 1400 Tu | Steel with manganese. Hardens as it is worked. |

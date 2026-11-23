@@ -1,0 +1,38 @@
+{
+  "inputs": [
+    {
+      "type": "feedback:material",
+      "material": "feedback:cinnabar",
+      "forms": [
+        "concentrate"
+      ]
+    }
+  ],
+  "min_temperature": 400,
+  "optimal_temperature": 520,
+  "max_temperature": 620,
+  "required_tpu": 200,
+  "result": {
+    "id": "feedback:mercury_ingot",
+    "count": 1
+  },
+  "spoil_temperature": 750,
+  "spoiled": {
+    "id": "feedback:scrap_metal"
+  },
+  "reaction": {
+    "fluid_inputs": [
+      {
+        "fluid": "feedback:oxygen",
+        "mb": 100
+      }
+    ],
+    "fluid_outputs": [
+      {
+        "fluid": "feedback:sulfur_dioxide",
+        "mb": 100
+      }
+    ],
+    "heat": 2
+  }
+}

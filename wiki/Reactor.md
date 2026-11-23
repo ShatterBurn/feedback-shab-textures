@@ -81,6 +81,8 @@ Some reactions give off heat, which warms the reactor.
 | **Reduce osmium tetroxide** | 100 mB osmium tetroxide, 400 mB hydrogen | one **Osmium Sponge**, and some heat | 280 to 420 Tu, best 330 |
 | **Reduce iridium residue** | one Iridium Residue, 200 mB hydrogen | one **Iridium Sponge**, and some heat | 450 to 800 Tu, best 550 |
 | **Amalgamate gold** | one gold concentrate, one mercury ingot | one **Gold Amalgam**; above 90 Tu the batch spoils to scrap metal | 10 to 60 Tu, best 30 |
+| **Roast cinnabar** | one cinnabar concentrate, 100 mB oxygen | one mercury ingot and 100 mB [sulfur dioxide](Chemicals.md#sulfur-dioxide); above 750 Tu the mercury is lost and the batch spoils to scrap metal | 400 to 620 Tu, best 520 |
+| **Precipitate stibnite** | one stibnite concentrate, three pieces of iron (nugget, scrap or swarf) | one antimony ingot and one Bloomery Slag; above 1100 Tu the batch is lost to slag | 600 to 950 Tu, best 750 |
 | **Roast molybdenite** | one molybdenite concentrate, 100 mB oxygen | one **Molybdenum Calcine**, one **Rhenium Oxide** and 100 mB [sulfur dioxide](Chemicals.md#sulfur-dioxide); above 800 Tu the batch spoils | 450 to 750 Tu, best 600 |
 | **Reduce rhenium oxide** | one Rhenium Oxide, 300 mB hydrogen | one **Rhenium Sponge**, and some heat | 300 to 600 Tu, best 400 |
 | **Ammonia** | 100 mB nitrogen, 300 mB hydrogen, an iron bed | 200 mB [ammonia](Chemicals.md#ammonia), and some heat | 400 to 500 Tu, best 450 |
