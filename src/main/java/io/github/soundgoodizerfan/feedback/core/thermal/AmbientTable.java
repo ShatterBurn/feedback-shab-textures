@@ -71,7 +71,12 @@ public class AmbientTable extends SimpleJsonResourceReloadListener {
 
     /** Ambient in this level's dimension. A null level -- a block entity not yet placed -- is the default. */
     public static Tu at(@Nullable Level level) {
-        return level == null ? ThermalTuning.AMBIENT_TU : of(level.dimension().location());
+        if (level == null)
+            return ThermalTuning.AMBIENT_TU;
+        Tu base = of(level.dimension().location());
+        float shift = SeasonalAmbient.shift(level);
+        // Over WARM_TU an ingot would never read cold, so the season never lifts a room past it; a room is never below 0 Tu.
+        return shift == 0f ? base : new Tu(Math.max(0f, Math.min(ThermalTuning.WARM_TU.value(), base.value() + shift)));
     }
 
     public static Tu of(ResourceLocation dimension) {

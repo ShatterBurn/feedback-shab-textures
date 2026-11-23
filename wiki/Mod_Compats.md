@@ -13,6 +13,9 @@ The mods Feedback works with, and what each one gives you. Some are required, so
 | [JEI](#jei) | Optional | Recipe, process and info pages |
 | [Jade](#jade) | Optional | Readouts on blocks and villagers |
 | [Thaumaturge](#thaumaturge) | Optional | Aspects on Feedback items, flux and essentia machines, thaumium alloys |
+| [Iris](#iris) | Optional | Shader packs: the fluid caster's flame follows the pack |
+| [EMI](#emi) | Optional | Shows Feedback's recipe cards through its JEI bridge |
+| [Other mods' foods](#other-mods-foods) | Optional | Any food from another mod keeps and spoils like Feedback food |
 | [Inventory Sorter](#inventory-sorter) | Optional | Sorting skips screens whose slots are roles |
 | [Other mods](#other-mods) | Optional | Fluid tags and shared biome and stone tags |
 
@@ -174,6 +177,18 @@ Crafting some Feedback items gives Thaumaturge warp, a few points each: the fuel
 Thaumaturge's Outer Lands dimension is cold and has the thin, oxygen-free air of the End, so [Heat](Heat.md) rules for cold and the sealed-suit rules of [Hazards](Hazards.md) apply there.
 
 Hot surfaces, plants that hurt on contact, Core Slag, Crude Pools, Tar Seeps and Soul Seeps count as unsafe landings for Thaumaturge's arrival pads.
+
+## EMI
+
+**Optional.** EMI shows Feedback's JEI cards (see [JEI](#jei)) through EMI's own JEI bridge, so the recipe, process and info pages appear in EMI's browser. Feedback has no EMI plugin of its own, and none for REI or WTHIT; Jade is the block readout it supports.
+
+## Iris
+
+**Optional.** While Iris is running a shader pack, the [Fluid Caster](Fluid_Caster.md) draws the plain flame in place of its flickering shader flame.
+
+## Other mods' foods
+
+Any food from another mod (an item that is edible and is not from Minecraft or Feedback) keeps, spoils and feeds through the [Food](Food.md) state model. Its keeping figures come from its nutrition: a heartier food is drier, and a sweeter food holds more fat. It has no compounds and no perks, and cooking it yields nothing. A material file for the item overrides these figures.
 
 ## Inventory Sorter
 
