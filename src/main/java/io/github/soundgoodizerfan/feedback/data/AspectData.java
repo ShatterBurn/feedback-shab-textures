@@ -100,7 +100,19 @@ public final class AspectData implements DataProvider {
 
         Path path = output.getOutputFolder(PackOutput.Target.DATA_PACK)
                 .resolve("thaumaturge/data_maps/item/base_aspects.json");
-        return DataProvider.saveStable(cache, root, path);
+
+        // The same format keyed by entity type: what a scan of one of our entities yields (the "entities" table of the pin file).
+        Map<String, List<Aspect>> entities = new TreeMap<>(table("entities"));
+        entities.keySet().stream().filter(k -> !BuiltInRegistries.ENTITY_TYPE.containsKey(ResourceLocation.parse(k)))
+                .forEach(k -> LOG.error("entity aspect names an unknown entity type: {}", k));
+        JsonObject entityValues = new JsonObject();
+        entities.forEach((key, list) -> entityValues.add(key, toJson(list)));
+        JsonObject entityRoot = new JsonObject();
+        entityRoot.add("neoforge:conditions", conditions);
+        entityRoot.add("values", entityValues);
+        Path entityPath = output.getOutputFolder(PackOutput.Target.DATA_PACK)
+                .resolve("thaumaturge/data_maps/entity_type/entity_aspects.json");
+        return CompletableFuture.allOf(DataProvider.saveStable(cache, root, path), DataProvider.saveStable(cache, entityRoot, entityPath));
     }
 
     /** An aspect and how much of it a form carries. */

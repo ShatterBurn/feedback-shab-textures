@@ -1,0 +1,98 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "thaumaturge"
+    }
+  ],
+  "values": {
+    "feedback:grapple_hook": [
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:vinculum"
+      },
+      {
+        "amount": 3,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 3,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:grenade": [
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:ignis"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:potentia"
+      },
+      {
+        "amount": 2,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:potion_bottle": [
+      {
+        "amount": 3,
+        "aspect": "thaumaturge:alkimia"
+      },
+      {
+        "amount": 2,
+        "aspect": "thaumaturge:vitreus"
+      },
+      {
+        "amount": 2,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:robot": [
+      {
+        "amount": 8,
+        "aspect": "thaumaturge:machina"
+      },
+      {
+        "amount": 6,
+        "aspect": "thaumaturge:motus"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:sensus"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:cognitio"
+      }
+    ],
+    "feedback:steam_cloud": [
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:aqua"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:ignis"
+      },
+      {
+        "amount": 3,
+        "aspect": "thaumaturge:aer"
+      }
+    ],
+    "feedback:thrown_weapon": [
+      {
+        "amount": 3,
+        "aspect": "thaumaturge:instrumentum"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      },
+      {
+        "amount": 2,
+        "aspect": "thaumaturge:metallum"
+      }
+    ]
+  }
+}

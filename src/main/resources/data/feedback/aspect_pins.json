@@ -58,6 +58,14 @@
     {"aspects":{"potentia":5,"mortuus":4},"spread":1,"items":["radiation_source"]},
     {"aspects":{"instrumentum":2,"machina":2,"fabrico":2},"spread":1,"items":["market_cross","potion","potion_salts","mixture","pod","diamond_grit","diamond_seed","joint_link","copper_flower","bladder_campion","carrier","magnetic_carrier","counter","counterweight","bolt","driver_seat","pivot_tip_break","pivot_tip_collect","pivot_tip_cut","pivot_tip_feed","pivot_tip_plant","pivot_tip_strike"]}
   ],
+  "entities": {
+    "feedback:robot": [{"aspect":"thaumaturge:machina","amount":8},{"aspect":"thaumaturge:motus","amount":6},{"aspect":"thaumaturge:sensus","amount":4},{"aspect":"thaumaturge:cognitio","amount":4}],
+    "feedback:steam_cloud": [{"aspect":"thaumaturge:aqua","amount":4},{"aspect":"thaumaturge:ignis","amount":4},{"aspect":"thaumaturge:aer","amount":3}],
+    "feedback:grenade": [{"aspect":"thaumaturge:ignis","amount":4},{"aspect":"thaumaturge:potentia","amount":4},{"aspect":"thaumaturge:motus","amount":2}],
+    "feedback:potion_bottle": [{"aspect":"thaumaturge:alkimia","amount":3},{"aspect":"thaumaturge:vitreus","amount":2},{"aspect":"thaumaturge:motus","amount":2}],
+    "feedback:grapple_hook": [{"aspect":"thaumaturge:vinculum","amount":4},{"aspect":"thaumaturge:metallum","amount":3},{"aspect":"thaumaturge:motus","amount":3}],
+    "feedback:thrown_weapon": [{"aspect":"thaumaturge:instrumentum","amount":3},{"aspect":"thaumaturge:motus","amount":4},{"aspect":"thaumaturge:metallum","amount":2}]
+  },
   "pins": {
     "feedback:shaft": [{"aspect":"thaumaturge:machina","amount":3},{"aspect":"thaumaturge:motus","amount":5}],
     "feedback:bearing": [{"aspect":"thaumaturge:machina","amount":4},{"aspect":"thaumaturge:motus","amount":3}],

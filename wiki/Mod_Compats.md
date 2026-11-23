@@ -129,6 +129,8 @@ Machines, devices and carried hardware carry aspects that match their function:
 
 Part items that carry their material on the stack have no aspects of their own, and Thaumaturge works theirs out from their recipes. Creative and debug items have none.
 
+Scanning Feedback's entities with the Thaumometer also yields aspects: the robot, the steam cloud, the grenade, the thrown potion bottle, the grapple hook and the thrown weapon.
+
 ### Taint and portable holes
 
 Feedback machines are immune to Thaumaturge's taint: it does not convert them. A portable hole does not take them either. Without Thaumaturge, nothing changes.
