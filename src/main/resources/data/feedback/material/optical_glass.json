@@ -36,6 +36,7 @@
   },
   "corrosion_resistance": 1,
   "enchantability": 2,
+  "attenuation": 0.1,
   "electrical": {
     "insulation": "hv"
   },

@@ -377,6 +377,13 @@ public abstract class ThermalVesselCore extends io.github.soundgoodizerfan.feedb
         List<ItemStack> contents = processSlots();
         if (slotTpu.length != contents.size())
             slotTpu = new float[contents.size()];
+        // An empty vessel has nothing to match and nothing to run; most vessels in the world sit empty, and each would otherwise search every row every tick.
+        if (contents.stream().allMatch(ItemStack::isEmpty)) {
+            currentTpu = 0f;
+            currentProcess = null;
+            java.util.Arrays.fill(slotTpu, 0f);
+            return Optional.empty();
+        }
         Optional<ThermalProcess> maybe = ThermalProcessTable.get().find(contents, airlessRun());
         int[] used = null;
         if (maybe.isEmpty()) {

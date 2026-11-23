@@ -34,5 +34,6 @@
     "density": 1.2,
     "shear_thickening": 0
   },
-  "enchantability": 8
+  "enchantability": 8,
+  "attenuation": 0.15
 }

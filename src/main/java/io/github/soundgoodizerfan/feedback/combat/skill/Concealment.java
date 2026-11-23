@@ -27,13 +27,30 @@ public final class Concealment {
 
     @SubscribeEvent
     public static void onVisibility(LivingEvent.LivingVisibilityEvent event) {
-        if (!(event.getEntity() instanceof ServerPlayer p) || !Skills.unlocked(p, "concealed_carry"))
+        if (!(event.getEntity() instanceof ServerPlayer p))
             return;
         ItemStack held = p.getMainHandItem();
-        if (held.isEmpty() || ItemHeat.isHot(held, p.level()))
+        // Cheapest test first: every mob that can see the player asks this each tick, and the skill lookup walks every skill tree.
+        if (held.isEmpty())
             return;
-        float stealth = WeaponProfile.of(held).stealth();
-        if (stealth >= MIN_STEALTH)
-            event.modifyVisibility(1.0 - MAX_HIDE * stealth);
+        long now = p.level().getGameTime();
+        if (now != askedTick || !p.getUUID().equals(askedPlayer)) {
+            askedTick = now;
+            askedPlayer = p.getUUID();
+            double hide = 1.0;
+            if (Skills.unlocked(p, "concealed_carry") && !ItemHeat.isHot(held, p.level())) {
+                float stealth = WeaponProfile.of(held).stealth();
+                if (stealth >= MIN_STEALTH)
+                    hide = 1.0 - MAX_HIDE * stealth;
+            }
+            askedHide = hide;
+        }
+        if (askedHide != 1.0)
+            event.modifyVisibility(askedHide);
     }
+
+    // The answer holds for the tick: what a player holds and knows does not change between one mob's look and the next.
+    private static java.util.UUID askedPlayer;
+    private static long askedTick = Long.MIN_VALUE;
+    private static double askedHide = 1.0;
 }

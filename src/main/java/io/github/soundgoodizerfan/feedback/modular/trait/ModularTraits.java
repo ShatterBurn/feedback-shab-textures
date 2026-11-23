@@ -527,8 +527,23 @@ public final class ModularTraits {
         LivingEntity wearer = event.getEntity();
         if (wearer.level().isClientSide)
             return;
-        for (Worn w : worn(wearer))
+        for (Worn w : wornThisTick(wearer))
             w.trait().onWornVisibility(event, wearer, w.piece(), w.params());
+    }
+
+    // Every mob that can see a wearer asks this event once a tick (a crowd of them, each tick); what is worn does not change between those asks, so the first answer of the tick serves the rest.
+    private static java.util.UUID visionWearer;
+    private static long visionTick = Long.MIN_VALUE;
+    private static List<Worn> visionWorn = List.of();
+
+    private static List<Worn> wornThisTick(LivingEntity wearer) {
+        long now = wearer.level().getGameTime();
+        if (now != visionTick || !wearer.getUUID().equals(visionWearer)) {
+            visionWorn = worn(wearer);
+            visionTick = now;
+            visionWearer = wearer.getUUID();
+        }
+        return visionWorn;
     }
 
     /** Worn traits tick for players only (a mob in modular armour gets the event hooks, not a per-tick one). */

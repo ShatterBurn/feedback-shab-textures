@@ -42,6 +42,7 @@
     "fibre"
   ],
   "enchantability": 2,
+  "attenuation": 0.5,
   "electrical": {
     "insulation": "hv"
   },

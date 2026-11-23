@@ -349,8 +349,13 @@ public class ThermalProcessTable extends SimpleJsonResourceReloadListener {
 
     /** The process these contents satisfy, if any. */
     public Optional<ThermalProcess> find(List<ItemStack> contents, boolean airless) {
+        int held = 0;
+        for (ItemStack stack : contents)
+            if (!stack.isEmpty())
+                held++;
+        // Rows are ordered most inputs first, and a row cannot match with more inputs than there are stacks: skip those without the backtracking search.
         for (ThermalProcess entry : entries())
-            if (!entry.isReaction() && (airless || !entry.airless()) && match(entry.inputs(), contents) != null)
+            if (entry.inputs().size() <= held && !entry.isReaction() && (airless || !entry.airless()) && match(entry.inputs(), contents) != null)
                 return Optional.of(entry);
         return Optional.empty();
     }
