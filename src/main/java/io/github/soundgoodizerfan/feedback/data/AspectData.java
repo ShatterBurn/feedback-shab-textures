@@ -77,6 +77,9 @@ public final class AspectData implements DataProvider {
         Map<String, List<Aspect>> pins = new TreeMap<>(groups());
         pins.putAll(table("pins"));
         PINNED = pins.keySet();
+        // Engineered items with neither a baseline nor a pin: what their recipe is made of (Thaumaturge derives from
+        // vanilla recipe types only, and never reads feedback:engineering).
+        engineered(entries, pins.keySet());
         review(entries);
         // A pin naming an item that does not exist is a typo: it would ship as a silent no-op.
         pins.keySet().stream().filter(k -> !k.startsWith("#") && !BuiltInRegistries.ITEM.containsKey(ResourceLocation.parse(k)))
@@ -240,6 +243,81 @@ public final class AspectData implements DataProvider {
     /** An ingot-sized weight stays within Thaumaturge's own habit (a few to about ten). */
     private static float clamp(float weight) {
         return Math.max(1f, Math.min(10f, weight));
+    }
+
+    // ------------------------------------------------------------------ engineered items
+
+    /** The craft an assembly adds to what it is made of. */
+    private static final int ASSEMBLY_FABRICO = 2;
+
+    /**
+     * Gives every {@code feedback:engineering} result that has no entry and no pin the sum of its item ingredients' aspects
+     * (the baseline and earlier results, counted by how many cells carry them), divided by the result count, plus a little
+     * {@code fabrico} for the assembly. Tag and form-matching ingredients, fasteners and tools carry no aspects of their own
+     * here, so a recipe made only of those gets no entry and is left to the pins. Recipes are read from the source tree
+     * beside the output folder, so a run needs no loaded recipe manager.
+     */
+    private void engineered(Map<ResourceLocation, List<Aspect>> entries, java.util.Set<String> pinned) {
+        Path recipes = output.getOutputFolder().getParent().getParent()
+                .resolve("main/resources/data/feedback/recipe");
+        if (!java.nio.file.Files.isDirectory(recipes))
+            return;
+        // Results of earlier recipes feed later ones (a housing inside a machine), so repeat until nothing new settles.
+        Map<ResourceLocation, JsonObject> pending = new TreeMap<>();
+        try (var files = java.nio.file.Files.list(recipes)) {
+            for (Path file : (Iterable<Path>) files.sorted()::iterator) {
+                if (!file.toString().endsWith(".json"))
+                    continue;
+                JsonObject recipe = JsonParser.parseString(java.nio.file.Files.readString(file)).getAsJsonObject();
+                if (!"feedback:engineering".equals(recipe.get("type").getAsString()))
+                    continue;
+                ResourceLocation result = ResourceLocation.parse(recipe.getAsJsonObject("result").get("id").getAsString());
+                if (entries.containsKey(result) || pinned.contains(result.toString()) || !BuiltInRegistries.ITEM.containsKey(result))
+                    continue;
+                pending.put(result, recipe);
+            }
+        } catch (IOException | RuntimeException ex) {
+            throw new IllegalStateException("engineering recipes are unreadable", ex);
+        }
+        boolean progress = true;
+        while (progress && !pending.isEmpty()) {
+            progress = false;
+            for (var it = pending.entrySet().iterator(); it.hasNext(); ) {
+                var e = it.next();
+                List<Aspect> derived = fromRecipe(e.getValue(), entries);
+                if (derived.isEmpty())
+                    continue;
+                entries.put(e.getKey(), derived);
+                it.remove();
+                progress = true;
+            }
+        }
+    }
+
+    private static List<Aspect> fromRecipe(JsonObject recipe, Map<ResourceLocation, List<Aspect>> entries) {
+        JsonObject key = recipe.getAsJsonObject("key");
+        Map<String, Integer> cells = new TreeMap<>();
+        for (JsonElement row : recipe.getAsJsonArray("pattern"))
+            for (char c : row.getAsString().toCharArray())
+                if (c != ' ')
+                    cells.merge(String.valueOf(c), 1, Integer::sum);
+        Map<String, Integer> sum = new TreeMap<>();
+        cells.forEach((symbol, count) -> {
+            JsonObject ingredient = key.has(symbol) && key.get(symbol).isJsonObject() ? key.getAsJsonObject(symbol) : null;
+            if (ingredient == null || !ingredient.has("item"))
+                return;
+            List<Aspect> aspects = entries.get(ResourceLocation.parse(ingredient.get("item").getAsString()));
+            if (aspects != null)
+                aspects.forEach(a -> sum.merge(a.id(), a.amount() * count, Integer::sum));
+        });
+        if (sum.isEmpty())
+            return List.of();
+        int made = Math.max(1, recipe.getAsJsonObject("result").has("count")
+                ? recipe.getAsJsonObject("result").get("count").getAsInt() : 1);
+        sum.merge("thaumaturge:fabrico", ASSEMBLY_FABRICO * made, Integer::sum);
+        List<Aspect> out = new ArrayList<>();
+        sum.forEach((id, total) -> out.add(new Aspect(id, Math.max(1, Math.min(MAX_AMOUNT, Math.round((float) total / made))))));
+        return out;
     }
 
     // ------------------------------------------------------------------ pins

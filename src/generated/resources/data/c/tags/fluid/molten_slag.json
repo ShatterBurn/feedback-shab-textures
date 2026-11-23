@@ -1,6 +1,6 @@
 {
   "values": [
-    "feedback:molten_slag_flowing",
-    "feedback:molten_slag"
+    "feedback:molten_slag",
+    "feedback:molten_slag_flowing"
   ]
 }

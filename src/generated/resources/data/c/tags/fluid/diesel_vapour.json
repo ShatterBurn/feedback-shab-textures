@@ -1,6 +1,6 @@
 {
   "values": [
-    "feedback:diesel_vapour_flowing",
-    "feedback:diesel_vapour"
+    "feedback:diesel_vapour",
+    "feedback:diesel_vapour_flowing"
   ]
 }

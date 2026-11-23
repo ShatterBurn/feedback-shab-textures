@@ -1,6 +1,6 @@
 {
   "values": [
-    "feedback:molten_thorium_flowing",
-    "feedback:molten_thorium"
+    "feedback:molten_thorium",
+    "feedback:molten_thorium_flowing"
   ]
 }

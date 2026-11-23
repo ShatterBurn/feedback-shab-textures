@@ -1,6 +1,6 @@
 {
   "values": [
-    "feedback:liquid_wisp_gas_flowing",
-    "feedback:liquid_wisp_gas"
+    "feedback:liquid_wisp_gas",
+    "feedback:liquid_wisp_gas_flowing"
   ]
 }

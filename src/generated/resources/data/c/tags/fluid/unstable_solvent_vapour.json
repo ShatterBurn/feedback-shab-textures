@@ -1,6 +1,6 @@
 {
   "values": [
-    "feedback:unstable_solvent_vapour_flowing",
-    "feedback:unstable_solvent_vapour"
+    "feedback:unstable_solvent_vapour",
+    "feedback:unstable_solvent_vapour_flowing"
   ]
 }

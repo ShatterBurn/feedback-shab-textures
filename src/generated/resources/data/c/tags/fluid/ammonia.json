@@ -1,6 +1,6 @@
 {
   "values": [
-    "feedback:ammonia_flowing",
-    "feedback:ammonia"
+    "feedback:ammonia",
+    "feedback:ammonia_flowing"
   ]
 }

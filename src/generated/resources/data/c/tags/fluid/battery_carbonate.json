@@ -1,6 +1,6 @@
 {
   "values": [
-    "feedback:battery_carbonate_flowing",
-    "feedback:battery_carbonate"
+    "feedback:battery_carbonate",
+    "feedback:battery_carbonate_flowing"
   ]
 }

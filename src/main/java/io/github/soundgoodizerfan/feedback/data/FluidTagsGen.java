@@ -36,7 +36,11 @@ public final class FluidTagsGen extends FluidTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        for (var entry : BuiltInRegistries.FLUID.entrySet()) {
+        // Sorted, so the files are stable between runs whatever order the registry iterates in.
+        var sorted = BuiltInRegistries.FLUID.entrySet().stream()
+                .sorted(java.util.Map.Entry.comparingByKey(java.util.Comparator.comparing(k -> k.location().toString())))
+                .toList();
+        for (var entry : sorted) {
             ResourceLocation id = entry.getKey().location();
             if (!Feedback.MOD_ID.equals(id.getNamespace())) continue;
             Fluid fluid = entry.getValue();

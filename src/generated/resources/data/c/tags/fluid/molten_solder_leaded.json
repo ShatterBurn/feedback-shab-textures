@@ -1,6 +1,6 @@
 {
   "values": [
-    "feedback:molten_solder_leaded_flowing",
-    "feedback:molten_solder_leaded"
+    "feedback:molten_solder_leaded",
+    "feedback:molten_solder_leaded_flowing"
   ]
 }

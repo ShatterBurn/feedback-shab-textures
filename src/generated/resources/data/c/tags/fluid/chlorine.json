@@ -1,6 +1,6 @@
 {
   "values": [
-    "feedback:chlorine_flowing",
-    "feedback:chlorine"
+    "feedback:chlorine",
+    "feedback:chlorine_flowing"
   ]
 }

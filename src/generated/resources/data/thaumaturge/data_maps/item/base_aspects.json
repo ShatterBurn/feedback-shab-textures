@@ -28276,6 +28276,28 @@
         "aspect": "thaumaturge:ordo"
       }
     ],
+    "feedback:optical_terminal": [
+      {
+        "amount": 2,
+        "aspect": "thaumaturge:fabrico"
+      },
+      {
+        "amount": 12,
+        "aspect": "thaumaturge:lux"
+      },
+      {
+        "amount": 26,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 16,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 7,
+        "aspect": "thaumaturge:potentia"
+      }
+    ],
     "feedback:orb_absorber": [
       {
         "amount": 7,
@@ -31832,6 +31854,28 @@
       {
         "amount": 3,
         "aspect": "thaumaturge:victus"
+      }
+    ],
+    "feedback:radiation_sensor": [
+      {
+        "amount": 2,
+        "aspect": "thaumaturge:fabrico"
+      },
+      {
+        "amount": 6,
+        "aspect": "thaumaturge:lux"
+      },
+      {
+        "amount": 22,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 8,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 14,
+        "aspect": "thaumaturge:potentia"
       }
     ],
     "feedback:radiation_source": [
@@ -39480,6 +39524,28 @@
       {
         "amount": 4,
         "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:tension_gauge": [
+      {
+        "amount": 2,
+        "aspect": "thaumaturge:fabrico"
+      },
+      {
+        "amount": 22,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 8,
+        "aspect": "thaumaturge:motus"
+      },
+      {
+        "amount": 12,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 14,
+        "aspect": "thaumaturge:potentia"
       }
     ],
     "feedback:terracotta_dust": [
