@@ -22,6 +22,7 @@ Dig, as before. Each ore sits where it always did.
 - **Stibnite** (antimony) in the Overworld between y -8 and 64 and **vanadinite** (vanadium) between y -24 and 40, each in veins with a loose rock above. **Cinnabar** (mercury) in the Nether between y 10 and 117, in the netherrack, with a loose rock above.
 - **Cryolite**, rare, in the overworld between y -20 and 60. It melts into the bath for [aluminum](Guide_Making_Aluminum.md).
 - **Saltpetre** in cave deposits from Y -16 to 64, with a loose rock on the surface.
+- **Deep Dark uraninite** in the deepslate between y -64 and -16, only where the Deep Dark lies; the sculk concentrates the isotope. It is [radioactive](Radiation.md).
 - **Nether ores**: **pentlandite**, **wolframite**, **chromite**, **cobaltite**, **uraninite** and **monazite** grow in the netherrack all through the Nether, richer in the hot Nether belt, with the same signs as their Overworld kin. Uraninite and monazite are [radioactive](Radiation.md).
 - **Bastion Rubble** in small, rare patches in the Nether between y 30 and 110. Each block breaks into 1 to 3 Worn Netherite Bits, the scrap of [Netherite](Netherite.md#getting-the-scrap).
 - **Sulfur** in the Nether, in the netherrack, with a loose rock above.

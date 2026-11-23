@@ -42,6 +42,7 @@
   },
   "corrosion_resistance": 0.8,
   "toxicity": 0.7,
+  "radioactivity": 0.004,
   "molten": {
     "viscosity": 100,
     "density": 1.08,

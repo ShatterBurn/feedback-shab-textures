@@ -1,6 +1,6 @@
 # Radiation
 
-Some materials give off radiation, measured in **Ru** (dose rate). Uranium and thorium are the first; a running [fission reactor](Fission_Reactor.md) is the strongest source.
+Some materials give off radiation, measured in **Ru** (dose rate). Uranium and thorium are the first, and **glowstone** gives off a trace, far under the harmless rate, as a fossil of the same isotopes; a running [fission reactor](Fission_Reactor.md) is the strongest source.
 
 ## What you take
 
