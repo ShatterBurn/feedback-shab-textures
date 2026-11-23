@@ -1,0 +1,10 @@
+{
+  "values": [
+    { "id": "#feedback:hot_surface", "required": false },
+    { "id": "#feedback:hurts_on_contact", "required": false },
+    { "id": "feedback:core_slag", "required": false },
+    { "id": "feedback:crude_pool", "required": false },
+    { "id": "feedback:seep", "required": false },
+    { "id": "feedback:soul_seep", "required": false }
+  ]
+}
