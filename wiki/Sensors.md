@@ -1,6 +1,6 @@
 # Sensors
 
-Six blocks that report what they see to a [Controller](Controller.md); all but the Tension Gauge look at the face they were placed against. They sense and control nothing. Right-click one with an empty hand to read it as a percentage.
+Seven blocks that report what they see to a [Controller](Controller.md); all but the Tension Gauge look at the face they were placed against. They sense and control nothing. Right-click one with an empty hand to read it as a percentage.
 
 | Sensor | Reads | Reads in |
 | --- | --- | --- |
@@ -10,6 +10,7 @@ Six blocks that report what they see to a [Controller](Controller.md); all but t
 | Fill Gauge | how full the inventory or tank in front is | eighths |
 | Observer | a change in the state of the block in front, for half a second after it | on or off |
 | Tension Gauge | how taut the [fixed line](Grapple.md#fixed-lines) is that passes through its own block: the load on it over the line's rating, full when over it | sixths |
+| [Thermocouple Probe](Thermocouple_Probe.md) | the temperature of the block in front, up to what its weaker wire stands | 2 to 16 bands, set by the two metals |
 
 ## Using them
 

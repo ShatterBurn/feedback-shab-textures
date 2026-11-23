@@ -800,6 +800,7 @@
     "feedback:thaumium_block",
     "feedback:thaumium_pipe",
     "feedback:thermal_store",
+    "feedback:thermocouple_probe",
     "feedback:thermoelectric_generator",
     "feedback:thorium_block",
     "feedback:thorium_fuel_rod_pipe",

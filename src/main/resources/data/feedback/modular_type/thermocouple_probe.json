@@ -1,0 +1,55 @@
+{
+  "family": "block",
+  "measures": {
+    "show": [
+      "block.Gap",
+      "block.ServiceTu"
+    ]
+  },
+  "required": [
+    "S"
+  ],
+  "slot": "mainhand",
+  "wear_litres": 0.1,
+  "wear_role": "S",
+  "primary": "S",
+  "blueprint": true,
+  "roles": {
+    "S": {
+      "name": "thermo_wire",
+      "class": "working_face",
+      "forms": [
+        "thermo_wire"
+      ],
+      "litres": 0.1,
+      "layer": 0,
+      "part": {
+        "item": "feedback:thermo_wire",
+        "cells": 2,
+        "stock": [
+          "@lump",
+          "@long"
+        ],
+        "slots": [
+          {
+            "name": "positive",
+            "share": 1
+          },
+          {
+            "name": "negative",
+            "share": 1
+          }
+        ]
+      }
+    }
+  },
+  "patterns": [
+    [
+      "S"
+    ]
+  ],
+  "defaults": {
+    "S": "feedback:copper"
+  },
+  "school": "electrical:2"
+}

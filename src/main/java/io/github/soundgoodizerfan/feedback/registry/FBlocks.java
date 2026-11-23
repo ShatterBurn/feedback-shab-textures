@@ -764,6 +764,15 @@ public class FBlocks {
                     .strength(1.5f)
                     .sound(SoundType.COPPER), Feedback.id("zinc"), Feedback.id("copper"), MachineTuning.GALVANIC_PACK_CELLS));
 
+    /** Two wires of different metals joined at a tip on the face it looks at: a temperature reading with no power. See {@code ThermocoupleProbeBlockEntity}. */
+    public static final DeferredBlock<io.github.soundgoodizerfan.feedback.machine.thermoelectric.ThermocoupleProbeBlock> THERMOCOUPLE_PROBE =
+            BLOCKS.register("thermocouple_probe",
+                    () -> new io.github.soundgoodizerfan.feedback.machine.thermoelectric.ThermocoupleProbeBlock(BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.COLOR_ORANGE)
+                            .strength(0.5f)
+                            .sound(SoundType.COPPER)
+                            .noOcclusion()));
+
     /** Two legs of different metals between a hot side and a cold side: a trickle of LV from a temperature difference. See {@code ThermoelectricGeneratorBlockEntity}. */
     public static final DeferredBlock<io.github.soundgoodizerfan.feedback.machine.thermoelectric.ThermoelectricGeneratorBlock> THERMOELECTRIC_GENERATOR =
             BLOCKS.register("thermoelectric_generator",
