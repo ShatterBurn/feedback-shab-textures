@@ -1,6 +1,6 @@
 # Optics
 
-Lenses, fiber and the pyrometer, all from glass.
+Lenses, fiber, the pyrometer and the telescope, all from glass.
 
 ## Lens
 
@@ -15,3 +15,7 @@ Draw a glass rod into **fiber**, a thread of glass.
 A [Thermometer](Instruments.md#thermometer) with a lens in it. Right-click a vessel up to 24 blocks away to read its temperature in steps of 10 Tu, sealed furnace or not. Aimed at melting ice or another block sitting at its melting point, it reads that figure and sets itself back on true ([Drift](Instruments.md#drift)).
 
 > **Recipe:** an optical glass lens over a [Photocell](Sensors.md) over a Wrought Iron Plate, in a column. Craft it at the [Engineering Table](Engineering_Table.md) with a [screwdriver](Hand_Tools.md#screwdriver) in the tool row, 1 screw ([Fasteners](Fasteners.md)) and Electrical Treatise I: Cells and Static Charge ([Treatise](Treatise.md)).
+
+## Telescope
+
+Two lenses and a tube make a [Telescope](Telescope.md): hold right click to look through it, magnified by the ratio of the lenses' focal lengths.
