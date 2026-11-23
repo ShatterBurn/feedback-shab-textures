@@ -576,6 +576,14 @@ public class FCreativeTabs {
             event.accept(FItems.MATERIAL_PROBE.get());
             event.accept(FItems.CAMERA_POLE.get());
             event.accept(FItems.BLOCK_CAMERA.get());
+            // A sample circuit with free figures (many fast quiet elements, a good joint, traces that never lift): operator tab only.
+            ItemStack sample = new ItemStack(FItems.CIRCUIT.get());
+            sample.set(FDataComponents.CIRCUIT.get(), new io.github.soundgoodizerfan.feedback.process.Circuit(16, 1f,
+                    io.github.soundgoodizerfan.feedback.process.ProcessTuning.CIRCUIT_NOISE_FLOOR,
+                    io.github.soundgoodizerfan.feedback.process.Board.Joint.GOOD, 10000f, 1000f, 0f, 0f, 0f, 0f,
+                    io.github.soundgoodizerfan.feedback.process.Circuit.clockRateOf(1f),
+                    io.github.soundgoodizerfan.feedback.process.Circuit.Line.NONE));
+            event.accept(sample);
         }
     }
 }
