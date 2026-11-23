@@ -199,6 +199,10 @@ Any food from another mod (an item that is edible and is not from Minecraft or F
 
 **Optional.** With Inventory Sorter installed, sorting and scroll-moving do nothing on screens whose slots are roles, where an input, a fuel and a result each sit in a place that matters: the [Engineering Table](Engineering_Table.md), Reloading Press, Blueprint Table, Research Table, Material Probe, Enchanting screen, Casting Basin, Mixer, Brewing Stand, Station, Programmer, Prep Table, Thermal Vessel, Arc Hearth and Crucible. Packs and depots stay sortable. Food that differs in cook or moisture state does not merge in a sort.
 
+## Energy Fitting
+
+The [Energy Fitting](Energy_Fitting.md) is the one place Forge Energy (FE) leaves a Feedback electrical line. Placed against another mod's machine that takes FE, it hands that machine FE made from the line's current, at a loss. Nothing else in Feedback gives or takes FE.
+
 ## Other mods
 
 Every Feedback fluid and gas is published under the common fluid tags, so other mods' pumps and tanks accept them. Gases lighter than air are tagged `c:gaseous`, and each fluid has a tag of its own named for it, such as `c:molten_copper`.

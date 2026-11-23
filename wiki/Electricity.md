@@ -46,6 +46,7 @@ Bands don't lock anything. A machine is *rated* for a band; feed it a higher ban
 | [Charging Gantry](Charger.md#charging-gantry) | Charges the battery of a worn exosuit. |
 | [Glowstone Lamp](Lamp.md) | Light in four steps, by how well it is fed. |
 | [Rectifier](Rectifier.md) | Makes a battery beside it charge about three times faster. |
+| [Energy Fitting](Energy_Fitting.md) | Gives a line's power to another mod's machines as FE, at a loss. |
 | **Measuring** | |
 | [Electroscope](Instruments.md#electroscope) | The band of a live line. |
 | [Galvanometer](Instruments.md#galvanometer) | Current. |
