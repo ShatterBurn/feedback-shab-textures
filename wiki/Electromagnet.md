@@ -28,7 +28,7 @@ It only moves items that are lying on the ground. It doesn't pick anything up in
 
 Dropped items made of a **diamagnetic** material (bismuth above all, then graphite, and weakly gold, silver, lead, cadmium, zinc and copper; see [Materials](Materials.md#the-metals)) are shoved away from a powered magnet and slightly upward, harder the higher the material's diamagnetism and the stronger the field. The magnet gives a faint hum and sparks while it does. With **Scatter** the magnet pulls them in instead.
 
-A powered magnet also lets [Levitation Plates](Levitation.md#levitation-plate) float above it, humming faintly while a plate stands within 3 blocks above it, and takes the drag off a shaft, flywheel or bearing fitted with a [Levitation Sleeve](Levitation.md#levitation-sleeve).
+A powered magnet also lets [Levitation Plates](Levitation.md#levitation-plate) float above it, humming faintly while a plate stands within 3 blocks above it, and takes the drag off a shaft, flywheel or bearing fitted with a [Levitation Sleeve](Levitation.md#levitation-sleeve). The magnet hums faintly while a sleeved shaft or bearing touching it is held off, as it does for a plate.
 
 ## Separating ore
 

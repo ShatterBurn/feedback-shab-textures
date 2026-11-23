@@ -13,6 +13,7 @@ The mods Feedback works with, and what each one gives you. Some are required, so
 | [JEI](#jei) | Optional | Recipe, process and info pages |
 | [Jade](#jade) | Optional | Readouts on blocks and villagers |
 | [Thaumaturge](#thaumaturge) | Optional | Aspects on Feedback items |
+| [Other mods](#other-mods) | Optional | Fluid tags and shared biome and stone tags |
 
 ## Sable, Dimensional Sable and Sable Scaling
 
@@ -92,6 +93,7 @@ Thaumaturge items that match a Feedback material are read as that material in ev
 - Void metal is dense, very hard, brittle and dark (88% osmium, 8% ender pearl, 4% essentia).
 - Thaumium and void metal each make the usual tinted form items. Thaumaturge's thaumium and void swords, pickaxes, axes, shovels, hoes, helmets, chestplates, leggings and boots are converted on the spot into the modular item of that kind, headed or plated in that metal, like vanilla tools (see [Old vanilla tools](Tools_and_Weapons.md#old-vanilla-tools)). Robes and shields are not converted. Other mods' recipes and JEI pages that ask for one of these items accept the converted item too.
 - Greatwood and silverwood logs are wood materials. Greatwood is a dense hardwood that burns long; silverwood is a lighter, pale wood that burns shorter.
+- Cinderpearl is a pyrophoric herb: it burns at a low temperature, short and hot, as fuel.
 - Fabric is cloth, mirrored glass is mirrored glass and tallow is tallow. These three have no items of their own, and anything tagged tallow or animal fat from any mod counts as tallow.
 - Flux Goo, Thaumaturge's fluid, is a corrosive acidic sludge with pH 3.
 
@@ -128,7 +130,7 @@ Machines, devices and carried hardware carry aspects that match their function:
 - Reactor parts: their own aspects, set by what they do. See [Fission Reactor](Fission_Reactor.md).
 - [Robot](Robots.md) parts (chassis, drive, head, loader, radio, sensor, tether): Machina, Cognitio and Motus.
 
-Part items that carry their material on the stack have no aspects of their own, and Thaumaturge works theirs out from their recipes. Creative and debug items have none.
+Part items that carry their material on the stack have no aspects of their own, and Thaumaturge works theirs out from their recipes. So do engineered items that have no aspects set by hand: they take them from their recipe ingredients. Creative and debug items have none.
 
 Scanning Feedback's entities with the Thaumometer also yields aspects: the robot, the steam cloud, the grenade, the thrown potion bottle, the grapple hook and the thrown weapon.
 
@@ -137,3 +139,15 @@ Scanning Feedback's entities with the Thaumometer also yields aspects: the robot
 Feedback machines are immune to Thaumaturge's taint: it does not convert them. A portable hole does not take them either.
 
 Core Slag, Crude Pools, Tar Seeps and Soul Seeps count as physical flux for Thaumaturge: they feed a chunk's flux floor and taint outbreaks, where Thaumaturge's options for that are on. Crude Pools, Tar Seeps and Soul Seeps can also be cleared by Thaumaturge's scrubbers. Without Thaumaturge, nothing changes.
+
+### The Outer Lands and arrival pads
+
+Thaumaturge's Outer Lands dimension is cold and has the thin, oxygen-free air of the End, so [Heat](Heat.md) rules for cold and the sealed-suit rules of [Hazards](Hazards.md) apply there.
+
+Hot surfaces, plants that hurt on contact, Core Slag, Crude Pools, Tar Seeps and Soul Seeps count as unsafe landings for Thaumaturge's arrival pads.
+
+## Other mods
+
+Every Feedback fluid and gas is published under the common fluid tags, so other mods' pumps and tanks accept them. Gases lighter than air are tagged `c:gaseous`, and each fluid has a tag of its own named for it, such as `c:molten_copper`.
+
+The biome lists for oil, evaporite and emerald deposits also accept other mods' biomes through the common biome tags (`c:is_desert`, `c:is_plains`, `c:is_mountain`). Ore that generates in Nether stone also generates in other mods' stone tagged `c:netherrack`.
