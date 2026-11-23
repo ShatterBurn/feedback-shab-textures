@@ -66,7 +66,7 @@ import org.jetbrains.annotations.NotNull;
  * with exposed plates (low water). Misuse only: overcharge vents water and releases hydrogen, overdraw heats the case and
  * costs condition, heat over {@link ElectricMachineTuning#BATTERY_HOT_TU} costs condition, a band over the case's costs condition.
  */
-public class BatteryBlockEntity extends ElectricNode implements ThermalBody, Weldable {
+public class BatteryBlockEntity extends ElectricNode implements ThermalBody, Weldable, io.github.soundgoodizerfan.feedback.core.hazard.Corrodible {
 
     private int cells = 1;
     private float capacity = 48000f * FTuning.BATTERY_INGOTS_PER_CELL;
@@ -576,6 +576,12 @@ public class BatteryBlockEntity extends ElectricNode implements ThermalBody, Wel
     @Override
     public float getCondition() {
         return condition;
+    }
+
+    @Override
+    public void corrode(float amount) {
+        condition = Math.max(ElectricMachineTuning.BATTERY_CONDITION_FLOOR, condition - amount);
+        setChanged();
     }
 
     @Override

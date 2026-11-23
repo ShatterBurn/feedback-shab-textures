@@ -38,7 +38,7 @@ import net.minecraft.world.level.block.state.BlockState;
  * strains and its condition falls, to a floor and never to a burst. A strained rim carries less inertia, read the
  * next time the run is rebuilt.
  */
-public class ShaftBlockEntity extends RotationNode implements Wearing, io.github.soundgoodizerfan.feedback.machine.Reachable,
+public class ShaftBlockEntity extends RotationNode implements Wearing, io.github.soundgoodizerfan.feedback.core.hazard.Corrodible, io.github.soundgoodizerfan.feedback.machine.Reachable,
         io.github.soundgoodizerfan.feedback.fitting.StoredFittable {
 
     private float condition = 1f;
@@ -158,6 +158,12 @@ public class ShaftBlockEntity extends RotationNode implements Wearing, io.github
     @Override
     public float getCondition() {
         return condition;
+    }
+
+    @Override
+    public void corrode(float amount) {
+        condition = Math.max(FTuning.FLYWHEEL_CONDITION_FLOOR, condition - amount);
+        setChanged();
     }
 
     /** Closes {@code by} of the rim's strain (an attuned part's mend, {@code MachineAura}). */

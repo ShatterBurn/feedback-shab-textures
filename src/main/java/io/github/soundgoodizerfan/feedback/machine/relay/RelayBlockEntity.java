@@ -40,7 +40,7 @@ import net.minecraft.world.level.block.state.BlockState;
  * <h2>Sense and stop</h2>
  * Sense: the coil run's current, with the galvanometer fitting. Stop: cut the coil run.
  */
-public class RelayBlockEntity extends ElectricNode implements Wearing, io.github.soundgoodizerfan.feedback.instrument.Testable {
+public class RelayBlockEntity extends ElectricNode implements Wearing, io.github.soundgoodizerfan.feedback.core.hazard.Corrodible, io.github.soundgoodizerfan.feedback.instrument.Testable {
 
     private boolean closed;
     private float condition = 1f;
@@ -100,6 +100,12 @@ public class RelayBlockEntity extends ElectricNode implements Wearing, io.github
     @Override
     public float getCondition() {
         return condition;
+    }
+
+    @Override
+    public void corrode(float amount) {
+        condition = Math.max(ElectricMachineTuning.RELAY_CONDITION_FLOOR, condition - amount);
+        setChanged();
     }
 
     @Override

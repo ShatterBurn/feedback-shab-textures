@@ -145,6 +145,15 @@ public final class HazardTuning {
 
     public static final int SPATIAL_HOP_MB_FOR_CERTAIN = 125;
 
+    /**
+     * Placeholder. Flux rust (core/hazard/FluxRust): the share of a chunk's base aura that flux must pass before bare metal machines there start to
+     * corrode, the condition (a fraction of full) each corrodes per sweep at a chunk's flux equal to its base, the ticks between sweeps and the chunk radius around
+     * each player that is swept.
+     */
+    public static final float FLUX_RUST_THRESHOLD = 0.4f, FLUX_RUST_PER_PERIOD = 0.004f;
+
+    public static final int FLUX_RUST_PERIOD_TICKS = 600, FLUX_RUST_RADIUS_CHUNKS = 3;
+
     /** Invented. The electrolyser's lining (glass and plate) resists a corrosive liquid to this degree; a vessel is bitten when its resistance is below {@link #CORROSIVE_BITE}, by {@code CORROSION_WEAR_PER_SECOND} of condition a second times the shortfall. */
     public static final float ELECTROLYSER_LINING = 0.95f, CORROSIVE_BITE = 0.9f, CORROSION_WEAR_PER_SECOND = 0.0005f;
 }

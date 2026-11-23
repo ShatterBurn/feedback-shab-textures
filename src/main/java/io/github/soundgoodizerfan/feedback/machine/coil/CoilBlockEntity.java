@@ -51,7 +51,7 @@ import net.minecraft.world.level.block.state.BlockState;
  * higher band than it is rated for, a resistive element draws more current, and past what its wire carries it wears by the excess
  * ({@link io.github.soundgoodizerfan.feedback.core.electric.ElectricRules#overCurrent}); fed as rated it never does.
  */
-public class CoilBlockEntity extends ElectricNode implements ThermalBody, HeatSource, Wearing, io.github.soundgoodizerfan.feedback.modular.bake.FigureHolder {
+public class CoilBlockEntity extends ElectricNode implements ThermalBody, HeatSource, Wearing, io.github.soundgoodizerfan.feedback.core.hazard.Corrodible, io.github.soundgoodizerfan.feedback.modular.bake.FigureHolder {
 
     @Override
     public io.github.soundgoodizerfan.feedback.modular.bake.FigureStore figures() {
@@ -165,6 +165,12 @@ public class CoilBlockEntity extends ElectricNode implements ThermalBody, HeatSo
     @Override
     public float getCondition() {
         return condition;
+    }
+
+    @Override
+    public void corrode(float amount) {
+        condition = Math.max(ElectricMachineTuning.COIL_CONDITION_FLOOR, condition - amount);
+        setChanged();
     }
 
     @Override

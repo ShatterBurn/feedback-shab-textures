@@ -55,7 +55,7 @@ import net.minecraft.world.level.block.state.BlockState;
  * A belt wears only while slipping, which is misuse -- carrying more than it was built for -- and
  * a worn belt carries proportionally less, which makes it slip sooner.
  */
-public class PulleyBlockEntity extends RotationNode implements Wearing {
+public class PulleyBlockEntity extends RotationNode implements Wearing, io.github.soundgoodizerfan.feedback.core.hazard.Corrodible {
 
     @Nullable
     private BlockPos beltPartner;
@@ -189,6 +189,12 @@ public class PulleyBlockEntity extends RotationNode implements Wearing {
     @Override
     public float getCondition() {
         return condition;
+    }
+
+    @Override
+    public void corrode(float amount) {
+        condition = Math.max(FTuning.BELT_CONDITION_FLOOR, condition - amount);
+        setChanged();
     }
 
     @Override

@@ -81,7 +81,7 @@ import org.jetbrains.annotations.Nullable;
  * choice {@code RotationNetwork.recalculate} makes for every machine's working draw. It does not spin on screen yet:
  * placeholder art.
  */
-public class DynamotorBlockEntity extends ElectricNode implements ThermalBody, Weldable {
+public class DynamotorBlockEntity extends ElectricNode implements ThermalBody, Weldable, io.github.soundgoodizerfan.feedback.core.hazard.Corrodible {
 
     // Figures baked at the Tool Table; the defaults are the smallest, coarsest machine, for a block placed with none.
     private float frameSu = FTuning.FRAME_SU_SMALL;
@@ -276,6 +276,12 @@ public class DynamotorBlockEntity extends ElectricNode implements ThermalBody, W
     @Override
     public float getCondition() {
         return condition;
+    }
+
+    @Override
+    public void corrode(float amount) {
+        condition = Math.max(ElectricMachineTuning.MACHINE_CONDITION_FLOOR, condition - amount);
+        setChanged();
     }
 
     @Override

@@ -238,7 +238,7 @@ public class FCreativeTabs {
             FItems.SILVER_INGOT, FItems.BRONZE_INGOT, FItems.BRASS_INGOT, FItems.CAST_IRON, FItems.STEEL_INGOT,
             FItems.TEMPERED_STEEL, FItems.HARDENED_STEEL, FItems.GROUND_HARDENED_STEEL, FItems.CAST_NETHERITE_INGOT,
             FItems.GLASS_INGOT, FItems.QUARTZ_GLASS_INGOT, FItems.COPPER_TUBING, FItems.GLASS_TUBING,
-            FItems.CERAMIC, FItems.GLAZED_CERAMIC, FItems.FIREBRICK);
+            FItems.CERAMIC, FItems.GLAZED_CERAMIC, FItems.TAINT_GLAZE, FItems.FIREBRICK);
 
     /** Ores and the ground: stone and deepslate ore side by side, raw before ore, then deposits, plants, soils. */
     private static final List<DeferredItem<?>> ORES = of(FItems.COAL_ORE, FItems.DEEPSLATE_COAL_ORE,

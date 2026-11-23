@@ -60,7 +60,7 @@ import net.minecraft.world.phys.Vec3;
  * material gets the same behaviour with no code. A workpiece hotter than its material's Curie point
  * is not pulled (it passes the magnet, as it passes the drum).
  */
-public class ElectromagnetBlockEntity extends ElectricNode implements ThermalBody, Wearing, io.github.soundgoodizerfan.feedback.machine.Mendable,
+public class ElectromagnetBlockEntity extends ElectricNode implements ThermalBody, Wearing, io.github.soundgoodizerfan.feedback.core.hazard.Corrodible, io.github.soundgoodizerfan.feedback.machine.Mendable,
         io.github.soundgoodizerfan.feedback.modular.bake.FigureHolder {
 
     private float temperature = ThermalTuning.AMBIENT_TU.value();
@@ -333,6 +333,12 @@ public class ElectromagnetBlockEntity extends ElectricNode implements ThermalBod
     @Override
     public float getCondition() {
         return condition;
+    }
+
+    @Override
+    public void corrode(float amount) {
+        condition = Math.max(ElectricMachineTuning.ELECTROMAGNET_CONDITION_FLOOR, condition - amount);
+        setChanged();
     }
 
     /** A magnet that is pulling is working and cannot be measured, like any machine (philosophy 10). */

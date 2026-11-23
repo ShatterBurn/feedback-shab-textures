@@ -35,7 +35,7 @@ import net.minecraft.world.level.block.state.BlockState;
  * faster beside aluminium {@link HeatsinkBlock}s; past the service temperature the block loses condition, and a worn one
  * wastes more. It never refuses a line and is never destroyed.
  */
-public class ConverterBlockEntity extends ElectricNode implements ThermalBody, Wearing {
+public class ConverterBlockEntity extends ElectricNode implements ThermalBody, Wearing, io.github.soundgoodizerfan.feedback.core.hazard.Corrodible {
 
     private float temperature = ThermalTuning.AMBIENT_TU.value();
     private float condition = 1f;
@@ -170,6 +170,12 @@ public class ConverterBlockEntity extends ElectricNode implements ThermalBody, W
     @Override
     public float getCondition() {
         return condition;
+    }
+
+    @Override
+    public void corrode(float amount) {
+        condition = Math.max(ElectricMachineTuning.CONVERTER_CONDITION_FLOOR, condition - amount);
+        setChanged();
     }
 
     @Override

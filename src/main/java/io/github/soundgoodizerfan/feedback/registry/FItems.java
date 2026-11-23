@@ -619,6 +619,9 @@ public class FItems {
      * {@link #CERAMIC} dipped in a vessel holding molten glass. See {@code
      * data/feedback/dip/glazed_ceramic.json} and {@code machine/dip/Dipping.java}. */
     public static final DeferredItem<Item> GLAZED_CERAMIC = ITEMS.registerSimpleItem("glazed_ceramic");
+    /** A pot of glaze brushed onto one placed block so taint and flux cannot eat it. See {@code core/hazard/Coats}. */
+    public static final DeferredItem<Item> TAINT_GLAZE = ITEMS.register("taint_glaze",
+            () -> new io.github.soundgoodizerfan.feedback.item.TaintGlazeItem(new Item.Properties().stacksTo(16)));
 
     // Firebrick's own raw material, distinct from ordinary pottery clay -- no ore, no worldgen
     // yet, same call as tin/zinc.
