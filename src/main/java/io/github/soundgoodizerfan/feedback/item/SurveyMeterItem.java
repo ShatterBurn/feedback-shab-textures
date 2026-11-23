@@ -113,13 +113,46 @@ public class SurveyMeterItem extends Item implements Instrument {
                             Component.translatable(e.getKey()),
                             Instruments.format(reading, ItemTuning.SURVEY_RESOLUTION), bearing(s));
                 })
-                .filter(java.util.Objects::nonNull).toList();
+                .filter(java.util.Objects::nonNull).collect(java.util.stream.Collectors.toCollection(java.util.ArrayList::new));
+        // A node concentrates aura and aura bends the field a survey reads, so the chunk holding the most reads as an anomaly,
+        // like an ore body: with a bearing and no figure. Only where Thaumaturge keeps aura, and never a constant signal.
+        var anomaly = auraAnomaly(level, centre);
+        if (anomaly != null)
+            lines.add(Component.translatable("feedback.survey.aura", bearing(anomaly)));
         if (lines.isEmpty()) {
             player.displayClientMessage(Instruments.signed(this, Component.translatable("feedback.survey.none")), true);
             return;
         }
         for (var line : lines)
             player.sendSystemMessage(Instruments.signed(this, line));
+    }
+
+    /**
+     * The chunk within the survey radius whose vis is the highest share of its base aura, as a {@code bearing} sum for one block
+     * at its centre; null with no Thaumaturge, no chunk over {@link ItemTuning#SURVEY_AURA_MIN_SHARE}, or when the reading's own
+     * wobble drops a marginal chunk below it.
+     */
+    private static long[] auraAnomaly(Level level, BlockPos centre) {
+        if (!io.github.soundgoodizerfan.feedback.compat.thaumaturge.ThaumaturgeFlux.present())
+            return null;
+        int r = ItemTuning.SURVEY_RADIUS;
+        float best = 0f;
+        BlockPos at = null;
+        for (int cx = Math.floorDiv(centre.getX() - r, 16); cx <= Math.floorDiv(centre.getX() + r, 16); cx++)
+            for (int cz = Math.floorDiv(centre.getZ() - r, 16); cz <= Math.floorDiv(centre.getZ() + r, 16); cz++) {
+                BlockPos mid = new BlockPos(cx * 16 + 8, centre.getY(), cz * 16 + 8);
+                if (!level.hasChunkAt(mid))
+                    continue;
+                float share = io.github.soundgoodizerfan.feedback.compat.thaumaturge.ThaumaturgeFlux.visShare(level, mid);
+                if (share > best) {
+                    best = share;
+                    at = mid;
+                }
+            }
+        float wobble = (level.random.nextFloat() - 0.5f) * ItemTuning.SURVEY_AURA_WOBBLE;
+        if (at == null || best + wobble < ItemTuning.SURVEY_AURA_MIN_SHARE)
+            return null;
+        return new long[] {1, at.getX() - centre.getX(), 0, at.getZ() - centre.getZ()};
     }
 
     /** Where the mean of the ore lies from the holder: nearest of eight horizontal points, and above or below. */

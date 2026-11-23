@@ -115,6 +115,9 @@ public final class ItemTuning {
     /** Invented. Oil reads as a block count would: this many per block that the nearest basin's circle reaches into the survey radius. */
     public static final float SURVEY_OIL_PER_BLOCK = 4f;
 
+    /** Invented. Thaumaturge aura on the survey meter: the share of its base aura a chunk's vis must hold to read as an anomaly, and the wobble (width, centred) on that reading. */
+    public static final float SURVEY_AURA_MIN_SHARE = 1.2f, SURVEY_AURA_WOBBLE = 0.3f;
+
     /**
      * Placeholder. What each electrical instrument can resolve (philosophy 10: tiers buy
      * significant figures, never access). The electroscope is coarse on purpose -- it says a wire
