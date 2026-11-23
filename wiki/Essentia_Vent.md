@@ -21,3 +21,5 @@ Place it touching an essentia store, on any side. **Right-click with an empty ha
 The vent reads how much essentia the store beside it holds, about once a second. Above a high fill it opens and draws essentia out, with a hiss and a puff of vapor. It stays open until the store has fallen well below that fill, and only then reseats, so it does not flutter on the line.
 
 Nothing it bleeds is lost: the essentia goes into the chunk as flux. A [Scrubbing Bed](Scrubbing_Bed.md) in the chunk takes that flux back out; without one, the chunk's flux rises, and flooded chunks [rust bare machines](Mod_Compats.md#flux-scrubbing-and-rust).
+
+The [Essentia Adapter](Essentia_Adapter.md) draws a store down into gas instead.
