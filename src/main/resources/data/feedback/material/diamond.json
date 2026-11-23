@@ -29,6 +29,7 @@
   },
   "forms": {
     "gem": "minecraft:diamond",
+    "lump": "feedback:diamond_grit",
     "block": "minecraft:diamond_block",
     "horse_armor": "minecraft:diamond_horse_armor",
     "ore": "feedback:diamond_ore",
