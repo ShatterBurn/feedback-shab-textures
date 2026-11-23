@@ -120,8 +120,33 @@ public final class VanillaVesselSwap {
         return to.hasProperty(prop) ? to.setValue(prop, from.getValue(prop)) : to;
     }
 
+    /** Time one tick may spend swapping; the rest of the queue waits for the next tick. */
+    private static final long BUDGET_NANOS = 1_500_000L;
+
+    /**
+     * A swap writes a block, and the physics mod reads the blocks around it on every write; a neighbour in a chunk that is not loaded
+     * makes the server load or generate it on the spot and stall the tick. So a position waits until every chunk within two blocks of it is loaded.
+     */
+    private static boolean surroundingsLoaded(ServerLevel level, BlockPos pos) {
+        for (int dx = -2; dx <= 2; dx += 2)
+            for (int dz = -2; dz <= 2; dz += 2)
+                if (!level.hasChunk((pos.getX() + dx) >> 4, (pos.getZ() + dz) >> 4))
+                    return false;
+        return true;
+    }
+
     public static void onServerTick(ServerTickEvent.Post event) {
-        for (Pending p; (p = QUEUE.poll()) != null;) {
+        long deadline = System.nanoTime() + BUDGET_NANOS;
+        // Only the positions queued before this tick are looked at, so a deferred one cannot loop forever.
+        for (int left = QUEUE.size(); left-- > 0 && System.nanoTime() < deadline;) {
+            Pending p = QUEUE.poll();
+            // Its own chunk is gone: it queues again when the chunk loads.
+            if (!p.level().hasChunk(p.pos().getX() >> 4, p.pos().getZ() >> 4))
+                continue;
+            if (!surroundingsLoaded(p.level(), p.pos())) {
+                QUEUE.add(p);
+                continue;
+            }
             var state = p.level().getBlockState(p.pos());
             Block ours = SWAP.get(state.getBlock());
             if (ours == null)
