@@ -12,7 +12,7 @@ The mods Feedback works with, and what each one gives you. Some are required, so
 | [Flywheel](#flywheel) | Required | Rendering on the client |
 | [JEI](#jei) | Optional | Recipe, process and info pages |
 | [Jade](#jade) | Optional | Readouts on blocks and villagers |
-| [Thaumaturge](#thaumaturge) | Optional | Aspects on Feedback items, flux and essentia machines, thaumium alloys |
+| [Thaumaturge](#thaumaturge) | Optional | Aspects on Feedback items, flux and essentia machines, a vis-fed current source, thaumium alloys |
 | [Iris](#iris) | Optional | Shader packs: the fluid caster's flame follows the pack |
 | [Serene Seasons](#serene-seasons) | Optional | The season shifts the Overworld's room temperature |
 | [EMI](#emi) | Optional | Shows Feedback's recipe cards through its JEI bridge |
@@ -153,11 +153,12 @@ Scanning Feedback's entities with the Thaumometer also yields aspects: the robot
 
 ### Flux, scrubbing and rust
 
-Thaumaturge tracks **flux** in each chunk. Four Feedback blocks and one item deal with it.
+Thaumaturge tracks **flux** in each chunk. Five Feedback blocks and one item deal with it.
 
 - The [Scrubbing Bed](Scrubbing_Bed.md) takes flux out of the chunk it stands in. It fills up, and a full bed leaks flux back.
 - The [Aura Sensor](Aura_Sensor.md) reads the chunk's vis and flux for a [Controller](Controller.md).
 - The [Essentia Vent](Essentia_Vent.md) bleeds essentia from a full essentia store into the chunk as flux.
+- The [Vis Tap](Vis_Tap.md) turns vis from a vis relay network into current. With no load, the vis it cannot hold backs up into the chunk as flux.
 - **Flux rust.** In a chunk whose flux stands well above its base, bare metal machines slowly corrode: [shafts](Shaft.md), [pulleys](Pulleys.md), [dynamotors](Dynamotor.md), [converters](Converter.md), [coils](Heating_Coil.md), [relays](Relay.md), [electromagnets](Electromagnet.md) and [batteries](Battery.md) lose condition, faster the more flux there is. It is the place doing it, not the machine's use. It happens in chunks near a player. A machine whose block wears a [Taint Glaze](Taint_Glaze.md) does not corrode, and neither does anything once a scrubbing bed brings the flux back down.
 - **Flux goo into brine.** 200 mB of Thaumaturge's Flux Goo and 100 mB of [lye](Chemicals.md#lye) in a [Reactor](Reactor.md) make 300 mB of [brine](Chemicals.md#brine). The Reactor wants it cool, 10 to 120 Tu, best near 40.
 
