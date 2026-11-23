@@ -439,13 +439,16 @@ public record Material(St hardness, Tu minTemperature, Tu maxTemperature,
      * @param friction      sliding coefficient, for brakes, clutches, bearings and tires.
      * @param abrasiveness  0 to 1: how fast cutting it spends a grinding wheel's grit.
      * @param hardenable    whether a quench hardens it rather than merely cooling it.
+     * @param crushEnergy   Work one litre of it absorbs crushing at its plateau (a foam, a honeycomb); real figure in kJ per litre
+     *                      (aluminium foam about 10). Absent means it only bends or breaks. Read by an armour lining
+     *                      ({@code ModularBake}) as padding beyond its competence.
      * @param permeability  mB of gas a full 1000 mB cell wrapped in a skin of this passes each tick at rest, within its
      *                      stretch (absent or 0 is gas-tight). Read by {@code vehicle/air/Skin}.
      */
     public record Mechanical(Optional<St> toughness, Optional<Integer> ductility, Optional<St> workHardening,
                              Optional<St> yieldStrength, Optional<Float> friction, Optional<Float> abrasiveness,
                              boolean hardenable, Optional<Damping> damping, Optional<Float> permeability,
-                             Optional<Hydrogen> hydrogen) {
+                             Optional<Hydrogen> hydrogen, Optional<Float> crushEnergy) {
         /**
          * How a metal soaks hydrogen: {@code uptake} is the volumes of gas (at the pressure a pipe holds, ambient) one volume of the metal takes at
          * saturation (real: palladium 900, magnesium about 1300, titanium about 400), {@code release} the Tu above which it gives the gas back (real
@@ -473,7 +476,7 @@ public record Material(St hardness, Tu minTemperature, Tu maxTemperature,
         }
 
         static final Mechanical NONE = new Mechanical(Optional.empty(), Optional.empty(), Optional.empty(),
-                Optional.empty(), Optional.empty(), Optional.empty(), false, Optional.empty(), Optional.empty(), Optional.empty());
+                Optional.empty(), Optional.empty(), Optional.empty(), false, Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
 
         static final Codec<Mechanical> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 Units.codec(St::new).optionalFieldOf("toughness").forGetter(Mechanical::toughness),
@@ -485,7 +488,8 @@ public record Material(St hardness, Tu minTemperature, Tu maxTemperature,
                 Codec.BOOL.optionalFieldOf("hardenable", false).forGetter(Mechanical::hardenable),
                 Damping.CODEC.optionalFieldOf("damping").forGetter(Mechanical::damping),
                 Codec.FLOAT.optionalFieldOf("permeability").forGetter(Mechanical::permeability),
-                Hydrogen.CODEC.optionalFieldOf("hydrogen").forGetter(Mechanical::hydrogen)
+                Hydrogen.CODEC.optionalFieldOf("hydrogen").forGetter(Mechanical::hydrogen),
+                Codec.FLOAT.optionalFieldOf("crush_energy").forGetter(Mechanical::crushEnergy)
         ).apply(instance, Mechanical::new));
     }
 

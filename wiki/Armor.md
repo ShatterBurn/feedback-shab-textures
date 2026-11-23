@@ -26,6 +26,8 @@ Put the piece in the item slot of the Engineering Table's [Fit tab](Engineering_
 | studs | studded |
 | lining, studs | lined and studded |
 
+A soft foam such as aluminum foam pads by what it absorbs as it is crushed, so a lining of it protects about as well as a hard metal one.
+
 To take a lining or studs off, take the piece apart on the Repair tab and fit the rest again; a plain piece is worn as it is.
 
 ### Studs

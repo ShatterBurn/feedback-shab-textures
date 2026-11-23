@@ -1282,6 +1282,8 @@
   "feedback.jei.material.yield": "Yield strength",
   "feedback.jei.material.friction": "Friction",
   "feedback.jei.material.abrasiveness": "Abrasiveness",
+  "feedback.jei.material.crush_energy": "Crush energy",
+  "feedback.jei.material.crush_energy.tip": "How much a liter of it absorbs as it is crushed, as a foam does. As an armor lining it pads like a harder material would.",
   "feedback.jei.material.permeability": "Permeability",
   "feedback.jei.material.hardenable": "Quench hardens",
   "feedback.jei.material.electrical_conductivity": "Conductivity",

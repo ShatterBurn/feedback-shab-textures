@@ -639,6 +639,8 @@ public final class ModularTuning {
      * for exactly that (a goat horn), so sensors and wardens hear it only from echoing blows.
      */
     public static final Holder<GameEvent> PERK_ECHO_EVENT = GameEvent.INSTRUMENT_PLAY;
+    /** Placeholder. Work per litre a lining's crushing absorbs that counts as one point of competence when it pads armour. */
+    public static final float CRUSH_ENERGY_PER_COMPETENCE = 2f;
     /** Ticks a ringing blow slows its target, per level; the blocks around it within which hostile mobs are called to the striker. */
     public static final int PERK_RING_SLOW_TICKS_PER_LEVEL = 40;
     public static final double PERK_RING_CALL_BLOCKS = 12.0;

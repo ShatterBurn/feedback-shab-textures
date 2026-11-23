@@ -65,7 +65,7 @@ Amounts of metal and other stuff are counted in **Qu**. See [Units](Units.md#amo
 | Alnico | 44 | 7.3 | 8 | 1500 Tu | **Magnetic** below **890 Tu**. Iron, cobalt, nickel and aluminum. |
 | Redstone-Chromium | 29 | 4.5 | 15 | 1300 Tu | Redstone with a little chromium. A drawn alloy of redstone. |
 | Duralumin | 13.5 | 2.78 | 16 | 640 Tu | Aluminum hardened with a little copper, magnesium and manganese. Light and strong. |
-| Aluminium Foam | 0.5 | 0.4 | 0.25 | 640 Tu | **Porous**, lighter than any wood. 97 to 99.5% aluminum, 0.5 to 3% titanium, alloyed in the crucible ([Casting and Alloys](Casting.md)). |
+| Aluminium Foam | 0.5 | 0.4 | 0.25 | 640 Tu | **Porous**, lighter than any wood; it gives under a blow and absorbs it (**10** crush energy per liter, shown on its JEI page), so as an armor lining it pads about as well as plain iron. 97 to 99.5% aluminum, 0.5 to 3% titanium, alloyed in the crucible ([Casting and Alloys](Casting.md)). |
 | Nichrome | 17.5 | 8.4 | 15.5 | 1400 Tu | Nickel and chromium. Stands 1150 Tu and barely corrodes; a poor conductor. |
 | Wood's Metal | 1 | 9.58 | 1 | 70 Tu | Bismuth, lead, tin and cadmium. Melts in hot water. Toxic. |
 | Beryllium Copper | 36 | 8.25 | 50 | 980 Tu | Copper with 2% beryllium. Springy and strong, and still conducts well. |

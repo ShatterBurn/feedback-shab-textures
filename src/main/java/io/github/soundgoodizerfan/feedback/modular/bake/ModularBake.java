@@ -1066,7 +1066,8 @@ public final class ModularBake {
                     total += mass(r, p, pm);
                     switch (r.name()) {
                         case "underlayer" -> {
-                            float c = competence(pm);
+                            // A foam gives under a blow and absorbs it: its crush energy pads as well as a harder lining's competence would.
+                            float c = Math.max(competence(pm), pm.mechanical().crushEnergy().map(e -> e / ModularTuning.CRUSH_ENERGY_PER_COMPETENCE).orElse(0f));
                             points += type.armourMax() * ModularTuning.LINING_SHARE * c / (c + ModularTuning.ARMOUR_HALF_COMPETENCE);
                         }
                         case "battery_bay" -> {
