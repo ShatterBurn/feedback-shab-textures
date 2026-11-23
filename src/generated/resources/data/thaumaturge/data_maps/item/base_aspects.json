@@ -484,6 +484,20 @@
         "aspect": "thaumaturge:motus"
       }
     ],
+    "feedback:alnico_welding_rod": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 10,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
     "feedback:alnico_wire": [
       {
         "amount": 5,
@@ -964,6 +978,12 @@
         "aspect": "thaumaturge:metallum"
       }
     ],
+    "feedback:aluminium_foam_welding_rod": [
+      {
+        "amount": 2,
+        "aspect": "thaumaturge:metallum"
+      }
+    ],
     "feedback:aluminium_foam_wire": [
       {
         "amount": 2,
@@ -1209,6 +1229,20 @@
       }
     ],
     "feedback:aluminium_turned_rod": [
+      {
+        "amount": 3,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:potentia"
+      },
+      {
+        "amount": 6,
+        "aspect": "thaumaturge:lux"
+      }
+    ],
+    "feedback:aluminium_welding_rod": [
       {
         "amount": 3,
         "aspect": "thaumaturge:metallum"
@@ -1842,6 +1876,20 @@
         "aspect": "thaumaturge:ordo"
       }
     ],
+    "feedback:amethyst_bronze_welding_rod": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 3,
+        "aspect": "thaumaturge:mortuus"
+      },
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:ordo"
+      }
+    ],
     "feedback:amethyst_bronze_wire": [
       {
         "amount": 5,
@@ -2207,6 +2255,16 @@
       }
     ],
     "feedback:antimony_turned_rod": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:mortuus"
+      }
+    ],
+    "feedback:antimony_welding_rod": [
       {
         "amount": 5,
         "aspect": "thaumaturge:metallum"
@@ -2909,6 +2967,16 @@
       }
     ],
     "feedback:babbitt_turned_rod": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 3,
+        "aspect": "thaumaturge:ordo"
+      }
+    ],
+    "feedback:babbitt_welding_rod": [
       {
         "amount": 5,
         "aspect": "thaumaturge:metallum"
@@ -3798,6 +3866,16 @@
         "aspect": "thaumaturge:ordo"
       }
     ],
+    "feedback:bell_metal_welding_rod": [
+      {
+        "amount": 6,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 7,
+        "aspect": "thaumaturge:ordo"
+      }
+    ],
     "feedback:bell_metal_wire": [
       {
         "amount": 6,
@@ -4668,6 +4746,20 @@
         "aspect": "thaumaturge:ordo"
       }
     ],
+    "feedback:beryllium_copper_welding_rod": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:mortuus"
+      },
+      {
+        "amount": 10,
+        "aspect": "thaumaturge:ordo"
+      }
+    ],
     "feedback:beryllium_copper_wire": [
       {
         "amount": 5,
@@ -5100,6 +5192,24 @@
         "aspect": "thaumaturge:ordo"
       }
     ],
+    "feedback:beryllium_welding_rod": [
+      {
+        "amount": 3,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:potentia"
+      },
+      {
+        "amount": 8,
+        "aspect": "thaumaturge:mortuus"
+      },
+      {
+        "amount": 6,
+        "aspect": "thaumaturge:ordo"
+      }
+    ],
     "feedback:beryllium_wire": [
       {
         "amount": 3,
@@ -5339,6 +5449,12 @@
       }
     ],
     "feedback:bismuth_turned_rod": [
+      {
+        "amount": 6,
+        "aspect": "thaumaturge:metallum"
+      }
+    ],
+    "feedback:bismuth_welding_rod": [
       {
         "amount": 6,
         "aspect": "thaumaturge:metallum"
@@ -6444,6 +6560,20 @@
         "aspect": "thaumaturge:ordo"
       }
     ],
+    "feedback:brass_welding_rod": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 3,
+        "aspect": "thaumaturge:lux"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:ordo"
+      }
+    ],
     "feedback:brass_wire": [
       {
         "amount": 5,
@@ -6745,6 +6875,20 @@
       },
       {
         "amount": 2,
+        "aspect": "thaumaturge:ordo"
+      }
+    ],
+    "feedback:breeder_rod_welding_rod": [
+      {
+        "amount": 6,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:mortuus"
+      },
+      {
+        "amount": 9,
         "aspect": "thaumaturge:ordo"
       }
     ],
@@ -7187,6 +7331,20 @@
       }
     ],
     "feedback:bronze_turned_rod": [
+      {
+        "amount": 6,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 3,
+        "aspect": "thaumaturge:mortuus"
+      },
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:ordo"
+      }
+    ],
+    "feedback:bronze_welding_rod": [
       {
         "amount": 6,
         "aspect": "thaumaturge:metallum"
@@ -7714,6 +7872,20 @@
         "aspect": "thaumaturge:mortuus"
       }
     ],
+    "feedback:cadmium_welding_rod": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 2,
+        "aspect": "thaumaturge:lux"
+      },
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:mortuus"
+      }
+    ],
     "feedback:cadmium_wire": [
       {
         "amount": 5,
@@ -8210,6 +8382,20 @@
         "aspect": "thaumaturge:motus"
       }
     ],
+    "feedback:cast_iron_welding_rod": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 7,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
     "feedback:cast_netherite_birdshot": [
       {
         "amount": 5,
@@ -8491,6 +8677,20 @@
       },
       {
         "amount": 1,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:cast_netherite_welding_rod": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 10,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
         "aspect": "thaumaturge:motus"
       }
     ],
@@ -9105,6 +9305,20 @@
       }
     ],
     "feedback:cermet_turned_rod": [
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 10,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:cermet_welding_rod": [
       {
         "amount": 4,
         "aspect": "thaumaturge:metallum"
@@ -9818,6 +10032,16 @@
         "aspect": "thaumaturge:ordo"
       }
     ],
+    "feedback:chromium_welding_rod": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 7,
+        "aspect": "thaumaturge:ordo"
+      }
+    ],
     "feedback:chromium_wire": [
       {
         "amount": 5,
@@ -10484,6 +10708,20 @@
         "aspect": "thaumaturge:motus"
       }
     ],
+    "feedback:cobalt_welding_rod": [
+      {
+        "amount": 6,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 7,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
     "feedback:cobalt_wire": [
       {
         "amount": 6,
@@ -10710,6 +10948,12 @@
       {
         "amount": 4,
         "aspect": "thaumaturge:machina"
+      }
+    ],
+    "feedback:collagen_glue": [
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:ignis"
       }
     ],
     "feedback:component_tester": [
@@ -11097,6 +11341,16 @@
       }
     ],
     "feedback:constantan_turned_rod": [
+      {
+        "amount": 6,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:ordo"
+      }
+    ],
+    "feedback:constantan_welding_rod": [
       {
         "amount": 6,
         "aspect": "thaumaturge:metallum"
@@ -11573,6 +11827,16 @@
       }
     ],
     "feedback:copper_turned_rod": [
+      {
+        "amount": 6,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 7,
+        "aspect": "thaumaturge:potentia"
+      }
+    ],
+    "feedback:copper_welding_rod": [
       {
         "amount": 6,
         "aspect": "thaumaturge:metallum"
@@ -12452,6 +12716,16 @@
         "aspect": "thaumaturge:ordo"
       }
     ],
+    "feedback:cupronickel_welding_rod": [
+      {
+        "amount": 6,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:ordo"
+      }
+    ],
     "feedback:cupronickel_wire": [
       {
         "amount": 6,
@@ -13166,6 +13440,20 @@
         "aspect": "thaumaturge:fabrico"
       }
     ],
+    "feedback:drill_tip": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:instrumentum"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:fabrico"
+      },
+      {
+        "amount": 1,
+        "aspect": "thaumaturge:metallum"
+      }
+    ],
     "feedback:dripstone_dust": [
       {
         "amount": 5,
@@ -13629,6 +13917,20 @@
       }
     ],
     "feedback:duralumin_turned_rod": [
+      {
+        "amount": 3,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:lux"
+      },
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:ordo"
+      }
+    ],
+    "feedback:duralumin_welding_rod": [
       {
         "amount": 3,
         "aspect": "thaumaturge:metallum"
@@ -14234,6 +14536,20 @@
         "aspect": "thaumaturge:ordo"
       }
     ],
+    "feedback:electrum_welding_rod": [
+      {
+        "amount": 8,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:lux"
+      },
+      {
+        "amount": 3,
+        "aspect": "thaumaturge:ordo"
+      }
+    ],
     "feedback:electrum_wire": [
       {
         "amount": 8,
@@ -14747,6 +15063,20 @@
       },
       {
         "amount": 2,
+        "aspect": "thaumaturge:ordo"
+      }
+    ],
+    "feedback:enriched_fuel_rod_welding_rod": [
+      {
+        "amount": 6,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:mortuus"
+      },
+      {
+        "amount": 9,
         "aspect": "thaumaturge:ordo"
       }
     ],
@@ -15452,6 +15782,20 @@
         "aspect": "thaumaturge:ordo"
       }
     ],
+    "feedback:fuel_rod_welding_rod": [
+      {
+        "amount": 6,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:mortuus"
+      },
+      {
+        "amount": 9,
+        "aspect": "thaumaturge:ordo"
+      }
+    ],
     "feedback:fume_port": [
       {
         "amount": 5,
@@ -16066,6 +16410,20 @@
         "aspect": "thaumaturge:ordo"
       }
     ],
+    "feedback:galinstan_welding_rod": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 3,
+        "aspect": "thaumaturge:lux"
+      },
+      {
+        "amount": 2,
+        "aspect": "thaumaturge:ordo"
+      }
+    ],
     "feedback:galinstan_wire": [
       {
         "amount": 5,
@@ -16365,6 +16723,16 @@
       }
     ],
     "feedback:gallium_turned_rod": [
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 3,
+        "aspect": "thaumaturge:lux"
+      }
+    ],
+    "feedback:gallium_welding_rod": [
       {
         "amount": 4,
         "aspect": "thaumaturge:metallum"
@@ -17194,6 +17562,16 @@
         "aspect": "thaumaturge:potentia"
       }
     ],
+    "feedback:gold_welding_rod": [
+      {
+        "amount": 10,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 6,
+        "aspect": "thaumaturge:potentia"
+      }
+    ],
     "feedback:gold_wire": [
       {
         "amount": 10,
@@ -17686,6 +18064,20 @@
         "aspect": "thaumaturge:motus"
       }
     ],
+    "feedback:hardened_high_speed_steel_welding_rod": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 10,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
     "feedback:hardened_steel": [
       {
         "amount": 5,
@@ -17929,6 +18321,20 @@
       }
     ],
     "feedback:hardened_steel_screw": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 10,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:hardened_steel_welding_rod": [
       {
         "amount": 5,
         "aspect": "thaumaturge:metallum"
@@ -18584,6 +18990,20 @@
         "aspect": "thaumaturge:motus"
       }
     ],
+    "feedback:high_speed_steel_welding_rod": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 8,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
     "feedback:high_speed_steel_wire": [
       {
         "amount": 5,
@@ -19053,6 +19473,12 @@
       }
     ],
     "feedback:indium_turned_rod": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      }
+    ],
+    "feedback:indium_welding_rod": [
       {
         "amount": 5,
         "aspect": "thaumaturge:metallum"
@@ -19656,6 +20082,24 @@
         "aspect": "thaumaturge:motus"
       }
     ],
+    "feedback:invar_welding_rod": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 3,
+        "aspect": "thaumaturge:mortuus"
+      },
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
     "feedback:invar_wire": [
       {
         "amount": 5,
@@ -19813,6 +20257,16 @@
       }
     ],
     "feedback:iron_bloom_screw": [
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:iron_bloom_welding_rod": [
       {
         "amount": 4,
         "aspect": "thaumaturge:metallum"
@@ -20265,6 +20719,20 @@
       }
     ],
     "feedback:iron_turned_rod": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:iron_welding_rod": [
       {
         "amount": 5,
         "aspect": "thaumaturge:metallum"
@@ -21168,6 +21636,16 @@
         "aspect": "thaumaturge:mortuus"
       }
     ],
+    "feedback:lead_welding_rod": [
+      {
+        "amount": 7,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:mortuus"
+      }
+    ],
     "feedback:lead_wire": [
       {
         "amount": 7,
@@ -21807,6 +22285,20 @@
       }
     ],
     "feedback:lithium_turned_rod": [
+      {
+        "amount": 2,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 6,
+        "aspect": "thaumaturge:lux"
+      },
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:mortuus"
+      }
+    ],
+    "feedback:lithium_welding_rod": [
       {
         "amount": 2,
         "aspect": "thaumaturge:metallum"
@@ -22483,6 +22975,24 @@
       }
     ],
     "feedback:magnesium_turned_rod": [
+      {
+        "amount": 3,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:potentia"
+      },
+      {
+        "amount": 2,
+        "aspect": "thaumaturge:lux"
+      },
+      {
+        "amount": 10,
+        "aspect": "thaumaturge:ignis"
+      }
+    ],
+    "feedback:magnesium_welding_rod": [
       {
         "amount": 3,
         "aspect": "thaumaturge:metallum"
@@ -23370,6 +23880,16 @@
         "aspect": "thaumaturge:ordo"
       }
     ],
+    "feedback:manganese_steel_welding_rod": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 8,
+        "aspect": "thaumaturge:ordo"
+      }
+    ],
     "feedback:manganese_steel_wire": [
       {
         "amount": 5,
@@ -23391,6 +23911,16 @@
       }
     ],
     "feedback:manganese_turned_rod": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 7,
+        "aspect": "thaumaturge:ordo"
+      }
+    ],
+    "feedback:manganese_welding_rod": [
       {
         "amount": 5,
         "aspect": "thaumaturge:metallum"
@@ -23941,6 +24471,20 @@
       }
     ],
     "feedback:mercury_turned_rod": [
+      {
+        "amount": 7,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:lux"
+      },
+      {
+        "amount": 8,
+        "aspect": "thaumaturge:mortuus"
+      }
+    ],
+    "feedback:mercury_welding_rod": [
       {
         "amount": 7,
         "aspect": "thaumaturge:metallum"
@@ -24839,6 +25383,24 @@
       }
     ],
     "feedback:molybdenum_turned_rod": [
+      {
+        "amount": 6,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:potentia"
+      },
+      {
+        "amount": 3,
+        "aspect": "thaumaturge:mortuus"
+      },
+      {
+        "amount": 6,
+        "aspect": "thaumaturge:ordo"
+      }
+    ],
+    "feedback:molybdenum_welding_rod": [
       {
         "amount": 6,
         "aspect": "thaumaturge:metallum"
@@ -25880,6 +26442,20 @@
         "aspect": "thaumaturge:motus"
       }
     ],
+    "feedback:netherite_blend_welding_rod": [
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 10,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
     "feedback:netherite_bullet": [
       {
         "amount": 5,
@@ -26266,6 +26842,20 @@
         "aspect": "thaumaturge:motus"
       }
     ],
+    "feedback:netherite_welding_rod": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 10,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
     "feedback:netherite_wire": [
       {
         "amount": 5,
@@ -26597,6 +27187,16 @@
       }
     ],
     "feedback:nichrome_turned_rod": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 6,
+        "aspect": "thaumaturge:ordo"
+      }
+    ],
+    "feedback:nichrome_welding_rod": [
       {
         "amount": 5,
         "aspect": "thaumaturge:metallum"
@@ -27125,6 +27725,24 @@
       }
     ],
     "feedback:nickel_turned_rod": [
+      {
+        "amount": 6,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 3,
+        "aspect": "thaumaturge:mortuus"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:nickel_welding_rod": [
       {
         "amount": 6,
         "aspect": "thaumaturge:metallum"
@@ -27712,6 +28330,20 @@
         "aspect": "thaumaturge:perditio"
       }
     ],
+    "feedback:osmium_welding_rod": [
+      {
+        "amount": 10,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 8,
+        "aspect": "thaumaturge:mortuus"
+      },
+      {
+        "amount": 10,
+        "aspect": "thaumaturge:ordo"
+      }
+    ],
     "feedback:overspeed_trip": [
       {
         "amount": 4,
@@ -28123,6 +28755,20 @@
       }
     ],
     "feedback:palladium_turned_rod": [
+      {
+        "amount": 7,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 2,
+        "aspect": "thaumaturge:lux"
+      },
+      {
+        "amount": 3,
+        "aspect": "thaumaturge:mortuus"
+      }
+    ],
+    "feedback:palladium_welding_rod": [
       {
         "amount": 7,
         "aspect": "thaumaturge:metallum"
@@ -28680,6 +29326,16 @@
         "aspect": "thaumaturge:ordo"
       }
     ],
+    "feedback:pewter_welding_rod": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 2,
+        "aspect": "thaumaturge:ordo"
+      }
+    ],
     "feedback:pewter_wire": [
       {
         "amount": 5,
@@ -29177,6 +29833,12 @@
       }
     ],
     "feedback:platinum_turned_rod": [
+      {
+        "amount": 10,
+        "aspect": "thaumaturge:metallum"
+      }
+    ],
+    "feedback:platinum_welding_rod": [
       {
         "amount": 10,
         "aspect": "thaumaturge:metallum"
@@ -31120,6 +31782,20 @@
         "aspect": "thaumaturge:motus"
       }
     ],
+    "feedback:rare_earth_magnet_welding_rod": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 10,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
     "feedback:rare_earth_residue": [
       {
         "amount": 4,
@@ -31826,6 +32502,24 @@
         "aspect": "thaumaturge:ordo"
       }
     ],
+    "feedback:redstone_chromium_welding_rod": [
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 10,
+        "aspect": "thaumaturge:potentia"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:mortuus"
+      },
+      {
+        "amount": 9,
+        "aspect": "thaumaturge:ordo"
+      }
+    ],
     "feedback:redstone_chromium_wire": [
       {
         "amount": 4,
@@ -31949,6 +32643,24 @@
       }
     ],
     "feedback:redstone_filament_screw": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 10,
+        "aspect": "thaumaturge:potentia"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:mortuus"
+      },
+      {
+        "amount": 3,
+        "aspect": "thaumaturge:ordo"
+      }
+    ],
+    "feedback:redstone_filament_welding_rod": [
       {
         "amount": 5,
         "aspect": "thaumaturge:metallum"
@@ -32132,6 +32844,24 @@
         "aspect": "thaumaturge:ordo"
       }
     ],
+    "feedback:redstone_superconductor_fair_welding_rod": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 10,
+        "aspect": "thaumaturge:potentia"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:mortuus"
+      },
+      {
+        "amount": 3,
+        "aspect": "thaumaturge:ordo"
+      }
+    ],
     "feedback:redstone_superconductor_fair_wire": [
       {
         "amount": 5,
@@ -32240,6 +32970,24 @@
         "aspect": "thaumaturge:ordo"
       }
     ],
+    "feedback:redstone_superconductor_poor_welding_rod": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 10,
+        "aspect": "thaumaturge:potentia"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:mortuus"
+      },
+      {
+        "amount": 3,
+        "aspect": "thaumaturge:ordo"
+      }
+    ],
     "feedback:redstone_superconductor_poor_wire": [
       {
         "amount": 5,
@@ -32277,6 +33025,24 @@
       }
     ],
     "feedback:redstone_superconductor_screw": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 10,
+        "aspect": "thaumaturge:potentia"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:mortuus"
+      },
+      {
+        "amount": 3,
+        "aspect": "thaumaturge:ordo"
+      }
+    ],
+    "feedback:redstone_superconductor_welding_rod": [
       {
         "amount": 5,
         "aspect": "thaumaturge:metallum"
@@ -33692,6 +34458,20 @@
         "aspect": "thaumaturge:ordo"
       }
     ],
+    "feedback:shakudo_welding_rod": [
+      {
+        "amount": 6,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:potentia"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:ordo"
+      }
+    ],
     "feedback:shakudo_wire": [
       {
         "amount": 6,
@@ -34584,6 +35364,20 @@
         "aspect": "thaumaturge:lux"
       }
     ],
+    "feedback:silver_welding_rod": [
+      {
+        "amount": 6,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 7,
+        "aspect": "thaumaturge:potentia"
+      },
+      {
+        "amount": 7,
+        "aspect": "thaumaturge:lux"
+      }
+    ],
     "feedback:silver_wire": [
       {
         "amount": 6,
@@ -34944,6 +35738,34 @@
         "aspect": "thaumaturge:ordo"
       }
     ],
+    "feedback:solder_free_solder_wire": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 3,
+        "aspect": "thaumaturge:lux"
+      },
+      {
+        "amount": 2,
+        "aspect": "thaumaturge:ordo"
+      }
+    ],
+    "feedback:solder_free_welding_rod": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 3,
+        "aspect": "thaumaturge:lux"
+      },
+      {
+        "amount": 2,
+        "aspect": "thaumaturge:ordo"
+      }
+    ],
     "feedback:solder_leaded_birdshot": [
       {
         "amount": 6,
@@ -35145,6 +35967,34 @@
       }
     ],
     "feedback:solder_leaded_screw": [
+      {
+        "amount": 6,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:mortuus"
+      },
+      {
+        "amount": 2,
+        "aspect": "thaumaturge:ordo"
+      }
+    ],
+    "feedback:solder_leaded_solder_wire": [
+      {
+        "amount": 6,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:mortuus"
+      },
+      {
+        "amount": 2,
+        "aspect": "thaumaturge:ordo"
+      }
+    ],
+    "feedback:solder_leaded_welding_rod": [
       {
         "amount": 6,
         "aspect": "thaumaturge:metallum"
@@ -35751,6 +36601,20 @@
       },
       {
         "amount": 2,
+        "aspect": "thaumaturge:ordo"
+      }
+    ],
+    "feedback:spent_fuel_rod_welding_rod": [
+      {
+        "amount": 6,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 6,
+        "aspect": "thaumaturge:mortuus"
+      },
+      {
+        "amount": 9,
         "aspect": "thaumaturge:ordo"
       }
     ],
@@ -36362,6 +37226,16 @@
         "aspect": "thaumaturge:ordo"
       }
     ],
+    "feedback:stainless_steel_welding_rod": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 7,
+        "aspect": "thaumaturge:ordo"
+      }
+    ],
     "feedback:stainless_steel_wire": [
       {
         "amount": 5,
@@ -36876,6 +37750,20 @@
         "aspect": "thaumaturge:motus"
       }
     ],
+    "feedback:steel_welding_rod": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 6,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
     "feedback:steel_wire": [
       {
         "amount": 5,
@@ -37175,6 +38063,16 @@
       }
     ],
     "feedback:stellite_turned_rod": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 10,
+        "aspect": "thaumaturge:ordo"
+      }
+    ],
+    "feedback:stellite_welding_rod": [
       {
         "amount": 5,
         "aspect": "thaumaturge:metallum"
@@ -38102,6 +39000,20 @@
         "aspect": "thaumaturge:motus"
       }
     ],
+    "feedback:tempered_steel_welding_rod": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 10,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
     "feedback:tempered_steel_wire": [
       {
         "amount": 5,
@@ -38584,6 +39496,20 @@
         "aspect": "thaumaturge:motus"
       }
     ],
+    "feedback:thaumium_welding_rod": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 6,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
     "feedback:thaumium_wire": [
       {
         "amount": 5,
@@ -39019,6 +39945,20 @@
       },
       {
         "amount": 2,
+        "aspect": "thaumaturge:ordo"
+      }
+    ],
+    "feedback:thorium_fuel_rod_welding_rod": [
+      {
+        "amount": 6,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:mortuus"
+      },
+      {
+        "amount": 9,
         "aspect": "thaumaturge:ordo"
       }
     ],
@@ -39476,6 +40416,16 @@
         "aspect": "thaumaturge:ordo"
       }
     ],
+    "feedback:thorium_tungsten_welding_rod": [
+      {
+        "amount": 10,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 10,
+        "aspect": "thaumaturge:ordo"
+      }
+    ],
     "feedback:thorium_tungsten_wire": [
       {
         "amount": 10,
@@ -39487,6 +40437,16 @@
       }
     ],
     "feedback:thorium_turned_rod": [
+      {
+        "amount": 7,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:mortuus"
+      }
+    ],
+    "feedback:thorium_welding_rod": [
       {
         "amount": 7,
         "aspect": "thaumaturge:metallum"
@@ -39888,6 +40848,16 @@
         "aspect": "thaumaturge:lux"
       }
     ],
+    "feedback:tin_solder_wire": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:lux"
+      }
+    ],
     "feedback:tin_swarf": [
       {
         "amount": 1,
@@ -39909,6 +40879,16 @@
       }
     ],
     "feedback:tin_turned_rod": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:lux"
+      }
+    ],
+    "feedback:tin_welding_rod": [
       {
         "amount": 5,
         "aspect": "thaumaturge:metallum"
@@ -40278,6 +41258,16 @@
         "aspect": "thaumaturge:ordo"
       }
     ],
+    "feedback:titanium_6al_4v_welding_rod": [
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 10,
+        "aspect": "thaumaturge:ordo"
+      }
+    ],
     "feedback:titanium_6al_4v_wire": [
       {
         "amount": 4,
@@ -40582,6 +41572,16 @@
         "aspect": "thaumaturge:ordo"
       }
     ],
+    "feedback:titanium_carbide_welding_rod": [
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 10,
+        "aspect": "thaumaturge:ordo"
+      }
+    ],
     "feedback:titanium_case": [
       {
         "amount": 4,
@@ -40837,6 +41837,16 @@
       }
     ],
     "feedback:titanium_turned_rod": [
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 6,
+        "aspect": "thaumaturge:ordo"
+      }
+    ],
+    "feedback:titanium_welding_rod": [
       {
         "amount": 4,
         "aspect": "thaumaturge:metallum"
@@ -41842,6 +42852,16 @@
         "aspect": "thaumaturge:ordo"
       }
     ],
+    "feedback:tungsten_carbide_welding_rod": [
+      {
+        "amount": 8,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 10,
+        "aspect": "thaumaturge:ordo"
+      }
+    ],
     "feedback:tungsten_case": [
       {
         "amount": 10,
@@ -42197,6 +43217,20 @@
       }
     ],
     "feedback:tungsten_turned_rod": [
+      {
+        "amount": 10,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:potentia"
+      },
+      {
+        "amount": 10,
+        "aspect": "thaumaturge:ordo"
+      }
+    ],
+    "feedback:tungsten_welding_rod": [
       {
         "amount": 10,
         "aspect": "thaumaturge:metallum"
@@ -43030,6 +44064,24 @@
         "aspect": "thaumaturge:motus"
       }
     ],
+    "feedback:uranium_depleted_welding_rod": [
+      {
+        "amount": 10,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:mortuus"
+      },
+      {
+        "amount": 7,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 2,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
     "feedback:uranium_depleted_wire": [
       {
         "amount": 10,
@@ -43614,6 +44666,24 @@
         "aspect": "thaumaturge:motus"
       }
     ],
+    "feedback:uranium_enriched_welding_rod": [
+      {
+        "amount": 10,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:mortuus"
+      },
+      {
+        "amount": 7,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 2,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
     "feedback:uranium_enriched_wire": [
       {
         "amount": 10,
@@ -44027,6 +45097,24 @@
       }
     ],
     "feedback:uranium_turned_rod": [
+      {
+        "amount": 10,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:mortuus"
+      },
+      {
+        "amount": 7,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 2,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
+    "feedback:uranium_welding_rod": [
       {
         "amount": 10,
         "aspect": "thaumaturge:metallum"
@@ -44592,6 +45680,16 @@
         "aspect": "thaumaturge:ordo"
       }
     ],
+    "feedback:vanadium_welding_rod": [
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:ordo"
+      }
+    ],
     "feedback:vanadium_wire": [
       {
         "amount": 4,
@@ -44809,6 +45907,20 @@
       }
     ],
     "feedback:void_metal_screw": [
+      {
+        "amount": 6,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 6,
+        "aspect": "thaumaturge:mortuus"
+      },
+      {
+        "amount": 10,
+        "aspect": "thaumaturge:ordo"
+      }
+    ],
+    "feedback:void_metal_welding_rod": [
       {
         "amount": 6,
         "aspect": "thaumaturge:metallum"
@@ -45544,6 +46656,20 @@
         "aspect": "thaumaturge:ordo"
       }
     ],
+    "feedback:woods_metal_welding_rod": [
+      {
+        "amount": 6,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:mortuus"
+      },
+      {
+        "amount": 2,
+        "aspect": "thaumaturge:ordo"
+      }
+    ],
     "feedback:woods_metal_wire": [
       {
         "amount": 6,
@@ -45982,6 +47108,20 @@
         "aspect": "thaumaturge:motus"
       }
     ],
+    "feedback:wrought_iron_welding_rod": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:ordo"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:motus"
+      }
+    ],
     "feedback:wrought_iron_wire": [
       {
         "amount": 5,
@@ -46254,6 +47394,12 @@
       {
         "amount": 1,
         "aspect": "thaumaturge:fabrico"
+      }
+    ],
+    "feedback:zinc_welding_rod": [
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:metallum"
       }
     ],
     "feedback:zinc_wire": [
