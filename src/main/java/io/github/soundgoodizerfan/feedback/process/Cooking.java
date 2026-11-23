@@ -81,7 +81,30 @@ public final class Cooking {
             }
             index = serverIndex;
         }
-        return Optional.ofNullable(index.get(stack.getItem()));
+        Entry entry = index.get(stack.getItem());
+        return entry != null ? Optional.of(entry) : foreign(stack);
+    }
+
+    private static final Map<Item, Entry> FOREIGN = new java.util.concurrent.ConcurrentHashMap<>();
+
+    /**
+     * A food another mod added: any item with the food component that is neither ours nor vanilla's (both have materials) is a plain
+     * perishable, its figures taken from its nutrition. A heartier food (more nutrition) is denser and drier, a sweeter one (higher
+     * saturation modifier) carries more fat; it has no compounds, perks or cooked form, so it only keeps, spoils and feeds. Cached
+     * per item; read from the stack's component so the figures follow whatever that mod gave it. Taken from no mod's code.
+     */
+    private static Optional<Entry> foreign(ItemStack stack) {
+        FoodProperties food = stack.get(DataComponents.FOOD);
+        if (food == null)
+            return Optional.empty();
+        ResourceLocation id = BuiltInRegistries.ITEM.getKey(stack.getItem());
+        if (id.getNamespace().equals("minecraft") || id.getNamespace().equals(io.github.soundgoodizerfan.feedback.Feedback.MOD_ID))
+            return Optional.empty();
+        return Optional.of(FOREIGN.computeIfAbsent(stack.getItem(), item -> {
+            float moisture = Mth.clamp(0.8f - food.nutrition() * 0.04f, 0.25f, 0.8f);
+            float fat = Mth.clamp(food.saturation() * 0.1f, 0f, 0.5f);
+            return new Entry(new Material.Food(moisture, 0f, 0f, Optional.empty(), fat, 0.2f, Map.of(), Map.of(), 1f, 1f), FTuning.FOOD_CHAR_TU, Optional.empty());
+        }));
     }
 
     /**
