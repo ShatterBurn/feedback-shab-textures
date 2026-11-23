@@ -347,6 +347,12 @@ public final class ElectricMachineTuning {
     public static final float ENERGY_FITTING_AMPS = 2f, ENERGY_FITTING_FE_PER_EU = 4f, ENERGY_FITTING_EFFICIENCY = 0.8f;
     public static final int ENERGY_FITTING_CAPACITY_FE = 20000, ENERGY_FITTING_FE_PER_TICK = 400;
 
+    /** Invented. The vis tap (current from a Thaumaturge vis relay network): the band it offers, its most amps, the primal it draws, centivis per draw and how often (ticks), Eu per centivis, the buffer in Eu, and the flux a second it fouls the chunk with while full. */
+    public static final VoltageBand VIS_TAP_BAND = VoltageBand.MV;
+    public static final float VIS_TAP_AMPS = 2f, VIS_TAP_EU_PER_CENTIVIS = 5f, VIS_TAP_CAPACITY_EU = 400f, VIS_TAP_BACKFLOW = 0.05f;
+    public static final int VIS_TAP_CENTIVIS_PER_DRAW = 4, VIS_TAP_DRAW_EVERY = 20;
+    public static final String VIS_TAP_PRIMAL = "ignis";
+
     /** Placeholder. A lightning strike that lands on a rod standing on a Leyden jar: the band it arrives at and the packets of that band it carries; a jar rated under the band punctures, one rated at it takes the charge up to its capacity. */
     public static final VoltageBand STORM_STRIKE_BAND = VoltageBand.EHV;
     public static final float STORM_STRIKE_PACKETS = 40f;

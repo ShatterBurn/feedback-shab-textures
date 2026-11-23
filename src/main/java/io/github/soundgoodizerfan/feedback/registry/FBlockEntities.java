@@ -346,6 +346,11 @@ public class FBlockEntities {
                     .of(io.github.soundgoodizerfan.feedback.robot.RobotArmBlockEntity::new, FBlocks.ROBOT_ARM.get())
                     .build(null));
 
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<io.github.soundgoodizerfan.feedback.machine.vistap.VisTapBlockEntity>> VIS_TAP =
+            BLOCK_ENTITIES.register("vis_tap", () -> BlockEntityType.Builder
+                    .of(io.github.soundgoodizerfan.feedback.machine.vistap.VisTapBlockEntity::new, FBlocks.VIS_TAP.get())
+                    .build(null));
+
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<io.github.soundgoodizerfan.feedback.machine.energyfitting.EnergyFittingBlockEntity>> ENERGY_FITTING =
             BLOCK_ENTITIES.register("energy_fitting", () -> BlockEntityType.Builder
                     .of(io.github.soundgoodizerfan.feedback.machine.energyfitting.EnergyFittingBlockEntity::new, FBlocks.ENERGY_FITTING.get())

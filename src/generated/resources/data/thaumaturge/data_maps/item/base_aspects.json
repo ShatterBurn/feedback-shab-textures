@@ -47560,6 +47560,20 @@
         "aspect": "thaumaturge:instrumentum"
       }
     ],
+    "feedback:vis_tap": [
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:potentia"
+      },
+      {
+        "amount": 5,
+        "aspect": "thaumaturge:auram"
+      },
+      {
+        "amount": 3,
+        "aspect": "thaumaturge:machina"
+      }
+    ],
     "feedback:void_metal_birdshot": [
       {
         "amount": 6,

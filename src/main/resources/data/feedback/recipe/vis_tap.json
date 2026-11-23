@@ -1,0 +1,27 @@
+{
+  "type": "feedback:engineering",
+  "key": {
+    "P": { "item": "feedback:brass_plate" },
+    "T": { "item": "feedback:glass_tubing" },
+    "W": { "item": "feedback:copper_fine_wire" },
+    "L": { "item": "feedback:copper_wire" }
+  },
+  "pattern": [
+    " T ",
+    "WWW",
+    "PLP"
+  ],
+  "result": {
+    "count": 1,
+    "id": "feedback:vis_tap"
+  },
+  "tool": [
+    { "ability": "feedback:driver", "wear": 1 }
+  ],
+  "fasteners": {
+    "count": 2,
+    "floor": 1,
+    "forms": ["screw"]
+  },
+  "school": "electrical:2"
+}
