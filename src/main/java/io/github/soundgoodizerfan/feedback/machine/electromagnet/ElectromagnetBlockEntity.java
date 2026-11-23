@@ -219,6 +219,9 @@ public class ElectromagnetBlockEntity extends ElectricNode implements ThermalBod
                     .add(toward.normalize().scale((flings ? -1 : 1) * figures.get("Pull", ElectricMachineTuning.ELECTROMAGNET_PULL) * field)));
             item.hasImpulse = true;
         }
+        // A levitation plate riding on the field (within the reach a plate feels it) is held off too, whatever it is made of.
+        for (int up = 1; up <= (int) MagnetField.REACH && !humming; up++)
+            humming = level.getBlockState(worldPosition.above(up)).getBlock() instanceof io.github.soundgoodizerfan.feedback.machine.levitation.LevitationPlateBlock;
         // A hum every couple of seconds while something diamagnetic is held off.
         if (humming && (sinceHum += ElectricMachineTuning.ELECTROMAGNET_PULL_INTERVAL_TICKS) >= ElectricMachineTuning.ELECTROMAGNET_HUM_INTERVAL_TICKS) {
             sinceHum = 0;

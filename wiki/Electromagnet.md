@@ -18,7 +18,7 @@ The core has one measure, the **turns**, from 50 to 150 percent (100 by default)
 
 ## What it pulls
 
-Anything on the ground made of **iron, steel, cast iron, hardened steel or netherite**, in any form. That means ingots, nuggets, plates, rods, scrap, swarf, dust, raw iron. (Assembled [tools and armor](Tools_and_Weapons.md) are not pulled yet.)
+Anything on the ground made of **iron, steel, cast iron, hardened steel or netherite**, in any form. That means ingots, nuggets, plates, rods, scrap, swarf, dust, raw iron. (Assembled [tools and armor](Tools_and_Weapons.md) are not pulled.)
 
 It ignores everything else: copper, gold, zinc, tin, brass, bronze, lead, stone, wood and so on. A magnet over a mixed pile will drag the iron and steel out and leave the rest behind. That's what it's for: **sorting by what something is made of**, not by which item it is.
 
@@ -28,7 +28,7 @@ It only moves items that are lying on the ground. It doesn't pick anything up in
 
 Dropped items made of a **diamagnetic** material (bismuth above all, then graphite, and weakly gold, silver, lead, cadmium, zinc and copper; see [Materials](Materials.md#the-metals)) are shoved away from a powered magnet and slightly upward, harder the higher the material's diamagnetism and the stronger the field. The magnet gives a faint hum and sparks while it does. With **Scatter** the magnet pulls them in instead.
 
-A powered magnet also lets [Levitation Plates](Levitation.md#levitation-plate) float above it and takes the drag off a shaft, flywheel or bearing fitted with a [Levitation Sleeve](Levitation.md#levitation-sleeve).
+A powered magnet also lets [Levitation Plates](Levitation.md#levitation-plate) float above it, humming faintly while a plate stands within 3 blocks above it, and takes the drag off a shaft, flywheel or bearing fitted with a [Levitation Sleeve](Levitation.md#levitation-sleeve).
 
 ## Separating ore
 
