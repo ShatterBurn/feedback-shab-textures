@@ -29,6 +29,15 @@
     "reflectivity": 0.5
   },
   "toxicity": 0,
+  "potion": {
+    "family": "resin",
+    "heading": 70,
+    "reach": 0.25,
+    "shape": {
+      "type": "arc",
+      "bulge": 0.2
+    }
+  },
   "molten": {
     "viscosity": 10000.0,
     "density": 0.97,

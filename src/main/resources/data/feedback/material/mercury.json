@@ -41,6 +41,16 @@
   "corrosion_resistance": 1.0,
   "enchantability": 6,
   "toxicity": 3.0,
+  "potion": {
+    "family": "toxin",
+    "heading": 250,
+    "reach": 0.3,
+    "shape": {
+      "type": "zigzag",
+      "teeth": 2,
+      "amp": 0.3
+    }
+  },
   "accepts": {
     "gem": ["#c:gems/quicksilver"],
     "nugget": ["#c:nuggets/quicksilver"]
