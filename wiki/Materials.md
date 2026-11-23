@@ -213,7 +213,7 @@ Graphite ore sits in veins in stone and deepslate, rarer than coal, in small sea
 Diamond can be grown. Everything starts from a **Diamond Seed**, a chip of diamond for a crystal to grow on. Two ways make one:
 
 - 1 Diamond cuts into 2 Diamond Seeds (shapeless).
-- 8 Diamond Grit press into 1 Diamond Seed (shapeless). Diamond Grit comes from a [Shock Capsule](Shock_Capsule.md) set off by a blast.
+- 8 Diamond Grit press into 1 Diamond Seed (shapeless). Diamond Grit comes from a [Shock Capsule](Shock_Capsule.md) set off by a blast. It is also diamond's lump form, so it serves as the grit stock of an [Abrasive Wheel](Grinding_Wheel.md).
 
 A seed then grows in a [Reactor](Reactor.md#the-reactions), two ways:
 

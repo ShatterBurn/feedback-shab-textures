@@ -14,7 +14,7 @@ C B C
 
 C is Cobblestone, B is a [Bearing](Bearing.md) and S is a [Shaft](Shaft.md).
 
-The wheel is a [machine head](Machine_Heads.md): draw it at the Blueprint Table and put it together in a crafting grid. Its edge material is the grit; a wheel with diamond grit cuts the hardest stock.
+The wheel is a [machine head](Machine_Heads.md): draw it at the Blueprint Table and put it together in a crafting grid. Its edge material is the grit; a wheel with diamond grit cuts the hardest stock. Diamond Grit is the lump form of diamond, so it is stock for the wheel's edge at the part bench ([Smithing Table](Smithing_Table.md)).
 
 ## Using it
 

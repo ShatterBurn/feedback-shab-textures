@@ -12,7 +12,7 @@ The mods Feedback works with, and what each one gives you. Some are required, so
 | [Flywheel](#flywheel) | Required | Rendering on the client |
 | [JEI](#jei) | Optional | Recipe, process and info pages |
 | [Jade](#jade) | Optional | Readouts on blocks and villagers |
-| [Thaumaturge](#thaumaturge) | Optional | Aspects on Feedback items |
+| [Thaumaturge](#thaumaturge) | Optional | Aspects on Feedback items, flux and essentia machines, thaumium alloys |
 | [Other mods](#other-mods) | Optional | Fluid tags and shared biome and stone tags |
 
 ## Sable, Dimensional Sable and Sable Scaling
@@ -89,13 +89,25 @@ Thaumaturge items that match a Feedback material are read as that material in ev
 - Amber and cinnabar ores, blocks and raw items are amber and cinnabar.
 - Rare earth is rare earth residue.
 - Essentia is a quartz-like crystal that holds an aspect. Its crystal item and the seven world crystals (air, fire, water, earth, order, entropy and flux) are its forms.
-- Thaumium is iron with a little essentia (94% iron, 6% essentia): strong, magnetic, enchantability 22.
+- Thaumium is iron with a little essentia, in three grades (see [Doped thaumium](#doped-thaumium)).
 - Void metal is dense, very hard, brittle and dark (88% osmium, 8% ender pearl, 4% essentia).
 - Thaumium and void metal each make the usual tinted form items. Thaumaturge's thaumium and void swords, pickaxes, axes, shovels, hoes, helmets, chestplates, leggings and boots are converted on the spot into the modular item of that kind, headed or plated in that metal, like vanilla tools (see [Old vanilla tools](Tools_and_Weapons.md#old-vanilla-tools)). Robes and shields are not converted. Other mods' recipes and JEI pages that ask for one of these items accept the converted item too.
 - Greatwood and silverwood logs are wood materials. Greatwood is a dense hardwood that burns long; silverwood is a lighter, pale wood that burns shorter.
 - Cinderpearl is a pyrophoric herb: it burns at a low temperature, short and hot, as fuel.
 - Fabric is cloth, mirrored glass is mirrored glass and tallow is tallow. These three have no items of their own, and anything tagged tallow or animal fat from any mod counts as tallow.
 - Flux Goo, Thaumaturge's fluid, is a corrosive acidic sludge with pH 3.
+
+### Doped thaumium
+
+Molten essentia mixed into molten iron in a [Crucible](Crucible.md) makes thaumium, and the share of essentia picks the grade. Each grade is a window; the mix has to land inside one.
+
+| Grade | Essentia share | Hardness | Toughness | Enchantability |
+| --- | --- | --- | --- | --- |
+| **Lean Thaumium** | 1 to 4% | 10 | 80 | 18 |
+| **Thaumium** | 5 to 10% | 14 | 60 | 22 |
+| **Rich Thaumium** | 11 to 20% | 22 | 12 | 24 |
+
+The rest of each mix is iron. More essentia makes the metal harder and more brittle: Rich Thaumium is the hardest and breaks easily, Lean Thaumium the toughest. All three are magnetic and each makes the usual tinted form items. JEI's *Mixing* card lists the windows.
 
 ### Foods
 
@@ -133,6 +145,15 @@ Machines, devices and carried hardware carry aspects that match their function:
 Part items that carry their material on the stack have no aspects of their own, and Thaumaturge works theirs out from their recipes. So do engineered items that have no aspects set by hand: they take them from their recipe ingredients. Creative and debug items have none.
 
 Scanning Feedback's entities with the Thaumometer also yields aspects: the robot, the steam cloud, the grenade, the thrown potion bottle, the grapple hook and the thrown weapon.
+
+### Flux, scrubbing and rust
+
+Thaumaturge tracks **flux** in each chunk. Three Feedback blocks and one item deal with it.
+
+- The [Scrubbing Bed](Scrubbing_Bed.md) takes flux out of the chunk it stands in. It fills up, and a full bed leaks flux back.
+- The [Essentia Vent](Essentia_Vent.md) bleeds essentia from a full essentia store into the chunk as flux.
+- **Flux rust.** In a chunk whose flux stands well above its base, bare metal machines slowly corrode: [shafts](Shaft.md), [pulleys](Pulleys.md), [dynamotors](Dynamotor.md), [converters](Converter.md), [coils](Heating_Coil.md), [relays](Relay.md), [electromagnets](Electromagnet.md) and [batteries](Battery.md) lose condition, faster the more flux there is. It is the place doing it, not the machine's use. It happens in chunks near a player. A machine whose block wears a [Taint Glaze](Taint_Glaze.md) does not corrode, and neither does anything once a scrubbing bed brings the flux back down.
+- **Flux goo into brine.** 200 mB of Thaumaturge's Flux Goo and 100 mB of [lye](Chemicals.md#lye) in a [Reactor](Reactor.md) make 300 mB of [brine](Chemicals.md#brine). The Reactor wants it cool, 10 to 120 Tu, best near 40.
 
 ### Taint and portable holes
 
