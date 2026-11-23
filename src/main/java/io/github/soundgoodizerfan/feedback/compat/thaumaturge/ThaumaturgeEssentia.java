@@ -76,6 +76,38 @@ public final class ThaumaturgeEssentia {
         }
     }
 
+    /** What {@link #drawAspect} took: the aspect's path (such as {@code ignis}) and how much. */
+    public record Drawn(String aspect, int amount) {
+    }
+
+    /**
+     * As {@link #draw}, but naming the aspect it took, and only from an aspect {@code wanted} accepts (a path such as {@code aqua}); null when
+     * nothing wanted came out. The adapter uses it to turn each aspect into its own gas and to leave every other aspect untouched.
+     */
+    public static Drawn drawAspect(Level level, BlockPos pos, Direction face, int amount, java.util.function.Predicate<String> wanted) {
+        if (!present() || amount <= 0)
+            return null;
+        try {
+            Object s = level.getCapability(storage, pos, face);
+            if (s == null)
+                return null;
+            @SuppressWarnings("unchecked")
+            Set<Holder<?>> held = (Set<Holder<?>>) aspects.invoke(contents.invoke(s));
+            for (Holder<?> aspect : held) {
+                String path = aspect.unwrapKey().map(k -> k.location().getPath()).orElse("");
+                if (!wanted.test(path))
+                    continue;
+                int out = (int) extract.invoke(s, aspect, amount, false);
+                if (out > 0)
+                    return new Drawn(path, out);
+            }
+            return null;
+        } catch (Throwable t) {
+            fail(t);
+            return null;
+        }
+    }
+
     private static int fail(Throwable t) {
         Feedback.LOGGER.warn("Thaumaturge essentia binding failed, turned off: {}", t.toString());
         usable = false;

@@ -105,6 +105,7 @@
     "feedback:engine",
     "feedback:engineering_table",
     "feedback:enriched_fuel_rod_pipe",
+    "feedback:essentia_adapter",
     "feedback:essentia_vent",
     "feedback:evacuated_tube",
     "feedback:fence",

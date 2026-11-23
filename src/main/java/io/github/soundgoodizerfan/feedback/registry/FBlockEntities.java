@@ -346,6 +346,11 @@ public class FBlockEntities {
                     .of(io.github.soundgoodizerfan.feedback.robot.RobotArmBlockEntity::new, FBlocks.ROBOT_ARM.get())
                     .build(null));
 
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<io.github.soundgoodizerfan.feedback.machine.essentiaadapter.EssentiaAdapterBlockEntity>> ESSENTIA_ADAPTER =
+            BLOCK_ENTITIES.register("essentia_adapter", () -> BlockEntityType.Builder
+                    .of(io.github.soundgoodizerfan.feedback.machine.essentiaadapter.EssentiaAdapterBlockEntity::new, FBlocks.ESSENTIA_ADAPTER.get())
+                    .build(null));
+
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<io.github.soundgoodizerfan.feedback.machine.vistap.VisTapBlockEntity>> VIS_TAP =
             BLOCK_ENTITIES.register("vis_tap", () -> BlockEntityType.Builder
                     .of(io.github.soundgoodizerfan.feedback.machine.vistap.VisTapBlockEntity::new, FBlocks.VIS_TAP.get())

@@ -5345,6 +5345,8 @@
   "message.feedback.rub_generator.no_rod": "No rod seated: seat a rod of amber or another good insulator to rub.",
   "message.feedback.rub_generator.full": "The rod holds all the charge it can.",
   "feedback.jei.info.rub_generator": "Friction electricity by hand. Seat a rod of an insulator, amber is the classic one, by right-clicking with it (sneak with an empty hand to take it out), then rub it with an empty hand: each rub leaves charge on the rod, more for a better insulator, because only an insulator holds it. The charge leaks away slowly on its own and is drawn off into a low-voltage line as a small burst. Wire it to a Leyden jar and the rubs add up.",
+  "block.feedback.essentia_adapter": "Essentia Adapter",
+  "feedback.jei.info.essentia_adapter": "A one-way fitting from a Thaumaturge essentia store to a gas. Beside a store it draws a little essentia of the aspects it has a gas for each second (aer gives air, aqua steam, ignis hot air, forty mB for each unit) into its own tank, and leaves every other aspect where it is. Nothing goes back. A full tank spills what it cannot hold into the chunk as flux. Without Thaumaturge it does nothing.",
   "block.feedback.essentia_vent": "Essentia Vent",
   "message.feedback.essentia_vent.nothing": "It touches no essentia store: it has nothing to read.",
   "message.feedback.essentia_vent.open": "Open: bleeding essentia off into the chunk as flux until the store is down.",

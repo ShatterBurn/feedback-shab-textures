@@ -181,7 +181,7 @@ public class FCreativeTabs {
     /** Fluids and gases: move, hold, control, treat, then the oil field. */
     private static final List<DeferredItem<?>> FLUIDS = of(FModular.PUMP, FModular.COMPRESSOR, FItems.VACUUM_PUMP,
             FModular.GAS_TANK, FModular.PRESSURE_VESSEL, FItems.VALVE, FItems.RELIEF_VALVE, FItems.AIR_INTAKE, FItems.RADIATOR_PANEL, FItems.AIR_VALVE,
-            FItems.BELLOWS, FItems.DAMPER, FItems.FLARE, FItems.HYDRIDE_BED, FItems.SCRUBBING_BED, FItems.ESSENTIA_VENT, FItems.CONDENSER, FItems.REBOILER,
+            FItems.BELLOWS, FItems.DAMPER, FItems.FLARE, FItems.HYDRIDE_BED, FItems.SCRUBBING_BED, FItems.ESSENTIA_VENT, FItems.ESSENTIA_ADAPTER, FItems.CONDENSER, FItems.REBOILER,
             FModular.TRAY, FItems.REACTOR, FModular.GAS_CENTRIFUGE,
             FItems.SEEP, FItems.SOUL_SEEP, FItems.DERRICK_BASE, FItems.DERRICK_CASING, FItems.DERRICK_BIT,
             FItems.WELLHEAD);

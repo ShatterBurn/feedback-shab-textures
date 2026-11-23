@@ -936,6 +936,15 @@ public class FBlocks {
             BLOCKS.register("robot_reel", () -> new io.github.soundgoodizerfan.feedback.robot.RobotDockBlock(
                     BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_ORANGE).strength(1.0f).sound(SoundType.COPPER).noOcclusion(), true));
 
+    /** From a Thaumaturge essentia store to a Feedback gas. See {@code EssentiaAdapterBlockEntity}. */
+    public static final DeferredBlock<io.github.soundgoodizerfan.feedback.machine.essentiaadapter.EssentiaAdapterBlock> ESSENTIA_ADAPTER =
+            BLOCKS.register("essentia_adapter", () -> new io.github.soundgoodizerfan.feedback.machine.essentiaadapter.EssentiaAdapterBlock(
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.COLOR_PURPLE)
+                            .strength(1.5f)
+                            .sound(SoundType.COPPER)
+                            .noOcclusion()));
+
     /** A tap on a Thaumaturge vis relay network that gives current. See {@code VisTapBlockEntity}. */
     public static final DeferredBlock<io.github.soundgoodizerfan.feedback.machine.vistap.VisTapBlock> VIS_TAP =
             BLOCKS.register("vis_tap", () -> new io.github.soundgoodizerfan.feedback.machine.vistap.VisTapBlock(
