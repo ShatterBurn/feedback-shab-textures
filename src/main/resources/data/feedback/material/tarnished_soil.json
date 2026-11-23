@@ -1,0 +1,45 @@
+{
+  "kind": "granular",
+  "traits": [
+    "porous"
+  ],
+  "exclude": [
+    "ingot"
+  ],
+  "hardness": 0.6,
+  "density": 1.6,
+  "thermal": {
+    "melting_point": 1300,
+    "cooling_rate": 2.07,
+    "conductivity": 7.48e-05,
+    "specific_heat": 1,
+    "latent_heat_fusion": 250,
+    "boiling_point": 500,
+    "latent_heat_vaporisation": 800,
+    "oxidation_temperature": 1300,
+    "service_temperature": 780
+  },
+  "mechanical": {
+    "friction": 0.9,
+    "abrasiveness": 0.1,
+    "yield_strength": 0.5,
+    "toughness": 0.5
+  },
+  "separation": {
+    "reflectivity": 0.15
+  },
+  "forms": {
+    "block": "feedback:tarnished_soil"
+  },
+  "bears": {
+    "feedback:silver": 0.03
+  },
+  "corrosion_resistance": 1,
+  "toxicity": 0,
+  "molten": {
+    "viscosity": 100,
+    "density": 1.4,
+    "shear_thickening": 0
+  },
+  "enchantability": 1
+}

@@ -38,6 +38,20 @@ Melting raw or crushed chalcopyrite gives molten copper, and its iron leaves as 
 
 Native copper, gold, tin, zinc and lead ores take the same ladder: they are separated from their rock rather than ground.
 
+## Stained soil as ore
+
+The stained soils that mark a vein bear a little of its metal and take the same ladder as any ore: crush a block, wash it, then melt or leach it. The yield is small.
+
+| Block | Metal (share) |
+| --- | --- |
+| Rust-Stained Soil | Cast iron (12%) |
+| Gossan Rubble | Gold (2%) |
+| Bleached Soil | Uranium (3%); faintly [radioactive](Radiation.md) |
+| Tarnished Soil | Silver (3%) |
+| Black Sand | Tin (8%); [magnetic](Electromagnet.md#separating-ore) |
+
+Sooty Soil bears no metal.
+
 ## Crushing and grinding
 
 1. **Crush** raw rock to Crushed with the [Mechanical Hammer](Mechanical_Hammer.md#crushing-ore) or by hand on an [Anvil](Anvil.md).
