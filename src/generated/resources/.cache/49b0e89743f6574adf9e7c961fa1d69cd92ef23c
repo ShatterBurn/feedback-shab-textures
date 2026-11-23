@@ -1,4 +1,4 @@
-// 1.21.1	2026-11-22T20:49:16.938232515	Item Models: feedback
+// 1.21.1	2026-11-22T21:23:49.413229478	Item Models: feedback
 65f5ba7f72e4fca87b13d4ce890377b47b0160dd assets/feedback/models/item/acacia_grip.json
 1cbe171cef7392663517643cbe471f06b808ce0b assets/feedback/models/item/acacia_shaving.json
 73e726da459876a2f12985c5cd3247f952c6eb88 assets/feedback/models/item/alnico_birdshot.json
@@ -1000,6 +1000,8 @@ ecea29d296fea14e23e84fd85988b769c9a17560 assets/feedback/models/item/gold_rivet.
 94405843f6403f879bec90012bcb581772bbbf76 assets/feedback/models/item/graphite_dust.json
 261c86b92d63c259f06949eaf52e371f2deab1cf assets/feedback/models/item/graphite_plate.json
 94405843f6403f879bec90012bcb581772bbbf76 assets/feedback/models/item/gravel_dust.json
+65f5ba7f72e4fca87b13d4ce890377b47b0160dd assets/feedback/models/item/greatwood_grip.json
+1cbe171cef7392663517643cbe471f06b808ce0b assets/feedback/models/item/greatwood_shaving.json
 73e726da459876a2f12985c5cd3247f952c6eb88 assets/feedback/models/item/hardened_high_speed_steel_birdshot.json
 49daa5676c97ca3e81e097077fcde704793d52a1 assets/feedback/models/item/hardened_high_speed_steel_bullet.json
 ff79ab50270fe1b648f4bd4de325622d80debbc7 assets/feedback/models/item/hardened_high_speed_steel_case.json
@@ -1969,6 +1971,8 @@ ecea29d296fea14e23e84fd85988b769c9a17560 assets/feedback/models/item/silver_rive
 62d1e8961ae1cfe84c84aef5dbf7d66444136377 assets/feedback/models/item/silver_turned_rod.json
 8c6561c2f1587b8b174519f5b02c4f34cba746aa assets/feedback/models/item/silver_welding_rod.json
 45b92b867fd674f9299593d0fc5b99feac2976b0 assets/feedback/models/item/silver_wire.json
+65f5ba7f72e4fca87b13d4ce890377b47b0160dd assets/feedback/models/item/silverwood_grip.json
+1cbe171cef7392663517643cbe471f06b808ce0b assets/feedback/models/item/silverwood_shaving.json
 94405843f6403f879bec90012bcb581772bbbf76 assets/feedback/models/item/slag_dust.json
 73e726da459876a2f12985c5cd3247f952c6eb88 assets/feedback/models/item/solder_free_birdshot.json
 67065ce51af909879e9c2e47e3e1448d1d148f93 assets/feedback/models/item/solder_free_coil_spring.json

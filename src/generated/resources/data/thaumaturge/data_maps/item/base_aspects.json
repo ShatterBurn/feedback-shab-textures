@@ -17710,6 +17710,26 @@
         "aspect": "thaumaturge:perditio"
       }
     ],
+    "feedback:greatwood_grip": [
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:ignis"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:herba"
+      }
+    ],
+    "feedback:greatwood_shaving": [
+      {
+        "amount": 1,
+        "aspect": "thaumaturge:ignis"
+      },
+      {
+        "amount": 1,
+        "aspect": "thaumaturge:herba"
+      }
+    ],
     "feedback:grinding_wheel": [
       {
         "amount": 4,
@@ -35804,6 +35824,26 @@
       {
         "amount": 7,
         "aspect": "thaumaturge:lux"
+      }
+    ],
+    "feedback:silverwood_grip": [
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:ignis"
+      },
+      {
+        "amount": 4,
+        "aspect": "thaumaturge:herba"
+      }
+    ],
+    "feedback:silverwood_shaving": [
+      {
+        "amount": 1,
+        "aspect": "thaumaturge:ignis"
+      },
+      {
+        "amount": 1,
+        "aspect": "thaumaturge:herba"
       }
     ],
     "feedback:skewer": [

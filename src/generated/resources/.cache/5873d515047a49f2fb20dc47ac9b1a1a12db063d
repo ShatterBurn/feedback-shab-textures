@@ -1,4 +1,4 @@
-// 1.21.1	2026-11-22T20:49:16.957735196	Tags for minecraft:item mod id feedback
+// 1.21.1	2026-11-22T21:23:49.434418187	Tags for minecraft:item mod id feedback
 3073a61ba898ee96262dfccbc399f1d5818039eb data/c/tags/item/birdshots/alnico.json
 574ad0a0f2ff288ea1128b7267ecde3cdd2af387 data/c/tags/item/birdshots/aluminium.json
 3b858b2b1f82950d60df7edc28f511d16bcaa4d0 data/c/tags/item/birdshots/aluminium_foam.json
@@ -1199,6 +1199,7 @@ c6463866fb3e5cbbdfb6143f7163e30d90923fc0 data/c/tags/item/grips/fuel_rod.json
 62832c19334cde044cf3c7a342f539a1ebc22795 data/c/tags/item/grips/galinstan.json
 8ae0a39a7650b0b29fe82e6f3cc580bb83ca44aa data/c/tags/item/grips/gallium.json
 d380a47ece596dd856c5e589249435e792d4035e data/c/tags/item/grips/gold.json
+dd977e3b6265f80df33fa4a20d04c51832182de8 data/c/tags/item/grips/greatwood.json
 f5342c8c4879c5550547744f83283e379d805efc data/c/tags/item/grips/hardened_high_speed_steel.json
 e1067293274ea437102b00e37fdeb15183d305da data/c/tags/item/grips/hardened_steel.json
 83e7554765324490cbd319f4dfcfc48fd4186040 data/c/tags/item/grips/high_speed_steel.json
@@ -1231,6 +1232,7 @@ bdb682d8ef20ea2f95d25caee0b8a11fb7b665e5 data/c/tags/item/grips/pvc.json
 d8aede25397c2419fd7bfd4202817b3fcbfd9ab6 data/c/tags/item/grips/redstone_chromium.json
 978d3dc92ccd732138b070faa13d5e4bfa6cda69 data/c/tags/item/grips/shakudo.json
 2ba93cd55645d434f6aab41bbbf1aee94dcfe24c data/c/tags/item/grips/silver.json
+4e26f10bd0bee9de0e774d33d2c0f1678dfc19f6 data/c/tags/item/grips/silverwood.json
 ca0a893df233a2685d4109d9de046c6b8a463d26 data/c/tags/item/grips/soul_resin.json
 b5ed511f7896ee798d404e4a5631d85fd6fdaf95 data/c/tags/item/grips/spent_fuel_rod.json
 608221e59f3fef4233cecc1db3520a334f4e452f data/c/tags/item/grips/spruce.json
@@ -2654,9 +2656,11 @@ d71af9cbad2db32be3a23b510a598eacb2999441 data/c/tags/item/shavings/acacia.json
 9f3875665339a0f4dd2a97a3c08bd9700425051d data/c/tags/item/shavings/birch.json
 313b790cf986e768e2f5dcd4103c83fcfef6a94c data/c/tags/item/shavings/cherry.json
 adba77a5c00dbb6e033751da5ce5c8c2b3978912 data/c/tags/item/shavings/dark_oak.json
+ee37b4ff2be91c5cf21201a5cca9706b88bec700 data/c/tags/item/shavings/greatwood.json
 0cd0835f43969b4de80c5c9d7f2457b32312f769 data/c/tags/item/shavings/jungle.json
 1443543c5e37d43dd55123e0b881198602c5eec9 data/c/tags/item/shavings/mangrove.json
 57573d93ca04581c18919e9e4416a0189b8b3aea data/c/tags/item/shavings/oak.json
+0900fb7ec25adb45f986ac164651774de95b587b data/c/tags/item/shavings/silverwood.json
 eb489029d549d3bc5317a3ad21562037bd8a5973 data/c/tags/item/shavings/spruce.json
 8114229471de593e3f730182b45018fc8a483804 data/c/tags/item/shavings/wood.json
 c732bf24768ee64196481851aa35018f2f5b18a0 data/c/tags/item/slugs/iridium.json
