@@ -41,7 +41,7 @@ Amounts of metal and other stuff are counted in **Qu**. See [Units](Units.md#amo
 | Molybdenum | 15 | 10.28 | 22 | 2623 Tu | Strong and stands high heat. |
 | Palladium | 4.5 | 12.02 | 2.5 | 1555 Tu | A **catalyst** (activity 1.4). |
 | Cadmium | 2 | 8.65 | 1 | 321 Tu | Soft and toxic. A byproduct of leaching sphalerite. |
-| Vanadium | 6.5 | 6.11 | 7.5 | 1910 Tu | Tough; stands 600 Tu. For high-speed steel and titanium 6Al-4V. Comes from vanadinite. |
+| Vanadium | 6.5 | 6.11 | 7.5 | 1910 Tu | Tough; stands 600 Tu. For high-speed steel and titanium 6Al-4V. Comes from vanadinite, which [aluminum reduces](Ore_Processing.md#leaching-and-winning). |
 | Indium | 0.1 | 7.31 | 0.2 | 157 Tu | Very soft and ductile, melts low. A byproduct of leaching sphalerite. For galinstan. |
 | Mercury | 0.2 | 13.53 | 0.1 | -38.8 Tu | **Liquid at room temperature** and toxic. Its items are the frozen metal. Comes from [roasting cinnabar](Ore_Processing.md#leaching-and-winning). Binds gold into [Gold Amalgam](Ore_Processing.md#gold-by-amalgam). |
 | Thorium | 4 | 11.7 | 5 | 1750 Tu | **Radioactive**, weaker than uranium. See [Thorium](#thorium). |

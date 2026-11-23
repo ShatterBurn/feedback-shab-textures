@@ -1,0 +1,32 @@
+{
+  "inputs": [
+    { "type": "feedback:material", "material": "feedback:vanadinite", "forms": ["concentrate"] },
+    { "type": "feedback:material", "material": "feedback:aluminium", "forms": ["nugget", "scrap", "swarf"] },
+    { "type": "feedback:material", "material": "feedback:aluminium", "forms": ["nugget", "scrap", "swarf"] }
+  ],
+  "min_temperature": 900,
+  "optimal_temperature": 1100,
+  "max_temperature": 1400,
+  "required_tpu": 400,
+  "result": {
+    "id": "feedback:vanadium_ingot",
+    "count": 1
+  },
+  "spoil_temperature": 1600,
+  "spoiled": {
+    "id": "feedback:bloomery_slag"
+  },
+  "reaction": {
+    "fluid_inputs": [],
+    "fluid_outputs": [],
+    "byproducts": [
+      {
+        "item": {
+          "id": "feedback:bloomery_slag",
+          "count": 1
+        }
+      }
+    ],
+    "heat": 6
+  }
+}
