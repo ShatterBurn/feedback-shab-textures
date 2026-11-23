@@ -15,7 +15,7 @@ Take one from a trial chamber, or make it.
 5. **Press** the powder in the [Mechanical Press](Mechanical_Press.md#pressing-powder) into an **Osmium Green Compact**.
 6. **Sinter** three compacts in the [Arc Hearth](Arc_Furnace.md#sintering-under-gas) under **argon** or **nitrogen**, between **1800 and 2150 Tu**, best at 1950. The result is a Heavy Core, the same block a trial chamber holds.
 
-The sinter fails two ways. Above **2300 Tu** the grains coarsen into a weak **Porous Sinter**. With no protective gas the powder oxidizes to osmium tetroxide instead: the batch is lost and a fume cloud stays where the hearth stands. Argon comes from [air separation](Chemicals.md#air-separation); nitrogen also comes from a catalyst bed.
+The sinter fails two ways. Above **2300 Tu** the grains coarsen into a weak **Porous Sinter**. With no protective gas the powder oxidizes to osmium tetroxide instead: the batch is lost and a fume cloud stays where the hearth stands. Argon comes from [air separation](Chemicals.md#air-separation); nitrogen also comes from a charcoal bed.
 
 ## Using it
 

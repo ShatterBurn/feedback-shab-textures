@@ -39,6 +39,12 @@
     "paper_case"
   ],
   "corrosion_resistance": 0.9,
+  "catalyst": {
+    "activity": 0.6,
+    "sulfur_tolerance": 1.0,
+    "regeneration_temperature": 200,
+    "sinter_temperature": 500
+  },
   "toxicity": 0,
   "molten": {
     "viscosity": 100,

@@ -71,7 +71,7 @@ Some reactions give off heat, which warms the reactor.
 | **Tetrafluoroethylene** | 200 mB chlorodifluoromethane | 100 mB [tetrafluoroethylene](Chemicals.md#fluorine-and-ptfe) and 100 mB hydrochloric acid, and some heat | 600 to 850 Tu, best 700 |
 | **PTFE powder** | 100 mB tetrafluoroethylene, 100 mB water, **2 Pu** at least (best from 4 Pu) | 4 **PTFE Powder**, and some heat | 40 to 110 Tu, best 70 |
 | **Hypochlorite** | 100 mB chlorine, 100 mB lye | 100 mB [Hypochlorite Bleach](Chemicals.md#hypochlorite-bleach) | 20 to 60 Tu, best 40 |
-| **Nitrogen separation** | 100 mB air, a catalyst bed | 78 mB [nitrogen](Chemicals.md#nitrogen) | 20 to 100 Tu, best 40 |
+| **Nitrogen separation** | 100 mB air, a molecular sieve bed (charcoal) | 78 mB [nitrogen](Chemicals.md#nitrogen) | 20 to 100 Tu, best 40 |
 | **Liquefy air** | 160 mB air, **2 Pu** at least (best from 4 Pu), a [Cryocooler](Cryocooler.md) on its deep stage | 32 mB liquid air | -200 to -188 Tu, best -194 |
 | **Rectify air** | 32 mB liquid air, a Cryocooler on its middle stage | 125 mB nitrogen and 7 mB oxygen-rich liquid; too warm, the liquid boils back to air | -196 to -186 Tu, best -190.5 |
 | **Liquefy wisp gas** | 160 mB wisp gas, **2 Pu** at least (best from 4 Pu), a [Cryocooler](Cryocooler.md) | 32 mB [liquid wisp gas](Oil.md#soul-oil) | -120 to -100 Tu, best -110 |
@@ -108,12 +108,13 @@ The cold rows need no catalyst bed. Their temperatures are set by the Cryocooler
 
 ## Catalysts
 
-A catalyst speeds a reaction up without being used up. The bed is an item whose **material** says it is a catalyst, so any item of that material works, and a reaction names a *kind* of catalyst, not an item. Two are known for cracking, nitrogen separation and sulfuric acid; ammonia is made over an iron ingot bed, and the high-pressure diamond row over an iron, nickel or cobalt ingot bed.
+A catalyst speeds a reaction up without being used up. The bed is an item whose **material** says it is a catalyst, so any item of that material works, and a reaction names a *kind* of catalyst, not an item. Two are known for cracking and sulfuric acid; nitrogen separation takes a **molecular sieve** bed, which is charcoal; ammonia is made over an iron ingot bed, and the high-pressure diamond row over an iron, nickel or cobalt ingot bed.
 
 | Bed | Speed | Sulfur tolerance | Burn it clean at | Sinters at |
 | --- | --- | --- | --- | --- |
 | **Brick** | 1× | high (2×) | 450 Tu | 700 Tu |
 | **Blaze Powder** | 2× | low (0.5×) | 450 Tu | 520 Tu |
+| **Charcoal** (molecular sieve) | 0.6× | 1× | 200 Tu | 500 Tu |
 
 The bed's activity is shown as a percentage. It falls three ways:
 

@@ -68,7 +68,7 @@ Made in a Reactor from chlorine and lye. Dip a block of dyed wool or a dyed carp
 
 Air is split into its parts in two ways.
 
-- **Catalyst bed.** A Reactor separates nitrogen from air over a catalyst bed, warm and cheap.
+- **Molecular sieve.** A Reactor separates nitrogen from air over a bed of charcoal, warm and cheap. See [Catalysts](Reactor.md#catalysts).
 - **Cold.** A [Reactor](Reactor.md#the-reactions) chilled by a [Cryocooler](Cryocooler.md) liquefies compressed air into **Liquid Air**, boils nitrogen off it into a gas and leaves an **Oxygen-Rich Liquid**, then boils that liquid into **Argon** and oxygen. The cold route is the only source of argon. A further cut of cold nitrogen gives [helium](#helium).
 
 ## Nitrogen
