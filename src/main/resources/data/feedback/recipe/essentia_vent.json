@@ -1,0 +1,14 @@
+{
+  "type": "feedback:engineering",
+  "key": {
+    "S": { "item": "feedback:wrought_iron_plate" },
+    "G": { "item": "feedback:pressure_gauge" },
+    "V": { "item": "feedback:valve" },
+    "K": { "type": "feedback:material", "form": "coil_spring" }
+  },
+  "pattern": [ " G ", "SKS", "SVS" ],
+  "result": { "count": 1, "id": "feedback:essentia_vent" },
+  "tool": [ { "ability": "feedback:driver", "wear": 1 } ],
+  "fasteners": { "count": 3, "floor": 1, "forms": [ "screw" ] },
+  "school": "mechanical:1"
+}

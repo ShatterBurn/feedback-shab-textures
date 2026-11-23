@@ -703,6 +703,9 @@ public class FBlockEntities {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<io.github.soundgoodizerfan.feedback.machine.optical.OpticalTerminalBlockEntity>> OPTICAL_TERMINAL =
             BLOCK_ENTITIES.register("optical_terminal", () -> BlockEntityType.Builder
                     .of(io.github.soundgoodizerfan.feedback.machine.optical.OpticalTerminalBlockEntity::new, FBlocks.OPTICAL_TERMINAL.get()).build(null));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<io.github.soundgoodizerfan.feedback.machine.scrubber.EssentiaVentBlockEntity>> ESSENTIA_VENT =
+            BLOCK_ENTITIES.register("essentia_vent", () -> BlockEntityType.Builder
+                    .of(io.github.soundgoodizerfan.feedback.machine.scrubber.EssentiaVentBlockEntity::new, FBlocks.ESSENTIA_VENT.get()).build(null));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<io.github.soundgoodizerfan.feedback.machine.scrubber.ScrubbingBedBlockEntity>> SCRUBBING_BED =
             BLOCK_ENTITIES.register("scrubbing_bed", () -> BlockEntityType.Builder
                     .of(io.github.soundgoodizerfan.feedback.machine.scrubber.ScrubbingBedBlockEntity::new, FBlocks.SCRUBBING_BED.get()).build(null));

@@ -548,6 +548,7 @@ public class FeedbackJeiPlugin implements IModPlugin {
         info(registration, FItems.PYRO_PLATE.get(), "pyro_plate");
         info(registration, FItems.HYDRIDE_BED.get(), "hydride_bed");
         info(registration, FItems.SCRUBBING_BED.get(), "scrubbing_bed");
+        info(registration, FItems.ESSENTIA_VENT.get(), "essentia_vent");
         info(registration, FItems.TAINT_GLAZE.get(), "taint_glaze");
         net.minecraft.core.registries.BuiltInRegistries.ITEM.getOptional(io.github.soundgoodizerfan.feedback.Feedback.id("uranium_glass_block"))
                 .ifPresent(item -> info(registration, item, "uranium_glass_block"));

@@ -651,6 +651,14 @@ public final class MachineTuning {
     public static final float SCRUBBER_FLUX_PER_SECOND = 1.5f, SCRUBBER_CAPACITY = 120f, SCRUBBER_BREAKTHROUGH_PER_SECOND = 0.5f,
             SCRUBBER_REGEN_PER_SECOND = 0.04f, SCRUBBER_SINTER_PER_SECOND = 0.02f;
 
+    /**
+     * Placeholder. Essentia vent: the essentia held (Thaumaturge's own units; its reservoir holds 256) at which the valve opens and below which it
+     * reseats, the essentia it bleeds a second while open, and the flux that each vented essentia becomes in the chunk (its reservoir's own rupture figure).
+     */
+    public static final int ESSENTIA_VENT_ABOVE = 180, ESSENTIA_VENT_RESEAT = 120, ESSENTIA_VENT_PER_SECOND = 8;
+
+    public static final float ESSENTIA_VENT_FLUX_PER_ESSENTIA = 0.25f;
+
     /** Placeholder [OPEN]. A control surface's full deflection, in radians (about 29 degrees); the arm's force limit is the driver's (STEER_ARM_SU). */
     public static final float SURFACE_MAX_ANGLE = 0.5f;
 }

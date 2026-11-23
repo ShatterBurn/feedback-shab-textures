@@ -15090,6 +15090,24 @@
         "aspect": "thaumaturge:motus"
       }
     ],
+    "feedback:essentia_vent": [
+      {
+        "amount": 2,
+        "aspect": "thaumaturge:fabrico"
+      },
+      {
+        "amount": 20,
+        "aspect": "thaumaturge:metallum"
+      },
+      {
+        "amount": 16,
+        "aspect": "thaumaturge:motus"
+      },
+      {
+        "amount": 20,
+        "aspect": "thaumaturge:ordo"
+      }
+    ],
     "feedback:evacuated_tube": [
       {
         "amount": 3,
