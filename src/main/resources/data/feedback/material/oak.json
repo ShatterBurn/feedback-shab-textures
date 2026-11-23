@@ -19,6 +19,9 @@
   "molten": {
     "density": 0.68
   },
+  "accepts": {
+    "oak_log": ["#minecraft:oak_logs"]
+  },
   "forms": {
     "oak_log": "minecraft:oak_log",
     "stripped_oak_log": "minecraft:stripped_oak_log",

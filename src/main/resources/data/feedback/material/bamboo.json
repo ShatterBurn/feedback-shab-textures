@@ -27,6 +27,11 @@
   "separation": {
     "reflectivity": 0.4
   },
+  "combustion": {
+    "flame_temperature": 700,
+    "burn_ticks": 100,
+    "spread": 0.2
+  },
   "corrosion_resistance": 0.3,
   "forms": {
     "stalk": "minecraft:bamboo",
