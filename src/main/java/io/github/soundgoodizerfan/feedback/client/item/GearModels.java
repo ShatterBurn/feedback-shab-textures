@@ -10,16 +10,12 @@ import java.util.Map;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
-import io.github.soundgoodizerfan.feedback.client.gun.PlateDraw;
-import io.github.soundgoodizerfan.feedback.process.ClientMaterials;
-import io.github.soundgoodizerfan.feedback.process.Material;
 import io.github.soundgoodizerfan.feedback.modular.type.MaterialColors;
 import io.github.soundgoodizerfan.feedback.modular.type.ModularDesign;
 import io.github.soundgoodizerfan.feedback.modular.item.ModularStacks;
 import io.github.soundgoodizerfan.feedback.modular.type.ModularType;
 import io.github.soundgoodizerfan.feedback.modular.type.ModularTypes;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.core.component.DataComponents;
@@ -45,10 +41,8 @@ public final class GearModels {
     private static final class Gear extends HumanoidModel<LivingEntity> {
         private final Map<String, ModelPart> extra = new HashMap<>();
         private final Map<String, ModelPart> host = new HashMap<>();
-        private final Map<String, List<float[]>> boxes = new HashMap<>();
         private List<String> on = List.of();
-        private int studs = -1, plateColour = 0xFFFFFFFF, calls;
-        private Material plateMaterial, studMaterial;
+        private int studs = -1, calls;
 
         final int generation = GearGeo.generation();
 
@@ -65,7 +59,6 @@ public final class GearModels {
                 };
                 extra.put(e.name(), parent.getChild(e.name()));
                 host.put(e.name(), parent);
-                boxes.put(e.name(), e.cubes().stream().map(c -> c.box(inner)).toList());
             }
         }
 
@@ -74,10 +67,6 @@ public final class GearModels {
             ModularDesign.Part plate = design == null ? null : design.part("P"), studPart = design == null ? null : design.part("T");
             on = GearGeo.wears(slotName(slot), plate == null ? "" : plate.variant());
             fit(design, plate, slot);
-            var materials = ClientMaterials.get();
-            plateMaterial = plate == null ? null : materials.get(plate.material());
-            plateColour = plate == null ? 0xFFB4B4B8 : 0xFF000000 | MaterialColors.of(plate.material());
-            studMaterial = studPart == null ? null : materials.get(studPart.material());
             studs = studPart != null && !GearGeo.studs(slotName(slot)).isEmpty()
                     ? 0xFF000000 | MaterialColors.of(studPart.material()) : -1;
             calls = 0;
@@ -153,8 +142,9 @@ public final class GearModels {
         }
 
         /**
-         * The first pass draws vanilla's cubes, then the extras with the gun sheet. The trim and glint passes that follow
-         * draw the extras as vanilla cubes in the armour layer's layout, which the trim sprite and the glint cover too.
+         * Every pass draws the extras as vanilla cubes in the armour layer's layout (so the trim sprite and the glint cover
+         * them too) with the pass's own buffer: no second buffer, nothing flushed mid-render. Studs are drawn once, after the
+         * first pass, in their own material's colour.
          */
         @Override
         public void renderToBuffer(PoseStack pose, VertexConsumer buffer, int light, int overlay, int color) {
@@ -162,31 +152,26 @@ public final class GearModels {
             Map<String, Boolean> saved = new HashMap<>();
             for (var e : extra.entrySet()) {
                 saved.put(e.getKey(), e.getValue().visible);
-                e.getValue().visible = !first && !isStud(e.getKey()) && on.contains(e.getKey());
+                e.getValue().visible = !isStud(e.getKey()) && on.contains(e.getKey());
             }
             super.renderToBuffer(pose, buffer, light, overlay, color);
             for (var e : saved.entrySet())
                 extra.get(e.getKey()).visible = e.getValue();
-            if (!first)
+            if (!first || studs == -1)
                 return;
-            var source = Minecraft.getInstance().renderBuffers().bufferSource();
-            for (var e : extra.entrySet()) {
-                String name = e.getKey();
-                boolean stud = isStud(name);
-                if (stud ? studs == -1 || !GearGeo.studs(slotName(currentSlot)).contains(name) : !on.contains(name))
-                    continue;
+            for (String name : GearGeo.studs(slotName(currentSlot))) {
                 ModelPart h = host.get(name);
-                if (!h.visible)
+                if (h == null || !h.visible)
                     continue;
+                ModelPart stud = extra.get(name);
+                boolean was = stud.visible;
+                stud.visible = true;
                 pose.pushPose();
                 h.translateAndRotate(pose);
-                PlateDraw draw = new PlateDraw(pose, source, light, overlay).material(stud ? studMaterial : plateMaterial, stud ? studs : plateColour);
-                for (float[] b : boxes.get(name))
-                    draw.box(b[0], b[1], b[2], b[3], b[4], b[5]);
-                draw.end();
+                stud.render(pose, buffer, light, overlay, studs);
                 pose.popPose();
+                stud.visible = was;
             }
-            PlateDraw.flush(source);
         }
 
         private static boolean isStud(String name) {
