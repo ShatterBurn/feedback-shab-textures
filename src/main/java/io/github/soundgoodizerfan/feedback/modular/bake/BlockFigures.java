@@ -60,6 +60,8 @@ public final class BlockFigures {
                     && material.mechanical().yieldStrength().isPresent();
             case "water_wheel", "pump", "compressor", "burner", "hand_crank" -> material.density().muPerMb() > 0;
             case "galvanic_cell" -> material.kind().orElse(null) == Material.Kind.METAL && material.density().muPerMb() > 0;
+            case "thermoelectric_generator" -> material.kind().orElse(null) == Material.Kind.METAL && material.density().muPerMb() > 0
+                    && material.thermal().serviceTemperature().or(material::failureTemperature).isPresent();
             case "lamp" -> material.ampacity().isPresent();
             case "linear_motor" -> material.kind().orElse(null) == Material.Kind.METAL && material.density().muPerMb() > 0 && material.ampacity().isPresent();
             case "heating_coil" -> material.kind().orElse(null) == Material.Kind.METAL && material.density().muPerMb() > 0 && material.thermal().serviceTemperature().isPresent()
@@ -382,6 +384,18 @@ float leak = ModularBake.param(type, part, "leak", 1f) * ModularTuning.JAR_LEAK 
                 float a = role.axis(part, "anode") / 50f, amps = ModularBake.param(type, part, "amps", 1f) * a * cathode(design, role, materials, m);
                 out.putFloat("Supply", amps);
                 out.putFloat("AnodeEu", ElectricMachineTuning.GALVANIC_ANODE_EU * a * ModularBake.param(type, part, "life", 1f));
+            }
+            // Two legs of different metals: the voltage a degree of difference drives is the gap between their Seebeck figures (same metal, no gap, no source);
+            // the legs' section sets the current, stubby legs carry more and hold less of the temperature difference than slender ones, and the weaker leg's
+            // service temperature is the hottest the pair stands.
+            case "thermoelectric_generator" -> {
+                Material pos = ModularBake.slotMaterial(role, part, "positive", materials), neg = ModularBake.slotMaterial(role, part, "negative", materials);
+                if (pos == null || neg == null)
+                    return Optional.empty();
+                out.putFloat("Gap", Math.abs(pos.electrical().seebeckOrEstimate() - neg.electrical().seebeckOrEstimate()));
+                out.putFloat("Supply", ModularTuning.THERMO_LEG_AMPS * (role.axis(part, "section") / 50f) * ModularBake.param(type, part, "amps", 1f));
+                out.putFloat("Hold", ModularBake.param(type, part, "hold", 1f));
+                out.putFloat("ServiceTu", Math.min(serviceTu(pos), serviceTu(neg)));
             }
             // Filament: a thicker one draws more and lasts; the shape trades draw against toughness; a ballast (an addon) lets it ride a little overvoltage.
             case "lamp" -> {

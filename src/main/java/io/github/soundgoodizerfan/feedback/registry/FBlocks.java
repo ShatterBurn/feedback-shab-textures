@@ -764,6 +764,14 @@ public class FBlocks {
                     .strength(1.5f)
                     .sound(SoundType.COPPER), Feedback.id("zinc"), Feedback.id("copper"), MachineTuning.GALVANIC_PACK_CELLS));
 
+    /** Two legs of different metals between a hot side and a cold side: a trickle of LV from a temperature difference. See {@code ThermoelectricGeneratorBlockEntity}. */
+    public static final DeferredBlock<io.github.soundgoodizerfan.feedback.machine.thermoelectric.ThermoelectricGeneratorBlock> THERMOELECTRIC_GENERATOR =
+            BLOCKS.register("thermoelectric_generator",
+                    () -> new io.github.soundgoodizerfan.feedback.machine.thermoelectric.ThermoelectricGeneratorBlock(BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.COLOR_ORANGE)
+                            .strength(1.5f)
+                            .sound(SoundType.COPPER)));
+
     /** The first electrical consumer. See {@code ElectromagnetBlockEntity}. */
     public static final DeferredBlock<ElectromagnetBlock> ELECTROMAGNET = BLOCKS.register("electromagnet",
             () -> new ElectromagnetBlock(BlockBehaviour.Properties.of()

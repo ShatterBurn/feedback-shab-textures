@@ -1,0 +1,4 @@
+{
+  "parent": "feedback:block/tint_cube_all",
+  "textures": { "all": "feedback:block/form/block" }
+}

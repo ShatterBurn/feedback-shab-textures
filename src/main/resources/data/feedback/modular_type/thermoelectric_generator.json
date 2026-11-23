@@ -1,0 +1,85 @@
+{
+  "family": "block",
+  "measures": {
+    "show": [
+      "block.Gap",
+      "block.Supply",
+      "block.ServiceTu"
+    ]
+  },
+  "required": [
+    "S"
+  ],
+  "slot": "mainhand",
+  "wear_litres": 0.4,
+  "wear_role": "S",
+  "primary": "S",
+  "blueprint": true,
+  "roles": {
+    "S": {
+      "name": "thermo_leg",
+      "class": "working_face",
+      "forms": [
+        "thermo_leg"
+      ],
+      "litres": 0.4,
+      "layer": 0,
+      "axes": {
+        "section": {
+          "min": 20,
+          "max": 100,
+          "unit": "%",
+          "default": 50,
+          "step": 10
+        }
+      },
+      "part": {
+        "item": "feedback:thermo_leg",
+        "cells": 6,
+        "stock": [
+          "@lump",
+          "@long"
+        ],
+        "base": "stubby_legs",
+        "variants": [
+          {
+            "name": "stubby_legs",
+            "cells": 6,
+            "params": {
+              "amps": 1.4,
+              "hold": 0.7
+            }
+          },
+          {
+            "name": "slender_legs",
+            "cells": 6,
+            "adjective": true,
+            "params": {
+              "amps": 0.8,
+              "hold": 1.2
+            }
+          }
+        ],
+        "slots": [
+          {
+            "name": "positive",
+            "share": 1
+          },
+          {
+            "name": "negative",
+            "share": 1
+          }
+        ]
+      }
+    }
+  },
+  "patterns": [
+    [
+      "S"
+    ]
+  ],
+  "defaults": {
+    "S": "feedback:copper"
+  },
+  "school": "electrical:2"
+}
