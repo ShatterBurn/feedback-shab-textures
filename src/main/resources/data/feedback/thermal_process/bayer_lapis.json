@@ -22,7 +22,7 @@
     "fluid_outputs": [
       {
         "fluid": "feedback:lye",
-        "mb": 250
+        "mb": 200
       }
     ]
   }

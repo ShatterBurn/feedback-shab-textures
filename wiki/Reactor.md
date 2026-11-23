@@ -59,8 +59,8 @@ Some reactions give off heat, which warms the reactor.
 | **Soul retort** | one Soul Sand or Soul Soil in the hopper | 60 mB soul oil, 20 mB wisp gas and a **Husk Sand** | 300 to 600 Tu, best 420 |
 | **Magma settling** | 1000 mB [Magma Melt](Magma_Drill.md#settling-the-melt) | 500 mB molten iron, 60 mB molten nickel, 20 mB molten cobalt and 300 mB molten slag | 1550 Tu or more, best 1700 |
 | **Dissolve salt** | one Salt, 250 mB water | 250 mB [brine](Chemicals.md#brine) | 20 to 100 Tu, best 60 |
-| **Bayer (bauxite)** | any bauxite item, 250 mB [lye](Chemicals.md#lye) | 2 [alumina](Guide_Making_Aluminum.md), the lye returned | 150 to 250 Tu, best 200 |
-| **Bayer (lapis)** | one Lapis Lazuli, 250 mB lye | 1 alumina, the lye returned; the lapis' stored experience is lost | 150 to 250 Tu, best 200 |
+| **Bayer (bauxite)** | any bauxite item, 250 mB [lye](Chemicals.md#lye) | 2 [alumina](Guide_Making_Aluminum.md) and 200 mB lye back | 150 to 250 Tu, best 200 |
+| **Bayer (lapis)** | one Lapis Lazuli, 250 mB lye | 1 alumina and 200 mB lye back; the lapis' stored experience is lost | 150 to 250 Tu, best 200 |
 | **Roast pyrite** | any pyrite item | 4 iron nuggets and 200 mB [sulfur dioxide](Chemicals.md#sulfur-dioxide) | 500 to 900 Tu, best 700 |
 | **Sulfuric acid** | 100 mB sulfur dioxide, 50 mB oxygen, 100 mB water, a catalyst bed, **1 Pu** at least (best from 2 Pu) | 100 mB [sulfuric acid](Chemicals.md#acids), and some heat | 400 to 550 Tu, best 450 |
 | **Hydrochloric acid** | 100 mB hydrogen, 100 mB chlorine | 100 mB [hydrochloric acid](Chemicals.md#acids), and some heat | 20 to 200 Tu, best 60 |
