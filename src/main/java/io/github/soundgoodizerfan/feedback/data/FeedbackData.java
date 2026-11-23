@@ -21,6 +21,8 @@ public final class FeedbackData {
                 new FormData.BlockTagsGen(output, lookup, event.getExistingFileHelper()));
         event.getGenerator().addProvider(event.includeServer(),
                 new FormData.ItemTagsGen(output, lookup, blockTags.contentsGetter(), event.getExistingFileHelper()));
+        event.getGenerator().addProvider(event.includeServer(),
+                new FluidTagsGen(output, lookup, event.getExistingFileHelper()));
         event.getGenerator().addProvider(event.includeServer(), new FormData.Recipes(output, lookup));
         event.getGenerator().addProvider(event.includeServer(), new AspectData(output));
     }
