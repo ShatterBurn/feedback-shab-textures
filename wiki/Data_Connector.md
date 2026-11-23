@@ -6,7 +6,9 @@ The tool that links sensors and switchable blocks to a [Controller](Controller.m
 
 ## Using it
 
-Hold the connector in either hand and every block that is a **data node** shows a small socket with a bright core, outlined through walls. Linked nodes take the color of their link; a node nothing has linked is grey-blue and blinks. A spark runs along each link.
+Hold the connector in either hand and every block that is a **data node** shows a small socket with a bright core, outlined through walls. Linked nodes take the color of their link; a node nothing has linked is gray-blue and blinks. A spark runs along each link.
+
+Every link is also drawn in the world whether or not you hold the connector: a thin wire hangs between the two sockets and sags more the longer the link is. It is bare copper when the link has no color and takes the dye's color when the link was colored. Walls hide it, and it is drawn within 48 blocks of you. Cutting a link removes its wire.
 
 A data node is any block that offers a reading or can be switched: a [Temperature Sensor](Instruments.md#temperature-sensor) or [Current Sensor](Instruments.md#current-sensor) face, a crucible or other vessel, a heater, a [Lathe](Lathe.md), a [Clutch](Clutch.md), [Valve](Valve.md), [Damper](Damper.md), [Breaker](Breaker.md), [Engine](Engine.md), [Thruster](Thruster.md), a [Driver's Seat](Vehicles.md#the-drivers-seat), an [Optical Terminal](Optical_Terminal.md), and the Controllers themselves.
 
