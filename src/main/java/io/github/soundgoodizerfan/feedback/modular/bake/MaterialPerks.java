@@ -179,7 +179,7 @@ public final class MaterialPerks {
         float bonus = bonus(perks, target);
         if (bonus > 0f)
             event.setAmount(event.getAmount() + bonus);
-        affect(perks, target);
+        affect(perks, target, attacker);
     }
 
     /** An attuned plate worn sets whoever struck the wearer alight. */
@@ -204,6 +204,11 @@ public final class MaterialPerks {
 
     /** What a blow that landed does to {@code target} besides damage; shared by the swung and the thrown. */
     public static void affect(Map<Perk, Integer> perks, LivingEntity target) {
+        affect(perks, target, null);
+    }
+
+    /** As {@link #affect(Map, LivingEntity)}, with the one who struck (a ringing blow calls mobs on them); null for an unattributed blow. */
+    public static void affect(Map<Perk, Integer> perks, LivingEntity target, LivingEntity striker) {
         if (perks.containsKey(Perk.FIRE_ASPECT))
             target.igniteForSeconds(perks.get(Perk.FIRE_ASPECT) * ModularTuning.PERK_IGNITE_SECONDS_PER_LEVEL);
         if (perks.containsKey(Perk.ECHO)) {
@@ -228,6 +233,21 @@ public final class MaterialPerks {
         if (perks.containsKey(Perk.CLING))
             target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN,
                     perks.get(Perk.CLING) * ModularTuning.PERK_CLING_TICKS_PER_LEVEL));
+        if (perks.containsKey(Perk.RING))
+            ring(perks.get(Perk.RING), target, striker);
+    }
+
+    /** A ringing blow: the target is slowed by the sound, the sound is heard by sculk, and hostile mobs within earshot turn on the striker. */
+    private static void ring(int level, LivingEntity target, LivingEntity striker) {
+        target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, level * ModularTuning.PERK_RING_SLOW_TICKS_PER_LEVEL));
+        target.gameEvent(ModularTuning.PERK_ECHO_EVENT);
+        target.level().playSound(null, target.blockPosition(), SoundEvents.BELL_BLOCK, SoundSource.PLAYERS, 1.0f, 0.9f);
+        if (striker == null)
+            return;
+        for (net.minecraft.world.entity.Mob mob : target.level().getEntitiesOfClass(net.minecraft.world.entity.Mob.class,
+                target.getBoundingBox().inflate(ModularTuning.PERK_RING_CALL_BLOCKS),
+                m -> m != target && m != striker && m instanceof net.minecraft.world.entity.monster.Enemy && m.getTarget() == null))
+            mob.setTarget(striker);
     }
 
     /** The share of {@code m}'s mass a swing feels: whole unless a featherlight perk takes some off. */

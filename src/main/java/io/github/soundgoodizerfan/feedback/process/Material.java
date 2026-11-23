@@ -336,7 +336,9 @@ public record Material(St hardness, Tu minTemperature, Tu maxTemperature,
         /** A kill carries the wielder into the victim's place. */
         BLINK,
         /** What a part of it holds stays warm: a dish on it is held above the warm point wherever it is. */
-        WARMING;
+        WARMING,
+        /** A struck target rings: it is slowed by the sound, and hostile mobs near it turn on the one who struck. */
+        RING;
 
         public static final Codec<Perk> CODEC = StringRepresentable.fromEnum(Perk::values);
 

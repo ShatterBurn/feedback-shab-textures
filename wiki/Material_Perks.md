@@ -15,6 +15,7 @@ A weapon's tooltip lists its perks in gold. All numbers are per level.
 | Echo shard, amethyst | **Echo** | the target glows for 3 seconds |
 | Lead, mercury, cadmium, antimony, stibnite, cinnabar, galena, vanadinite, chloroform, beryllium | **Toxic** | poisons the target for 3 seconds |
 | Slime, natural rubber, synthetic rubber | **Bounce** | pops the target upward |
+| Bell metal | **Ring** | a bell sounds; the target is slowed for 2 seconds and sculk hears the blow. Hostile mobs within 12 blocks that have no target turn on you |
 | Honey, bitumen, soul resin | **Cling** | slows the target for 3 seconds |
 | Ice, blue ice, snow, liquid air, liquid oxygen | **Chill** | builds freezing on the target (about 3.5 seconds of powder-snow chill) if it can freeze |
 | Sculk | **Siphon** | a melee kill drops 3 extra experience |

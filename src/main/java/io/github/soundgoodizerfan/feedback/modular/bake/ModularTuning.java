@@ -639,6 +639,9 @@ public final class ModularTuning {
      * for exactly that (a goat horn), so sensors and wardens hear it only from echoing blows.
      */
     public static final Holder<GameEvent> PERK_ECHO_EVENT = GameEvent.INSTRUMENT_PLAY;
+    /** Ticks a ringing blow slows its target, per level; the blocks around it within which hostile mobs are called to the striker. */
+    public static final int PERK_RING_SLOW_TICKS_PER_LEVEL = 40;
+    public static final double PERK_RING_CALL_BLOCKS = 12.0;
     /** Share of a featherlight part's mass the swing does not feel, per level (floored at {@link #PERK_FEATHER_FLOOR} felt). */
     public static final float PERK_FEATHER_PER_LEVEL = 0.4f;
     public static final float PERK_FEATHER_FLOOR = 0.2f;

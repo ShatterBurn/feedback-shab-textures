@@ -59,7 +59,7 @@ Amounts of metal and other stuff are counted in **Qu**. See [Units](Units.md#amo
 | Stellite | 39 | 8.4 | 30 | 1285 Tu | Cobalt, chromium and tungsten. Hard, and stands 800 Tu. |
 | Pewter | 1.5 | 7.28 | 1.5 | 235 Tu | Tin with antimony and a little copper. Soft. |
 | Babbitt | 2.5 | 7.34 | 1.5 | 350 Tu | Tin with antimony and copper. Slippery, at a grip friction of 0.3. |
-| Bell Metal | 20 | 8.8 | 15 | 990 Tu | Copper with a fifth tin. |
+| Bell Metal | 20 | 8.8 | 15 | 990 Tu | Copper with a fifth tin. Gives the [Ring](Material_Perks.md) perk. |
 | Shakudo | 8 | 8.98 | 5 | 1075 Tu | Copper with a little gold. |
 | Galinstan | 0.2 | 6.44 | 0.1 | -19 Tu | Gallium, indium and tin. **Liquid at room temperature.** |
 | Alnico | 44 | 7.3 | 8 | 1500 Tu | **Magnetic** below **890 Tu**. Iron, cobalt, nickel and aluminum. |
