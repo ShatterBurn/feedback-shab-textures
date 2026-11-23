@@ -34,10 +34,19 @@ import net.minecraft.world.level.saveddata.SavedData;
 public final class DataWires {
 
     public enum Grade {
-        /** Short and lossy. */
+        /** Short and lossy: a reading rounds to one figure. */
         POOR,
+        /** A fibre run past its clean reach: a reading rounds to two figures. Never a wire grade; only a fibre degrades to it. */
+        COARSE,
         /** Long and exact, but quenches under load. */
-        GOOD
+        GOOD,
+        /** A fibre inside its clean reach: exact and immune to the critical current. Always between two {@link OpticalEnd}s. */
+        FIBRE
+    }
+
+    /** Orders grades from worst to best; the path's grade is its worst link. */
+    private static int rank(Grade grade) {
+        return grade.ordinal();
     }
 
     public static final TagKey<Item> POOR_WIRE = TagKey.create(Registries.ITEM, Feedback.id("data_wire_poor"));
@@ -129,14 +138,23 @@ public final class DataWires {
     /** Remembers the grade of the wire that now joins {@code a} and {@code b}. */
     public static void record(Level level, DataNodeRef a, DataNodeRef b, Grade grade) {
         if (level.getServer() != null)
-            Book.get(level.getServer()).put(key(level, a, b), grade);
+            Book.get(level.getServer()).put(key(level, a, b), new Wire(grade, 0f));
     }
 
-    /** A link with no recorded wire counts as the poor grade: nothing joins for free. */
+    /**
+     * What a link carries now. A link with no recorded wire counts as the poor grade: nothing joins for free. A fibre is judged by its ends as
+     * they are this moment (power, crystal, circuit): a dark end, or a loss past eight times the clean reach, gives {@code null}, a link that carries nothing.
+     */
     static Grade gradeOf(Level level, DataNodeRef a, DataNodeRef b) {
         if (level.getServer() == null)
             return Grade.POOR;
-        return Book.get(level.getServer()).get(key(level, a, b));
+        Wire wire = Book.get(level.getServer()).get(key(level, a, b));
+        if (wire.grade() != Grade.FIBRE)
+            return wire.grade();
+        if (!(DataNode.resolveOrNull(level, a) instanceof OpticalEnd ea) || !(DataNode.resolveOrNull(level, b) instanceof OpticalEnd eb)
+                || !ea.lit() || !eb.lit())
+            return null;
+        return fibreGrade(wire.lossDb(), budgetDb(ea, eb));
     }
 
     // --- reading through a path -----------------------------------------------------------------------------------
@@ -156,14 +174,14 @@ public final class DataWires {
         ArrayDeque<DataNodeRef> frontier = new ArrayDeque<>();
         Set<DataNodeRef> seen = new HashSet<>();
         DataNodeRef start = from.getNodeRef();
-        best.put(start, Grade.GOOD);
+        best.put(start, Grade.FIBRE);
         frontier.add(start);
         seen.add(start);
         Grade found = null;
         // The pair crossing the path to each node used (if any), so a path that crosses is charged once when it is the one found.
         Map<DataNodeRef, io.github.soundgoodizerfan.feedback.control.endernet.Endernet.Crossing> via = new HashMap<>();
         io.github.soundgoodizerfan.feedback.control.endernet.Endernet.Crossing foundVia = null;
-        for (int hop = 0; hop < MAX_HOPS && !frontier.isEmpty() && found != Grade.GOOD; hop++) {
+        for (int hop = 0; hop < MAX_HOPS && !frontier.isEmpty() && (found == null || rank(found) < rank(Grade.GOOD)); hop++) {
             ArrayDeque<DataNodeRef> next = new ArrayDeque<>();
             for (DataNodeRef at : frontier) {
                 DataNode node = DataNode.resolveOrNull(level, at);
@@ -178,6 +196,8 @@ public final class DataWires {
                 for (DataNodeRef other : outs) {
                     boolean cross = other.equals(crossRef);
                     Grade wire = cross ? Grade.GOOD : gradeOf(level, at, other);
+                    if (wire == null)
+                        continue;
                     if (wire == Grade.GOOD && !cross && quenched(level, node, other, now))
                         continue;
                     Grade here = worse(best.get(at), wire);
@@ -259,51 +279,169 @@ public final class DataWires {
     }
 
     private static Grade worse(Grade a, Grade b) {
-        return a == Grade.POOR || b == Grade.POOR ? Grade.POOR : Grade.GOOD;
+        return rank(a) <= rank(b) ? a : b;
     }
 
     private static Grade better(Grade a, Grade b) {
-        return a == Grade.GOOD || b == Grade.GOOD ? Grade.GOOD : Grade.POOR;
+        return rank(a) >= rank(b) ? a : b;
     }
 
-    /** A reading as the wire delivers it: exact on good wire, rounded to one significant figure on poor. */
+    /** A reading as the wire delivers it: exact on good wire and fibre, two significant figures on a coarse fibre, one on poor. */
     public static float deliver(float reading, Grade grade) {
-        if (grade == Grade.GOOD || reading == 0f || Float.isNaN(reading) || Float.isInfinite(reading))
+        if (grade == Grade.GOOD || grade == Grade.FIBRE || reading == 0f || Float.isNaN(reading) || Float.isInfinite(reading))
             return reading;
-        double step = Math.pow(10, Math.floor(Math.log10(Math.abs(reading))));
+        double step = Math.pow(10, Math.floor(Math.log10(Math.abs(reading))) - (grade == Grade.COARSE ? 1 : 0));
         return (float) (Math.round(reading / step) * step);
+    }
+
+    // --- fibre ----------------------------------------------------------------------------------------------------
+
+    /** The fibre of a glass or polymer item: its loss in dB per metre, or empty when the item is no fibre or its material carries no light. */
+    public static java.util.Optional<Float> attenuationOf(ItemStack stack) {
+        return io.github.soundgoodizerfan.feedback.process.Material.find(
+                        io.github.soundgoodizerfan.feedback.process.MaterialTable.get().materials(), stack.getItem())
+                .filter(l -> l.form().equals("fibre"))
+                .flatMap(l -> l.material().attenuation());
+    }
+
+    /** The loss budget in dB of a fibre between two ends: the base budget scaled by the weaker crystal and lengthened by the larger circuit gain. */
+    public static float budgetDb(OpticalEnd a, OpticalEnd b) {
+        float gain = Math.max(0f, Math.max(a.gain(), b.gain()));
+        return ControlTuning.FIBRE_LOSS_BUDGET_DB * Math.min(a.budgetShare(), b.budgetShare())
+                * (1f + io.github.soundgoodizerfan.feedback.process.ProcessTuning.CIRCUIT_WIRE_RANGE_GAIN * gain);
+    }
+
+    /** How far a link's loss is past what the budget allows, 1 being exactly the clean reach; the cap on a clean run shows as a smaller loss, never a bigger budget. */
+    public static float lossRatio(float lossDb, float budgetDb) {
+        return budgetDb <= 0f ? Float.POSITIVE_INFINITY : lossDb / budgetDb;
+    }
+
+    /** The grade a fibre of this loss gives over this budget: exact inside the reach, then two figures, then one, then lost (null). */
+    public static Grade fibreGrade(float lossDb, float budgetDb) {
+        float ratio = lossRatio(lossDb, budgetDb);
+        if (ratio <= 1f)
+            return Grade.FIBRE;
+        if (ratio <= ControlTuning.FIBRE_ONE_FIGURE_RATIO)
+            return Grade.COARSE;
+        return ratio < ControlTuning.FIBRE_DEAD_RATIO ? Grade.POOR : null;
+    }
+
+    /** The loss in dB of {@code blocks} of a fibre of {@code attenuation} dB per metre, one block being one metre; a glass so clear its reach would pass the cap is held to the cap. */
+    public static float lossDb(float attenuation, int blocks) {
+        float floor = ControlTuning.FIBRE_LOSS_BUDGET_DB / ControlTuning.FIBRE_CAP_BLOCKS;
+        return Math.max(attenuation, floor) * Math.max(1, blocks);
+    }
+
+    /** Result of paying for a fibre link: what was spent, or why not. */
+    public record PaidFibre(boolean enough, float lossDb, int pieces, boolean dead) {
+    }
+
+    /**
+     * Takes fibre for a link of {@code blocks} between ends whose loss budget is {@code budgetDb}: the poorest fibre carried that still keeps
+     * the link clean, else the best carried (the link then degrades, and is refused only when even that is lost). Creative pays nothing and
+     * gets the clearest glass in the registry (a perfect fibre). Takes nothing when it fails.
+     */
+    public static PaidFibre payFibre(Player player, int blocks, float budgetDb) {
+        int pieces = Math.max(1, blocks);
+        if (player.getAbilities().instabuild)
+            return new PaidFibre(true, lossDb(0f, blocks), pieces, false);
+        ItemStack poorestClean = null, best = null;
+        float cleanLoss = 0f, bestLoss = Float.MAX_VALUE;
+        for (ItemStack stack : player.getInventory().items) {
+            if (stack.isEmpty() || stack.getCount() < pieces)
+                continue;
+            var att = attenuationOf(stack);
+            if (att.isEmpty())
+                continue;
+            float loss = lossDb(att.get(), blocks);
+            if (loss <= budgetDb && (poorestClean == null || loss > cleanLoss)) {
+                poorestClean = stack;
+                cleanLoss = loss;
+            }
+            if (loss < bestLoss) {
+                best = stack;
+                bestLoss = loss;
+            }
+        }
+        ItemStack use = poorestClean != null ? poorestClean : best;
+        if (use == null)
+            return new PaidFibre(false, 0f, pieces, false);
+        float loss = poorestClean != null ? cleanLoss : bestLoss;
+        if (fibreGrade(loss, budgetDb) == null)
+            return new PaidFibre(false, loss, pieces, true);
+        use.shrink(pieces);
+        return new PaidFibre(true, loss, pieces, false);
+    }
+
+    /** Remembers the fibre that now joins {@code a} and {@code b}: its total loss in dB. */
+    public static void recordFibre(Level level, DataNodeRef a, DataNodeRef b, float lossDb) {
+        if (level.getServer() != null)
+            Book.get(level.getServer()).put(key(level, a, b), new Wire(Grade.FIBRE, lossDb));
+    }
+
+    /** The loss in dB of the fibre between two nodes, or empty when the link is not a fibre. */
+    public static java.util.Optional<Float> fibreLoss(Level level, DataNodeRef a, DataNodeRef b) {
+        if (level.getServer() == null)
+            return java.util.Optional.empty();
+        Wire w = Book.get(level.getServer()).wires.get(key(level, a, b));
+        return w != null && w.grade() == Grade.FIBRE ? java.util.Optional.of(w.lossDb()) : java.util.Optional.empty();
+    }
+
+    /** What a wire is: its grade, and for a fibre its total loss in dB. */
+    record Wire(Grade grade, float lossDb) {
+    }
+
+    /** The recorded wire between two nodes as it was made (a fibre keeps its loss), for carrying a link to a new position. */
+    static Wire wireOf(Level level, DataNodeRef a, DataNodeRef b) {
+        return level.getServer() == null ? new Wire(Grade.POOR, 0f) : Book.get(level.getServer()).get(key(level, a, b));
+    }
+
+    static void recordWire(Level level, DataNodeRef a, DataNodeRef b, Wire wire) {
+        if (level.getServer() != null)
+            Book.get(level.getServer()).put(key(level, a, b), wire);
     }
 
     /** Which wire joins which pair, saved in the overworld's data. */
     private static final class Book extends SavedData {
-        private final Map<String, Grade> wires = new HashMap<>();
+        private final Map<String, Wire> wires = new HashMap<>();
 
         static Book get(MinecraftServer server) {
             return server.overworld().getDataStorage().computeIfAbsent(new Factory<>(Book::new, Book::load), "feedback_data_wires");
         }
 
-        void put(String key, Grade grade) {
-            if (wires.put(key, grade) != grade)
+        void put(String key, Wire wire) {
+            if (!wire.equals(wires.put(key, wire)))
                 setDirty();
         }
 
-        Grade get(String key) {
-            return wires.getOrDefault(key, Grade.POOR);
+        Wire get(String key) {
+            return wires.getOrDefault(key, new Wire(Grade.POOR, 0f));
         }
 
         @Override
         public CompoundTag save(CompoundTag tag, HolderLookup.Provider registries) {
             CompoundTag all = new CompoundTag();
-            wires.forEach((k, g) -> all.putBoolean(k, g == Grade.GOOD));
-            tag.put("Wires", all);
+            wires.forEach((k, w) -> {
+                CompoundTag one = new CompoundTag();
+                one.putString("Grade", w.grade().name());
+                one.putFloat("Loss", w.lossDb());
+                all.put(k, one);
+            });
+            tag.put("Wires2", all);
             return tag;
         }
 
         static Book load(CompoundTag tag, HolderLookup.Provider registries) {
             Book book = new Book();
-            CompoundTag all = tag.getCompound("Wires");
-            for (String k : all.getAllKeys())
-                book.wires.put(k, all.getBoolean(k) ? Grade.GOOD : Grade.POOR);
+            CompoundTag all = tag.getCompound("Wires2");
+            for (String k : all.getAllKeys()) {
+                CompoundTag one = all.getCompound(k);
+                try {
+                    book.wires.put(k, new Wire(Grade.valueOf(one.getString("Grade")), one.getFloat("Loss")));
+                } catch (IllegalArgumentException ignored) {
+                    book.wires.put(k, new Wire(Grade.POOR, 0f));
+                }
+            }
             return book;
         }
     }

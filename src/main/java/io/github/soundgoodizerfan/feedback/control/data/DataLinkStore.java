@@ -157,7 +157,7 @@ public final class DataLinkStore extends SavedData {
         for (Map.Entry<DataNodeRef, Set<DataNodeRef>> entry : store.links.entrySet())
             for (DataNodeRef other : entry.getValue())
                 if (entry.getKey().compareTo(other) < 0 && (moves.containsKey(entry.getKey().pos()) || moves.containsKey(other.pos())))
-                    wires.add(new Object[]{follow(entry.getKey(), moves), follow(other, moves), DataWires.gradeOf(level, entry.getKey(), other)});
+                    wires.add(new Object[]{follow(entry.getKey(), moves), follow(other, moves), DataWires.wireOf(level, entry.getKey(), other)});
         java.util.Set<DataNodeRef> touched = new HashSet<>(store.links.keySet());
         touched.addAll(store.colors.keySet());
         Map<DataNodeRef, Set<DataNodeRef>> moved = new HashMap<>();
@@ -190,7 +190,7 @@ public final class DataLinkStore extends SavedData {
         store.setDirty();
         epoch++;
         for (Object[] wire : wires)
-            DataWires.record(level, (DataNodeRef) wire[0], (DataNodeRef) wire[1], (DataWires.Grade) wire[2]);
+            DataWires.recordWire(level, (DataNodeRef) wire[0], (DataNodeRef) wire[1], (DataWires.Wire) wire[2]);
         // Clients drop every old ref and learn every new one.
         java.util.Set<DataNodeRef> resend = new HashSet<>(touched);
         resend.addAll(store.links.keySet());

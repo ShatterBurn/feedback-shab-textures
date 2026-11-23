@@ -1512,6 +1512,9 @@ public class FBlocks {
     public static final DeferredBlock<io.github.soundgoodizerfan.feedback.machine.ender.DataPortBlock> DATA_PORT = BLOCKS.register("data_port",
             () -> new io.github.soundgoodizerfan.feedback.machine.ender.DataPortBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_PURPLE).strength(4.0f).sound(SoundType.METAL)));
 
+    public static final DeferredBlock<io.github.soundgoodizerfan.feedback.machine.optical.OpticalTerminalBlock> OPTICAL_TERMINAL = BLOCKS.register("optical_terminal",
+            () -> new io.github.soundgoodizerfan.feedback.machine.optical.OpticalTerminalBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_YELLOW).strength(3.0f).sound(SoundType.METAL)));
+
     private FBlocks() {
     }
 

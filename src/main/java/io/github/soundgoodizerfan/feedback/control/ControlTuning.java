@@ -167,4 +167,14 @@ public final class ControlTuning {
 
     /** Invented. Data wire (control/data/DataWires): the blocks a link may span on poor (copper) and good (redstone-chromium) wire, the links an end may carry before good wire quenches, and the ticks a quenched line stays dark. */
     public static final int WIRE_RANGE_POOR = 8, WIRE_RANGE_GOOD = 32, WIRE_CRITICAL_LINKS = 3, WIRE_QUENCH_TICKS = 200;
+    /** Placeholder. Loss in dB a fibre link may carry before its reading starts to degrade, with a perfect crystal at both ends. */
+    public static final float FIBRE_LOSS_BUDGET_DB = 20f;
+    /** Placeholder. The most a clean fibre run reaches, however pure the glass (blocks): silica glass would otherwise reach for ever. */
+    public static final float FIBRE_CAP_BLOCKS = 512f;
+    /** Placeholder. A terminal's loss budget scales by {@code FLOOR + SLOPE x rectifying} of its crystal (the weaker end of the pair counts). */
+    public static final float FIBRE_CRYSTAL_FLOOR = 0.4f, FIBRE_CRYSTAL_SLOPE = 0.6f;
+    /** Past this many times its clean reach a fibre reading is lost; between 1 and 2 it rounds to two figures, after that to one. */
+    public static final float FIBRE_DEAD_RATIO = 8f, FIBRE_ONE_FIGURE_RATIO = 2f;
+    /** Placeholder. Standing current of an optical terminal with a crystal seated (amps, at its LV band). */
+    public static final float OPTICAL_TERMINAL_AMPS = 0.05f;
 }

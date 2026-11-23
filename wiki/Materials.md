@@ -313,6 +313,19 @@ Glasses that melt from sand and a dust at a high heat:
 
 Each makes 144 mB of melt, which casts like other glass ([Casting and Alloys](Casting.md)).
 
+### Glass fiber
+
+A glass rod drawn at the [Wire Drawer](Wire_Drawer.md#what-it-makes) becomes fiber, which joins [Optical Terminals](Optical_Terminal.md) through the [Data Connector](Data_Connector.md#fiber). Each fiber loses some light per meter (one block is one meter); the less it loses, the further a link reaches cleanly. A material with no figure carries no light.
+
+| Fiber | Loss (dB per meter) |
+| --- | --- |
+| Glass | 1.0 |
+| Borosilicate Glass | 0.5 |
+| Polyester | 0.15 |
+| Optical Glass | 0.1 |
+| Silica Glass | 0.0002 |
+| Quartz Glass | 0.0002 |
+
 Every glass, these two included, casts into a placeable **Block of** that glass in the Block Mold. Vanilla glass and obsidian keep their vanilla blocks.
 
 ### Uranium glass block

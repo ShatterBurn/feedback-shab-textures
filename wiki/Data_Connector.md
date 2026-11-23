@@ -8,7 +8,7 @@ The tool that links sensors and switchable blocks to a [Controller](Controller.m
 
 Hold the connector in either hand and every block that is a **data node** shows a small socket with a bright core, outlined through walls. Linked nodes take the color of their link; a node nothing has linked is grey-blue and blinks. A spark runs along each link.
 
-A data node is any block that offers a reading or can be switched: a [Temperature Sensor](Instruments.md#temperature-sensor) or [Current Sensor](Instruments.md#current-sensor) face, a crucible or other vessel, a heater, a [Lathe](Lathe.md), a [Clutch](Clutch.md), [Valve](Valve.md), [Damper](Damper.md), [Breaker](Breaker.md), [Engine](Engine.md), [Thruster](Thruster.md), a [Driver's Seat](Vehicles.md#the-drivers-seat), and the Controllers themselves.
+A data node is any block that offers a reading or can be switched: a [Temperature Sensor](Instruments.md#temperature-sensor) or [Current Sensor](Instruments.md#current-sensor) face, a crucible or other vessel, a heater, a [Lathe](Lathe.md), a [Clutch](Clutch.md), [Valve](Valve.md), [Damper](Damper.md), [Breaker](Breaker.md), [Engine](Engine.md), [Thruster](Thruster.md), a [Driver's Seat](Vehicles.md#the-drivers-seat), an [Optical Terminal](Optical_Terminal.md), and the Controllers themselves.
 
 1. **Right-click** the node. You see *"Node selected."* For a sensor attached to a face, click **the face the sensor is on**.
 2. **Right-click** the [Controller](Controller.md), [Electric Controller](Electric_Controller.md) or [Computer](Electric_Controller.md#computer). The node is linked to it.
@@ -49,8 +49,25 @@ Each link costs fine wire from your inventory, one piece per block of distance. 
 
 A link uses copper wire when it reaches and you have enough, otherwise redstone-chromium. A path is as good as its worst wire. A live [endernet](Data_Port.md#endernet) pair counts as one hop of the best grade, so a path can cross any distance through it.
 
-**Longer links.** A link that ends at a block holding a [circuit](Basic_Electronic_Circuit.md) with gain reaches further: each point of gain adds the wire's plain reach again, and the better of the two ends counts. The blocks that take a circuit are the [Controller](Controller.md#circuit-slot), [Electric Controller](Electric_Controller.md#circuit-slot), [Computer](Electric_Controller.md#circuit-slot), [Data Port](Data_Port.md#circuit), [Power Cutter](Power_Cutter.md#circuit), [Auto Engineer](Auto_Engineer.md#circuit) and [Electrolytic Cell](Electrolytic_Cell.md#circuit). Gain comes from a [Vacuum Tube](Vacuum_Tube.md) on the board and reads at its warmth, so a cold tube gives none. The wire still costs one piece per block, and the grade and quenching rules are unchanged.
+**Longer links.** A link that ends at a block holding a [circuit](Basic_Electronic_Circuit.md) with gain reaches further: each point of gain adds the wire's plain reach again, and the better of the two ends counts. The blocks that take a circuit are the [Controller](Controller.md#circuit-slot), [Electric Controller](Electric_Controller.md#circuit-slot), [Computer](Electric_Controller.md#circuit-slot), [Data Port](Data_Port.md#circuit), [Optical Terminal](Optical_Terminal.md#circuit), [Power Cutter](Power_Cutter.md#circuit), [Auto Engineer](Auto_Engineer.md#circuit) and [Electrolytic Cell](Electrolytic_Cell.md#circuit). Gain comes from a [Vacuum Tube](Vacuum_Tube.md) on the board and reads at its warmth, so a cold tube gives none. The wire still costs one piece per block, and the grade and quenching rules are unchanged. Gain lengthens a [fiber](#fiber) the same way.
 
 Redstone-chromium wire quenches: if either end of a good line carries more than 3 links, the line goes dark for 10 seconds and then recovers undamaged. A reader with no working path reads 0.
+
+## Fiber
+
+Two [Optical Terminals](Optical_Terminal.md) are joined only by **fiber**, never by wire. Link them as any two nodes: select one terminal, then the other. Fiber is the *Fiber* form of a glass or polymer, [drawn from a glass rod](Wire_Drawer.md#what-it-makes) at the Wire Drawer. Nodes reach a terminal with ordinary wire.
+
+A fiber link costs one piece of fiber per block of distance, taken from your inventory (creative players pay nothing). Of the fibers you carry, the connector spends the poorest one that still reaches the whole distance cleanly, and the best one you carry when none does. The link is refused only when even that fiber would be lost; the bar says no fiber you carry reaches that far, or how much a link that long needs. It also refuses when an end has no crystal seated.
+
+Every fiber loses some light per meter, and a block is a meter. The terminals' crystals and circuits set a loss budget; the **clean reach** is that budget divided by the fiber's loss, up to 512 blocks. See the [Optical Terminal](Optical_Terminal.md#how-far-it-reaches) for the budget and [Materials](Materials.md#glass-fiber) for each glass's loss.
+
+| Distance | Reading it carries |
+| --- | --- |
+| Within the clean reach | exact |
+| Up to twice the clean reach | rounded to two significant figures |
+| Up to eight times the clean reach | rounded to one significant figure |
+| Beyond | lost: the link goes dark |
+
+Fiber does not quench: a fiber line carries any number of links without going dark.
 
 The mechanical [Controller](Controller.md) is a data node like the others and is linked with wire in the same way.

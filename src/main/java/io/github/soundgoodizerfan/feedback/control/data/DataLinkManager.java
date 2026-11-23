@@ -99,6 +99,11 @@ public final class DataLinkManager {
             return;
         }
         int blocks = (int) Math.ceil(Math.sqrt(a.getNodePos().distSqr(node.getNodePos())));
+        // Two optical terminals are joined by fibre (never wire), paid at one piece a block from the glass carried; any other pair by wire.
+        if (a instanceof OpticalEnd ea && node instanceof OpticalEnd eb) {
+            linkFibre(player, hand, level, ea, eb, blocks);
+            return;
+        }
         DataWires.Paid paid = DataWires.pay(player, blocks, Math.max(DataWires.gainOf(a), DataWires.gainOf(node)));
         if (!paid.enough()) {
             player.displayClientMessage(Component.translatable(paid.inRange()
@@ -109,6 +114,28 @@ public final class DataLinkManager {
         if (linked) {
             DataWires.record(level, a.getNodeRef(), node.getNodeRef(), paid.grade());
             colour(a, node, colorIn(player, hand));
+        }
+        player.displayClientMessage(Component.translatable(linked
+                ? "feedback.data_connector.linked" : "feedback.data_connector.failed"), true);
+    }
+
+    /** Joins two optical terminals with the fibre the player carries; says why when it cannot (no crystal in an end, no fibre, a fibre too lossy even at its best). */
+    private void linkFibre(Player player, net.minecraft.world.InteractionHand hand, Level level, OpticalEnd a, OpticalEnd b, int blocks) {
+        float share = Math.min(a.budgetShare(), b.budgetShare());
+        if (share <= 0f) {
+            player.displayClientMessage(Component.translatable("feedback.data_connector.fibre_no_crystal"), true);
+            return;
+        }
+        DataWires.PaidFibre paid = DataWires.payFibre(player, blocks, DataWires.budgetDb(a, b));
+        if (!paid.enough()) {
+            player.displayClientMessage(Component.translatable(paid.dead()
+                    ? "feedback.data_connector.fibre_dead" : "feedback.data_connector.fibre", paid.pieces()), true);
+            return;
+        }
+        boolean linked = a.linkTo(b);
+        if (linked) {
+            DataWires.recordFibre(level, a.getNodeRef(), b.getNodeRef(), paid.lossDb());
+            colour(a, b, colorIn(player, hand));
         }
         player.displayClientMessage(Component.translatable(linked
                 ? "feedback.data_connector.linked" : "feedback.data_connector.failed"), true);

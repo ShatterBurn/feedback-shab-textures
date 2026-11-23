@@ -131,6 +131,7 @@ public class MaterialStatsCategory implements IRecipeCategory<MaterialStatsCateg
         add(rows, "latent_fusion", t.latentHeatFusion());
         add(rows, "latent_vaporisation", t.latentHeatVaporisation());
         number(rows, "toxicity", m.toxicity());
+        number(rows, "attenuation", m.attenuation());
         number(rows, "corrosivity", m.corrosivity());
         number(rows, "ph", m.ph());
         number(rows, "shear_thickening", m.molten().shearThickening());
