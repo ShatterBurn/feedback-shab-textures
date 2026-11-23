@@ -1,0 +1,7 @@
+{
+  "values": [
+    { "id": "feedback:crude_pool", "required": false },
+    { "id": "feedback:seep", "required": false },
+    { "id": "feedback:soul_seep", "required": false }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "parent": "_kind_wood",
+  "color": "#cfd6d9",
+  "hardness": 2.2,
+  "density": 0.55,
+  "thermal": {
+    "cooling_rate": 1.7,
+    "conductivity": 4.0e-05
+  },
+  "mechanical": {
+    "toughness": 3.4,
+    "yield_strength": 2.2,
+    "abrasiveness": 0.03
+  },
+  "combustion": {
+    "burn_ticks": 600
+  },
+  "corrosion_resistance": 0.5,
+  "molten": {
+    "density": 0.5
+  },
+  "accepts": {
+    "silverwood_log": ["#thaumaturge:silverwood_logs"]
+  }
+}

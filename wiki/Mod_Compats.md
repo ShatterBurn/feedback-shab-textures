@@ -91,6 +91,7 @@ Thaumaturge items that match a Feedback material are read as that material in ev
 - Thaumium is iron with a little essentia (94% iron, 6% essentia): strong, magnetic, enchantability 22.
 - Void metal is dense, very hard, brittle and dark (88% osmium, 8% ender pearl, 4% essentia).
 - Thaumium and void metal each make the usual tinted form items. Thaumaturge's thaumium and void swords, pickaxes, axes, shovels, hoes, helmets, chestplates, leggings and boots are converted on the spot into the modular item of that kind, headed or plated in that metal, like vanilla tools (see [Old vanilla tools](Tools_and_Weapons.md#old-vanilla-tools)). Robes and shields are not converted. Other mods' recipes and JEI pages that ask for one of these items accept the converted item too.
+- Greatwood and silverwood logs are wood materials. Greatwood is a dense hardwood that burns long; silverwood is a lighter, pale wood that burns shorter.
 - Fabric is cloth, mirrored glass is mirrored glass and tallow is tallow. These three have no items of their own, and anything tagged tallow or animal fat from any mod counts as tallow.
 - Flux Goo, Thaumaturge's fluid, is a corrosive acidic sludge with pH 3.
 
@@ -133,4 +134,6 @@ Scanning Feedback's entities with the Thaumometer also yields aspects: the robot
 
 ### Taint and portable holes
 
-Feedback machines are immune to Thaumaturge's taint: it does not convert them. A portable hole does not take them either. Without Thaumaturge, nothing changes.
+Feedback machines are immune to Thaumaturge's taint: it does not convert them. A portable hole does not take them either.
+
+Core Slag, Crude Pools, Tar Seeps and Soul Seeps count as physical flux for Thaumaturge: they feed a chunk's flux floor and taint outbreaks, where Thaumaturge's options for that are on. Crude Pools, Tar Seeps and Soul Seeps can also be cleared by Thaumaturge's scrubbers. Without Thaumaturge, nothing changes.
