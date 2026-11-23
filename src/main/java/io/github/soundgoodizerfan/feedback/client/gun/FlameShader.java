@@ -42,7 +42,34 @@ public final class FlameShader {
 
     /** Whether the shader flame should be drawn now. */
     public static boolean ready() {
-        return shader != null && ClientSettings.shaderFlame();
+        return shader != null && ClientSettings.shaderFlame() && !shaderPackInUse();
+    }
+
+    private static java.lang.reflect.Method irisInUse;
+    private static Object irisApi;
+    private static boolean irisLooked;
+
+    /**
+     * Whether Iris is running a shader pack. A pack replaces the core pipeline, and a mod's own core shader is not part of it (it is drawn
+     * unlit or not at all), so the plain flame, a vanilla render type Iris does handle, is drawn instead. Iris (LGPL-3.0, no compile
+     * dependency here) is read through its public {@code IrisApi.isShaderPackInUse}; absent, false.
+     */
+    private static boolean shaderPackInUse() {
+        if (!irisLooked) {
+            irisLooked = true;
+            try {
+                Class<?> api = Class.forName("net.irisshaders.iris.api.v0.IrisApi");
+                irisApi = api.getMethod("getInstance").invoke(null);
+                irisInUse = api.getMethod("isShaderPackInUse");
+            } catch (Throwable t) {
+                irisInUse = null;
+            }
+        }
+        try {
+            return irisInUse != null && (boolean) irisInUse.invoke(irisApi);
+        } catch (Throwable t) {
+            return false;
+        }
     }
 
     /** Additive, no depth write, drawn with the strips' own quads (position, uv, colour). */
