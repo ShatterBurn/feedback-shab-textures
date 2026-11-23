@@ -25,6 +25,14 @@
         "mb": 100
       }
     ],
-    "heat": 4
+    "heat": 4,
+    "byproducts": [
+      {
+        "item": {
+          "id": "feedback:iridium_residue",
+          "count": 1
+        }
+      }
+    ]
   }
 }

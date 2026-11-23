@@ -1,0 +1,24 @@
+{
+  "inputs": [
+    {
+      "item": "feedback:iridium_residue"
+    }
+  ],
+  "min_temperature": 450,
+  "optimal_temperature": 550,
+  "max_temperature": 800,
+  "required_tpu": 300,
+  "result": {
+    "id": "feedback:iridium_sponge"
+  },
+  "reaction": {
+    "fluid_inputs": [
+      {
+        "fluid": "feedback:hydrogen",
+        "mb": 200
+      }
+    ],
+    "fluid_outputs": [],
+    "heat": 4
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "fastener": 4,
+  "color": "#b9bcc4",
+  "kind": "metal",
+  "hardness": 25,
+  "density": 21.02,
+  "thermal": {
+    "melting_point": 3186,
+    "boiling_point": 5596,
+    "cooling_rate": 1.4,
+    "conductivity": 0.012,
+    "service_temperature": 2500,
+    "specific_heat": 0.137,
+    "latent_heat_fusion": 177,
+    "latent_heat_vaporisation": 3780,
+    "oxidation_temperature": 400,
+    "anneal_temperature": 1400
+  },
+  "mechanical": {
+    "toughness": 30,
+    "yield_strength": 15,
+    "friction": 0.5,
+    "abrasiveness": 0.4,
+    "ductility": 4,
+    "work_hardening": 6
+  },
+  "separation": {
+    "magnetic": false,
+    "reflectivity": 0.65
+  },
+  "corrosion_resistance": 0.95,
+  "enchantability": 3,
+  "forms": {
+    "sponge": "feedback:rhenium_sponge",
+    "dust": "feedback:rhenium_powder",
+    "green_compact": "feedback:rhenium_green_compact"
+  },
+  "exclude": [
+    "barrel_shroud",
+    "bayonet",
+    "bipod",
+    "block",
+    "bolt",
+    "bullet",
+    "case",
+    "coin",
+    "cylinder",
+    "drilled_plate",
+    "eddy_sleeve",
+    "fine_wire",
+    "foil",
+    "grip",
+    "ground_ingot",
+    "gun_barrel",
+    "heavy_core",
+    "ingot",
+    "mace",
+    "magazine_tube",
+    "muzzle_brake",
+    "nugget",
+    "pipe",
+    "plate",
+    "receiver",
+    "relief_vent",
+    "resonance_weight",
+    "rod",
+    "scrap",
+    "sculk_jacket",
+    "selector_switch",
+    "slide",
+    "suppressor",
+    "swarf",
+    "thermal_sleeve",
+    "trigger_group",
+    "turned_rod",
+    "wire"
+  ],
+  "toxicity": 0.5,
+  "molten": {
+    "viscosity": 7,
+    "density": 18.8,
+    "shear_thickening": 0
+  },
+  "electrical": {
+    "conductivity": 0.087,
+    "drop": 0.575,
+    "electrode_potential": 0.3
+  },
+  "ampacity": 0.35
+}

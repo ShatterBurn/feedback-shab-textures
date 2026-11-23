@@ -1,0 +1,28 @@
+{
+  "inputs": [
+    {
+      "item": "feedback:rhenium_green_compact"
+    },
+    {
+      "item": "feedback:rhenium_green_compact"
+    },
+    {
+      "item": "feedback:rhenium_green_compact"
+    }
+  ],
+  "min_temperature": 2400,
+  "optimal_temperature": 2550,
+  "max_temperature": 2750,
+  "required_tpu": 1200,
+  "result": {
+    "id": "feedback:rhenium_slug"
+  },
+  "spoil_temperature": 2900,
+  "spoiled": {
+    "id": "feedback:porous_sinter"
+  },
+  "atmosphere": {
+    "fluid": "feedback:nitrogen",
+    "mb": 300
+  }
+}

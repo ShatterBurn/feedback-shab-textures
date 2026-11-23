@@ -77,8 +77,11 @@ Some reactions give off heat, which warms the reactor.
 | **Liquefy wisp gas** | 160 mB wisp gas, **2 Pu** at least (best from 4 Pu), a [Cryocooler](Cryocooler.md) | 32 mB [liquid wisp gas](Oil.md#soul-oil) | -120 to -100 Tu, best -110 |
 | **Helium cut** | 100 mB nitrogen | 4 mB [helium](Chemicals.md#helium) and 96 mB nitrogen; too warm, only the nitrogen | -196 to -189 Tu, best -193 |
 | **Argon cut** | 7 mB oxygen-rich liquid, a Cryocooler on its shallow stage | 2 mB [argon](Chemicals.md#argon) and 33 mB oxygen; too warm, only oxygen | -188 to -182.5 Tu, best -185 |
-| **Leach osmiridium** | one Raw Osmiridium, 200 mB sulfuric acid, 100 mB oxygen | 100 mB [osmium tetroxide](Chemicals.md#osmium-tetroxide), and some heat | 60 to 125 Tu, best 90 |
+| **Leach osmiridium** | one Raw Osmiridium, 200 mB sulfuric acid, 100 mB oxygen | 100 mB [osmium tetroxide](Chemicals.md#osmium-tetroxide), one **Iridium Residue**, and some heat | 60 to 125 Tu, best 90 |
 | **Reduce osmium tetroxide** | 100 mB osmium tetroxide, 400 mB hydrogen | one **Osmium Sponge**, and some heat | 280 to 420 Tu, best 330 |
+| **Reduce iridium residue** | one Iridium Residue, 200 mB hydrogen | one **Iridium Sponge**, and some heat | 450 to 800 Tu, best 550 |
+| **Roast molybdenite** | one molybdenite concentrate, 100 mB oxygen | one **Molybdenum Calcine**, one **Rhenium Oxide** and 100 mB [sulfur dioxide](Chemicals.md#sulfur-dioxide); above 800 Tu the batch spoils | 450 to 750 Tu, best 600 |
+| **Reduce rhenium oxide** | one Rhenium Oxide, 300 mB hydrogen | one **Rhenium Sponge**, and some heat | 300 to 600 Tu, best 400 |
 | **Ammonia** | 100 mB nitrogen, 300 mB hydrogen, an iron bed | 200 mB [ammonia](Chemicals.md#ammonia), and some heat | 400 to 500 Tu, best 450 |
 | **Fertilizer** | 200 mB ammonia, 100 mB sulfuric or hydrochloric acid | 2 [Fertilizer](Fertilizer.md) | 20 to 100 Tu, best 50 |
 | **Raw Spatial Slurry** | one Chorus Fruit, 100 mB water | 100 mB Raw Spatial Slurry | 0 to 60 Tu, best 25 |

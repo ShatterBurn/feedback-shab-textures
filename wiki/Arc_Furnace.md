@@ -49,7 +49,7 @@ The arc is capped by the **weakest electrode**: about 97% of the temperature at 
 
 ## Sintering under gas
 
-The hearth has a fluid face that takes **nitrogen** or **argon** and holds it under the arc head. A sintering batch (the [Heavy Core](Heavy_Core.md#making-it): three osmium green compacts) spends that gas, 300 mB of nitrogen or 150 mB of argon, and without it the batch is lost.
+The hearth has a fluid face that takes **nitrogen** or **argon** and holds it under the arc head. A sintering batch (the [Heavy Core](Heavy_Core.md#making-it) and [iridium and rhenium slugs](Materials.md#iridium-and-rhenium): three osmium, iridium or rhenium green compacts) spends that gas, 300 mB of nitrogen or 150 mB of argon, and without it the batch is lost.
 
 ## Power
 

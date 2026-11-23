@@ -567,6 +567,16 @@ public class FItems {
     public static final DeferredItem<Item> OSMIUM_SPONGE = ITEMS.registerSimpleItem("osmium_sponge");
     public static final DeferredItem<Item> OSMIUM_POWDER = ITEMS.registerSimpleItem("osmium_powder");
     public static final DeferredItem<Item> OSMIUM_GREEN_COMPACT = ITEMS.registerSimpleItem("osmium_green_compact");
+    /** Iridium left behind when osmiridium gives up its osmium as tetroxide, and rhenium from the roast of molybdenite; each is reduced, pressed and sintered to a slug like osmium. */
+    public static final DeferredItem<Item> IRIDIUM_RESIDUE = ITEMS.registerSimpleItem("iridium_residue");
+    public static final DeferredItem<Item> IRIDIUM_SPONGE = ITEMS.registerSimpleItem("iridium_sponge");
+    public static final DeferredItem<Item> IRIDIUM_POWDER = ITEMS.registerSimpleItem("iridium_powder");
+    public static final DeferredItem<Item> IRIDIUM_GREEN_COMPACT = ITEMS.registerSimpleItem("iridium_green_compact");
+    public static final DeferredItem<Item> MOLYBDENUM_CALCINE = ITEMS.registerSimpleItem("molybdenum_calcine");
+    public static final DeferredItem<Item> RHENIUM_OXIDE = ITEMS.registerSimpleItem("rhenium_oxide");
+    public static final DeferredItem<Item> RHENIUM_SPONGE = ITEMS.registerSimpleItem("rhenium_sponge");
+    public static final DeferredItem<Item> RHENIUM_POWDER = ITEMS.registerSimpleItem("rhenium_powder");
+    public static final DeferredItem<Item> RHENIUM_GREEN_COMPACT = ITEMS.registerSimpleItem("rhenium_green_compact");
     public static final DeferredItem<Item> BURNT_IRON = ITEMS.registerSimpleItem("burnt_iron");
     /** The bloomery's spongy iron, slag in it as {@code MadeOf.flaw}; shingled at the anvil or the Mechanical Hammer into wrought iron. */
     public static final DeferredItem<Item> IRON_BLOOM = ITEMS.registerItem("iron_bloom", io.github.soundgoodizerfan.feedback.item.BloomItem::new);

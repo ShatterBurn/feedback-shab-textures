@@ -29,7 +29,8 @@
     "gangue": "feedback:granite"
   },
   "bears": {
-    "feedback:molybdenum": 0.6
+    "feedback:molybdenum": 0.6,
+    "feedback:rhenium": 0.02
   },
   "corrosion_resistance": 0.9,
   "toxicity": 0.3,

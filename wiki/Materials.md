@@ -74,6 +74,8 @@ Amounts of metal and other stuff are counted in **Qu**. See [Units](Units.md#amo
 | Amethyst Bronze | 12.5 | 7.4 | 12 | 1000 Tu | A mixture of bronze with a little amethyst. The best conductor of XP, at a conductance of 4 ([Experience](Experience.md)). |
 | Uranium | 20 | 19.1 | 10 | 1132 Tu | **Radioactive.** Nearly as dense as gold and tungsten. See [Uranium](#uranium). |
 | [Osmium](Heavy_Core.md) | 39 | 22.59 | 30 | 3033 Tu | The densest metal. Its only forms are powder, sponge, compact and the [Heavy Core](Heavy_Core.md). |
+| [Iridium](#iridium-and-rhenium) | 18 | 22.56 | 20 | 2446 Tu | Nearly as dense as osmium, and it stands 2300 Tu. Its only forms are powder, sponge, compact and slug. |
+| [Rhenium](#iridium-and-rhenium) | 25 | 21.02 | 15 | 3186 Tu | Stands 2500 Tu. Its only forms are powder, sponge, compact and slug. |
 | [Netherite](Netherite.md) | 130 | 7.5 | 100 | 2200 Tu | **Magnetic.** Harder than a drill bit; only a lathe bit or a grinding wheel cuts it. |
 | Cast Netherite | 83 | 7.5 | 60 | 1380 Tu | **Magnetic.** The ingot before soul quenching ([Netherite](Netherite.md#soul-quenching)). |
 
@@ -447,6 +449,17 @@ Two more are laminated in a vessel, each a plate:
 | Nacre Laminate | 2 Calcite Dust and 100 mB phenolic resin | 140 to 190 Tu, best near 160; chars past 300 | Hardness 15, density 2.7, yield strength 5. Stands 200 Tu. Needs 1 Pu or more. |
 | Phantom Ripstop | a phantom membrane and an Aramid ingot, or 2 Aramid ingots and a slime ball | 120 to 180 Tu, best near 150; spoils past 300 | Very light (density 0.9) and very tough (30). Insulates to HV. Stands 150 Tu. |
 
+## Iridium and rhenium
+
+Two dense metals that melt too high to cast. Like [osmium](Heavy_Core.md), each is made as a powder, pressed and sintered, never cast. Neither has an ingot, plate, rod or wire.
+
+1. **Sponge.** Iridium comes with osmium: leaching osmiridium in the [Reactor](Reactor.md#the-reactions) also leaves **Iridium Residue**, and a Reactor with hydrogen between **450 and 800 Tu** (best 550) reduces it to an **Iridium Sponge**. Rhenium comes with molybdenum: roasting a molybdenite concentrate with oxygen in the Reactor leaves a **Molybdenum Calcine**, sulfur dioxide and a **Rhenium Oxide** beside it, and hydrogen between **300 and 600 Tu** (best 400) reduces the oxide to a **Rhenium Sponge**.
+2. **Mix** 85 to 98% sponge with 2 to 15% nickel in the [Mixer](Mixer.md#mixing-powders-for-pressing) for **Iridium Powder** or **Rhenium Powder**.
+3. **Press** the powder in the [Mechanical Press](Mechanical_Press.md#pressing-powder) into a green compact.
+4. **Sinter** three compacts in the [Arc Hearth](Arc_Furnace.md#sintering-under-gas) under argon or nitrogen. Iridium sinters between **1900 and 2250 Tu**, best at 2050; rhenium between **2400 and 2750 Tu**, best at 2550. Past **2400 Tu** (iridium) or **2900 Tu** (rhenium) the grains coarsen into a weak **Porous Sinter**. The result is an **Iridium Slug** or a **Rhenium Slug**.
+
+Iridium is hard, brittle and gives off a toxic dust; rhenium is tough and more toxic still.
+
 ## Ore minerals
 
 Ore minerals are not metal. Most melt into the metal they carry the most of, and give more of it the further they are processed: crushed, separated into a concentrate, roasted and leached. **Ilmenite, dolomite and beryl are refractory**: they do not melt to metal, and their metal comes only from a reducing process ([Ore Processing](Ore_Processing.md#reducing-refractory-ores)). See [Ore Processing](Ore_Processing.md). Find them in [Ore Deposits](Ore_Deposits.md).
@@ -470,7 +483,7 @@ Ore minerals are not metal. Most melt into the metal they carry the most of, and
 | Stibnite | Antimony |
 | Vanadinite | Vanadium |
 | Cinnabar | Mercury |
-| Molybdenite | Molybdenum (60%) |
+| Molybdenite | Molybdenum (60%), Rhenium (2%) |
 | Dolomite | Magnesium (13%; reduced, not melted) |
 
 **Galena** and **Pyrite** are crystals that rectify, which is why a [Cat's Whisker Detector](Cats_Whisker_Detector.md) wants one. Galena melts down to lead. **Spodumene** and **beryl** are transparent crystals.
