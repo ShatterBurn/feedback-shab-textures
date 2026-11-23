@@ -2,7 +2,7 @@
   "type": "feedback:engineering",
   "key": {
     "P": { "item": "feedback:wrought_iron_plate" },
-    "W": { "item": "minecraft:white_wool" },
+    "W": { "tag": "minecraft:wool" },
     "K": { "item": "feedback:copper_plate" },
     "F": { "item": "feedback:copper_fine_wire" }
   },

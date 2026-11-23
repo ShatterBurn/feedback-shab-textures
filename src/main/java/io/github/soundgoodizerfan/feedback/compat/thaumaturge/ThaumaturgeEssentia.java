@@ -54,7 +54,7 @@ public final class ThaumaturgeEssentia {
         }
     }
 
-    /** Draws up to {@code amount} essentia out of the store at {@code pos}, from its fullest aspect first; returns what came out. */
+    /** Draws up to {@code amount} essentia out of the store at {@code pos}, from the first aspect that gives any; returns what came out. */
     public static int draw(Level level, BlockPos pos, Direction face, int amount) {
         if (!present() || amount <= 0)
             return 0;
