@@ -1,4 +1,4 @@
-// 1.21.1	2026-11-22T20:49:16.954496638	Tags for minecraft:block mod id feedback
+// 1.21.1	2026-11-22T21:02:18.540672045	Tags for minecraft:block mod id feedback
 5299fba2cf8a4d2241cff1374fa635c78187d415 data/c/tags/block/cobbles/deepslate.json
 e46c61e630c70c05b43ebfc298ed188210359830 data/c/tags/block/cobbles/stone.json
 ff5f6a7fd186e4aca55ed7b60721a78c9241c219 data/c/tags/block/deepslate_ores/alumina.json
@@ -395,3 +395,5 @@ a45842e11a0f307ad8ba6b6b9af3cf1f17e5e45b data/minecraft/tags/block/mineable/hoe.
 83fba4e9cd75ac5fdd1c5af68d56688a7f4de185 data/minecraft/tags/block/mineable/pickaxe.json
 ae9427d3f6cf27d8eb095f5fa284df1b89372e2b data/minecraft/tags/block/needs_iron_tool.json
 887b57db5cf2256c7718051c18405984a7ae6f1b data/minecraft/tags/block/needs_stone_tool.json
+80c782434a8e2c86795e06ae8e2c00f9f6724e4b data/thaumaturge/tags/block/portable_hole_blacklist.json
+80c782434a8e2c86795e06ae8e2c00f9f6724e4b data/thaumaturge/tags/block/taint_conversion_immune.json

@@ -259,6 +259,14 @@ public final class FormData {
                         String path = e.getKey().location().getPath();
                         tag(wooden.contains(path)
                                 ? BlockTags.MINEABLE_WITH_AXE : BlockTags.MINEABLE_WITH_PICKAXE).add(b);
+                        // A machine housing is built stuff, not terrain: Thaumaturge's taint does not convert it (interop tag, a no-op without that mod).
+                        // A portable hole does not eat one either: it holds a tank, a charge or a heat that a hole would spill.
+                        if (b instanceof net.minecraft.world.level.block.EntityBlock) {
+                            tag(net.minecraft.tags.TagKey.create(net.minecraft.core.registries.Registries.BLOCK,
+                                    net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("thaumaturge", "taint_conversion_immune"))).add(b);
+                            tag(net.minecraft.tags.TagKey.create(net.minecraft.core.registries.Registries.BLOCK,
+                                    net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("thaumaturge", "portable_hole_blacklist"))).add(b);
+                        }
                         // Bolted machines and pipes come apart fast with a wrench; wires and stations do not.
                         if (!wooden.contains(path) && !path.equals("cable") && !path.equals("fence")
                                 && !path.equals("xp_wire")

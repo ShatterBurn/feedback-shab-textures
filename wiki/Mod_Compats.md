@@ -128,3 +128,7 @@ Machines, devices and carried hardware carry aspects that match their function:
 - [Robot](Robots.md) parts (chassis, drive, head, loader, radio, sensor, tether): Machina, Cognitio and Motus.
 
 Part items that carry their material on the stack have no aspects of their own, and Thaumaturge works theirs out from their recipes. Creative and debug items have none.
+
+### Taint and portable holes
+
+Feedback machines are immune to Thaumaturge's taint: it does not convert them. A portable hole does not take them either. Without Thaumaturge, nothing changes.
