@@ -24,6 +24,14 @@
         "fluid": "feedback:lye",
         "mb": 200
       }
+    ],
+    "byproducts": [
+      {
+        "item": {
+          "id": "feedback:silicate_slag",
+          "count": 1
+        }
+      }
     ]
   }
 }

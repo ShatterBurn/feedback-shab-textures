@@ -127,4 +127,4 @@ Amounts and windows are in the Reactor table; the melt is poured as described un
 
 ## Cryolite bath
 
-Cryolite Ore melted in a Reactor at 1010 Tu gives this molten liquid. At 950 Tu or hotter it is the solvent in which an Electrolyser splits alumina into aluminum. It is not used up. See [Guide: Making Aluminum](Guide_Making_Aluminum.md).
+Cryolite Ore or Cryolite Dust melted in a Reactor at 1010 Tu gives this molten liquid. Cryolite Dust is made from alumina, hydrofluoric acid and lye in a Reactor. At 950 Tu or hotter it is the solvent in which an Electrolyser splits alumina into aluminum. It is not used up. See [Guide: Making Aluminum](Guide_Making_Aluminum.md).

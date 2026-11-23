@@ -1,0 +1,29 @@
+{
+  "inputs": [
+    {
+      "item": "feedback:alumina"
+    }
+  ],
+  "min_temperature": 80,
+  "optimal_temperature": 110,
+  "max_temperature": 160,
+  "required_tpu": 300,
+  "result": {
+    "id": "feedback:cryolite_dust",
+    "count": 2
+  },
+  "reaction": {
+    "fluid_inputs": [
+      {
+        "fluid": "feedback:hydrofluoric_acid",
+        "mb": 300
+      },
+      {
+        "fluid": "feedback:lye",
+        "mb": 150
+      }
+    ],
+    "fluid_outputs": [],
+    "heat": 4
+  }
+}

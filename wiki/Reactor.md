@@ -60,7 +60,7 @@ Some reactions give off heat, which warms the reactor.
 | **Magma settling** | 1000 mB [Magma Melt](Magma_Drill.md#settling-the-melt) | 500 mB molten iron, 60 mB molten nickel, 20 mB molten cobalt and 300 mB molten slag | 1550 Tu or more, best 1700 |
 | **Dissolve salt** | one Salt, 250 mB water | 250 mB [brine](Chemicals.md#brine) | 20 to 100 Tu, best 60 |
 | **Bayer (bauxite)** | any bauxite item, 250 mB [lye](Chemicals.md#lye) | 2 [alumina](Guide_Making_Aluminum.md) and 200 mB lye back | 150 to 250 Tu, best 200 |
-| **Bayer (lapis)** | one Lapis Lazuli, 250 mB lye | 1 alumina and 200 mB lye back; the lapis' stored experience is lost | 150 to 250 Tu, best 200 |
+| **Bayer (lapis)** | one Lapis Lazuli, 250 mB lye | 1 alumina, one Silicate Slag and 200 mB lye back; the lapis' stored experience is lost | 150 to 250 Tu, best 200 |
 | **Roast pyrite** | any pyrite item | 4 iron nuggets and 200 mB [sulfur dioxide](Chemicals.md#sulfur-dioxide) | 500 to 900 Tu, best 700 |
 | **Sulfuric acid** | 100 mB sulfur dioxide, 50 mB oxygen, 100 mB water, a catalyst bed, **1 Pu** at least (best from 2 Pu) | 100 mB [sulfuric acid](Chemicals.md#acids), and some heat | 400 to 550 Tu, best 450 |
 | **Hydrochloric acid** | 100 mB hydrogen, 100 mB chlorine | 100 mB [hydrochloric acid](Chemicals.md#acids), and some heat | 20 to 200 Tu, best 60 |
@@ -98,7 +98,9 @@ Some reactions give off heat, which warms the reactor.
 | **Diamond (vapor)** | one Diamond Seed, 8 mB [methane](Chemicals.md#fluorine-and-ptfe), 72 mB hydrogen, **1.5 Pu** at least (best at 2 Pu) | 2 Diamonds and 64 mB hydrogen; over 950 Tu, a Graphite instead | 780 to 950 Tu, best 880 |
 | **Purify redstone** | one Redstone dust, 50 mB sulfuric or hydrochloric acid | one [Purified Redstone](Materials.md#superconductor) | 40 to 120 Tu, best 60 |
 | **Superconductor anneal** | one fine wire of Redstone Filament with texture 1, 2 or 3, 160 mB oxygen, **3.8 Pu** at least (best at 4.6 Pu) | a poor, fair or best Redstone Superconductor Wire (by texture), the oxygen returned; too hot, redstone dust | 840 to 920 Tu, best 880 |
+| **Synthesize cryolite** | one alumina, 300 mB hydrofluoric acid, 150 mB [lye](Chemicals.md#lye) | 2 Cryolite Dust, and some heat | 80 to 160 Tu, best 110 |
 | **Molten cryolite** | one Cryolite Ore | 144 mB [cryolite bath](Chemicals.md#cryolite-bath) | melts at 1010 Tu |
+| **Molten cryolite dust** | one Cryolite Dust | 72 mB cryolite bath | melts at 1010 Tu |
 
 Porous Aggregate, left by the End stone row, is a very light rock that barely conducts heat. End Stone is also a tungsten ore; its lye leach is in [Ore Processing](Ore_Processing.md#leaching-and-winning).
 

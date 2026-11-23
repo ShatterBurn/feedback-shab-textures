@@ -1,0 +1,16 @@
+{
+  "inputs": [
+    [
+      {
+        "item": "feedback:cryolite_dust"
+      }
+    ]
+  ],
+  "min_temperature": 1010,
+  "optimal_temperature": 1010,
+  "required_tpu": 0,
+  "result_fluid": {
+    "id": "feedback:cryolite_bath",
+    "amount": 72
+  }
+}
