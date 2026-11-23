@@ -19,6 +19,7 @@ The mods Feedback works with, and what each one gives you. Some are required, so
 | [Other mods' foods](#other-mods-foods) | Optional | Any food from another mod keeps and spoils like Feedback food |
 | [Inventory Sorter](#inventory-sorter) | Optional | Sorting skips screens whose slots are roles |
 | [Xaero's Minimap](#xaeros-minimap) | Optional | Survey Meter readings pin to the map |
+| [Applied Energistics 2](#applied-energistics-2) | Optional | Certus Quartz and Fluix crystals and dusts count as materials |
 | [Other mods](#other-mods) | Optional | Fluid tags and shared biome and stone tags |
 
 ## Sable, Dimensional Sable and Sable Scaling
@@ -205,6 +206,19 @@ Any food from another mod (an item that is edible and is not from Minecraft or F
 ## Xaero's Minimap
 
 **Optional.** With Xaero's Minimap installed, every [Survey Meter](Instruments.md#survey-meter) reading pins to the map. The pins sit in a waypoint set named **Feedback survey**, one yellow waypoint for each line the meter read: each kind of ore, oil, and the Thaumaturge field anomaly. A pin marks where most of that kind lies, rounded to 8 blocks, not the exact block. The next reading clears the set and fills it again, and a reading that finds nothing leaves it empty.
+
+## Applied Energistics 2
+
+**Optional.** With Applied Energistics 2 installed, two materials exist, and AE2's crystals and dusts are those materials in every recipe and process that reads a material by its properties:
+
+| Material | What it is | Insulation | Piezo coupling |
+|---|---|---|---|
+| **Certus Quartz** | A quartz-like piezo crystal | ehv | 1.0 |
+| **Fluix** | A weaker mixed crystal | hv | 0.7 |
+
+Certus Quartz and Fluix crystals and dusts count as their material. Their blocks, buds and ores do not. Using one opens the material's stats card in JEI, whose item box lists it. Without Applied Energistics 2, neither material exists.
+
+AE2's own fluid cells already hold Feedback's fluids and gases. Feedback adds nothing for AE2 network storage: it is not part of Feedback's own logistics.
 
 ## Energy Fitting
 
