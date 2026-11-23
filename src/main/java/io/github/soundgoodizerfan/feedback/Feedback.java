@@ -58,6 +58,7 @@ public class Feedback {
         io.github.soundgoodizerfan.feedback.robot.RobotChannel.declareSignals();
         FFluidTypes.register(modBus);
         FFluids.register(modBus);
+        io.github.soundgoodizerfan.feedback.compat.lso.LsoCompat.init(modBus);
         io.github.soundgoodizerfan.feedback.registry.FCrops.init();
         FBlocks.register(modBus);
         modBus.addListener(io.github.soundgoodizerfan.feedback.worldgen.VanillaVesselSwap::onExtendPoi);

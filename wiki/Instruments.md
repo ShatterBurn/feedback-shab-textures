@@ -151,6 +151,8 @@ It reads toxin only. Heat does not clear a toxin, and your senses do not show on
 
 Turns "glowing orange" into a number.
 
+With Legendary Survival Overhaul installed, carrying it also shows your body temperature ([Mod Compats](Mod_Compats.md#legendary-survival-overhaul)).
+
 ```
 G
 F

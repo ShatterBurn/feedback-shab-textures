@@ -59,6 +59,8 @@ A finished piece is named by rule from its plate shape, the bands its axes sit i
 
 ## What it gives
 
+With Legendary Survival Overhaul installed, worn armor also insulates the body ([Mod Compats](Mod_Compats.md#legendary-survival-overhaul)).
+
 - **Protection depends on how hard and strong the plate is.** Iron gives what it does in vanilla: six points in a chestplate. Diamond and netherite give more; **gold and leather give much less**, because they're soft. A plate that is better than iron gives less and less extra: there's a ceiling.
 - **Chain covers less than plate** (three quarters as much).
 - **Armor toughness** only comes from the very best plate (diamond, netherite).

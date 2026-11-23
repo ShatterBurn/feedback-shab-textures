@@ -88,7 +88,7 @@ A hot enough crucible, furnace or casting basin that holds metal gives off real 
 
 ## Room temperature
 
-Everything cools toward the room's temperature: **20 Tu** in the Overworld, **40 Tu** in the Nether. A vessel loses heat to the room through the air, so thin air slows its cooling and in a vacuum it keeps all its heat; a [Radiator Panel](Radiator_Panel.md) sheds it. With Serene Seasons installed the Overworld's room follows the season ([Mod Compats](Mod_Compats.md#serene-seasons)).
+Everything cools toward the room's temperature: **20 Tu** in the Overworld, **40 Tu** in the Nether. A vessel loses heat to the room through the air, so thin air slows its cooling and in a vacuum it keeps all its heat; a [Radiator Panel](Radiator_Panel.md) sheds it. With Serene Seasons installed the Overworld's room follows the season ([Mod Compats](Mod_Compats.md#serene-seasons)). With Legendary Survival Overhaul installed the room also sets the player's body temperature ([Mod Compats](Mod_Compats.md#legendary-survival-overhaul)).
 
 ## Processes
 

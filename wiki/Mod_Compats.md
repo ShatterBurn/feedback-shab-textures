@@ -15,6 +15,7 @@ The mods Feedback works with, and what each one gives you. Some are required, so
 | [Thaumaturge](#thaumaturge) | Optional | Aspects on Feedback items, flux and essentia machines, essentia turned to gas, a vis-fed current source, thaumium alloys |
 | [Iris](#iris) | Optional | Shader packs: the fluid caster's flame follows the pack |
 | [Serene Seasons](#serene-seasons) | Optional | The season shifts the Overworld's room temperature |
+| [Legendary Survival Overhaul](#legendary-survival-overhaul) | Optional | Body temperature and thirst follow Feedback's rooms, machines, armor, food and fluids |
 | [EMI](#emi) | Optional | Shows Feedback's recipe cards through its JEI bridge |
 | [Other mods' foods](#other-mods-foods) | Optional | Any food from another mod keeps and spoils like Feedback food |
 | [Inventory Sorter](#inventory-sorter) | Optional | Sorting skips screens whose slots are roles |
@@ -182,6 +183,28 @@ Crafting some Feedback items gives Thaumaturge warp, a few points each: the fuel
 Thaumaturge's Outer Lands dimension is cold and has the thin, oxygen-free air of the End, so [Heat](Heat.md) rules for cold and the sealed-suit rules of [Hazards](Hazards.md) apply there.
 
 Hot surfaces, plants that hurt on contact, Core Slag, Crude Pools, Tar Seeps and Soul Seeps count as unsafe landings for Thaumaturge's arrival pads.
+
+## Legendary Survival Overhaul
+
+**Optional.** Legendary Survival Overhaul (LSO) gives the player a body temperature, thirst and a temperature icon on the HUD. With both mods installed, Feedback's world drives them.
+
+### Body temperature
+
+- **Rooms.** Feedback's [room temperature](Heat.md#room-temperature) for the dimension (with the season shift from [Serene Seasons](#serene-seasons)) replaces LSO's own dimension and season effects. LSO's biome, altitude, night, weather, wetness and sprint effects stay. The body scale is in Tu: **20 Tu** is normal body temperature and **40 Tu** is the Nether's heat.
+- **Machines.** A hot or cold Feedback machine within **5 blocks** warms or chills you, less with distance. Fires count by their flame temperature, and vessels and other thermal bodies by their temperature. One machine adds a limited amount and all machines together a limited amount, so a crowded forge room is hot but bounded.
+- **Armor.** Worn modular [armor](Armor.md) insulates by what its parts are made of: poor heat conductors (leather, cloth, wood) insulate and metal plate does not. The chest piece counts most, then legs, then head and feet. LSO treats the result as the armor's thermal resistance.
+
+### Food and drink
+
+Finishing a Feedback food or dish hydrates by its nutrition times its water share: a thin soup hydrates well and dry bread barely. A meal far from room temperature warms or chills you for a while, stronger and longer the further it is from room temperature. A wet meal counts as a drink for LSO's drink effects. See [Food](Food.md).
+
+### Fluids
+
+Drinking a placed Feedback fluid has a cost: **Brine** dehydrates and sickens, and **Lye**, **Hydrochloric Acid**, **Sulfuric Acid** and **Hypochlorite Bleach** poison.
+
+### Reading the body
+
+LSO's icon and its word states work as they do without Feedback. While you carry a Feedback temperature instrument (the [Thermometer](Instruments.md#thermometer)), a line **Body: N Tu** shows above the left end of the hotbar. It reads to a tenth of the instrument's step, which is **2.5 Tu** for the Thermometer, and never finer. It is hidden while LSO's own thermometer is worn, which shows its own number.
 
 ## EMI
 

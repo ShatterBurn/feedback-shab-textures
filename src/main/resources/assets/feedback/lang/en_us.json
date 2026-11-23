@@ -696,6 +696,7 @@
   "message.feedback.press.seated": "Seated.",
   "gun.feedback.rounds": "Loaded: %1$s in the magazine, %2$s chambered",
   "gun.feedback.wear": "Bore wear: %s%%",
+  "hud.feedback.lso_body": "Body: %s Tu",
   "hud.feedback.gun.barrel": "Barrel: %s",
   "hud.feedback.gun.heat.cool": "cool",
   "hud.feedback.gun.heat.warm": "warm",

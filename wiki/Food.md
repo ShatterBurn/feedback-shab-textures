@@ -8,6 +8,8 @@ Raw meat and fish are cooked in a furnace, smoker or campfire (here the [Campfir
 
 ## What Feedback does
 
+With Legendary Survival Overhaul installed, food also hydrates and warms or chills the body ([Mod Compats](Mod_Compats.md#legendary-survival-overhaul)).
+
 - **Cooking is heat on a food, not a recipe.** A [Furnace, Smoker or Crude Blast Furnace](Furnaces.md) heats whatever food is inside. Raw meat first cooks through (the live organisms in it die), then becomes its cooked item.
 - **Keep it on and it spoils.** Past done, the water boils off and the food is *dried out*: it keeps the same item but feeds you less. Hotter than it can take and it *chars*: it feeds you almost nothing and can make you sick. The Smoker's low ceiling keeps food in the good window; a hot furnace left unattended takes it past.
 - **Food heats by its own specific heat.** A wet food takes more heat to warm than a dry one, so it comes up to temperature more slowly in the same pan.
