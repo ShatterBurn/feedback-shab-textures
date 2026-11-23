@@ -101,6 +101,8 @@ public class SurveyMeterItem extends Item implements Instrument {
             if (best != null)
                 found.put(bestKey, best);
         }
+        // What a map mod may pin: each line the meter reads, at the place most of it lies, coarsened to the meter's own step.
+        var pins = new java.util.ArrayList<io.github.soundgoodizerfan.feedback.net.SurveyPinPayload.Pin>();
         var lines = found.entrySet().stream()
                 .map(e -> Map.entry(e.getKey(), e.getValue()))
                 .sorted(Comparator.comparingLong((Map.Entry<String, long[]> e) -> -e.getValue()[0]))
@@ -109,6 +111,8 @@ public class SurveyMeterItem extends Item implements Instrument {
                     long[] s = e.getValue();
                     float wobble = (level.random.nextFloat() - 0.5f) * ItemTuning.SURVEY_RESOLUTION;
                     float reading = Instruments.quantise(s[0] + wobble, ItemTuning.SURVEY_RESOLUTION);
+                    if (reading > 0)
+                        pins.add(new io.github.soundgoodizerfan.feedback.net.SurveyPinPayload.Pin(e.getKey(), pinAt(centre, s)));
                     return reading <= 0 ? null : Component.translatable("feedback.survey.line",
                             Component.translatable(e.getKey()),
                             Instruments.format(reading, ItemTuning.SURVEY_RESOLUTION), bearing(s));
@@ -117,14 +121,28 @@ public class SurveyMeterItem extends Item implements Instrument {
         // A node concentrates aura and aura bends the field a survey reads, so the chunk holding the most reads as an anomaly,
         // like an ore body: with a bearing and no figure. Only where Thaumaturge keeps aura, and never a constant signal.
         var anomaly = auraAnomaly(level, centre);
-        if (anomaly != null)
+        if (anomaly != null) {
             lines.add(Component.translatable("feedback.survey.aura", bearing(anomaly)));
+            pins.add(new io.github.soundgoodizerfan.feedback.net.SurveyPinPayload.Pin("feedback.survey.aura_pin", pinAt(centre, anomaly)));
+        }
+        // Every reading replaces the last set of pins (an empty reading clears them), so only what the meter just read is on the map.
+        if (player instanceof net.minecraft.server.level.ServerPlayer sp)
+            net.neoforged.neoforge.network.PacketDistributor.sendToPlayer(sp, new io.github.soundgoodizerfan.feedback.net.SurveyPinPayload(pins));
         if (lines.isEmpty()) {
             player.displayClientMessage(Instruments.signed(this, Component.translatable("feedback.survey.none")), true);
             return;
         }
         for (var line : lines)
             player.sendSystemMessage(Instruments.signed(this, line));
+    }
+
+    /** Where most of a kind lies, from the holder, rounded to {@link ItemTuning#SURVEY_RESOLUTION} blocks: the pin is the reading, not the block. */
+    private static BlockPos pinAt(BlockPos centre, long[] s) {
+        int step = Math.max(1, Math.round(ItemTuning.SURVEY_RESOLUTION));
+        return new BlockPos(
+                centre.getX() + Math.round((float) (s[1] / (double) s[0]) / step) * step,
+                centre.getY() + Math.round((float) (s[2] / (double) s[0]) / step) * step,
+                centre.getZ() + Math.round((float) (s[3] / (double) s[0]) / step) * step);
     }
 
     /**

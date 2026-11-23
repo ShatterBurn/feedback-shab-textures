@@ -189,6 +189,9 @@ public class Feedback {
                         io.github.soundgoodizerfan.feedback.net.SkillWispPayload::handle)
                 .playToClient(AmbientSyncPayload.TYPE, AmbientSyncPayload.STREAM_CODEC,
                         AmbientSyncPayload::handle)
+                .playToClient(io.github.soundgoodizerfan.feedback.net.SurveyPinPayload.TYPE,
+                        io.github.soundgoodizerfan.feedback.net.SurveyPinPayload.STREAM_CODEC,
+                        io.github.soundgoodizerfan.feedback.net.SurveyPinPayload::handle)
                 .playToClient(MaterialSyncPayload.TYPE, MaterialSyncPayload.STREAM_CODEC,
                         MaterialSyncPayload::handle)
                 .playToClient(DeformationSyncPayload.TYPE, DeformationSyncPayload.STREAM_CODEC,

@@ -4037,6 +4037,7 @@
   "tooltip.feedback.modular.perk.radiant": "Radiant %s (struck targets wither and glow)",
   "feedback.instrument.survey_meter": "Survey meter",
   "feedback.survey.line": "%1$s: about %2$s blocks, %3$s",
+  "feedback.survey.aura_pin": "Field anomaly",
   "feedback.survey.aura": "Field anomaly, no ore: %s",
   "feedback.survey.none":"Nothing within reach reads above the noise.",
   "feedback.survey.here": "right here",
